@@ -105,6 +105,43 @@ Ngắn gọn: **SQLite đủ dùng cho app cá nhân / ít người dùng.** Gi�
 - **Frontend:** deploy tĩnh lên Vercel / Netlify (build `frontend/dist`), đặt `VITE_API_URL` trỏ về URL backend.
 - Biến môi trường khi deploy: `PORT`, `JWT_SECRET` (đổi thành chuỗi dài ngẫu nhiên), `DATABASE_PATH`, `GOOGLE_CLIENT_ID`, `CORS_ORIGIN` (domain frontend).
 
+### Các bước deploy — làm theo thứ tự: Render trước, Vercel sau
+
+Thứ tự này là bắt buộc: frontend cần biết URL backend (`VITE_API_URL`) mới build được, nên phải deploy backend trước để lấy URL.
+
+**Bước 0 — Chuẩn bị (làm 1 lần):**
+- Push code lên GitHub (repo `anhanh777/app_toeic`, nhánh `main`).
+- Chuẩn bị sẵn: 1 chuỗi `JWT_SECRET` dài ngẫu nhiên (tự tạo, ví dụ 32 ký tự trở lên); Google OAuth Client ID/Secret (xem mục "Google login").
+
+**Bước 1 — Deploy backend lên Render (từ `render.yaml`):**
+1. Vào [Render Dashboard](https://dashboard.render.com/) → **New → Blueprint** → chọn repo `anhanh777/app_toeic`.
+2. Render đọc file `render.yaml` ở gốc repo và tạo web service `app-toeic-backend` (thư mục gốc `backend`, build `npm install`, start `npm start`) + disk `app-data` 1 GB gắn tại `/var/data`.
+3. Khi Render hỏi các biến `sync: false`, nhập giá trị thật: `JWT_SECRET` (chuỗi ngẫu nhiên đã chuẩn bị), `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
+4. Chọn gói instance: **disk chỉ có trên gói trả phí (Starter trở lên, ~$7/tháng)**. Gói free không có disk — file `.db` sẽ bị xóa khi redeploy/restart. Nếu tạm dùng gói free thì bỏ khối `disk` trong `render.yaml`, nhưng phải chấp nhận mất dữ liệu mỗi lần deploy lại.
+5. Deploy xong, ghi lại URL backend, ví dụ: `https://app-toeic-backend.onrender.com`.
+6. Kiểm tra: mở `https://app-toeic-backend.onrender.com/health` trên trình duyệt — phải trả về `{"ok":true,...}`.
+7. Lưu ý gói free: Render **tạm dừng (sleep) service sau ~15 phút không có ai truy cập**, lần truy cập đầu tiên sau đó sẽ chờ ~30–60 giây để service thức dậy. Đây là bình thường của gói free, không phải lỗi. Gói trả phí không bị sleep.
+
+**Bước 2 — Deploy frontend lên Vercel:**
+1. Vào [Vercel Dashboard](https://vercel.com/dashboard) → **Add New → Project** → chọn repo `anhanh777/app_toeic`.
+2. Cấu hình project (quan trọng, làm đúng 3 chỗ này):
+   - **Root Directory: `frontend`** (bấm Edit và chọn `frontend` — vì code web nằm trong thư mục `frontend/`, không phải gốc repo).
+   - **Framework Preset: Vite** (Vercel tự nhận từ `frontend/vercel.json`: build `npm run build`, output `dist`).
+   - **Environment Variables:** thêm `VITE_API_URL` = URL backend ở Bước 1 (ví dụ: `https://app-toeic-backend.onrender.com`). Nếu có Google login thì thêm `VITE_GOOGLE_CLIENT_ID` = Client ID đã tạo.
+3. Bấm **Deploy**. Deploy xong, ghi lại URL frontend, ví dụ: `https://app-toeic.vercel.app`.
+
+**Bước 3 — Nối 2 đầu lại với nhau (sau khi có cả 2 URL):**
+1. **Trên Render:** vào service `app-toeic-backend` → **Environment** → sửa `FRONTEND_URL` và `CORS_ORIGIN` thành URL Vercel thật (ví dụ: `https://app-toeic.vercel.app`) → **Save** (Render tự redeploy backend).
+2. **Google OAuth:** vào [Google Cloud Console](https://console.cloud.google.com/) → project của bạn → **APIs & Services → Credentials** → mở OAuth Client ID → thêm vào **Authorized JavaScript origins**: `http://localhost:5173`, `https://app-toeic.vercel.app` (và domain thật nếu có domain riêng). Nếu dùng code flow thì thêm cả **Authorized redirect URIs** tương ứng. Lưu lại.
+3. **Kiểm tra toàn bộ trên link thật:** mở URL Vercel → đăng ký tài khoản mới → luyện 1 câu Part 5 → thi thử mini → xem thống kê → đăng nhập bằng Google (nếu đã cấu hình). Kiểm tra `https://app-toeic-backend.onrender.com/health` vẫn trả về OK.
+
+**Tóm tắt các file cấu hình deploy trong repo:**
+
+| File | Dùng cho | Nội dung |
+|---|---|---|
+| `render.yaml` (gốc repo) | Render Blueprint | 1 web service backend (`rootDir: backend`, build `npm install`, start `npm start`) + disk `app-data` 1 GB tại `/var/data`; env `NODE_ENV=production`, `DATABASE_PATH=/var/data/app.db`, `JWT_SECRET`/`GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` (`sync: false`), `FRONTEND_URL` |
+| `frontend/vercel.json` | Vercel | Framework Vite, build `npm run build`, output `dist` (đặt Root Directory = `frontend` khi import project) |
+
 ### Lộ trình chuyển sang Postgres (khi cần)
 
 SQL của app đã viết theo chuẩn tương thích Postgres (xem `docs/database.md` — bảng tương đương kiểu dữ liệu), và toàn bộ SQL chỉ nằm trong `backend/src/db.js`, nên việc chuyển đổi chỉ cần:

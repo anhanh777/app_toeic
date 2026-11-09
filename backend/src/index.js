@@ -7,8 +7,13 @@
  * + 2 tai khoan demo, roi mo HTTP server.
  *
  * Env (xem .env.example):
- *   PORT (mac dinh 4000), JWT_SECRET, DATABASE_PATH, GOOGLE_CLIENT_ID,
- *   GOOGLE_CLIENT_SECRET, CORS_ORIGIN (mac dinh http://localhost:5173)
+ *   PORT (mac dinh 4000; Render tu dat PORT), JWT_SECRET, DATABASE_PATH,
+ *   GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET,
+ *   FRONTEND_URL (URL frontend khi deploy, vd https://app-toeic.vercel.app;
+ *     co the ghi nhieu URL, cach nhau bang dau phay),
+ *   CORS_ORIGIN (tuong tu FRONTEND_URL, de tuong thich nguoc).
+ * CORS cho phep: http://localhost:5173 + http://127.0.0.1:5173 (dev)
+ *   + cac URL trong FRONTEND_URL / CORS_ORIGIN (prod).
  */
 
 const express = require('express');
@@ -16,10 +21,27 @@ const cors = require('cors');
 const { seedAll } = require('./seed');
 
 const PORT = parseInt(process.env.PORT, 10) || 4000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
+
+const allowedOrigins = new Set(['http://localhost:5173', 'http://127.0.0.1:5173']);
+for (const v of [process.env.FRONTEND_URL, process.env.CORS_ORIGIN]) {
+  if (v) {
+    for (const o of v.split(',')) {
+      const origin = o.trim();
+      if (origin) allowedOrigins.add(origin);
+    }
+  }
+}
 
 const app = express();
-app.use(cors({ origin: CORS_ORIGIN }));
+app.use(
+  cors({
+    origin: (origin, cb) => {
+      // Request khong co Origin (curl, Postman, health check) thi cho qua.
+      if (!origin || allowedOrigins.has(origin)) cb(null, true);
+      else cb(null, false);
+    },
+  })
+);
 app.use(express.json({ limit: '5mb' }));
 
 app.get('/health', (req, res) => {
@@ -52,8 +74,8 @@ try {
   console.error('[startup] seed loi:', err.message);
 }
 
-app.listen(PORT, () => {
-  console.log(`app_toeic backend listening on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`app_toeic backend listening on 0.0.0.0:${PORT}`);
 });
 
 module.exports = app;

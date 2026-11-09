@@ -1,0 +1,40 @@
+# Render Blueprint — deploy backend app TOEIC.
+# Dung: Render Dashboard -> New -> Blueprint -> chon repo nay.
+# Render se doc file nay va tao web service + persistent disk.
+# Luu y: persistent disk CHI co tren goi tra phi (Starter tro len, ~$7/thang).
+# Go free KHONG co disk — file .db se bi xoa khi redeploy/restart.
+# Neu dung goi free tam thoi: bo khoi `disk` ben duoi, nhung phai chap nhan
+# mat du lieu (tai khoan, bai lam, diem) moi lan deploy lai.
+
+services:
+  - type: web
+    name: app-toeic-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    # Render tu dat bien PORT; backend doc PORT tu env (xem src/index.js).
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # File .db phai nam tren persistent disk (xem `disk` ben duoi).
+      - key: DATABASE_PATH
+        value: /var/data/app.db
+      # Cac secret: dat gia tri that tren Render Dashboard (sync: false
+      # nghia la Render se hoi gia tri khi tao service, khong lay tu file nay).
+      - key: JWT_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      # URL frontend that (sau khi deploy Vercel) — sua lai cho dung domain
+      # cua ban, vd https://app-toeic.vercel.app. Co the sua sau tren Dashboard.
+      - key: FRONTEND_URL
+        value: https://app-toeic.vercel.app
+      - key: CORS_ORIGIN
+        value: https://app-toeic.vercel.app
+    disk:
+      name: app-data
+      mountPath: /var/data
+      sizeGB: 1
