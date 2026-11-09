@@ -11,7 +11,7 @@ services:
     name: app-toeic-backend
     runtime: node
     rootDir: backend
-    buildCommand: npm install
+    buildCommand: yarn install
     startCommand: npm start
     # Render tu dat bien PORT; backend doc PORT tu env (xem src/index.js).
     envVars:
