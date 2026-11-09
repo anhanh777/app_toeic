@@ -28,9 +28,20 @@ function resolveDbPath() {
 }
 
 const DB_PATH = resolveDbPath();
-fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+const FALLBACK_DB_PATH = path.join(__dirname, '..', 'data', 'app.db');
+let DB_FILE = DB_PATH;
+try {
+  fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+} catch (err) {
+  // Render goi Free khong co persistent disk: /var/data khong ghi duoc
+  // (EACCES). Roi ve file .db trong thu muc backend/data — du lieu se mat
+  // khi redeploy, nhung app van chay duoc de test.
+  console.warn(`[db] khong tao duoc thu muc ${path.dirname(DB_PATH)} (${err.code}) — dung ${FALLBACK_DB_PATH} thay the.`);
+  DB_FILE = FALLBACK_DB_PATH;
+  fs.mkdirSync(path.dirname(DB_FILE), { recursive: true });
+}
 
-const db = new DatabaseSync(DB_PATH);
+const db = new DatabaseSync(DB_FILE);
 db.exec('PRAGMA foreign_keys = ON');
 
 const SCHEMA = `
