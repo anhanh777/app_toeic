@@ -1,0 +1,1282 @@
+[
+  {
+    "example": "Please submit the report to your supervisor by Friday.",
+    "id": "V001",
+    "meaning": "người giám sát, cấp trên trực tiếp",
+    "phonetic": "/ˈsuːpərvaɪzər/",
+    "topic": "office",
+    "word": "supervisor"
+  },
+  {
+    "example": "The new photocopier is in the supply room.",
+    "id": "V002",
+    "meaning": "máy photocopy",
+    "phonetic": "/ˈfəʊtəʊkɒpiər/",
+    "topic": "office",
+    "word": "photocopier"
+  },
+  {
+    "example": "She keeps all important files in a filing cabinet.",
+    "id": "V003",
+    "meaning": "tủ đựng hồ sơ",
+    "phonetic": "/ˈfaɪlɪŋ ˌkæbɪnət/",
+    "topic": "office",
+    "word": "filing cabinet"
+  },
+  {
+    "example": "We need to order more stationery for the office.",
+    "id": "V004",
+    "meaning": "văn phòng phẩm",
+    "phonetic": "/ˈsteɪʃənəri/",
+    "topic": "office",
+    "word": "stationery"
+  },
+  {
+    "example": "The meeting room is on the third floor.",
+    "id": "V005",
+    "meaning": "phòng họp",
+    "phonetic": "/ˈmiːtɪŋ ruːm/",
+    "topic": "office",
+    "word": "meeting room"
+  },
+  {
+    "example": "Please check your inbox for the new memo.",
+    "id": "V006",
+    "meaning": "hộp thư đến",
+    "phonetic": "/ˈɪnbɒks/",
+    "topic": "office",
+    "word": "inbox"
+  },
+  {
+    "example": "He works in the accounting department.",
+    "id": "V007",
+    "meaning": "phòng kế toán",
+    "phonetic": "/əˈkaʊntɪŋ dɪˈpɑːtmənt/",
+    "topic": "office",
+    "word": "accounting department"
+  },
+  {
+    "example": "The printer is out of paper again.",
+    "id": "V008",
+    "meaning": "máy in",
+    "phonetic": "/ˈprɪntər/",
+    "topic": "office",
+    "word": "printer"
+  },
+  {
+    "example": "Her desk is near the window.",
+    "id": "V009",
+    "meaning": "bàn làm việc",
+    "phonetic": "/desk/",
+    "topic": "office",
+    "word": "desk"
+  },
+  {
+    "example": "All employees must wear their ID badge at work.",
+    "id": "V010",
+    "meaning": "thẻ nhân viên",
+    "phonetic": "/aɪˈdiː bædʒ/",
+    "topic": "office",
+    "word": "ID badge"
+  },
+  {
+    "example": "The office will be renovated next month.",
+    "id": "V011",
+    "meaning": "cải tạo, sửa chữa lại",
+    "phonetic": "/ˈrenəveɪt/",
+    "topic": "office",
+    "word": "renovate"
+  },
+  {
+    "example": "Please staple these documents together.",
+    "id": "V012",
+    "meaning": "ghim (bằng ghim bấm)",
+    "phonetic": "/ˈsteɪpəl/",
+    "topic": "office",
+    "word": "staple"
+  },
+  {
+    "example": "The IT department fixed the network problem.",
+    "id": "V013",
+    "meaning": "mạng (máy tính)",
+    "phonetic": "/ˈnetwɜːk/",
+    "topic": "office",
+    "word": "network"
+  },
+  {
+    "example": "She is the head of the design team.",
+    "id": "V014",
+    "meaning": "trưởng nhóm",
+    "phonetic": "/hed əv ðə tiːm/",
+    "topic": "office",
+    "word": "head of the team"
+  },
+  {
+    "example": "The receptionist greeted the visitors politely.",
+    "id": "V015",
+    "meaning": "nhân viên lễ tân",
+    "phonetic": "/rɪˈsepʃənɪst/",
+    "topic": "office",
+    "word": "receptionist"
+  },
+  {
+    "example": "We share the same workspace on the second floor.",
+    "id": "V016",
+    "meaning": "không gian làm việc",
+    "phonetic": "/ˈwɜːkspeɪs/",
+    "topic": "office",
+    "word": "workspace"
+  },
+  {
+    "example": "Please sign the form at the bottom.",
+    "id": "V017",
+    "meaning": "ký tên",
+    "phonetic": "/saɪn/",
+    "topic": "office",
+    "word": "sign"
+  },
+  {
+    "example": "The office supplies are kept in the storage room.",
+    "id": "V018",
+    "meaning": "vật tư văn phòng",
+    "phonetic": "/ˈɒfɪs səˈplaɪz/",
+    "topic": "office",
+    "word": "office supplies"
+  },
+  {
+    "example": "He has a part-time job at the library.",
+    "id": "V019",
+    "meaning": "bán thời gian",
+    "phonetic": "/pɑːt taɪm/",
+    "topic": "office",
+    "word": "part-time"
+  },
+  {
+    "example": "The company provides free lunch for all staff.",
+    "id": "V020",
+    "meaning": "nhân viên",
+    "phonetic": "/stɑːf/",
+    "topic": "office",
+    "word": "staff"
+  },
+  {
+    "example": "Our company will launch a new product in June.",
+    "id": "V021",
+    "meaning": "ra mắt, tung ra thị trường",
+    "phonetic": "/lɔːntʃ/",
+    "topic": "business",
+    "word": "launch"
+  },
+  {
+    "example": "The two companies signed a contract yesterday.",
+    "id": "V022",
+    "meaning": "hợp đồng",
+    "phonetic": "/ˈkɒntrækt/",
+    "topic": "business",
+    "word": "contract"
+  },
+  {
+    "example": "Sales have increased by 20 percent this quarter.",
+    "id": "V023",
+    "meaning": "doanh số bán hàng",
+    "phonetic": "/seɪlz/",
+    "topic": "business",
+    "word": "sales"
+  },
+  {
+    "example": "We need to negotiate a better price with the supplier.",
+    "id": "V024",
+    "meaning": "đàm phán",
+    "phonetic": "/nɪˈɡəʊʃieɪt/",
+    "topic": "business",
+    "word": "negotiate"
+  },
+  {
+    "example": "The CEO announced a new business strategy.",
+    "id": "V025",
+    "meaning": "chiến lược",
+    "phonetic": "/ˈstrætədʒi/",
+    "topic": "business",
+    "word": "strategy"
+  },
+  {
+    "example": "Our main competitor opened a store nearby.",
+    "id": "V026",
+    "meaning": "đối thủ cạnh tranh",
+    "phonetic": "/kəmˈpetɪtər/",
+    "topic": "business",
+    "word": "competitor"
+  },
+  {
+    "example": "The company aims to expand into new markets.",
+    "id": "V027",
+    "meaning": "mở rộng",
+    "phonetic": "/ɪkˈspænd/",
+    "topic": "business",
+    "word": "expand"
+  },
+  {
+    "example": "Please review the annual report carefully.",
+    "id": "V028",
+    "meaning": "báo cáo thường niên",
+    "phonetic": "/ˈænjuəl rɪˈpɔːt/",
+    "topic": "business",
+    "word": "annual report"
+  },
+  {
+    "example": "The merger will create a larger company.",
+    "id": "V029",
+    "meaning": "sự sáp nhập",
+    "phonetic": "/ˈmɜːdʒər/",
+    "topic": "business",
+    "word": "merger"
+  },
+  {
+    "example": "We held a meeting to discuss the budget.",
+    "id": "V030",
+    "meaning": "ngân sách",
+    "phonetic": "/ˈbʌdʒɪt/",
+    "topic": "business",
+    "word": "budget"
+  },
+  {
+    "example": "The supplier delivered the goods on time.",
+    "id": "V031",
+    "meaning": "nhà cung cấp",
+    "phonetic": "/səˈplaɪər/",
+    "topic": "business",
+    "word": "supplier"
+  },
+  {
+    "example": "Customer satisfaction is our top priority.",
+    "id": "V032",
+    "meaning": "sự hài lòng của khách hàng",
+    "phonetic": "/ˈkʌstəmər ˌsætɪsˈfækʃən/",
+    "topic": "business",
+    "word": "customer satisfaction"
+  },
+  {
+    "example": "The company invested in new technology.",
+    "id": "V033",
+    "meaning": "đầu tư",
+    "phonetic": "/ɪnˈvest/",
+    "topic": "business",
+    "word": "invest"
+  },
+  {
+    "example": "Our profit doubled last year.",
+    "id": "V034",
+    "meaning": "lợi nhuận",
+    "phonetic": "/ˈprɒfɪt/",
+    "topic": "business",
+    "word": "profit"
+  },
+  {
+    "example": "The branch office is in downtown Hanoi.",
+    "id": "V035",
+    "meaning": "chi nhánh",
+    "phonetic": "/brɑːntʃ ˈɒfɪs/",
+    "topic": "business",
+    "word": "branch office"
+  },
+  {
+    "example": "She is responsible for marketing in Asia.",
+    "id": "V036",
+    "meaning": "tiếp thị",
+    "phonetic": "/ˈmɑːkɪtɪŋ/",
+    "topic": "business",
+    "word": "marketing"
+  },
+  {
+    "example": "The company hired 20 new employees this month.",
+    "id": "V037",
+    "meaning": "tuyển dụng",
+    "phonetic": "/haɪər/",
+    "topic": "business",
+    "word": "hire"
+  },
+  {
+    "example": "We need to improve our customer service.",
+    "id": "V038",
+    "meaning": "dịch vụ khách hàng",
+    "phonetic": "/ˈkʌstəmər ˈsɜːvɪs/",
+    "topic": "business",
+    "word": "customer service"
+  },
+  {
+    "example": "The trade fair attracted many visitors.",
+    "id": "V039",
+    "meaning": "hội chợ thương mại",
+    "phonetic": "/treɪd feər/",
+    "topic": "business",
+    "word": "trade fair"
+  },
+  {
+    "example": "The factory produces 1,000 units a day.",
+    "id": "V040",
+    "meaning": "nhà máy",
+    "phonetic": "/ˈfæktəri/",
+    "topic": "business",
+    "word": "factory"
+  },
+  {
+    "example": "I need to book a flight to Singapore.",
+    "id": "V041",
+    "meaning": "đặt vé máy bay",
+    "phonetic": "/bʊk ə flaɪt/",
+    "topic": "travel",
+    "word": "book a flight"
+  },
+  {
+    "example": "The hotel offers free breakfast for guests.",
+    "id": "V042",
+    "meaning": "bữa sáng miễn phí",
+    "phonetic": "/friː ˈbrekfəst/",
+    "topic": "travel",
+    "word": "free breakfast"
+  },
+  {
+    "example": "Please arrive at the airport two hours early.",
+    "id": "V043",
+    "meaning": "sân bay",
+    "phonetic": "/ˈeəpɔːt/",
+    "topic": "travel",
+    "word": "airport"
+  },
+  {
+    "example": "Our luggage was delayed for two hours.",
+    "id": "V044",
+    "meaning": "hành lý",
+    "phonetic": "/ˈlʌɡɪdʒ/",
+    "topic": "travel",
+    "word": "luggage"
+  },
+  {
+    "example": "The train departs from Platform 4.",
+    "id": "V045",
+    "meaning": "khởi hành",
+    "phonetic": "/dɪˈpɑːt/",
+    "topic": "travel",
+    "word": "depart"
+  },
+  {
+    "example": "We stayed at a hotel near the beach.",
+    "id": "V046",
+    "meaning": "khách sạn",
+    "phonetic": "/həʊˈtel/",
+    "topic": "travel",
+    "word": "hotel"
+  },
+  {
+    "example": "You can take a taxi from the station.",
+    "id": "V047",
+    "meaning": "xe taxi",
+    "phonetic": "/ˈtæksi/",
+    "topic": "travel",
+    "word": "taxi"
+  },
+  {
+    "example": "The tour guide showed us around the city.",
+    "id": "V048",
+    "meaning": "hướng dẫn viên du lịch",
+    "phonetic": "/tʊər ɡaɪd/",
+    "topic": "travel",
+    "word": "tour guide"
+  },
+  {
+    "example": "Please show your passport at check-in.",
+    "id": "V049",
+    "meaning": "hộ chiếu",
+    "phonetic": "/ˈpɑːspɔːt/",
+    "topic": "travel",
+    "word": "passport"
+  },
+  {
+    "example": "The flight was cancelled due to bad weather.",
+    "id": "V050",
+    "meaning": "bị hủy (chuyến bay)",
+    "phonetic": "/ˈkænsəld/",
+    "topic": "travel",
+    "word": "cancelled"
+  },
+  {
+    "example": "We booked a double room for three nights.",
+    "id": "V051",
+    "meaning": "phòng đôi",
+    "phonetic": "/ˈdʌbəl ruːm/",
+    "topic": "travel",
+    "word": "double room"
+  },
+  {
+    "example": "The bus stop is in front of the hotel.",
+    "id": "V052",
+    "meaning": "trạm xe buýt",
+    "phonetic": "/bʌs stɒp/",
+    "topic": "travel",
+    "word": "bus stop"
+  },
+  {
+    "example": "She travels abroad twice a year.",
+    "id": "V053",
+    "meaning": "ra nước ngoài",
+    "phonetic": "/əˈbrɔːd/",
+    "topic": "travel",
+    "word": "abroad"
+  },
+  {
+    "example": "The reservation is under the name Kim.",
+    "id": "V054",
+    "meaning": "đặt chỗ trước",
+    "phonetic": "/ˌrezəˈveɪʃən/",
+    "topic": "travel",
+    "word": "reservation"
+  },
+  {
+    "example": "We need to change our flight to Saturday.",
+    "id": "V055",
+    "meaning": "thay đổi chuyến bay",
+    "phonetic": "/tʃeɪndʒ ə flaɪt/",
+    "topic": "travel",
+    "word": "change a flight"
+  },
+  {
+    "example": "The train station is five minutes away.",
+    "id": "V056",
+    "meaning": "ga tàu",
+    "phonetic": "/treɪn ˈsteɪʃən/",
+    "topic": "travel",
+    "word": "train station"
+  },
+  {
+    "example": "He bought a souvenir for his mother.",
+    "id": "V057",
+    "meaning": "quà lưu niệm",
+    "phonetic": "/ˌsuːvəˈnɪər/",
+    "topic": "travel",
+    "word": "souvenir"
+  },
+  {
+    "example": "The travel agency planned our whole trip.",
+    "id": "V058",
+    "meaning": "công ty du lịch",
+    "phonetic": "/ˈtrævəl ˈeɪdʒənsi/",
+    "topic": "travel",
+    "word": "travel agency"
+  },
+  {
+    "example": "Check-out time is 12 noon.",
+    "id": "V059",
+    "meaning": "thời gian trả phòng",
+    "phonetic": "/tʃek aʊt taɪm/",
+    "topic": "travel",
+    "word": "check-out time"
+  },
+  {
+    "example": "The flight attendant served drinks to passengers.",
+    "id": "V060",
+    "meaning": "tiếp viên hàng không",
+    "phonetic": "/flaɪt əˈtendənt/",
+    "topic": "travel",
+    "word": "flight attendant"
+  },
+  {
+    "example": "Please pay the invoice by the end of the month.",
+    "id": "V061",
+    "meaning": "hóa đơn",
+    "phonetic": "/ˈɪnvɔɪs/",
+    "topic": "finance",
+    "word": "invoice"
+  },
+  {
+    "example": "The bank charges a small fee for this service.",
+    "id": "V062",
+    "meaning": "phí",
+    "phonetic": "/fiː/",
+    "topic": "finance",
+    "word": "fee"
+  },
+  {
+    "example": "We need to reduce our expenses this year.",
+    "id": "V063",
+    "meaning": "chi phí",
+    "phonetic": "/ɪkˈspensɪz/",
+    "topic": "finance",
+    "word": "expenses"
+  },
+  {
+    "example": "The company's earnings rose sharply last year.",
+    "id": "V064",
+    "meaning": "thu nhập, lợi nhuận",
+    "phonetic": "/ˈɜːnɪŋz/",
+    "topic": "finance",
+    "word": "earnings"
+  },
+  {
+    "example": "Please send the receipt to the finance department.",
+    "id": "V065",
+    "meaning": "biên lai, hóa đơn thanh toán",
+    "phonetic": "/rɪˈsiːt/",
+    "topic": "finance",
+    "word": "receipt"
+  },
+  {
+    "example": "You can pay by credit card or in cash.",
+    "id": "V066",
+    "meaning": "thẻ tín dụng",
+    "phonetic": "/ˈkredɪt kɑːd/",
+    "topic": "finance",
+    "word": "credit card"
+  },
+  {
+    "example": "The interest rate is very low this year.",
+    "id": "V067",
+    "meaning": "lãi suất",
+    "phonetic": "/ˈɪntrəst reɪt/",
+    "topic": "finance",
+    "word": "interest rate"
+  },
+  {
+    "example": "She opened a savings account at the bank.",
+    "id": "V068",
+    "meaning": "tài khoản tiết kiệm",
+    "phonetic": "/ˈseɪvɪŋz əˈkaʊnt/",
+    "topic": "finance",
+    "word": "savings account"
+  },
+  {
+    "example": "The total amount is $250, including tax.",
+    "id": "V069",
+    "meaning": "tổng số tiền",
+    "phonetic": "/ˈtəʊtəl əˈmaʊnt/",
+    "topic": "finance",
+    "word": "total amount"
+  },
+  {
+    "example": "We received a refund of $50.",
+    "id": "V070",
+    "meaning": "hoàn tiền",
+    "phonetic": "/ˈriːfʌnd/",
+    "topic": "finance",
+    "word": "refund"
+  },
+  {
+    "example": "The loan must be repaid within five years.",
+    "id": "V071",
+    "meaning": "khoản vay",
+    "phonetic": "/ləʊn/",
+    "topic": "finance",
+    "word": "loan"
+  },
+  {
+    "example": "The store offers a 10 percent discount today.",
+    "id": "V072",
+    "meaning": "giảm giá",
+    "phonetic": "/ˈdɪskaʊnt/",
+    "topic": "finance",
+    "word": "discount"
+  },
+  {
+    "example": "Please check your bank balance online.",
+    "id": "V073",
+    "meaning": "số dư tài khoản",
+    "phonetic": "/bæŋk ˈbæləns/",
+    "topic": "finance",
+    "word": "bank balance"
+  },
+  {
+    "example": "The tax will be added to the price.",
+    "id": "V074",
+    "meaning": "thuế",
+    "phonetic": "/tæks/",
+    "topic": "finance",
+    "word": "tax"
+  },
+  {
+    "example": "The company raised its prices in January.",
+    "id": "V075",
+    "meaning": "tăng giá",
+    "phonetic": "/reɪz praɪsɪz/",
+    "topic": "finance",
+    "word": "raise prices"
+  },
+  {
+    "example": "He paid the bill in full yesterday.",
+    "id": "V076",
+    "meaning": "hóa đơn thanh toán",
+    "phonetic": "/bɪl/",
+    "topic": "finance",
+    "word": "bill"
+  },
+  {
+    "example": "Our revenue grew by 15 percent last year.",
+    "id": "V077",
+    "meaning": "doanh thu",
+    "phonetic": "/ˈrevənjuː/",
+    "topic": "finance",
+    "word": "revenue"
+  },
+  {
+    "example": "The exchange rate changed this morning.",
+    "id": "V078",
+    "meaning": "tỷ giá hối đoái",
+    "phonetic": "/ɪksˈtʃeɪndʒ reɪt/",
+    "topic": "finance",
+    "word": "exchange rate"
+  },
+  {
+    "example": "Please keep the receipt for your records.",
+    "id": "V079",
+    "meaning": "hồ sơ, giấy tờ lưu trữ",
+    "phonetic": "/ˈrekɔːdz/",
+    "topic": "finance",
+    "word": "records"
+  },
+  {
+    "example": "The payment is due on the first of the month.",
+    "id": "V080",
+    "meaning": "đến hạn thanh toán",
+    "phonetic": "/djuː/",
+    "topic": "finance",
+    "word": "due"
+  },
+  {
+    "example": "The store is having a big sale this weekend.",
+    "id": "V081",
+    "meaning": "đợt giảm giá, bán hàng",
+    "phonetic": "/seɪl/",
+    "topic": "shopping",
+    "word": "sale"
+  },
+  {
+    "example": "I would like to try on this jacket, please.",
+    "id": "V082",
+    "meaning": "thử (quần áo)",
+    "phonetic": "/traɪ ɒn/",
+    "topic": "shopping",
+    "word": "try on"
+  },
+  {
+    "example": "The fitting room is at the back of the store.",
+    "id": "V083",
+    "meaning": "phòng thử đồ",
+    "phonetic": "/ˈfɪtɪŋ ruːm/",
+    "topic": "shopping",
+    "word": "fitting room"
+  },
+  {
+    "example": "This shirt is available in size medium.",
+    "id": "V084",
+    "meaning": "cỡ (quần áo)",
+    "phonetic": "/saɪz/",
+    "topic": "shopping",
+    "word": "size"
+  },
+  {
+    "example": "You can return the item within 30 days.",
+    "id": "V085",
+    "meaning": "trả lại hàng",
+    "phonetic": "/rɪˈtɜːn/",
+    "topic": "shopping",
+    "word": "return"
+  },
+  {
+    "example": "The cashier will help you at the checkout.",
+    "id": "V086",
+    "meaning": "nhân viên thu ngân",
+    "phonetic": "/kæˈʃɪər/",
+    "topic": "shopping",
+    "word": "cashier"
+  },
+  {
+    "example": "We offer free delivery on orders over $50.",
+    "id": "V087",
+    "meaning": "giao hàng miễn phí",
+    "phonetic": "/friː dɪˈlɪvəri/",
+    "topic": "shopping",
+    "word": "free delivery"
+  },
+  {
+    "example": "The shopping mall opens at 9 a.m. every day.",
+    "id": "V088",
+    "meaning": "trung tâm mua sắm",
+    "phonetic": "/ˈʃɒpɪŋ mɔːl/",
+    "topic": "shopping",
+    "word": "shopping mall"
+  },
+  {
+    "example": "This product is out of stock at the moment.",
+    "id": "V089",
+    "meaning": "hết hàng",
+    "phonetic": "/aʊt əv stɒk/",
+    "topic": "shopping",
+    "word": "out of stock"
+  },
+  {
+    "example": "She bought a new pair of shoes yesterday.",
+    "id": "V090",
+    "meaning": "mua",
+    "phonetic": "/bɔːt/",
+    "topic": "shopping",
+    "word": "bought"
+  },
+  {
+    "example": "The price tag shows $25.",
+    "id": "V091",
+    "meaning": "nhãn giá",
+    "phonetic": "/praɪs tæɡ/",
+    "topic": "shopping",
+    "word": "price tag"
+  },
+  {
+    "example": "Customers can exchange the item for a larger size.",
+    "id": "V092",
+    "meaning": "đổi hàng",
+    "phonetic": "/ɪksˈtʃeɪndʒ/",
+    "topic": "shopping",
+    "word": "exchange"
+  },
+  {
+    "example": "The store sells clothes, shoes, and accessories.",
+    "id": "V093",
+    "meaning": "phụ kiện",
+    "phonetic": "/əkˈsesəriz/",
+    "topic": "shopping",
+    "word": "accessories"
+  },
+  {
+    "example": "Please show your receipt at the entrance.",
+    "id": "V094",
+    "meaning": "lối vào",
+    "phonetic": "/ˈentrəns/",
+    "topic": "shopping",
+    "word": "entrance"
+  },
+  {
+    "example": "The supermarket is open until 10 p.m.",
+    "id": "V095",
+    "meaning": "siêu thị",
+    "phonetic": "/ˈsuːpəmɑːkɪt/",
+    "topic": "shopping",
+    "word": "supermarket"
+  },
+  {
+    "example": "I need to buy some groceries for dinner.",
+    "id": "V096",
+    "meaning": "thực phẩm, đồ tạp hóa",
+    "phonetic": "/ˈɡrəʊsəriz/",
+    "topic": "shopping",
+    "word": "groceries"
+  },
+  {
+    "example": "The new model is on display in the window.",
+    "id": "V097",
+    "meaning": "trưng bày",
+    "phonetic": "/ɒn dɪˈspleɪ/",
+    "topic": "shopping",
+    "word": "on display"
+  },
+  {
+    "example": "She paid for the dress with cash.",
+    "id": "V098",
+    "meaning": "tiền mặt",
+    "phonetic": "/kæʃ/",
+    "topic": "shopping",
+    "word": "cash"
+  },
+  {
+    "example": "The shop assistant was very helpful.",
+    "id": "V099",
+    "meaning": "nhân viên bán hàng",
+    "phonetic": "/ʃɒp əˈsɪstənt/",
+    "topic": "shopping",
+    "word": "shop assistant"
+  },
+  {
+    "example": "We have a special offer this week only.",
+    "id": "V100",
+    "meaning": "ưu đãi đặc biệt",
+    "phonetic": "/ˈspeʃəl ˈɒfər/",
+    "topic": "shopping",
+    "word": "special offer"
+  },
+  {
+    "example": "The meeting is scheduled for 10 a.m. tomorrow.",
+    "id": "V101",
+    "meaning": "đã được lên lịch",
+    "phonetic": "/ˈskedʒuːld/",
+    "topic": "meetings",
+    "word": "scheduled"
+  },
+  {
+    "example": "Please prepare an agenda for the meeting.",
+    "id": "V102",
+    "meaning": "chương trình họp",
+    "phonetic": "/əˈdʒendə/",
+    "topic": "meetings",
+    "word": "agenda"
+  },
+  {
+    "example": "The chairman opened the meeting at 9 a.m.",
+    "id": "V103",
+    "meaning": "chủ tọa cuộc họp",
+    "phonetic": "/ˈtʃeəmən/",
+    "topic": "meetings",
+    "word": "chairman"
+  },
+  {
+    "example": "We need to discuss the new project today.",
+    "id": "V104",
+    "meaning": "thảo luận",
+    "phonetic": "/dɪˈskʌs/",
+    "topic": "meetings",
+    "word": "discuss"
+  },
+  {
+    "example": "She took notes during the meeting.",
+    "id": "V105",
+    "meaning": "ghi chép",
+    "phonetic": "/teɪk nəʊts/",
+    "topic": "meetings",
+    "word": "take notes"
+  },
+  {
+    "example": "The presentation lasted for one hour.",
+    "id": "V106",
+    "meaning": "bài thuyết trình",
+    "phonetic": "/ˌprezənˈteɪʃən/",
+    "topic": "meetings",
+    "word": "presentation"
+  },
+  {
+    "example": "Please attend the conference next week.",
+    "id": "V107",
+    "meaning": "hội nghị",
+    "phonetic": "/ˈkɒnfərəns/",
+    "topic": "meetings",
+    "word": "conference"
+  },
+  {
+    "example": "The board of directors meets every month.",
+    "id": "V108",
+    "meaning": "hội đồng quản trị",
+    "phonetic": "/bɔːd əv daɪˈrektəz/",
+    "topic": "meetings",
+    "word": "board of directors"
+  },
+  {
+    "example": "We reached an agreement after a long discussion.",
+    "id": "V109",
+    "meaning": "thỏa thuận",
+    "phonetic": "/əˈɡriːmənt/",
+    "topic": "meetings",
+    "word": "agreement"
+  },
+  {
+    "example": "The meeting was postponed until Friday.",
+    "id": "V110",
+    "meaning": "hoãn lại",
+    "phonetic": "/pəʊstˈpəʊnd/",
+    "topic": "meetings",
+    "word": "postpone"
+  },
+  {
+    "example": "He gave a brief summary of the report.",
+    "id": "V111",
+    "meaning": "tóm tắt ngắn gọn",
+    "phonetic": "/ˈsʌməri/",
+    "topic": "meetings",
+    "word": "summary"
+  },
+  {
+    "example": "The participants asked many questions.",
+    "id": "V112",
+    "meaning": "người tham gia",
+    "phonetic": "/pɑːˈtɪsɪpənts/",
+    "topic": "meetings",
+    "word": "participants"
+  },
+  {
+    "example": "Please confirm your attendance by email.",
+    "id": "V113",
+    "meaning": "xác nhận sự tham dự",
+    "phonetic": "/kənˈfɜːm jər əˈtendəns/",
+    "topic": "meetings",
+    "word": "confirm attendance"
+  },
+  {
+    "example": "The vote was unanimous.",
+    "id": "V114",
+    "meaning": "nhất trí, đồng thuận",
+    "phonetic": "/juːˈnænɪməs/",
+    "topic": "meetings",
+    "word": "unanimous"
+  },
+  {
+    "example": "We need to set a date for the next meeting.",
+    "id": "V115",
+    "meaning": "ấn định ngày",
+    "phonetic": "/set ə deɪt/",
+    "topic": "meetings",
+    "word": "set a date"
+  },
+  {
+    "example": "The minutes of the meeting will be sent tomorrow.",
+    "id": "V116",
+    "meaning": "biên bản cuộc họp",
+    "phonetic": "/ˈmɪnɪts/",
+    "topic": "meetings",
+    "word": "minutes"
+  },
+  {
+    "example": "She proposed a new idea at the meeting.",
+    "id": "V117",
+    "meaning": "đề xuất",
+    "phonetic": "/prəˈpəʊz/",
+    "topic": "meetings",
+    "word": "propose"
+  },
+  {
+    "example": "The deadline for the report is Friday.",
+    "id": "V118",
+    "meaning": "hạn chót",
+    "phonetic": "/ˈdedlaɪn/",
+    "topic": "meetings",
+    "word": "deadline"
+  },
+  {
+    "example": "Please raise your hand if you have a question.",
+    "id": "V119",
+    "meaning": "giơ tay",
+    "phonetic": "/reɪz jər hænd/",
+    "topic": "meetings",
+    "word": "raise your hand"
+  },
+  {
+    "example": "The team works well together.",
+    "id": "V120",
+    "meaning": "làm việc nhóm",
+    "phonetic": "/ˈtiːmwɜːk/",
+    "topic": "meetings",
+    "word": "teamwork"
+  },
+  {
+    "example": "Please find the report attached to this email.",
+    "id": "V121",
+    "meaning": "đính kèm",
+    "phonetic": "/əˈtætʃt/",
+    "topic": "email",
+    "word": "attached"
+  },
+  {
+    "example": "I will reply to your email as soon as possible.",
+    "id": "V122",
+    "meaning": "trả lời (email)",
+    "phonetic": "/rɪˈplaɪ/",
+    "topic": "email",
+    "word": "reply"
+  },
+  {
+    "example": "Please forward this email to the manager.",
+    "id": "V123",
+    "meaning": "chuyển tiếp (email)",
+    "phonetic": "/ˈfɔːwəd/",
+    "topic": "email",
+    "word": "forward"
+  },
+  {
+    "example": "The subject of the email is the new schedule.",
+    "id": "V124",
+    "meaning": "tiêu đề (email)",
+    "phonetic": "/ˈsʌbdʒɪkt/",
+    "topic": "email",
+    "word": "subject"
+  },
+  {
+    "example": "Your sent emails are saved in the sent items folder.",
+    "id": "V125",
+    "meaning": "mục thư đã gửi",
+    "phonetic": "/sent ˈaɪtəmz/",
+    "topic": "email",
+    "word": "sent items"
+  },
+  {
+    "example": "I sent the file as an email attachment.",
+    "id": "V126",
+    "meaning": "tệp đính kèm",
+    "phonetic": "/əˈtætʃmənt/",
+    "topic": "email",
+    "word": "attachment"
+  },
+  {
+    "example": "Could you CC me on that email, please?",
+    "id": "V127",
+    "meaning": "gửi bản sao (CC)",
+    "phonetic": "/ˌsiːˈsiː/",
+    "topic": "email",
+    "word": "CC"
+  },
+  {
+    "example": "The email was sent to all staff members.",
+    "id": "V128",
+    "meaning": "gửi (email)",
+    "phonetic": "/send/",
+    "topic": "email",
+    "word": "send"
+  },
+  {
+    "example": "Please do not hesitate to contact us by email.",
+    "id": "V129",
+    "meaning": "liên hệ",
+    "phonetic": "/ˈkɒntækt/",
+    "topic": "email",
+    "word": "contact"
+  },
+  {
+    "example": "I look forward to hearing from you soon.",
+    "id": "V130",
+    "meaning": "mong chờ nhận tin từ bạn",
+    "phonetic": "/lʊk ˈfɔːwəd tuː/",
+    "topic": "email",
+    "word": "look forward to"
+  },
+  {
+    "example": "Best regards is a common way to end a formal email.",
+    "id": "V131",
+    "meaning": "trân trọng (cuối thư)",
+    "phonetic": "/best rɪˈɡɑːdz/",
+    "topic": "email",
+    "word": "best regards"
+  },
+  {
+    "example": "Please confirm receipt of this email.",
+    "id": "V132",
+    "meaning": "xác nhận đã nhận",
+    "phonetic": "/kənˈfɜːm rɪˈsiːt/",
+    "topic": "email",
+    "word": "confirm receipt"
+  },
+  {
+    "example": "The newsletter is sent every month.",
+    "id": "V133",
+    "meaning": "bản tin (email)",
+    "phonetic": "/ˈnjuːzletər/",
+    "topic": "email",
+    "word": "newsletter"
+  },
+  {
+    "example": "I forgot my email password.",
+    "id": "V134",
+    "meaning": "mật khẩu",
+    "phonetic": "/ˈpɑːswɜːd/",
+    "topic": "email",
+    "word": "password"
+  },
+  {
+    "example": "Please update your email address in the system.",
+    "id": "V135",
+    "meaning": "cập nhật",
+    "phonetic": "/ʌpˈdeɪt/",
+    "topic": "email",
+    "word": "update"
+  },
+  {
+    "example": "The email address is info@company.com.",
+    "id": "V136",
+    "meaning": "địa chỉ email",
+    "phonetic": "/ˈiːmeɪl əˈdres/",
+    "topic": "email",
+    "word": "email address"
+  },
+  {
+    "example": "She signed the email with her full name.",
+    "id": "V137",
+    "meaning": "chữ ký (email)",
+    "phonetic": "/ˈsɪɡnətʃər/",
+    "topic": "email",
+    "word": "signature"
+  },
+  {
+    "example": "Please delete the spam emails from your inbox.",
+    "id": "V138",
+    "meaning": "thư rác",
+    "phonetic": "/spæm/",
+    "topic": "email",
+    "word": "spam"
+  },
+  {
+    "example": "The IT team will reset your password.",
+    "id": "V139",
+    "meaning": "đặt lại (mật khẩu)",
+    "phonetic": "/riːˈset/",
+    "topic": "email",
+    "word": "reset"
+  },
+  {
+    "example": "I will get back to you by tomorrow morning.",
+    "id": "V140",
+    "meaning": "trả lời lại sau",
+    "phonetic": "/ɡet bæk tuː juː/",
+    "topic": "email",
+    "word": "get back to"
+  },
+  {
+    "example": "Please send your resume to our HR department.",
+    "id": "V141",
+    "meaning": "sơ yếu lý lịch, CV",
+    "phonetic": "/ˈrezjʊmeɪ/",
+    "topic": "job/hiring",
+    "word": "resume"
+  },
+  {
+    "example": "The job interview is scheduled for Monday.",
+    "id": "V142",
+    "meaning": "buổi phỏng vấn xin việc",
+    "phonetic": "/ˈdʒɒb ˈɪntəvjuː/",
+    "topic": "job/hiring",
+    "word": "job interview"
+  },
+  {
+    "example": "We are hiring two new sales assistants.",
+    "id": "V143",
+    "meaning": "tuyển dụng",
+    "phonetic": "/ˈhaɪərɪŋ/",
+    "topic": "job/hiring",
+    "word": "hiring"
+  },
+  {
+    "example": "The candidate has five years of experience.",
+    "id": "V144",
+    "meaning": "ứng viên",
+    "phonetic": "/ˈkændɪdət/",
+    "topic": "job/hiring",
+    "word": "candidate"
+  },
+  {
+    "example": "Please fill in the application form.",
+    "id": "V145",
+    "meaning": "đơn xin việc",
+    "phonetic": "/ˌæplɪˈkeɪʃən fɔːm/",
+    "topic": "job/hiring",
+    "word": "application form"
+  },
+  {
+    "example": "The salary for this position is $1,500 a month.",
+    "id": "V146",
+    "meaning": "mức lương",
+    "phonetic": "/ˈsæləri/",
+    "topic": "job/hiring",
+    "word": "salary"
+  },
+  {
+    "example": "She has strong communication skills.",
+    "id": "V147",
+    "meaning": "kỹ năng giao tiếp",
+    "phonetic": "/kəmjuːnɪˈkeɪʃən skɪlz/",
+    "topic": "job/hiring",
+    "word": "communication skills"
+  },
+  {
+    "example": "The new employee will start on Monday.",
+    "id": "V148",
+    "meaning": "nhân viên mới",
+    "phonetic": "/njuː emplɔɪˈiː/",
+    "topic": "job/hiring",
+    "word": "new employee"
+  },
+  {
+    "example": "The position requires a university degree.",
+    "id": "V149",
+    "meaning": "vị trí công việc",
+    "phonetic": "/pəˈzɪʃən/",
+    "topic": "job/hiring",
+    "word": "position"
+  },
+  {
+    "example": "He was promoted to manager last year.",
+    "id": "V150",
+    "meaning": "được thăng chức",
+    "phonetic": "/prəˈməʊtɪd/",
+    "topic": "job/hiring",
+    "word": "promoted"
+  },
+  {
+    "example": "The company offers training for all new staff.",
+    "id": "V151",
+    "meaning": "đào tạo",
+    "phonetic": "/ˈtreɪnɪŋ/",
+    "topic": "job/hiring",
+    "word": "training"
+  },
+  {
+    "example": "Please list three references on your application.",
+    "id": "V152",
+    "meaning": "người giới thiệu",
+    "phonetic": "/ˈrefrənsɪz/",
+    "topic": "job/hiring",
+    "word": "references"
+  },
+  {
+    "example": "She works full-time at a bank.",
+    "id": "V153",
+    "meaning": "toàn thời gian",
+    "phonetic": "/fʊl taɪm/",
+    "topic": "job/hiring",
+    "word": "full-time"
+  },
+  {
+    "example": "The job description is on our website.",
+    "id": "V154",
+    "meaning": "mô tả công việc",
+    "phonetic": "/dʒɒb dɪˈskrɪpʃən/",
+    "topic": "job/hiring",
+    "word": "job description"
+  },
+  {
+    "example": "He resigned from his job last month.",
+    "id": "V155",
+    "meaning": "từ chức, nghỉ việc",
+    "phonetic": "/rɪˈzaɪnd/",
+    "topic": "job/hiring",
+    "word": "resigned"
+  },
+  {
+    "example": "The probation period lasts for two months.",
+    "id": "V156",
+    "meaning": "thời gian thử việc",
+    "phonetic": "/prəˈbeɪʃən ˈpɪəriəd/",
+    "topic": "job/hiring",
+    "word": "probation period"
+  },
+  {
+    "example": "We offer flexible working hours.",
+    "id": "V157",
+    "meaning": "giờ làm việc linh hoạt",
+    "phonetic": "/ˈfleksəbəl ˈwɜːkɪŋ aʊəz/",
+    "topic": "job/hiring",
+    "word": "flexible working hours"
+  },
+  {
+    "example": "The benefits include health insurance.",
+    "id": "V158",
+    "meaning": "phúc lợi",
+    "phonetic": "/ˈbenɪfɪts/",
+    "topic": "job/hiring",
+    "word": "benefits"
+  },
+  {
+    "example": "She applied for the marketing assistant job.",
+    "id": "V159",
+    "meaning": "nộp đơn xin việc",
+    "phonetic": "/əˈplaɪd fɔːr/",
+    "topic": "job/hiring",
+    "word": "applied for"
+  },
+  {
+    "example": "The interviewer asked about my experience.",
+    "id": "V160",
+    "meaning": "người phỏng vấn",
+    "phonetic": "/ˈɪntəvjuːər/",
+    "topic": "job/hiring",
+    "word": "interviewer"
+  }
+]
