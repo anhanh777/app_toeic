@@ -37,7 +37,7 @@ export default function WrongQuestions() {
       {items.map(q => (
         <div key={q.id} className="card">
           <p className="tag">{partName(q.part)} • Sai {q.wrongCount ?? 1} lần</p>
-          {q.passageText && <div style={{ whiteSpace: 'pre-wrap', background: '#f8fafc', padding: '.8rem', borderRadius: 8, marginBottom: '.5rem' }}>{q.passageText}</div>}
+          {q.passageText && <div className="passage">{q.passageText}</div>}
           <p><strong>{q.content}</strong></p>
           {q.options.map(o => (
             <button key={o.label} className={`option ${selected[q.id] === o.label ? 'selected' : ''}`} onClick={() => setSelected(s => ({ ...s, [q.id]: o.label }))}>

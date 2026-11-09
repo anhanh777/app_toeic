@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, targetScoreOf, type Attempt, type StatsOverview } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox, partName } from '../components';
+import { ErrorBox, partName, TierBadge, XpBar } from '../components';
 
 export default function Stats() {
   const { user } = useAuth();
@@ -28,8 +28,8 @@ export default function Stats() {
             <div className="card"><div className="muted">Tổng câu đã làm</div><div className="stat-num">{stats.totalAnswered}</div></div>
             <div className="card"><div className="muted">Tỉ lệ đúng</div><div className="stat-num">{Math.round(stats.accuracy * 100)}%</div></div>
             <div className="card"><div className="muted">Streak</div><div className="stat-num">{stats.streakDays} ngày 🔥</div></div>
-            <div className="card"><div className="muted">Tổng XP</div><div className="stat-num">{stats.totalXp}</div></div>
-            <div className="card"><div className="muted">Mục tiêu điểm</div><div className="stat-num">{target}</div><p className="muted">Còn cách mục tiêu: {Math.max(0, target - best)} điểm (điểm cao nhất: {best || '—'})</p></div>
+            <div className="card stat-card"><div className="ico">⭐</div><div className="muted">Tổng XP</div><div className="stat-num">{stats.totalXp}</div><XpBar xp={stats.totalXp} gold /></div>
+            <div className="card stat-card"><div className="ico">🎯</div><div className="muted">Mục tiêu điểm</div><div className="stat-num">{target}</div><p className="muted">Còn cách mục tiêu: {Math.max(0, target - best)} điểm (điểm cao nhất: {best || '—'})</p>{best > 0 && <p><TierBadge total={best} /></p>}</div>
             <div className="card"><div className="muted">Part yếu nhất</div><div className="stat-num">{stats.weakestPart ? partName(stats.weakestPart) : '—'}</div></div>
           </div>
           <div className="card"><h2>Tỉ lệ đúng theo Part</h2>

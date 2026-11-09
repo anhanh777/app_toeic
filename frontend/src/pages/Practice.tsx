@@ -26,10 +26,12 @@ export default function Practice() {
         {(parts.length ? parts : [1, 2, 3, 4, 5, 6, 7].map(p => ({ part: p, count: 0 }))).map(p => {
           const a = acc(p.part);
           return (
-            <div key={p.part} className="card part-card" onClick={() => setPart(p.part)} style={part === p.part ? { borderColor: 'var(--primary)', borderWidth: 2 } : undefined}>
+            <div key={p.part} className={`card part-card${part === p.part ? ' selected' : ''}`} onClick={() => setPart(p.part)}>
+              <div className="part-ico">{p.part <= 4 ? '🎧' : '📖'} LV.{p.part}</div>
               <strong>{partName(p.part)}</strong> <span className="pill">{sectionOf(p.part)}</span>
               <p className="muted">{p.count ? `${p.count} câu trong ngân hàng` : 'Chưa rõ số câu'}</p>
               {a && <p>Tỉ lệ đúng: {Math.round(a.accuracy * 100)}% ({a.correct}/{a.answered} câu)</p>}
+              {a && <div className="bar"><i style={{ width: `${a.accuracy * 100}%` }} /></div>}
             </div>
           );
         })}

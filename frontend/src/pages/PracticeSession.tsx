@@ -65,11 +65,11 @@ export default function PracticeSession() {
     <div>
       <p className="muted">{partName(part)} — Câu {idx + 1}/{questions.length} • Đúng {score.correct}/{score.done}</p>
       <ErrorBox error={error} />
-      <div className="card">
-        {q.passageText && (<div style={{ whiteSpace: 'pre-wrap', background: '#f8fafc', padding: '.8rem', borderRadius: 8, marginBottom: '.8rem' }}>{q.passageText}</div>)}
+      <div className="card screen">
+        {q.passageText && (<div className="passage">{q.passageText}</div>)}
         <p><strong>{q.content}</strong></p>
         {isListening && (
-          <div className="card" style={{ background: '#eff6ff' }}>
+          <div className="card audio-box">
             <p className="muted">Âm thanh đọc bằng giọng máy (TTS)</p>
             <div className="btn-row">
               <button className="btn" onClick={play}>{playing ? '🔊 Đang đọc…' : '▶ Phát âm thanh'}</button>
@@ -94,7 +94,7 @@ export default function PracticeSession() {
           <div className="btn-row"><button className="btn" disabled={!selected} onClick={submit}>Nộp đáp án</button></div>
         ) : (
           <div>
-            <p style={{ color: result.correct ? 'var(--green)' : 'var(--red)', fontWeight: 700 }}>
+            <p style={{ color: result.correct ? '#15803d' : '#dc2626', fontWeight: 700 }}>
               {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${result.correctLabel}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
             </p>
             {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}

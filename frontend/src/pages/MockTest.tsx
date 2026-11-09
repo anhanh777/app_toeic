@@ -94,12 +94,12 @@ export default function MockTest() {
         <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
       </div>
       <ErrorBox error={error} />
-      <div className="card">
+      <div className="card screen">
         <p className="tag">{partName(q.part)}</p>
-        {q.passageText && <div style={{ whiteSpace: 'pre-wrap', background: '#f8fafc', padding: '.8rem', borderRadius: 8, marginBottom: '.8rem' }}>{q.passageText}</div>}
+        {q.passageText && <div className="passage">{q.passageText}</div>}
         <p><strong>{q.content}</strong></p>
         {q.part <= 4 && (
-          <div className="card" style={{ background: '#eff6ff' }}>
+          <div className="card audio-box">
             <p className="muted">Âm thanh đọc bằng giọng máy (TTS)</p>
             <div className="btn-row">
               <button className="btn secondary" onClick={() => { if (ttsSupported()) speak(ttsTextFor(q), rate); }}>▶ Phát âm thanh</button>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, scoreLevel } from '../api';
-import { ErrorBox, partName } from '../components';
+import { ErrorBox, partName, TierBadge } from '../components';
 
 export default function Result() {
   const { id } = useParams();
@@ -20,9 +20,11 @@ export default function Result() {
     <div>
       <h1>Kết quả thi thử</h1>
       {isFull && data.total_score != null ? (
-        <div className="card">
+        <div className="card" style={{ textAlign: 'center' }}>
           <div className="muted">Tổng điểm (điểm ước lượng)</div>
           <div className="big">{data.total_score} / 990</div>
+          <p><TierBadge total={data.total_score} /></p>
+          <p className="hearts">{'★'.repeat(data.total_score >= 900 ? 3 : data.total_score >= 600 ? 2 : 1)}{'☆'.repeat(data.total_score >= 900 ? 0 : data.total_score >= 600 ? 1 : 2)}</p>
           <p>Mức: {scoreLevel(data.total_score)}</p>
           <p>Listening: {data.listening_score ?? '—'} ({data.listening_correct ?? 0} câu đúng) • Reading: {data.reading_score ?? '—'} ({data.reading_correct ?? 0} câu đúng)</p>
           <p className="muted">Điểm ước lượng theo bảng quy đổi tham khảo công khai, không phải điểm chính thức của ETS.</p>

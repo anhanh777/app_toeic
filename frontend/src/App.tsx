@@ -27,7 +27,7 @@ function Layout() {
   return (
     <div className="app">
       <header className="topbar">
-        <Link className="brand" to="/">📘 TOEIC Luyện thi</Link>
+        <Link className="brand" to="/">🕹️ TOEIC <span className="arcade">ARCADE</span></Link>
         {user && (
           <nav>
             <NavLink to="/" end>Trang chủ</NavLink>
@@ -60,7 +60,7 @@ function Layout() {
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
         </Routes>
       </main>
-      <footer>App TOEIC — Giai đoạn 1 (TOEIC only). Điểm thi thử là điểm ước lượng, không phải điểm chính thức của ETS. Âm thanh đọc bằng giọng máy (TTS).</footer>
+      <footer>🕹️ TOEIC ARCADE — LUYỆN THI TOEIC • ĐIỂM THI THỬ LÀ ĐIỂM ƯỚC LƯỢNG, KHÔNG PHẢI ĐIỂM CHÍNH THỨC CỦA ETS • ÂM THANH ĐỌC BẰNG GIỌNG MÁY (TTS)</footer>
     </div>
   );
 }

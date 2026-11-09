@@ -1,53 +1,271 @@
-:root{--primary:#2563eb;--primary-d:#1d4ed8;--bg:#f6f8fb;--card:#fff;--text:#1e293b;--muted:#64748b;--border:#e2e8f0;--green:#16a34a;--red:#dc2626;--amber:#d97706;--radius:12px}
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ============ TOEIC ARCADE — Retro Pixel / 8-bit theme ============
+   Dark CRT background, neon accents, square corners everywhere.
+   RULE: pixel font is ONLY for headings, labels, buttons and scores.
+   Long reading text (questions, passages, explanations) stays in a
+   clean sans-serif so a 120-minute test does not strain the eyes. */
+
+:root{
+  --bg:#0a0d1f; --bg2:#10142b; --panel:#151a36; --panel2:#1d2347;
+  --ink:#e8ecff; --muted:#8b93b8; --border:#2e3560; --border-neon:#00e5ff;
+  --magenta:#ff2e88; --cyan:#00e5ff; --lime:#a3e635; --yellow:#ffd500;
+  --gold:#ffb800; --silver:#c0c7e0; --bronze:#e08a4c;
+  --green:#2ee66b; --red:#ff3b5c; --amber:#ffb800;
+  --px:'Press Start 2P','Courier New',monospace;
+  --body:system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
-a{color:var(--primary);text-decoration:none}
-button{font:inherit;cursor:pointer}
-input,select,textarea{font:inherit;width:100%;padding:.6rem .7rem;border:1px solid var(--border);border-radius:8px;background:#fff}
-label{display:block;font-weight:600;margin:.6rem 0 .25rem}
-.app{min-height:100vh;display:flex;flex-direction:column}
-.topbar{background:var(--primary);color:#fff;padding:.7rem 1rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap;position:sticky;top:0;z-index:10}
-.topbar a{color:#fff;font-weight:600}
-.topbar .brand{font-size:1.15rem;font-weight:800;margin-right:auto}
-.topbar nav{display:flex;gap:.9rem;flex-wrap:wrap;align-items:center}
-.topbar nav a.active{text-decoration:underline}
-.container{max-width:960px;width:100%;margin:0 auto;padding:1rem;flex:1}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:1rem}
-.grid{display:grid;gap:1rem;grid-template-columns:1fr}
+html{scrollbar-color:var(--magenta) var(--bg)}
+body{
+  margin:0; font-family:var(--body); background:var(--bg); color:var(--ink);
+  line-height:1.55;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124,58,237,.28), transparent),
+    radial-gradient(ellipse 60% 40% at 90% 110%, rgba(0,229,255,.12), transparent),
+    radial-gradient(ellipse 50% 35% at 0% 100%, rgba(255,46,136,.10), transparent);
+  background-attachment:fixed;
+}
+/* Subtle CRT scanlines — cheap, pure CSS, never blocks clicks */
+body::after{
+  content:''; position:fixed; inset:0; z-index:9999; pointer-events:none;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.16) 0 1px, transparent 1px 3px);
+  opacity:.35;
+}
+a{color:var(--cyan); text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit; cursor:pointer; color:var(--ink)}
+input,select,textarea{
+  font:inherit; width:100%; padding:.6rem .7rem; color:var(--ink);
+  background:#0d1128; border:3px solid var(--border); border-radius:0;
+}
+input:focus,select:focus,textarea:focus{outline:none; border-color:var(--cyan); box-shadow:0 0 0 3px rgba(0,229,255,.25)}
+label{display:block; font-family:var(--px); font-size:.6rem; line-height:1.8; color:var(--cyan); margin:.8rem 0 .3rem; text-transform:uppercase}
+input[type='checkbox'],input[type='range']{width:auto; accent-color:var(--magenta)}
+input[type='range']{border:none; padding:0}
+
+h1,h2,h3{font-family:var(--px); font-weight:400; line-height:1.7; letter-spacing:.02em;
+  text-shadow:3px 3px 0 rgba(0,0,0,.55)}
+h1{font-size:1.05rem; color:#fff; margin:.4rem 0 1rem}
+h1 .glow{color:var(--yellow); text-shadow:3px 3px 0 var(--magenta)}
+h2{font-size:.8rem; color:var(--cyan); margin:0 0 .8rem}
+h3{font-size:.68rem; color:var(--yellow); margin:0 0 .6rem}
+hr{border:none; border-top:3px dashed var(--border); margin:1.2rem 0}
+
+.app{min-height:100vh; display:flex; flex-direction:column}
+.topbar{
+  background:linear-gradient(90deg,#1a0b2e,#2b0f54 45%,#0b2a4a);
+  border-bottom:4px solid var(--magenta);
+  box-shadow:0 4px 0 #000, 0 0 24px rgba(255,46,136,.35);
+  padding:.7rem 1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;
+  position:sticky; top:0; z-index:10;
+}
+.topbar a{color:var(--ink); font-weight:700}
+.topbar a:hover{color:var(--yellow); text-decoration:none}
+.topbar .brand{
+  font-family:var(--px); font-size:.85rem; color:#fff; margin-right:auto;
+  text-shadow:3px 3px 0 var(--magenta); letter-spacing:.02em; white-space:nowrap;
+}
+.topbar .brand .arcade{color:var(--cyan)}
+.topbar nav{display:flex; gap:.45rem; flex-wrap:wrap; align-items:center}
+.topbar nav a{
+  font-family:var(--px); font-size:.52rem; padding:.5rem .55rem; text-transform:uppercase;
+  border:2px solid transparent; color:#cdd5f5;
+}
+.topbar nav a:hover{border-color:var(--cyan); color:#fff; background:rgba(0,229,255,.12)}
+.topbar nav a.active{border-color:var(--yellow); color:#000; background:var(--yellow); box-shadow:3px 3px 0 #000}
+.container{max-width:960px; width:100%; margin:0 auto; padding:1rem; flex:1}
+.card{
+  background:linear-gradient(180deg,var(--panel),var(--bg2));
+  border:3px solid var(--border); border-radius:0; padding:1rem; margin-bottom:1rem;
+  box-shadow:5px 5px 0 rgba(0,0,0,.55);
+}
+.card h2{margin-top:0}
+.grid{display:grid; gap:1rem; grid-template-columns:1fr}
 @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
 @media(min-width:900px){.grid3{grid-template-columns:repeat(3,1fr)}}
-.btn{display:inline-block;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:.6rem 1.1rem;font-weight:600;text-align:center}
-.btn:hover{background:var(--primary-d)}
-.btn:disabled{opacity:.5;cursor:not-allowed}
-.btn.secondary{background:#e2e8f0;color:var(--text)}
-.btn.danger{background:var(--red)}
-.btn.ghost{background:transparent;color:var(--primary);border:1px solid var(--primary)}
-.btn-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.8rem}
-.error{background:#fef2f2;color:var(--red);border:1px solid #fecaca;border-radius:8px;padding:.6rem .8rem;margin:.6rem 0}
-.success{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0;border-radius:8px;padding:.6rem .8rem;margin:.6rem 0}
-.muted{color:var(--muted);font-size:.9rem}
-.big{font-size:2rem;font-weight:800}
-.stat-num{font-size:1.6rem;font-weight:800}
-.part-card{cursor:pointer}
-.part-card:hover{border-color:var(--primary)}
-.option{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--border);border-radius:8px;padding:.7rem;margin:.4rem 0}
-.option:hover{border-color:var(--primary)}
-.option.selected{border-color:var(--primary);background:#eff6ff}
-.option.correct{border-color:var(--green);background:#f0fdf4}
-.option.wrong{border-color:var(--red);background:#fef2f2}
-.bar{height:10px;background:#e2e8f0;border-radius:99px;overflow:hidden}
-.bar>i{display:block;height:100%;background:var(--primary)}
-.bar.green>i{background:var(--green)}
-table{width:100%;border-collapse:collapse}
-th,td{padding:.5rem;border-bottom:1px solid var(--border);text-align:left}
-.timer{font-size:1.4rem;font-weight:800;font-variant-numeric:tabular-nums}
-.timer.low{color:var(--red)}
-.flashcard{perspective:800px;cursor:pointer;min-height:180px}
-.flashcard-inner{position:relative;width:100%;min-height:180px;transition:transform .4s;transform-style:preserve-3d}
+
+/* Chunky pixel buttons — hard shadow, press-down effect */
+.btn{
+  display:inline-block; font-family:var(--px); font-size:.62rem; line-height:1.6;
+  text-transform:uppercase; color:#fff; background:linear-gradient(180deg,#9333ea,#7c3aed);
+  border:3px solid #000; border-radius:0; padding:.7rem 1rem; font-weight:400; text-align:center;
+  box-shadow:4px 4px 0 #000; text-shadow:2px 2px 0 rgba(0,0,0,.5);
+  transition:transform .05s, box-shadow .05s;
+}
+.btn:hover{filter:brightness(1.15); text-decoration:none}
+.btn:active{transform:translate(3px,3px); box-shadow:1px 1px 0 #000}
+.btn:disabled{opacity:.45; cursor:not-allowed; filter:grayscale(.6)}
+.btn.secondary{background:linear-gradient(180deg,#334155,#1e293b); color:#e2e8f0}
+.btn.danger{background:linear-gradient(180deg,#ff3b5c,#c81e3a)}
+.btn.ghost{background:transparent; color:var(--cyan); border:3px solid var(--cyan); box-shadow:4px 4px 0 #000}
+.btn.neon{background:linear-gradient(180deg,#00b8d4,#0090a8); color:#fff}
+.btn.gold{background:linear-gradient(180deg,#ffd500,#f59e0b); color:#231303; text-shadow:none}
+.btn-row{display:flex; gap:.7rem; flex-wrap:wrap; margin-top:.8rem}
+
+.error{background:#2b0f1e; color:#ff8fa8; border:3px solid var(--red); border-radius:0; padding:.6rem .8rem; margin:.6rem 0}
+.success{background:#0f2b1a; color:var(--lime); border:3px solid var(--green); border-radius:0; padding:.6rem .8rem; margin:.6rem 0}
+.muted{color:var(--muted); font-size:.9rem}
+.big{font-family:var(--px); font-size:1.5rem; line-height:1.6; color:#fff; text-shadow:3px 3px 0 var(--magenta)}
+.stat-num{font-family:var(--px); font-size:1.15rem; line-height:1.6; color:var(--yellow); text-shadow:2px 2px 0 #000}
+.pill{
+  display:inline-block; font-family:var(--px); font-size:.5rem; background:#0d1128;
+  color:var(--cyan); border:2px solid var(--cyan); border-radius:0; padding:.3rem .5rem;
+}
+.tag{font-family:var(--px); font-size:.55rem; color:var(--lime); letter-spacing:.05em}
+
+/* XP / level bar — chunky segmented pixel bar */
+.xpbar{height:18px; background:#0d1128; border:3px solid #000; box-shadow:3px 3px 0 #000; overflow:hidden}
+.xpbar>i{
+  display:block; height:100%;
+  background:repeating-linear-gradient(90deg,var(--lime) 0 10px,#65c90e 10px 20px);
+  box-shadow:inset 0 -4px 0 rgba(0,0,0,.35);
+}
+.xpbar.gold>i{background:repeating-linear-gradient(90deg,var(--yellow) 0 10px,#f59e0b 10px 20px)}
+.xp-label{font-family:var(--px); font-size:.58rem; color:var(--lime); display:flex; justify-content:space-between; gap:.5rem; flex-wrap:wrap}
+.bar{height:14px; background:#0d1128; border:2px solid #000; border-radius:0; overflow:hidden}
+.bar>i{display:block; height:100%; background:repeating-linear-gradient(90deg,var(--cyan) 0 8px,#0891b2 8px 16px)}
+.bar.green>i{background:repeating-linear-gradient(90deg,var(--lime) 0 8px,#4d9e08 8px 16px)}
+
+/* Rank / tier badges */
+.tier{
+  display:inline-block; font-family:var(--px); font-size:.55rem; text-transform:uppercase;
+  padding:.45rem .6rem; border:3px solid #000; box-shadow:3px 3px 0 #000; color:#fff;
+}
+.tier-bronze{background:linear-gradient(180deg,#d08a4e,#8a5a2b)}
+.tier-silver{background:linear-gradient(180deg,#dbe4ff,#8b93b8); color:#10142b}
+.tier-gold{background:linear-gradient(180deg,#ffd500,#f59e0b); color:#231303}
+.tier-platinum{background:linear-gradient(180deg,#67e8f9,#0e7490)}
+.tier-diamond{background:linear-gradient(180deg,#f0abfc,#a21caf)}
+.hearts{font-size:1.15rem; letter-spacing:.15rem; color:#ff3b5c; text-shadow:2px 2px 0 #000}
+.streak-flame{color:#ff9f1c; text-shadow:2px 2px 0 #000; animation:flicker 1s infinite alternate}
+@keyframes flicker{from{opacity:.75} to{opacity:1}}
+.blink{animation:blink 1.1s steps(2,start) infinite}
+@keyframes blink{50%{opacity:0}}
+.press-start{font-family:var(--px); font-size:.7rem; color:var(--yellow); text-shadow:3px 3px 0 var(--magenta)}
+
+/* Hero / arena banner */
+.hero{
+  border:4px solid var(--magenta); background:
+    linear-gradient(135deg, rgba(124,58,237,.55), rgba(0,229,255,.18) 55%, rgba(255,46,136,.35));
+  box-shadow:6px 6px 0 #000, 0 0 32px rgba(255,46,136,.35);
+  padding:1.2rem 1rem; margin-bottom:1rem; text-align:center;
+}
+.hero h1{font-size:1.25rem; margin:.2rem 0 .6rem}
+.hero .sub{color:#dbe4ff; font-weight:600}
+.stat-card{position:relative; overflow:hidden}
+.stat-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:6px;
+  background:linear-gradient(90deg,var(--magenta),var(--cyan),var(--lime));
+}
+.stat-card .ico{font-size:1.6rem; filter:drop-shadow(2px 2px 0 #000)}
+
+/* Part select tiles — arcade level select */
+.part-card{cursor:pointer; transition:transform .08s}
+.part-card:hover{border-color:var(--cyan); transform:translate(-2px,-2px); box-shadow:7px 7px 0 rgba(0,0,0,.6)}
+.part-card.selected{border-color:var(--yellow); box-shadow:0 0 0 3px var(--yellow), 6px 6px 0 #000}
+.part-ico{font-family:var(--px); font-size:.8rem; color:var(--magenta); text-shadow:2px 2px 0 #000}
+
+/* The exam "screen" — bright LCD panel so long text stays readable */
+.screen{
+  background:#f4f6ff !important; color:#141833 !important;
+  border:3px solid #000 !important; box-shadow:5px 5px 0 #000;
+}
+.screen p, .screen strong{color:#141833}
+.screen .muted{color:#475069}
+.screen .tag{color:#0e7490}
+.flashcard-face .big{font-size:1rem; word-break:break-word}
+.arcade-card{box-shadow:6px 6px 0 #000, 0 0 32px rgba(255,46,136,.35)}
+.passage{
+  white-space:pre-wrap; background:#fff; color:#141833; border:3px solid #1e2447;
+  padding:.8rem; border-radius:0; margin-bottom:.8rem; line-height:1.65;
+}
+.audio-box{background:#0d2b3a !important; border:3px solid var(--cyan) !important}
+.audio-box .muted{color:#a5f3fc}
+
+/* Answer options — letter badge in a pixel chip */
+.option{
+  display:block; width:100%; text-align:left; font-family:var(--body); font-size:1rem;
+  background:#0d1128; color:var(--ink); border:3px solid var(--border);
+  border-radius:0; padding:.7rem .8rem; margin:.45rem 0;
+  box-shadow:3px 3px 0 #000;
+}
+.option:hover{border-color:var(--cyan)}
+.option strong{
+  font-family:var(--px); font-size:.6rem; color:#000; background:var(--cyan);
+  padding:.35rem .45rem; margin-right:.5rem; box-shadow:2px 2px 0 #000;
+}
+.option.selected{border-color:var(--yellow); background:#2a2305; color:#ffe98a}
+.option.selected strong{background:var(--yellow)}
+.option.correct{border-color:var(--green); background:#0d2b1a; color:#a7f3c9}
+.option.correct strong{background:var(--green)}
+.option.wrong{border-color:var(--red); background:#2b0f1e; color:#ffb3c0}
+.option.wrong strong{background:var(--red); color:#fff}
+.option:disabled{cursor:default}
+
+table{width:100%; border-collapse:collapse}
+th,td{padding:.55rem .5rem; border-bottom:2px solid var(--border); text-align:left}
+th{font-family:var(--px); font-size:.52rem; color:var(--cyan); text-transform:uppercase}
+tbody tr:hover{background:rgba(0,229,255,.06)}
+
+.timer{font-family:var(--px); font-size:1rem; color:var(--yellow); text-shadow:3px 3px 0 #000; font-variant-numeric:tabular-nums}
+.timer.low{color:var(--red); animation:blink .8s steps(2,start) infinite}
+
+/* Flashcards — neon front, gradient back */
+.flashcard{perspective:800px; cursor:pointer; min-height:190px}
+.flashcard-inner{position:relative; width:100%; min-height:190px; transition:transform .35s steps(6); transform-style:preserve-3d}
 .flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
-.flashcard-face{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1rem;backface-visibility:hidden;text-align:center}
-.flashcard-face.back{transform:rotateY(180deg);background:#eff6ff}
-.top3{border:2px solid var(--amber);background:#fffbeb}
-.me-row{background:#eff6ff;font-weight:700}
-.pill{display:inline-block;background:#e0e7ff;border-radius:99px;padding:.1rem .6rem;font-size:.85rem;font-weight:600}
-footer{padding:1rem;text-align:center;color:var(--muted);font-size:.85rem}
+.flashcard-face{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:var(--panel); border:3px solid var(--magenta); border-radius:0; padding:1rem;
+  backface-visibility:hidden; text-align:center; box-shadow:5px 5px 0 #000;
+}
+.flashcard-face .big{color:var(--cyan); text-shadow:3px 3px 0 #000}
+.flashcard-face.back{transform:rotateY(180deg); background:linear-gradient(135deg,#7c3aed,#db2777); border-color:var(--yellow)}
+.flashcard-face.back, .flashcard-face.back .muted{color:#fff}
+
+/* Leaderboard — arcade high-score table */
+.podium{display:grid; grid-template-columns:1fr 1.25fr 1fr; gap:.6rem; align-items:end; margin:1rem 0}
+.podium-place{
+  text-align:center; padding:.9rem .4rem .6rem; border:3px solid #000;
+  box-shadow:4px 4px 0 #000;
+}
+.podium-place .medal{font-size:1.9rem; filter:drop-shadow(2px 2px 0 #000)}
+.podium-place .p-name{font-family:var(--px); font-size:.58rem; line-height:1.7; word-break:break-word}
+.podium-place .p-score{font-family:var(--px); font-size:.85rem; color:var(--yellow); text-shadow:2px 2px 0 #000; margin-top:.4rem}
+.podium-1{background:linear-gradient(180deg,#3d2c00,#1a1200); border-color:var(--gold); min-height:150px}
+.podium-2{background:linear-gradient(180deg,#232a45,#12172e); border-color:var(--silver); min-height:120px}
+.podium-3{background:linear-gradient(180deg,#33200f,#1a1005); border-color:var(--bronze); min-height:105px}
+.rank-chip{
+  display:inline-block; font-family:var(--px); font-size:.55rem; min-width:2.6rem; text-align:center;
+  padding:.35rem .4rem; border:2px solid #000; box-shadow:2px 2px 0 #000; color:#fff;
+}
+.rank-1{background:linear-gradient(180deg,#ffd500,#f59e0b); color:#231303}
+.rank-2{background:linear-gradient(180deg,#dbe4ff,#8b93b8); color:#10142b}
+.rank-3{background:linear-gradient(180deg,#e08a4c,#8a5a2b)}
+.rank-other{background:#1e2447; color:#cdd5f5}
+.top3{border:2px solid var(--gold); background:#241c05}
+.me-row{
+  background:linear-gradient(90deg, rgba(255,46,136,.25), rgba(0,229,255,.18)) !important;
+  border:3px solid var(--magenta) !important; box-shadow:5px 5px 0 #000;
+  font-weight:700;
+}
+.lb-row-name{font-weight:700; color:#fff}
+.lb-row-name img{border:2px solid var(--cyan)}
+.seg{display:flex; gap:.5rem; flex-wrap:wrap}
+.seg .btn{flex:1 1 auto}
+
+footer{
+  padding:1rem; text-align:center; color:var(--muted); font-size:.82rem;
+  border-top:3px solid var(--border); font-family:var(--px); font-size:.5rem; line-height:2;
+}
+footer .px{font-family:var(--px)}
+::selection{background:var(--magenta); color:#fff}
+@media(max-width:640px){
+  h1{font-size:.9rem}
+  .hero h1{font-size:1rem}
+  .big{font-size:1.15rem}
+  .topbar .brand{font-size:.68rem}
+  .podium{gap:.35rem}
+  .podium-place .p-name{font-size:.45rem}
+}

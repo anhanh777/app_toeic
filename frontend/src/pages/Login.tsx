@@ -26,8 +26,9 @@ export default function Login() {
   };
 
   return (
-    <div className="card" style={{ maxWidth: 480, margin: '2rem auto' }}>
-      <h1>{mode === 'login' ? 'Đăng nhập' : 'Đăng ký'}</h1>
+    <div className="card arcade-card" style={{ maxWidth: 480, margin: '2rem auto', borderColor: 'var(--magenta)' }}>
+      <p style={{ textAlign: 'center' }}><span className="press-start blink">► INSERT COIN ◄</span></p>
+      <h1 style={{ textAlign: 'center' }}>{mode === 'login' ? '🕹️ ĐĂNG NHẬP' : '🕹️ ĐĂNG KÝ'}</h1>
       <p className="muted">Luyện thi TOEIC — Listening &amp; Reading. Tài khoản demo: user@toeic.app / user123 (admin: demo@toeic.app / admin123).</p>
       <form onSubmit={submit}>
         {mode === 'register' && (<><label htmlFor="name">Họ tên</label><input id="name" value={name} onChange={e => setName(e.target.value)} required /></>)}
