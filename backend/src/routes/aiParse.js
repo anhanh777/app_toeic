@@ -299,6 +299,7 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
     let blocks; // [{part, text, expectedQuestions, passageText, warnings, vision?}]
     let structure; // {mode, parts, answerKeyFound, answerKey, warnings}
     let visionParts = null; // parts gui Gemini khi mode = 'vision'
+    let fullText = ''; // toan bo text trich xuat (chi co o nhom text)
     try {
       if (modeInfo.mode === 'vision') {
         visionParts = [
@@ -329,6 +330,7 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
         };
       } else {
         const text = await extractText(req.file.buffer, req.file.mimetype, req.file.originalname);
+        fullText = text || '';
         if (!text || !text.trim()) {
           return res
             .status(400)
@@ -370,13 +372,38 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
         .json({ error: 'Không đọc được file: ' + (e.message || 'lỗi không xác định') });
     }
 
-    // ---------- Tang 3: goi Gemini TUAN TU, moi block 1 call ----------
-    // Goi song song 4-5 block cung luc hay vuot han muc theo phut cua
-    // goi Gemini Free (429) nen goi lan luot, moi block cach nhau 1,5s.
+    // ---------- Tang 3: goi Gemini ----------
+    // File text NHO (<= 25.000 ky tu): goi 1 call duy nhat cho ca file thay
+    // vi goi tung block — goi Gemini Free gioi han so request/phut rat
+    // thap, goi 4-5 block lien tiep de bi 429 (da gap voi de thi that).
+    // File lon hon van goi tuan tu tung block nhu cu.
+    const SINGLE_CALL_MAX_CHARS = 25000;
+    const useSingleCall =
+      modeInfo.mode === 'text' &&
+      structure.mode === 'split' &&
+      fullText.length > 0 &&
+      fullText.length <= SINGLE_CALL_MAX_CHARS;
     let blockResults;
     try {
       blockResults = await Promise.race([
         (async () => {
+          if (useSingleCall) {
+            try {
+              const geminiJson = await callGemini(apiKey, [{ text: buildParsePrompt(fullText) }]);
+              const expectedAll = blocks.flatMap((b) => b.expectedQuestions || []);
+              return [
+                {
+                  ok: true,
+                  parsed: parseGeminiJson(geminiJson),
+                  block: { part: 0, expectedQuestions: expectedAll, warnings: [] },
+                },
+              ];
+            } catch (e) {
+              return [
+                { ok: false, error: e, block: { part: 0, expectedQuestions: [], warnings: [] } },
+              ];
+            }
+          }
           const results = [];
           for (let i = 0; i < blocks.length; i++) {
             const block = blocks[i];
