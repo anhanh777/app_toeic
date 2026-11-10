@@ -41,7 +41,7 @@ export default function PracticeSession() {
   // Part 1/2 thi that: chi co tranh + nghe + chon A/B/C/D, KHONG hien chu
   // cau hoi/phuong an truoc khi tra loi (giong de thi that). Tra loi xong
   // moi hien day du chu de xem lai minh vua nghe gi.
-  const hideListeningText = (q.part === 1 || q.part === 2) && !result;
+  const hideListeningText = (q?.part === 1 || q?.part === 2) && !result;
   const letterOnly = listeningOnly || hideListeningText;
 
   const submit = async () => {
