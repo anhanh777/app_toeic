@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ApiError } from './api';
+import { speak, stopSpeak, pauseSpeak, resumeSpeak, ttsSupported } from './tts';
 
 /** Small shared UI helpers. */
 export function ErrorBox({ error }: { error: unknown }) {
@@ -58,4 +59,98 @@ export function TierBadge({ total }: { total?: number | null }) {
 export function RankChip({ rank }: { rank: number }) {
   const cls = rank === 1 ? 'rank-1' : rank === 2 ? 'rank-2' : rank === 3 ? 'rank-3' : 'rank-other';
   return <span className={`rank-chip ${cls}`}>#{rank}</span>;
+}
+
+/**
+ * Trình phát audio cho phần Nghe (Part 1–4), dùng chung cho
+ * PracticeSession và MockTest.
+ * - Có audioUrl (file mp3 đã upload / AI sinh, gồm audio của đoạn cho
+ *   Part 3/4 do backend gộp): trình phát HTML5 + thanh trượt tốc độ.
+ * - Không có audioUrl: giữ nguyên nút TTS cũ làm fallback.
+ * Khi stopKey đổi (chuyển câu) thì dừng cả audio element lẫn TTS.
+ */
+export function ListeningAudio({
+  audioUrl, ttsText, rate, onRateChange, stopKey, variant, onError,
+}: {
+  audioUrl?: string | null;
+  ttsText: string;
+  rate: number;
+  onRateChange: (r: number) => void;
+  /** Đổi giá trị này khi chuyển câu — audio đang phát sẽ bị dừng. */
+  stopKey: unknown;
+  /** 'practice': đủ nút TTS (phát / tạm dừng / tiếp tục / nghe lại). 'mock': chỉ phát / dừng. */
+  variant: 'practice' | 'mock';
+  onError?: (e: unknown) => void;
+}) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const stopAll = () => {
+    audioRef.current?.pause();
+    stopSpeak();
+    setPlaying(false);
+  };
+
+  useEffect(() => { stopAll(); }, [stopKey]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => () => stopAll(), []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.playbackRate = rate;
+  }, [rate, audioUrl]);
+
+  const playTts = () => {
+    if (!ttsSupported()) {
+      onError?.(new Error('Trình duyệt của bạn không hỗ trợ đọc giọng máy (TTS).'));
+      return;
+    }
+    setPlaying(true);
+    speak(ttsText, rate, () => setPlaying(false));
+  };
+
+  if (audioUrl) {
+    return (
+      <div className="card audio-box">
+        <p className="muted">🎧 Nghe đoạn audio</p>
+        <audio
+          ref={audioRef}
+          controls
+          src={audioUrl}
+          preload="metadata"
+          style={{ width: '100%' }}
+        />
+        <div className="btn-row">
+          <button className="btn secondary" onClick={stopAll}>⏹ Dừng</button>
+        </div>
+        <label htmlFor="audio-rate">Tốc độ phát: {rate.toFixed(2)}x</label>
+        <input
+          id="audio-rate" type="range" min={0.5} max={1.5} step={0.25} value={rate}
+          onChange={e => {
+            const r = Number(e.target.value);
+            onRateChange(r);
+            if (audioRef.current) audioRef.current.playbackRate = r;
+          }}
+        />
+      </div>
+    );
+  }
+
+  // Fallback TTS như cũ khi chưa có file audio.
+  return (
+    <div className="card audio-box">
+      <p className="muted">Âm thanh đọc bằng giọng máy (TTS)</p>
+      <div className="btn-row">
+        <button className={variant === 'practice' ? 'btn' : 'btn secondary'} onClick={playTts}>{playing ? '🔊 Đang đọc…' : '▶ Phát âm thanh'}</button>
+        {variant === 'practice' ? (
+          <>
+            <button className="btn secondary" onClick={() => { pauseSpeak(); setPlaying(false); }}>⏸ Tạm dừng</button>
+            <button className="btn secondary" onClick={() => { resumeSpeak(); setPlaying(true); }}>▶ Tiếp tục</button>
+            <button className="btn secondary" onClick={playTts}>↻ Nghe lại</button>
+          </>
+        ) : (
+          <button className="btn secondary" onClick={stopAll}>⏹ Dừng</button>
+        )}
+      </div>
+      <label htmlFor="rate">Tốc độ đọc: {rate.toFixed(2)}x</label>
+      <input id="rate" type="range" min={0.5} max={1.5} step={0.25} value={rate} onChange={e => onRateChange(Number(e.target.value))} />
+    </div>
+  );
 }

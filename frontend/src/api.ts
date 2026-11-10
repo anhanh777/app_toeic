@@ -23,6 +23,7 @@ export function setToken(t: string | null) {
 const VI_ERRORS: Record<string, string> = {
   google_not_configured: 'Chưa cấu hình Google OAuth trên máy chủ.',
   gemini_not_configured: 'Chưa cấu hình GEMINI_API_KEY trên máy chủ.',
+  cloudinary_not_configured: 'Chưa cấu hình Cloudinary trên máy chủ.',
   invalid_credentials: 'Email hoặc mật khẩu không đúng.',
   user_exists: 'Email này đã được đăng ký.',
   unauthorized: 'Bạn cần đăng nhập lại.',
@@ -66,6 +67,7 @@ export interface Question {
   passageText?: string; script?: string; content: string;
   options: Option[]; topic?: string; difficulty?: string;
   explanation?: string; correct?: string; correctLabel?: string;
+  imageUrl?: string | null; audioUrl?: string | null;
 }
 export interface PartInfo { part: number; count: number; section?: string; listening?: boolean; reading?: boolean; }
 export interface Vocab { id: string; word: string; phonetic?: string; meaning: string; example?: string; topic?: string; }
@@ -97,6 +99,16 @@ export interface ImportQuestion {
   confidence?: 'high' | 'low';
 }
 
+export interface MediaConfig {
+  cloudName: string; uploadPreset: string; configured: boolean;
+}
+export interface GeneratedAudio {
+  audioUrl: string; level: string;
+}
+
+// Ảnh + audio cho phần Nghe: cấu hình Cloudinary, lưu media thủ công,
+// sinh audio bằng AI (Gemini TTS). Lỗi 501 (gemini/cloudinary chưa cấu
+// hình) được req() dịch sang tiếng Việt qua VI_ERRORS.
 export interface AiParseInvalid { index: number; reason: string; }
 export interface AiParseStructure {
   mode: 'split' | 'fallback' | 'vision';
@@ -136,7 +148,7 @@ export const api = {
     return data.items;
   },
   question: (id: string) => req<Question>(`/api/questions/${encodeURIComponent(id)}`),
-  passage: (id: string) => req<{ id: string; part: number; title?: string; content?: string; script?: string }>(`/api/passages/${encodeURIComponent(id)}`),
+  passage: (id: string) => req<{ id: string; part: number; title?: string; content?: string; script?: string; audioUrl?: string | null }>(`/api/passages/${encodeURIComponent(id)}`),
 
   practiceAnswer: (questionId: string, selected: string) =>
     req<{ correct: boolean; correctLabel: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
@@ -223,6 +235,18 @@ export const api = {
     }
     return data as AiParseResult;
   },
+
+  // Media cho phần Nghe (ảnh + audio)
+  mediaConfig: () => req<MediaConfig>('/api/admin/media/config'),
+  saveQuestionMedia: (id: string, body: { imageUrl?: string; audioUrl?: string }) =>
+    req<Question>(`/api/admin/questions/${encodeURIComponent(id)}/media`, { method: 'POST', body: JSON.stringify(body) }),
+  savePassageMedia: (id: string, body: { audioUrl: string }) =>
+    req<{ id: string; part: number; title?: string; content?: string; script?: string; audioUrl?: string | null }>(
+      `/api/admin/passages/${encodeURIComponent(id)}/media`, { method: 'POST', body: JSON.stringify(body) }),
+  generateQuestionAudio: (id: string) =>
+    req<GeneratedAudio>(`/api/admin/questions/${encodeURIComponent(id)}/generate-audio`, { method: 'POST' }),
+  generatePassageAudio: (id: string) =>
+    req<GeneratedAudio>(`/api/admin/passages/${encodeURIComponent(id)}/generate-audio`, { method: 'POST' }),
 
   // Admin
   adminQuestions: async (part?: number, limit = 50, offset = 0) => {

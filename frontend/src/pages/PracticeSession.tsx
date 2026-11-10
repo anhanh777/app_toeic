@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { api, type Question } from '../api';
-import { ErrorBox, partName } from '../components';
-import { speak, stopSpeak, pauseSpeak, resumeSpeak, ttsSupported, ttsTextFor } from '../tts';
+import { ErrorBox, ListeningAudio, partName } from '../components';
+import { stopSpeak, ttsTextFor } from '../tts';
 
 export default function PracticeSession() {
   const [params] = useSearchParams();
@@ -17,10 +17,7 @@ export default function PracticeSession() {
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [rate, setRate] = useState(1);
-  const [playing, setPlaying] = useState(false);
   const [score, setScore] = useState({ correct: 0, done: 0 });
-  const rateRef = useRef(rate);
-  rateRef.current = rate;
 
   useEffect(() => {
     setLoading(true);
@@ -35,12 +32,6 @@ export default function PracticeSession() {
   const q = questions[idx];
   const isListening = part <= 4;
 
-  const play = () => {
-    if (!q) return;
-    if (!ttsSupported()) { setError(new Error('Trình duyệt của bạn không hỗ trợ đọc giọng máy (TTS).')); return; }
-    setPlaying(true);
-    speak(ttsTextFor(q), rateRef.current, () => setPlaying(false));
-  };
   const submit = async () => {
     if (!q || !selected) return;
     try {
@@ -49,7 +40,7 @@ export default function PracticeSession() {
       setScore(s => ({ correct: s.correct + (r.correct ? 1 : 0), done: s.done + 1 }));
     } catch (e) { setError(e); }
   };
-  const next = () => { stopSpeak(); setSelected(null); setResult(null); setPlaying(false); setIdx(i => i + 1); };
+  const next = () => { stopSpeak(); setSelected(null); setResult(null); setIdx(i => i + 1); };
 
   if (loading) return <p>Đang tải câu hỏi…</p>;
   if (!questions.length) return <div><ErrorBox error={error} /><p>Chưa có câu hỏi cho Part này. {testSetId ? <Link to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link to="/practice">Quay lại chọn Part</Link>}</p></div>;
@@ -76,19 +67,20 @@ export default function PracticeSession() {
       <ErrorBox error={error} />
       <div className="card screen">
         {q.passageText && (<div className="passage">{q.passageText}</div>)}
+        {q.imageUrl && (
+          <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
+        )}
         <p><strong>{q.content}</strong></p>
         {isListening && (
-          <div className="card audio-box">
-            <p className="muted">Âm thanh đọc bằng giọng máy (TTS)</p>
-            <div className="btn-row">
-              <button className="btn" onClick={play}>{playing ? '🔊 Đang đọc…' : '▶ Phát âm thanh'}</button>
-              <button className="btn secondary" onClick={() => { pauseSpeak(); setPlaying(false); }}>⏸ Tạm dừng</button>
-              <button className="btn secondary" onClick={() => { resumeSpeak(); setPlaying(true); }}>▶ Tiếp tục</button>
-              <button className="btn secondary" onClick={play}>↻ Nghe lại</button>
-            </div>
-            <label htmlFor="rate">Tốc độ đọc: {rate.toFixed(2)}x</label>
-            <input id="rate" type="range" min={0.5} max={1.5} step={0.25} value={rate} onChange={e => setRate(Number(e.target.value))} />
-          </div>
+          <ListeningAudio
+            audioUrl={q.audioUrl}
+            ttsText={ttsTextFor(q)}
+            rate={rate}
+            onRateChange={setRate}
+            stopKey={idx}
+            variant="practice"
+            onError={setError}
+          />
         )}
         {q.options.map(o => {
           let cls = 'option';

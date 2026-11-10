@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, type Question, type TestSet } from '../api';
-import { ErrorBox, partName } from '../components';
-import { speak, stopSpeak, ttsSupported, ttsTextFor } from '../tts';
+import { ErrorBox, ListeningAudio, partName } from '../components';
+import { stopSpeak, ttsTextFor } from '../tts';
 
 function fmt(s: number) {
   const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
@@ -129,17 +129,20 @@ export default function MockTest() {
       <div className="card screen">
         <p className="tag">{partName(q.part)}</p>
         {q.passageText && <div className="passage">{q.passageText}</div>}
+        {q.imageUrl && (
+          <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
+        )}
         <p><strong>{q.content}</strong></p>
         {q.part <= 4 && (
-          <div className="card audio-box">
-            <p className="muted">Âm thanh đọc bằng giọng máy (TTS)</p>
-            <div className="btn-row">
-              <button className="btn secondary" onClick={() => { if (ttsSupported()) speak(ttsTextFor(q), rate); }}>▶ Phát âm thanh</button>
-              <button className="btn secondary" onClick={stopSpeak}>⏹ Dừng</button>
-            </div>
-            <label htmlFor="rate">Tốc độ đọc: {rate.toFixed(2)}x</label>
-            <input id="rate" type="range" min={0.5} max={1.5} step={0.25} value={rate} onChange={e => setRate(Number(e.target.value))} />
-          </div>
+          <ListeningAudio
+            audioUrl={q.audioUrl}
+            ttsText={ttsTextFor(q)}
+            rate={rate}
+            onRateChange={setRate}
+            stopKey={idx}
+            variant="mock"
+            onError={setError}
+          />
         )}
         {q.options.map(o => (
           <button key={o.label} className={`option ${answers[q.id] === o.label ? 'selected' : ''}`} onClick={() => choose(o.label)}>

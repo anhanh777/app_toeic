@@ -52,6 +52,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api', require('./routes/testsets'));
 app.use('/api', require('./routes/aiParse'));
+app.use('/api', require('./routes/media'));
 app.use('/api', require('./routes/questions'));
 app.use('/api', require('./routes/practice'));
 app.use('/api', require('./routes/tests'));

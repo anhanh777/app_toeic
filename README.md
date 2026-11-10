@@ -70,6 +70,25 @@ app_toeic/
 
 Không có file audio thu âm sẵn. Phần nghe dùng **Web Speech API (`speechSynthesis`)** của trình duyệt để đọc script (câu hỏi Part 1/2, đoạn hội thoại/bài nói Part 3/4) bằng giọng máy, có nút phát / tạm dừng / nghe lại và chỉnh tốc độ. Trong app, mọi chỗ phát audio đều ghi rõ: **"Âm thanh đọc bằng giọng máy (TTS)"**. Transcript chỉ hiện sau khi bạn trả lời xong.
 
+## Ảnh + Audio cho phần Nghe (Cloudinary + Gemini TTS)
+
+Admin có thể gắn ảnh (Part 1) và audio (Part 1–4) cho câu hỏi / đoạn văn, lưu dưới dạng URL Cloudinary trong DB (`questions.image_url`, `questions.audio_url`, `passages.audio_url`). Audio của đoạn Part 3/4 được dùng chung cho mọi câu trong đoạn đó. Backend không nhận file upload từ client — admin dán URL Cloudinary đã upload, hoặc bấm sinh audio bằng Gemini TTS (backend tự gọi Gemini rồi upload file WAV lên Cloudinary).
+
+**Cấu hình (2 biến môi trường, đặt trong `backend/.env` hoặc trên Render):**
+
+- `CLOUDINARY_CLOUD_NAME` — Cloud name của tài khoản Cloudinary.
+- `CLOUDINARY_UPLOAD_PRESET` — tên unsigned upload preset.
+
+**Các bước tạo tài khoản Cloudinary miễn phí và unsigned upload preset:**
+
+1. Đăng ký tài khoản miễn phí tại [cloudinary.com](https://cloudinary.com/) và đăng nhập.
+2. Lấy **Cloud name** ở Dashboard (góc trên, dưới tên tài khoản).
+3. Vào Dashboard → **Settings → Upload → Upload presets → Add new preset**.
+4. Đặt **Signing Mode: Unsigned**, **Folder: toeic**, rồi **Save**.
+5. Lấy tên preset vừa tạo, đặt vào `CLOUDINARY_UPLOAD_PRESET` cùng `CLOUDINARY_CLOUD_NAME`.
+
+Preset unsigned chỉ dùng để upload ảnh/audio công khai của đề thi, không dùng cho dữ liệu nhạy cảm. Chưa cấu hình 2 biến này thì tính năng upload/AI-audio báo `501` (`cloudinary_not_configured` / `gemini_not_configured`) nhưng app vẫn chạy bình thường. Sinh audio bằng AI cũng cần `GEMINI_API_KEY` (xem mục Deploy).
+
 ## Cách tính điểm
 
 Mỗi phần Listening (Part 1–4) và Reading (Part 5–7) chấm riêng: số câu đúng → điểm phần (5–495) theo **bảng quy đổi tham khảo công khai** (nội suy tuyến tính giữa các mốc, xem `backend/src/scoring.js`). Tổng điểm = Listening + Reading (thang 10–990). Đây là **điểm ước lượng để tham khảo**, không phải điểm chính thức của ETS. Bài thi mini (1 Part) chỉ báo số câu đúng, không quy đổi ra điểm 10–990.

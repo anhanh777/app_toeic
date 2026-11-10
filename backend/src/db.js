@@ -76,7 +76,9 @@ CREATE TABLE IF NOT EXISTS questions (
   topic TEXT,
   difficulty TEXT,
   script TEXT,
-  passage_text TEXT
+  passage_text TEXT,
+  image_url TEXT,
+  audio_url TEXT
 );
 CREATE TABLE IF NOT EXISTS options (
   question_id TEXT,
@@ -92,7 +94,8 @@ CREATE TABLE IF NOT EXISTS passages (
   title TEXT,
   content TEXT,
   script TEXT,
-  type TEXT
+  type TEXT,
+  audio_url TEXT
 );
 CREATE TABLE IF NOT EXISTS vocabulary (
   id TEXT PRIMARY KEY,
@@ -158,7 +161,10 @@ function initDb() {
   db.exec(SCHEMA);
   // DB cu da ton tai truoc khi co cot test_set_id: them cot neu chua co.
   ensureColumn('questions', 'test_set_id', 'TEXT');
+  ensureColumn('questions', 'image_url', 'TEXT');
+  ensureColumn('questions', 'audio_url', 'TEXT');
   ensureColumn('passages', 'test_set_id', 'TEXT');
+  ensureColumn('passages', 'audio_url', 'TEXT');
   ensureColumn('attempts', 'test_set_id', 'TEXT');
   db.exec('CREATE INDEX IF NOT EXISTS idx_questions_testset_part ON questions(test_set_id, part)');
 }
@@ -217,6 +223,8 @@ function mapQuestion(row, opts, passage) {
     content: row.content,
     topic: row.topic || null,
     difficulty: row.difficulty || null,
+    imageUrl: row.image_url || null,
+    audioUrl: row.audio_url || (passage && passage.audio_url) || null,
     options: (opts || []).map((o) => ({ label: o.label, content: o.content })),
   };
 }
@@ -287,7 +295,7 @@ function passagesByIds(ids) {
   if (!uniq.length) return map;
   const placeholders = uniq.map(() => '?').join(',');
   const rows = db
-    .prepare(`SELECT id, part, title, content, script, type FROM passages WHERE id IN (${placeholders})`)
+    .prepare(`SELECT id, part, title, content, script, type, audio_url FROM passages WHERE id IN (${placeholders})`)
     .all(...uniq);
   for (const r of rows) map.set(r.id, r);
   return map;
@@ -372,13 +380,14 @@ function countUsers() {
 
 /* ---------------- passages ---------------- */
 
-function upsertPassage({ id, part, title, content, script, type, testSetId }) {
+function upsertPassage({ id, part, title, content, script, type, testSetId, audioUrl }) {
   db.prepare(
-    `INSERT INTO passages (id, part, title, content, script, type, test_set_id) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `INSERT INTO passages (id, part, title, content, script, type, test_set_id, audio_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(id) DO UPDATE SET part = excluded.part, title = excluded.title,
        content = excluded.content, script = excluded.script, type = excluded.type,
-       test_set_id = excluded.test_set_id`
-  ).run(id, part || null, title || null, content || null, script || null, type || null, testSetId || null);
+       test_set_id = excluded.test_set_id,
+       audio_url = COALESCE(excluded.audio_url, passages.audio_url)`
+  ).run(id, part || null, title || null, content || null, script || null, type || null, testSetId || null, audioUrl || null);
 }
 
 function getPassage(id) {
@@ -395,8 +404,20 @@ function getPassage(id) {
     content: row.content,
     script: row.script,
     type: row.type,
+    audioUrl: row.audio_url || null,
     questionIds: qids,
   };
+}
+
+/** Cap nhat audio cho 1 doan van (Part 3/4/6/7). Tra ve null neu khong co doan. */
+function updatePassageMedia(id, { audioUrl }) {
+  const cur = db.prepare('SELECT * FROM passages WHERE id = ?').get(id);
+  if (!cur) return null;
+  db.prepare('UPDATE passages SET audio_url = ? WHERE id = ?').run(
+    audioUrl !== undefined ? audioUrl : cur.audio_url,
+    id
+  );
+  return getPassage(id);
 }
 
 /* ---------------- questions ---------------- */
@@ -424,8 +445,8 @@ function insertQuestionTx(q) {
     });
   }
   db.prepare(
-    `INSERT INTO questions (id, exam, part, passage_id, test_set_id, content, explanation, topic, difficulty, script, passage_text)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO questions (id, exam, part, passage_id, test_set_id, content, explanation, topic, difficulty, script, passage_text, image_url, audio_url)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).run(
     q.id,
     'toeic',
@@ -437,7 +458,9 @@ function insertQuestionTx(q) {
     q.topic || null,
     q.difficulty || null,
     q.script || null,
-    q.passageText || null
+    q.passageText || null,
+    q.imageUrl || null,
+    q.audioUrl || null
   );
   const optStmt = db.prepare(
     'INSERT INTO options (question_id, label, content, is_correct) VALUES (?, ?, ?, ?)'
@@ -463,7 +486,7 @@ function updateQuestion(id, fields) {
     }
     db.prepare(
       `UPDATE questions SET part = ?, passage_id = ?, content = ?, explanation = ?,
-       topic = ?, difficulty = ?, script = ?, passage_text = ? WHERE id = ?`
+       topic = ?, difficulty = ?, script = ?, passage_text = ?, image_url = ?, audio_url = ? WHERE id = ?`
     ).run(
       fields.part !== undefined ? fields.part : cur.part,
       fields.passageId !== undefined ? fields.passageId : cur.passage_id,
@@ -473,6 +496,8 @@ function updateQuestion(id, fields) {
       fields.difficulty !== undefined ? fields.difficulty : cur.difficulty,
       fields.script !== undefined ? fields.script : cur.script,
       fields.passageText !== undefined ? fields.passageText : cur.passage_text,
+      fields.imageUrl !== undefined ? fields.imageUrl : cur.image_url,
+      fields.audioUrl !== undefined ? fields.audioUrl : cur.audio_url,
       id
     );
     if (fields.options && fields.correct) {
@@ -919,6 +944,8 @@ function listWrongQuestions(userId, part) {
       difficulty: r.difficulty,
       script: r.script,
       passage_text: r.passage_text,
+      image_url: r.image_url,
+      audio_url: r.audio_url,
     })),
     false
   );
@@ -1096,6 +1123,7 @@ module.exports = {
   // passages
   upsertPassage,
   getPassage,
+  updatePassageMedia,
   // questions
   insertQuestion,
   updateQuestion,

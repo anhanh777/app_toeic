@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { api, ApiError, type Question, type TestSet, type ImportQuestion, type AiParseResult } from '../api';
+import { api, ApiError, type Question, type TestSet, type ImportQuestion, type AiParseResult, type MediaConfig } from '../api';
 import { useAuth } from '../auth';
 import { ErrorBox, partName } from '../components';
+import { uploadToCloudinary } from '../cloudinary';
 import { STANDARD_COUNTS, normalizeImportFile, splitValid, validateQuestion, type QuestionError } from '../testSetUtils';
 
 interface AiPreview extends AiParseResult {
@@ -19,6 +20,7 @@ interface PartPreview {
 const emptyManual = {
   content: '', optA: '', optB: '', optC: '', optD: '', correct: 'A',
   explanation: '', script: '', passageId: '', passageTitle: '', passageText: '', topic: '', difficulty: 'medium',
+  imageUrl: '', audioUrl: '',
 };
 
 export default function TestSetAdmin() {
@@ -38,6 +40,12 @@ export default function TestSetAdmin() {
   const [aiBusy, setAiBusy] = useState(false);
   const [aiPreview, setAiPreview] = useState<AiPreview | null>(null);
   const [aiKeyMissing, setAiKeyMissing] = useState(false);
+  const [mediaCfg, setMediaCfg] = useState<MediaConfig | null>(null);
+  const [imgUploading, setImgUploading] = useState(false);
+  const [audioUploading, setAudioUploading] = useState(false);
+  const [manualAudioName, setManualAudioName] = useState('');
+  const [genBusy, setGenBusy] = useState<string | null>(null);
+  const [genDone, setGenDone] = useState<Record<string, string>>({});
 
   const load = () => {
     if (!id) return;
@@ -45,6 +53,10 @@ export default function TestSetAdmin() {
     api.testSet(id).then(setTs).catch(setError).finally(() => setLoading(false));
   };
   useEffect(load, [id]);
+  // Cấu hình Cloudinary lấy 1 lần khi mở trang (chỉ admin gọi được).
+  useEffect(() => {
+    api.mediaConfig().then(setMediaCfg).catch(() => setMediaCfg(null));
+  }, []);
 
   if (user?.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Bạn không có quyền xem trang này.</p></div>;
@@ -141,6 +153,8 @@ export default function TestSetAdmin() {
         part: manualPart, content: manual.content, explanation: manual.explanation,
         topic: manual.topic, difficulty: manual.difficulty, script: manual.script,
         passageId: manual.passageId, passageTitle: manual.passageTitle, passageText: manual.passageText,
+        ...(manual.imageUrl ? { imageUrl: manual.imageUrl } : {}),
+        ...(manual.audioUrl ? { audioUrl: manual.audioUrl } : {}),
         options: [
           { label: 'A', content: manual.optA }, { label: 'B', content: manual.optB },
           { label: 'C', content: manual.optC }, { label: 'D', content: manual.optD },
@@ -149,9 +163,67 @@ export default function TestSetAdmin() {
       };
       await api.adminAddTestSetQuestion(ts.id, body);
       setMsg(`Đã thêm câu hỏi vào Part ${manualPart}.`);
-      setManual(emptyManual); setManualPart(null);
+      setManual(emptyManual); setManualAudioName(''); setManualPart(null);
       load();
     } catch (err) { setError(err); } finally { setBusy(false); }
+  };
+
+  // Upload ảnh/audio cho form thêm câu thủ công: chọn file là upload ngay
+  // lên Cloudinary, chỉ lưu URL vào câu khi bấm "Lưu câu hỏi".
+  const onManualImage = async (file: File) => {
+    if (!mediaCfg?.configured) { setError(new Error('Chưa cấu hình Cloudinary — xem README')); return; }
+    setImgUploading(true); setError(null);
+    try {
+      const url = await uploadToCloudinary(file, 'toeic/images', mediaCfg);
+      setManual(m => ({ ...m, imageUrl: url }));
+    } catch (e) { setError(e); } finally { setImgUploading(false); }
+  };
+  const onManualAudio = async (file: File) => {
+    if (!mediaCfg?.configured) { setError(new Error('Chưa cấu hình Cloudinary — xem README')); return; }
+    setAudioUploading(true); setError(null);
+    try {
+      const url = await uploadToCloudinary(file, 'toeic/audio', mediaCfg);
+      setManual(m => ({ ...m, audioUrl: url }));
+      setManualAudioName(file.name);
+    } catch (e) { setError(e); } finally { setAudioUploading(false); }
+  };
+
+  // Tải lại danh sách câu của 1 Part sau khi sinh audio (không load() lại
+  // toàn trang để khỏi mất trạng thái đang mở).
+  const refreshList = async (p: number) => {
+    if (!ts) return;
+    try {
+      const items = await api.questions(p, 100, 0, '', ts.id);
+      setListQuestions(items);
+    } catch (e) { setError(e); }
+  };
+
+  // Sinh audio bằng AI: Part 1–2 theo từng câu, Part 3/4 theo đoạn văn.
+  // Lỗi 501 (gemini/cloudinary chưa cấu hình) đã được api.ts dịch sang
+  // tiếng Việt, hiện qua ErrorBox.
+  const onGenerateAudio = async (key: string, kind: 'question' | 'passage', targetId: string) => {
+    setGenBusy(key); setError(null); setMsg('');
+    try {
+      const r = kind === 'question'
+        ? await api.generateQuestionAudio(targetId)
+        : await api.generatePassageAudio(targetId);
+      setGenDone(d => ({ ...d, [key]: r.audioUrl }));
+      setMsg(`Đã sinh audio AI (${r.level}) và lưu vào ${kind === 'question' ? 'câu hỏi' : 'đoạn văn'}.`);
+      if (listPart != null) await refreshList(listPart);
+    } catch (e) { setError(e); } finally { setGenBusy(null); }
+  };
+
+  // Ô nút "AI đọc audio" + player nghe thử trong danh sách câu.
+  const audioGenCell = (key: string, kind: 'question' | 'passage', targetId: string, existingUrl?: string | null) => {
+    const url = genDone[key] || existingUrl || undefined;
+    return (
+      <div>
+        <button className="btn secondary" disabled={genBusy === key} onClick={() => void onGenerateAudio(key, kind, targetId)}>
+          {genBusy === key ? '⏳ Đang sinh audio… (10–30 giây)' : '🔊 AI đọc audio'}
+        </button>
+        {url && <audio controls src={url} preload="metadata" style={{ width: 180, marginTop: '.4rem' }} />}
+      </div>
+    );
   };
 
   const toggleList = async (p: number) => {
@@ -321,6 +393,40 @@ export default function TestSetAdmin() {
               </select>
               <label>Giải thích (tiếng Việt, ngắn)</label><textarea rows={2} value={manual.explanation} onChange={e => setManual({ ...manual, explanation: e.target.value })} />
               <label>Script / transcript (Part 1–4)</label><textarea rows={2} value={manual.script} onChange={e => setManual({ ...manual, script: e.target.value })} />
+              {mediaCfg?.configured ? (
+                <>
+                  <label>Ảnh minh họa (Part 1)</label>
+                  <div className="btn-row">
+                    <label className="btn secondary" style={{ cursor: 'pointer' }}>
+                      🖼 Chọn ảnh (.png/.jpg/.jpeg, ≤ 5MB)
+                      <input type="file" accept=".png,.jpg,.jpeg" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) void onManualImage(f); e.target.value = ''; }} />
+                    </label>
+                  </div>
+                  {imgUploading && <p className="muted">Đang tải ảnh lên Cloudinary…</p>}
+                  {manual.imageUrl && (
+                    <>
+                      <img src={manual.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
+                      <p className="muted">Đã upload ảnh.</p>
+                    </>
+                  )}
+                  <label>File audio (Part 1–4, .mp3)</label>
+                  <div className="btn-row">
+                    <label className="btn secondary" style={{ cursor: 'pointer' }}>
+                      🎵 Chọn file audio (.mp3, ≤ 10MB)
+                      <input type="file" accept=".mp3" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) void onManualAudio(f); e.target.value = ''; }} />
+                    </label>
+                  </div>
+                  {audioUploading && <p className="muted">Đang tải audio lên Cloudinary…</p>}
+                  {manual.audioUrl && (
+                    <>
+                      <p className="muted">Đã upload: {manualAudioName || 'file audio'}</p>
+                      <audio controls src={manual.audioUrl} style={{ width: '100%' }} />
+                    </>
+                  )}
+                </>
+              ) : (
+                <p className="muted">Chưa cấu hình Cloudinary — xem README</p>
+              )}
               <label>ID đoạn (passageId, không bắt buộc)</label><input value={manual.passageId} onChange={e => setManual({ ...manual, passageId: e.target.value })} />
               <label>Tiêu đề đoạn (passageTitle, không bắt buộc)</label><input value={manual.passageTitle} onChange={e => setManual({ ...manual, passageTitle: e.target.value })} />
               <label>Đoạn văn (passageText, không bắt buộc)</label><textarea rows={3} value={manual.passageText} onChange={e => setManual({ ...manual, passageText: e.target.value })} />
@@ -339,8 +445,33 @@ export default function TestSetAdmin() {
           {listPart === p && (
             <div style={{ marginTop: '1rem' }}>
               <p className="muted">{listQuestions.length} câu đã tải (tối đa 100).</p>
-              <table><thead><tr><th>Mã</th><th>Nội dung</th></tr></thead><tbody>
-                {listQuestions.map(q => <tr key={q.id}><td>{q.id}</td><td>{q.content.slice(0, 100)}</td></tr>)}
+              <table><thead><tr><th>Mã</th><th>Nội dung</th><th>Audio AI</th></tr></thead><tbody>
+                {(() => {
+                  // Part 3/4: nút sinh audio nằm ở cấp đoạn văn — mỗi passageId
+                  // chỉ hiện nút 1 lần (các câu chung đoạn không lặp nút).
+                  const seenPassages = new Set<string>();
+                  return listQuestions.map(q => {
+                    let audioCell: React.ReactNode = <span className="muted">—</span>;
+                    if (p === 1 || p === 2) {
+                      audioCell = audioGenCell(`q:${q.id}`, 'question', q.id, q.audioUrl);
+                    } else if (p === 3 || p === 4) {
+                      if (q.passageId) {
+                        if (seenPassages.has(q.passageId)) {
+                          audioCell = q.audioUrl
+                            ? <audio controls src={q.audioUrl} preload="metadata" style={{ width: 180 }} />
+                            : <span className="muted">↳ chung đoạn trên</span>;
+                        } else {
+                          seenPassages.add(q.passageId);
+                          audioCell = audioGenCell(`p:${q.passageId}`, 'passage', q.passageId, q.audioUrl);
+                        }
+                      } else {
+                        // Câu Part 3/4 không gắn đoạn: sinh audio theo từng câu.
+                        audioCell = audioGenCell(`q:${q.id}`, 'question', q.id, q.audioUrl);
+                      }
+                    }
+                    return <tr key={q.id}><td>{q.id}</td><td>{q.content.slice(0, 100)}</td><td>{audioCell}</td></tr>;
+                  });
+                })()}
               </tbody></table>
             </div>
           )}
