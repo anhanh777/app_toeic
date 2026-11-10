@@ -5,6 +5,17 @@
 // JSON de admin xem truoc / sua tay, KHONG tu luu vao DB o buoc nay.
 // Luu xong: admin goi POST /admin/test-sets/:id/import nhu binh thuong.
 //
+// Hybrid 3 tang:
+//   Tang 1 — Doc file: trich text (txt/docx/pdf co lop chu) hoac gui thang
+//     bytes goc cho Gemini vision (anh, PDF scan khong co lop chu).
+//     KHONG render PDF o server.
+//   Tang 2 — Tach cau truc (chi regex, khong AI): splitStructure() tach
+//     tieu de Part, khoi cau hoi, nhom doan van, Answer Key. File scan
+//     BO QUA tang 2 vi khong co text de tach.
+//   Tang 3 — AI theo khoi: moi block 1 call Gemini (song song), prompt
+//     kem dap an tang 2 da tach duoc; neu 1 block loi thi ghi warning
+//     va tiep tuc cac block khac.
+//
 // Bao mat: GEMINI_API_KEY chi doc tu process.env, KHONG BAO GIO ghi key
 // vao log, file hay response.
 
@@ -13,13 +24,15 @@ const multer = require('multer');
 const mammoth = require('mammoth');
 const db = require('../db');
 const { authMiddleware, requireAdmin } = require('../auth');
-const { buildParsePrompt, buildVisionPrompt } = require('../aiPrompt');
+const { buildParsePrompt, buildVisionPrompt, buildBlockParsePrompt } = require('../aiPrompt');
+const { isScannedText, splitStructure } = require('../structureSplit');
 
 const router = express.Router();
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const GEMINI_MODEL = 'gemini-2.5-flash';
-const GEMINI_TIMEOUT_MS = 60 * 1000; // 60 giay
+const GEMINI_TIMEOUT_MS = 60 * 1000; // 60 giay cho 1 call Gemini
+const OVERALL_TIMEOUT_MS = 90 * 1000; // 90 giay cho toan bo tang 3
 
 const ALLOWED_EXTS = ['.txt', '.docx', '.doc', '.pdf', '.png', '.jpg', '.jpeg'];
 const IMAGE_MIMES = new Set(['image/png', 'image/jpeg']);
@@ -97,6 +110,36 @@ async function extractText(buffer, mimetype, filename) {
   throw new Error('Định dạng file không hỗ trợ trích xuất văn bản');
 }
 
+/**
+ * Chon cach doc file o tang 1 (ham thuan: khong goi mang, chi doc buffer).
+ *  - Anh (.png/.jpg/.jpeg) -> vision, giu mimeType goc.
+ *  - PDF -> trich text roi dung isScannedText: neu scan (< 100 ky tu thuc)
+ *    thi vision voi mimeType 'application/pdf', nguoc lai thi text.
+ *  - .txt/.docx/.doc -> text (khong coi la scan du ngan).
+ * @param {Buffer} buffer noi dung file
+ * @param {string} mimetype MIME type cua file (multer cung cap)
+ * @param {string} filename ten file goc (de lay duoi file)
+ * @returns {Promise<{mode: 'vision'|'text', mimeType: string}>}
+ */
+async function selectParseMode(buffer, mimetype, filename) {
+  const ext = extOf(filename);
+  const mime = String(mimetype || '').toLowerCase();
+  if (IMAGE_EXTS.has(ext) || IMAGE_MIMES.has(mime)) {
+    const mimeType = IMAGE_MIMES.has(mime)
+      ? mime
+      : ext === '.png'
+        ? 'image/png'
+        : 'image/jpeg';
+    return { mode: 'vision', mimeType };
+  }
+  if (ext === '.pdf' || mime === 'application/pdf') {
+    const text = await extractText(buffer, mimetype, filename);
+    if (isScannedText(text)) return { mode: 'vision', mimeType: 'application/pdf' };
+    return { mode: 'text', mimeType: 'application/pdf' };
+  }
+  return { mode: 'text', mimeType: mime || 'text/plain' };
+}
+
 /** Tach JSON khoi text Gemini tra ve (phong truong hop co ```json fence). */
 function extractJsonText(raw) {
   const text = String(raw || '').trim();
@@ -131,6 +174,32 @@ async function callGemini(apiKey, parts) {
   }
 }
 
+/** Lay text JSON tu response Gemini, parse thanh object {questions, warnings}. */
+function parseGeminiJson(geminiJson) {
+  const rawText =
+    geminiJson &&
+    geminiJson.candidates &&
+    geminiJson.candidates[0] &&
+    geminiJson.candidates[0].content &&
+    Array.isArray(geminiJson.candidates[0].content.parts) &&
+    geminiJson.candidates[0].content.parts[0] &&
+    geminiJson.candidates[0].content.parts[0].text;
+  if (!rawText) {
+    const err = new Error('Gemini trả về kết quả không đúng định dạng');
+    err.kind = 'parse';
+    throw err;
+  }
+  try {
+    const parsed = JSON.parse(extractJsonText(rawText));
+    if (!parsed || !Array.isArray(parsed.questions)) throw new Error('no questions');
+    return parsed;
+  } catch (_) {
+    const err = new Error('Gemini trả về kết quả không đúng định dạng');
+    err.kind = 'parse';
+    throw err;
+  }
+}
+
 function normalizeQuestion(raw) {
   const q = raw && typeof raw === 'object' ? raw : {};
   const part = parseInt(q.part, 10);
@@ -156,6 +225,18 @@ function normalizeQuestion(raw) {
     passageText:
       typeof q.passageText === 'string' && q.passageText ? q.passageText : null,
   };
+}
+
+/** Prompt cho 1 block o tang 3 (khong dung cho nhom vision — vision co prompt rieng). */
+function blockPrompt(block, structure) {
+  if (structure.mode === 'fallback') return buildParsePrompt(block.text);
+  const keyForBlock = {};
+  if (structure.answerKey) {
+    for (const n of block.expectedQuestions || []) {
+      if (structure.answerKey[String(n)]) keyForBlock[n] = structure.answerKey[String(n)];
+    }
+  }
+  return buildBlockParsePrompt(block, keyForBlock);
 }
 
 router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req, res) => {
@@ -184,21 +265,50 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
       });
     }
 
-    const isImage =
-      IMAGE_EXTS.has(extOf(req.file.originalname)) || IMAGE_MIMES.has(req.file.mimetype);
-    let parts;
+    // ---------- Tang 1: chon cach doc file ----------
+    let modeInfo;
     try {
-      if (isImage) {
-        // Anh: khong trich chu o backend, gui thang bytes anh cho Gemini vision.
-        parts = [
+      modeInfo = await selectParseMode(req.file.buffer, req.file.mimetype, req.file.originalname);
+    } catch (e) {
+      return res
+        .status(400)
+        .json({ error: 'Không đọc được file: ' + (e.message || 'lỗi không xác định') });
+    }
+
+    // ---------- Tang 2: tach cau truc (chi ap dung cho nhom text) ----------
+    // File scan/anh BO QUA tang 2 vi khong co text de tach — gui thang bytes
+    // goc cho Gemini vision o tang 3.
+    let blocks; // [{part, text, expectedQuestions, passageText, warnings, vision?}]
+    let structure; // {mode, parts, answerKeyFound, answerKey, warnings}
+    let visionParts = null; // parts gui Gemini khi mode = 'vision'
+    try {
+      if (modeInfo.mode === 'vision') {
+        visionParts = [
           {
             inlineData: {
-              mimeType: req.file.mimetype,
+              mimeType: modeInfo.mimeType,
               data: req.file.buffer.toString('base64'),
             },
           },
           { text: buildVisionPrompt() },
         ];
+        blocks = [
+          {
+            part: 0,
+            text: '',
+            expectedQuestions: [],
+            passageText: null,
+            warnings: [],
+            vision: true,
+          },
+        ];
+        structure = {
+          mode: 'vision',
+          parts: [],
+          answerKeyFound: false,
+          answerKey: null,
+          warnings: ['File scan/ảnh — AI đã đọc trực tiếp từ ảnh, không tách cấu trúc được.'],
+        };
       } else {
         const text = await extractText(req.file.buffer, req.file.mimetype, req.file.originalname);
         if (!text || !text.trim()) {
@@ -206,7 +316,35 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
             .status(400)
             .json({ error: 'Không trích xuất được nội dung từ file này' });
         }
-        parts = [{ text: buildParsePrompt(text) }];
+        const split = splitStructure(text);
+        if (split.parts.length === 0) {
+          // Fallback: khong tach duoc cau truc -> 1 block duy nhat, AI doc toan bo file.
+          blocks = [
+            {
+              part: 0,
+              text,
+              expectedQuestions: [],
+              passageText: null,
+              warnings: [],
+            },
+          ];
+          structure = {
+            mode: 'fallback',
+            parts: [],
+            answerKeyFound: split.answerKeyFound,
+            answerKey: split.answerKey,
+            warnings: [...split.warnings, 'Không tách được cấu trúc — đã dùng AI đọc toàn bộ file.'],
+          };
+        } else {
+          blocks = split.blocks;
+          structure = {
+            mode: 'split',
+            parts: split.parts,
+            answerKeyFound: split.answerKeyFound,
+            answerKey: split.answerKey,
+            warnings: split.warnings,
+          };
+        }
       }
     } catch (e) {
       return res
@@ -214,21 +352,59 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
         .json({ error: 'Không đọc được file: ' + (e.message || 'lỗi không xác định') });
     }
 
-    let geminiJson;
+    // ---------- Tang 3: goi Gemini SONG SONG, moi block 1 call ----------
+    let blockResults;
     try {
-      geminiJson = await callGemini(apiKey, parts);
+      blockResults = await Promise.race([
+        Promise.all(
+          blocks.map(async (block) => {
+            try {
+              const geminiParts = block.vision
+                ? visionParts
+                : [{ text: blockPrompt(block, structure) }];
+              const geminiJson = await callGemini(apiKey, geminiParts);
+              return { ok: true, parsed: parseGeminiJson(geminiJson), block };
+            } catch (e) {
+              // 1 block loi khong fail ca request — ghi warning, tiep tuc block khac.
+              return { ok: false, error: e, block };
+            }
+          })
+        ),
+        new Promise((_, reject) =>
+          setTimeout(() => {
+            const err = new Error('Gemini phản hồi quá chậm (quá 90 giây), vui lòng thử lại');
+            err.code = 'OVERALL_TIMEOUT';
+            reject(err);
+          }, OVERALL_TIMEOUT_MS)
+        ),
+      ]);
     } catch (e) {
-      if (e.name === 'AbortError') {
+      if (e && e.code === 'OVERALL_TIMEOUT') {
+        return res.status(502).json({ error: e.message });
+      }
+      throw e;
+    }
+
+    const failed = blockResults.filter((r) => !r.ok);
+    if (failed.length === blockResults.length) {
+      // TAT CA block deu loi -> 502 nhu cu.
+      const first = failed[0].error;
+      if (first && first.name === 'AbortError') {
         return res
           .status(502)
           .json({ error: 'Gemini phản hồi quá chậm (quá 60 giây), vui lòng thử lại' });
       }
-      if (e.status === 400 || e.status === 401 || e.status === 403) {
+      if (first && (first.status === 400 || first.status === 401 || first.status === 403)) {
         return res.status(502).json({
           error:
             'Gemini từ chối yêu cầu (mã ' +
-            e.status +
+            first.status +
             '). Vui lòng kiểm tra lại GEMINI_API_KEY trên máy chủ.',
+        });
+      }
+      if (first && first.kind === 'parse') {
+        return res.status(502).json({
+          error: 'Gemini trả về kết quả không đúng định dạng, vui lòng thử lại',
         });
       }
       return res
@@ -236,29 +412,48 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
         .json({ error: 'Không gọi được Gemini, vui lòng thử lại sau' });
     }
 
-    let parsed;
-    try {
-      const rawText =
-        geminiJson &&
-        geminiJson.candidates &&
-        geminiJson.candidates[0] &&
-        geminiJson.candidates[0].content &&
-        Array.isArray(geminiJson.candidates[0].content.parts) &&
-        geminiJson.candidates[0].content.parts[0] &&
-        geminiJson.candidates[0].content.parts[0].text;
-      if (!rawText) throw new Error('empty');
-      parsed = JSON.parse(extractJsonText(rawText));
-      if (!parsed || !Array.isArray(parsed.questions)) throw new Error('no questions');
-    } catch (_) {
-      return res.status(502).json({
-        error: 'Gemini trả về kết quả không đúng định dạng, vui lòng thử lại',
+    // ---------- Gop ket qua cac block theo dung thu tu block ----------
+    const questions = [];
+    const warnings = [...structure.warnings];
+    blockResults.forEach((r) => {
+      const block = r.block;
+      if (!r.ok) {
+        const partLabel = block.part ? `Part ${block.part}` : 'khối toàn bộ file';
+        warnings.push(
+          `Không nhận diện được khối ${partLabel} (${r.error.message || 'lỗi không xác định'})`
+        );
+        return;
+      }
+      const parsed = r.parsed;
+      if (Array.isArray(parsed.warnings)) {
+        for (const w of parsed.warnings) {
+          if (typeof w === 'string') warnings.push(w);
+        }
+      }
+      const rawQs = parsed.questions.map(normalizeQuestion);
+      const expected = block.expectedQuestions || [];
+      const countMismatch = expected.length > 0 && rawQs.length !== expected.length;
+      const blockHasWarning =
+        Array.isArray(block.warnings) && block.warnings.length > 0;
+      rawQs.forEach((q, k) => {
+        // confidence: "low" khi chua co dap an, khi block co warning, khi so
+        // cau tra ve lech so ky vong, hoac khi dap an AI khong khop answer
+        // key tang 2 da tach (cau tra ve thu k ung voi expectedQuestions[k]).
+        let confidence = 'high';
+        if (!q.correct) {
+          confidence = 'low';
+        } else if (countMismatch || blockHasWarning) {
+          confidence = 'low';
+        } else if (expected.length > 0 && structure.answerKey) {
+          const expectedNum = expected[k];
+          const keyAns =
+            expectedNum != null ? structure.answerKey[String(expectedNum)] : undefined;
+          if (keyAns && q.correct !== keyAns) confidence = 'low';
+        }
+        questions.push({ ...q, confidence });
       });
-    }
+    });
 
-    const questions = parsed.questions.map(normalizeQuestion);
-    const warnings = Array.isArray(parsed.warnings)
-      ? parsed.warnings.filter((w) => typeof w === 'string')
-      : [];
     const invalid = [];
     questions.forEach((q, index) => {
       if (q.correct === '') {
@@ -272,9 +467,10 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
       if (reason) invalid.push({ index, reason });
     });
 
-    return res.json({ questions, invalid, warnings });
+    return res.json({ questions, invalid, warnings, structure });
   });
 });
 
 module.exports = router;
 module.exports.extractText = extractText;
+module.exports.selectParseMode = selectParseMode;

@@ -94,7 +94,65 @@ function buildVisionPrompt() {
 
 DE THI CAN TRICH XUAT: anh chup / anh scan de thi TOEIC dinh kem theo prompt nay.
 Hay doc ky toan bo noi dung trong anh (ke ca phan answer key o cuoi neu co trong anh)
-va trich xuat toan bo cau hoi thanh JSON dung shape da cho.`;
+va trich xuat toan bo cau hoi thanh JSON dung shape da cho.
+CHI tra ve JSON thuan dung shape ben tren (giong nhu prompt van ban),
+khong them giai thich, khong them markdown, khong them \`\`\`json.`;
 }
 
-module.exports = { buildParsePrompt, buildVisionPrompt };
+/**
+ * Prompt cho TANG 3 (Hybrid 3 tang): trich xuat 1 KHOI de (1 Part, hoac 1 doan
+ * van + cac cau cua no trong Part 3/4/6/7) thay vi ca file. Dung chung
+ * COMMON_INSTRUCTIONS va JSON_SHAPE voi buildParsePrompt, chi them ngu canh
+ * cua khoi: so Part, so thu tu cau ky vong, passageText, va bang dap an da
+ * tach duoc o tang 2 cho dung cac cau do (uu tien dung bang nay).
+ * @param {{part:number, text:string, expectedQuestions:number[], passageText:string|null}} block khoi de da tach o tang 2
+ * @param {{[n:number]: string}} answerKeyForBlock dap an tang 2 tach duoc cho cac cau trong khoi, vd {3:'A', 4:'A'}
+ * @returns {string} prompt gui Gemini cho khoi nay
+ */
+function buildBlockParsePrompt(block, answerKeyForBlock) {
+  const partLabel =
+    block.part && block.part >= 1 && block.part <= 7
+      ? `Part ${block.part}`
+      : 'Part chưa xác định (file không ghi rõ Part)';
+  const contextLines = [`KHOI DE CAN TRICH XUAT: ${partLabel}.`];
+  if (Array.isArray(block.expectedQuestions) && block.expectedQuestions.length > 0) {
+    contextLines.push(
+      `Cac cau trong khoi nay (theo thu tu trong de): ${block.expectedQuestions.join(', ')}.`
+    );
+  }
+  if (block.passageText) {
+    contextLines.push(
+      `Doan van chung cua khoi (passageText — cac cau trong khoi deu dung chung doan nay):\n${block.passageText}`
+    );
+  }
+  const keyEntries =
+    answerKeyForBlock && typeof answerKeyForBlock === 'object'
+      ? Object.keys(answerKeyForBlock)
+          .map((n) => parseInt(n, 10))
+          .filter((n) => Number.isInteger(n))
+          .sort((a, b) => a - b)
+          .map((n) => `Câu ${n}: ${answerKeyForBlock[n]}`)
+      : [];
+  if (keyEntries.length > 0) {
+    contextLines.push(
+      `BANG DAP AN DA TACH DUOC O BUOC TRUOC CHO DUNG CAC CAU NAY — UU TIEN DUNG BANG DAP AN NAY, khong doan dap an khac:\n${keyEntries.join('\n')}`
+    );
+  } else {
+    contextLines.push(
+      'Khong co bang dap an tach san cho khoi nay — chi dien "correct" khi chac chan dua tren noi dung cau hoi, neu khong de "".'
+    );
+  }
+
+  return `${COMMON_INSTRUCTIONS}
+
+${contextLines.join('\n\n')}
+
+NOI DUNG KHOI DE (van ban trich tu file):
+---
+${block.text}
+---
+Hay trich xuat toan bo cau hoi trong khoi tren thanh JSON dung shape da cho.
+Chi trich xuat cac cau thuoc khoi nay, khong them cau cua khoi khac.`;
+}
+
+module.exports = { buildParsePrompt, buildVisionPrompt, buildBlockParsePrompt };

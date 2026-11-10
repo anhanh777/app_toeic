@@ -1,0 +1,71 @@
+File test fallback — 8 cau hoi giong file mau ai-parse-sample.txt, KHONG co tieu de Part va KHONG co Answer Key. Marker "Question N" van giu nguyen de chung minh tang 2 van tim duoc cau hoi nhung khong gan duoc Part (parts rong -> route dung fallback, AI doc toan bo file).
+TOEIC Sample Test — AI Parse Demo (unstructured version)
+8 questions, no Part headers, no Answer Key
+
+Question 1
+Look at the picture and choose the statement that best describes what you see.
+(A) The man is reading a newspaper at a desk.
+(B) The woman is watering the plants in the garden.
+(C) The workers are having lunch in the cafeteria.
+(D) The children are playing soccer in the park.
+
+Question 2
+Where is the meeting room on the third floor?
+(A) Yes, it starts at nine o'clock.
+(B) It's next to the elevator, on the left.
+(C) I will send the report tomorrow.
+
+Read the conversation below and answer questions 3 to 5.
+
+Woman: Hi, David. Have you finished the sales report for the Chicago branch?
+Man: Not yet. I still need the figures from the marketing team.
+Woman: They promised to send them this afternoon. The director wants the final version by Friday morning.
+Man: That's fine. Once I get the numbers, I can finish it in a couple of hours.
+
+Question 3
+What are the speakers mainly discussing?
+(A) A sales report for the Chicago branch
+(B) A marketing plan for a new product
+(C) A meeting with the company director
+(D) A trip to Chicago next Friday
+
+Question 4
+What does the man still need?
+(A) The figures from the marketing team
+(B) The director's approval
+(C) A new computer
+(D) The meeting schedule
+
+Question 5
+When does the director want the final version?
+(A) This afternoon
+(B) By Friday morning
+(C) Next Monday
+(D) At the end of the month
+
+Question 6
+The new manager is known for her excellent ______ skills and friendly attitude.
+(A) communicate
+(B) communication
+(C) communicated
+(D) communicative
+
+Read the notice below and answer questions 7 to 8.
+
+NOTICE: OFFICE RELOCATION
+Dear all staff,
+Please note that our head office will move to a new building at 25 Green Street, effective March 1. The new office is larger and has a modern conference room on the fifth floor. All phone numbers and email addresses will stay the same. If you have any questions, please contact the administration team at admin@brightoffice.com.
+
+Question 7
+What is the main purpose of the notice?
+(A) To announce the company's new address
+(B) To introduce a new manager
+(C) To change the company's phone numbers
+(D) To invite staff to a conference
+
+Question 8
+What will stay the same after the move?
+(A) The office building
+(B) The conference room
+(C) The phone numbers and email addresses
+(D) The administration team
