@@ -32,7 +32,7 @@ const router = express.Router();
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_TIMEOUT_MS = 60 * 1000; // 60 giay cho 1 call Gemini
-const OVERALL_TIMEOUT_MS = 90 * 1000; // 90 giay cho toan bo tang 3
+const OVERALL_TIMEOUT_MS = 180 * 1000; // 180 giay cho toan bo tang 3 (cac block goi tuan tu)
 
 const ALLOWED_EXTS = ['.txt', '.docx', '.doc', '.pdf', '.png', '.jpg', '.jpeg'];
 const IMAGE_MIMES = new Set(['image/png', 'image/jpeg']);
@@ -152,7 +152,8 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function callGemini(apiKey, parts) {
   // Gemini thi thoang tra 429/5xx nhat thoi (dac biet khi doc PDF scan) —
-  // thu lai toi da 3 lan, moi lan cach nhau 2s roi 4s, truoc khi bao loi.
+  // thu lai toi da 3 lan. Rieng 429 la het han muc theo phut cua goi Free
+  // nen doi lau hon (5s roi 10s); loi 5xx khac doi 2s roi 4s.
   let lastErr = null;
   for (let attempt = 1; attempt <= 3; attempt++) {
     const controller = new AbortController();
@@ -182,7 +183,8 @@ async function callGemini(apiKey, parts) {
         e.name !== 'AbortError' &&
         (e.status === undefined || TRANSIENT_STATUSES.has(e.status));
       if (!retryable || attempt === 3) throw e;
-      await sleep(attempt === 1 ? 2000 : 4000);
+      const isRateLimit = e.status === 429;
+      await sleep(isRateLimit ? (attempt === 1 ? 5000 : 10000) : (attempt === 1 ? 2000 : 4000));
     } finally {
       clearTimeout(timer);
     }
@@ -368,27 +370,33 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
         .json({ error: 'Không đọc được file: ' + (e.message || 'lỗi không xác định') });
     }
 
-    // ---------- Tang 3: goi Gemini SONG SONG, moi block 1 call ----------
+    // ---------- Tang 3: goi Gemini TUAN TU, moi block 1 call ----------
+    // Goi song song 4-5 block cung luc hay vuot han muc theo phut cua
+    // goi Gemini Free (429) nen goi lan luot, moi block cach nhau 1,5s.
     let blockResults;
     try {
       blockResults = await Promise.race([
-        Promise.all(
-          blocks.map(async (block) => {
+        (async () => {
+          const results = [];
+          for (let i = 0; i < blocks.length; i++) {
+            const block = blocks[i];
+            if (i > 0) await sleep(1500);
             try {
               const geminiParts = block.vision
                 ? visionParts
                 : [{ text: blockPrompt(block, structure) }];
               const geminiJson = await callGemini(apiKey, geminiParts);
-              return { ok: true, parsed: parseGeminiJson(geminiJson), block };
+              results.push({ ok: true, parsed: parseGeminiJson(geminiJson), block });
             } catch (e) {
               // 1 block loi khong fail ca request — ghi warning, tiep tuc block khac.
-              return { ok: false, error: e, block };
+              results.push({ ok: false, error: e, block });
             }
-          })
-        ),
+          }
+          return results;
+        })(),
         new Promise((_, reject) =>
           setTimeout(() => {
-            const err = new Error('Gemini phản hồi quá chậm (quá 90 giây), vui lòng thử lại');
+            const err = new Error('Gemini phản hồi quá chậm (quá 180 giây), vui lòng thử lại');
             err.code = 'OVERALL_TIMEOUT';
             reject(err);
           }, OVERALL_TIMEOUT_MS)
