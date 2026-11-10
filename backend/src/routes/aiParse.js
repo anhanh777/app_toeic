@@ -147,31 +147,47 @@ function extractJsonText(raw) {
   return fenced ? fenced[1].trim() : text;
 }
 
+const TRANSIENT_STATUSES = new Set([429, 500, 502, 503]);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 async function callGemini(apiKey, parts) {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
-  try {
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts }],
-          generationConfig: { responseMimeType: 'application/json' },
-        }),
-        signal: controller.signal,
+  // Gemini thi thoang tra 429/5xx nhat thoi (dac biet khi doc PDF scan) —
+  // thu lai toi da 3 lan, moi lan cach nhau 2s roi 4s, truoc khi bao loi.
+  let lastErr = null;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), GEMINI_TIMEOUT_MS);
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts }],
+            generationConfig: { responseMimeType: 'application/json' },
+          }),
+          signal: controller.signal,
+        }
+      );
+      if (!res.ok) {
+        const err = new Error(`Gemini trả lỗi HTTP ${res.status}`);
+        err.status = res.status;
+        throw err;
       }
-    );
-    if (!res.ok) {
-      const err = new Error(`Gemini trả lỗi HTTP ${res.status}`);
-      err.status = res.status;
-      throw err;
+      return await res.json();
+    } catch (e) {
+      lastErr = e;
+      const retryable =
+        e.name !== 'AbortError' &&
+        (e.status === undefined || TRANSIENT_STATUSES.has(e.status));
+      if (!retryable || attempt === 3) throw e;
+      await sleep(attempt === 1 ? 2000 : 4000);
+    } finally {
+      clearTimeout(timer);
     }
-    return await res.json();
-  } finally {
-    clearTimeout(timer);
   }
+  throw lastErr;
 }
 
 /** Lay text JSON tu response Gemini, parse thanh object {questions, warnings}. */
@@ -400,6 +416,12 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
             'Gemini từ chối yêu cầu (mã ' +
             first.status +
             '). Vui lòng kiểm tra lại GEMINI_API_KEY trên máy chủ.',
+        });
+      }
+      if (first && (first.status === 429 || first.status === 500 || first.status === 502 || first.status === 503)) {
+        return res.status(502).json({
+          error:
+            'Gemini đang bận (mã ' + first.status + '), vui lòng thử lại sau ít phút.',
         });
       }
       if (first && first.kind === 'parse') {
