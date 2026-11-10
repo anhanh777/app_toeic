@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Home from './pages/Home';
 import Practice from './pages/Practice';
 import PracticeSession from './pages/PracticeSession';
+import TestSetDetail from './pages/TestSetDetail';
 import MockTest from './pages/MockTest';
 import Result from './pages/Result';
 import WrongQuestions from './pages/WrongQuestions';
@@ -11,6 +12,7 @@ import Vocabulary from './pages/Vocabulary';
 import Stats from './pages/Stats';
 import Leaderboard from './pages/Leaderboard';
 import Admin from './pages/Admin';
+import TestSetAdmin from './pages/TestSetAdmin';
 import Settings from './pages/Settings';
 import type { ReactNode } from 'react';
 
@@ -48,6 +50,7 @@ function Layout() {
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
           <Route path="/practice" element={<RequireAuth><Practice /></RequireAuth>} />
+          <Route path="/practice/test-set/:id" element={<RequireAuth><TestSetDetail /></RequireAuth>} />
           <Route path="/practice/session" element={<RequireAuth><PracticeSession /></RequireAuth>} />
           <Route path="/mock" element={<RequireAuth><MockTest /></RequireAuth>} />
           <Route path="/result/:id" element={<RequireAuth><Result /></RequireAuth>} />
@@ -56,6 +59,7 @@ function Layout() {
           <Route path="/stats" element={<RequireAuth><Stats /></RequireAuth>} />
           <Route path="/leaderboard" element={<RequireAuth><Leaderboard /></RequireAuth>} />
           <Route path="/admin" element={<RequireAuth><Admin /></RequireAuth>} />
+          <Route path="/admin/test-set/:id" element={<RequireAuth><TestSetAdmin /></RequireAuth>} />
           <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
         </Routes>

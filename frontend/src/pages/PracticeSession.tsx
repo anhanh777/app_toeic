@@ -8,6 +8,8 @@ export default function PracticeSession() {
   const [params] = useSearchParams();
   const part = Number(params.get('part') || 5);
   const count = Number(params.get('count') || 10);
+  const testSetId = params.get('testSetId') || undefined;
+  const [testSetTitle, setTestSetTitle] = useState<string>('');
   const [questions, setQuestions] = useState<Question[]>([]);
   const [idx, setIdx] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
@@ -22,10 +24,11 @@ export default function PracticeSession() {
 
   useEffect(() => {
     setLoading(true);
-    api.questions(part, count).then(setQuestions).catch(setError).finally(() => setLoading(false));
+    if (testSetId) api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => undefined);
+    api.questions(part, count, 0, '', testSetId).then(setQuestions).catch(setError).finally(() => setLoading(false));
     return () => stopSpeak();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [part, count]);
+  }, [part, count, testSetId]);
 
   useEffect(() => () => stopSpeak(), [idx]);
 
@@ -49,20 +52,26 @@ export default function PracticeSession() {
   const next = () => { stopSpeak(); setSelected(null); setResult(null); setPlaying(false); setIdx(i => i + 1); };
 
   if (loading) return <p>Đang tải câu hỏi…</p>;
-  if (!questions.length) return <div><ErrorBox error={error} /><p>Chưa có câu hỏi cho Part này. <Link to="/practice">Quay lại chọn Part</Link></p></div>;
+  if (!questions.length) return <div><ErrorBox error={error} /><p>Chưa có câu hỏi cho Part này. {testSetId ? <Link to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link to="/practice">Quay lại chọn Part</Link>}</p></div>;
   if (idx >= questions.length) {
     return (
       <div className="card">
         <h1>Hoàn thành!</h1>
+        {testSetTitle && <p className="muted">{testSetTitle}</p>}
         <p className="big">{score.correct}/{score.done} câu đúng</p>
         <p>{score.done ? `Tỉ lệ đúng: ${Math.round((score.correct / score.done) * 100)}%` : ''}</p>
-        <div className="btn-row"><Link className="btn" to="/practice">Luyện Part khác</Link><Link className="btn secondary" to="/wrong">Ôn câu sai</Link></div>
+        <div className="btn-row">
+          {testSetId
+            ? <><Link className="btn" to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link><Link className="btn secondary" to="/wrong">Ôn câu sai</Link></>
+            : <><Link className="btn" to="/practice">Luyện Part khác</Link><Link className="btn secondary" to="/wrong">Ôn câu sai</Link></>}
+        </div>
       </div>
     );
   }
 
   return (
     <div>
+      {testSetTitle && <p className="tag">📚 {testSetTitle}</p>}
       <p className="muted">{partName(part)} — Câu {idx + 1}/{questions.length} • Đúng {score.correct}/{score.done}</p>
       <ErrorBox error={error} />
       <div className="card screen">

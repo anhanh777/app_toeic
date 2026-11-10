@@ -28,7 +28,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A woman is typing on a laptop at her desk.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Hai người đàn ông đang bắt tay nhau trước tòa nhà văn phòng.",
@@ -59,7 +60,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Two men are shaking hands in front of an office building.",
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người đàn ông đang mang một chiếc hộp vào kho hàng.",
@@ -90,7 +92,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A man is carrying a box into a warehouse.",
-    "topic": "workplace"
+    "topic": "workplace",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Nhiều người đang xếp hàng tại quầy làm thủ tục ở sân bay.",
@@ -121,7 +124,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Several people are waiting in line at the airport check-in counter.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một đầu bếp đang chuẩn bị món ăn trong bếp nhà hàng.",
@@ -152,7 +156,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A chef is preparing food in a restaurant kitchen.",
-    "topic": "workplace"
+    "topic": "workplace",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người phụ nữ đang nói chuyện điện thoại và ghi chép.",
@@ -183,7 +188,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A woman is talking on the phone while taking notes.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Các công nhân đang chất các hộp hàng lên xe tải.",
@@ -214,7 +220,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Workers are loading boxes onto a truck.",
-    "topic": "workplace"
+    "topic": "workplace",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người đàn ông đang thuyết trình trước các đồng nghiệp trong phòng họp.",
@@ -245,7 +252,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A man is giving a presentation to his colleagues in a meeting room.",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người phụ nữ đang chỉ vào biểu đồ trên bảng trắng.",
@@ -276,7 +284,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A woman is pointing at a chart on the whiteboard.",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Mọi người đang ngồi ở các bàn trong một quán cà phê đông đúc.",
@@ -307,7 +316,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "People are sitting at tables in a busy cafe.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một nhân viên giao hàng đang trao gói hàng cho khách tại cửa nhà.",
@@ -338,7 +348,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A delivery man is handing a package to a customer at the door.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Văn phòng trống không có ai, nhưng đèn vẫn đang bật.",
@@ -369,7 +380,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "The office is empty, and the lights are still on.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người phụ nữ đang xem lịch trình trên điện thoại thông minh.",
@@ -400,7 +412,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A woman is checking her schedule on her smartphone.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Hai đồng nghiệp đang thảo luận về một báo cáo trong lúc uống cà phê.",
@@ -431,7 +444,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Two colleagues are discussing a report over coffee.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người đàn ông đang sửa máy in ở góc văn phòng.",
@@ -462,7 +476,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A man is fixing a printer in the corner of the office.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một nhóm sinh viên đang nghe giảng trong một hội trường lớn.",
@@ -493,7 +508,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A group of students is listening to a lecture in a large hall.",
-    "topic": "education"
+    "topic": "education",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người phụ nữ đang đặt hoa lên bàn ở sảnh khách sạn.",
@@ -524,7 +540,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A woman is placing flowers on a table in the hotel lobby.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Các xe ô tô đang dừng ở đèn đỏ trên một con phố đông đúc.",
@@ -555,7 +572,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Cars are stopped at a red traffic light on a busy street.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người đàn ông đang xem bản đồ khi đứng ở ga tàu.",
@@ -586,7 +604,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A man is reading a map while standing at a train station.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người phụ nữ đang tưới cây trên ban công văn phòng.",
@@ -617,7 +636,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A woman is watering the plants on the office balcony.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Các kệ trong cửa hàng chất đầy sách và tạp chí.",
@@ -648,7 +668,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "The shelves in the store are filled with books and magazines.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một kỹ thuật viên đang kiểm tra thiết bị trong nhà máy.",
@@ -679,7 +700,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A technician is inspecting the equipment in a factory.",
-    "topic": "workplace"
+    "topic": "workplace",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Một người phụ nữ đang thanh toán tiền mua hàng tại quầy thu ngân.",
@@ -710,7 +732,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "A woman is paying for her groceries at the checkout counter.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Mô tả tranh: Nhiều chiếc ghế đã được xếp thành hàng cho buổi hội nghị.",
@@ -741,7 +764,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Several chairs have been arranged in rows for the conference.",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "When does the meeting start?",
@@ -772,7 +796,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "When does the meeting start?",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "Where is the new office located?",
@@ -803,7 +828,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Where is the new office located?",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Who is in charge of the project?",
@@ -834,7 +860,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Who is in charge of the project?",
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "Would you like some coffee?",
@@ -865,7 +892,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Would you like some coffee?",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why was the shipment delayed?",
@@ -896,7 +924,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Why was the shipment delayed?",
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "How many people will attend the conference?",
@@ -927,7 +956,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "How many people will attend the conference?",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "Have you finished the report yet?",
@@ -958,7 +988,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Have you finished the report yet?",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Could you please send me the invoice?",
@@ -989,7 +1020,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Could you please send me the invoice?",
-    "topic": "finance"
+    "topic": "finance",
+    "testSetId": "TS-001"
   },
   {
     "content": "What time does the store open?",
@@ -1020,7 +1052,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "What time does the store open?",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Did you go to the training session yesterday?",
@@ -1051,7 +1084,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Did you go to the training session yesterday?",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "When will the new product be launched?",
@@ -1082,7 +1116,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "When will the new product be launched?",
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "Where can I park my car?",
@@ -1113,7 +1148,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Where can I park my car?",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "How do I get to the airport from here?",
@@ -1144,7 +1180,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "How do I get to the airport from here?",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Is the printer working now?",
@@ -1175,7 +1212,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Is the printer working now?",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Who should I contact about the refund?",
@@ -1206,7 +1244,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Who should I contact about the refund?",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why don't we have lunch together tomorrow?",
@@ -1237,7 +1276,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Why don't we have lunch together tomorrow?",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "How much does this laptop cost?",
@@ -1268,7 +1308,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "How much does this laptop cost?",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Can I change my flight to Friday?",
@@ -1299,7 +1340,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Can I change my flight to Friday?",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What did you think of the presentation?",
@@ -1330,7 +1372,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "What did you think of the presentation?",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "When is the deadline for the application?",
@@ -1361,7 +1404,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "When is the deadline for the application?",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "Would you mind closing the window?",
@@ -1392,7 +1436,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Would you mind closing the window?",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "Where did you put the keys to the office?",
@@ -1423,7 +1468,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Where did you put the keys to the office?",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "How often do you travel for work?",
@@ -1454,7 +1500,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "How often do you travel for work?",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Have you ever worked in sales before?",
@@ -1485,7 +1532,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Have you ever worked in sales before?",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "What should we do about the budget problem?",
@@ -1516,7 +1564,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "What should we do about the budget problem?",
-    "topic": "finance"
+    "topic": "finance",
+    "testSetId": "TS-001"
   },
   {
     "content": "Is there a bank near here?",
@@ -1547,7 +1596,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Is there a bank near here?",
-    "topic": "finance"
+    "topic": "finance",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why did you choose this hotel?",
@@ -1578,7 +1628,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Why did you choose this hotel?",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Could you tell me where the restroom is?",
@@ -1609,7 +1660,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Could you tell me where the restroom is?",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "When did you start working here?",
@@ -1640,7 +1692,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "When did you start working here?",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "Do you prefer working alone or in a team?",
@@ -1671,7 +1724,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": "Do you prefer working alone or in a team?",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the woman calling about?",
@@ -1702,7 +1756,8 @@
     "passageText": "Woman: Good evening, I'd like to make a reservation for dinner tomorrow night. Man: Of course. How many people will there be? Woman: There will be four of us, and we'd like a table by the window if possible. Man: Let me check. Yes, we have a window table available at 7 p.m. Woman: That sounds perfect. Could you put it under the name Sarah Miller? Man: Certainly, Ms. Miller. We'll see you tomorrow at seven.",
     "passageTitle": "Restaurant reservation",
     "script": "Woman: Good evening, I'd like to make a reservation for dinner tomorrow night. Man: Of course. How many people will there be? Woman: There will be four of us, and we'd like a table by the window if possible. Man: Let me check. Yes, we have a window table available at 7 p.m. Woman: That sounds perfect. Could you put it under the name Sarah Miller? Man: Certainly, Ms. Miller. We'll see you tomorrow at seven.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "How many people will be at dinner?",
@@ -1733,7 +1788,8 @@
     "passageText": "Woman: Good evening, I'd like to make a reservation for dinner tomorrow night. Man: Of course. How many people will there be? Woman: There will be four of us, and we'd like a table by the window if possible. Man: Let me check. Yes, we have a window table available at 7 p.m. Woman: That sounds perfect. Could you put it under the name Sarah Miller? Man: Certainly, Ms. Miller. We'll see you tomorrow at seven.",
     "passageTitle": "Restaurant reservation",
     "script": "Woman: Good evening, I'd like to make a reservation for dinner tomorrow night. Man: Of course. How many people will there be? Woman: There will be four of us, and we'd like a table by the window if possible. Man: Let me check. Yes, we have a window table available at 7 p.m. Woman: That sounds perfect. Could you put it under the name Sarah Miller? Man: Certainly, Ms. Miller. We'll see you tomorrow at seven.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What time is the reservation for?",
@@ -1764,7 +1820,8 @@
     "passageText": "Woman: Good evening, I'd like to make a reservation for dinner tomorrow night. Man: Of course. How many people will there be? Woman: There will be four of us, and we'd like a table by the window if possible. Man: Let me check. Yes, we have a window table available at 7 p.m. Woman: That sounds perfect. Could you put it under the name Sarah Miller? Man: Certainly, Ms. Miller. We'll see you tomorrow at seven.",
     "passageTitle": "Restaurant reservation",
     "script": "Woman: Good evening, I'd like to make a reservation for dinner tomorrow night. Man: Of course. How many people will there be? Woman: There will be four of us, and we'd like a table by the window if possible. Man: Let me check. Yes, we have a window table available at 7 p.m. Woman: That sounds perfect. Could you put it under the name Sarah Miller? Man: Certainly, Ms. Miller. We'll see you tomorrow at seven.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why is the man talking to the woman?",
@@ -1795,7 +1852,8 @@
     "passageText": "Man: Hi, Anna. I just wanted to let you know that tomorrow's meeting has been moved to Wednesday. Woman: Oh, really? What time will it start? Man: It will start at 2 p.m. in Room 201, the same room as before. Woman: Thanks for letting me know. I was planning to prepare the sales figures tonight. Man: That's fine. You'll have one more day to get them ready.",
     "passageTitle": "Meeting moved",
     "script": "Man: Hi, Anna. I just wanted to let you know that tomorrow's meeting has been moved to Wednesday. Woman: Oh, really? What time will it start? Man: It will start at 2 p.m. in Room 201, the same room as before. Woman: Thanks for letting me know. I was planning to prepare the sales figures tonight. Man: That's fine. You'll have one more day to get them ready.",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "When will the meeting take place?",
@@ -1826,7 +1884,8 @@
     "passageText": "Man: Hi, Anna. I just wanted to let you know that tomorrow's meeting has been moved to Wednesday. Woman: Oh, really? What time will it start? Man: It will start at 2 p.m. in Room 201, the same room as before. Woman: Thanks for letting me know. I was planning to prepare the sales figures tonight. Man: That's fine. You'll have one more day to get them ready.",
     "passageTitle": "Meeting moved",
     "script": "Man: Hi, Anna. I just wanted to let you know that tomorrow's meeting has been moved to Wednesday. Woman: Oh, really? What time will it start? Man: It will start at 2 p.m. in Room 201, the same room as before. Woman: Thanks for letting me know. I was planning to prepare the sales figures tonight. Man: That's fine. You'll have one more day to get them ready.",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "What was the woman planning to do tonight?",
@@ -1857,7 +1916,8 @@
     "passageText": "Man: Hi, Anna. I just wanted to let you know that tomorrow's meeting has been moved to Wednesday. Woman: Oh, really? What time will it start? Man: It will start at 2 p.m. in Room 201, the same room as before. Woman: Thanks for letting me know. I was planning to prepare the sales figures tonight. Man: That's fine. You'll have one more day to get them ready.",
     "passageTitle": "Meeting moved",
     "script": "Man: Hi, Anna. I just wanted to let you know that tomorrow's meeting has been moved to Wednesday. Woman: Oh, really? What time will it start? Man: It will start at 2 p.m. in Room 201, the same room as before. Woman: Thanks for letting me know. I was planning to prepare the sales figures tonight. Man: That's fine. You'll have one more day to get them ready.",
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "What problem does the woman have?",
@@ -1888,7 +1948,8 @@
     "passageText": "Woman: Hi, Tom. My laptop won't start this morning. Could you take a look at it? Man: Sure. When did it last work properly? Woman: It was fine yesterday, but this morning the screen stayed black. Man: It might be a battery problem. Let me check the power cable first. Woman: Thanks. I need it for the client presentation at 11.",
     "passageTitle": "Laptop problem",
     "script": "Woman: Hi, Tom. My laptop won't start this morning. Could you take a look at it? Man: Sure. When did it last work properly? Woman: It was fine yesterday, but this morning the screen stayed black. Man: It might be a battery problem. Let me check the power cable first. Woman: Thanks. I need it for the client presentation at 11.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What does the man think the problem might be?",
@@ -1919,7 +1980,8 @@
     "passageText": "Woman: Hi, Tom. My laptop won't start this morning. Could you take a look at it? Man: Sure. When did it last work properly? Woman: It was fine yesterday, but this morning the screen stayed black. Man: It might be a battery problem. Let me check the power cable first. Woman: Thanks. I need it for the client presentation at 11.",
     "passageTitle": "Laptop problem",
     "script": "Woman: Hi, Tom. My laptop won't start this morning. Could you take a look at it? Man: Sure. When did it last work properly? Woman: It was fine yesterday, but this morning the screen stayed black. Man: It might be a battery problem. Let me check the power cable first. Woman: Thanks. I need it for the client presentation at 11.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why does the woman need the laptop urgently?",
@@ -1950,7 +2012,8 @@
     "passageText": "Woman: Hi, Tom. My laptop won't start this morning. Could you take a look at it? Man: Sure. When did it last work properly? Woman: It was fine yesterday, but this morning the screen stayed black. Man: It might be a battery problem. Let me check the power cable first. Woman: Thanks. I need it for the client presentation at 11.",
     "passageTitle": "Laptop problem",
     "script": "Woman: Hi, Tom. My laptop won't start this morning. Could you take a look at it? Man: Sure. When did it last work properly? Woman: It was fine yesterday, but this morning the screen stayed black. Man: It might be a battery problem. Let me check the power cable first. Woman: Thanks. I need it for the client presentation at 11.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What are the speakers mainly discussing?",
@@ -1981,7 +2044,8 @@
     "passageText": "Man: Have you heard? David is leaving the company next month. Woman: Yes, I heard. We should organize a farewell party for him. Man: Good idea. How about Friday afternoon in the conference room? Woman: That works for me. I'll order some food and drinks. Man: And I'll buy a gift from the whole team. Let's ask everyone to contribute $10.",
     "passageTitle": "Farewell party",
     "script": "Man: Have you heard? David is leaving the company next month. Woman: Yes, I heard. We should organize a farewell party for him. Man: Good idea. How about Friday afternoon in the conference room? Woman: That works for me. I'll order some food and drinks. Man: And I'll buy a gift from the whole team. Let's ask everyone to contribute $10.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "When will the party be held?",
@@ -2012,7 +2076,8 @@
     "passageText": "Man: Have you heard? David is leaving the company next month. Woman: Yes, I heard. We should organize a farewell party for him. Man: Good idea. How about Friday afternoon in the conference room? Woman: That works for me. I'll order some food and drinks. Man: And I'll buy a gift from the whole team. Let's ask everyone to contribute $10.",
     "passageTitle": "Farewell party",
     "script": "Man: Have you heard? David is leaving the company next month. Woman: Yes, I heard. We should organize a farewell party for him. Man: Good idea. How about Friday afternoon in the conference room? Woman: That works for me. I'll order some food and drinks. Man: And I'll buy a gift from the whole team. Let's ask everyone to contribute $10.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What will the man do for the party?",
@@ -2043,7 +2108,8 @@
     "passageText": "Man: Have you heard? David is leaving the company next month. Woman: Yes, I heard. We should organize a farewell party for him. Man: Good idea. How about Friday afternoon in the conference room? Woman: That works for me. I'll order some food and drinks. Man: And I'll buy a gift from the whole team. Let's ask everyone to contribute $10.",
     "passageTitle": "Farewell party",
     "script": "Man: Have you heard? David is leaving the company next month. Woman: Yes, I heard. We should organize a farewell party for him. Man: Good idea. How about Friday afternoon in the conference room? Woman: That works for me. I'll order some food and drinks. Man: And I'll buy a gift from the whole team. Let's ask everyone to contribute $10.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What does the man want to buy?",
@@ -2074,7 +2140,8 @@
     "passageText": "Man: Excuse me, I'm looking for a white shirt in size medium. Woman: Let me check. We have one left in the back. Would you like to try it on? Man: Yes, please. Where are the fitting rooms? Woman: They are at the back of the store, on your left. Man: Thank you. By the way, is this shirt on sale? Woman: Yes, it's 20 percent off today.",
     "passageTitle": "Buying a shirt",
     "script": "Man: Excuse me, I'm looking for a white shirt in size medium. Woman: Let me check. We have one left in the back. Would you like to try it on? Man: Yes, please. Where are the fitting rooms? Woman: They are at the back of the store, on your left. Man: Thank you. By the way, is this shirt on sale? Woman: Yes, it's 20 percent off today.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Where are the fitting rooms?",
@@ -2105,7 +2172,8 @@
     "passageText": "Man: Excuse me, I'm looking for a white shirt in size medium. Woman: Let me check. We have one left in the back. Would you like to try it on? Man: Yes, please. Where are the fitting rooms? Woman: They are at the back of the store, on your left. Man: Thank you. By the way, is this shirt on sale? Woman: Yes, it's 20 percent off today.",
     "passageTitle": "Buying a shirt",
     "script": "Man: Excuse me, I'm looking for a white shirt in size medium. Woman: Let me check. We have one left in the back. Would you like to try it on? Man: Yes, please. Where are the fitting rooms? Woman: They are at the back of the store, on your left. Man: Thank you. By the way, is this shirt on sale? Woman: Yes, it's 20 percent off today.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "How much is the shirt discounted?",
@@ -2136,7 +2204,8 @@
     "passageText": "Man: Excuse me, I'm looking for a white shirt in size medium. Woman: Let me check. We have one left in the back. Would you like to try it on? Man: Yes, please. Where are the fitting rooms? Woman: They are at the back of the store, on your left. Man: Thank you. By the way, is this shirt on sale? Woman: Yes, it's 20 percent off today.",
     "passageTitle": "Buying a shirt",
     "script": "Man: Excuse me, I'm looking for a white shirt in size medium. Woman: Let me check. We have one left in the back. Would you like to try it on? Man: Yes, please. Where are the fitting rooms? Woman: They are at the back of the store, on your left. Man: Thank you. By the way, is this shirt on sale? Woman: Yes, it's 20 percent off today.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the man asking about?",
@@ -2167,7 +2236,8 @@
     "passageText": "Man: Hi, I'd like to book a flight to Singapore for next Tuesday. Woman: Let me check the schedule. There's a morning flight at 8:30 and an afternoon flight at 3:15. Man: The morning flight sounds better. How much is it? Woman: It's $280 for a round trip. Man: That's fine. I'd like a window seat, please. Woman: No problem. I'll book it for you now.",
     "passageTitle": "Booking a flight",
     "script": "Man: Hi, I'd like to book a flight to Singapore for next Tuesday. Woman: Let me check the schedule. There's a morning flight at 8:30 and an afternoon flight at 3:15. Man: The morning flight sounds better. How much is it? Woman: It's $280 for a round trip. Man: That's fine. I'd like a window seat, please. Woman: No problem. I'll book it for you now.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Which flight does the man choose?",
@@ -2198,7 +2268,8 @@
     "passageText": "Man: Hi, I'd like to book a flight to Singapore for next Tuesday. Woman: Let me check the schedule. There's a morning flight at 8:30 and an afternoon flight at 3:15. Man: The morning flight sounds better. How much is it? Woman: It's $280 for a round trip. Man: That's fine. I'd like a window seat, please. Woman: No problem. I'll book it for you now.",
     "passageTitle": "Booking a flight",
     "script": "Man: Hi, I'd like to book a flight to Singapore for next Tuesday. Woman: Let me check the schedule. There's a morning flight at 8:30 and an afternoon flight at 3:15. Man: The morning flight sounds better. How much is it? Woman: It's $280 for a round trip. Man: That's fine. I'd like a window seat, please. Woman: No problem. I'll book it for you now.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "How much is the round-trip ticket?",
@@ -2229,7 +2300,8 @@
     "passageText": "Man: Hi, I'd like to book a flight to Singapore for next Tuesday. Woman: Let me check the schedule. There's a morning flight at 8:30 and an afternoon flight at 3:15. Man: The morning flight sounds better. How much is it? Woman: It's $280 for a round trip. Man: That's fine. I'd like a window seat, please. Woman: No problem. I'll book it for you now.",
     "passageTitle": "Booking a flight",
     "script": "Man: Hi, I'd like to book a flight to Singapore for next Tuesday. Woman: Let me check the schedule. There's a morning flight at 8:30 and an afternoon flight at 3:15. Man: The morning flight sounds better. How much is it? Woman: It's $280 for a round trip. Man: That's fine. I'd like a window seat, please. Woman: No problem. I'll book it for you now.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the woman's job?",
@@ -2260,7 +2332,8 @@
     "passageText": "Man: Hi, Lisa. I heard you're interviewing candidates today. Woman: Yes, I'm in Human Resources, and we're hiring two new sales assistants. Man: How many people have applied so far? Woman: We've received more than 40 applications, but we'll only interview ten people. Man: That sounds like a lot of work. Woman: It is, but we hope to finish all the interviews by Friday.",
     "passageTitle": "Job interviews",
     "script": "Man: Hi, Lisa. I heard you're interviewing candidates today. Woman: Yes, I'm in Human Resources, and we're hiring two new sales assistants. Man: How many people have applied so far? Woman: We've received more than 40 applications, but we'll only interview ten people. Man: That sounds like a lot of work. Woman: It is, but we hope to finish all the interviews by Friday.",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "How many positions are open?",
@@ -2291,7 +2364,8 @@
     "passageText": "Man: Hi, Lisa. I heard you're interviewing candidates today. Woman: Yes, I'm in Human Resources, and we're hiring two new sales assistants. Man: How many people have applied so far? Woman: We've received more than 40 applications, but we'll only interview ten people. Man: That sounds like a lot of work. Woman: It is, but we hope to finish all the interviews by Friday.",
     "passageTitle": "Job interviews",
     "script": "Man: Hi, Lisa. I heard you're interviewing candidates today. Woman: Yes, I'm in Human Resources, and we're hiring two new sales assistants. Man: How many people have applied so far? Woman: We've received more than 40 applications, but we'll only interview ten people. Man: That sounds like a lot of work. Woman: It is, but we hope to finish all the interviews by Friday.",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "When does the woman hope to finish the interviews?",
@@ -2322,7 +2396,8 @@
     "passageText": "Man: Hi, Lisa. I heard you're interviewing candidates today. Woman: Yes, I'm in Human Resources, and we're hiring two new sales assistants. Man: How many people have applied so far? Woman: We've received more than 40 applications, but we'll only interview ten people. Man: That sounds like a lot of work. Woman: It is, but we hope to finish all the interviews by Friday.",
     "passageTitle": "Job interviews",
     "script": "Man: Hi, Lisa. I heard you're interviewing candidates today. Woman: Yes, I'm in Human Resources, and we're hiring two new sales assistants. Man: How many people have applied so far? Woman: We've received more than 40 applications, but we'll only interview ten people. Man: That sounds like a lot of work. Woman: It is, but we hope to finish all the interviews by Friday.",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "What does the woman want to do?",
@@ -2353,7 +2428,8 @@
     "passageText": "Woman: Mr. Chen, could we extend the deadline for the quarterly report? Man: When is it due now? Woman: It's due this Friday, but we still need more data from the branch offices. Man: How much extra time do you need? Woman: Just three more days, until next Monday. Man: All right, I'll approve the extension, but please send me a draft on Friday.",
     "passageTitle": "Report deadline",
     "script": "Woman: Mr. Chen, could we extend the deadline for the quarterly report? Man: When is it due now? Woman: It's due this Friday, but we still need more data from the branch offices. Man: How much extra time do you need? Woman: Just three more days, until next Monday. Man: All right, I'll approve the extension, but please send me a draft on Friday.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why does the woman need more time?",
@@ -2384,7 +2460,8 @@
     "passageText": "Woman: Mr. Chen, could we extend the deadline for the quarterly report? Man: When is it due now? Woman: It's due this Friday, but we still need more data from the branch offices. Man: How much extra time do you need? Woman: Just three more days, until next Monday. Man: All right, I'll approve the extension, but please send me a draft on Friday.",
     "passageTitle": "Report deadline",
     "script": "Woman: Mr. Chen, could we extend the deadline for the quarterly report? Man: When is it due now? Woman: It's due this Friday, but we still need more data from the branch offices. Man: How much extra time do you need? Woman: Just three more days, until next Monday. Man: All right, I'll approve the extension, but please send me a draft on Friday.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What does the man ask the woman to do on Friday?",
@@ -2415,7 +2492,8 @@
     "passageText": "Woman: Mr. Chen, could we extend the deadline for the quarterly report? Man: When is it due now? Woman: It's due this Friday, but we still need more data from the branch offices. Man: How much extra time do you need? Woman: Just three more days, until next Monday. Man: All right, I'll approve the extension, but please send me a draft on Friday.",
     "passageTitle": "Report deadline",
     "script": "Woman: Mr. Chen, could we extend the deadline for the quarterly report? Man: When is it due now? Woman: It's due this Friday, but we still need more data from the branch offices. Man: How much extra time do you need? Woman: Just three more days, until next Monday. Man: All right, I'll approve the extension, but please send me a draft on Friday.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Where are the speakers?",
@@ -2446,7 +2524,8 @@
     "passageText": "Woman: Good afternoon. I have a reservation under the name Kim. Man: Let me check. Yes, Ms. Kim, you have a double room for three nights. Woman: Great. What time is breakfast served? Man: Breakfast is served from 6:30 to 10:00 in the restaurant on the ground floor. Woman: Thank you. Could I also have an extra towel, please? Man: Of course. I'll have one sent to your room right away.",
     "passageTitle": "Hotel check-in",
     "script": "Woman: Good afternoon. I have a reservation under the name Kim. Man: Let me check. Yes, Ms. Kim, you have a double room for three nights. Woman: Great. What time is breakfast served? Man: Breakfast is served from 6:30 to 10:00 in the restaurant on the ground floor. Woman: Thank you. Could I also have an extra towel, please? Man: Of course. I'll have one sent to your room right away.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "How long will the woman stay at the hotel?",
@@ -2477,7 +2556,8 @@
     "passageText": "Woman: Good afternoon. I have a reservation under the name Kim. Man: Let me check. Yes, Ms. Kim, you have a double room for three nights. Woman: Great. What time is breakfast served? Man: Breakfast is served from 6:30 to 10:00 in the restaurant on the ground floor. Woman: Thank you. Could I also have an extra towel, please? Man: Of course. I'll have one sent to your room right away.",
     "passageTitle": "Hotel check-in",
     "script": "Woman: Good afternoon. I have a reservation under the name Kim. Man: Let me check. Yes, Ms. Kim, you have a double room for three nights. Woman: Great. What time is breakfast served? Man: Breakfast is served from 6:30 to 10:00 in the restaurant on the ground floor. Woman: Thank you. Could I also have an extra towel, please? Man: Of course. I'll have one sent to your room right away.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What does the woman ask for at the end?",
@@ -2508,7 +2588,8 @@
     "passageText": "Woman: Good afternoon. I have a reservation under the name Kim. Man: Let me check. Yes, Ms. Kim, you have a double room for three nights. Woman: Great. What time is breakfast served? Man: Breakfast is served from 6:30 to 10:00 in the restaurant on the ground floor. Woman: Thank you. Could I also have an extra towel, please? Man: Of course. I'll have one sent to your room right away.",
     "passageTitle": "Hotel check-in",
     "script": "Woman: Good afternoon. I have a reservation under the name Kim. Man: Let me check. Yes, Ms. Kim, you have a double room for three nights. Woman: Great. What time is breakfast served? Man: Breakfast is served from 6:30 to 10:00 in the restaurant on the ground floor. Woman: Thank you. Could I also have an extra towel, please? Man: Of course. I'll have one sent to your room right away.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What are the speakers discussing?",
@@ -2539,7 +2620,8 @@
     "passageText": "Man: Did you hear about the office move? Woman: Yes, we're moving to the new building downtown next month. Man: When exactly? Woman: The move is scheduled for the first weekend in July. Man: Will we have new desks and chairs? Woman: Yes, all the furniture will be new, and each department will have its own floor.",
     "passageTitle": "Office move",
     "script": "Man: Did you hear about the office move? Woman: Yes, we're moving to the new building downtown next month. Man: When exactly? Woman: The move is scheduled for the first weekend in July. Man: Will we have new desks and chairs? Woman: Yes, all the furniture will be new, and each department will have its own floor.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "When is the move scheduled?",
@@ -2570,7 +2652,8 @@
     "passageText": "Man: Did you hear about the office move? Woman: Yes, we're moving to the new building downtown next month. Man: When exactly? Woman: The move is scheduled for the first weekend in July. Man: Will we have new desks and chairs? Woman: Yes, all the furniture will be new, and each department will have its own floor.",
     "passageTitle": "Office move",
     "script": "Man: Did you hear about the office move? Woman: Yes, we're moving to the new building downtown next month. Man: When exactly? Woman: The move is scheduled for the first weekend in July. Man: Will we have new desks and chairs? Woman: Yes, all the furniture will be new, and each department will have its own floor.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What will be new in the new office?",
@@ -2601,7 +2684,8 @@
     "passageText": "Man: Did you hear about the office move? Woman: Yes, we're moving to the new building downtown next month. Man: When exactly? Woman: The move is scheduled for the first weekend in July. Man: Will we have new desks and chairs? Woman: Yes, all the furniture will be new, and each department will have its own floor.",
     "passageTitle": "Office move",
     "script": "Man: Did you hear about the office move? Woman: Yes, we're moving to the new building downtown next month. Man: When exactly? Woman: The move is scheduled for the first weekend in July. Man: Will we have new desks and chairs? Woman: Yes, all the furniture will be new, and each department will have its own floor.",
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the woman returning?",
@@ -2632,7 +2716,8 @@
     "passageText": "Woman: Hi, I'd like to return this jacket. I bought it yesterday, but it's too small. Man: Do you have the receipt? Woman: Yes, here it is. Man: Would you like a refund or an exchange? Woman: I'd like to exchange it for a larger size, please. Man: No problem. We have the same jacket in size large. Woman: Perfect, thank you.",
     "passageTitle": "Returning a jacket",
     "script": "Woman: Hi, I'd like to return this jacket. I bought it yesterday, but it's too small. Man: Do you have the receipt? Woman: Yes, here it is. Man: Would you like a refund or an exchange? Woman: I'd like to exchange it for a larger size, please. Man: No problem. We have the same jacket in size large. Woman: Perfect, thank you.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why does the woman want to return the jacket?",
@@ -2663,7 +2748,8 @@
     "passageText": "Woman: Hi, I'd like to return this jacket. I bought it yesterday, but it's too small. Man: Do you have the receipt? Woman: Yes, here it is. Man: Would you like a refund or an exchange? Woman: I'd like to exchange it for a larger size, please. Man: No problem. We have the same jacket in size large. Woman: Perfect, thank you.",
     "passageTitle": "Returning a jacket",
     "script": "Woman: Hi, I'd like to return this jacket. I bought it yesterday, but it's too small. Man: Do you have the receipt? Woman: Yes, here it is. Man: Would you like a refund or an exchange? Woman: I'd like to exchange it for a larger size, please. Man: No problem. We have the same jacket in size large. Woman: Perfect, thank you.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What does the woman want instead?",
@@ -2694,7 +2780,8 @@
     "passageText": "Woman: Hi, I'd like to return this jacket. I bought it yesterday, but it's too small. Man: Do you have the receipt? Woman: Yes, here it is. Man: Would you like a refund or an exchange? Woman: I'd like to exchange it for a larger size, please. Man: No problem. We have the same jacket in size large. Woman: Perfect, thank you.",
     "passageTitle": "Returning a jacket",
     "script": "Woman: Hi, I'd like to return this jacket. I bought it yesterday, but it's too small. Man: Do you have the receipt? Woman: Yes, here it is. Man: Would you like a refund or an exchange? Woman: I'd like to exchange it for a larger size, please. Man: No problem. We have the same jacket in size large. Woman: Perfect, thank you.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the man doing?",
@@ -2725,7 +2812,8 @@
     "passageText": "Man: Hello, I'm calling about the online training course for new employees. Woman: Yes, the course starts on Monday, and it lasts for two weeks. Man: How many hours a day will it take? Woman: About two hours a day, and you can study at your own pace. Man: That sounds good. How do I register? Woman: Just fill in the form on our website, and we'll send you a login link.",
     "passageTitle": "Training course",
     "script": "Man: Hello, I'm calling about the online training course for new employees. Woman: Yes, the course starts on Monday, and it lasts for two weeks. Man: How many hours a day will it take? Woman: About two hours a day, and you can study at your own pace. Man: That sounds good. How do I register? Woman: Just fill in the form on our website, and we'll send you a login link.",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "How long does the course last?",
@@ -2756,7 +2844,8 @@
     "passageText": "Man: Hello, I'm calling about the online training course for new employees. Woman: Yes, the course starts on Monday, and it lasts for two weeks. Man: How many hours a day will it take? Woman: About two hours a day, and you can study at your own pace. Man: That sounds good. How do I register? Woman: Just fill in the form on our website, and we'll send you a login link.",
     "passageTitle": "Training course",
     "script": "Man: Hello, I'm calling about the online training course for new employees. Woman: Yes, the course starts on Monday, and it lasts for two weeks. Man: How many hours a day will it take? Woman: About two hours a day, and you can study at your own pace. Man: That sounds good. How do I register? Woman: Just fill in the form on our website, and we'll send you a login link.",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "How does the man register for the course?",
@@ -2787,7 +2876,8 @@
     "passageText": "Man: Hello, I'm calling about the online training course for new employees. Woman: Yes, the course starts on Monday, and it lasts for two weeks. Man: How many hours a day will it take? Woman: About two hours a day, and you can study at your own pace. Man: That sounds good. How do I register? Woman: Just fill in the form on our website, and we'll send you a login link.",
     "passageTitle": "Training course",
     "script": "Man: Hello, I'm calling about the online training course for new employees. Woman: Yes, the course starts on Monday, and it lasts for two weeks. Man: How many hours a day will it take? Woman: About two hours a day, and you can study at your own pace. Man: That sounds good. How do I register? Woman: Just fill in the form on our website, and we'll send you a login link.",
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the main purpose of this announcement?",
@@ -2818,7 +2908,8 @@
     "passageText": "Attention, residents of the Green Tower Building. The elevators will be out of service this weekend for regular maintenance. The work will begin on Saturday at 8 a.m. and should finish by Sunday evening. During this time, please use the stairs. We apologize for any inconvenience and thank you for your understanding. If you have any questions, please contact the building office on the first floor.",
     "passageTitle": "Elevator maintenance",
     "script": "Attention, residents of the Green Tower Building. The elevators will be out of service this weekend for regular maintenance. The work will begin on Saturday at 8 a.m. and should finish by Sunday evening. During this time, please use the stairs. We apologize for any inconvenience and thank you for your understanding. If you have any questions, please contact the building office on the first floor.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "When will the maintenance begin?",
@@ -2849,7 +2940,8 @@
     "passageText": "Attention, residents of the Green Tower Building. The elevators will be out of service this weekend for regular maintenance. The work will begin on Saturday at 8 a.m. and should finish by Sunday evening. During this time, please use the stairs. We apologize for any inconvenience and thank you for your understanding. If you have any questions, please contact the building office on the first floor.",
     "passageTitle": "Elevator maintenance",
     "script": "Attention, residents of the Green Tower Building. The elevators will be out of service this weekend for regular maintenance. The work will begin on Saturday at 8 a.m. and should finish by Sunday evening. During this time, please use the stairs. We apologize for any inconvenience and thank you for your understanding. If you have any questions, please contact the building office on the first floor.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What should residents use during the maintenance?",
@@ -2880,7 +2972,8 @@
     "passageText": "Attention, residents of the Green Tower Building. The elevators will be out of service this weekend for regular maintenance. The work will begin on Saturday at 8 a.m. and should finish by Sunday evening. During this time, please use the stairs. We apologize for any inconvenience and thank you for your understanding. If you have any questions, please contact the building office on the first floor.",
     "passageTitle": "Elevator maintenance",
     "script": "Attention, residents of the Green Tower Building. The elevators will be out of service this weekend for regular maintenance. The work will begin on Saturday at 8 a.m. and should finish by Sunday evening. During this time, please use the stairs. We apologize for any inconvenience and thank you for your understanding. If you have any questions, please contact the building office on the first floor.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the speaker talking about?",
@@ -2911,7 +3004,8 @@
     "passageText": "Good morning, everyone. I would like to explain our new return policy. From next month, customers can return any item within 30 days of purchase, as long as they have the receipt. Refunds will be given in the same way the customer paid. If an item is damaged, we will offer a replacement or a full refund. Please remember to be polite and helpful when customers ask about returns.",
     "passageTitle": "Return policy",
     "script": "Good morning, everyone. I would like to explain our new return policy. From next month, customers can return any item within 30 days of purchase, as long as they have the receipt. Refunds will be given in the same way the customer paid. If an item is damaged, we will offer a replacement or a full refund. Please remember to be polite and helpful when customers ask about returns.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "How long do customers have to return an item?",
@@ -2942,7 +3036,8 @@
     "passageText": "Good morning, everyone. I would like to explain our new return policy. From next month, customers can return any item within 30 days of purchase, as long as they have the receipt. Refunds will be given in the same way the customer paid. If an item is damaged, we will offer a replacement or a full refund. Please remember to be polite and helpful when customers ask about returns.",
     "passageTitle": "Return policy",
     "script": "Good morning, everyone. I would like to explain our new return policy. From next month, customers can return any item within 30 days of purchase, as long as they have the receipt. Refunds will be given in the same way the customer paid. If an item is damaged, we will offer a replacement or a full refund. Please remember to be polite and helpful when customers ask about returns.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What do customers need to return an item?",
@@ -2973,7 +3068,8 @@
     "passageText": "Good morning, everyone. I would like to explain our new return policy. From next month, customers can return any item within 30 days of purchase, as long as they have the receipt. Refunds will be given in the same way the customer paid. If an item is damaged, we will offer a replacement or a full refund. Please remember to be polite and helpful when customers ask about returns.",
     "passageTitle": "Return policy",
     "script": "Good morning, everyone. I would like to explain our new return policy. From next month, customers can return any item within 30 days of purchase, as long as they have the receipt. Refunds will be given in the same way the customer paid. If an item is damaged, we will offer a replacement or a full refund. Please remember to be polite and helpful when customers ask about returns.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Who is this message for?",
@@ -3004,7 +3100,8 @@
     "passageText": "Good afternoon, passengers. This is an announcement for the 2:15 train to Boston. Due to a signal problem, the train will be delayed by about 30 minutes. It is now expected to leave at 2:45 from Platform 4. We apologize for the delay. Please listen for further announcements, and thank you for your patience.",
     "passageTitle": "Train delay",
     "script": "Good afternoon, passengers. This is an announcement for the 2:15 train to Boston. Due to a signal problem, the train will be delayed by about 30 minutes. It is now expected to leave at 2:45 from Platform 4. We apologize for the delay. Please listen for further announcements, and thank you for your patience.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why is the train delayed?",
@@ -3035,7 +3132,8 @@
     "passageText": "Good afternoon, passengers. This is an announcement for the 2:15 train to Boston. Due to a signal problem, the train will be delayed by about 30 minutes. It is now expected to leave at 2:45 from Platform 4. We apologize for the delay. Please listen for further announcements, and thank you for your patience.",
     "passageTitle": "Train delay",
     "script": "Good afternoon, passengers. This is an announcement for the 2:15 train to Boston. Due to a signal problem, the train will be delayed by about 30 minutes. It is now expected to leave at 2:45 from Platform 4. We apologize for the delay. Please listen for further announcements, and thank you for your patience.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What time is the train now expected to leave?",
@@ -3066,7 +3164,8 @@
     "passageText": "Good afternoon, passengers. This is an announcement for the 2:15 train to Boston. Due to a signal problem, the train will be delayed by about 30 minutes. It is now expected to leave at 2:45 from Platform 4. We apologize for the delay. Please listen for further announcements, and thank you for your patience.",
     "passageTitle": "Train delay",
     "script": "Good afternoon, passengers. This is an announcement for the 2:15 train to Boston. Due to a signal problem, the train will be delayed by about 30 minutes. It is now expected to leave at 2:45 from Platform 4. We apologize for the delay. Please listen for further announcements, and thank you for your patience.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the main topic of the talk?",
@@ -3097,7 +3196,8 @@
     "passageText": "Welcome, everyone, and thank you for coming to our product launch today. We are excited to introduce the SmartWatch X, our newest wearable device. It can track your heart rate, count your steps, and even monitor your sleep. The watch will be available in stores from next Monday, and the price will be $199. We believe it will be popular with people who want to stay healthy and active.",
     "passageTitle": "Product launch",
     "script": "Welcome, everyone, and thank you for coming to our product launch today. We are excited to introduce the SmartWatch X, our newest wearable device. It can track your heart rate, count your steps, and even monitor your sleep. The watch will be available in stores from next Monday, and the price will be $199. We believe it will be popular with people who want to stay healthy and active.",
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "What can the SmartWatch X do?",
@@ -3128,7 +3228,8 @@
     "passageText": "Welcome, everyone, and thank you for coming to our product launch today. We are excited to introduce the SmartWatch X, our newest wearable device. It can track your heart rate, count your steps, and even monitor your sleep. The watch will be available in stores from next Monday, and the price will be $199. We believe it will be popular with people who want to stay healthy and active.",
     "passageTitle": "Product launch",
     "script": "Welcome, everyone, and thank you for coming to our product launch today. We are excited to introduce the SmartWatch X, our newest wearable device. It can track your heart rate, count your steps, and even monitor your sleep. The watch will be available in stores from next Monday, and the price will be $199. We believe it will be popular with people who want to stay healthy and active.",
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "How much will the watch cost?",
@@ -3159,7 +3260,8 @@
     "passageText": "Welcome, everyone, and thank you for coming to our product launch today. We are excited to introduce the SmartWatch X, our newest wearable device. It can track your heart rate, count your steps, and even monitor your sleep. The watch will be available in stores from next Monday, and the price will be $199. We believe it will be popular with people who want to stay healthy and active.",
     "passageTitle": "Product launch",
     "script": "Welcome, everyone, and thank you for coming to our product launch today. We are excited to introduce the SmartWatch X, our newest wearable device. It can track your heart rate, count your steps, and even monitor your sleep. The watch will be available in stores from next Monday, and the price will be $199. We believe it will be popular with people who want to stay healthy and active.",
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the speaker announcing?",
@@ -3190,7 +3292,8 @@
     "passageText": "Hello, and welcome to the grand opening of our new branch in Maple City. To celebrate, we are offering a 25 percent discount on all items this weekend only. We are open from 9 a.m. to 9 p.m. every day, and our friendly staff are ready to help you. Please take a look around, and don't forget to pick up a free gift at the entrance.",
     "passageTitle": "New branch opening",
     "script": "Hello, and welcome to the grand opening of our new branch in Maple City. To celebrate, we are offering a 25 percent discount on all items this weekend only. We are open from 9 a.m. to 9 p.m. every day, and our friendly staff are ready to help you. Please take a look around, and don't forget to pick up a free gift at the entrance.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What discount is being offered?",
@@ -3221,7 +3324,8 @@
     "passageText": "Hello, and welcome to the grand opening of our new branch in Maple City. To celebrate, we are offering a 25 percent discount on all items this weekend only. We are open from 9 a.m. to 9 p.m. every day, and our friendly staff are ready to help you. Please take a look around, and don't forget to pick up a free gift at the entrance.",
     "passageTitle": "New branch opening",
     "script": "Hello, and welcome to the grand opening of our new branch in Maple City. To celebrate, we are offering a 25 percent discount on all items this weekend only. We are open from 9 a.m. to 9 p.m. every day, and our friendly staff are ready to help you. Please take a look around, and don't forget to pick up a free gift at the entrance.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What can visitors get at the entrance?",
@@ -3252,7 +3356,8 @@
     "passageText": "Hello, and welcome to the grand opening of our new branch in Maple City. To celebrate, we are offering a 25 percent discount on all items this weekend only. We are open from 9 a.m. to 9 p.m. every day, and our friendly staff are ready to help you. Please take a look around, and don't forget to pick up a free gift at the entrance.",
     "passageTitle": "New branch opening",
     "script": "Hello, and welcome to the grand opening of our new branch in Maple City. To celebrate, we are offering a 25 percent discount on all items this weekend only. We are open from 9 a.m. to 9 p.m. every day, and our friendly staff are ready to help you. Please take a look around, and don't forget to pick up a free gift at the entrance.",
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the purpose of this voicemail?",
@@ -3283,7 +3388,8 @@
     "passageText": "Hello, this is Dr. Park's office calling to confirm your appointment. Your appointment is scheduled for Thursday, May 15, at 10:30 in the morning. Please arrive 15 minutes early and bring your insurance card. If you need to change the appointment, please call us at 555-0142 at least 24 hours in advance. Thank you, and we look forward to seeing you.",
     "passageTitle": "Appointment confirmation",
     "script": "Hello, this is Dr. Park's office calling to confirm your appointment. Your appointment is scheduled for Thursday, May 15, at 10:30 in the morning. Please arrive 15 minutes early and bring your insurance card. If you need to change the appointment, please call us at 555-0142 at least 24 hours in advance. Thank you, and we look forward to seeing you.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "When is the appointment?",
@@ -3314,7 +3420,8 @@
     "passageText": "Hello, this is Dr. Park's office calling to confirm your appointment. Your appointment is scheduled for Thursday, May 15, at 10:30 in the morning. Please arrive 15 minutes early and bring your insurance card. If you need to change the appointment, please call us at 555-0142 at least 24 hours in advance. Thank you, and we look forward to seeing you.",
     "passageTitle": "Appointment confirmation",
     "script": "Hello, this is Dr. Park's office calling to confirm your appointment. Your appointment is scheduled for Thursday, May 15, at 10:30 in the morning. Please arrive 15 minutes early and bring your insurance card. If you need to change the appointment, please call us at 555-0142 at least 24 hours in advance. Thank you, and we look forward to seeing you.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What should the patient bring to the appointment?",
@@ -3345,7 +3452,8 @@
     "passageText": "Hello, this is Dr. Park's office calling to confirm your appointment. Your appointment is scheduled for Thursday, May 15, at 10:30 in the morning. Please arrive 15 minutes early and bring your insurance card. If you need to change the appointment, please call us at 555-0142 at least 24 hours in advance. Thank you, and we look forward to seeing you.",
     "passageTitle": "Appointment confirmation",
     "script": "Hello, this is Dr. Park's office calling to confirm your appointment. Your appointment is scheduled for Thursday, May 15, at 10:30 in the morning. Please arrive 15 minutes early and bring your insurance card. If you need to change the appointment, please call us at 555-0142 at least 24 hours in advance. Thank you, and we look forward to seeing you.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is this talk mainly about?",
@@ -3376,7 +3484,8 @@
     "passageText": "Welcome to our company. Before you start work, I need to explain some important safety rules. First, always wear your safety helmet in the factory area. Second, never use your mobile phone near the machines. Finally, if you see anything dangerous, report it to your supervisor immediately. Safety is our top priority, so please follow these rules at all times.",
     "passageTitle": "Safety rules",
     "script": "Welcome to our company. Before you start work, I need to explain some important safety rules. First, always wear your safety helmet in the factory area. Second, never use your mobile phone near the machines. Finally, if you see anything dangerous, report it to your supervisor immediately. Safety is our top priority, so please follow these rules at all times.",
-    "topic": "workplace"
+    "topic": "workplace",
+    "testSetId": "TS-001"
   },
   {
     "content": "What must employees wear in the factory area?",
@@ -3407,7 +3516,8 @@
     "passageText": "Welcome to our company. Before you start work, I need to explain some important safety rules. First, always wear your safety helmet in the factory area. Second, never use your mobile phone near the machines. Finally, if you see anything dangerous, report it to your supervisor immediately. Safety is our top priority, so please follow these rules at all times.",
     "passageTitle": "Safety rules",
     "script": "Welcome to our company. Before you start work, I need to explain some important safety rules. First, always wear your safety helmet in the factory area. Second, never use your mobile phone near the machines. Finally, if you see anything dangerous, report it to your supervisor immediately. Safety is our top priority, so please follow these rules at all times.",
-    "topic": "workplace"
+    "topic": "workplace",
+    "testSetId": "TS-001"
   },
   {
     "content": "What should employees do if they see something dangerous?",
@@ -3438,7 +3548,8 @@
     "passageText": "Welcome to our company. Before you start work, I need to explain some important safety rules. First, always wear your safety helmet in the factory area. Second, never use your mobile phone near the machines. Finally, if you see anything dangerous, report it to your supervisor immediately. Safety is our top priority, so please follow these rules at all times.",
     "passageTitle": "Safety rules",
     "script": "Welcome to our company. Before you start work, I need to explain some important safety rules. First, always wear your safety helmet in the factory area. Second, never use your mobile phone near the machines. Finally, if you see anything dangerous, report it to your supervisor immediately. Safety is our top priority, so please follow these rules at all times.",
-    "topic": "workplace"
+    "topic": "workplace",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the speaker doing?",
@@ -3469,7 +3580,8 @@
     "passageText": "Good morning, travelers. This summer, Sky Airlines is offering special fares to popular destinations in Asia. You can fly to Bangkok, Seoul, or Tokyo for as low as $199 one way. This offer is valid for travel between June 1 and August 31, and tickets must be booked by May 20. Visit our website or call our booking office to reserve your seat today.",
     "passageTitle": "Airline promotion",
     "script": "Good morning, travelers. This summer, Sky Airlines is offering special fares to popular destinations in Asia. You can fly to Bangkok, Seoul, or Tokyo for as low as $199 one way. This offer is valid for travel between June 1 and August 31, and tickets must be booked by May 20. Visit our website or call our booking office to reserve your seat today.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the lowest one-way fare mentioned?",
@@ -3500,7 +3612,8 @@
     "passageText": "Good morning, travelers. This summer, Sky Airlines is offering special fares to popular destinations in Asia. You can fly to Bangkok, Seoul, or Tokyo for as low as $199 one way. This offer is valid for travel between June 1 and August 31, and tickets must be booked by May 20. Visit our website or call our booking office to reserve your seat today.",
     "passageTitle": "Airline promotion",
     "script": "Good morning, travelers. This summer, Sky Airlines is offering special fares to popular destinations in Asia. You can fly to Bangkok, Seoul, or Tokyo for as low as $199 one way. This offer is valid for travel between June 1 and August 31, and tickets must be booked by May 20. Visit our website or call our booking office to reserve your seat today.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "By when must tickets be booked?",
@@ -3531,7 +3644,8 @@
     "passageText": "Good morning, travelers. This summer, Sky Airlines is offering special fares to popular destinations in Asia. You can fly to Bangkok, Seoul, or Tokyo for as low as $199 one way. This offer is valid for travel between June 1 and August 31, and tickets must be booked by May 20. Visit our website or call our booking office to reserve your seat today.",
     "passageTitle": "Airline promotion",
     "script": "Good morning, travelers. This summer, Sky Airlines is offering special fares to popular destinations in Asia. You can fly to Bangkok, Seoul, or Tokyo for as low as $199 one way. This offer is valid for travel between June 1 and August 31, and tickets must be booked by May 20. Visit our website or call our booking office to reserve your seat today.",
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the main purpose of this message?",
@@ -3562,7 +3676,8 @@
     "passageText": "Dear library members, please note that the Central Library will be closed from Monday, July 7, to Friday, July 11, for building repairs. During this time, you will not be able to borrow or return books. The library will reopen on Saturday, July 12, at 9 a.m. We apologize for the inconvenience and thank you for your patience.",
     "passageTitle": "Library closure",
     "script": "Dear library members, please note that the Central Library will be closed from Monday, July 7, to Friday, July 11, for building repairs. During this time, you will not be able to borrow or return books. The library will reopen on Saturday, July 12, at 9 a.m. We apologize for the inconvenience and thank you for your patience.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "How long will the library be closed?",
@@ -3593,7 +3708,8 @@
     "passageText": "Dear library members, please note that the Central Library will be closed from Monday, July 7, to Friday, July 11, for building repairs. During this time, you will not be able to borrow or return books. The library will reopen on Saturday, July 12, at 9 a.m. We apologize for the inconvenience and thank you for your patience.",
     "passageTitle": "Library closure",
     "script": "Dear library members, please note that the Central Library will be closed from Monday, July 7, to Friday, July 11, for building repairs. During this time, you will not be able to borrow or return books. The library will reopen on Saturday, July 12, at 9 a.m. We apologize for the inconvenience and thank you for your patience.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "When will the library reopen?",
@@ -3624,7 +3740,8 @@
     "passageText": "Dear library members, please note that the Central Library will be closed from Monday, July 7, to Friday, July 11, for building repairs. During this time, you will not be able to borrow or return books. The library will reopen on Saturday, July 12, at 9 a.m. We apologize for the inconvenience and thank you for your patience.",
     "passageTitle": "Library closure",
     "script": "Dear library members, please note that the Central Library will be closed from Monday, July 7, to Friday, July 11, for building repairs. During this time, you will not be able to borrow or return books. The library will reopen on Saturday, July 12, at 9 a.m. We apologize for the inconvenience and thank you for your patience.",
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the speaker mainly talking about?",
@@ -3655,7 +3772,8 @@
     "passageText": "Are you interested in improving your English? Our language school is now offering a new evening course for working adults. Classes meet on Tuesdays and Thursdays from 6:30 to 8:30 p.m. The course lasts for 12 weeks and covers speaking, listening, and business writing. The fee is $240, and early registration is now open. For more information, please visit our website or call 555-0198.",
     "passageTitle": "English course",
     "script": "Are you interested in improving your English? Our language school is now offering a new evening course for working adults. Classes meet on Tuesdays and Thursdays from 6:30 to 8:30 p.m. The course lasts for 12 weeks and covers speaking, listening, and business writing. The fee is $240, and early registration is now open. For more information, please visit our website or call 555-0198.",
-    "topic": "education"
+    "topic": "education",
+    "testSetId": "TS-001"
   },
   {
     "content": "When do the classes meet?",
@@ -3686,7 +3804,8 @@
     "passageText": "Are you interested in improving your English? Our language school is now offering a new evening course for working adults. Classes meet on Tuesdays and Thursdays from 6:30 to 8:30 p.m. The course lasts for 12 weeks and covers speaking, listening, and business writing. The fee is $240, and early registration is now open. For more information, please visit our website or call 555-0198.",
     "passageTitle": "English course",
     "script": "Are you interested in improving your English? Our language school is now offering a new evening course for working adults. Classes meet on Tuesdays and Thursdays from 6:30 to 8:30 p.m. The course lasts for 12 weeks and covers speaking, listening, and business writing. The fee is $240, and early registration is now open. For more information, please visit our website or call 555-0198.",
-    "topic": "education"
+    "topic": "education",
+    "testSetId": "TS-001"
   },
   {
     "content": "How much is the course fee?",
@@ -3717,7 +3836,8 @@
     "passageText": "Are you interested in improving your English? Our language school is now offering a new evening course for working adults. Classes meet on Tuesdays and Thursdays from 6:30 to 8:30 p.m. The course lasts for 12 weeks and covers speaking, listening, and business writing. The fee is $240, and early registration is now open. For more information, please visit our website or call 555-0198.",
     "passageTitle": "English course",
     "script": "Are you interested in improving your English? Our language school is now offering a new evening course for working adults. Classes meet on Tuesdays and Thursdays from 6:30 to 8:30 p.m. The course lasts for 12 weeks and covers speaking, listening, and business writing. The fee is $240, and early registration is now open. For more information, please visit our website or call 555-0198.",
-    "topic": "education"
+    "topic": "education",
+    "testSetId": "TS-001"
   },
   {
     "content": "The meeting will start ______ 9 a.m. sharp, so please arrive on time.",
@@ -3748,7 +3868,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "Ms. Taylor is ______ for the new marketing campaign.",
@@ -3779,7 +3900,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "Please send the report to Mr. Brown ______ Friday.",
@@ -3810,7 +3932,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The new employee ______ yesterday and met the whole team.",
@@ -3841,7 +3964,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "Our company offers a ______ working environment for all staff.",
@@ -3872,7 +3996,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The manager asked the staff to work ______ to finish the project on time.",
@@ -3903,7 +4028,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "If you have any questions, please do not ______ to contact us.",
@@ -3934,7 +4060,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The hotel is located in the ______ of the city, near the main station.",
@@ -3965,7 +4092,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "All employees must attend the training ______ next Monday.",
@@ -3996,7 +4124,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The price of the new model has ______ by 10 percent this year.",
@@ -4027,7 +4156,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "We will inform all customers ______ the change in our opening hours.",
@@ -4058,7 +4188,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The job requires at least two years of ______ in sales.",
@@ -4089,7 +4220,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "______ the heavy rain, the flight arrived on time.",
@@ -4120,7 +4252,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The company will ______ a new office in Hanoi next year.",
@@ -4151,7 +4284,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "Please read the instructions ______ before you start using the machine.",
@@ -4182,7 +4316,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The conference room is ______ for meetings of up to 20 people.",
@@ -4213,7 +4348,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "Neither the manager nor the employees ______ happy with the decision.",
@@ -4244,7 +4380,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "We are looking ______ a reliable supplier for our new product line.",
@@ -4275,7 +4412,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The new software is easy ______ and saves a lot of time.",
@@ -4306,7 +4444,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "Thank you for your ______ in our company.",
@@ -4337,7 +4476,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The report ______ by the finance team every month.",
@@ -4368,7 +4508,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "Please ______ the form and return it to the HR department.",
@@ -4399,7 +4540,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The number of visitors to our website ______ greatly this year.",
@@ -4430,7 +4572,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "We need to ______ the budget before the end of the month.",
@@ -4461,7 +4604,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The manager ______ the new policy to all staff yesterday.",
@@ -4492,7 +4636,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "Customers who buy two items will receive a 10 percent ______.",
@@ -4523,7 +4668,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The office will be closed ______ the public holiday on Monday.",
@@ -4554,7 +4700,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "She speaks English ______ than her colleagues.",
@@ -4585,7 +4732,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The train leaves ______ Platform 3 every hour.",
@@ -4616,7 +4764,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "We should book the hotel room ______ advance to get a better price.",
@@ -4647,7 +4796,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The new employee is still ______ training and cannot work alone yet.",
@@ -4678,7 +4828,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "If it rains tomorrow, the outdoor event will be ______.",
@@ -4709,7 +4860,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "The CEO made an important ______ during the meeting.",
@@ -4740,7 +4892,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "vocabulary"
+    "topic": "vocabulary",
+    "testSetId": "TS-001"
   },
   {
     "content": "Please keep your passport ______ you at all times while traveling.",
@@ -4771,7 +4924,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The new store will open ______ June 1.",
@@ -4802,7 +4956,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "She has worked here ______ 2019.",
@@ -4833,7 +4988,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The proposal was approved ______ the board of directors.",
@@ -4864,7 +5020,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "We are very pleased ______ the results of the survey.",
@@ -4895,7 +5052,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "The company ______ its profits by 15 percent last year.",
@@ -4926,7 +5084,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "You can pay by credit card ______ in cash.",
@@ -4957,7 +5116,8 @@
     "passageText": null,
     "passageTitle": null,
     "script": null,
-    "topic": "grammar"
+    "topic": "grammar",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (1) trong đoạn \"Annual meeting invitation\".",
@@ -4988,7 +5148,8 @@
     "passageText": "Dear Ms. Lee, We are pleased to invite you to our annual company meeting ____ (1) Monday, June 9, at the Grand Hotel in Seoul. The meeting will begin at 9 a.m. and will ____ (2) presentations from each department manager. Lunch will be provided, and there will be time for questions at the end. Please confirm your attendance by May 30 by replying to this email. We look ____ (3) to seeing you there. If you have any questions, please contact our office. We hope this meeting will be both informative and ____ (4). Sincerely, David Kim, Human Resources Manager",
     "passageTitle": "Annual meeting invitation",
     "script": null,
-    "topic": "email"
+    "topic": "email",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (2) trong đoạn \"Annual meeting invitation\".",
@@ -5019,7 +5180,8 @@
     "passageText": "Dear Ms. Lee, We are pleased to invite you to our annual company meeting ____ (1) Monday, June 9, at the Grand Hotel in Seoul. The meeting will begin at 9 a.m. and will ____ (2) presentations from each department manager. Lunch will be provided, and there will be time for questions at the end. Please confirm your attendance by May 30 by replying to this email. We look ____ (3) to seeing you there. If you have any questions, please contact our office. We hope this meeting will be both informative and ____ (4). Sincerely, David Kim, Human Resources Manager",
     "passageTitle": "Annual meeting invitation",
     "script": null,
-    "topic": "email"
+    "topic": "email",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (3) trong đoạn \"Annual meeting invitation\".",
@@ -5050,7 +5212,8 @@
     "passageText": "Dear Ms. Lee, We are pleased to invite you to our annual company meeting ____ (1) Monday, June 9, at the Grand Hotel in Seoul. The meeting will begin at 9 a.m. and will ____ (2) presentations from each department manager. Lunch will be provided, and there will be time for questions at the end. Please confirm your attendance by May 30 by replying to this email. We look ____ (3) to seeing you there. If you have any questions, please contact our office. We hope this meeting will be both informative and ____ (4). Sincerely, David Kim, Human Resources Manager",
     "passageTitle": "Annual meeting invitation",
     "script": null,
-    "topic": "email"
+    "topic": "email",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (4) trong đoạn \"Annual meeting invitation\".",
@@ -5081,7 +5244,8 @@
     "passageText": "Dear Ms. Lee, We are pleased to invite you to our annual company meeting ____ (1) Monday, June 9, at the Grand Hotel in Seoul. The meeting will begin at 9 a.m. and will ____ (2) presentations from each department manager. Lunch will be provided, and there will be time for questions at the end. Please confirm your attendance by May 30 by replying to this email. We look ____ (3) to seeing you there. If you have any questions, please contact our office. We hope this meeting will be both informative and ____ (4). Sincerely, David Kim, Human Resources Manager",
     "passageTitle": "Annual meeting invitation",
     "script": null,
-    "topic": "email"
+    "topic": "email",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (1) trong đoạn \"Job advertisement\".",
@@ -5112,7 +5276,8 @@
     "passageText": "We are looking for ____ (1) experienced sales representative to join our team in Ho Chi Minh City. The successful candidate will be responsible for finding new customers and ____ (2) relationships with existing clients. Applicants should have at least three years of experience in sales and excellent communication skills. We offer a competitive salary, health insurance, and ____ (3) for career growth. Interested candidates should send their resume to careers@brightstar.com by July 15. We look forward to ____ (4) from you. BrightStar Trading Company",
     "passageTitle": "Job advertisement",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (2) trong đoạn \"Job advertisement\".",
@@ -5143,7 +5308,8 @@
     "passageText": "We are looking for ____ (1) experienced sales representative to join our team in Ho Chi Minh City. The successful candidate will be responsible for finding new customers and ____ (2) relationships with existing clients. Applicants should have at least three years of experience in sales and excellent communication skills. We offer a competitive salary, health insurance, and ____ (3) for career growth. Interested candidates should send their resume to careers@brightstar.com by July 15. We look forward to ____ (4) from you. BrightStar Trading Company",
     "passageTitle": "Job advertisement",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (3) trong đoạn \"Job advertisement\".",
@@ -5174,7 +5340,8 @@
     "passageText": "We are looking for ____ (1) experienced sales representative to join our team in Ho Chi Minh City. The successful candidate will be responsible for finding new customers and ____ (2) relationships with existing clients. Applicants should have at least three years of experience in sales and excellent communication skills. We offer a competitive salary, health insurance, and ____ (3) for career growth. Interested candidates should send their resume to careers@brightstar.com by July 15. We look forward to ____ (4) from you. BrightStar Trading Company",
     "passageTitle": "Job advertisement",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (4) trong đoạn \"Job advertisement\".",
@@ -5205,7 +5372,8 @@
     "passageText": "We are looking for ____ (1) experienced sales representative to join our team in Ho Chi Minh City. The successful candidate will be responsible for finding new customers and ____ (2) relationships with existing clients. Applicants should have at least three years of experience in sales and excellent communication skills. We offer a competitive salary, health insurance, and ____ (3) for career growth. Interested candidates should send their resume to careers@brightstar.com by July 15. We look forward to ____ (4) from you. BrightStar Trading Company",
     "passageTitle": "Job advertisement",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (1) trong đoạn \"Summer sale notice\".",
@@ -5236,7 +5404,8 @@
     "passageText": "The Riverside Shopping Mall will hold its annual summer sale ____ (1) Saturday, August 2, through Sunday, August 10. During the sale, shoppers can enjoy discounts of up to 50 percent on clothing, electronics, and home goods. In addition, customers who spend more than $100 will ____ (2) a free gift. The mall will open one hour earlier than usual, at 8 a.m., ____ (3) the sale period. We hope you will come and enjoy great savings with your family and friends. For more information, please visit our website ____ (4) call our customer service line.",
     "passageTitle": "Summer sale notice",
     "script": null,
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (2) trong đoạn \"Summer sale notice\".",
@@ -5267,7 +5436,8 @@
     "passageText": "The Riverside Shopping Mall will hold its annual summer sale ____ (1) Saturday, August 2, through Sunday, August 10. During the sale, shoppers can enjoy discounts of up to 50 percent on clothing, electronics, and home goods. In addition, customers who spend more than $100 will ____ (2) a free gift. The mall will open one hour earlier than usual, at 8 a.m., ____ (3) the sale period. We hope you will come and enjoy great savings with your family and friends. For more information, please visit our website ____ (4) call our customer service line.",
     "passageTitle": "Summer sale notice",
     "script": null,
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (3) trong đoạn \"Summer sale notice\".",
@@ -5298,7 +5468,8 @@
     "passageText": "The Riverside Shopping Mall will hold its annual summer sale ____ (1) Saturday, August 2, through Sunday, August 10. During the sale, shoppers can enjoy discounts of up to 50 percent on clothing, electronics, and home goods. In addition, customers who spend more than $100 will ____ (2) a free gift. The mall will open one hour earlier than usual, at 8 a.m., ____ (3) the sale period. We hope you will come and enjoy great savings with your family and friends. For more information, please visit our website ____ (4) call our customer service line.",
     "passageTitle": "Summer sale notice",
     "script": null,
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (4) trong đoạn \"Summer sale notice\".",
@@ -5329,7 +5500,8 @@
     "passageText": "The Riverside Shopping Mall will hold its annual summer sale ____ (1) Saturday, August 2, through Sunday, August 10. During the sale, shoppers can enjoy discounts of up to 50 percent on clothing, electronics, and home goods. In addition, customers who spend more than $100 will ____ (2) a free gift. The mall will open one hour earlier than usual, at 8 a.m., ____ (3) the sale period. We hope you will come and enjoy great savings with your family and friends. For more information, please visit our website ____ (4) call our customer service line.",
     "passageTitle": "Summer sale notice",
     "script": null,
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (1) trong đoạn \"Train delay notice\".",
@@ -5360,7 +5532,8 @@
     "passageText": "Dear Passengers, ____ (1) maintenance work on the railway line, all trains between Central Station and Westfield will be delayed this weekend. Buses will be provided as an alternative, and they will depart ____ (2) the main entrance of Central Station every 30 minutes. We apologize for any inconvenience this may cause and thank you for your ____ (3). Please check our website for the latest updates before you travel. We expect normal service to resume on Monday morning, and we appreciate your cooperation ____ (4) this time. City Rail Company",
     "passageTitle": "Train delay notice",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (2) trong đoạn \"Train delay notice\".",
@@ -5391,7 +5564,8 @@
     "passageText": "Dear Passengers, ____ (1) maintenance work on the railway line, all trains between Central Station and Westfield will be delayed this weekend. Buses will be provided as an alternative, and they will depart ____ (2) the main entrance of Central Station every 30 minutes. We apologize for any inconvenience this may cause and thank you for your ____ (3). Please check our website for the latest updates before you travel. We expect normal service to resume on Monday morning, and we appreciate your cooperation ____ (4) this time. City Rail Company",
     "passageTitle": "Train delay notice",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (3) trong đoạn \"Train delay notice\".",
@@ -5422,7 +5596,8 @@
     "passageText": "Dear Passengers, ____ (1) maintenance work on the railway line, all trains between Central Station and Westfield will be delayed this weekend. Buses will be provided as an alternative, and they will depart ____ (2) the main entrance of Central Station every 30 minutes. We apologize for any inconvenience this may cause and thank you for your ____ (3). Please check our website for the latest updates before you travel. We expect normal service to resume on Monday morning, and we appreciate your cooperation ____ (4) this time. City Rail Company",
     "passageTitle": "Train delay notice",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (4) trong đoạn \"Train delay notice\".",
@@ -5453,7 +5628,8 @@
     "passageText": "Dear Passengers, ____ (1) maintenance work on the railway line, all trains between Central Station and Westfield will be delayed this weekend. Buses will be provided as an alternative, and they will depart ____ (2) the main entrance of Central Station every 30 minutes. We apologize for any inconvenience this may cause and thank you for your ____ (3). Please check our website for the latest updates before you travel. We expect normal service to resume on Monday morning, and we appreciate your cooperation ____ (4) this time. City Rail Company",
     "passageTitle": "Train delay notice",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (1) trong đoạn \"New product announcement\".",
@@ -5484,7 +5660,8 @@
     "passageText": "We are excited to announce the launch of our ____ (1) product, the EcoClean vacuum cleaner. This lightweight machine uses less electricity than older models and is easy to store. It will be available in stores ____ (2) September 1 at an introductory price of $129. Customers who buy the product in the first month will receive a free set of cleaning ____ (3). For more information, please visit our website or speak to a sales assistant in your ____ (4) store. Thank you for your continued support. HomeTech Company",
     "passageTitle": "New product announcement",
     "script": null,
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (2) trong đoạn \"New product announcement\".",
@@ -5515,7 +5692,8 @@
     "passageText": "We are excited to announce the launch of our ____ (1) product, the EcoClean vacuum cleaner. This lightweight machine uses less electricity than older models and is easy to store. It will be available in stores ____ (2) September 1 at an introductory price of $129. Customers who buy the product in the first month will receive a free set of cleaning ____ (3). For more information, please visit our website or speak to a sales assistant in your ____ (4) store. Thank you for your continued support. HomeTech Company",
     "passageTitle": "New product announcement",
     "script": null,
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (3) trong đoạn \"New product announcement\".",
@@ -5546,7 +5724,8 @@
     "passageText": "We are excited to announce the launch of our ____ (1) product, the EcoClean vacuum cleaner. This lightweight machine uses less electricity than older models and is easy to store. It will be available in stores ____ (2) September 1 at an introductory price of $129. Customers who buy the product in the first month will receive a free set of cleaning ____ (3). For more information, please visit our website or speak to a sales assistant in your ____ (4) store. Thank you for your continued support. HomeTech Company",
     "passageTitle": "New product announcement",
     "script": null,
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (4) trong đoạn \"New product announcement\".",
@@ -5577,7 +5756,8 @@
     "passageText": "We are excited to announce the launch of our ____ (1) product, the EcoClean vacuum cleaner. This lightweight machine uses less electricity than older models and is easy to store. It will be available in stores ____ (2) September 1 at an introductory price of $129. Customers who buy the product in the first month will receive a free set of cleaning ____ (3). For more information, please visit our website or speak to a sales assistant in your ____ (4) store. Thank you for your continued support. HomeTech Company",
     "passageTitle": "New product announcement",
     "script": null,
-    "topic": "business"
+    "topic": "business",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (1) trong đoạn \"Workshop invitation\".",
@@ -5608,7 +5788,8 @@
     "passageText": "All employees are invited to a workshop on time management ____ (1) Friday, October 3, from 1 p.m. to 4 p.m. in Room 305. The workshop will be led by Ms. Angela Wright, a well-known business consultant. Participants will learn how to set priorities, avoid ____ (2), and use their time more effectively. Please register by September 25 by sending an email to training@globalcorp.com. Spaces are ____ (3), so early registration is recommended. We hope the workshop will be useful and ____ (4) for everyone. GlobalCorp Training Department",
     "passageTitle": "Workshop invitation",
     "script": null,
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (2) trong đoạn \"Workshop invitation\".",
@@ -5639,7 +5820,8 @@
     "passageText": "All employees are invited to a workshop on time management ____ (1) Friday, October 3, from 1 p.m. to 4 p.m. in Room 305. The workshop will be led by Ms. Angela Wright, a well-known business consultant. Participants will learn how to set priorities, avoid ____ (2), and use their time more effectively. Please register by September 25 by sending an email to training@globalcorp.com. Spaces are ____ (3), so early registration is recommended. We hope the workshop will be useful and ____ (4) for everyone. GlobalCorp Training Department",
     "passageTitle": "Workshop invitation",
     "script": null,
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (3) trong đoạn \"Workshop invitation\".",
@@ -5670,7 +5852,8 @@
     "passageText": "All employees are invited to a workshop on time management ____ (1) Friday, October 3, from 1 p.m. to 4 p.m. in Room 305. The workshop will be led by Ms. Angela Wright, a well-known business consultant. Participants will learn how to set priorities, avoid ____ (2), and use their time more effectively. Please register by September 25 by sending an email to training@globalcorp.com. Spaces are ____ (3), so early registration is recommended. We hope the workshop will be useful and ____ (4) for everyone. GlobalCorp Training Department",
     "passageTitle": "Workshop invitation",
     "script": null,
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "Chọn đáp án đúng cho chỗ trống (4) trong đoạn \"Workshop invitation\".",
@@ -5701,7 +5884,8 @@
     "passageText": "All employees are invited to a workshop on time management ____ (1) Friday, October 3, from 1 p.m. to 4 p.m. in Room 305. The workshop will be led by Ms. Angela Wright, a well-known business consultant. Participants will learn how to set priorities, avoid ____ (2), and use their time more effectively. Please register by September 25 by sending an email to training@globalcorp.com. Spaces are ____ (3), so early registration is recommended. We hope the workshop will be useful and ____ (4) for everyone. GlobalCorp Training Department",
     "passageTitle": "Workshop invitation",
     "script": null,
-    "topic": "meetings"
+    "topic": "meetings",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the main purpose of this email?",
@@ -5732,7 +5916,8 @@
     "passageText": "From: Human Resources Department To: All Staff Subject: Change in Working Hours Dear Staff, Starting next month, our office hours will change from 9 a.m.-6 p.m. to 8:30 a.m.-5:30 p.m. This change is being made to help staff avoid heavy traffic in the morning. The lunch break will remain one hour, from 12:30 p.m. to 1:30 p.m. Please note that all meetings should now be scheduled between 9 a.m. and 5 p.m. If you have any questions, please contact the HR Department. Thank you for your cooperation.",
     "passageTitle": "Change in working hours",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What will the new office hours be?",
@@ -5763,7 +5948,8 @@
     "passageText": "From: Human Resources Department To: All Staff Subject: Change in Working Hours Dear Staff, Starting next month, our office hours will change from 9 a.m.-6 p.m. to 8:30 a.m.-5:30 p.m. This change is being made to help staff avoid heavy traffic in the morning. The lunch break will remain one hour, from 12:30 p.m. to 1:30 p.m. Please note that all meetings should now be scheduled between 9 a.m. and 5 p.m. If you have any questions, please contact the HR Department. Thank you for your cooperation.",
     "passageTitle": "Change in working hours",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why is the change being made?",
@@ -5794,7 +5980,8 @@
     "passageText": "From: Human Resources Department To: All Staff Subject: Change in Working Hours Dear Staff, Starting next month, our office hours will change from 9 a.m.-6 p.m. to 8:30 a.m.-5:30 p.m. This change is being made to help staff avoid heavy traffic in the morning. The lunch break will remain one hour, from 12:30 p.m. to 1:30 p.m. Please note that all meetings should now be scheduled between 9 a.m. and 5 p.m. If you have any questions, please contact the HR Department. Thank you for your cooperation.",
     "passageTitle": "Change in working hours",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is this notice about?",
@@ -5825,7 +6012,8 @@
     "passageText": "NOTICE TO ALL MEMBERS The swimming pool at the City Sports Center will be closed for cleaning from Monday, June 16, to Wednesday, June 18. During this time, members can use the gym and the tennis courts as usual. The pool will reopen on Thursday, June 19, at 7 a.m. We apologize for any inconvenience. For more information, please speak to a member of staff at the front desk.",
     "passageTitle": "Pool closure notice",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "How long will the pool be closed?",
@@ -5856,7 +6044,8 @@
     "passageText": "NOTICE TO ALL MEMBERS The swimming pool at the City Sports Center will be closed for cleaning from Monday, June 16, to Wednesday, June 18. During this time, members can use the gym and the tennis courts as usual. The pool will reopen on Thursday, June 19, at 7 a.m. We apologize for any inconvenience. For more information, please speak to a member of staff at the front desk.",
     "passageTitle": "Pool closure notice",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What can members still use while the pool is closed?",
@@ -5887,7 +6076,8 @@
     "passageText": "NOTICE TO ALL MEMBERS The swimming pool at the City Sports Center will be closed for cleaning from Monday, June 16, to Wednesday, June 18. During this time, members can use the gym and the tennis courts as usual. The pool will reopen on Thursday, June 19, at 7 a.m. We apologize for any inconvenience. For more information, please speak to a member of staff at the front desk.",
     "passageTitle": "Pool closure notice",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the main purpose of this advertisement?",
@@ -5918,7 +6108,8 @@
     "passageText": "LEARN TO COOK LIKE A CHEF! Join our new weekend cooking course at the Riverside Culinary School. Classes are held every Saturday from 10 a.m. to 1 p.m. You will learn how to prepare Italian, Japanese, and Vietnamese dishes. All ingredients and equipment are provided. The course lasts for eight weeks and costs $180. No experience is needed. To register, please call 555-0287 or visit our website at www.riversidecooking.com.",
     "passageTitle": "Cooking course ad",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "When are the classes held?",
@@ -5949,7 +6140,8 @@
     "passageText": "LEARN TO COOK LIKE A CHEF! Join our new weekend cooking course at the Riverside Culinary School. Classes are held every Saturday from 10 a.m. to 1 p.m. You will learn how to prepare Italian, Japanese, and Vietnamese dishes. All ingredients and equipment are provided. The course lasts for eight weeks and costs $180. No experience is needed. To register, please call 555-0287 or visit our website at www.riversidecooking.com.",
     "passageTitle": "Cooking course ad",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "How much does the course cost?",
@@ -5980,7 +6172,8 @@
     "passageText": "LEARN TO COOK LIKE A CHEF! Join our new weekend cooking course at the Riverside Culinary School. Classes are held every Saturday from 10 a.m. to 1 p.m. You will learn how to prepare Italian, Japanese, and Vietnamese dishes. All ingredients and equipment are provided. The course lasts for eight weeks and costs $180. No experience is needed. To register, please call 555-0287 or visit our website at www.riversidecooking.com.",
     "passageTitle": "Cooking course ad",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is this email mainly about?",
@@ -6011,7 +6204,8 @@
     "passageText": "Dear Ms. Nguyen, Thank you for your order of a laptop from our online store. We are writing to inform you that your order will be delayed by three days because of a problem with our supplier. Your laptop is now expected to arrive on Friday, July 25. As an apology, we would like to offer you free delivery on your next order. We are sorry for the inconvenience and thank you for your understanding. Best regards, Customer Service Team, TechWorld",
     "passageTitle": "Delayed delivery email",
     "script": null,
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why will the order be delayed?",
@@ -6042,7 +6236,8 @@
     "passageText": "Dear Ms. Nguyen, Thank you for your order of a laptop from our online store. We are writing to inform you that your order will be delayed by three days because of a problem with our supplier. Your laptop is now expected to arrive on Friday, July 25. As an apology, we would like to offer you free delivery on your next order. We are sorry for the inconvenience and thank you for your understanding. Best regards, Customer Service Team, TechWorld",
     "passageTitle": "Delayed delivery email",
     "script": null,
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What does the company offer as an apology?",
@@ -6073,7 +6268,8 @@
     "passageText": "Dear Ms. Nguyen, Thank you for your order of a laptop from our online store. We are writing to inform you that your order will be delayed by three days because of a problem with our supplier. Your laptop is now expected to arrive on Friday, July 25. As an apology, we would like to offer you free delivery on your next order. We are sorry for the inconvenience and thank you for your understanding. Best regards, Customer Service Team, TechWorld",
     "passageTitle": "Delayed delivery email",
     "script": null,
-    "topic": "shopping"
+    "topic": "shopping",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is this article mainly about?",
@@ -6104,7 +6300,8 @@
     "passageText": "More and more companies are now allowing their employees to work from home. This change has been made possible by improvements in technology, such as video calls and cloud storage. Many workers say they are happier working from home because they can save time on travel and spend more time with their families. However, some managers worry that remote workers may feel lonely or find it hard to work as a team. Most experts believe that a mix of office work and home work will become normal in the future.",
     "passageTitle": "Remote working",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why do many workers like working from home?",
@@ -6135,7 +6332,8 @@
     "passageText": "More and more companies are now allowing their employees to work from home. This change has been made possible by improvements in technology, such as video calls and cloud storage. Many workers say they are happier working from home because they can save time on travel and spend more time with their families. However, some managers worry that remote workers may feel lonely or find it hard to work as a team. Most experts believe that a mix of office work and home work will become normal in the future.",
     "passageTitle": "Remote working",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What do most experts believe?",
@@ -6166,7 +6364,8 @@
     "passageText": "More and more companies are now allowing their employees to work from home. This change has been made possible by improvements in technology, such as video calls and cloud storage. Many workers say they are happier working from home because they can save time on travel and spend more time with their families. However, some managers worry that remote workers may feel lonely or find it hard to work as a team. Most experts believe that a mix of office work and home work will become normal in the future.",
     "passageTitle": "Remote working",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the purpose of this memo?",
@@ -6197,7 +6396,8 @@
     "passageText": "MEMO To: All Staff From: Office Manager Date: June 10 Subject: Office Move — Please Clear Your Desks As you know, we will move to our new office on Saturday, June 21. Please clear your desks and pack your personal items into the boxes provided by Friday, June 20. Label each box with your name and department. The IT team will move all computers on Friday evening. If you have any large items, please tell the office manager by Wednesday. Thank you for your help.",
     "passageTitle": "Office move memo",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "By when must staff pack their personal items?",
@@ -6228,7 +6428,8 @@
     "passageText": "MEMO To: All Staff From: Office Manager Date: June 10 Subject: Office Move — Please Clear Your Desks As you know, we will move to our new office on Saturday, June 21. Please clear your desks and pack your personal items into the boxes provided by Friday, June 20. Label each box with your name and department. The IT team will move all computers on Friday evening. If you have any large items, please tell the office manager by Wednesday. Thank you for your help.",
     "passageTitle": "Office move memo",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What should staff write on each box?",
@@ -6259,7 +6460,8 @@
     "passageText": "MEMO To: All Staff From: Office Manager Date: June 10 Subject: Office Move — Please Clear Your Desks As you know, we will move to our new office on Saturday, June 21. Please clear your desks and pack your personal items into the boxes provided by Friday, June 20. Label each box with your name and department. The IT team will move all computers on Friday evening. If you have any large items, please tell the office manager by Wednesday. Thank you for your help.",
     "passageTitle": "Office move memo",
     "script": null,
-    "topic": "office"
+    "topic": "office",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is this text about?",
@@ -6290,7 +6492,8 @@
     "passageText": "ANNUAL JOB FAIR The Annual Job Fair will be held at the City Convention Center on Saturday, September 13, from 9 a.m. to 4 p.m. More than 50 companies will take part, offering jobs in marketing, IT, finance, and customer service. Students and recent graduates are welcome to bring their resumes and talk directly to company representatives. Admission is free, but visitors must register online in advance at www.cityjobfair.com. Don't miss this great chance to find your dream job!",
     "passageTitle": "Job fair",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "How many companies will take part in the job fair?",
@@ -6321,7 +6524,8 @@
     "passageText": "ANNUAL JOB FAIR The Annual Job Fair will be held at the City Convention Center on Saturday, September 13, from 9 a.m. to 4 p.m. More than 50 companies will take part, offering jobs in marketing, IT, finance, and customer service. Students and recent graduates are welcome to bring their resumes and talk directly to company representatives. Admission is free, but visitors must register online in advance at www.cityjobfair.com. Don't miss this great chance to find your dream job!",
     "passageTitle": "Job fair",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "What must visitors do before attending?",
@@ -6352,7 +6556,8 @@
     "passageText": "ANNUAL JOB FAIR The Annual Job Fair will be held at the City Convention Center on Saturday, September 13, from 9 a.m. to 4 p.m. More than 50 companies will take part, offering jobs in marketing, IT, finance, and customer service. Students and recent graduates are welcome to bring their resumes and talk directly to company representatives. Admission is free, but visitors must register online in advance at www.cityjobfair.com. Don't miss this great chance to find your dream job!",
     "passageTitle": "Job fair",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the main idea of this passage?",
@@ -6383,7 +6588,8 @@
     "passageText": "Recycling is one of the easiest ways to help protect the environment. When we recycle paper, plastic, and glass, we reduce the amount of waste in landfills and save natural resources. For example, recycling one ton of paper can save about 17 trees. Many cities now provide special bins for different types of waste, making it easy for people to recycle at home. By recycling a little every day, we can all make a big difference.",
     "passageTitle": "Recycling",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "According to the passage, what can recycling one ton of paper save?",
@@ -6414,7 +6620,8 @@
     "passageText": "Recycling is one of the easiest ways to help protect the environment. When we recycle paper, plastic, and glass, we reduce the amount of waste in landfills and save natural resources. For example, recycling one ton of paper can save about 17 trees. Many cities now provide special bins for different types of waste, making it easy for people to recycle at home. By recycling a little every day, we can all make a big difference.",
     "passageTitle": "Recycling",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "How do many cities help people recycle?",
@@ -6445,7 +6652,8 @@
     "passageText": "Recycling is one of the easiest ways to help protect the environment. When we recycle paper, plastic, and glass, we reduce the amount of waste in landfills and save natural resources. For example, recycling one ton of paper can save about 17 trees. Many cities now provide special bins for different types of waste, making it easy for people to recycle at home. By recycling a little every day, we can all make a big difference.",
     "passageTitle": "Recycling",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the purpose of this letter?",
@@ -6476,7 +6684,8 @@
     "passageText": "Dear Mr. Thompson, Thank you for meeting with me yesterday to discuss the position of Marketing Assistant. I enjoyed learning more about your company and the work of the marketing team. I believe my experience in social media and my strong communication skills make me a good fit for this role. I am very excited about the opportunity to join your team. Please let me know if you need any more information from me. I look forward to hearing from you soon. Sincerely, Emily Carter",
     "passageTitle": "Thank-you letter",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "What position did Emily interview for?",
@@ -6507,7 +6716,8 @@
     "passageText": "Dear Mr. Thompson, Thank you for meeting with me yesterday to discuss the position of Marketing Assistant. I enjoyed learning more about your company and the work of the marketing team. I believe my experience in social media and my strong communication skills make me a good fit for this role. I am very excited about the opportunity to join your team. Please let me know if you need any more information from me. I look forward to hearing from you soon. Sincerely, Emily Carter",
     "passageTitle": "Thank-you letter",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "What skills does Emily mention?",
@@ -6538,7 +6748,8 @@
     "passageText": "Dear Mr. Thompson, Thank you for meeting with me yesterday to discuss the position of Marketing Assistant. I enjoyed learning more about your company and the work of the marketing team. I believe my experience in social media and my strong communication skills make me a good fit for this role. I am very excited about the opportunity to join your team. Please let me know if you need any more information from me. I look forward to hearing from you soon. Sincerely, Emily Carter",
     "passageTitle": "Thank-you letter",
     "script": null,
-    "topic": "job/hiring"
+    "topic": "job/hiring",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is the main purpose of this bus notice?",
@@ -6569,7 +6780,8 @@
     "passageText": "BUS SERVICE NOTICE From Monday, August 4, Main Street will be closed for road repairs for two weeks. During this time, Bus Route 12 will not stop at Main Street. Instead, buses will stop on Elm Street, two blocks away. Passengers should allow extra time for their journey. Normal service will resume on Monday, August 18. We apologize for any inconvenience.",
     "passageTitle": "Bus service notice",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Where will Bus Route 12 stop during the repairs?",
@@ -6600,7 +6812,8 @@
     "passageText": "BUS SERVICE NOTICE From Monday, August 4, Main Street will be closed for road repairs for two weeks. During this time, Bus Route 12 will not stop at Main Street. Instead, buses will stop on Elm Street, two blocks away. Passengers should allow extra time for their journey. Normal service will resume on Monday, August 18. We apologize for any inconvenience.",
     "passageTitle": "Bus service notice",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "When will normal bus service resume?",
@@ -6631,7 +6844,8 @@
     "passageText": "BUS SERVICE NOTICE From Monday, August 4, Main Street will be closed for road repairs for two weeks. During this time, Bus Route 12 will not stop at Main Street. Instead, buses will stop on Elm Street, two blocks away. Passengers should allow extra time for their journey. Normal service will resume on Monday, August 18. We apologize for any inconvenience.",
     "passageTitle": "Bus service notice",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What does this advertisement offer?",
@@ -6662,7 +6876,8 @@
     "passageText": "GET FIT THIS SUMMER! Join FitLife Gym today and get your first month FREE. Our gym offers modern equipment, group classes such as yoga and spinning, and a swimming pool. We are open from 6 a.m. to 10 p.m. every day. Membership costs $40 a month after the first free month, and there is no joining fee. Visit us at 25 Park Avenue or call 555-0334 to join now. Hurry — this offer ends on June 30!",
     "passageTitle": "Gym advertisement",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "How much is the monthly membership after the first month?",
@@ -6693,7 +6908,8 @@
     "passageText": "GET FIT THIS SUMMER! Join FitLife Gym today and get your first month FREE. Our gym offers modern equipment, group classes such as yoga and spinning, and a swimming pool. We are open from 6 a.m. to 10 p.m. every day. Membership costs $40 a month after the first free month, and there is no joining fee. Visit us at 25 Park Avenue or call 555-0334 to join now. Hurry — this offer ends on June 30!",
     "passageTitle": "Gym advertisement",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "When does this offer end?",
@@ -6724,7 +6940,8 @@
     "passageText": "GET FIT THIS SUMMER! Join FitLife Gym today and get your first month FREE. Our gym offers modern equipment, group classes such as yoga and spinning, and a swimming pool. We are open from 6 a.m. to 10 p.m. every day. Membership costs $40 a month after the first free month, and there is no joining fee. Visit us at 25 Park Avenue or call 555-0334 to join now. Hurry — this offer ends on June 30!",
     "passageTitle": "Gym advertisement",
     "script": null,
-    "topic": "daily life"
+    "topic": "daily life",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is this email about?",
@@ -6755,7 +6972,8 @@
     "passageText": "Dear Sky Airlines, I am writing about my flight booking for next Friday, June 27. My booking reference is SKY88412, and I am booked on flight SK202 from Hanoi to Singapore, departing at 9:15 a.m. Unfortunately, I need to change my flight to Saturday, June 28, because of a change in my work schedule. Could you please let me know if a seat is available on the Saturday flight and what the change fee would be? I would be grateful for your help. Thank you. Anna Pham",
     "passageTitle": "Flight change request",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "What is Anna's booking reference?",
@@ -6786,7 +7004,8 @@
     "passageText": "Dear Sky Airlines, I am writing about my flight booking for next Friday, June 27. My booking reference is SKY88412, and I am booked on flight SK202 from Hanoi to Singapore, departing at 9:15 a.m. Unfortunately, I need to change my flight to Saturday, June 28, because of a change in my work schedule. Could you please let me know if a seat is available on the Saturday flight and what the change fee would be? I would be grateful for your help. Thank you. Anna Pham",
     "passageTitle": "Flight change request",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   },
   {
     "content": "Why does Anna want to change her flight?",
@@ -6817,6 +7036,7 @@
     "passageText": "Dear Sky Airlines, I am writing about my flight booking for next Friday, June 27. My booking reference is SKY88412, and I am booked on flight SK202 from Hanoi to Singapore, departing at 9:15 a.m. Unfortunately, I need to change my flight to Saturday, June 28, because of a change in my work schedule. Could you please let me know if a seat is available on the Saturday flight and what the change fee would be? I would be grateful for your help. Thank you. Anna Pham",
     "passageTitle": "Flight change request",
     "script": null,
-    "topic": "travel"
+    "topic": "travel",
+    "testSetId": "TS-001"
   }
 ]

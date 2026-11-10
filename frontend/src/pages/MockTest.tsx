@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { api, type Question } from '../api';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { api, type Question, type TestSet } from '../api';
 import { ErrorBox, partName } from '../components';
 import { speak, stopSpeak, ttsSupported, ttsTextFor } from '../tts';
 
@@ -11,6 +11,9 @@ function fmt(s: number) {
 
 export default function MockTest() {
   const nav = useNavigate();
+  const [params] = useSearchParams();
+  const testSetId = params.get('testSetId') || undefined;
+  const [testSet, setTestSet] = useState<TestSet | null>(null);
   const [mode, setMode] = useState<'mini' | 'full'>('mini');
   const [part, setPart] = useState(5);
   const [attemptId, setAttemptId] = useState<number | null>(null);
@@ -26,9 +29,11 @@ export default function MockTest() {
   const start = async () => {
     setBusy(true); setError(null);
     try {
-      const t = await api.createTest(mode, mode === 'mini' ? part : undefined, 120);
+      const t = testSetId
+        ? await api.createTest('full', undefined, 120, testSetId)
+        : await api.createTest(mode, mode === 'mini' ? part : undefined, 120);
       setAttemptId(t.attemptId);
-      setSecondsLeft(t.durationSec || (mode === 'full' ? 7200 : 1800));
+      setSecondsLeft(t.durationSec || 7200);
       const qs: Question[] = [];
       for (const id of t.questionIds) {
         try { qs.push(await api.question(id)); } catch { /* skip missing */ }
@@ -45,6 +50,10 @@ export default function MockTest() {
     try { await api.submitTest(attemptId); nav(`/result/${attemptId}`); }
     catch (e) { submittedRef.current = false; setError(e); }
   };
+
+  useEffect(() => {
+    if (testSetId) api.testSet(testSetId).then(setTestSet).catch(setError);
+  }, [testSetId]);
 
   useEffect(() => {
     if (!attemptId || secondsLeft <= 0) return;
@@ -67,6 +76,29 @@ export default function MockTest() {
   };
 
   if (!attemptId) {
+    if (testSetId) {
+      return (
+        <div className="card">
+          <h1>Thi thử cả đề</h1>
+          <ErrorBox error={error} />
+          {testSet ? (
+            <div>
+              <p><strong>{testSet.title}</strong></p>
+              {testSet.description && <p className="muted">{testSet.description}</p>}
+              <p><span className="stat-num">{testSet.totalQuestions}</span> câu • 120 phút</p>
+              <p className="muted">{testSet.parts.map(p => `P${p.part} ${p.count}`).join(' · ')}</p>
+              {testSet.missing.length > 0 && (
+                <p style={{ color: '#ffb800' }}>⚠ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}.</p>
+              )}
+            </div>
+          ) : <p>Đang tải thông tin đề thi…</p>}
+          <p className="muted">Làm đủ {testSet?.totalQuestions || ''} câu, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990).</p>
+          <div className="btn-row">
+            <button className="btn gold" disabled={busy || !testSet || !testSet.totalQuestions} onClick={start}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</button>
+          </div>
+        </div>
+      );
+    }
     return (
       <div className="card">
         <h1>Thi thử</h1>
@@ -90,7 +122,7 @@ export default function MockTest() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '.5rem' }}>
-        <p className="muted">Câu {idx + 1}/{questions.length} • Đã trả lời: {answeredCount}</p>
+        <p className="muted">{testSet ? `📚 ${testSet.title} — ` : ''}Câu {idx + 1}/{questions.length} • Đã trả lời: {answeredCount}</p>
         <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
       </div>
       <ErrorBox error={error} />

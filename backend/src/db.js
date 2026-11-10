@@ -57,11 +57,20 @@ CREATE TABLE IF NOT EXISTS users (
   hide_on_leaderboard INTEGER DEFAULT 0,
   created_at TEXT
 );
+CREATE TABLE IF NOT EXISTS test_sets (
+  id TEXT PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT,
+  total_questions INTEGER DEFAULT 0,
+  is_published INTEGER DEFAULT 0,
+  created_at TEXT
+);
 CREATE TABLE IF NOT EXISTS questions (
   id TEXT PRIMARY KEY,
   exam TEXT DEFAULT 'toeic',
   part INTEGER,
   passage_id TEXT,
+  test_set_id TEXT,
   content TEXT,
   explanation TEXT,
   topic TEXT,
@@ -79,6 +88,7 @@ CREATE TABLE IF NOT EXISTS options (
 CREATE TABLE IF NOT EXISTS passages (
   id TEXT PRIMARY KEY,
   part INTEGER,
+  test_set_id TEXT,
   title TEXT,
   content TEXT,
   script TEXT,
@@ -97,6 +107,7 @@ CREATE TABLE IF NOT EXISTS attempts (
   user_id INTEGER,
   mode TEXT,
   part INTEGER,
+  test_set_id TEXT,
   question_ids TEXT,
   started_at TEXT,
   finished_at TEXT,
@@ -145,6 +156,19 @@ CREATE INDEX IF NOT EXISTS idx_xp_user_created ON xp_events(user_id, created_at)
 
 function initDb() {
   db.exec(SCHEMA);
+  // DB cu da ton tai truoc khi co cot test_set_id: them cot neu chua co.
+  ensureColumn('questions', 'test_set_id', 'TEXT');
+  ensureColumn('passages', 'test_set_id', 'TEXT');
+  ensureColumn('attempts', 'test_set_id', 'TEXT');
+  db.exec('CREATE INDEX IF NOT EXISTS idx_questions_testset_part ON questions(test_set_id, part)');
+}
+
+/** Them cot vao bang neu chua ton tai (guard bang PRAGMA table_info). */
+function ensureColumn(table, column, type) {
+  const cols = db.prepare(`PRAGMA table_info(${table})`).all();
+  if (!cols.some((c) => c.name === column)) {
+    db.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+  }
 }
 
 function nowIso() {
@@ -186,6 +210,7 @@ function mapQuestion(row, opts, passage) {
     exam: row.exam || 'toeic',
     part: row.part,
     passageId: row.passage_id || null,
+    testSetId: row.test_set_id || null,
     passageTitle: (passage && passage.title) || null,
     passageText: (passage && passage.content) || row.passage_text || null,
     script: (passage && passage.script) || row.script || null,
@@ -224,6 +249,7 @@ function mapAttempt(row) {
     userId: row.user_id,
     mode: row.mode,
     part: row.part,
+    testSetId: row.test_set_id || null,
     questionIds,
     startedAt: row.started_at,
     finishedAt: row.finished_at,
@@ -346,12 +372,13 @@ function countUsers() {
 
 /* ---------------- passages ---------------- */
 
-function upsertPassage({ id, part, title, content, script, type }) {
+function upsertPassage({ id, part, title, content, script, type, testSetId }) {
   db.prepare(
-    `INSERT INTO passages (id, part, title, content, script, type) VALUES (?, ?, ?, ?, ?, ?)
+    `INSERT INTO passages (id, part, title, content, script, type, test_set_id) VALUES (?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(id) DO UPDATE SET part = excluded.part, title = excluded.title,
-       content = excluded.content, script = excluded.script, type = excluded.type`
-  ).run(id, part || null, title || null, content || null, script || null, type || null);
+       content = excluded.content, script = excluded.script, type = excluded.type,
+       test_set_id = excluded.test_set_id`
+  ).run(id, part || null, title || null, content || null, script || null, type || null, testSetId || null);
 }
 
 function getPassage(id) {
@@ -380,39 +407,44 @@ function getPassage(id) {
  * @param {object} q {id, part, passageId, passageTitle, passageText, script, content, explanation, topic, difficulty, options:[{label,content}], correct}
  */
 function insertQuestion(q) {
-  return transaction(() => {
-    if (q.passageId && (q.passageText || q.passageTitle || q.script)) {
-      upsertPassage({
-        id: q.passageId,
-        part: q.part,
-        title: q.passageTitle || null,
-        content: q.passageText || null,
-        script: q.script || null,
-        type: q.part <= 4 ? 'listening' : 'reading',
-      });
-    }
-    db.prepare(
-      `INSERT INTO questions (id, exam, part, passage_id, content, explanation, topic, difficulty, script, passage_text)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    ).run(
-      q.id,
-      'toeic',
-      q.part,
-      q.passageId || null,
-      q.content,
-      q.explanation || null,
-      q.topic || null,
-      q.difficulty || null,
-      q.script || null,
-      q.passageText || null
-    );
-    const optStmt = db.prepare(
-      'INSERT INTO options (question_id, label, content, is_correct) VALUES (?, ?, ?, ?)'
-    );
-    for (const o of q.options) {
-      optStmt.run(q.id, o.label, o.content, o.label === q.correct ? 1 : 0);
-    }
-  });
+  return transaction(() => insertQuestionTx(q));
+}
+
+/** Chen 1 cau hoi, KHONG tu mo transaction (dung trong import transaction chung). */
+function insertQuestionTx(q) {
+  if (q.passageId && (q.passageText || q.passageTitle || q.script)) {
+    upsertPassage({
+      id: q.passageId,
+      part: q.part,
+      title: q.passageTitle || null,
+      content: q.passageText || null,
+      script: q.script || null,
+      type: q.part <= 4 ? 'listening' : 'reading',
+      testSetId: q.testSetId || null,
+    });
+  }
+  db.prepare(
+    `INSERT INTO questions (id, exam, part, passage_id, test_set_id, content, explanation, topic, difficulty, script, passage_text)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    q.id,
+    'toeic',
+    q.part,
+    q.passageId || null,
+    q.testSetId || null,
+    q.content,
+    q.explanation || null,
+    q.topic || null,
+    q.difficulty || null,
+    q.script || null,
+    q.passageText || null
+  );
+  const optStmt = db.prepare(
+    'INSERT INTO options (question_id, label, content, is_correct) VALUES (?, ?, ?, ?)'
+  );
+  for (const o of q.options) {
+    optStmt.run(q.id, o.label, o.content, o.label === q.correct ? 1 : 0);
+  }
 }
 
 function updateQuestion(id, fields) {
@@ -491,12 +523,16 @@ function countByPart() {
   return rows.map((r) => ({ part: r.part, count: r.c }));
 }
 
-function listQuestions({ part, limit, offset, search, admin }) {
+function listQuestions({ part, limit, offset, search, admin, testSetId }) {
   const where = [];
   const params = [];
   if (part) {
     where.push('part = ?');
     params.push(part);
+  }
+  if (testSetId) {
+    where.push('test_set_id = ?');
+    params.push(testSetId);
   }
   if (search) {
     where.push('(content LIKE ? OR topic LIKE ?)');
@@ -529,18 +565,203 @@ function getAllQuestionsForBackup() {
   return hydrateQuestions(rows, true);
 }
 
+/* ---------------- test sets ---------------- */
+
+function mapTestSet(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    title: row.title,
+    description: row.description || null,
+    totalQuestions: row.total_questions != null ? row.total_questions : 0,
+    isPublished: row.is_published === 1,
+    createdAt: row.created_at,
+  };
+}
+
+/** Id de tiep theo dang TS-NNN dua tren max id hien co. */
+function nextTestSetId() {
+  const rows = db.prepare("SELECT id FROM test_sets WHERE id LIKE 'TS-%'").all();
+  let max = 0;
+  for (const r of rows) {
+    const m = /^TS-(\d+)$/.exec(r.id || '');
+    if (m) max = Math.max(max, parseInt(m[1], 10));
+  }
+  return `TS-${String(max + 1).padStart(3, '0')}`;
+}
+
+function createTestSet({ id, title, description, isPublished }) {
+  const newId = id || nextTestSetId();
+  db.prepare(
+    'INSERT INTO test_sets (id, title, description, total_questions, is_published, created_at) VALUES (?, ?, ?, 0, ?, ?)'
+  ).run(newId, title, description || null, isPublished ? 1 : 0, nowIso());
+  return getTestSet(newId);
+}
+
+function getTestSet(id) {
+  const row = db.prepare('SELECT * FROM test_sets WHERE id = ?').get(id);
+  return mapTestSet(row);
+}
+
+function listTestSets({ includeDrafts }) {
+  const sql = includeDrafts
+    ? 'SELECT * FROM test_sets ORDER BY id'
+    : 'SELECT * FROM test_sets WHERE is_published = 1 ORDER BY id';
+  return db.prepare(sql).all().map(mapTestSet);
+}
+
+function updateTestSet(id, fields) {
+  const cur = getTestSet(id);
+  if (!cur) return null;
+  db.prepare(
+    'UPDATE test_sets SET title = ?, description = ?, is_published = ? WHERE id = ?'
+  ).run(
+    fields.title !== undefined ? fields.title : cur.title,
+    fields.description !== undefined ? fields.description : cur.description,
+    fields.isPublished !== undefined ? (fields.isPublished ? 1 : 0) : (cur.isPublished ? 1 : 0),
+    id
+  );
+  return getTestSet(id);
+}
+
+function deleteTestSet(id) {
+  return transaction(() => {
+    db.prepare('UPDATE questions SET test_set_id = NULL WHERE test_set_id = ?').run(id);
+    db.prepare('UPDATE passages SET test_set_id = NULL WHERE test_set_id = ?').run(id);
+    const info = db.prepare('DELETE FROM test_sets WHERE id = ?').run(id);
+    return info.changes > 0;
+  });
+}
+
+/** Cap nhat total_questions = so cau hien co cua de. */
+function refreshTestSetTotal(testSetId) {
+  db.prepare(
+    'UPDATE test_sets SET total_questions = (SELECT COUNT(*) FROM questions WHERE test_set_id = ?) WHERE id = ?'
+  ).run(testSetId, testSetId);
+}
+
+function countByPartForTestSet(testSetId) {
+  const rows = db
+    .prepare(
+      'SELECT part, COUNT(*) AS c FROM questions WHERE test_set_id = ? GROUP BY part ORDER BY part'
+    )
+    .all(testSetId);
+  return rows.map((r) => ({ part: r.part, count: r.c }));
+}
+
+/**
+ * Tien do cua user trong 1 de: dem tu answers JOIN attempts JOIN questions,
+ * chi tinh cau co test_set_id = de do. answered = so cau distinct da tra loi
+ * (is_correct NOT NULL), correct = so cau distinct tra loi dung.
+ */
+function getUserProgressByTestSet(userId, testSetId) {
+  const rows = db
+    .prepare(
+      `SELECT q.part AS part,
+              COUNT(DISTINCT a.question_id) AS answered,
+              COUNT(DISTINCT CASE WHEN a.is_correct = 1 THEN a.question_id END) AS correct
+       FROM answers a
+       JOIN attempts t ON t.id = a.attempt_id
+       JOIN questions q ON q.id = a.question_id
+       WHERE t.user_id = ? AND q.test_set_id = ? AND a.is_correct IS NOT NULL
+       GROUP BY q.part ORDER BY q.part`
+    )
+    .all(userId, testSetId);
+  return rows.map((r) => ({ part: r.part, answered: r.answered, correct: r.correct }));
+}
+
+/**
+ * Kiem tra 1 cau import. Tra ve null neu hop le, neu khong tra ly do loi tieng Viet.
+ * @param {object} q cau hoi dang seed-format
+ * @param {number} index vi tri cau trong mang import (chi de bao loi)
+ */
+function validateImportQuestion(q, index) {
+  if (!q || typeof q !== 'object') return 'Câu hỏi không hợp lệ';
+  if (!Number.isInteger(q.part) || q.part < 1 || q.part > 7) {
+    return 'Part phải là số nguyên từ 1 đến 7';
+  }
+  if (typeof q.content !== 'string' || !q.content.trim()) {
+    return 'Thiếu nội dung câu hỏi';
+  }
+  if (!Array.isArray(q.options) || q.options.length !== 4) {
+    return 'Phải có đúng 4 phương án';
+  }
+  const labels = q.options.map((o) => o && o.label);
+  if (
+    new Set(labels).size !== 4 ||
+    !labels.every((l) => ['A', 'B', 'C', 'D'].includes(l))
+  ) {
+    return 'Các phương án phải có đủ nhãn A, B, C, D và không trùng nhau';
+  }
+  if (q.options.some((o) => !o || typeof o.content !== 'string' || !o.content.trim())) {
+    return 'Mỗi phương án phải có nội dung';
+  }
+  if (typeof q.correct !== 'string' || !['A', 'B', 'C', 'D'].includes(q.correct)) {
+    return 'Đáp án đúng phải là một trong 4 nhãn A, B, C, D';
+  }
+  return null;
+}
+
+/**
+ * Import nhieu cau vao 1 de trong 1 transaction. Cau loi bi bo qua va ghi vao
+ * errors; cau trung id cung bi bo qua. Tra ve {imported, errors}.
+ */
+function importTestSetQuestions(testSetId, questions) {
+  let imported = 0;
+  const errors = [];
+  transaction(() => {
+    (questions || []).forEach((q, index) => {
+      const err = validateImportQuestion(q, index);
+      if (err) {
+        errors.push({ index, id: q && q.id ? q.id : null, reason: err });
+        return;
+      }
+      if (db.prepare('SELECT 1 FROM questions WHERE id = ?').get(q.id)) {
+        errors.push({ index, id: q.id, reason: 'ID câu hỏi đã tồn tại' });
+        return;
+      }
+      try {
+        insertQuestionTx({ ...q, testSetId });
+        imported += 1;
+      } catch (e) {
+        errors.push({ index, id: q.id, reason: e.message });
+      }
+    });
+    refreshTestSetTotal(testSetId);
+  });
+  return { imported, errors };
+}
+
+/** Them 1 cau vao de (them thu cong). Loi thi throw Error tieng Viet. */
+function addQuestionToTestSet(testSetId, q) {
+  const err = validateImportQuestion(q, 0);
+  if (err) throw new Error(err);
+  if (!q.id || typeof q.id !== 'string' || !q.id.trim()) {
+    throw new Error('Thiếu ID câu hỏi');
+  }
+  if (db.prepare('SELECT 1 FROM questions WHERE id = ?').get(q.id)) {
+    throw new Error('ID câu hỏi đã tồn tại');
+  }
+  transaction(() => {
+    insertQuestionTx({ ...q, testSetId });
+    refreshTestSetTotal(testSetId);
+  });
+  return getQuestionById(q.id, true);
+}
+
 /* ---------------- attempts & answers ---------------- */
 
-function createAttempt({ userId, mode, part, questionIds, durationSec }) {
+function createAttempt({ userId, mode, part, questionIds, durationSec, testSetId }) {
   const info = db
     .prepare(
-      `INSERT INTO attempts (user_id, mode, part, question_ids, started_at, duration_sec, leaderboard_eligible)
-       VALUES (?, ?, ?, ?, ?, ?, 1)`
+      `INSERT INTO attempts (user_id, mode, part, test_set_id, question_ids, started_at, duration_sec, leaderboard_eligible)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 1)`
     )
     .run(
       userId,
       mode,
       part || null,
+      testSetId || null,
       JSON.stringify(questionIds || []),
       nowIso(),
       durationSec || null
@@ -887,6 +1108,19 @@ module.exports = {
   getQuestionsByPart,
   getAllQuestionsOrdered,
   getAllQuestionsForBackup,
+  // test sets
+  createTestSet,
+  getTestSet,
+  listTestSets,
+  updateTestSet,
+  deleteTestSet,
+  nextTestSetId,
+  countByPartForTestSet,
+  getUserProgressByTestSet,
+  validateImportQuestion,
+  importTestSetQuestions,
+  addQuestionToTestSet,
+  refreshTestSetTotal,
   // attempts & answers
   createAttempt,
   getAttempt,

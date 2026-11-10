@@ -31,7 +31,10 @@ router.get('/questions', (req, res) => {
   const search = typeof req.query.search === 'string' && req.query.search.trim()
     ? req.query.search.trim()
     : undefined;
-  const { total, items } = db.listQuestions({ part, limit, offset, search, admin: false });
+  const testSetId = typeof req.query.testSetId === 'string' && req.query.testSetId.trim()
+    ? req.query.testSetId.trim()
+    : undefined;
+  const { total, items } = db.listQuestions({ part, limit, offset, search, admin: false, testSetId });
   return res.json({ total, limit, offset, items });
 });
 

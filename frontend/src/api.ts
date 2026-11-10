@@ -76,6 +76,24 @@ export interface StatsOverview {
 }
 export interface LeaderboardEntry { rank: number; name: string; avatarUrl?: string; score: number; xp: number; answered?: number; }
 export interface Attempt { id: number; mode: string; part?: number; started_at?: string; finished_at?: string; total_score?: number; listening_score?: number; reading_score?: number; listening_correct?: number; reading_correct?: number; duration_sec?: number; }
+export interface TestSetPartCount { part: number; count: number; }
+export interface TestSetMissing { part: number; missing: number; }
+export interface TestSetProgress {
+  byPart: { part: number; answered: number; correct: number }[];
+  answeredTotal: number; correctTotal: number;
+}
+export interface TestSet {
+  id: string; title: string; description?: string; totalQuestions: number;
+  isPublished: boolean; createdAt: string;
+  parts: TestSetPartCount[]; missing: TestSetMissing[];
+  progress: TestSetProgress | null;
+}
+export interface ImportQuestion {
+  id?: string; part: number; content: string;
+  options: { label: string; content: string }[];
+  correct: string; explanation?: string; topic?: string; difficulty?: string;
+  script?: string; passageId?: string; passageTitle?: string; passageText?: string;
+}
 
 export const api = {
   health: () => req<{ ok: boolean; service: string; time: string }>('/health'),
@@ -92,10 +110,11 @@ export const api = {
     req<User>('/api/users/me', { method: 'PATCH', body: JSON.stringify(patch) }),
 
   parts: () => req<PartInfo[]>('/api/parts'),
-  questions: async (part?: number, limit = 50, offset = 0, search = '') => {
+  questions: async (part?: number, limit = 50, offset = 0, search = '', testSetId?: string) => {
     const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
     if (part) q.set('part', String(part));
     if (search) q.set('search', search);
+    if (testSetId) q.set('testSetId', testSetId);
     const data = await req<{ total: number; items: Question[] }>(`/api/questions?${q}`);
     return data.items;
   },
@@ -106,9 +125,9 @@ export const api = {
     req<{ correct: boolean; correctLabel: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
       '/api/practice/answer', { method: 'POST', body: JSON.stringify({ questionId, selected }) }),
 
-  createTest: (mode: 'mini' | 'full', part?: number, durationMinutes = 120) =>
+  createTest: (mode: 'mini' | 'full', part?: number, durationMinutes = 120, testSetId?: string) =>
     req<{ attemptId: number; questionIds: string[]; durationSec: number; startedAt: string }>(
-      '/api/tests', { method: 'POST', body: JSON.stringify({ mode, part, durationMinutes }) }),
+      '/api/tests', { method: 'POST', body: JSON.stringify({ mode, part, durationMinutes, ...(testSetId ? { testSetId } : {}) }) }),
   saveTestAnswer: (attemptId: number, questionId: string, selected: string) =>
     req(`/api/tests/${attemptId}/answers`, { method: 'POST', body: JSON.stringify({ questionId, selected }) }),
   submitTest: (attemptId: number) =>
@@ -139,6 +158,21 @@ export const api = {
 
   leaderboard: (metric: 'score' | 'xp' = 'score', tab: 'week' | 'month' | 'all' = 'all') =>
     req<{ entries: LeaderboardEntry[]; me: (LeaderboardEntry & { rank: number }) | null }>(`/api/leaderboard?metric=${metric}&tab=${tab}`),
+
+  // Test sets (bộ đề thi)
+  testSets: () => req<TestSet[]>('/api/test-sets'),
+  testSet: (id: string) => req<TestSet>(`/api/test-sets/${encodeURIComponent(id)}`),
+  adminCreateTestSet: (body: { title: string; description?: string; isPublished?: boolean }) =>
+    req<TestSet>('/api/admin/test-sets', { method: 'POST', body: JSON.stringify(body) }),
+  adminUpdateTestSet: (id: string, body: { title?: string; description?: string; isPublished?: boolean }) =>
+    req<TestSet>(`/api/admin/test-sets/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) }),
+  adminDeleteTestSet: (id: string) =>
+    req<{ ok: boolean }>(`/api/admin/test-sets/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+  adminImportTestSet: (id: string, questions: unknown[]) =>
+    req<{ imported: number; errors: { index: number; id?: string; reason: string }[] }>(
+      `/api/admin/test-sets/${encodeURIComponent(id)}/import`, { method: 'POST', body: JSON.stringify({ questions }) }),
+  adminAddTestSetQuestion: (id: string, question: Record<string, unknown>) =>
+    req<Question>(`/api/admin/test-sets/${encodeURIComponent(id)}/questions`, { method: 'POST', body: JSON.stringify(question) }),
 
   // Admin
   adminQuestions: async (part?: number, limit = 50, offset = 0) => {

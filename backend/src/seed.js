@@ -54,19 +54,32 @@ function validSeedQuestion(q) {
 function seedQuestions() {
   if (db.countQuestions() > 0) {
     console.log(`[seed] questions da co ${db.countQuestions()} cau — bo qua seed cau hoi.`);
+    // DB cu da seed truoc khi co total_questions: dong bo lai tong so cau cua TS-001.
+    if (db.getTestSet('TS-001')) db.refreshTestSetTotal('TS-001');
     return 0;
   }
   const list = readJsonArray('questions.json').filter(validSeedQuestion);
+  // Gom toan bo cau hien co thanh de mau TS-001 (neu chua co).
+  if (!db.getTestSet('TS-001')) {
+    db.createTestSet({
+      id: 'TS-001',
+      title: 'Đề mẫu 01 (ngân hàng hiện tại)',
+      description: 'Bộ đề mẫu gồm toàn bộ 220 câu hỏi hiện có trong ngân hàng.',
+      isPublished: 1,
+    });
+    console.log('[seed] da tao de mau TS-001.');
+  }
   let inserted = 0;
   for (const q of list) {
     try {
-      db.insertQuestion(q);
+      db.insertQuestion({ ...q, testSetId: q.testSetId || 'TS-001' });
       inserted += 1;
     } catch (err) {
       console.warn(`[seed] bo qua cau ${q.id}: ${err.message}`);
     }
   }
   console.log(`[seed] da seed ${inserted}/${list.length} cau hoi.`);
+  if (db.getTestSet('TS-001')) db.refreshTestSetTotal('TS-001');
   return inserted;
 }
 

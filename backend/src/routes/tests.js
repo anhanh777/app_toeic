@@ -82,9 +82,15 @@ function buildSubmitResponse(attempt, answers) {
 }
 
 router.post('/tests', authMiddleware, (req, res) => {
-  const { mode, part, count, durationMinutes } = req.body || {};
+  const { mode, part, count, durationMinutes, testSetId, questionIds: bodyQuestionIds } = req.body || {};
   if (mode !== 'mini' && mode !== 'full') {
     return res.status(400).json({ error: 'mode phai la mini hoac full' });
+  }
+  // Thi theo de: kiem tra de ton tai truoc.
+  let testSet = null;
+  if (testSetId) {
+    testSet = db.getTestSet(testSetId);
+    if (!testSet) return res.status(404).json({ error: 'khong tim thay bo de' });
   }
   let questionIds;
   let durationSec;
@@ -94,7 +100,9 @@ router.post('/tests', authMiddleware, (req, res) => {
     if (!Number.isInteger(p) || p < 1 || p > 7) {
       return res.status(400).json({ error: 'mini test can part tu 1 den 7' });
     }
-    const bank = db.getQuestionsByPart(p);
+    const bank = testSetId
+      ? db.listQuestions({ testSetId, part: p, limit: 200, offset: 0 }).items
+      : db.getQuestionsByPart(p);
     if (!bank.length) return res.status(400).json({ error: 'Part nay chua co cau hoi' });
     const n = count === undefined ? 10 : parseInt(count, 10);
     if (!Number.isInteger(n) || n < 1) {
@@ -104,9 +112,19 @@ router.post('/tests', authMiddleware, (req, res) => {
     durationSec = durationMinutes ? Math.round(durationMinutes * 60) : 30 * 60;
     attemptPart = p;
   } else {
-    const all = db.getAllQuestionsOrdered();
-    if (!all.length) return res.status(400).json({ error: 'chua co cau hoi nao' });
-    questionIds = all.map((q) => q.id);
+    if (Array.isArray(bodyQuestionIds) && bodyQuestionIds.length) {
+      questionIds = bodyQuestionIds.filter((id) => typeof id === 'string');
+    } else if (testSetId) {
+      // Thi thu ca de: lay toan bo cau cua de, toi da 200 cau.
+      const { items } = db.listQuestions({ testSetId, limit: 200, offset: 0 });
+      if (!items.length) return res.status(400).json({ error: 'bo de nay chua co cau hoi' });
+      questionIds = items.map((q) => q.id);
+    } else {
+      const all = db.getAllQuestionsOrdered();
+      if (!all.length) return res.status(400).json({ error: 'chua co cau hoi nao' });
+      questionIds = all.map((q) => q.id);
+    }
+    if (!questionIds.length) return res.status(400).json({ error: 'chua co cau hoi nao' });
     // Mac dinh 120 phut; durationMinutes chi de smoke-test, frontend luon dung 120.
     durationSec = durationMinutes ? Math.round(durationMinutes * 60) : 7200;
   }
@@ -116,9 +134,11 @@ router.post('/tests', authMiddleware, (req, res) => {
     part: attemptPart,
     questionIds,
     durationSec,
+    testSetId: testSet ? testSet.id : null,
   });
   return res.status(201).json({
     attemptId: attempt.id,
+    testSetId: attempt.testSetId,
     questionIds,
     durationSec,
     startedAt: attempt.startedAt,
