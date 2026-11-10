@@ -103,7 +103,7 @@ export default function PracticeSession() {
           <div className="btn-row"><button className="btn" disabled={!selected} onClick={submit}>Nộp đáp án</button></div>
         ) : (
           <div>
-            <p style={{ color: result.correct ? '#15803d' : '#dc2626', fontWeight: 700 }}>
+            <p style={{ color: result.correct ? '#3E6B4A' : '#A84A4A', fontWeight: 700 }}>
               {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${result.correctLabel}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
             </p>
             {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}

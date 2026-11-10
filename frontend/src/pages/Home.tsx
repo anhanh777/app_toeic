@@ -20,9 +20,8 @@ export default function Home() {
   return (
     <div>
       <div className="hero">
-        <h1>🕹️ <span className="glow">TOEIC ARCADE</span></h1>
-        <p className="sub">Chào {user?.name || 'bạn'} — sẵn sàng đấu rank chưa?</p>
-        <p className="press-start blink">► PRESS START — LUYỆN NGAY</p>
+        <h1>🌸 Luyện thi TOEIC</h1>
+        <p className="sub">Chào {user?.name || 'bạn'} — hôm nay mình luyện tiếp nhé.</p>
       </div>
       <ErrorBox error={error} />
       <div className="grid grid3">

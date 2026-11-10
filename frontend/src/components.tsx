@@ -26,7 +26,7 @@ export function sectionOf(part: number) { return part <= 4 ? 'Listening' : 'Read
 
 /** Rank tier from a TOEIC total score (same bands as scoreLevel in api.ts). */
 export function tierOf(total?: number | null): { name: string; icon: string; cls: string } {
-  if (total == null) return { name: 'Chưa xếp hạng', icon: '🎮', cls: 'tier-bronze' };
+  if (total == null) return { name: 'Chưa xếp hạng', icon: '✦', cls: 'tier-bronze' };
   if (total < 450) return { name: 'Đồng', icon: '🥉', cls: 'tier-bronze' };
   if (total < 600) return { name: 'Bạc', icon: '🥈', cls: 'tier-silver' };
   if (total < 750) return { name: 'Vàng', icon: '🥇', cls: 'tier-gold' };
@@ -44,7 +44,7 @@ export function XpBar({ xp, gold }: { xp: number; gold?: boolean }) {
   const { level, progress } = xpLevel(xp);
   return (
     <div>
-      <div className="xp-label"><span>⭐ LV.{level}</span><span>{progress}/100 XP</span></div>
+      <div className="xp-label"><span>⭐ Cấp {level}</span><span>{progress}/100 XP</span></div>
       <div className={`xpbar${gold ? ' gold' : ''}`}><i style={{ width: `${progress}%` }} /></div>
     </div>
   );

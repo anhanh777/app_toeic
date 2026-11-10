@@ -35,7 +35,7 @@ export default function TestSetDetail() {
         <p><span className="stat-num">{total}</span> câu • Đã làm {answered}/{total} câu ({pct}%) • Đúng {correct} câu</p>
         <div className="bar green"><i style={{ width: `${pct}%` }} /></div>
         {ts.missing.length > 0 && (
-          <p style={{ color: '#ffb800', marginTop: '.6rem' }}>
+          <p style={{ color: '#B98A1D', marginTop: '.6rem' }}>
             ⚠ Đề chưa đủ câu chuẩn: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}. Bạn vẫn có thể luyện các câu hiện có.
           </p>
         )}
@@ -51,7 +51,7 @@ export default function TestSetDetail() {
           const prog = partProgress(p);
           return (
             <div key={p} className="card part-card">
-              <div className="part-ico">{p <= 4 ? '🎧' : '📖'} LV.{p}</div>
+              <div className="part-ico">{p <= 4 ? '🎧' : '📖'} Part {p}</div>
               <strong>{partName(p)}</strong> <span className="pill">{sectionOf(p)}</span>
               <p className="muted">{n} câu trong đề này</p>
               {prog

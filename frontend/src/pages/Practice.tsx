@@ -55,7 +55,7 @@ export default function Practice() {
                     {ts.parts.map(p => `P${p.part} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
                   </p>
                   {ts.missing.length > 0 && (
-                    <p style={{ color: '#ffb800' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
+                    <p style={{ color: '#B98A1D' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
                   )}
                   {ts.progress ? (
                     <div>
@@ -87,7 +87,7 @@ export default function Practice() {
               const a = acc(p.part);
               return (
                 <div key={p.part} className={`card part-card${part === p.part ? ' selected' : ''}`} onClick={() => setPart(p.part)}>
-                  <div className="part-ico">{p.part <= 4 ? '🎧' : '📖'} LV.{p.part}</div>
+                  <div className="part-ico">{p.part <= 4 ? '🎧' : '📖'} Part {p.part}</div>
                   <strong>{partName(p.part)}</strong> <span className="pill">{sectionOf(p.part)}</span>
                   <p className="muted">{p.count ? `${p.count} câu trong ngân hàng` : 'Chưa rõ số câu'}</p>
                   {a && <p>Tỉ lệ đúng: {Math.round(a.accuracy * 100)}% ({a.correct}/{a.answered} câu)</p>}

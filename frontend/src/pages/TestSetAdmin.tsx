@@ -174,7 +174,7 @@ export default function TestSetAdmin() {
           {' '}• Tạo ngày {ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : '—'}
         </p>
         {ts.missing.length > 0 && (
-          <p style={{ color: '#ffb800' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
+          <p style={{ color: '#B98A1D' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
         )}
         <div className="btn-row">
           <button className="btn gold" onClick={togglePublish}>{ts.isPublished ? '⏸ Bỏ phát hành' : '🚀 Phát hành đề'}</button>
@@ -208,7 +208,7 @@ export default function TestSetAdmin() {
             <h3>Xem trước AI — {aiPreview.fileName}</h3>
             <p>{aiPreview.questions.length} câu parse được • {aiLiveErrorCount} câu còn lỗi</p>
             {aiPreview.warnings.length > 0 && (
-              <p style={{ color: '#ffb800' }}>⚠ {aiPreview.warnings.join(' ')}</p>
+              <p style={{ color: '#B98A1D' }}>⚠ {aiPreview.warnings.join(' ')}</p>
             )}
             <table>
               <thead><tr><th>#</th><th>Part</th><th>Nội dung</th><th>Đáp án đúng</th><th>Lý do lỗi</th></tr></thead>

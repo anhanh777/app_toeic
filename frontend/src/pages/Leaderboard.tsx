@@ -5,7 +5,6 @@ import { ErrorBox, RankChip } from '../components';
 type Metric = 'score' | 'xp';
 type Tab = 'week' | 'month' | 'all';
 const MEDALS = ['🥇', '🥈', '🥉'];
-const PODIUM_MEDAL = ['🥈', '🥇', '🥉'];
 
 export default function Leaderboard() {
   const [metric, setMetric] = useState<Metric>('score');
@@ -25,9 +24,8 @@ export default function Leaderboard() {
   return (
     <div>
       <div className="hero">
-        <h1>🏆 <span className="glow">HIGH SCORE</span></h1>
-        <p className="sub">Bảng xếp hạng đấu trường TOEIC — ai leo rank cao nhất?</p>
-        <p className="press-start blink">► INSERT COIN — THI ĐẤU NÀO</p>
+        <h1>🏆 Bảng xếp hạng</h1>
+        <p className="sub">Xem mình đang đứng ở đâu và cố gắng thêm một chút mỗi ngày nhé.</p>
       </div>
       <ErrorBox error={error} />
       <div className="btn-row seg">
@@ -44,23 +42,23 @@ export default function Leaderboard() {
       {loading ? <p>Đang tải…</p> : (
         <>
           {entries.length >= 3 && (
-            <div className="podium" aria-label="Top 3">
-              {[entries[1], entries[0], entries[2]].map((e, i) => (
-                <div key={e.rank} className={`podium-place podium-${e.rank}`}>
-                  <div className="medal">{PODIUM_MEDAL[i]}</div>
-                  <div className="p-name">{e.name}</div>
-                  <div className="p-score">{value(e)} {metric === 'score' ? 'ĐIỂM' : 'XP'}</div>
+            <div className="top3-list" aria-label="Top 3">
+              {entries.slice(0, 3).map((e) => (
+                <div key={e.rank} className="top3-place">
+                  <div className={`medal medal-${e.rank}`}>{e.rank}</div>
+                  <div className="p-name">{MEDALS[e.rank - 1]} {e.name}</div>
+                  <div className="p-score">{value(e)} {metric === 'score' ? 'điểm' : 'XP'}</div>
                 </div>
               ))}
             </div>
           )}
           <div className="card">
-            <table><thead><tr><th>Hạng</th><th>Người chơi</th><th>{metric === 'score' ? 'Điểm thi thử cao nhất' : 'XP'}</th><th>Câu đã làm</th></tr></thead>
+            <table><thead><tr><th>Hạng</th><th>Học viên</th><th>{metric === 'score' ? 'Điểm thi thử cao nhất' : 'XP'}</th><th>Câu đã làm</th></tr></thead>
               <tbody>
                 {entries.map(e => (
                   <tr key={e.rank} className={e.rank <= 3 ? 'top3' : ''}>
                     <td><RankChip rank={e.rank} /> {e.rank <= 3 ? MEDALS[e.rank - 1] : ''}</td>
-                    <td className="lb-row-name">{e.avatarUrl ? <img src={e.avatarUrl} alt="" width={28} style={{ borderRadius: 0, verticalAlign: 'middle', marginRight: 6 }} /> : null}{e.name}</td>
+                    <td className="lb-row-name">{e.avatarUrl ? <img src={e.avatarUrl} alt="" width={28} style={{ verticalAlign: 'middle', marginRight: 6 }} /> : null}{e.name}</td>
                     <td><strong>{value(e)}</strong></td><td>{e.answered ?? '—'}</td>
                   </tr>
                 ))}

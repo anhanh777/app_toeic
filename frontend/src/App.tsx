@@ -29,7 +29,7 @@ function Layout() {
   return (
     <div className="app">
       <header className="topbar">
-        <Link className="brand" to="/">🕹️ TOEIC <span className="arcade">ARCADE</span></Link>
+        <Link className="brand" to="/">🌸 Luyện thi TOEIC</Link>
         {user && (
           <nav>
             <NavLink to="/" end>Trang chủ</NavLink>
@@ -64,7 +64,7 @@ function Layout() {
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
         </Routes>
       </main>
-      <footer>🕹️ TOEIC ARCADE — LUYỆN THI TOEIC • ĐIỂM THI THỬ LÀ ĐIỂM ƯỚC LƯỢNG, KHÔNG PHẢI ĐIỂM CHÍNH THỨC CỦA ETS • ÂM THANH ĐỌC BẰNG GIỌNG MÁY (TTS)</footer>
+      <footer>LUYỆN THI TOEIC • ĐIỂM THI THỬ LÀ ĐIỂM ƯỚC LƯỢNG, KHÔNG PHẢI ĐIỂM CHÍNH THỨC CỦA ETS • ÂM THANH ĐỌC BẰNG GIỌNG MÁY (TTS)</footer>
     </div>
   );
 }
