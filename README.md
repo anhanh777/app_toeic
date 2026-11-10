@@ -16,6 +16,7 @@ Giai đoạn 1 chỉ làm TOEIC. Giai đoạn 2 sẽ thêm IELTS, dùng chung kh
 - Thống kê: tỉ lệ đúng theo Part, điểm theo thời gian, Part yếu nhất, lịch sử, streak, mục tiêu điểm
 - Bảng xếp hạng: 2 bảng (điểm thi thử cao nhất + XP), tab Tuần / Tháng / Mọi lúc, top 3 nổi bật, vị trí của mình luôn hiện, có thể ẩn tên
 - Admin: CRUD câu hỏi + từ vựng, import JSON, xuất backup JSON
+- Nhận diện đề thi bằng AI (Gemini): admin upload file đề thi (.txt/.docx/.pdf/ảnh) để AI trích xuất câu hỏi, xem trước rồi mới import — xem `docs/api.md` (cần `GEMINI_API_KEY`)
 
 ## Ngân hàng câu hỏi (số liệu thật)
 
@@ -103,7 +104,7 @@ Ngắn gọn: **SQLite đủ dùng cho app cá nhân / ít người dùng.** Gi�
 
 - **Backend:** deploy trên VPS, hoặc Render / Fly.io **kèm persistent disk** (gắn disk vào thư mục chứa file `.db`, đặt `DATABASE_PATH` trỏ tới đó). Không deploy backend lên Vercel Functions.
 - **Frontend:** deploy tĩnh lên Vercel / Netlify (build `frontend/dist`), đặt `VITE_API_URL` trỏ về URL backend.
-- Biến môi trường khi deploy: `PORT`, `JWT_SECRET` (đổi thành chuỗi dài ngẫu nhiên), `DATABASE_PATH`, `GOOGLE_CLIENT_ID`, `CORS_ORIGIN` (domain frontend).
+- Biến môi trường khi deploy: `PORT`, `JWT_SECRET` (đổi thành chuỗi dài ngẫu nhiên), `DATABASE_PATH`, `GOOGLE_CLIENT_ID`, `GEMINI_API_KEY` (key Gemini lấy ở Google AI Studio, chỉ cần key, không cần Client Secret — dùng cho tính năng nhận diện đề thi bằng AI; chưa có key thì endpoint ai-parse trả `501`), `CORS_ORIGIN` (domain frontend).
 
 ### Các bước deploy — làm theo thứ tự: Render trước, Vercel sau
 
@@ -116,7 +117,7 @@ Thứ tự này là bắt buộc: frontend cần biết URL backend (`VITE_API_U
 **Bước 1 — Deploy backend lên Render (từ `render.yaml`):**
 1. Vào [Render Dashboard](https://dashboard.render.com/) → **New → Blueprint** → chọn repo `anhanh777/app_toeic`.
 2. Render đọc file `render.yaml` ở gốc repo và tạo web service `app-toeic-backend` (thư mục gốc `backend`, build `npm install`, start `npm start`) + disk `app-data` 1 GB gắn tại `/var/data`.
-3. Khi Render hỏi các biến `sync: false`, nhập giá trị thật: `JWT_SECRET` (chuỗi ngẫu nhiên đã chuẩn bị), `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
+3. Khi Render hỏi các biến `sync: false`, nhập giá trị thật: `JWT_SECRET` (chuỗi ngẫu nhiên đã chuẩn bị), `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GEMINI_API_KEY` (key Gemini lấy ở Google AI Studio, chỉ cần key — dùng cho tính năng nhận diện đề thi bằng AI; có thể để trống, khi đó endpoint ai-parse trả `501`).
 4. Chọn gói instance: **disk chỉ có trên gói trả phí (Starter trở lên, ~$7/tháng)**. Gói free không có disk — file `.db` sẽ bị xóa khi redeploy/restart. Nếu tạm dùng gói free thì bỏ khối `disk` trong `render.yaml`, nhưng phải chấp nhận mất dữ liệu mỗi lần deploy lại.
 5. Deploy xong, ghi lại URL backend, ví dụ: `https://app-toeic-backend.onrender.com`.
 6. Kiểm tra: mở `https://app-toeic-backend.onrender.com/health` trên trình duyệt — phải trả về `{"ok":true,...}`.
@@ -139,7 +140,7 @@ Thứ tự này là bắt buộc: frontend cần biết URL backend (`VITE_API_U
 
 | File | Dùng cho | Nội dung |
 |---|---|---|
-| `render.yaml` (gốc repo) | Render Blueprint | 1 web service backend (`rootDir: backend`, build `npm install`, start `npm start`) + disk `app-data` 1 GB tại `/var/data`; env `NODE_ENV=production`, `DATABASE_PATH=/var/data/app.db`, `JWT_SECRET`/`GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET` (`sync: false`), `FRONTEND_URL` |
+| `render.yaml` (gốc repo) | Render Blueprint | 1 web service backend (`rootDir: backend`, build `npm install`, start `npm start`) + disk `app-data` 1 GB tại `/var/data`; env `NODE_ENV=production`, `DATABASE_PATH=/var/data/app.db`, `JWT_SECRET`/`GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`/`GEMINI_API_KEY` (`sync: false`), `FRONTEND_URL` |
 | `frontend/vercel.json` | Vercel | Framework Vite, build `npm run build`, output `dist` (đặt Root Directory = `frontend` khi import project) |
 
 ### Lộ trình chuyển sang Postgres (khi cần)

@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { api, type Question, type TestSet, type ImportQuestion } from '../api';
+import { api, ApiError, type Question, type TestSet, type ImportQuestion, type AiParseResult } from '../api';
 import { useAuth } from '../auth';
 import { ErrorBox, partName } from '../components';
-import { STANDARD_COUNTS, normalizeImportFile, splitValid, type QuestionError } from '../testSetUtils';
+import { STANDARD_COUNTS, normalizeImportFile, splitValid, validateQuestion, type QuestionError } from '../testSetUtils';
+
+interface AiPreview extends AiParseResult {
+  fileName: string;
+}
 
 interface PartPreview {
   part: number;
@@ -30,6 +34,10 @@ export default function TestSetAdmin() {
   const [manual, setManual] = useState(emptyManual);
   const [listPart, setListPart] = useState<number | null>(null);
   const [listQuestions, setListQuestions] = useState<Question[]>([]);
+  const [aiFile, setAiFile] = useState<File | null>(null);
+  const [aiBusy, setAiBusy] = useState(false);
+  const [aiPreview, setAiPreview] = useState<AiPreview | null>(null);
+  const [aiKeyMissing, setAiKeyMissing] = useState(false);
 
   const load = () => {
     if (!id) return;
@@ -81,6 +89,46 @@ export default function TestSetAdmin() {
     } catch (e) { setError(e); } finally { setBusy(false); }
   };
 
+  const onAiParse = async () => {
+    if (!aiFile) return;
+    setAiBusy(true); setError(null); setMsg(''); setAiKeyMissing(false); setAiPreview(null);
+    try {
+      const r = await api.aiParseTestSet(ts.id, aiFile);
+      setAiPreview({ ...r, fileName: aiFile.name });
+    } catch (e) {
+      if (e instanceof ApiError && (e.status === 501 || e.code === 'gemini_not_configured')) setAiKeyMissing(true);
+      else setError(e);
+    } finally { setAiBusy(false); }
+  };
+
+  const setAiCorrect = (index: number, correct: string) => {
+    setAiPreview(prev => prev ? {
+      ...prev,
+      questions: prev.questions.map((q, i) => i === index ? { ...q, correct } : q),
+    } : prev);
+  };
+
+  const confirmAiImport = async () => {
+    if (!aiPreview) return;
+    const { valid, errors } = splitValid(aiPreview.questions);
+    if (errors.length > 0) {
+      setError(new Error(`Còn ${errors.length} câu lỗi — hãy chọn đáp án đúng cho các câu bị lỗi trước khi import: ${errors.map(e => `#${e.index + 1}: ${e.reason}`).join('; ')}`));
+      return;
+    }
+    setBusy(true); setError(null);
+    try {
+      const r = await api.adminImportTestSet(ts.id, valid);
+      setMsg(`Đã import ${r.imported} câu từ file AI vào đề. ${r.errors.length ? `Lỗi từ máy chủ: ${r.errors.map(e => `#${e.index}${e.id ? ` (${e.id})` : ''}: ${e.reason}`).join('; ')}` : ''}`);
+      setAiPreview(null); setAiFile(null);
+      load();
+    } catch (e) { setError(e); } finally { setBusy(false); }
+  };
+
+  // Số câu AI còn lỗi theo validate hiện tại (giảm dần khi admin sửa đáp án tay).
+  const aiLiveErrorCount = aiPreview
+    ? aiPreview.questions.filter((q, i) => validateQuestion(q, i)).length
+    : 0;
+
   const saveManual = async (e: React.FormEvent) => {
     e.preventDefault();
     if (manualPart == null) return;
@@ -131,6 +179,72 @@ export default function TestSetAdmin() {
         <div className="btn-row">
           <button className="btn gold" onClick={togglePublish}>{ts.isPublished ? '⏸ Bỏ phát hành' : '🚀 Phát hành đề'}</button>
         </div>
+      </div>
+
+      <div className="card">
+        <h2>🤖 Nhận diện bằng AI</h2>
+        <p className="muted">Upload file đề Word/PDF/ảnh, AI sẽ tách thành câu hỏi để bạn kiểm tra trước khi thêm vào đề.</p>
+        <div className="btn-row">
+          <label className="btn secondary" style={{ cursor: 'pointer' }}>
+            📄 Chọn file đề
+            <input
+              type="file" accept=".txt,.docx,.pdf,.png,.jpg,.jpeg" style={{ display: 'none' }}
+              onChange={e => { const f = e.target.files?.[0]; if (f) { setAiFile(f); setAiPreview(null); setAiKeyMissing(false); setError(null); setMsg(''); } e.target.value = ''; }}
+            />
+          </label>
+          <button className="btn" disabled={!aiFile || aiBusy} onClick={() => void onAiParse()}>
+            {aiBusy ? 'Đang nhận diện…' : '🤖 Nhận diện bằng AI'}
+          </button>
+        </div>
+        {aiFile && <p className="muted">Đã chọn: {aiFile.name}</p>}
+        {aiBusy && <p>Đang nhận diện, chờ khoảng 10–60 giây…</p>}
+        {aiKeyMissing && (
+          <div className="error">
+            Chưa cấu hình GEMINI_API_KEY trên máy chủ. Cần thêm GEMINI_API_KEY trong phần Environment của backend trên Render rồi deploy lại.
+          </div>
+        )}
+        {aiPreview && (
+          <div className="card" style={{ marginTop: '1rem' }}>
+            <h3>Xem trước AI — {aiPreview.fileName}</h3>
+            <p>{aiPreview.questions.length} câu parse được • {aiLiveErrorCount} câu còn lỗi</p>
+            {aiPreview.warnings.length > 0 && (
+              <p style={{ color: '#ffb800' }}>⚠ {aiPreview.warnings.join(' ')}</p>
+            )}
+            <table>
+              <thead><tr><th>#</th><th>Part</th><th>Nội dung</th><th>Đáp án đúng</th><th>Lý do lỗi</th></tr></thead>
+              <tbody>
+                {aiPreview.questions.map((q, i) => {
+                  const inv = aiPreview.invalid.find(x => x.index === i);
+                  const liveErr = validateQuestion(q, i);
+                  const needsFix = !q.correct || !!inv;
+                  const reason = liveErr ? (inv?.reason || liveErr.reason) : '';
+                  return (
+                    <tr key={i}>
+                      <td>{i + 1}</td>
+                      <td>Part {q.part}</td>
+                      <td>{q.content.length > 120 ? `${q.content.slice(0, 120)}…` : q.content}</td>
+                      <td>
+                        {needsFix ? (
+                          <select value={q.correct || ''} onChange={e => setAiCorrect(i, e.target.value)}>
+                            <option value="">— Chọn —</option>
+                            {['A', 'B', 'C', 'D'].map(l => <option key={l} value={l}>{l}</option>)}
+                          </select>
+                        ) : q.correct}
+                      </td>
+                      <td>{reason}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+            <div className="btn-row">
+              <button className="btn" disabled={busy} onClick={() => void confirmAiImport()}>
+                {busy ? 'Đang import…' : `✅ Xác nhận thêm vào đề (${aiPreview.questions.length - aiLiveErrorCount} câu)`}
+              </button>
+              <button className="btn secondary" onClick={() => setAiPreview(null)}>Hủy</button>
+            </div>
+          </div>
+        )}
       </div>
 
       {[1, 2, 3, 4, 5, 6, 7].map(p => (

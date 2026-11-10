@@ -22,6 +22,7 @@ export function setToken(t: string | null) {
 
 const VI_ERRORS: Record<string, string> = {
   google_not_configured: 'Chưa cấu hình Google OAuth trên máy chủ.',
+  gemini_not_configured: 'Chưa cấu hình GEMINI_API_KEY trên máy chủ.',
   invalid_credentials: 'Email hoặc mật khẩu không đúng.',
   user_exists: 'Email này đã được đăng ký.',
   unauthorized: 'Bạn cần đăng nhập lại.',
@@ -93,6 +94,13 @@ export interface ImportQuestion {
   options: { label: string; content: string }[];
   correct: string; explanation?: string; topic?: string; difficulty?: string;
   script?: string; passageId?: string; passageTitle?: string; passageText?: string;
+}
+
+export interface AiParseInvalid { index: number; reason: string; }
+export interface AiParseResult {
+  questions: ImportQuestion[];
+  invalid: AiParseInvalid[];
+  warnings: string[];
 }
 
 export const api = {
@@ -173,6 +181,36 @@ export const api = {
       `/api/admin/test-sets/${encodeURIComponent(id)}/import`, { method: 'POST', body: JSON.stringify({ questions }) }),
   adminAddTestSetQuestion: (id: string, question: Record<string, unknown>) =>
     req<Question>(`/api/admin/test-sets/${encodeURIComponent(id)}/questions`, { method: 'POST', body: JSON.stringify(question) }),
+  // Nhận diện đề bằng AI: upload 1 file (.txt/.docx/.pdf/.png/.jpg/.jpeg),
+  // backend parse thành câu hỏi (KHÔNG tự lưu DB). Dùng fetch + FormData
+  // trực tiếp vì helper req() đặt Content-Type application/json.
+  aiParseTestSet: async (id: string, file: File): Promise<AiParseResult> => {
+    const token = getToken();
+    const form = new FormData();
+    form.append('file', file);
+    let res: Response;
+    try {
+      res = await fetch(`${API_URL}/api/admin/test-sets/${encodeURIComponent(id)}/ai-parse`, {
+        method: 'POST',
+        body: form,
+        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+      });
+    } catch {
+      throw new ApiError(0, 'Không kết nối được tới máy chủ. Hãy kiểm tra backend có đang chạy không (mặc định http://localhost:4000).');
+    }
+    let data: unknown = null;
+    try { data = await res.json(); } catch { /* empty body */ }
+    if (!res.ok) {
+      const err = (data as { error?: string })?.error;
+      if (err === 'gemini_not_configured') {
+        throw new ApiError(501, 'Chưa cấu hình GEMINI_API_KEY trên máy chủ.', err);
+      }
+      const msg = (data as { message?: string })?.message
+        || (err && VI_ERRORS[err]) || err || `Lỗi máy chủ (${res.status}).`;
+      throw new ApiError(res.status, msg, err);
+    }
+    return data as AiParseResult;
+  },
 
   // Admin
   adminQuestions: async (part?: number, limit = 50, offset = 0) => {

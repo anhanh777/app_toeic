@@ -100,6 +100,7 @@ bang chinh thuc cua ETS) — frontend phai ghi ro "diem uoc luong" khi hien thi.
 | `PUT /api/admin/questions/:id` | Sua cau hoi (validate lai toan bo) |
 | `DELETE /api/admin/questions/:id` | → `{ok:true}` |
 | `POST /api/admin/questions/import` | `{questions:[...]}` → `{imported, errors:[{index, reason}]}`. Validate moi dong: du 4 options A–D, dung 1 dap an dung, co `explanation`; dong loi bi bo qua, khong chen nua voi. |
+| `POST /api/admin/test-sets/:id/ai-parse` | **Nhan dien de thi bang AI (Gemini).** Upload 1 file de thi (multipart, field `file`: `.txt`, `.docx`, `.pdf`, `.png`, `.jpg`, `.jpeg`, toi da 10MB) → tra ve `{questions:[...], invalid:[{index, reason}], warnings:[...]}` de admin xem truoc / sua tay, **KHONG tu luu vao DB** (luu bang endpoint `/admin/test-sets/:id/import` nhu binh thuong). Cau nao khong xac dinh duoc dap an thi `correct: ""` va `invalid` ghi ly do "Chưa xác định được đáp án đúng — cần chọn tay trước khi import" (AI khong doan bua dap an). Chua cau hinh `GEMINI_API_KEY` thi tra `501 {error:"gemini_not_configured"}`; Gemini loi/timeout thi tra `502`. File mau: `data/ai-parse-sample.txt`. |
 | `GET /api/admin/vocabulary?topic=&limit=&offset=` | Danh sach tu vung |
 | `POST /api/admin/vocabulary` | Tao tu `{id, word, phonetic?, meaning, example?, topic?}` |
 | `PUT /api/admin/vocabulary/:id` | Sua tu |
@@ -110,7 +111,8 @@ bang chinh thuc cua ETS) — frontend phai ghi ro "diem uoc luong" khi hien thi.
 ## Cau hinh
 
 Xem `backend/.env.example`: `PORT=4000`, `JWT_SECRET`, `DATABASE_PATH`,
-`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `CORS_ORIGIN` (mac dinh
+`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GEMINI_API_KEY` (key Gemini de
+nhan dien de thi bang AI; chua co thi endpoint ai-parse tra `501`), `CORS_ORIGIN` (mac dinh
 `http://localhost:5173`).
 
 ## Chay

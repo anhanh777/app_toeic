@@ -69,6 +69,7 @@ docs/     database.md (schema), api.md (endpoints)
   - POST /api/admin/questions/import {questions:[seed-format objects]} -> validate each (4 options, exactly 1 correct, explanation present); return {imported, errors:[{index,reason}]}; skip invalid rows, never half-insert a bad row.
   - GET/POST/PUT/DELETE /api/admin/vocabulary (same pattern), POST /api/admin/vocabulary/import {items:[...]}
   - GET /api/admin/backup (admin) -> downloads JSON {exportedAt, questions, vocabulary, usersCount, attemptsCount} — the backup export. Do NOT include password hashes in the export.
+  - POST /api/admin/test-sets/:id/ai-parse (admin) — upload 1 exam file (multipart field `file`: .txt/.docx/.pdf/.png/.jpg/.jpeg, max 10MB) -> Gemini parses it into questions -> {questions:[...], invalid:[{index,reason}], warnings:[...]}. Does NOT save to DB; admin reviews then saves via POST /api/admin/test-sets/:id/import. Questions with unknown answers have correct:"" and invalid reason "Chưa xác định được đáp án đúng — cần chọn tay trước khi import" (AI must never guess answers). Requires GEMINI_API_KEY env; if unset return 501 {error:"gemini_not_configured"}; Gemini error/timeout return 502.
 - Errors: JSON {error:"..."} with proper status codes (400 validation, 401 unauth, 403 forbidden, 404 not found, 501 google_not_configured).
 
 ## Seed data format (data/questions.json, data/vocabulary.json)
@@ -87,7 +88,7 @@ docs/     database.md (schema), api.md (endpoints)
 - Vite proxy or CORS: backend must enable CORS for the Vite dev origin (http://localhost:5173).
 
 ## Env examples
-- backend/.env.example: PORT=4000, JWT_SECRET=change-me, DATABASE_PATH=./data/app.db, GOOGLE_CLIENT_ID=, GOOGLE_CLIENT_SECRET=
+- backend/.env.example: PORT=4000, JWT_SECRET=change-me, DATABASE_PATH=./data/app.db, GOOGLE_CLIENT_ID=, GOOGLE_CLIENT_SECRET=, GEMINI_API_KEY= (key Gemini lay o Google AI Studio, chi can key, khong can Client Secret; chua co thi endpoint ai-parse tra 501)
 - frontend/.env.example: VITE_API_URL=http://localhost:4000, VITE_GOOGLE_CLIENT_ID=
 
 ## README (root)

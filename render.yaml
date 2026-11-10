@@ -28,6 +28,11 @@ services:
         sync: false
       - key: GOOGLE_CLIENT_SECRET
         sync: false
+      # Key Gemini de nhan dien de thi bang AI (lay o Google AI Studio,
+      # chi can key, khong can Client Secret). Chua co key thi endpoint
+      # ai-parse tra 501.
+      - key: GEMINI_API_KEY
+        sync: false
       # URL frontend that (sau khi deploy Vercel) — sua lai cho dung domain
       # cua ban, vd https://app-toeic.vercel.app. Co the sua sau tren Dashboard.
       - key: FRONTEND_URL
