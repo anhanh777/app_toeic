@@ -97,6 +97,9 @@ export default function TestSetAdmin() {
       setAiPreview({ ...r, fileName: aiFile.name });
     } catch (e) {
       if (e instanceof ApiError && (e.status === 501 || e.code === 'gemini_not_configured')) setAiKeyMissing(true);
+      // 403/forbidden: api.ts đã dịch thành message tiếng Việt rõ ràng,
+      // hiện qua ErrorBox — không hiện chữ "forbidden" thô cho người dùng.
+      else if (e instanceof ApiError && (e.status === 403 || e.code === 'forbidden')) setError(e);
       else setError(e);
     } finally { setAiBusy(false); }
   };
@@ -210,8 +213,28 @@ export default function TestSetAdmin() {
             {aiPreview.warnings.length > 0 && (
               <p style={{ color: '#B98A1D' }}>⚠ {aiPreview.warnings.join(' ')}</p>
             )}
+            {aiPreview.structure?.mode === 'split' && (
+              <>
+                <p className="muted">
+                  Đã nhận diện cấu trúc
+                  {(aiPreview.structure.parts ?? []).length > 0 && (
+                    <>: {(aiPreview.structure.parts ?? []).map(p => `Part ${p.part} (${p.questionCount} câu)`).join(' · ')}</>
+                  )}
+                  {' · '}{aiPreview.structure.answerKeyFound ? 'Đã thấy bảng đáp án' : 'Chưa thấy bảng đáp án'}
+                </p>
+                {(aiPreview.structure.warnings ?? []).length > 0 && (
+                  <p style={{ color: '#B98A1D' }}>⚠ {(aiPreview.structure.warnings ?? []).join(' ')}</p>
+                )}
+              </>
+            )}
+            {aiPreview.structure?.mode === 'fallback' && (
+              <p className="muted">Không tách được cấu trúc — đã dùng AI đọc toàn bộ file.</p>
+            )}
+            {aiPreview.structure?.mode === 'vision' && (
+              <p className="muted">File scan/ảnh — AI đã đọc trực tiếp từ ảnh, không tách cấu trúc được.</p>
+            )}
             <table>
-              <thead><tr><th>#</th><th>Part</th><th>Nội dung</th><th>Đáp án đúng</th><th>Lý do lỗi</th></tr></thead>
+              <thead><tr><th>#</th><th>Part</th><th>Nội dung</th><th>Đáp án đúng</th><th>AI chưa chắc</th><th>Lý do lỗi</th></tr></thead>
               <tbody>
                 {aiPreview.questions.map((q, i) => {
                   const inv = aiPreview.invalid.find(x => x.index === i);
@@ -230,6 +253,11 @@ export default function TestSetAdmin() {
                             {['A', 'B', 'C', 'D'].map(l => <option key={l} value={l}>{l}</option>)}
                           </select>
                         ) : q.correct}
+                      </td>
+                      <td>
+                        {q.confidence === 'low' && (
+                          <span style={{ color: '#B98A1D', fontSize: '0.85rem' }}>⚠ Kiểm tra lại</span>
+                        )}
                       </td>
                       <td>{reason}</td>
                     </tr>

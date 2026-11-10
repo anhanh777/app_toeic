@@ -94,13 +94,22 @@ export interface ImportQuestion {
   options: { label: string; content: string }[];
   correct: string; explanation?: string; topic?: string; difficulty?: string;
   script?: string; passageId?: string; passageTitle?: string; passageText?: string;
+  confidence?: 'high' | 'low';
 }
 
 export interface AiParseInvalid { index: number; reason: string; }
+export interface AiParseStructure {
+  mode: 'split' | 'fallback' | 'vision';
+  parts: { part: number; startLine: number; questionCount: number }[];
+  answerKeyFound: boolean;
+  answerKey: Record<string, string> | null;
+  warnings: string[];
+}
 export interface AiParseResult {
   questions: ImportQuestion[];
   invalid: AiParseInvalid[];
   warnings: string[];
+  structure?: AiParseStructure | null;
 }
 
 export const api = {
@@ -204,6 +213,9 @@ export const api = {
       const err = (data as { error?: string })?.error;
       if (err === 'gemini_not_configured') {
         throw new ApiError(501, 'Chưa cấu hình GEMINI_API_KEY trên máy chủ.', err);
+      }
+      if (res.status === 403 || err === 'forbidden') {
+        throw new ApiError(403, 'Tính năng này chỉ dành cho tài khoản admin. Hãy đăng nhập bằng tài khoản demo@toeic.app.', err || 'forbidden');
       }
       const msg = (data as { message?: string })?.message
         || (err && VI_ERRORS[err]) || err || `Lỗi máy chủ (${res.status}).`;
