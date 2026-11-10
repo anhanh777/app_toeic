@@ -92,11 +92,12 @@ export const api = {
     req<User>('/api/users/me', { method: 'PATCH', body: JSON.stringify(patch) }),
 
   parts: () => req<PartInfo[]>('/api/parts'),
-  questions: (part?: number, limit = 50, offset = 0, search = '') => {
+  questions: async (part?: number, limit = 50, offset = 0, search = '') => {
     const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
     if (part) q.set('part', String(part));
     if (search) q.set('search', search);
-    return req<Question[]>(`/api/questions?${q}`);
+    const data = await req<{ total: number; items: Question[] }>(`/api/questions?${q}`);
+    return data.items;
   },
   question: (id: string) => req<Question>(`/api/questions/${encodeURIComponent(id)}`),
   passage: (id: string) => req<{ id: string; part: number; title?: string; content?: string; script?: string }>(`/api/passages/${encodeURIComponent(id)}`),
@@ -124,10 +125,11 @@ export const api = {
     req<{ correct: boolean; correctLabel?: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
       `/api/wrong-questions/${encodeURIComponent(questionId)}/review`, { method: 'POST', body: JSON.stringify({ selected }) }),
 
-  vocabulary: (topic = '', limit = 100) => {
+  vocabulary: async (topic = '', limit = 100) => {
     const q = new URLSearchParams({ limit: String(limit) });
     if (topic) q.set('topic', topic);
-    return req<Vocab[]>(`/api/vocabulary?${q}`);
+    const data = await req<{ total: number; items: Vocab[] }>(`/api/vocabulary?${q}`);
+    return data.items;
   },
   markVocab: (id: string, status: 'learning' | 'learned' | 'wrong') =>
     req(`/api/vocabulary/${encodeURIComponent(id)}/mark`, { method: 'POST', body: JSON.stringify({ status }) }),
@@ -139,10 +141,11 @@ export const api = {
     req<{ entries: LeaderboardEntry[]; me: (LeaderboardEntry & { rank: number }) | null }>(`/api/leaderboard?metric=${metric}&tab=${tab}`),
 
   // Admin
-  adminQuestions: (part?: number, limit = 50, offset = 0) => {
+  adminQuestions: async (part?: number, limit = 50, offset = 0) => {
     const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
     if (part) q.set('part', String(part));
-    return req<Question[]>(`/api/admin/questions?${q}`);
+    const data = await req<{ total: number; items: Question[] }>(`/api/admin/questions?${q}`);
+    return data.items;
   },
   adminCreateQuestion: (body: Record<string, unknown>) =>
     req<Question>('/api/admin/questions', { method: 'POST', body: JSON.stringify(body) }),
@@ -152,7 +155,10 @@ export const api = {
     req(`/api/admin/questions/${encodeURIComponent(id)}`, { method: 'DELETE' }),
   adminImportQuestions: (questions: unknown[]) =>
     req<{ imported: number; errors: { index: number; reason: string }[] }>('/api/admin/questions/import', { method: 'POST', body: JSON.stringify({ questions }) }),
-  adminVocabulary: () => req<Vocab[]>('/api/admin/vocabulary'),
+  adminVocabulary: async () => {
+    const data = await req<{ total: number; items: Vocab[] }>('/api/admin/vocabulary');
+    return data.items;
+  },
   adminCreateVocab: (body: Record<string, unknown>) =>
     req<Vocab>('/api/admin/vocabulary', { method: 'POST', body: JSON.stringify(body) }),
   adminUpdateVocab: (id: string, body: Record<string, unknown>) =>
