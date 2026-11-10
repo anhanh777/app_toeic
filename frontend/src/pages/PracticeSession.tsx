@@ -38,6 +38,12 @@ export default function PracticeSession() {
     q.options.length > 0 &&
     q.options.every(o => !o.content || !o.content.trim());
 
+  // Part 1/2 thi that: chi co tranh + nghe + chon A/B/C/D, KHONG hien chu
+  // cau hoi/phuong an truoc khi tra loi (giong de thi that). Tra loi xong
+  // moi hien day du chu de xem lai minh vua nghe gi.
+  const hideListeningText = (q.part === 1 || q.part === 2) && !result;
+  const letterOnly = listeningOnly || hideListeningText;
+
   const submit = async () => {
     if (!q || !selected) return;
     try {
@@ -79,10 +85,12 @@ export default function PracticeSession() {
         {listeningOnly && q.part === 1 && !q.imageUrl && (
           <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
         )}
-        {listeningOnly ? (
-          <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
+        {hideListeningText ? (
+          q.part === 2 && listeningOnly ? (
+            <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
+          ) : null
         ) : (
-          <p><strong>{q.content}</strong></p>
+          q.content ? <p><strong>{q.content}</strong></p> : null
         )}
         {isListening && (
           <ListeningAudio
@@ -97,13 +105,13 @@ export default function PracticeSession() {
         )}
         {q.options.map(o => {
           let cls = 'option';
-          if (listeningOnly) cls += ' letter-only';
+          if (letterOnly) cls += ' letter-only';
           if (selected === o.label) cls += ' selected';
           if (result) {
             if (o.label === result.correctLabel) cls += ' correct';
             else if (selected === o.label && !result.correct) cls += ' wrong';
           }
-          return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelected(o.label)}>{listeningOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}</button>;
+          return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelected(o.label)}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}</button>;
         })}
         {!result ? (
           <div className="btn-row"><button className="btn" disabled={!selected} onClick={submit}>Nộp đáp án</button></div>
