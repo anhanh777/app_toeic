@@ -21,8 +21,15 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const GEMINI_MODEL = 'gemini-2.5-flash';
 const GEMINI_TIMEOUT_MS = 60 * 1000; // 60 giay
 
-const ALLOWED_EXTS = ['.txt', '.docx', '.pdf', '.png', '.jpg', '.jpeg'];
+const ALLOWED_EXTS = ['.txt', '.docx', '.doc', '.pdf', '.png', '.jpg', '.jpeg'];
 const IMAGE_MIMES = new Set(['image/png', 'image/jpeg']);
+const IMAGE_EXTS = new Set(['.png', '.jpg', '.jpeg']);
+
+function extOf(name) {
+  const n = String(name || '').toLowerCase();
+  const i = n.lastIndexOf('.');
+  return i >= 0 ? n.slice(i) : '';
+}
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -43,23 +50,35 @@ const upload = multer({
 
 /**
  * Trich xuat van ban tu buffer file (khong dung cho anh).
+ * Quyet dinh theo duoi file truoc (trinh duyet tren Windows doi khi gui
+ * mimetype sai, vd .docx gui thanh application/octet-stream), roi moi
+ * dung mimetype lam du phong.
  * @param {Buffer} buffer noi dung file
  * @param {string} mimetype MIME type cua file (multer cung cap)
+ * @param {string} filename ten file goc (de lay duoi file)
  * @returns {Promise<string>} van ban trich duoc
  */
-async function extractText(buffer, mimetype) {
+async function extractText(buffer, mimetype, filename) {
   if (!Buffer.isBuffer(buffer)) throw new Error('Dữ liệu file không hợp lệ');
-  if (mimetype === 'text/plain') {
+  const ext = extOf(filename);
+  const type = ext || '';
+  if (type === '.doc') {
+    throw new Error(
+      'File .doc (Word cũ) không đọc được. Hãy mở bằng Word rồi lưu thành .docx (File → Save As → Word Document) rồi tải lên lại.'
+    );
+  }
+  if (type === '.txt' || mimetype === 'text/plain') {
     return buffer.toString('utf-8');
   }
   if (
+    type === '.docx' ||
     mimetype ===
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
   ) {
     const result = await mammoth.extractRawText({ buffer });
     return result.value || '';
   }
-  if (mimetype === 'application/pdf') {
+  if (type === '.pdf' || mimetype === 'application/pdf') {
     // pdf-parse v2: class PDFParse; v1: ham truc tiep. Ho tro ca hai.
     const pdfParse = require('pdf-parse');
     if (typeof pdfParse === 'function') {
@@ -165,7 +184,8 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
       });
     }
 
-    const isImage = IMAGE_MIMES.has(req.file.mimetype);
+    const isImage =
+      IMAGE_EXTS.has(extOf(req.file.originalname)) || IMAGE_MIMES.has(req.file.mimetype);
     let parts;
     try {
       if (isImage) {
@@ -180,7 +200,7 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
           { text: buildVisionPrompt() },
         ];
       } else {
-        const text = await extractText(req.file.buffer, req.file.mimetype);
+        const text = await extractText(req.file.buffer, req.file.mimetype, req.file.originalname);
         if (!text || !text.trim()) {
           return res
             .status(400)

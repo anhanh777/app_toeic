@@ -188,7 +188,7 @@ export default function TestSetAdmin() {
           <label className="btn secondary" style={{ cursor: 'pointer' }}>
             📄 Chọn file đề
             <input
-              type="file" accept=".txt,.docx,.pdf,.png,.jpg,.jpeg" style={{ display: 'none' }}
+              type="file" accept=".txt,.docx,.doc,.pdf,.png,.jpg,.jpeg" style={{ display: 'none' }}
               onChange={e => { const f = e.target.files?.[0]; if (f) { setAiFile(f); setAiPreview(null); setAiKeyMissing(false); setError(null); setMsg(''); } e.target.value = ''; }}
             />
           </label>
@@ -260,6 +260,7 @@ export default function TestSetAdmin() {
             <button className="btn" onClick={() => { setManualPart(p); setManual(emptyManual); setPreview(null); }}>✏ Thêm câu thủ công</button>
             <button className="btn ghost" onClick={() => void toggleList(p)}>{listPart === p ? 'Ẩn danh sách' : 'Xem danh sách câu'}</button>
           </div>
+          <p className="muted">Nút này chỉ nhận file JSON. File Word/PDF/ảnh thì dùng mục 🤖 Nhận diện bằng AI ở phía trên trang này.</p>
 
           {preview && preview.part === p && (
             <div className="card" style={{ marginTop: '1rem' }}>
