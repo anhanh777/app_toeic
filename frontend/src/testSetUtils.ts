@@ -16,18 +16,35 @@ export function validateQuestion(q: unknown, index: number): QuestionError | nul
   if (!o || typeof o !== 'object') return fail('Câu hỏi không phải là object.');
   const part = Number(o.part);
   if (!Number.isInteger(part) || part < 1 || part > 7) return fail('Part phải là số nguyên từ 1 đến 7.');
-  if (typeof o.content !== 'string' || !o.content.trim()) return fail('Thiếu nội dung câu hỏi (content).');
-  if (!Array.isArray(o.options) || o.options.length !== 4) return fail('Phải có đủ 4 phương án (options).');
+  // Cau chi-nghe (Part 1/2): de thi that khong in noi dung cau hoi/phuong an
+  // nen cho phep content rong va options rong (chi can nhan). Part 2 co
+  // dung 3 phuong an (A, B, C). Dap an dung van bat buoc nhu cac Part khac.
+  const listeningOnly = part === 1 || part === 2;
+  const expectedLabels = part === 2 ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D'];
+  if (!listeningOnly && (typeof o.content !== 'string' || !o.content.trim())) return fail('Thiếu nội dung câu hỏi (content).');
+  if (!Array.isArray(o.options) || o.options.length !== expectedLabels.length) {
+    return part === 2
+      ? fail('Part 2 phải có đúng 3 phương án (options).')
+      : fail('Phải có đủ 4 phương án (options).');
+  }
   const labels = new Set<string>();
   for (const opt of o.options as unknown[]) {
     const p = opt as Record<string, unknown>;
     if (!p || typeof p !== 'object') return fail('Phương án không hợp lệ.');
-    if (typeof p.label !== 'string' || !['A', 'B', 'C', 'D'].includes(p.label)) return fail('Nhãn phương án phải là A, B, C hoặc D.');
+    if (typeof p.label !== 'string' || !expectedLabels.includes(p.label)) {
+      return part === 2
+        ? fail('Nhãn phương án Part 2 phải là A, B hoặc C.')
+        : fail('Nhãn phương án phải là A, B, C hoặc D.');
+    }
     if (labels.has(p.label)) return fail(`Trùng nhãn phương án ${p.label}.`);
     labels.add(p.label);
-    if (typeof p.content !== 'string' || !p.content.trim()) return fail(`Phương án ${p.label} thiếu nội dung.`);
+    if (!listeningOnly && (typeof p.content !== 'string' || !p.content.trim())) return fail(`Phương án ${p.label} thiếu nội dung.`);
   }
-  if (typeof o.correct !== 'string' || !['A', 'B', 'C', 'D'].includes(o.correct)) return fail('Đáp án đúng (correct) phải là A, B, C hoặc D.');
+  if (typeof o.correct !== 'string' || !expectedLabels.includes(o.correct)) {
+    return part === 2
+      ? fail('Đáp án đúng (correct) phải là A, B hoặc C.')
+      : fail('Đáp án đúng (correct) phải là A, B, C hoặc D.');
+  }
   if (!labels.has(o.correct)) return fail(`Đáp án đúng ${o.correct} không có trong danh sách phương án.`);
   return null;
 }

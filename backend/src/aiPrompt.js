@@ -120,6 +120,14 @@ function buildBlockParsePrompt(block, answerKeyForBlock) {
       `Cac cau trong khoi nay (theo thu tu trong de): ${block.expectedQuestions.join(', ')}.`
     );
   }
+  if (block.part === 1 || block.part === 2) {
+    contextLines.push(
+      'LUU Y — Part 1/2 la cau CHI-NGHE: de thi that KHONG in noi dung cau hoi va phuong an ' +
+        '(Part 1 chi co anh + 4 cau noi trong audio, Part 2 chi co cau hoi + 3 cau tra loi trong audio). ' +
+        'KHONG bia noi dung cau hoi hay phuong an. Neu khoi nay khong trich duoc cau nao co noi dung ' +
+        'that thi tra ve mang questions rong — he thong se tu tao cau giu cho.'
+    );
+  }
   if (block.passageText) {
     contextLines.push(
       `Doan van chung cua khoi (passageText — cac cau trong khoi deu dung chung doan nay):\n${block.passageText}`

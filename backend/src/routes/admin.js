@@ -9,23 +9,17 @@ const { authMiddleware, requireAdmin } = require('../auth');
 const router = express.Router();
 router.use(authMiddleware, requireAdmin);
 
-/** Validate 1 cau hoi dang seed-format. Tra ve null neu hop le, neu khong tra ly do. */
+/**
+ * Validate 1 cau hoi dang seed-format. Tra ve null neu hop le, neu khong tra ly do.
+ * Quy tac part/content/options/correct dung chung db.validateImportQuestion
+ * (da noi long cho cau chi-nghe Part 1/2); o day chi them cac dieu kien
+ * rieng cua trang Admin tong (id, explanation, difficulty).
+ */
 function validateQuestion(q) {
   if (!q || typeof q !== 'object') return 'doi tuong cau hoi khong hop le';
   if (typeof q.id !== 'string' || !q.id.trim()) return 'thieu id';
-  if (!Number.isInteger(q.part) || q.part < 1 || q.part > 7) return 'part phai tu 1 den 7';
-  if (typeof q.content !== 'string' || !q.content.trim()) return 'thieu content';
-  if (!Array.isArray(q.options) || q.options.length !== 4) return 'phai co dung 4 options';
-  const labels = q.options.map((o) => o && o.label);
-  if (new Set(labels).size !== 4 || !labels.every((l) => ['A', 'B', 'C', 'D'].includes(l))) {
-    return 'options phai co label A, B, C, D (khong trung)';
-  }
-  if (q.options.some((o) => typeof o.content !== 'string' || !o.content.trim())) {
-    return 'moi option phai co content';
-  }
-  if (typeof q.correct !== 'string' || !labels.includes(q.correct)) {
-    return 'correct phai la 1 trong 4 label A-D';
-  }
+  const coreErr = db.validateImportQuestion(q, 0);
+  if (coreErr) return coreErr;
   const correctCount = q.options.filter((o) => o.label === q.correct).length;
   if (correctCount !== 1) return 'phai co dung 1 dap an dung';
   if (typeof q.explanation !== 'string' || !q.explanation.trim()) {

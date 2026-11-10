@@ -149,16 +149,22 @@ export default function TestSetAdmin() {
     if (manualPart == null) return;
     setBusy(true); setError(null); setMsg('');
     try {
+      // Câu chỉ-nghe (Part 1/2): không có chữ in — gửi content rỗng và
+      // options chỉ có nhãn (Part 1: A–D, Part 2: A–C).
+      const listeningOnly = manualPart === 1 || manualPart === 2;
+      const options = listeningOnly
+        ? (manualPart === 2 ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D']).map(label => ({ label, content: '' }))
+        : [
+            { label: 'A', content: manual.optA }, { label: 'B', content: manual.optB },
+            { label: 'C', content: manual.optC }, { label: 'D', content: manual.optD },
+          ];
       const body: Record<string, unknown> = {
-        part: manualPart, content: manual.content, explanation: manual.explanation,
+        part: manualPart, content: listeningOnly ? '' : manual.content, explanation: manual.explanation,
         topic: manual.topic, difficulty: manual.difficulty, script: manual.script,
         passageId: manual.passageId, passageTitle: manual.passageTitle, passageText: manual.passageText,
         ...(manual.imageUrl ? { imageUrl: manual.imageUrl } : {}),
         ...(manual.audioUrl ? { audioUrl: manual.audioUrl } : {}),
-        options: [
-          { label: 'A', content: manual.optA }, { label: 'B', content: manual.optB },
-          { label: 'C', content: manual.optC }, { label: 'D', content: manual.optD },
-        ],
+        options,
         correct: manual.correct,
       };
       await api.adminAddTestSetQuestion(ts.id, body);
@@ -322,7 +328,7 @@ export default function TestSetAdmin() {
                         {needsFix ? (
                           <select value={q.correct || ''} onChange={e => setAiCorrect(i, e.target.value)}>
                             <option value="">— Chọn —</option>
-                            {['A', 'B', 'C', 'D'].map(l => <option key={l} value={l}>{l}</option>)}
+                            {(q.part === 2 ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D']).map(l => <option key={l} value={l}>{l}</option>)}
                           </select>
                         ) : q.correct}
                       </td>
@@ -381,32 +387,42 @@ export default function TestSetAdmin() {
           {manualPart === p && (
             <form className="panel" onSubmit={saveManual}>
               <h3>Thêm câu thủ công — Part {p}</h3>
-              <label>Nội dung câu hỏi (tiếng Anh)</label>
-              <textarea rows={3} value={manual.content} onChange={e => setManual({ ...manual, content: e.target.value })} required />
-              <label>Phương án A</label><input value={manual.optA} onChange={e => setManual({ ...manual, optA: e.target.value })} required />
-              <label>Phương án B</label><input value={manual.optB} onChange={e => setManual({ ...manual, optB: e.target.value })} required />
-              <label>Phương án C</label><input value={manual.optC} onChange={e => setManual({ ...manual, optC: e.target.value })} required />
-              <label>Phương án D</label><input value={manual.optD} onChange={e => setManual({ ...manual, optD: e.target.value })} required />
+              {(p === 1 || p === 2) ? (
+                <p className="muted">🎧 Câu chỉ-nghe: đề thi thật không in chữ cho Part này ({p === 1 ? 'chỉ có ảnh + 4 câu nói trong audio' : 'chỉ có câu hỏi + 3 câu trả lời trong audio'}) — chỉ cần ảnh (Part 1), file audio và đáp án đúng.</p>
+              ) : (
+                <>
+                  <label>Nội dung câu hỏi (tiếng Anh)</label>
+                  <textarea rows={3} value={manual.content} onChange={e => setManual({ ...manual, content: e.target.value })} required />
+                  <label>Phương án A</label><input value={manual.optA} onChange={e => setManual({ ...manual, optA: e.target.value })} required />
+                  <label>Phương án B</label><input value={manual.optB} onChange={e => setManual({ ...manual, optB: e.target.value })} required />
+                  <label>Phương án C</label><input value={manual.optC} onChange={e => setManual({ ...manual, optC: e.target.value })} required />
+                  <label>Phương án D</label><input value={manual.optD} onChange={e => setManual({ ...manual, optD: e.target.value })} required />
+                </>
+              )}
               <label>Đáp án đúng</label>
               <select value={manual.correct} onChange={e => setManual({ ...manual, correct: e.target.value })}>
-                {['A', 'B', 'C', 'D'].map(l => <option key={l}>{l}</option>)}
+                {(p === 2 ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D']).map(l => <option key={l}>{l}</option>)}
               </select>
               <label>Giải thích (tiếng Việt, ngắn)</label><textarea rows={2} value={manual.explanation} onChange={e => setManual({ ...manual, explanation: e.target.value })} />
               <label>Script / transcript (Part 1–4)</label><textarea rows={2} value={manual.script} onChange={e => setManual({ ...manual, script: e.target.value })} />
               {mediaCfg?.configured ? (
                 <>
-                  <label>Ảnh minh họa (Part 1)</label>
-                  <div className="btn-row">
-                    <label className="btn secondary" style={{ cursor: 'pointer' }}>
-                      🖼 Chọn ảnh (.png/.jpg/.jpeg, ≤ 5MB)
-                      <input type="file" accept=".png,.jpg,.jpeg" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) void onManualImage(f); e.target.value = ''; }} />
-                    </label>
-                  </div>
-                  {imgUploading && <p className="muted">Đang tải ảnh lên Cloudinary…</p>}
-                  {manual.imageUrl && (
+                  {p === 1 && (
                     <>
-                      <img src={manual.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
-                      <p className="muted">Đã upload ảnh.</p>
+                      <label>Ảnh minh họa (Part 1)</label>
+                      <div className="btn-row">
+                        <label className="btn secondary" style={{ cursor: 'pointer' }}>
+                          🖼 Chọn ảnh (.png/.jpg/.jpeg, ≤ 5MB)
+                          <input type="file" accept=".png,.jpg,.jpeg" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) void onManualImage(f); e.target.value = ''; }} />
+                        </label>
+                      </div>
+                      {imgUploading && <p className="muted">Đang tải ảnh lên Cloudinary…</p>}
+                      {manual.imageUrl && (
+                        <>
+                          <img src={manual.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
+                          <p className="muted">Đã upload ảnh.</p>
+                        </>
+                      )}
                     </>
                   )}
                   <label>File audio (Part 1–4, .mp3)</label>
@@ -427,9 +443,13 @@ export default function TestSetAdmin() {
               ) : (
                 <p className="muted">Chưa cấu hình Cloudinary — xem README</p>
               )}
-              <label>ID đoạn (passageId, không bắt buộc)</label><input value={manual.passageId} onChange={e => setManual({ ...manual, passageId: e.target.value })} />
-              <label>Tiêu đề đoạn (passageTitle, không bắt buộc)</label><input value={manual.passageTitle} onChange={e => setManual({ ...manual, passageTitle: e.target.value })} />
-              <label>Đoạn văn (passageText, không bắt buộc)</label><textarea rows={3} value={manual.passageText} onChange={e => setManual({ ...manual, passageText: e.target.value })} />
+              {!(p === 1 || p === 2) && (
+                <>
+                  <label>ID đoạn (passageId, không bắt buộc)</label><input value={manual.passageId} onChange={e => setManual({ ...manual, passageId: e.target.value })} />
+                  <label>Tiêu đề đoạn (passageTitle, không bắt buộc)</label><input value={manual.passageTitle} onChange={e => setManual({ ...manual, passageTitle: e.target.value })} />
+                  <label>Đoạn văn (passageText, không bắt buộc)</label><textarea rows={3} value={manual.passageText} onChange={e => setManual({ ...manual, passageText: e.target.value })} />
+                </>
+              )}
               <label>Chủ đề</label><input value={manual.topic} onChange={e => setManual({ ...manual, topic: e.target.value })} />
               <label>Độ khó</label>
               <select value={manual.difficulty} onChange={e => setManual({ ...manual, difficulty: e.target.value })}>

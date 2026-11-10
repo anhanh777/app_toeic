@@ -245,6 +245,42 @@ function normalizeQuestion(raw) {
   };
 }
 
+/**
+ * Cau giu cho cho Part 1/2 chi-nghe: khi AI tra ve it cau hon so cau ky
+ * vong (expected — so cau theo thu tu trong de), tao cau giu cho cho cac
+ * so con thieu (tinh tu so cau AI da tra ve, vi AI tra theo dung thu tu).
+ * Part 1: 4 phuong an rong (A–D); Part 2: 3 phuong an rong (A–C); ca hai
+ * deu content rong, correct rong, confidence "low". Cau giu cho di qua
+ * dung luong `invalid` hien co (dap an trong -> invalid), khong luu DB.
+ * @returns {{ placeholders: object[], warnings: string[] }}
+ */
+function fillListeningPlaceholders(part, expected, gotCount) {
+  const labels = part === 1 ? ['A', 'B', 'C', 'D'] : ['A', 'B', 'C'];
+  const placeholders = [];
+  const warnings = [];
+  const missing = (expected || []).length - (gotCount || 0);
+  for (let m = 0; m < missing; m++) {
+    const num = expected[gotCount + m];
+    placeholders.push({
+      part,
+      content: '',
+      options: labels.map((label) => ({ label, content: '' })),
+      correct: '',
+      explanation: '',
+      script: null,
+      passageTitle: null,
+      passageText: null,
+      confidence: 'low',
+    });
+    warnings.push(
+      part === 1
+        ? `Câu ${num} Part 1 chỉ có audio — cần gắn ảnh, file audio và chọn đáp án tay trước khi import`
+        : `Câu ${num} Part 2 chỉ có audio — cần gắn file audio và chọn đáp án tay trước khi import`
+    );
+  }
+  return { placeholders, warnings };
+}
+
 /** Prompt cho 1 block o tang 3 (khong dung cho nhom vision — vision co prompt rieng). */
 function blockPrompt(block, structure) {
   if (structure.mode === 'fallback') return buildParsePrompt(block.text);
@@ -391,16 +427,41 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
             try {
               const geminiJson = await callGemini(apiKey, [{ text: buildParsePrompt(fullText) }]);
               const expectedAll = blocks.flatMap((b) => b.expectedQuestions || []);
+              // Giu so cau ky vong theo tung Part de bu cau giu cho chi-nghe
+              // o buoc gop (Part 1/2 co the khong co cau nao trong ket qua).
+              const expectedByPart = {};
+              for (const b of blocks) {
+                if (b.part === 1 || b.part === 2) {
+                  expectedByPart[b.part] = b.expectedQuestions || [];
+                }
+              }
               return [
                 {
                   ok: true,
                   parsed: parseGeminiJson(geminiJson),
-                  block: { part: 0, expectedQuestions: expectedAll, warnings: [] },
+                  block: {
+                    part: 0,
+                    expectedQuestions: expectedAll,
+                    expectedByPart,
+                    warnings: [],
+                  },
                 },
               ];
             } catch (e) {
               return [
-                { ok: false, error: e, block: { part: 0, expectedQuestions: [], warnings: [] } },
+                {
+                  ok: false,
+                  error: e,
+                  block: {
+                    part: 0,
+                    expectedQuestions: [],
+                    expectedByPart: blocks.reduce((acc, b) => {
+                      if (b.part === 1 || b.part === 2) acc[b.part] = b.expectedQuestions || [];
+                      return acc;
+                    }, {}),
+                    warnings: [],
+                  },
+                },
               ];
             }
           }
@@ -479,6 +540,25 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
         warnings.push(
           `Không nhận diện được khối ${partLabel} (${r.error.message || 'lỗi không xác định'})`
         );
+        // Block Part 1/2 loi hoan toan (vd Gemini 429): van tao cau giu cho
+        // de admin dien tay thay vi mat trang ca Part.
+        if (block.part === 1 || block.part === 2) {
+          const { placeholders, warnings: pw } = fillListeningPlaceholders(
+            block.part,
+            block.expectedQuestions || [],
+            0
+          );
+          questions.push(...placeholders);
+          warnings.push(...pw);
+        } else if (block.part === 0 && block.expectedByPart) {
+          for (const part of [1, 2]) {
+            const exp = block.expectedByPart[part] || [];
+            if (!exp.length) continue;
+            const { placeholders, warnings: pw } = fillListeningPlaceholders(part, exp, 0);
+            questions.push(...placeholders);
+            warnings.push(...pw);
+          }
+        }
         return;
       }
       const parsed = r.parsed;
@@ -509,6 +589,28 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
         }
         questions.push({ ...q, confidence });
       });
+      // Part 1/2 chi-nghe: AI tra ve it cau hon so ky vong thi bu cau giu
+      // cho cho cac so con thieu (di qua luong `invalid` nhu cau thuong).
+      if (block.part === 1 || block.part === 2) {
+        const { placeholders, warnings: pw } = fillListeningPlaceholders(
+          block.part,
+          expected,
+          rawQs.length
+        );
+        questions.push(...placeholders);
+        warnings.push(...pw);
+      } else if (block.part === 0 && block.expectedByPart) {
+        // Nhom single-call (1 call cho ca file): dem cau AI tra ve theo
+        // tung Part 1/2 roi bu giu cho cho phan thieu.
+        for (const part of [1, 2]) {
+          const exp = block.expectedByPart[part] || [];
+          if (!exp.length) continue;
+          const got = rawQs.filter((q) => q.part === part).length;
+          const { placeholders, warnings: pw } = fillListeningPlaceholders(part, exp, got);
+          questions.push(...placeholders);
+          warnings.push(...pw);
+        }
+      }
     });
 
     const invalid = [];
@@ -531,3 +633,4 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
 module.exports = router;
 module.exports.extractText = extractText;
 module.exports.selectParseMode = selectParseMode;
+module.exports.fillListeningPlaceholders = fillListeningPlaceholders;

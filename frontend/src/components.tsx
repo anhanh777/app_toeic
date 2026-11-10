@@ -134,6 +134,15 @@ export function ListeningAudio({
   }
 
   // Fallback TTS như cũ khi chưa có file audio.
+  // Câu chỉ-nghe (Part 1/2) chưa có audio lẫn transcript thì không có gì
+  // để đọc — hiện ghi chú thay vì nút phát rỗng.
+  if (!ttsText.trim()) {
+    return (
+      <div className="card audio-box">
+        <p className="muted">🎧 Câu chỉ-nghe — chưa có file audio. Admin cần upload file mp3 cho câu này (trang chi tiết đề → "AI đọc audio" cũng cần có transcript).</p>
+      </div>
+    );
+  }
   return (
     <div className="card audio-box">
       <p className="muted">Âm thanh đọc bằng giọng máy (TTS)</p>

@@ -225,6 +225,9 @@ select + .card{margin-top:1rem}
 .option.wrong{border-color:var(--red); background:var(--red-bg)}
 .option.wrong strong{background:#F0D3D3; color:var(--red-ink)}
 .option:disabled{cursor:default}
+/* Câu chỉ-nghe (Part 1/2): nút đáp án chỉ hiện chữ cái, to và căn giữa */
+.option.letter-only{text-align:center; padding:1rem .85rem}
+.option.letter-only strong{font-size:1.5rem; padding:.45rem .9rem; margin-right:0}
 
 table{width:100%; border-collapse:collapse}
 /* Bảng trong card hẹp: cuộn ngang trong card thay vì tràn ra ngoài */

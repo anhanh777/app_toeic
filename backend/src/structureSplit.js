@@ -18,6 +18,10 @@ const ANSWER_KEY_HEADER_RE = /^\s*(answer\s*key|đáp\s*án|key)\s*$/i;
 const ANSWER_LINE_RE = /^\s*(\d+)\s*[.\-:)]\s*([A-Da-d])\b/;
 const QUESTION_RE = /^\s*(?:question|câu)\s+(\d+)\b/i;
 const NUMBERED_RE = /^\s*(\d+)\s*[.)]\s+\S/;
+// So cau "tran" dung mot minh tren dong ("1.", "2.") — gap o Part 1 cua de
+// thi that: chi co so thu tu + anh, khong co chu. Chi nhan so 1-200 de
+// khong nham voi so trang / nam (vd "2024.").
+const BARE_NUMBER_RE = /^\s*(\d{1,3})\s*[.)]\s*$/;
 const PASSAGE_GROUP_RE = /questions?\s+(\d+)\s*(?:[-–—]|to)\s*(\d+)/i;
 const PAGE_MARKER_RE = /^\s*--\s*\d+\s+of\s+\d+\s*--\s*$/i;
 const PAGE_NUMBER_ONLY_RE = /^\s*\d+\s*$/;
@@ -46,10 +50,11 @@ function isScannedText(text) {
 function findQuestionNumbers(lines, from, to) {
   const nums = [];
   for (let i = from; i < to; i++) {
-    const m = lines[i].match(QUESTION_RE) || lines[i].match(NUMBERED_RE);
+    const m =
+      lines[i].match(QUESTION_RE) || lines[i].match(NUMBERED_RE) || lines[i].match(BARE_NUMBER_RE);
     if (m) {
       const n = parseInt(m[1], 10);
-      if (!nums.includes(n)) nums.push(n);
+      if (n >= 1 && n <= 200 && !nums.includes(n)) nums.push(n);
     }
   }
   return nums.sort((a, b) => a - b);
@@ -74,8 +79,14 @@ function parsePartSection(lines, section, warnings) {
       items.push({ kind: 'group', start: parseInt(gm[1], 10), end: parseInt(gm[2], 10), line: i });
       continue;
     }
-    const qm = lines[i].match(QUESTION_RE) || lines[i].match(NUMBERED_RE);
-    if (qm) items.push({ kind: 'question', num: parseInt(qm[1], 10), line: i });
+    const qm =
+      lines[i].match(QUESTION_RE) || lines[i].match(NUMBERED_RE) || lines[i].match(BARE_NUMBER_RE);
+    if (qm) {
+      const num = parseInt(qm[1], 10);
+      if (num >= 1 && num <= 200) {
+        items.push({ kind: 'question', num, line: i });
+      }
+    }
   }
 
   const blocks = [];

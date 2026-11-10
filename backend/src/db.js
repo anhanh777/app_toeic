@@ -697,6 +697,12 @@ function getUserProgressByTestSet(userId, testSetId) {
 
 /**
  * Kiem tra 1 cau import. Tra ve null neu hop le, neu khong tra ly do loi tieng Viet.
+ * Cau chi-nghe (Part 1/2): de thi that KHONG in noi dung cau hoi/phuong an
+ * (Part 1 chi co anh + 4 cau noi trong audio, Part 2 chi co cau hoi + 3 cau
+ * tra loi trong audio) nen cho phep content rong va options rong (chi can
+ * nhan). Part 2 co dung 3 phuong an (A, B, C). Dap an dung van bat buoc khi
+ * import/luu chinh thuc — dap an trong thi cau van bi liet vao `invalid`
+ * o buoc parse (xem aiParse.js).
  * @param {object} q cau hoi dang seed-format
  * @param {number} index vi tri cau trong mang import (chi de bao loi)
  */
@@ -705,24 +711,35 @@ function validateImportQuestion(q, index) {
   if (!Number.isInteger(q.part) || q.part < 1 || q.part > 7) {
     return 'Part phải là số nguyên từ 1 đến 7';
   }
-  if (typeof q.content !== 'string' || !q.content.trim()) {
+  const listeningOnly = q.part === 1 || q.part === 2;
+  const expectedLabels = q.part === 2 ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D'];
+  if (!listeningOnly && (typeof q.content !== 'string' || !q.content.trim())) {
     return 'Thiếu nội dung câu hỏi';
   }
-  if (!Array.isArray(q.options) || q.options.length !== 4) {
-    return 'Phải có đúng 4 phương án';
+  if (!Array.isArray(q.options) || q.options.length !== expectedLabels.length) {
+    return q.part === 2
+      ? 'Part 2 phải có đúng 3 phương án'
+      : 'Phải có đúng 4 phương án';
   }
   const labels = q.options.map((o) => o && o.label);
   if (
-    new Set(labels).size !== 4 ||
-    !labels.every((l) => ['A', 'B', 'C', 'D'].includes(l))
+    new Set(labels).size !== expectedLabels.length ||
+    !labels.every((l) => expectedLabels.includes(l))
   ) {
-    return 'Các phương án phải có đủ nhãn A, B, C, D và không trùng nhau';
+    return q.part === 2
+      ? 'Các phương án Part 2 phải có đủ nhãn A, B, C và không trùng nhau'
+      : 'Các phương án phải có đủ nhãn A, B, C, D và không trùng nhau';
   }
-  if (q.options.some((o) => !o || typeof o.content !== 'string' || !o.content.trim())) {
+  if (
+    !listeningOnly &&
+    q.options.some((o) => !o || typeof o.content !== 'string' || !o.content.trim())
+  ) {
     return 'Mỗi phương án phải có nội dung';
   }
-  if (typeof q.correct !== 'string' || !['A', 'B', 'C', 'D'].includes(q.correct)) {
-    return 'Đáp án đúng phải là một trong 4 nhãn A, B, C, D';
+  if (typeof q.correct !== 'string' || !expectedLabels.includes(q.correct)) {
+    return q.part === 2
+      ? 'Đáp án đúng phải là một trong 3 nhãn A, B, C'
+      : 'Đáp án đúng phải là một trong 4 nhãn A, B, C, D';
   }
   return null;
 }

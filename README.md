@@ -74,6 +74,8 @@ Không có file audio thu âm sẵn. Phần nghe dùng **Web Speech API (`speech
 
 Admin có thể gắn ảnh (Part 1) và audio (Part 1–4) cho câu hỏi / đoạn văn, lưu dưới dạng URL Cloudinary trong DB (`questions.image_url`, `questions.audio_url`, `passages.audio_url`). Audio của đoạn Part 3/4 được dùng chung cho mọi câu trong đoạn đó. Backend không nhận file upload từ client — admin dán URL Cloudinary đã upload, hoặc bấm sinh audio bằng Gemini TTS (backend tự gọi Gemini rồi upload file WAV lên Cloudinary).
 
+**Câu chỉ-nghe (Part 1/2):** đề thi thật không in chữ cho 2 Part này — Part 1 chỉ có ảnh + 4 câu nói trong audio, Part 2 chỉ có câu hỏi + 3 câu trả lời trong audio, người học nghe rồi chọn đáp án. Vì vậy câu Part 1/2 được phép có nội dung và phương án rỗng (chỉ cần nhãn: Part 1 có 4 đáp án A–D, Part 2 có 3 đáp án A–C), đáp án đúng vẫn bắt buộc. Khi nhận diện bằng AI, các câu Part 1/2 không trích được từ file sẽ tự thành câu giữ chỗ (đáp án trống, cần chọn tay ở bước xem trước). Lúc làm bài, câu chỉ-nghe hiện ảnh (Part 1) + trình phát audio và các nút đáp án lớn chỉ hiện chữ cái. Muốn có audio thật thì upload file mp3 cho câu, hoặc bấm nút "AI đọc audio" (cần có transcript/script để AI đọc).
+
 **Cấu hình (2 biến môi trường, đặt trong `backend/.env` hoặc trên Render):**
 
 - `CLOUDINARY_CLOUD_NAME` — Cloud name của tài khoản Cloudinary.

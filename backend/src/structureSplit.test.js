@@ -169,5 +169,27 @@ check(
   `warnings=${JSON.stringify(unstructured.warnings)}`
 );
 
+// ---------- splitStructure: so cau tran Part 1 (de thi that) ----------
+// Part 1 chi in so thu tu dung mot minh tren dong ("1." ... "6."), khong co
+// chu — giong file test3_2024.pdf that.
+const bareP1 = splitStructure(
+  'PART 1\nFor each question, you will hear four statements about a picture.\n1.\n2.\n3.\n4.\n5.\n6.\nPART 2\n7. Mark your answer on your answer sheet.\n8. Mark your answer on your answer sheet.\n'
+);
+check(
+  'bare P1: tach duoc Part 1 voi 6 cau (so tran dung mot minh)',
+  bareP1.parts.find((p) => p.part === 1)?.questionCount === 6,
+  `parts=${JSON.stringify(bareP1.parts)}`
+);
+check(
+  'bare P1: block P1 co expectedQuestions 1-6',
+  (bareP1.blocks.find((b) => b.part === 1)?.expectedQuestions || []).join(',') === '1,2,3,4,5,6',
+  `blocks=${JSON.stringify(bareP1.blocks.map((b) => b.expectedQuestions))}`
+);
+check(
+  'bare P1: khong warning "Part 1 không tìm thấy câu hỏi nào"',
+  !bareP1.warnings.some((w) => w.includes('Part 1 không tìm thấy câu hỏi nào')),
+  `warnings=${JSON.stringify(bareP1.warnings)}`
+);
+
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed === 0 ? 0 : 1);

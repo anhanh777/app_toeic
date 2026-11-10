@@ -118,6 +118,12 @@ export default function MockTest() {
   const q = questions[idx];
   if (!q) return <p>Đang tải đề thi…</p>;
   const answeredCount = Object.keys(answers).length;
+  // Câu chỉ-nghe (Part 1/2): toàn bộ phương án đều rỗng nội dung (chỉ có
+  // nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
+  const listeningOnly =
+    (q.part === 1 || q.part === 2) &&
+    q.options.length > 0 &&
+    q.options.every(o => !o.content || !o.content.trim());
 
   return (
     <div>
@@ -132,7 +138,14 @@ export default function MockTest() {
         {q.imageUrl && (
           <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
         )}
-        <p><strong>{q.content}</strong></p>
+        {listeningOnly && q.part === 1 && !q.imageUrl && (
+          <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
+        )}
+        {listeningOnly ? (
+          <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
+        ) : (
+          <p><strong>{q.content}</strong></p>
+        )}
         {q.part <= 4 && (
           <ListeningAudio
             audioUrl={q.audioUrl}
@@ -145,8 +158,8 @@ export default function MockTest() {
           />
         )}
         {q.options.map(o => (
-          <button key={o.label} className={`option ${answers[q.id] === o.label ? 'selected' : ''}`} onClick={() => choose(o.label)}>
-            <strong>{o.label}.</strong> {o.content}
+          <button key={o.label} className={`option${listeningOnly ? ' letter-only' : ''} ${answers[q.id] === o.label ? 'selected' : ''}`} onClick={() => choose(o.label)}>
+            {listeningOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}
           </button>
         ))}
         <div className="btn-row">

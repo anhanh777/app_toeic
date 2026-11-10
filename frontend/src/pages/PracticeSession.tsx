@@ -31,6 +31,12 @@ export default function PracticeSession() {
 
   const q = questions[idx];
   const isListening = part <= 4;
+  // Câu chỉ-nghe (Part 1/2): toàn bộ phương án đều rỗng nội dung (chỉ có
+  // nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
+  const listeningOnly =
+    (q?.part === 1 || q?.part === 2) &&
+    q.options.length > 0 &&
+    q.options.every(o => !o.content || !o.content.trim());
 
   const submit = async () => {
     if (!q || !selected) return;
@@ -70,7 +76,14 @@ export default function PracticeSession() {
         {q.imageUrl && (
           <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
         )}
-        <p><strong>{q.content}</strong></p>
+        {listeningOnly && q.part === 1 && !q.imageUrl && (
+          <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
+        )}
+        {listeningOnly ? (
+          <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
+        ) : (
+          <p><strong>{q.content}</strong></p>
+        )}
         {isListening && (
           <ListeningAudio
             audioUrl={q.audioUrl}
@@ -84,12 +97,13 @@ export default function PracticeSession() {
         )}
         {q.options.map(o => {
           let cls = 'option';
+          if (listeningOnly) cls += ' letter-only';
           if (selected === o.label) cls += ' selected';
           if (result) {
             if (o.label === result.correctLabel) cls += ' correct';
             else if (selected === o.label && !result.correct) cls += ' wrong';
           }
-          return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelected(o.label)}><strong>{o.label}.</strong> {o.content}</button>;
+          return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelected(o.label)}>{listeningOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}</button>;
         })}
         {!result ? (
           <div className="btn-row"><button className="btn" disabled={!selected} onClick={submit}>Nộp đáp án</button></div>
