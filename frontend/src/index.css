@@ -47,7 +47,7 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
   background:rgba(255,255,255,.92); backdrop-filter:blur(6px);
   border-bottom:1px solid var(--border);
   box-shadow:0 2px 12px rgba(93,64,28,.05);
-  padding:.7rem 1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;
+  padding:.7rem 1rem; display:flex; gap:1rem; row-gap:.4rem; align-items:center; flex-wrap:wrap;
   position:sticky; top:0; z-index:10;
 }
 .topbar a{color:var(--ink-soft); font-weight:600}
@@ -70,9 +70,47 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
   box-shadow:0 2px 12px rgba(93,64,28,.06);
 }
 .card h2{margin-top:0}
-.grid{display:grid; gap:1rem; grid-template-columns:1fr}
+/* Đáy card gọn: phần tử cuối không cộng thêm margin, chỉ còn padding của card */
+.card > :last-child{margin-bottom:0}
+/* Box con trong card (xem trước import, form con): nền nhạt, không viền dày, không bóng */
+.panel{
+  background:var(--surface-soft); border:1px solid var(--border-soft);
+  border-radius:12px; padding:1rem 1.1rem; margin-top:1rem; box-shadow:none;
+}
+.panel h3{margin-top:0}
+/* Lưới phòng hờ: card nào còn lồng trong card cũng không bị 2 lớp viền dày */
+.card .card{box-shadow:none; border-color:var(--border-soft); background:var(--surface-soft)}
+/* Nhịp dọc duy nhất: lưới dùng gap, không cộng thêm margin-bottom của card */
+.grid{display:grid; gap:1rem; grid-template-columns:1fr; margin-bottom:1rem}
+.grid > .card{
+  margin-bottom:0; display:flex; flex-direction:column; gap:.45rem;
+}
+.grid > .card > *{margin-top:0; margin-bottom:0}
+.grid > .card p{margin:.25rem 0}
+/* Nút và chân card trong lưới luôn thẳng hàng ở đáy, dù nội dung dài ngắn khác nhau */
+.grid > .card .btn-row:last-child{margin-top:auto; padding-top:.5rem}
+.card-foot{
+  margin-top:auto; padding-top:.5rem;
+  display:flex; flex-direction:column; gap:.35rem;
+}
+.card-foot > *{margin:0}
+.grid > .card .card-foot p{margin:0}
 @media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
-@media(min-width:900px){.grid3{grid-template-columns:repeat(3,1fr)}}
+/* 3 cột chỉ từ 960px; ở 2 cột (640–959px) nhóm đúng 3 thẻ không để thẻ cuối lẻ trơ trọi */
+@media(min-width:960px){.grid3{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:640px) and (max-width:959px){
+  .grid3 > :last-child:nth-child(odd){grid-column:1 / -1}
+}
+/* Lưới Part (7 thẻ, chia nhóm Nghe/Đọc): thẻ lẻ cuối nhóm luôn span full-width */
+@media(min-width:640px){
+  .parts-grid > :last-child:nth-child(odd){grid-column:1 / -1}
+}
+/* Select đứng trước card (lọc chủ đề từ vựng, lọc câu sai): chừa 1 nhịp cách */
+select + .card{margin-top:1rem}
+/* Ô chọn số câu đặt trong card thông tin đề: label + select nằm 1 hàng */
+.field-inline{display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-top:.9rem}
+.field-inline label{margin:0; flex:0 0 auto}
+.field-inline select{width:auto; min-width:130px; flex:0 0 auto}
 
 /* Nút phẳng bo tròn — 1 màu nhấn duy nhất, hover nâng nhẹ */
 .btn{
@@ -95,7 +133,8 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 .btn.neon:hover{background:#CDE8E2}
 .btn.gold{background:var(--cream); color:#8A6D1F; box-shadow:0 1px 4px rgba(93,64,28,.06)}
 .btn.gold:hover{background:#F8E7AC}
-.btn-row{display:flex; gap:.7rem; flex-wrap:wrap; margin-top:.8rem}
+.btn-row{display:flex; gap:.7rem; flex-wrap:wrap; margin-bottom:1rem}
+.card .btn-row{margin-top:.8rem; margin-bottom:0}
 
 .error{background:var(--red-bg); color:var(--red-ink); border:1px solid #F0D3D3; border-radius:12px; padding:.65rem .9rem; margin:.6rem 0}
 .success{background:var(--green-bg); color:#3E6B4A; border:1px solid #CFE6D4; border-radius:12px; padding:.65rem .9rem; margin:.6rem 0}
@@ -188,6 +227,8 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 .option:disabled{cursor:default}
 
 table{width:100%; border-collapse:collapse}
+/* Bảng trong card hẹp: cuộn ngang trong card thay vì tràn ra ngoài */
+.card:has(table), .panel:has(table){overflow-x:auto}
 th,td{padding:.6rem .5rem; border-bottom:1px solid var(--border-soft); text-align:left}
 th{font-weight:700; font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.03em}
 tbody tr:hover{background:var(--surface-soft)}
@@ -209,7 +250,7 @@ tbody tr:hover{background:var(--surface-soft)}
 .flashcard-face.back, .flashcard-face.back .muted{color:var(--ink)}
 
 /* Bảng xếp hạng — top 3 dạng thẻ mềm với huy chương tròn */
-.top3-list{display:grid; gap:.6rem; margin:1rem 0}
+.top3-list{display:grid; gap:.6rem; margin:0 0 1rem}
 @media(min-width:640px){.top3-list{grid-template-columns:repeat(3,1fr)}}
 .top3-place{
   display:flex; flex-direction:column; align-items:center; gap:.3rem; text-align:center;

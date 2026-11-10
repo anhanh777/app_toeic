@@ -204,7 +204,7 @@ export default function TestSetAdmin() {
           </div>
         )}
         {aiPreview && (
-          <div className="card" style={{ marginTop: '1rem' }}>
+          <div className="panel">
             <h3>Xem trước AI — {aiPreview.fileName}</h3>
             <p>{aiPreview.questions.length} câu parse được • {aiLiveErrorCount} câu còn lỗi</p>
             {aiPreview.warnings.length > 0 && (
@@ -263,7 +263,7 @@ export default function TestSetAdmin() {
           <p className="muted">Nút này chỉ nhận file JSON. File Word/PDF/ảnh thì dùng mục 🤖 Nhận diện bằng AI ở phía trên trang này.</p>
 
           {preview && preview.part === p && (
-            <div className="card" style={{ marginTop: '1rem' }}>
+            <div className="panel">
               <h3>Xem trước — {preview.fileName}</h3>
               <p>{preview.valid.length} câu hợp lệ cho Part {p} • {preview.errors.length} câu lỗi (sẽ bị bỏ qua)</p>
               {preview.errors.length > 0 && (
@@ -279,7 +279,7 @@ export default function TestSetAdmin() {
           )}
 
           {manualPart === p && (
-            <form className="card" style={{ marginTop: '1rem' }} onSubmit={saveManual}>
+            <form className="panel" onSubmit={saveManual}>
               <h3>Thêm câu thủ công — Part {p}</h3>
               <label>Nội dung câu hỏi (tiếng Anh)</label>
               <textarea rows={3} value={manual.content} onChange={e => setManual({ ...manual, content: e.target.value })} required />

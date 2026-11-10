@@ -24,6 +24,31 @@ export default function TestSetDetail() {
   const correct = ts.progress?.correctTotal || 0;
   const pct = total ? Math.round((answered / total) * 100) : 0;
   const partProgress = (p: number) => ts.progress?.byPart.find(b => b.part === p);
+  const renderPartCard = (p: number) => {
+    const info = ts.parts.find(x => x.part === p);
+    const n = info?.count || 0;
+    const prog = partProgress(p);
+    return (
+      <div key={p} className="card part-card">
+        <div className="part-ico">{p <= 4 ? '🎧' : '📖'} Part {p}</div>
+        <strong>{partName(p)}</strong> <span className="pill">{sectionOf(p)}</span>
+        <p className="muted">{n} câu trong đề này</p>
+        {prog
+          ? <p>Đã làm {prog.answered}/{n} câu · đúng {prog.correct}</p>
+          : <p className="muted">Chưa làm câu nào ở Part này</p>}
+        {prog && n > 0 && <div className="bar"><i style={{ width: `${Math.round((prog.answered / n) * 100)}%` }} /></div>}
+        <div className="btn-row">
+          <button
+            className="btn"
+            disabled={!n}
+            onClick={() => nav(`/practice/session?testSetId=${ts.id}&part=${p}&count=${Math.min(count, n)}`)}
+          >
+            Luyện Part này
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -42,41 +67,21 @@ export default function TestSetDetail() {
         <div className="btn-row">
           <button className="btn gold" disabled={!total} onClick={() => nav(`/mock?testSetId=${ts.id}`)}>🏆 Thi thử cả đề ({total} câu · 120 phút)</button>
         </div>
+        <div className="field-inline">
+          <label htmlFor="ts-count">Số câu mỗi lần luyện Part</label>
+          <select id="ts-count" value={count} onChange={e => setCount(Number(e.target.value))}>
+            {[10, 20, 30, 50].map(n => <option key={n} value={n}>{n} câu</option>)}
+          </select>
+        </div>
       </div>
 
-      <div className="grid">
-        {[1, 2, 3, 4, 5, 6, 7].map(p => {
-          const info = ts.parts.find(x => x.part === p);
-          const n = info?.count || 0;
-          const prog = partProgress(p);
-          return (
-            <div key={p} className="card part-card">
-              <div className="part-ico">{p <= 4 ? '🎧' : '📖'} Part {p}</div>
-              <strong>{partName(p)}</strong> <span className="pill">{sectionOf(p)}</span>
-              <p className="muted">{n} câu trong đề này</p>
-              {prog
-                ? <p>Đã làm {prog.answered}/{n} câu · đúng {prog.correct}</p>
-                : <p className="muted">Chưa làm câu nào ở Part này</p>}
-              {prog && n > 0 && <div className="bar"><i style={{ width: `${Math.round((prog.answered / n) * 100)}%` }} /></div>}
-              <div className="btn-row">
-                <button
-                  className="btn"
-                  disabled={!n}
-                  onClick={() => nav(`/practice/session?testSetId=${ts.id}&part=${p}&count=${Math.min(count, n)}`)}
-                >
-                  Luyện Part này
-                </button>
-              </div>
-            </div>
-          );
-        })}
+      <h2>🎧 Listening — Part 1–4</h2>
+      <div className="grid parts-grid">
+        {[1, 2, 3, 4].map(renderPartCard)}
       </div>
-
-      <div className="card">
-        <label htmlFor="ts-count">Số câu mỗi lần luyện Part</label>
-        <select id="ts-count" value={count} onChange={e => setCount(Number(e.target.value))}>
-          {[10, 20, 30, 50].map(n => <option key={n} value={n}>{n} câu</option>)}
-        </select>
+      <h2>📖 Reading — Part 5–7</h2>
+      <div className="grid parts-grid">
+        {[5, 6, 7].map(renderPartCard)}
       </div>
     </div>
   );

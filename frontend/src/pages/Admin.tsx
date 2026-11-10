@@ -215,7 +215,7 @@ export default function Admin() {
         </div>
         <p className="muted">File JSON chấp nhận dạng {'{title, description?, questions: [...]}'} hoặc {'{parts: {"1": [...], ...}}'}. Mỗi câu cần đủ 4 phương án, đúng 1 đáp án, Part 1–7. File Word/PDF/ảnh: tạo đề trước, rồi bấm vào tên đề trong danh sách bên dưới để mở trang chi tiết đề và dùng mục 🤖 Nhận diện bằng AI.</p>
         {uploadPreview && (
-          <div className="card" style={{ marginTop: '1rem' }}>
+          <div className="panel">
             <h3>Xem trước — {uploadPreview.fileName}</h3>
             <p><strong>{uploadPreview.title}</strong>{uploadPreview.description ? ` — ${uploadPreview.description}` : ''}</p>
             <p>{uploadPreview.valid.length} câu hợp lệ • {uploadPreview.errors.length} câu lỗi (sẽ bị bỏ qua khi import)</p>
