@@ -5,6 +5,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const db = require('../db');
+const { validateCloudinaryUrl } = require('./media');
 const { authMiddleware, requireAdmin } = require('../auth');
 
 const router = express.Router();
@@ -89,6 +90,13 @@ router.get('/test-sets/:id', optionalAuth, (req, res) => {
   return res.json(serializeTestSet(testSet, req.user));
 });
 
+/* Audio cap Part (Part 1-4, 1 file cho toan bo Part) — public, khong can dang nhap. */
+router.get('/test-sets/:id/part-media', (req, res) => {
+  const testSet = db.getTestSet(req.params.id);
+  if (!testSet) return res.status(404).json({ error: 'khong tim thay bo de' });
+  return res.json(db.getPartMedia(req.params.id));
+});
+
 /* ---------- admin ---------- */
 
 router.post('/admin/test-sets', authMiddleware, requireAdmin, (req, res) => {
@@ -170,6 +178,59 @@ router.post('/admin/test-sets/:id/questions', authMiddleware, requireAdmin, (req
   } catch (e) {
     return res.status(400).json({ error: e.message });
   }
+});
+
+/* ---------- audio cap Part (Part 1-4) ---------- */
+
+router.post('/admin/test-sets/:id/parts/:part/media', authMiddleware, requireAdmin, (req, res) => {
+  const testSet = db.getTestSet(req.params.id);
+  if (!testSet) return res.status(404).json({ error: 'khong tim thay bo de' });
+  const part = Number(req.params.part);
+  if (!Number.isInteger(part) || part < 1 || part > 4) {
+    return res.status(400).json({ error: 'Chi ho tro audio cap Part cho Part 1 den Part 4' });
+  }
+  const { audioUrl } = req.body || {};
+  const err = validateCloudinaryUrl(audioUrl, 'URL audio');
+  if (err) return res.status(400).json({ error: err });
+  const saved = db.setPartMedia(testSet.id, part, audioUrl);
+  return res.json(saved);
+});
+
+/* ---------- them thu cong theo loat (bulk) ---------- */
+
+router.post('/admin/test-sets/:id/questions/bulk', authMiddleware, requireAdmin, (req, res) => {
+  const testSet = db.getTestSet(req.params.id);
+  if (!testSet) return res.status(404).json({ error: 'khong tim thay bo de' });
+  const questions = (req.body || {}).questions;
+  if (!Array.isArray(questions)) {
+    return res.status(400).json({ error: 'body phai co questions la array' });
+  }
+  if (questions.length > 200) {
+    return res.status(400).json({ error: 'toi da 200 cau hoi moi lan' });
+  }
+  // Tu sinh id cho cau chua co id: TS-xxx-P<part>-<nnn>, khong trung id hien co
+  // (ca id trong DB va id cua cac cau khac trong cung batch) — COPY dung logic
+  // cua route import ben tren.
+  const usedIds = new Set(
+    questions
+      .filter((q) => q && typeof q === 'object' && typeof q.id === 'string' && q.id.trim())
+      .map((q) => q.id)
+  );
+  const prepared = questions.map((q) => {
+    if (!q || typeof q !== 'object') return q;
+    if (typeof q.id === 'string' && q.id.trim()) return q;
+    const part = Number.isInteger(q.part) ? q.part : 0;
+    let n = 1;
+    let genId;
+    do {
+      genId = `${testSet.id}-P${part}-${String(n).padStart(3, '0')}`;
+      n += 1;
+    } while (db.getQuestionById(genId, true) || usedIds.has(genId));
+    usedIds.add(genId);
+    return { ...q, id: genId };
+  });
+  const result = db.importTestSetQuestions(testSet.id, prepared);
+  return res.json(result);
 });
 
 module.exports = router;

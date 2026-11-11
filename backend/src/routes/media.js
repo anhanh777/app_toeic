@@ -339,3 +339,8 @@ router.post('/admin/passages/:id/generate-audio', ...adminOnly, async (req, res)
 });
 
 module.exports = router;
+
+// Export them de route khac tai dung (vd testsets.js dung validateCloudinaryUrl
+// cho audio cap Part). Router van la export chinh (require(...) tra ve router).
+module.exports.validateCloudinaryUrl = validateCloudinaryUrl;
+module.exports.isCloudinaryUrl = isCloudinaryUrl;

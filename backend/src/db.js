@@ -97,6 +97,12 @@ CREATE TABLE IF NOT EXISTS passages (
   type TEXT,
   audio_url TEXT
 );
+CREATE TABLE IF NOT EXISTS part_media (
+  test_set_id TEXT NOT NULL,
+  part INTEGER NOT NULL,
+  audio_url TEXT NOT NULL,
+  PRIMARY KEY (test_set_id, part)
+);
 CREATE TABLE IF NOT EXISTS vocabulary (
   id TEXT PRIMARY KEY,
   word TEXT,
@@ -791,6 +797,31 @@ function addQuestionToTestSet(testSetId, q) {
   return getQuestionById(q.id, true);
 }
 
+/* ---------------- part media (audio cap Part) ---------------- */
+
+/**
+ * Audio cap Part: 1 file audio cho TOAN BO 1 Part (Part 1-4 moi Part 1 file).
+ * Tra ve object {[part]: audioUrl} chi gom cac Part da co audio,
+ * vd {1: "https://...", 3: "https://..."}.
+ */
+function getPartMedia(testSetId) {
+  const rows = db
+    .prepare('SELECT part, audio_url FROM part_media WHERE test_set_id = ? ORDER BY part')
+    .all(testSetId);
+  const out = {};
+  for (const r of rows) out[r.part] = r.audio_url;
+  return out;
+}
+
+/** Luu (upsert) audio cho 1 Part cua 1 de. */
+function setPartMedia(testSetId, part, audioUrl) {
+  db.prepare(
+    `INSERT INTO part_media (test_set_id, part, audio_url) VALUES (?, ?, ?)
+     ON CONFLICT(test_set_id, part) DO UPDATE SET audio_url = excluded.audio_url`
+  ).run(testSetId, part, audioUrl);
+  return { part, audioUrl };
+}
+
 /* ---------------- attempts & answers ---------------- */
 
 function createAttempt({ userId, mode, part, questionIds, durationSec, testSetId }) {
@@ -1166,6 +1197,9 @@ module.exports = {
   importTestSetQuestions,
   addQuestionToTestSet,
   refreshTestSetTotal,
+  // part media (audio cap Part)
+  getPartMedia,
+  setPartMedia,
   // attempts & answers
   createAttempt,
   getAttempt,
