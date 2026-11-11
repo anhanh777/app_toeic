@@ -93,6 +93,17 @@ Preset unsigned chỉ dùng để upload ảnh/audio công khai của đề thi,
 
 **Nhận diện đáp án (Answer Key):** luồng đầy đủ là upload đề → xem trước → upload file đáp án riêng → áp dụng → import (endpoint `POST /api/admin/test-sets/:id/answer-key`). File đáp án có thể là ảnh chụp trang đáp án, file scan, hoặc file gõ tay (.txt/.docx/.pdf). Đáp án dạng text đơn giản (vd `1. A`, `2 - B`) được đọc ngay bằng quy tắc, không tốn lượt gọi Gemini; chỉ khi file là ảnh/scan hoặc text đọc được ít hơn 3 câu thì mới gọi Gemini 1 lần để đọc. File mẫu: `data/answer-key-sample.txt`.
 
+**Thêm thủ công theo loạt (Batch Manual Entry):** ở trang Admin → Bộ đề → mở một bộ đề, mục "✍️ Thêm thủ công theo loạt": chọn Part (1–7) rồi hiện form danh sách câu liên tiếp với số câu chuẩn TOEIC (Part 1: 1–6, Part 2: 7–31, Part 3: 32–70, Part 4: 71–100, Part 5: 101–130, Part 6: 131–146, Part 7: 147–200), nút "＋ Thêm dòng/cụm" và "💾 Lưu tất cả" (lưu 1 lần qua endpoint bulk `POST /api/admin/test-sets/:id/questions/bulk`, tối đa 200 câu/lần, trả `{imported, errors}`; câu lỗi được báo rõ lý do, các câu đúng vẫn được lưu). Cách nhập theo Part:
+- **Part 1:** đúng 6 dòng, mỗi dòng upload ảnh + chọn đáp án đúng A–D (không có ô nội dung/phương án).
+- **Part 2:** đúng 25 dòng, mỗi dòng chỉ chọn đáp án đúng. **Lưu ý đã chốt: đáp án Part 2 chỉ A/B/C theo đề thi thật — KHÔNG thêm D.**
+- **Part 3/4:** nhập theo cụm (đoạn hội thoại / bài nói), mỗi cụm có ô tên đoạn + script/transcript + đúng 3 câu hỏi (nội dung + 4 phương án + đáp án + upload ảnh nếu có).
+- **Part 5:** các dòng câu hỏi (mặc định 30 dòng, thêm/bớt được), mỗi dòng: nội dung câu (có chỗ trống) + 4 phương án + đáp án.
+- **Part 6:** nhập theo cụm đoạn văn, mỗi cụm có ô bài đọc (gõ đoạn văn kèm chỗ trống dạng "131._______") + đúng 4 câu hỏi (4 phương án + đáp án; ô nội dung không bắt buộc).
+- **Part 7:** nhập theo cụm đoạn văn giống Part 6, mỗi cụm mặc định 3 câu hỏi (thêm/bớt được trong cụm), mỗi dòng có nội dung + 4 phương án + đáp án + upload ảnh nếu có.
+Form kiểm tra từng dòng bằng validator hiện có (`validateQuestion`/`splitValid`) trước khi lưu.
+
+**Audio cấp Part (Part 1–4):** audio nghe thật là 1 track liền mạch cho cả Part, nên mỗi Part 1–4 chỉ cần 1 file audio, lưu trong bảng `part_media` (`test_set_id`, `part`, `audio_url`). Admin upload ở mục "🎧 Audio cả Part" trong trang chi tiết bộ đề (1 ô cho mỗi Part 1–4, upload qua Cloudinary, cần cấu hình 2 biến trên). API: `GET /api/test-sets/:id/part-media` (trả `{part: audioUrl}`) và `POST /api/admin/test-sets/:id/parts/:part/media` (admin, body `{audioUrl}`, chỉ Part 1–4). Lúc luyện/thi, thứ tự ưu tiên audio: audio của câu hỏi → audio của đoạn văn (Part 3/4) → audio cấp Part của bộ đề đang làm; khi luyện theo Part từ ngân hàng (không chọn bộ đề) thì dùng part-media của TS-001.
+
 ## Cách tính điểm
 
 Mỗi phần Listening (Part 1–4) và Reading (Part 5–7) chấm riêng: số câu đúng → điểm phần (5–495) theo **bảng quy đổi tham khảo công khai** (nội suy tuyến tính giữa các mốc, xem `backend/src/scoring.js`). Tổng điểm = Listening + Reading (thang 10–990). Đây là **điểm ước lượng để tham khảo**, không phải điểm chính thức của ETS. Bài thi mini (1 Part) chỉ báo số câu đúng, không quy đổi ra điểm 10–990.
