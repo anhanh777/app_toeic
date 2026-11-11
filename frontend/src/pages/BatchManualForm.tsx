@@ -204,23 +204,30 @@ export default function BatchManualForm({
     </label>
   );
 
-  const correctSelect = (value: string, onChange: (v: string) => void, labels: string[] = LABELS_4) => (
-    <select value={value} onChange={e => onChange(e.target.value)}>
-      {labels.map(l => <option key={l} value={l}>{l}</option>)}
-    </select>
+  // Hàng radio/pill chọn đáp án đúng (A–D, hoặc A–C cho Part 2) — gọn
+  // trong 1 dòng cùng chữ "Đáp án:", thay cho ô <select> chiếm cả khối.
+  const correctPills = (value: string, onChange: (v: string) => void, name: string, labels: string[] = LABELS_4) => (
+    <span className="radio-pills">
+      {labels.map(l => (
+        <label key={l} className="radio-pill">
+          <input type="radio" name={name} value={l} checked={value === l} onChange={() => onChange(l)} />{l}
+        </label>
+      ))}
+    </span>
   );
 
   // 1 dòng câu hỏi có nội dung + 4 phương án + đáp án (dùng cho Part 5/7,
   // và trong cụm Part 3/4/6 — Part 6 có thể để trống nội dung).
+  // Bố cục tờ đề: số câu in đậm ở đầu, nội dung, 4 phương án lưới 2 cột,
+  // hàng "Đáp án:" + pill radio cùng 1 dòng — không còn hộp panel riêng.
   const optRowFields = (
     row: OptRow, setRow: (r: OptRow) => void, num: number,
     opts: { withImage?: boolean; imageKey?: string; onImage?: (f: File) => void; contentOptional?: boolean } = {},
   ) => (
-    <div className="panel" key={num}>
-      <h4>Câu {num}</h4>
-      <label>Nội dung câu hỏi{opts.contentOptional ? ' (không bắt buộc — chỗ trống đã nằm trong đoạn văn)' : ''}</label>
+    <div className="paper-q" key={num}>
+      <label><span className="q-num">{num}.</span>Nội dung câu hỏi{opts.contentOptional ? ' (không bắt buộc — chỗ trống đã nằm trong đoạn văn)' : ''}</label>
       <textarea rows={2} value={row.content} onChange={e => setRow({ ...row, content: e.target.value })} />
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '.5rem' }}>
+      <div className="paper-opts">
         {(['A', 'B', 'C', 'D'] as const).map(l => (
           <div key={l}>
             <label>Phương án {l}</label>
@@ -228,15 +235,17 @@ export default function BatchManualForm({
           </div>
         ))}
       </div>
-      <label>Đáp án đúng</label>
-      {correctSelect(row.correct, v => setRow({ ...row, correct: v }))}
+      <div className="answer-line">
+        <label>Đáp án:</label>
+        {correctPills(row.correct, v => setRow({ ...row, correct: v }), `q-${num}`)}
+      </div>
       {opts.withImage && (
         <>
           <label>Ảnh minh họa (không bắt buộc)</label>
           <div className="btn-row">
             {opts.imageKey && opts.onImage && fileInput(opts.imageKey, opts.onImage)}
           </div>
-          {row.imageUrl && <img src={row.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />}
+          {row.imageUrl && <img src={row.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: 280, borderRadius: 10 }} />}
         </>
       )}
     </div>
@@ -248,7 +257,7 @@ export default function BatchManualForm({
   ) => {
     const start = clusterStart(clusters, clusterIdx);
     return (
-      <div className="panel" key={clusterIdx}>
+      <div className="paper-cluster" key={clusterIdx}>
         <h4>{part === 3 ? 'Đoạn hội thoại' : part === 4 ? 'Bài nói' : 'Bài đọc'} {clusterIdx + 1}
           {' '}— câu {stdNum(part, start)}–{stdNum(part, start + cl.questions.length - 1)}
         </h4>
@@ -337,36 +346,44 @@ export default function BatchManualForm({
         </div>
       )}
 
+      {/* Tờ đề thi: toàn bộ câu của 1 Part nằm trong 1 khối giấy duy nhất,
+          các câu nối tiếp nhau bằng đường kẻ mảnh, không hộp lồng nhau. */}
+      <div className="paper">
       {part === 1 && (
         <>
           <p className="muted">Part 1: đúng 6 dòng cố định (câu 1–6). Mỗi câu chỉ có ảnh + đáp án đúng — không có ô nội dung/phương án.</p>
+          <div className="p1-grid">
           {p1Rows.map((row, i) => {
             const key = `p1-${i}`;
             return (
-              <div className="panel" key={i}>
-                <h4>Câu {stdNum(1, i)}</h4>
+              <div className="p1-cell" key={i}>
+                <span className="q-num">Câu {stdNum(1, i)}</span>
                 <label>Ảnh minh họa</label>
                 <div className="btn-row">{fileInput(key, f => void onImage(f, key, url => setP1Rows(p1Rows.map((r, j) => j === i ? { ...r, imageUrl: url } : r))))}</div>
-                {row.imageUrl && <img src={row.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />}
-                <label>Đáp án đúng</label>
-                {correctSelect(row.correct, v => setP1Rows(p1Rows.map((r, j) => j === i ? { ...r, correct: v } : r)))}
+                {row.imageUrl && <img src={row.imageUrl} alt="Ảnh minh họa" />}
+                <div className="answer-line">
+                  <label>Đáp án:</label>
+                  {correctPills(row.correct, v => setP1Rows(p1Rows.map((r, j) => j === i ? { ...r, correct: v } : r)), `p1-${i}`)}
+                </div>
               </div>
             );
           })}
+          </div>
         </>
       )}
 
       {part === 2 && (
         <>
           <p className="muted">Part 2: đúng 25 dòng cố định (câu 7–31). Mỗi câu chỉ chọn đáp án đúng (A/B/C) — không có ô nội dung.</p>
+          <div className="p2-list">
           {p2Rows.map((row, i) => (
-            <div className="panel" key={i}>
-              <h4>Câu {stdNum(2, i)}</h4>
-              <label>Đáp án đúng</label>
+            <div className="p2-row" key={i}>
+              <span className="q-num">{stdNum(2, i)}.</span>
               {/* Đáp án Part 2 chỉ A/B/C theo đề thi thật và validator hiện có, KHÔNG thêm D. */}
-              {correctSelect(row.correct, v => setP2Rows(p2Rows.map((r, j) => j === i ? { ...r, correct: v } : r)), ['A', 'B', 'C'])}
+              {correctPills(row.correct, v => setP2Rows(p2Rows.map((r, j) => j === i ? { ...r, correct: v } : r)), `p2-${i}`, ['A', 'B', 'C'])}
             </div>
           ))}
+          </div>
         </>
       )}
 
@@ -386,8 +403,10 @@ export default function BatchManualForm({
 
       {part === 6 && clusterList(p6Clusters, setP6Clusters, { scriptLabel: '', passageLabel: 'Bài đọc (gõ đoạn văn kèm chỗ trống dạng "131._______")', withImage: false, fixedCount: 4, addLabel: '＋ Thêm bài đọc' })}
       {part === 7 && clusterList(p7Clusters, setP7Clusters, { scriptLabel: '', passageLabel: 'Bài đọc', withImage: true, fixedCount: null, addLabel: '＋ Thêm bài đọc' })}
+      </div>
 
-      <div className="btn-row" style={{ marginTop: '1rem' }}>
+      {/* Thanh lưu dính cuối form: nút Lưu luôn thấy được khi cuộn. */}
+      <div className="paper-savebar">
         <button type="button" className="btn" disabled={busy} onClick={() => void saveAll()}>
           {busy ? 'Đang lưu…' : `💾 Lưu tất cả (${totalRows} câu — Part ${part})`}
         </button>
