@@ -31,7 +31,7 @@ const router = express.Router();
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const GEMINI_MODEL = 'gemini-2.5-flash';
-const GEMINI_TIMEOUT_MS = 60 * 1000; // 60 giay cho 1 call Gemini
+const GEMINI_TIMEOUT_MS = 100 * 1000; // 100 giay cho 1 call Gemini (file lon tra JSON dai can hon 60s)
 const OVERALL_TIMEOUT_MS = 180 * 1000; // 180 giay cho toan bo tang 3 (cac block goi tuan tu)
 
 const ALLOWED_EXTS = ['.txt', '.docx', '.doc', '.pdf', '.png', '.jpg', '.jpeg'];
@@ -448,21 +448,9 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
                 },
               ];
             } catch (e) {
-              return [
-                {
-                  ok: false,
-                  error: e,
-                  block: {
-                    part: 0,
-                    expectedQuestions: [],
-                    expectedByPart: blocks.reduce((acc, b) => {
-                      if (b.part === 1 || b.part === 2) acc[b.part] = b.expectedQuestions || [];
-                      return acc;
-                    }, {}),
-                    warnings: [],
-                  },
-                },
-              ];
+              // 1 call duy nhat that bai (vd timeout vi file dai) -> roi ve
+              // goi tuan tu tung block: moi block nho hon, tra loi nhanh hon.
+              // Khong return loi o day de buoc gop van tao cau giu cho P1/P2.
             }
           }
           const results = [];
@@ -504,7 +492,7 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
       if (first && first.name === 'AbortError') {
         return res
           .status(502)
-          .json({ error: 'Gemini phản hồi quá chậm (quá 60 giây), vui lòng thử lại' });
+          .json({ error: 'Gemini phản hồi quá chậm (quá 100 giây), vui lòng thử lại' });
       }
       if (first && (first.status === 400 || first.status === 401 || first.status === 403)) {
         return res.status(502).json({

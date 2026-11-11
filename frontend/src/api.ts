@@ -124,6 +124,15 @@ export interface AiParseResult {
   structure?: AiParseStructure | null;
 }
 
+// Kết quả đọc bảng đáp án: key là số câu chuẩn TOEIC → đáp án A–D.
+// source "rule" = đọc bằng quy tắc (không tốn Gemini), "ai" = đọc bằng AI.
+export interface AnswerKeyResult {
+  key: Record<string, string>;
+  found: number;
+  source: 'rule' | 'ai';
+  warnings: string[];
+}
+
 export const api = {
   health: () => req<{ ok: boolean; service: string; time: string }>('/health'),
   register: (name: string, email: string, password: string) =>
@@ -234,6 +243,40 @@ export const api = {
       throw new ApiError(res.status, msg, err);
     }
     return data as AiParseResult;
+  },
+
+  // Nhận diện bảng đáp án: upload 1 file (.txt/.docx/.pdf/.png/.jpg/.jpeg),
+  // backend đọc thành { số câu: đáp án } (KHÔNG tự lưu DB). Cùng pattern
+  // FormData + dịch lỗi như aiParseTestSet.
+  parseAnswerKey: async (id: string, file: File): Promise<AnswerKeyResult> => {
+    const token = getToken();
+    const form = new FormData();
+    form.append('file', file);
+    let res: Response;
+    try {
+      res = await fetch(`${API_URL}/api/admin/test-sets/${encodeURIComponent(id)}/answer-key`, {
+        method: 'POST',
+        body: form,
+        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+      });
+    } catch {
+      throw new ApiError(0, 'Không kết nối được tới máy chủ. Hãy kiểm tra backend có đang chạy không (mặc định http://localhost:4000).');
+    }
+    let data: unknown = null;
+    try { data = await res.json(); } catch { /* empty body */ }
+    if (!res.ok) {
+      const err = (data as { error?: string })?.error;
+      if (err === 'gemini_not_configured') {
+        throw new ApiError(501, 'Chưa cấu hình GEMINI_API_KEY trên máy chủ.', err);
+      }
+      if (res.status === 403 || err === 'forbidden') {
+        throw new ApiError(403, 'Tính năng này chỉ dành cho tài khoản admin. Hãy đăng nhập bằng tài khoản demo@toeic.app.', err || 'forbidden');
+      }
+      const msg = (data as { message?: string })?.message
+        || (err && VI_ERRORS[err]) || err || `Lỗi máy chủ (${res.status}).`;
+      throw new ApiError(res.status, msg, err);
+    }
+    return data as AnswerKeyResult;
   },
 
   // Media cho phần Nghe (ảnh + audio)

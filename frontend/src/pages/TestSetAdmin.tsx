@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { api, ApiError, type Question, type TestSet, type ImportQuestion, type AiParseResult, type MediaConfig } from '../api';
+import { api, ApiError, type Question, type TestSet, type ImportQuestion, type AiParseResult, type AnswerKeyResult, type MediaConfig } from '../api';
 import { useAuth } from '../auth';
 import { ErrorBox, partName } from '../components';
 import { uploadToCloudinary } from '../cloudinary';
@@ -40,6 +40,10 @@ export default function TestSetAdmin() {
   const [aiBusy, setAiBusy] = useState(false);
   const [aiPreview, setAiPreview] = useState<AiPreview | null>(null);
   const [aiKeyMissing, setAiKeyMissing] = useState(false);
+  const [akFile, setAkFile] = useState<File | null>(null);
+  const [akBusy, setAkBusy] = useState(false);
+  const [akResult, setAkResult] = useState<AnswerKeyResult | null>(null);
+  const [akApplied, setAkApplied] = useState<{ filled: number; total: number; missing: number[] } | null>(null);
   const [mediaCfg, setMediaCfg] = useState<MediaConfig | null>(null);
   const [imgUploading, setImgUploading] = useState(false);
   const [audioUploading, setAudioUploading] = useState(false);
@@ -104,6 +108,7 @@ export default function TestSetAdmin() {
   const onAiParse = async () => {
     if (!aiFile) return;
     setAiBusy(true); setError(null); setMsg(''); setAiKeyMissing(false); setAiPreview(null);
+    setAkFile(null); setAkResult(null); setAkApplied(null);
     try {
       const r = await api.aiParseTestSet(ts.id, aiFile);
       setAiPreview({ ...r, fileName: aiFile.name });
@@ -135,14 +140,79 @@ export default function TestSetAdmin() {
       const r = await api.adminImportTestSet(ts.id, valid);
       setMsg(`Đã import ${r.imported} câu từ file AI vào đề. ${r.errors.length ? `Lỗi từ máy chủ: ${r.errors.map(e => `#${e.index}${e.id ? ` (${e.id})` : ''}: ${e.reason}`).join('; ')}` : ''}`);
       setAiPreview(null); setAiFile(null);
+      setAkFile(null); setAkResult(null); setAkApplied(null);
       load();
     } catch (e) { setError(e); } finally { setBusy(false); }
+  };
+
+  // Số câu bắt đầu chuẩn của mỗi Part trong 1 đề TOEIC 200 câu.
+  const PART_STARTS: Record<number, number> = { 1: 1, 2: 7, 3: 32, 4: 71, 5: 101, 6: 131, 7: 147 };
+
+  // Số câu chuẩn TOEIC của câu thứ `index` trong bản xem trước: đếm vị trí
+  // của nó trong Part của nó (câu đầu tiên của Part = số bắt đầu của Part,
+  // câu tiếp theo +1). Câu Part 1/2 giữ chỗ cũng được tính theo đúng số
+  // của chúng. Câu part = 0/không rõ thì lấy số thứ tự toàn cục (index + 1).
+  const standardNumber = (questions: ImportQuestion[], index: number): number => {
+    const part = Number(questions[index]?.part);
+    if (!Number.isInteger(part) || part < 1 || part > 7) return index + 1;
+    let pos = 0;
+    for (let i = 0; i < index; i++) if (Number(questions[i]?.part) === part) pos++;
+    return PART_STARTS[part] + pos;
+  };
+
+  // Đọc bảng đáp án từ file (rule hoặc AI, theo backend) — lỗi 501
+  // (gemini_not_configured) xử lý giống onAiParse: hiện banner aiKeyMissing.
+  const onAnswerKeyParse = async () => {
+    if (!akFile) return;
+    setAkBusy(true); setError(null); setAkResult(null); setAkApplied(null);
+    try {
+      const r = await api.parseAnswerKey(ts.id, akFile);
+      setAkResult(r);
+    } catch (e) {
+      if (e instanceof ApiError && (e.status === 501 || e.code === 'gemini_not_configured')) setAiKeyMissing(true);
+      else if (e instanceof ApiError && (e.status === 403 || e.code === 'forbidden')) setError(e);
+      else setError(e);
+    } finally { setAkBusy(false); }
+  };
+
+  // Điền đáp án từ bảng đáp án vào bản xem trước theo số câu chuẩn TOEIC.
+  // Chỉ điền khi đáp án hợp lệ với Part đó (Part 2 chỉ A–C); câu nào key
+  // thiếu (hoặc đáp án không hợp lệ) thì ghi vào danh sách missing để
+  // admin chọn tay. aiLiveErrorCount tự tính lại từ aiPreview nên số câu
+  // lỗi giảm tương ứng, không cần đếm riêng.
+  const applyAnswerKey = () => {
+    if (!aiPreview || !akResult) return;
+    const questions = aiPreview.questions;
+    const expected = (part: number) => (part === 2 ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D']);
+    let filled = 0;
+    const missing: number[] = [];
+    const next = questions.map((q, i) => {
+      const num = standardNumber(questions, i);
+      const ans = akResult.key[String(num)];
+      if (ans && expected(Number(q.part)).includes(ans)) {
+        filled++;
+        return { ...q, correct: ans };
+      }
+      missing.push(num);
+      return q;
+    });
+    setAiPreview({ ...aiPreview, questions: next });
+    setAkApplied({ filled, total: questions.length, missing });
   };
 
   // Số câu AI còn lỗi theo validate hiện tại (giảm dần khi admin sửa đáp án tay).
   const aiLiveErrorCount = aiPreview
     ? aiPreview.questions.filter((q, i) => validateQuestion(q, i)).length
     : 0;
+
+  // Danh sách đáp án rút gọn để hiển thị: "1: A, 2: C, 3: B…", tối đa 20 mục.
+  const akEntries = akResult
+    ? Object.entries(akResult.key)
+      .map(([n, a]) => [Number(n), a] as [number, string])
+      .sort((a, b) => a[0] - b[0])
+    : [];
+  const akPreviewText = akEntries.slice(0, 20).map(([n, a]) => `${n}: ${a}`).join(', ')
+    + (akEntries.length > 20 ? ', …' : '');
 
   const saveManual = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -270,7 +340,7 @@ export default function TestSetAdmin() {
             📄 Chọn file đề
             <input
               type="file" accept=".txt,.docx,.doc,.pdf,.png,.jpg,.jpeg" style={{ display: 'none' }}
-              onChange={e => { const f = e.target.files?.[0]; if (f) { setAiFile(f); setAiPreview(null); setAiKeyMissing(false); setError(null); setMsg(''); } e.target.value = ''; }}
+              onChange={e => { const f = e.target.files?.[0]; if (f) { setAiFile(f); setAiPreview(null); setAiKeyMissing(false); setAkFile(null); setAkResult(null); setAkApplied(null); setError(null); setMsg(''); } e.target.value = ''; }}
             />
           </label>
           <button className="btn" disabled={!aiFile || aiBusy} onClick={() => void onAiParse()}>
@@ -347,8 +417,50 @@ export default function TestSetAdmin() {
               <button className="btn" disabled={busy} onClick={() => void confirmAiImport()}>
                 {busy ? 'Đang import…' : `✅ Xác nhận thêm vào đề (${aiPreview.questions.length - aiLiveErrorCount} câu)`}
               </button>
-              <button className="btn secondary" onClick={() => setAiPreview(null)}>Hủy</button>
+              <button className="btn secondary" onClick={() => { setAiPreview(null); setAkFile(null); setAkResult(null); setAkApplied(null); }}>Hủy</button>
             </div>
+          </div>
+        )}
+        {aiPreview && (
+          <div className="panel">
+            <h3>📋 Nhận diện đáp án</h3>
+            <p className="muted">Upload file đáp án (bảng đáp án) để điền đáp án đúng vào bản xem trước phía trên — khớp theo số câu chuẩn của TOEIC.</p>
+            <div className="btn-row">
+              <label className="btn secondary" style={{ cursor: 'pointer' }}>
+                📄 Chọn file đáp án
+                <input
+                  type="file" accept=".txt,.docx,.pdf,.png,.jpg,.jpeg" style={{ display: 'none' }}
+                  onChange={e => { const f = e.target.files?.[0]; if (f) { setAkFile(f); setAkResult(null); setAkApplied(null); setError(null); } e.target.value = ''; }}
+                />
+              </label>
+              <button className="btn" disabled={!akFile || akBusy} onClick={() => void onAnswerKeyParse()}>
+                {akBusy ? 'Đang đọc đáp án…' : '📋 Nhận diện đáp án'}
+              </button>
+            </div>
+            {akFile && <p className="muted">Đã chọn: {akFile.name}</p>}
+            {akBusy && <p>Đang đọc file đáp án…</p>}
+            {akResult && (
+              <>
+                <p>Đã đọc được {akResult.found} đáp án (nguồn: {akResult.source === 'ai' ? 'AI' : 'tự động'})</p>
+                {akResult.warnings.length > 0 && (
+                  <p style={{ color: '#B98A1D' }}>⚠ {akResult.warnings.join(' ')}</p>
+                )}
+                {akPreviewText && <p className="muted">{akPreviewText}</p>}
+                <div className="btn-row">
+                  <button className="btn" onClick={applyAnswerKey}>✅ Áp dụng vào bản xem trước</button>
+                </div>
+              </>
+            )}
+            {akApplied && (
+              <>
+                <p>Đã điền đáp án cho {akApplied.filled}/{akApplied.total} câu.</p>
+                {akApplied.missing.length > 0 && (
+                  <p style={{ color: '#B98A1D' }}>
+                    Chưa có đáp án: câu {akApplied.missing.slice(0, 20).join(', ')}{akApplied.missing.length > 20 ? ', …' : ''} — chọn tay nốt trong bảng xem trước phía trên.
+                  </p>
+                )}
+              </>
+            )}
           </div>
         )}
       </div>
