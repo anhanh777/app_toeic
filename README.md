@@ -91,6 +91,8 @@ Admin có thể gắn ảnh (Part 1) và audio (Part 1–4) cho câu hỏi / đo
 
 Preset unsigned chỉ dùng để upload ảnh/audio công khai của đề thi, không dùng cho dữ liệu nhạy cảm. Chưa cấu hình 2 biến này thì tính năng upload/AI-audio báo `501` (`cloudinary_not_configured` / `gemini_not_configured`) nhưng app vẫn chạy bình thường. Sinh audio bằng AI cũng cần `GEMINI_API_KEY` (xem mục Deploy).
 
+**Nhận diện đáp án (Answer Key):** luồng đầy đủ là upload đề → xem trước → upload file đáp án riêng → áp dụng → import (endpoint `POST /api/admin/test-sets/:id/answer-key`). File đáp án có thể là ảnh chụp trang đáp án, file scan, hoặc file gõ tay (.txt/.docx/.pdf). Đáp án dạng text đơn giản (vd `1. A`, `2 - B`) được đọc ngay bằng quy tắc, không tốn lượt gọi Gemini; chỉ khi file là ảnh/scan hoặc text đọc được ít hơn 3 câu thì mới gọi Gemini 1 lần để đọc. File mẫu: `data/answer-key-sample.txt`.
+
 ## Cách tính điểm
 
 Mỗi phần Listening (Part 1–4) và Reading (Part 5–7) chấm riêng: số câu đúng → điểm phần (5–495) theo **bảng quy đổi tham khảo công khai** (nội suy tuyến tính giữa các mốc, xem `backend/src/scoring.js`). Tổng điểm = Listening + Reading (thang 10–990). Đây là **điểm ước lượng để tham khảo**, không phải điểm chính thức của ETS. Bài thi mini (1 Part) chỉ báo số câu đúng, không quy đổi ra điểm 10–990.

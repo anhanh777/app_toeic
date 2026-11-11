@@ -163,4 +163,44 @@ Hay trich xuat toan bo cau hoi trong khoi tren thanh JSON dung shape da cho.
 Chi trich xuat cac cau thuoc khoi nay, khong them cau cua khoi khac.`;
 }
 
-module.exports = { buildParsePrompt, buildVisionPrompt, buildBlockParsePrompt };
+/**
+ * Prompt doc BANG DAP AN rieng (endpoint answer-key): Gemini CHI doc so cau
+ * va dap an A-D, khong trich cau hoi. Dung cho ca 2 dang dau vao:
+ *   - text: van ban trich tu file dap an go tay (.txt/.docx/.pdf co lop chu)
+ *   - vision: anh chup / anh scan trang dap an (textOrVision = null, anh
+ *     dinh kem theo prompt nhu buildVisionPrompt).
+ * @param {string|null} textOrVision van ban bang dap an, hoac null khi la anh
+ * @returns {string} prompt gui Gemini
+ */
+function buildAnswerKeyPrompt(textOrVision) {
+  const source =
+    typeof textOrVision === 'string' && textOrVision.trim()
+      ? `BANG DAP AN CAN DOC (van ban trich tu file):\n---\n${textOrVision}\n---`
+      : 'BANG DAP AN CAN DOC: anh chup / anh scan trang dap an dinh kem theo prompt nay. Hay doc ky toan bo bang dap an trong anh.';
+  return `Ban la chuyen gia bien soan de thi TOEIC. Nhiem vu cua ban la doc BANG DAP AN
+TOEIC duoc cung cap va tra ve dung JSON shape ben duoi. CHI tra ve JSON thuan
+(khong them giai thich, khong them markdown, khong them \`\`\`json).
+
+Shape JSON bat buoc tra ve:
+{
+  "key": { "1": "A", "2": "C" },
+  "warnings": ["Canh bao neu co, vi du: khong doc duoc dap an cau 12"]
+}
+
+QUY TAC BAT BUOC:
+1. "key" chi chua so cau 1-200 va dap an A, B, C, D (chu hoa). So cau la chuoi,
+   vi du "1", "2", ..., "200".
+2. Chi ghi dap an khi ban DOC RO trong bang (chu in hoac chu viet ro rang).
+   NEU KHONG DOC DUOC dap an cua mot cau: BO QUA so cau do (khong dua vao
+   "key") va them mot canh bao vao "warnings". TUYET DOI KHONG DOAN BUA DAP AN.
+   Doan bua dap an sai con te hon de trong.
+3. Khong tu them cau khong co trong bang. Giu dung so cau nhu trong bang goc.
+4. Neu bang chi co cot chu cai ma khong ghi so cau (moi dong 1 chu cai A-D),
+   hieu cac chu cai theo dung thu tu tu tren xuong duoi, bat dau tu cau 1.
+
+${source}
+
+Hay doc bang dap an tren va tra ve JSON dung shape da cho.`;
+}
+
+module.exports = { buildParsePrompt, buildVisionPrompt, buildBlockParsePrompt, buildAnswerKeyPrompt };
