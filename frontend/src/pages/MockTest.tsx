@@ -25,10 +25,15 @@ export default function MockTest() {
   const [busy, setBusy] = useState(false);
   const [rate, setRate] = useState(1);
   const submittedRef = useRef(false);
+  // Audio cấp Part (Part 1–4): fallback khi câu/đoạn chưa có audio riêng.
+  const [partMedia, setPartMedia] = useState<Record<number, string>>({});
 
   const start = async () => {
     setBusy(true); setError(null);
     try {
+      // Tải audio cấp Part trước khi bắt đầu để câu đầu tiên đã có audio.
+      // Lỗi (backend chưa có endpoint) thì bỏ qua, fallback về {}.
+      try { setPartMedia(await api.partMedia(testSetId || 'TS-001')); } catch { setPartMedia({}); }
       const t = testSetId
         ? await api.createTest('full', undefined, 120, testSetId)
         : await api.createTest(mode, mode === 'mini' ? part : undefined, 120);
@@ -156,7 +161,9 @@ export default function MockTest() {
         )}
         {q.part <= 4 && (
           <ListeningAudio
-            audioUrl={q.audioUrl}
+            // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
+            // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
+            audioUrl={q.audioUrl || partMedia[q.part]}
             ttsText={ttsTextFor(q)}
             rate={rate}
             onRateChange={setRate}

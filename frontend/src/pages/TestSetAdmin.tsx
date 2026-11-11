@@ -5,6 +5,7 @@ import { useAuth } from '../auth';
 import { ErrorBox, partName } from '../components';
 import { uploadToCloudinary } from '../cloudinary';
 import { STANDARD_COUNTS, normalizeImportFile, splitValid, validateQuestion, type QuestionError } from '../testSetUtils';
+import BatchManualForm from './BatchManualForm';
 
 interface AiPreview extends AiParseResult {
   fileName: string;
@@ -50,6 +51,10 @@ export default function TestSetAdmin() {
   const [manualAudioName, setManualAudioName] = useState('');
   const [genBusy, setGenBusy] = useState<string | null>(null);
   const [genDone, setGenDone] = useState<Record<string, string>>({});
+  // Audio cấp Part (Part 1–4): 1 file audio cho cả Part.
+  const [partMedia, setPartMedia] = useState<Record<number, string>>({});
+  const [pendingPartAudio, setPendingPartAudio] = useState<Record<number, string>>({});
+  const [partAudioUploading, setPartAudioUploading] = useState<number | null>(null);
 
   const load = () => {
     if (!id) return;
@@ -61,6 +66,11 @@ export default function TestSetAdmin() {
   useEffect(() => {
     api.mediaConfig().then(setMediaCfg).catch(() => setMediaCfg(null));
   }, []);
+  // Audio cấp Part đã lưu (nếu backend chưa có endpoint thì bỏ qua).
+  useEffect(() => {
+    if (!id) return;
+    api.partMedia(id).then(setPartMedia).catch(() => setPartMedia({}));
+  }, [id]);
 
   if (user?.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Bạn không có quyền xem trang này.</p></div>;
@@ -264,6 +274,29 @@ export default function TestSetAdmin() {
     } catch (e) { setError(e); } finally { setAudioUploading(false); }
   };
 
+  // Audio cấp Part (Part 1–4): chọn file là upload ngay lên Cloudinary,
+  // rồi bấm "Lưu audio" để gọi savePartMedia. Player nghe thử hiện khi
+  // đã có audio (đã lưu, hoặc vừa upload chờ lưu).
+  const onPartAudioFile = async (file: File, p: number) => {
+    if (!mediaCfg?.configured) { setError(new Error('Chưa cấu hình Cloudinary — xem README')); return; }
+    setPartAudioUploading(p); setError(null);
+    try {
+      const url = await uploadToCloudinary(file, 'toeic/audio', mediaCfg);
+      setPendingPartAudio(d => ({ ...d, [p]: url }));
+    } catch (e) { setError(e); } finally { setPartAudioUploading(null); }
+  };
+  const savePartAudio = async (p: number) => {
+    const url = pendingPartAudio[p];
+    if (!url) return;
+    setBusy(true); setError(null); setMsg('');
+    try {
+      const r = await api.savePartMedia(ts.id, p, url);
+      setPartMedia(d => ({ ...d, [r.part]: r.audioUrl }));
+      setPendingPartAudio(d => { const n = { ...d }; delete n[p]; return n; });
+      setMsg(`Đã lưu audio cho Part ${p}.`);
+    } catch (e) { setError(e); } finally { setBusy(false); }
+  };
+
   // Tải lại danh sách câu của 1 Part sau khi sinh audio (không load() lại
   // toàn trang để khỏi mất trạng thái đang mở).
   const refreshList = async (p: number) => {
@@ -330,6 +363,38 @@ export default function TestSetAdmin() {
         <div className="btn-row">
           <button className="btn gold" onClick={togglePublish}>{ts.isPublished ? '⏸ Bỏ phát hành' : '🚀 Phát hành đề'}</button>
         </div>
+      </div>
+
+      <div className="card">
+        <h2>🎧 Audio cả Part</h2>
+        <p className="muted">1 file audio cho cả Part (Part 1–4). Khi luyện/thi, câu nào chưa có audio riêng sẽ phát audio này. Chọn file mp3 để upload lên Cloudinary rồi bấm Lưu.</p>
+        {mediaCfg?.configured ? (
+          [1, 2, 3, 4].map(p => {
+            const savedUrl = partMedia[p];
+            const pendingUrl = pendingPartAudio[p];
+            const url = pendingUrl || savedUrl;
+            return (
+              <div key={p} className="panel">
+                <h3>Part {p}</h3>
+                <div className="btn-row">
+                  <label className="btn secondary" style={{ cursor: 'pointer' }}>
+                    🎵 Chọn file audio (.mp3, ≤ 10MB)
+                    <input type="file" accept=".mp3" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) void onPartAudioFile(f, p); e.target.value = ''; }} />
+                  </label>
+                  <button className="btn" disabled={!pendingUrl || busy} onClick={() => void savePartAudio(p)}>
+                    {busy && pendingUrl ? 'Đang lưu…' : '💾 Lưu audio'}
+                  </button>
+                </div>
+                {partAudioUploading === p && <p className="muted">Đang tải audio lên Cloudinary…</p>}
+                {pendingUrl && <p className="muted">Đã upload, chưa lưu — bấm “Lưu audio” để áp dụng.</p>}
+                {url && <audio controls src={url} preload="metadata" style={{ width: '100%' }} />}
+                {!url && <p className="muted">Chưa có audio cho Part {p}.</p>}
+              </div>
+            );
+          })
+        ) : (
+          <p className="muted">Chưa cấu hình Cloudinary — xem README</p>
+        )}
       </div>
 
       <div className="card">
@@ -464,6 +529,8 @@ export default function TestSetAdmin() {
           </div>
         )}
       </div>
+
+      <BatchManualForm testSetId={ts.id} mediaCfg={mediaCfg} partMedia={partMedia} onSaved={load} />
 
       {[1, 2, 3, 4, 5, 6, 7].map(p => (
         <div key={p} className="card">

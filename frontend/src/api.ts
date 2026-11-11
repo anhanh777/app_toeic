@@ -291,6 +291,18 @@ export const api = {
   generatePassageAudio: (id: string) =>
     req<GeneratedAudio>(`/api/admin/passages/${encodeURIComponent(id)}/generate-audio`, { method: 'POST' }),
 
+  // Audio cấp Part (Part 1–4): 1 file audio cho cả Part, dùng làm fallback
+  // khi câu hỏi/đoạn văn chưa có audio riêng (xem PracticeSession/MockTest).
+  partMedia: (id: string) => req<Record<number, string>>(`/api/test-sets/${encodeURIComponent(id)}/part-media`),
+  savePartMedia: (id: string, part: number, audioUrl: string) =>
+    req<{ part: number; audioUrl: string }>(`/api/admin/test-sets/${encodeURIComponent(id)}/parts/${part}/media`, { method: 'POST', body: JSON.stringify({ audioUrl }) }),
+  // Thêm nhiều câu thủ công theo loạt (tối đa 200 câu/lần). Backend tự sinh
+  // id cho câu chưa có id; câu lỗi được trả về trong errors, câu hợp lệ
+  // vẫn được thêm.
+  adminBulkAddTestSetQuestions: (id: string, questions: unknown[]) =>
+    req<{ imported: number; errors: { index: number; reason: string }[] }>(
+      `/api/admin/test-sets/${encodeURIComponent(id)}/questions/bulk`, { method: 'POST', body: JSON.stringify({ questions }) }),
+
   // Admin
   adminQuestions: async (part?: number, limit = 50, offset = 0) => {
     const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });

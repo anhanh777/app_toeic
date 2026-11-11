@@ -18,10 +18,14 @@ export default function PracticeSession() {
   const [loading, setLoading] = useState(true);
   const [rate, setRate] = useState(1);
   const [score, setScore] = useState({ correct: 0, done: 0 });
+  // Audio cấp Part (Part 1–4): fallback khi câu/đoạn chưa có audio riêng.
+  // Tải thất bại (backend chưa có endpoint) thì bỏ qua, fallback về {}.
+  const [partMedia, setPartMedia] = useState<Record<number, string>>({});
 
   useEffect(() => {
     setLoading(true);
     if (testSetId) api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => undefined);
+    if (part <= 4) api.partMedia(testSetId || 'TS-001').then(setPartMedia).catch(() => setPartMedia({}));
     api.questions(part, count, 0, '', testSetId).then(setQuestions).catch(setError).finally(() => setLoading(false));
     return () => stopSpeak();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,7 +98,9 @@ export default function PracticeSession() {
         )}
         {isListening && (
           <ListeningAudio
-            audioUrl={q.audioUrl}
+            // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
+            // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
+            audioUrl={q.audioUrl || partMedia[q.part]}
             ttsText={ttsTextFor(q)}
             rate={rate}
             onRateChange={setRate}
