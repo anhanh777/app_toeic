@@ -221,12 +221,19 @@ function parseGeminiJson(geminiJson) {
 function normalizeQuestion(raw) {
   const q = raw && typeof raw === 'object' ? raw : {};
   const part = parseInt(q.part, 10);
-  const options = Array.isArray(q.options)
+  let options = Array.isArray(q.options)
     ? q.options.map((o, i) => ({
         label: ['A', 'B', 'C', 'D'][i] || String((o && o.label) || '').toUpperCase(),
         content: o && typeof o.content === 'string' ? o.content : '',
       }))
     : [];
+  // Part 2 thi that chi co 3 cau tra loi (A, B, C). Gemini doi khi tra ve
+  // them phuong an D rong — bo D rong di de cau qua duoc validator (Part 2
+  // phai co dung 3 phuong an). D khong bao gio la dap an dung cua Part 2.
+  if (part === 2 && options.length === 4) {
+    const d = options[3];
+    if (!d.content || !d.content.trim()) options = options.slice(0, 3);
+  }
   const correct =
     typeof q.correct === 'string' && ['A', 'B', 'C', 'D'].includes(q.correct.trim().toUpperCase())
       ? q.correct.trim().toUpperCase()
@@ -621,4 +628,5 @@ router.post('/admin/test-sets/:id/ai-parse', authMiddleware, requireAdmin, (req,
 module.exports = router;
 module.exports.extractText = extractText;
 module.exports.selectParseMode = selectParseMode;
+module.exports.callGemini = callGemini;
 module.exports.fillListeningPlaceholders = fillListeningPlaceholders;
