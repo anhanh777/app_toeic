@@ -350,6 +350,27 @@ footer{
 .paper-savebar .btn{width:100%}
 @media(min-width:640px){.paper-savebar .btn{width:auto; min-width:280px}}
 
+/* ============ Luyện tập — bố cục "tờ đề thi" liền mạch ============
+   Toàn bộ câu của đợt luyện nằm trong 1 tờ giấy (.paper), các câu nối
+   tiếp bằng đường kẻ mảnh. Đáp án gọn: Part 1/2 là 1 hàng pill chữ cái,
+   Part 3–7 là lưới phương án (1 cột trên điện thoại, 2 cột từ 640px). */
+.letter-row{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem}
+.option.letter-pill{
+  flex:1 1 0; min-width:3rem; width:auto; text-align:center;
+  padding:.55rem .4rem; margin:0;
+}
+.option.letter-pill strong{font-size:1.15rem; padding:.2rem .55rem; margin-right:0}
+.opts-grid{display:grid; grid-template-columns:1fr; gap:.45rem; margin-top:.5rem}
+.opts-grid .option{margin:0}
+@media(min-width:640px){.opts-grid{grid-template-columns:1fr 1fr; gap:.45rem .6rem}}
+/* Thanh tiến độ dính cuối màn luyện: luôn thấy "Xem kết quả" khi cuộn */
+.practice-bar{
+  position:sticky; bottom:0; z-index:5; background:#fff;
+  border-top:1px solid var(--border); padding:.7rem 0 .4rem; margin-top:1rem;
+  display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap;
+}
+.practice-bar .progress{font-weight:700; color:var(--ink)}
+
 ::selection{background:var(--accent-soft); color:var(--ink)}
 @media(max-width:640px){
   h1{font-size:1.2rem}

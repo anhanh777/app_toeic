@@ -1,8 +1,16 @@
+// Luyện tập theo Part — dạng danh sách liền mạch như tờ đề thi:
+// toàn bộ câu của đợt luyện nằm trong 1 tờ giấy (.paper), các câu nối
+// tiếp nhau bằng đường kẻ mảnh; chấm điểm theo từng câu ngay sau khi bấm
+// "Nộp đáp án" của câu đó (giữ nguyên API practiceAnswer, XP, ghi câu sai).
+// Người học được làm các câu theo thứ tự bất kỳ. Part 1/2 vẫn ẨN chữ trước
+// khi trả lời từng câu (đúng đề thi thật), chỉ hiện lại sau khi đã nộp đáp án.
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, partName } from '../components';
 import { stopSpeak, ttsTextFor } from '../tts';
+
+type AnswerResult = { correct: boolean; correctLabel: string; explanation?: string; transcript?: string; xpAwarded?: number };
 
 export default function PracticeSession() {
   const [params] = useSearchParams();
@@ -11,13 +19,14 @@ export default function PracticeSession() {
   const testSetId = params.get('testSetId') || undefined;
   const [testSetTitle, setTestSetTitle] = useState<string>('');
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [idx, setIdx] = useState(0);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [result, setResult] = useState<{ correct: boolean; correctLabel: string; explanation?: string; transcript?: string; xpAwarded?: number } | null>(null);
+  // Chọn đáp án + kết quả chấm lưu theo id câu (mỗi câu chấm độc lập).
+  const [selectedById, setSelectedById] = useState<Record<string, string>>({});
+  const [resultById, setResultById] = useState<Record<string, AnswerResult>>({});
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [rate, setRate] = useState(1);
   const [score, setScore] = useState({ correct: 0, done: 0 });
+  const [finished, setFinished] = useState(false);
   // Audio cấp Part (Part 1–4): fallback khi câu/đoạn chưa có audio riêng.
   // Tải thất bại (backend chưa có endpoint) thì bỏ qua, fallback về {}.
   const [partMedia, setPartMedia] = useState<Record<number, string>>({});
@@ -31,36 +40,29 @@ export default function PracticeSession() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [part, count, testSetId]);
 
-  useEffect(() => () => stopSpeak(), [idx]);
-
-  const q = questions[idx];
   const isListening = part <= 4;
+
   // Câu chỉ-nghe (Part 1/2): toàn bộ phương án đều rỗng nội dung (chỉ có
   // nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
-  const listeningOnly =
-    (q?.part === 1 || q?.part === 2) &&
+  const isListeningOnly = (q: Question) =>
+    (q.part === 1 || q.part === 2) &&
     q.options.length > 0 &&
     q.options.every(o => !o.content || !o.content.trim());
 
-  // Part 1/2 thi that: chi co tranh + nghe + chon A/B/C/D, KHONG hien chu
-  // cau hoi/phuong an truoc khi tra loi (giong de thi that). Tra loi xong
-  // moi hien day du chu de xem lai minh vua nghe gi.
-  const hideListeningText = (q?.part === 1 || q?.part === 2) && !result;
-  const letterOnly = listeningOnly || hideListeningText;
-
-  const submit = async () => {
-    if (!q || !selected) return;
+  const submit = async (q: Question) => {
+    const selected = selectedById[q.id];
+    // Đã chấm rồi thì không chấm lại (nút cũng đã bị khóa, đây là chốt chặn).
+    if (!selected || resultById[q.id]) return;
     try {
       const r = await api.practiceAnswer(q.id, selected);
-      setResult(r);
+      setResultById(m => ({ ...m, [q.id]: r }));
       setScore(s => ({ correct: s.correct + (r.correct ? 1 : 0), done: s.done + 1 }));
     } catch (e) { setError(e); }
   };
-  const next = () => { stopSpeak(); setSelected(null); setResult(null); setIdx(i => i + 1); };
 
   if (loading) return <p>Đang tải câu hỏi…</p>;
   if (!questions.length) return <div><ErrorBox error={error} /><p>Chưa có câu hỏi cho Part này. {testSetId ? <Link to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link to="/practice">Quay lại chọn Part</Link>}</p></div>;
-  if (idx >= questions.length) {
+  if (finished) {
     return (
       <div className="card">
         <h1>Hoàn thành!</h1>
@@ -76,25 +78,45 @@ export default function PracticeSession() {
     );
   }
 
-  return (
-    <div>
-      {testSetTitle && <p className="tag">📚 {testSetTitle}</p>}
-      <p className="muted">{partName(part)} — Câu {idx + 1}/{questions.length} • Đúng {score.correct}/{score.done}</p>
-      <ErrorBox error={error} />
-      <div className="card screen">
-        {q.passageText && (<div className="passage">{q.passageText}</div>)}
+  // Nhóm các câu liên tiếp cùng 1 đoạn văn (Part 3/4/6/7) để đoạn chỉ hiện
+  // 1 lần, các câu hỏi của đoạn nối tiếp ngay bên dưới — như tờ đề thi thật.
+  // Số thứ tự n đếm liên tiếp theo thứ tự câu trong đợt luyện.
+  type Block = { key: string; passageText?: string; questions: { q: Question; n: number }[] };
+  const blocks: Block[] = [];
+  questions.forEach((q, i) => {
+    const last = blocks[blocks.length - 1];
+    const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
+    const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
+    if ((sameId || sameText) && last) last.questions.push({ q, n: i + 1 });
+    else blocks.push({ key: q.id, passageText: q.passageText, questions: [{ q, n: i + 1 }] });
+  });
+
+  const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
+    const result = resultById[q.id];
+    const selected = selectedById[q.id] ?? null;
+    const listeningOnly = isListeningOnly(q);
+    // Part 1/2 thi that: chi co tranh + nghe + chon A/B/C/D, KHONG hien chu
+    // cau hoi/phuong an truoc khi tra loi cau do. Tra loi xong moi hien day
+    // du chu de xem lai minh vua nghe gi.
+    const hideListeningText = (q.part === 1 || q.part === 2) && !result;
+    const letterOnly = listeningOnly || hideListeningText;
+    return (
+      <div className="paper-q" key={q.id}>
+        <p>
+          <span className="q-num">Câu {n}/{questions.length}.</span>{' '}
+          {hideListeningText ? (
+            q.part === 2 && listeningOnly ? (
+              <strong>🎧 Nghe và chọn đáp án đúng</strong>
+            ) : null
+          ) : (
+            q.content ? <strong>{q.content}</strong> : null
+          )}
+        </p>
         {q.imageUrl && (
           <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
         )}
         {listeningOnly && q.part === 1 && !q.imageUrl && (
           <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
-        )}
-        {hideListeningText ? (
-          q.part === 2 && listeningOnly ? (
-            <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
-          ) : null
-        ) : (
-          q.content ? <p><strong>{q.content}</strong></p> : null
         )}
         {isListening && (
           <ListeningAudio
@@ -104,23 +126,25 @@ export default function PracticeSession() {
             ttsText={ttsTextFor(q)}
             rate={rate}
             onRateChange={setRate}
-            stopKey={idx}
+            stopKey={q.id}
             variant="practice"
             onError={setError}
           />
         )}
-        {q.options.map(o => {
-          let cls = 'option';
-          if (letterOnly) cls += ' letter-only';
-          if (selected === o.label) cls += ' selected';
-          if (result) {
-            if (o.label === result.correctLabel) cls += ' correct';
-            else if (selected === o.label && !result.correct) cls += ' wrong';
-          }
-          return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelected(o.label)}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}</button>;
-        })}
+        <div className={letterOnly ? 'letter-row' : 'opts-grid'}>
+          {q.options.map(o => {
+            let cls = 'option';
+            if (letterOnly) cls += ' letter-pill';
+            if (selected === o.label) cls += ' selected';
+            if (result) {
+              if (o.label === result.correctLabel) cls += ' correct';
+              else if (selected === o.label && !result.correct) cls += ' wrong';
+            }
+            return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelectedById(m => ({ ...m, [q.id]: o.label }))}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}</button>;
+          })}
+        </div>
         {!result ? (
-          <div className="btn-row"><button className="btn" disabled={!selected} onClick={submit}>Nộp đáp án</button></div>
+          <div className="btn-row"><button className="btn" disabled={!selected} onClick={() => void submit(q)}>Nộp đáp án</button></div>
         ) : (
           <div>
             <p style={{ color: result.correct ? '#3E6B4A' : '#A84A4A', fontWeight: 700 }}>
@@ -128,9 +152,30 @@ export default function PracticeSession() {
             </p>
             {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}
             {result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
-            <div className="btn-row"><button className="btn" onClick={next}>{idx + 1 < questions.length ? 'Câu tiếp theo →' : 'Xem kết quả'}</button></div>
           </div>
         )}
+      </div>
+    );
+  };
+
+  return (
+    <div>
+      {testSetTitle && <p className="tag">📚 {testSetTitle}</p>}
+      <p className="muted">{partName(part)} — Đã làm {score.done}/{questions.length} • Đúng {score.correct}</p>
+      <ErrorBox error={error} />
+      <div className="paper">
+        {blocks.map(block => block.passageText ? (
+          <div className="paper-cluster" key={block.key}>
+            <div className="passage">{block.passageText}</div>
+            {block.questions.map(item => renderQuestion(item))}
+          </div>
+        ) : (
+          block.questions.map(item => renderQuestion(item))
+        ))}
+      </div>
+      <div className="practice-bar">
+        <span className="progress">Đã làm {score.done}/{questions.length} • Đúng {score.correct}</span>
+        <button className="btn" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
       </div>
     </div>
   );
