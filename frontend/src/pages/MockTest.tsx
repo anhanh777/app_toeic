@@ -18,7 +18,8 @@ export default function MockTest() {
   const [part, setPart] = useState(5);
   const [attemptId, setAttemptId] = useState<number | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);
-  const [idx, setIdx] = useState(0);
+  // Đáp án lưu theo id câu (làm theo thứ tự bất kỳ, đổi thoải mái trước
+  // khi nộp — thi thử KHÔNG chấm ngay từng câu).
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [error, setError] = useState<unknown>(null);
@@ -44,7 +45,7 @@ export default function MockTest() {
         try { qs.push(await api.question(id)); } catch { /* skip missing */ }
       }
       setQuestions(qs);
-      setIdx(0); setAnswers({});
+      setAnswers({});
     } catch (e) { setError(e); } finally { setBusy(false); }
   };
 
@@ -71,11 +72,11 @@ export default function MockTest() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [secondsLeft, attemptId]);
 
-  useEffect(() => () => stopSpeak(), [idx]);
+  useEffect(() => () => stopSpeak(), []);
 
-  const choose = async (label: string) => {
-    const q = questions[idx];
+  const choose = async (q: Question, label: string) => {
     if (!q || !attemptId) return;
+    // Ghi lần chọn cuối (đổi đáp án thoải mái trước khi nộp).
     setAnswers(a => ({ ...a, [q.id]: label }));
     try { await api.saveTestAnswer(attemptId, q.id, label); } catch (e) { setError(e); }
   };
@@ -120,44 +121,55 @@ export default function MockTest() {
     );
   }
 
-  const q = questions[idx];
-  if (!q) return <p>Đang tải đề thi…</p>;
+  if (!questions.length) return <p>Đang tải đề thi…</p>;
   const answeredCount = Object.keys(answers).length;
+
   // Câu chỉ-nghe (Part 1/2): toàn bộ phương án đều rỗng nội dung (chỉ có
   // nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
-  const listeningOnly =
+  const isListeningOnly = (q: Question) =>
     (q.part === 1 || q.part === 2) &&
     q.options.length > 0 &&
     q.options.every(o => !o.content || !o.content.trim());
 
-  // Part 1/2 thi that: trong bai thi chi hien tranh (Part 1) + audio +
-  // nut A/B/C/D, KHONG hien chu cau hoi/phuong an (xem lai o trang On cau
-  // sai sau khi nop bai).
-  const hideListeningText = q.part === 1 || q.part === 2;
-  const letterOnly = listeningOnly || hideListeningText;
+  // Nhóm các câu liên tiếp cùng 1 đoạn văn (Part 3/4/6/7) để đoạn chỉ hiện
+  // 1 lần, các câu hỏi của đoạn nối tiếp ngay bên dưới — như tờ đề thi thật.
+  // Số thứ tự n đếm liên tiếp theo thứ tự câu trong bài thi. Mỗi khối cũng
+  // ghi lại Part để hiện tiêu đề Part khi chuyển sang Part mới (thi full).
+  type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number }[] };
+  const blocks: Block[] = [];
+  questions.forEach((q, i) => {
+    const last = blocks[blocks.length - 1];
+    const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
+    const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
+    if ((sameId || sameText) && last) last.questions.push({ q, n: i + 1 });
+    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n: i + 1 }] });
+  });
 
-  return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '.5rem' }}>
-        <p className="muted">{testSet ? `📚 ${testSet.title} — ` : ''}Câu {idx + 1}/{questions.length} • Đã trả lời: {answeredCount}</p>
-        <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
-      </div>
-      <ErrorBox error={error} />
-      <div className="card screen">
-        <p className="tag">{partName(q.part)}</p>
-        {q.passageText && <div className="passage">{q.passageText}</div>}
+  const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
+    const listeningOnly = isListeningOnly(q);
+    // Part 1/2 thi that: trong bai thi chi hien tranh (Part 1) + audio +
+    // nut A/B/C/D, KHONG hien chu cau hoi/phuong an trong SUOT bai thi
+    // (xem lai o trang On cau sai sau khi nop bai) — KHONG hien lai chu
+    // sau khi chon dap an nhu man Luyen tap.
+    const hideListeningText = q.part === 1 || q.part === 2;
+    const letterOnly = listeningOnly || hideListeningText;
+    return (
+      <div className="paper-q" key={q.id}>
+        <p>
+          <span className="q-num">Câu {n}/{questions.length}.</span>{' '}
+          {hideListeningText ? (
+            q.part === 2 && listeningOnly ? (
+              <strong>🎧 Nghe và chọn đáp án đúng</strong>
+            ) : null
+          ) : (
+            q.content ? <strong>{q.content}</strong> : null
+          )}
+        </p>
         {q.imageUrl && (
           <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
         )}
         {listeningOnly && q.part === 1 && !q.imageUrl && (
           <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
-        )}
-        {hideListeningText ? (
-          q.part === 2 && listeningOnly ? (
-            <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
-          ) : null
-        ) : (
-          <p><strong>{q.content}</strong></p>
         )}
         {q.part <= 4 && (
           <ListeningAudio
@@ -167,24 +179,56 @@ export default function MockTest() {
             ttsText={ttsTextFor(q)}
             rate={rate}
             onRateChange={setRate}
-            stopKey={idx}
+            stopKey={q.id}
             variant="mock"
             onError={setError}
           />
         )}
-        {q.options.map(o => (
-          <button key={o.label} className={`option${letterOnly ? ' letter-only' : ''} ${answers[q.id] === o.label ? 'selected' : ''}`} onClick={() => choose(o.label)}>
-            {letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}
-          </button>
-        ))}
-        <div className="btn-row">
-          <button className="btn secondary" disabled={idx === 0} onClick={() => setIdx(i => i - 1)}>← Câu trước</button>
-          {idx + 1 < questions.length
-            ? <button className="btn" onClick={() => setIdx(i => i + 1)}>Câu tiếp →</button>
-            : <button className="btn" onClick={submit}>Nộp bài</button>}
+        <div className={letterOnly ? 'letter-row' : 'opts-grid'}>
+          {q.options.map(o => (
+            <button
+              key={o.label}
+              className={`option${letterOnly ? ' letter-pill' : ''} ${answers[q.id] === o.label ? 'selected' : ''}`}
+              onClick={() => void choose(q, o.label)}
+            >
+              {letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}
+            </button>
+          ))}
         </div>
-        <p className="muted">Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>
       </div>
+    );
+  };
+
+  return (
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '.5rem' }}>
+        <p className="muted">{testSet ? `📚 ${testSet.title} — ` : ''}Đã trả lời: {answeredCount}/{questions.length}</p>
+        <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
+      </div>
+      <ErrorBox error={error} />
+      <div className="paper">
+        {blocks.map((block, bi) => {
+          const showPart = bi === 0 || blocks[bi - 1].part !== block.part;
+          return (
+            <div key={block.key}>
+              {showPart && <h3 className="paper-part">{partName(block.part)}</h3>}
+              {block.passageText ? (
+                <div className="paper-cluster">
+                  <div className="passage">{block.passageText}</div>
+                  {block.questions.map(item => renderQuestion(item))}
+                </div>
+              ) : (
+                block.questions.map(item => renderQuestion(item))
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div className="practice-bar">
+        <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
+        <button className="btn" onClick={() => void submit()}>Nộp bài</button>
+      </div>
+      <p className="muted">Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>
     </div>
   );
 }

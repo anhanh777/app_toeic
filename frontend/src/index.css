@@ -363,6 +363,8 @@ footer{
 .opts-grid{display:grid; grid-template-columns:1fr; gap:.45rem; margin-top:.5rem}
 .opts-grid .option{margin:0}
 @media(min-width:640px){.opts-grid{grid-template-columns:1fr 1fr; gap:.45rem .6rem}}
+/* Tiêu đề Part trong tờ đề thi thử full (Part 1 → Part 7 nối tiếp nhau) */
+.paper-part{margin:.4rem 0 .2rem; font-size:1.05rem; color:var(--accent-dark)}
 /* Thanh tiến độ dính cuối màn luyện: luôn thấy "Xem kết quả" khi cuộn */
 .practice-bar{
   position:sticky; bottom:0; z-index:5; background:#fff;
