@@ -96,6 +96,24 @@ function seedQuestions() {
     });
     console.log('[seed] da tao ETS 2024 Test 01 TS-003.');
   }
+  if (!db.getTestSet('TS-004')) {
+    db.createTestSet({
+      id: 'TS-004',
+      title: 'ETS 2024 - Test 02',
+      description: 'ETS 2024 Test 02 - LC + RC (200 câu)',
+      isPublished: 1,
+    });
+    console.log('[seed] da tao ETS 2024 Test 02 TS-004.');
+  }
+  if (!db.getTestSet('TS-005')) {
+    db.createTestSet({
+      id: 'TS-005',
+      title: 'ETS 2024 - Test 03',
+      description: 'ETS 2024 Test 03 - LC + RC (200 câu)',
+      isPublished: 1,
+    });
+    console.log('[seed] da tao ETS 2024 Test 03 TS-005.');
+  }
   let inserted = 0;
   for (const q of list) {
     try {
@@ -108,6 +126,8 @@ function seedQuestions() {
   console.log(`[seed] da seed ${inserted}/${list.length} cau hoi.`);
   if (db.getTestSet('TS-001')) db.refreshTestSetTotal('TS-001');
   if (db.getTestSet('TS-003')) db.refreshTestSetTotal('TS-003');
+  if (db.getTestSet('TS-004')) db.refreshTestSetTotal('TS-004');
+  if (db.getTestSet('TS-005')) db.refreshTestSetTotal('TS-005');
   return inserted;
 }
 
@@ -150,9 +170,38 @@ function seedDemoUsers() {
   }
 }
 
+function seedPartMedia() {
+  // Audio ca Part 1-4 cho tung bo de (link Cloudinary). Bang part_media KHONG
+  // duoc seed mac dinh nen sau moi lan redeploy (Render free tier xoa DB) thi
+  // audio gan qua API se mat — seed tu data/part-media.json de du ben.
+  let list = [];
+  try {
+    list = readJsonArray('part-media.json');
+  } catch (err) {
+    console.warn(`[seed] khong doc duoc part-media.json: ${err.message}`);
+    return 0;
+  }
+  let seeded = 0;
+  for (const m of list) {
+    if (!m || typeof m.testSetId !== 'string' || !Number.isInteger(m.part) || typeof m.audioUrl !== 'string') {
+      continue;
+    }
+    if (!db.getTestSet(m.testSetId)) continue;
+    try {
+      db.setPartMedia(m.testSetId, m.part, m.audioUrl);
+      seeded += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua part-media ${m.testSetId} P${m.part}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${seeded}/${list.length} part-media.`);
+  return seeded;
+}
+
 function seedAll() {
   db.initDb();
   seedQuestions();
+  seedPartMedia();
   seedVocabulary();
   seedDemoUsers();
   console.log(
@@ -164,4 +213,4 @@ if (require.main === module) {
   seedAll();
 }
 
-module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers };
+module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia };
