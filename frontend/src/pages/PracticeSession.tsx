@@ -101,52 +101,54 @@ export default function PracticeSession() {
     const hideListeningText = (q.part === 1 || q.part === 2) && !result;
     const letterOnly = listeningOnly || hideListeningText;
     return (
-      <div className="paper-q" key={q.id}>
-        <p>
-          <span className="q-num">Câu {n}/{questions.length}.</span>{' '}
+      <div className="paper-q exam-q" key={q.id}>
+        <div className="exam-q-body">
           {hideListeningText ? (
             q.part === 2 && listeningOnly ? (
-              <strong>🎧 Nghe và chọn đáp án đúng</strong>
+              <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
             ) : null
           ) : (
-            q.content ? <strong>{q.content}</strong> : null
+            q.content ? <p><strong>{q.content}</strong></p> : null
           )}
-        </p>
-        {q.imageUrl && (
-          <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
-        )}
-        {listeningOnly && q.part === 1 && !q.imageUrl && (
-          <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
-        )}
-        {isListening && (
-          <ListeningAudio
-            // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
-            // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
-            audioUrl={q.audioUrl || partMedia[q.part]}
-            ttsText={ttsTextFor(q)}
-            rate={rate}
-            onRateChange={setRate}
-            stopKey={q.id}
-            variant="practice"
-            onError={setError}
-          />
-        )}
-        <div className={letterOnly ? 'letter-row' : 'opts-grid'}>
-          {q.options.map(o => {
-            let cls = 'option';
-            if (letterOnly) cls += ' letter-pill';
-            if (selected === o.label) cls += ' selected';
-            if (result) {
-              if (o.label === result.correctLabel) cls += ' correct';
-              else if (selected === o.label && !result.correct) cls += ' wrong';
-            }
-            return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelectedById(m => ({ ...m, [q.id]: o.label }))}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}</button>;
-          })}
+          {q.imageUrl && (
+            <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
+          )}
+          {listeningOnly && q.part === 1 && !q.imageUrl && (
+            <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
+          )}
+          {isListening && (
+            <ListeningAudio
+              // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
+              // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
+              audioUrl={q.audioUrl || partMedia[q.part]}
+              ttsText={ttsTextFor(q)}
+              rate={rate}
+              onRateChange={setRate}
+              stopKey={q.id}
+              variant="practice"
+              onError={setError}
+            />
+          )}
         </div>
-        {!result ? (
-          <div className="btn-row"><button className="btn btn-sm" disabled={!selected} onClick={() => void submit(q)}>Nộp đáp án</button></div>
-        ) : (
-          <div>
+        <div className="exam-q-side">
+          <div className="exam-q-num">{n}.</div>
+          <div className="exam-opts">
+            {q.options.map(o => {
+              let cls = 'option';
+              if (selected === o.label) cls += ' selected';
+              if (result) {
+                if (o.label === result.correctLabel) cls += ' correct';
+                else if (selected === o.label && !result.correct) cls += ' wrong';
+              }
+              return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelectedById(m => ({ ...m, [q.id]: o.label }))}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}</strong> {o.content}</>}</button>;
+            })}
+          </div>
+          {!result && (
+            <div className="btn-row"><button className="btn btn-sm" disabled={!selected} onClick={() => void submit(q)}>Nộp đáp án</button></div>
+          )}
+        </div>
+        {result && (
+          <div className="exam-q-result">
             <p style={{ color: result.correct ? '#3E6B4A' : '#A84A4A', fontWeight: 700 }}>
               {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${result.correctLabel}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
             </p>
@@ -161,7 +163,10 @@ export default function PracticeSession() {
   return (
     <div>
       {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
-      <p className="muted" style={{ margin: '.3rem 0 0' }}>{partName(part)} — Đã làm {score.done}/{questions.length} • Đúng {score.correct}</p>
+      <div className="exam-head">
+        <h2 className="exam-part">Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</h2>
+        <span className="progress-badge">Đã làm {score.done}/{questions.length}</span>
+      </div>
       <ErrorBox error={error} />
       <div className="paper">
         {blocks.map(block => block.passageText ? (

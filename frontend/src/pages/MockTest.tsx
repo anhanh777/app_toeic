@@ -154,46 +154,48 @@ export default function MockTest() {
     const hideListeningText = q.part === 1 || q.part === 2;
     const letterOnly = listeningOnly || hideListeningText;
     return (
-      <div className="paper-q" key={q.id}>
-        <p>
-          <span className="q-num">Câu {n}/{questions.length}.</span>{' '}
+      <div className="paper-q exam-q" key={q.id}>
+        <div className="exam-q-body">
           {hideListeningText ? (
             q.part === 2 && listeningOnly ? (
-              <strong>🎧 Nghe và chọn đáp án đúng</strong>
+              <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
             ) : null
           ) : (
-            q.content ? <strong>{q.content}</strong> : null
+            q.content ? <p><strong>{q.content}</strong></p> : null
           )}
-        </p>
-        {q.imageUrl && (
-          <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
-        )}
-        {listeningOnly && q.part === 1 && !q.imageUrl && (
-          <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
-        )}
-        {q.part <= 4 && (
-          <ListeningAudio
-            // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
-            // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
-            audioUrl={q.audioUrl || partMedia[q.part]}
-            ttsText={ttsTextFor(q)}
-            rate={rate}
-            onRateChange={setRate}
-            stopKey={q.id}
-            variant="mock"
-            onError={setError}
-          />
-        )}
-        <div className={letterOnly ? 'letter-row' : 'opts-grid'}>
-          {q.options.map(o => (
-            <button
-              key={o.label}
-              className={`option${letterOnly ? ' letter-pill' : ''} ${answers[q.id] === o.label ? 'selected' : ''}`}
-              onClick={() => void choose(q, o.label)}
-            >
-              {letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}.</strong> {o.content}</>}
-            </button>
-          ))}
+          {q.imageUrl && (
+            <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
+          )}
+          {listeningOnly && q.part === 1 && !q.imageUrl && (
+            <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
+          )}
+          {q.part <= 4 && (
+            <ListeningAudio
+              // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
+              // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
+              audioUrl={q.audioUrl || partMedia[q.part]}
+              ttsText={ttsTextFor(q)}
+              rate={rate}
+              onRateChange={setRate}
+              stopKey={q.id}
+              variant="mock"
+              onError={setError}
+            />
+          )}
+        </div>
+        <div className="exam-q-side">
+          <div className="exam-q-num">{n}.</div>
+          <div className="exam-opts">
+            {q.options.map(o => (
+              <button
+                key={o.label}
+                className={`option ${answers[q.id] === o.label ? 'selected' : ''}`}
+                onClick={() => void choose(q, o.label)}
+              >
+                {letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}</strong> {o.content}</>}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -201,9 +203,12 @@ export default function MockTest() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '.5rem' }}>
-        <p className="muted" style={{ margin: 0 }}>{testSet ? `📚 ${testSet.title} — ` : ''}Đã trả lời: {answeredCount}/{questions.length}</p>
-        <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
+      <div className="exam-head">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '.8rem', flexWrap: 'wrap', minWidth: 0 }}>
+          <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
+          <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
+        </div>
+        <span className="progress-badge">Đã trả lời {answeredCount}/{questions.length}</span>
       </div>
       <ErrorBox error={error} />
       <div className="paper">

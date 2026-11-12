@@ -15,6 +15,7 @@
   --red:#D96C6C; --red-bg:#FBEAEA; --red-ink:#A84A4A;
   --amber:#B98A1D; --amber-bg:#FCF3D9;
   --gold:#E9B949; --silver:#B9C2D4; --bronze:#D89B6A;
+  --exam-blue:#0B5CAD; --exam-orange:#F5821F;
   --body:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
 }
 *{box-sizing:border-box}
@@ -374,8 +375,60 @@ footer{
 .opts-grid{display:grid; grid-template-columns:1fr; gap:.35rem; margin-top:.35rem}
 .opts-grid .option{margin:0}
 @media(min-width:640px){.opts-grid{grid-template-columns:1fr 1fr; gap:.35rem .5rem}}
+/* ============ Giao diện thi theo ảnh mẫu — 2 cột, tiêu đề Part xanh ============
+   Giữ danh sách liền mạch (.paper): mỗi câu là 1 hàng 2 cột trên màn
+   rộng — trái là nội dung (ảnh/audio/đoạn/câu hỏi), phải là số câu +
+   phương án radio tròn; màn hẹp xếp chồng. Chỉ dùng cho Practice/Mock
+   (.exam-q), KHÔNG đổi .paper-q gốc của form nhập tay. */
+/* Đầu trang bài làm dính khi cuộn (ngay dưới topbar sticky): tiêu đề
+   Part xanh dương đậm + badge cam tiến độ góc phải */
+.exam-head{
+  position:sticky; top:60px; z-index:9; background:#fff;
+  display:flex; align-items:center; justify-content:space-between; gap:.8rem;
+  padding:.55rem 0 .5rem; margin:0 0 .1rem; border-bottom:1px solid var(--border-soft);
+}
+.exam-part{
+  margin:0; font-size:1.35rem; font-weight:800; color:var(--exam-blue);
+  text-transform:uppercase; letter-spacing:.02em; line-height:1.2;
+}
+.exam-part span{font-size:.85rem; font-weight:600; color:var(--muted); text-transform:none; letter-spacing:0}
+.exam-head .timer{font-size:1.05rem}
+.progress-badge{
+  flex:0 0 auto; background:var(--exam-orange); color:#fff; font-weight:800;
+  font-size:.95rem; padding:.4rem .9rem; border-radius:10px;
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
 /* Tiêu đề Part trong tờ đề thi thử full (Part 1 → Part 7 nối tiếp nhau) */
-.paper-part{margin:.55rem 0 .15rem; font-size:1.05rem; color:var(--accent-dark)}
+.paper-part{margin:.7rem 0 .15rem; font-size:1.3rem; font-weight:800; color:var(--exam-blue); text-transform:uppercase; letter-spacing:.02em}
+/* 1 câu hỏi dạng 2 cột: nội dung | số câu + phương án */
+.exam-q{display:grid; grid-template-columns:minmax(0,1fr); gap:.1rem .5rem}
+@media(min-width:760px){
+  .exam-q{grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); gap:.3rem 1.6rem; align-items:start}
+}
+.exam-q-body{min-width:0}
+.exam-q-body > img{display:block; max-width:100%; border-radius:12px; margin:.35rem 0}
+.exam-q-side{min-width:0}
+.exam-q-num{font-weight:800; font-size:1.15rem; color:var(--ink); margin:.3rem 0 .45rem; font-variant-numeric:tabular-nums}
+/* Phương án radio tròn xếp dọc */
+.exam-opts{display:flex; flex-direction:column; gap:.4rem; margin-top:.1rem}
+.exam-opts .option{
+  margin:0; display:flex; align-items:flex-start; gap:.6rem;
+  text-align:left; padding:.5rem .7rem;
+}
+.exam-opts .option strong{
+  flex:0 0 auto; width:1.7rem; height:1.7rem; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:.95rem; font-weight:800; margin:0; padding:0;
+  background:#fff; color:var(--ink); border:1.5px solid var(--border);
+}
+.exam-opts .option.selected{border-color:var(--accent)}
+.exam-opts .option.selected strong{border-color:var(--accent); background:var(--accent); color:#fff}
+.exam-opts .option.correct strong{border-color:var(--green); background:var(--green); color:#fff}
+.exam-opts .option.wrong strong{border-color:var(--red); background:var(--red); color:#fff}
+.exam-opts .option:disabled{cursor:default}
+.exam-q-side > .btn-row{margin:.6rem 0 0}
+/* Kết quả chấm từng câu (Practice): trải hết chiều rộng dưới 2 cột */
+.exam-q-result{grid-column:1/-1}
 /* Thanh tiến độ dính cuối màn luyện: luôn thấy "Xem kết quả" khi cuộn */
 .practice-bar{
   position:sticky; bottom:0; z-index:5; background:#fff;
