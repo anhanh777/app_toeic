@@ -32,17 +32,30 @@ export default function PracticeSession() {
   // Audio cấp Part (Part 1–4): fallback khi câu/đoạn chưa có audio riêng.
   // Tải thất bại (backend chưa có endpoint) thì bỏ qua, fallback về {}.
   const [partMedia, setPartMedia] = useState<Record<number, string>>({});
+  // Đã tải xong part-media hay chưa — để quyết định "1 nút cả Part" hay
+  // "nút từng câu" rồi mới render, tránh nhấp nháy đổi dạng giữa chừng.
+  const [partMediaLoaded, setPartMediaLoaded] = useState(false);
 
   useEffect(() => {
     setLoading(true);
+    setPartMediaLoaded(false);
     if (testSetId) api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => undefined);
-    if (part <= 4) api.partMedia(testSetId || 'TS-001').then(setPartMedia).catch(() => setPartMedia({}));
+    if (part <= 4) {
+      api.partMedia(testSetId || 'TS-001')
+        .then(setPartMedia)
+        .catch(() => setPartMedia({}))
+        .finally(() => setPartMediaLoaded(true));
+    }
     api.questionsAll(part, testSetId).then(setQuestions).catch(setError).finally(() => setLoading(false));
     return () => stopSpeak();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [part, testSetId]);
 
   const isListening = part <= 4;
+  // 1 nút nghe DUY NHẤT cho cả Part: chỉ khi luyện trong 1 bộ đề (có
+  // testSetId) VÀ đề đó có file audio cấp Part. Đề chưa có audio Part
+  // (hoặc luyện theo Part không kèm đề) thì giữ nút nghe từng câu như cũ.
+  const usePartAudio = isListening && !!testSetId && !!partMedia[part];
 
   // Câu chỉ-nghe (Part 1/2): toàn bộ phương án đều rỗng nội dung (chỉ có
   // nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
@@ -62,7 +75,7 @@ export default function PracticeSession() {
     } catch (e) { setError(e); }
   };
 
-  if (loading) return <p>Đang tải câu hỏi…</p>;
+  if (loading || (isListening && !!testSetId && !partMediaLoaded)) return <p>Đang tải câu hỏi…</p>;
   if (!questions.length) return <div><ErrorBox error={error} /><p>Chưa có câu hỏi cho Part này. {testSetId ? <Link to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link to="/practice">Quay lại chọn Part</Link>}</p></div>;
   if (finished) {
     return (
@@ -117,10 +130,13 @@ export default function PracticeSession() {
           {listeningOnly && q.part === 1 && !q.imageUrl && (
             <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
           )}
-          {isListening && (
+          {isListening && !usePartAudio && (
             <ListeningAudio
               // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
               // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
+              // Khi đề có file audio cấp Part thì KHÔNG render hộp này nữa —
+              // cả Part chỉ còn 1 nút nghe duy nhất ở đầu Part (ngay dưới
+              // tiêu đề PART X).
               audioUrl={q.audioUrl || partMedia[q.part]}
               ttsText={ttsTextFor(q)}
               stopKey={q.id}
@@ -166,6 +182,12 @@ export default function PracticeSession() {
         <h2 className="exam-part">Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</h2>
         <span className="progress-badge">Đã làm {score.done}/{questions.length}</span>
       </div>
+      {usePartAudio && (
+        <div className="part-audio">
+          <ListeningAudio audioUrl={partMedia[part]} ttsText="" stopKey={`part-${part}`} onError={setError} />
+          <p className="muted">🎧 Nghe cả Part {part} — bấm 1 lần rồi làm hết các câu của Part trong lúc nghe.</p>
+        </div>
+      )}
       <ErrorBox error={error} />
       <div className="paper">
         {blocks.map(block => block.passageText ? (

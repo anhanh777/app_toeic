@@ -75,7 +75,12 @@ export function RankChip({ rank }: { rank: number }) {
  * - Không có audioUrl lẫn chữ để đọc TTS (câu chỉ-nghe chưa có file):
  *   khối .audio-missing với nút "🔊 Nghe" disabled — giữ nguyên.
  * Khi stopKey đổi (chuyển câu) thì dừng cả audio element lẫn TTS.
+ * Chỉ 1 hộp audio được phát cùng lúc trong toàn trang: khi 1 hộp bắt đầu
+ * phát, hộp đang phát trước đó tự dừng (kẻo 2 file nghe chồng lên nhau —
+ * trang thi full có tới 4 nút nghe Part + nút từng câu ở đề chưa có audio).
  */
+let activeStop: (() => void) | null = null;
+
 export function ListeningAudio({
   audioUrl, ttsText, stopKey, onError,
 }: {
@@ -93,12 +98,22 @@ export function ListeningAudio({
   // sau khi đã dừng (stopKey đổi / unmount).
   const genRef = useRef(0);
 
+  const stopAllRef = useRef<() => void>(() => {});
   const stopAll = () => {
     genRef.current += 1;
     audioRef.current?.pause();
     stopSpeak();
     setStatus('idle');
     setProgress(0);
+    if (activeStop === stopAllRef.current) activeStop = null;
+  };
+  // Giữ ref luôn trỏ tới stopAll mới nhất (stopAll tạo lại mỗi lần render).
+  useEffect(() => { stopAllRef.current = stopAll; });
+  // Giành quyền phát: dừng hộp đang phát trước đó (nếu khác hộp này) rồi
+  // đăng ký hộp này là hộp đang phát.
+  const claimPlayback = () => {
+    if (activeStop && activeStop !== stopAllRef.current) activeStop();
+    activeStop = stopAllRef.current;
   };
 
   useEffect(() => { stopAll(); }, [stopKey]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -107,6 +122,7 @@ export function ListeningAudio({
   const playFile = () => {
     const el = audioRef.current;
     if (!el) return;
+    claimPlayback();
     if (status === 'ended') { el.currentTime = 0; setProgress(0); }
     el.play().catch(() => setStatus('idle'));
     setStatus('playing');
@@ -121,6 +137,7 @@ export function ListeningAudio({
       return;
     }
     const gen = genRef.current;
+    claimPlayback();
     setStatus('playing');
     speak(ttsText, 1, () => { if (genRef.current === gen) setStatus('ended'); });
   };

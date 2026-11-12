@@ -144,6 +144,11 @@ export default function MockTest() {
     else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n: i + 1 }] });
   });
 
+  // 1 nút nghe DUY NHẤT cho cả Part: chỉ khi thi trong 1 bộ đề (có
+  // testSetId) VÀ đề đó có file audio cấp Part. Đề chưa có audio Part
+  // (hoặc thi mini/full không kèm đề) thì giữ nút nghe từng câu như cũ.
+  const usePartAudioFor = (p: number) => p <= 4 && !!testSetId && !!partMedia[p];
+
   const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
     const listeningOnly = isListeningOnly(q);
     // Part 1/2 thi that: trong bai thi chi hien tranh (Part 1) + audio +
@@ -167,10 +172,13 @@ export default function MockTest() {
           {listeningOnly && q.part === 1 && !q.imageUrl && (
             <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
           )}
-          {q.part <= 4 && (
+          {q.part <= 4 && !usePartAudioFor(q.part) && (
             <ListeningAudio
               // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
               // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
+              // Khi đề có file audio cấp Part thì KHÔNG render hộp này nữa —
+              // cả Part chỉ còn 1 nút nghe duy nhất ở đầu Part (ngay dưới
+              // tiêu đề Part trong tờ đề).
               audioUrl={q.audioUrl || partMedia[q.part]}
               ttsText={ttsTextFor(q)}
               stopKey={q.id}
@@ -213,6 +221,12 @@ export default function MockTest() {
           return (
             <div key={block.key}>
               {showPart && <h3 className="paper-part">{partName(block.part)}</h3>}
+              {showPart && usePartAudioFor(block.part) && (
+                <div className="part-audio">
+                  <ListeningAudio audioUrl={partMedia[block.part]} ttsText="" stopKey={`part-${block.part}`} onError={setError} />
+                  <p className="muted">🎧 Nghe cả Part {block.part} — bấm 1 lần rồi làm hết các câu của Part trong lúc nghe.</p>
+                </div>
+              )}
               {block.passageText ? (
                 <div className="paper-cluster">
                   <div className="passage">{block.passageText}</div>

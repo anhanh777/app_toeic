@@ -458,6 +458,21 @@ footer{
 }
 .listen-progress{height:4px; border-radius:2px; background:#DCE9FB; overflow:hidden}
 .listen-progress i{display:block; height:100%; background:var(--accent); border-radius:2px}
+/* Nút nghe DUY NHẤT của cả Part (khi luyện/thi trong 1 đề có file audio
+   cấp Part): 1 nút nằm ngay dưới tiêu đề PART X, trước câu đầu tiên của
+   Part — bấm 1 lần nghe hết cả Part trong lúc làm các câu. Hộp dùng cùng
+   kiểu với hộp audio trong tờ đề, chỉ khác là nằm ngoài .paper. */
+.part-audio{margin:.1rem 0 .6rem}
+.part-audio .audio-box{
+  display:flex; flex-direction:column; align-items:stretch; gap:.4rem;
+  padding:.5rem .6rem; border-radius:10px; box-shadow:none;
+}
+.part-audio .audio-box audio{display:none}
+.part-audio .audio-box .listen-btn{
+  padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:10px;
+  box-shadow:none; text-align:left;
+}
+.part-audio > p{margin:.3rem 0 0}
 /* Hộp nghe khi chưa có gì để phát (.audio-missing, render từ
    components.tsx): phải RÕ RÀNG, nổi bật như khi có audio — viền vàng
    đứt nét + nền vàng nhạt, nút "🔊 Nghe" to dễ thấy. Nút disabled nhưng
