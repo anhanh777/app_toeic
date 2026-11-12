@@ -38,17 +38,32 @@ function readJsonArray(file) {
 }
 
 function validSeedQuestion(q) {
-  return (
-    q &&
-    typeof q.id === 'string' &&
-    Number.isInteger(q.part) &&
-    q.part >= 1 &&
-    q.part <= 7 &&
-    typeof q.content === 'string' &&
-    Array.isArray(q.options) &&
-    q.options.length === 4 &&
-    typeof q.correct === 'string'
-  );
+  // Luat seed rieng (rong hon db.validateImportQuestion o 1 diem):
+  // Part 2 chap nhan 3 phuong an (de moi AI-parse) HOAC 4 phuong an
+  // (ngan hang cu 220 cau co 4 phuong an cho Part 2) — chi dung
+  // validateImportQuestion se lam rot het 30 cau Part 2 cu.
+  // Part 1/2 chi-nghe duoc rong noi dung (nhu validateImportQuestion).
+  if (!q || typeof q.id !== 'string') return false;
+  if (!Number.isInteger(q.part) || q.part < 1 || q.part > 7) return false;
+  const listeningOnly = q.part === 1 || q.part === 2;
+  if (!listeningOnly && (typeof q.content !== 'string' || !q.content.trim())) return false;
+  if (!Array.isArray(q.options)) return false;
+  if (q.part === 2) {
+    if (q.options.length !== 3 && q.options.length !== 4) return false;
+  } else if (q.options.length !== 4) {
+    return false;
+  }
+  const labels = q.options.map((o) => o && o.label);
+  if (new Set(labels).size !== labels.length) return false;
+  if (!labels.every((l) => ['A', 'B', 'C', 'D'].includes(l))) return false;
+  if (
+    !listeningOnly &&
+    q.options.some((o) => !o || typeof o.content !== 'string' || !o.content.trim())
+  ) {
+    return false;
+  }
+  if (typeof q.correct !== 'string' || !['A', 'B', 'C', 'D'].includes(q.correct)) return false;
+  return true;
 }
 
 function seedQuestions() {

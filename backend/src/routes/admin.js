@@ -73,17 +73,23 @@ router.put('/admin/questions/:id', (req, res) => {
   const existing = db.getQuestionById(req.params.id, true);
   if (!existing) return res.status(404).json({ error: 'khong tim thay cau hoi' });
   const merged = { ...existing, ...req.body, id: req.params.id };
-  // updateQuestion nhan options dang [{label, content}] + correct rieng.
-  const err = validateQuestion({
-    id: merged.id,
-    part: merged.part,
-    content: merged.content,
-    options: merged.options,
-    correct: merged.correct,
-    explanation: merged.explanation,
-    difficulty: merged.difficulty,
-  });
-  if (err) return res.status(400).json({ error: err });
+  // PUT chi sua 1 phan (vd chi doi imageUrl) nen khong dung validateQuestion
+  // cua trang Admin tong (bat buoc explanation + difficulty): cau nhap tu AI
+  // co the khong co explanation, va PUT doi anh se loi "thieu explanation".
+  // Chi kiem tra luat cot loi nhu luc import + dung 1 dap an dung.
+  const coreErr = db.validateImportQuestion(
+    {
+      id: merged.id,
+      part: merged.part,
+      content: merged.content,
+      options: merged.options,
+      correct: merged.correct,
+    },
+    0
+  );
+  if (coreErr) return res.status(400).json({ error: coreErr });
+  const correctCount = merged.options.filter((o) => o.label === merged.correct).length;
+  if (correctCount !== 1) return res.status(400).json({ error: 'phai co dung 1 dap an dung' });
   const updated = db.updateQuestion(req.params.id, {
     part: merged.part,
     passageId: merged.passageId,
