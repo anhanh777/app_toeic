@@ -156,6 +156,26 @@ export const api = {
     const data = await req<{ total: number; items: Question[] }>(`/api/questions?${q}`);
     return data.items;
   },
+  /** Lấy TOÀN BỘ câu của 1 Part (không giới hạn số lượng): backend giới hạn
+   * tối đa 200 câu/cuộc gọi nên phân trang bằng offset tới khi đủ `total`
+   * mà backend trả về. Dùng cho màn Luyện tập theo Part. */
+  questionsAll: async (part?: number, testSetId?: string) => {
+    const PAGE = 200;
+    const all: Question[] = [];
+    let total = Infinity;
+    let offset = 0;
+    while (all.length < total) {
+      const q = new URLSearchParams({ limit: String(PAGE), offset: String(offset) });
+      if (part) q.set('part', String(part));
+      if (testSetId) q.set('testSetId', testSetId);
+      const data = await req<{ total: number; items: Question[] }>(`/api/questions?${q}`);
+      total = data.total;
+      if (!data.items.length) break;
+      all.push(...data.items);
+      offset += data.items.length;
+    }
+    return all;
+  },
   question: (id: string) => req<Question>(`/api/questions/${encodeURIComponent(id)}`),
   passage: (id: string) => req<{ id: string; part: number; title?: string; content?: string; script?: string; audioUrl?: string | null }>(`/api/passages/${encodeURIComponent(id)}`),
 

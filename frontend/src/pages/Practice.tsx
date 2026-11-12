@@ -13,7 +13,6 @@ export default function Practice() {
   const [stats, setStats] = useState<StatsOverview | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [part, setPart] = useState(5);
-  const [count, setCount] = useState(10);
 
   useEffect(() => {
     api.testSets().then(setTestSets).catch(setSetsError).finally(() => setSetsLoading(false));
@@ -104,12 +103,16 @@ export default function Practice() {
             {partList.filter(p => p.part > 4).map(renderPartCard)}
           </div>
           <div className="card">
-            <label htmlFor="count">Số câu luyện</label>
-            <select id="count" value={count} onChange={e => setCount(Number(e.target.value))}>
-              {[10, 20, 30, 50].map(n => <option key={n} value={n}>{n} câu</option>)}
-            </select>
+            <p style={{ margin: 0 }}>
+              {(() => {
+                const n = partList.find(p => p.part === part)?.count || 0;
+                return n > 0
+                  ? `Luyện hết ${n} câu của ${partName(part)} — không giới hạn số lượng.`
+                  : `Luyện hết tất cả các câu của ${partName(part)} — không giới hạn số lượng.`;
+              })()}
+            </p>
             <div className="btn-row">
-              <button className="btn" onClick={() => nav(`/practice/session?part=${part}&count=${count}`)}>Bắt đầu luyện {partName(part)}</button>
+              <button className="btn" onClick={() => nav(`/practice/session?part=${part}`)}>Bắt đầu luyện {partName(part)}</button>
             </div>
           </div>
         </div>

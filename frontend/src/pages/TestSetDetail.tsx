@@ -9,7 +9,6 @@ export default function TestSetDetail() {
   const [ts, setTs] = useState<TestSet | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
-  const [count, setCount] = useState(10);
 
   useEffect(() => {
     if (!id) return;
@@ -41,9 +40,9 @@ export default function TestSetDetail() {
           <button
             className="btn"
             disabled={!n}
-            onClick={() => nav(`/practice/session?testSetId=${ts.id}&part=${p}&count=${Math.min(count, n)}`)}
+            onClick={() => nav(`/practice/session?testSetId=${ts.id}&part=${p}`)}
           >
-            Luyện Part này
+            Luyện Part này ({n} câu)
           </button>
         </div>
       </div>
@@ -66,12 +65,6 @@ export default function TestSetDetail() {
         )}
         <div className="btn-row">
           <button className="btn gold" disabled={!total} onClick={() => nav(`/mock?testSetId=${ts.id}`)}>🏆 Thi thử cả đề ({total} câu · 120 phút)</button>
-        </div>
-        <div className="field-inline">
-          <label htmlFor="ts-count">Số câu mỗi lần luyện Part</label>
-          <select id="ts-count" value={count} onChange={e => setCount(Number(e.target.value))}>
-            {[10, 20, 30, 50].map(n => <option key={n} value={n}>{n} câu</option>)}
-          </select>
         </div>
       </div>
 

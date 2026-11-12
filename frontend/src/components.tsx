@@ -67,6 +67,11 @@ export function RankChip({ rank }: { rank: number }) {
  * - Có audioUrl (file mp3 đã upload / AI sinh, gồm audio của đoạn cho
  *   Part 3/4 do backend gộp): trình phát HTML5 + thanh trượt tốc độ.
  * - Không có audioUrl: giữ nguyên nút TTS cũ làm fallback.
+ * - Không có audioUrl lẫn chữ để đọc TTS (câu chỉ-nghe chưa có file):
+ *   KHÔNG hiện ghi chú mờ nữa — hiện khối RÕ RÀNG (.audio-missing) với
+ *   nút "🔊 Nghe" to, dễ thấy (disabled, bấm không làm gì) + dòng chữ rõ
+ *   "Chưa có file audio cho Part này" + hướng dẫn admin upload. Nút phải
+ *   trông như cố ý, không được trông như bị thiếu/mất.
  * Khi stopKey đổi (chuyển câu) thì dừng cả audio element lẫn TTS.
  */
 export function ListeningAudio({
@@ -135,11 +140,19 @@ export function ListeningAudio({
 
   // Fallback TTS như cũ khi chưa có file audio.
   // Câu chỉ-nghe (Part 1/2) chưa có audio lẫn transcript thì không có gì
-  // để đọc — hiện ghi chú thay vì nút phát rỗng.
+  // để đọc — hiện KHỐI RÕ RÀNG thay vì ghi chú mờ: nút "Nghe" to, dễ thấy
+  // (disabled — bấm không làm gì, trông như cố ý chứ không như bị mất nút)
+  // + dòng chữ rõ + hướng dẫn admin upload file cho Part này.
   if (!ttsText.trim()) {
     return (
-      <div className="card audio-box">
-        <p className="muted">🎧 Câu chỉ-nghe — chưa có file audio. Admin cần upload file mp3 cho câu này (trang chi tiết đề → "AI đọc audio" cũng cần có transcript).</p>
+      <div className="card audio-box audio-missing">
+        <div className="btn-row">
+          <button className="btn" disabled title="Chưa có file audio cho Part này">🔊 Nghe</button>
+        </div>
+        <p className="audio-missing-text">
+          <strong>Chưa có file audio cho Part này.</strong>{' '}
+          Admin: vào trang Quản trị → chi tiết đề → mục 🎧 Audio cả Part để upload file mp3.
+        </p>
       </div>
     );
   }

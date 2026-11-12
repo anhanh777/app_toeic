@@ -156,13 +156,12 @@ export default function MockTest() {
     return (
       <div className="paper-q exam-q" key={q.id}>
         <div className="exam-q-body">
-          {hideListeningText ? (
-            q.part === 2 && listeningOnly ? (
-              <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
-            ) : null
-          ) : (
-            q.content ? <p><strong>{q.content}</strong></p> : null
-          )}
+          {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
+              audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
+              nút nghe phải thấy ngay, không bị chìm dưới chữ câu hỏi. */}
+          {hideListeningText && q.part === 2 && listeningOnly ? (
+            <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
+          ) : null}
           {q.imageUrl && (
             <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
           )}
@@ -182,6 +181,7 @@ export default function MockTest() {
               onError={setError}
             />
           )}
+          {!hideListeningText && q.content ? <p><strong>{q.content}</strong></p> : null}
         </div>
         <div className="exam-q-side">
           <div className="exam-q-num">{n}.</div>

@@ -1,9 +1,11 @@
 // Luyện tập theo Part — dạng danh sách liền mạch như tờ đề thi:
-// toàn bộ câu của đợt luyện nằm trong 1 tờ giấy (.paper), các câu nối
-// tiếp nhau bằng đường kẻ mảnh; chấm điểm theo từng câu ngay sau khi bấm
-// "Nộp đáp án" của câu đó (giữ nguyên API practiceAnswer, XP, ghi câu sai).
-// Người học được làm các câu theo thứ tự bất kỳ. Part 1/2 vẫn ẨN chữ trước
-// khi trả lời từng câu (đúng đề thi thật), chỉ hiện lại sau khi đã nộp đáp án.
+// LUYỆN HẾT câu của Part (không giới hạn số lượng): toàn bộ câu của Part
+// đó — trong 1 đề hoặc toàn ngân hàng — nằm trong 1 tờ giấy (.paper),
+// các câu nối tiếp nhau bằng đường kẻ mảnh; chấm điểm theo từng câu ngay
+// sau khi bấm "Nộp đáp án" của câu đó (giữ nguyên API practiceAnswer, XP,
+// ghi câu sai). Người học được làm các câu theo thứ tự bất kỳ. Part 1/2
+// vẫn ẨN chữ trước khi trả lời từng câu (đúng đề thi thật), chỉ hiện lại
+// sau khi đã nộp đáp án.
 import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { api, type Question } from '../api';
@@ -15,7 +17,8 @@ type AnswerResult = { correct: boolean; correctLabel: string; explanation?: stri
 export default function PracticeSession() {
   const [params] = useSearchParams();
   const part = Number(params.get('part') || 5);
-  const count = Number(params.get('count') || 10);
+  // Luyện HẾT câu của Part (không giới hạn số lượng): lấy toàn bộ qua
+  // phân trang. Tham số count cũ trên URL (nếu còn từ link cũ) được bỏ qua.
   const testSetId = params.get('testSetId') || undefined;
   const [testSetTitle, setTestSetTitle] = useState<string>('');
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -35,10 +38,10 @@ export default function PracticeSession() {
     setLoading(true);
     if (testSetId) api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => undefined);
     if (part <= 4) api.partMedia(testSetId || 'TS-001').then(setPartMedia).catch(() => setPartMedia({}));
-    api.questions(part, count, 0, '', testSetId).then(setQuestions).catch(setError).finally(() => setLoading(false));
+    api.questionsAll(part, testSetId).then(setQuestions).catch(setError).finally(() => setLoading(false));
     return () => stopSpeak();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [part, count, testSetId]);
+  }, [part, testSetId]);
 
   const isListening = part <= 4;
 
@@ -103,13 +106,12 @@ export default function PracticeSession() {
     return (
       <div className="paper-q exam-q" key={q.id}>
         <div className="exam-q-body">
-          {hideListeningText ? (
-            q.part === 2 && listeningOnly ? (
-              <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
-            ) : null
-          ) : (
-            q.content ? <p><strong>{q.content}</strong></p> : null
-          )}
+          {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
+              audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
+              nút nghe phải thấy ngay, không bị chìm dưới chữ câu hỏi. */}
+          {hideListeningText && q.part === 2 && listeningOnly ? (
+            <p><strong>🎧 Nghe và chọn đáp án đúng</strong></p>
+          ) : null}
           {q.imageUrl && (
             <img src={q.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: '100%', borderRadius: 12 }} />
           )}
@@ -129,6 +131,7 @@ export default function PracticeSession() {
               onError={setError}
             />
           )}
+          {!hideListeningText && q.content ? <p><strong>{q.content}</strong></p> : null}
         </div>
         <div className="exam-q-side">
           <div className="exam-q-num">{n}.</div>

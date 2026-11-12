@@ -445,7 +445,8 @@ footer{
    nút phát + audio + tốc độ nằm cùng hàng (xuống dòng khi màn hẹp).
    Dòng tiêu đề ("Nghe đoạn audio" / "Âm thanh đọc bằng giọng máy") được
    ẩn khi đã có audio hoặc nút phát; chỉ giữ ghi chú "chưa có file audio"
-   khi hộp trống không có gì để phát. Không sửa components.tsx. */
+   khi hộp trống không có gì để phát — lúc đó components.tsx render khối
+   .audio-missing rõ ràng (nút "Nghe" to + chữ rõ), xem quy tắc dưới. */
 .paper .audio-box{
   display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .6rem;
   padding:.45rem .6rem; margin:.4rem 0; border-radius:10px; box-shadow:none;
@@ -458,6 +459,17 @@ footer{
 .paper .audio-box .muted{margin:0; font-size:.82rem}
 .paper .audio-box:has(audio) > .muted,
 .paper .audio-box:has(.btn-row) > .muted{display:none}
+/* Hộp nghe khi chưa có gì để phát (.audio-missing, render từ
+   components.tsx): phải RÕ RÀNG, nổi bật như khi có audio — viền vàng
+   đứt nét + nền vàng nhạt, nút "🔊 Nghe" to dễ thấy. Nút disabled nhưng
+   giữ nguyên độ rõ (không mờ đi như .btn:disabled mặc định) để trông như
+   cố ý, không như bị thiếu/mất nút. Dòng chữ dùng .audio-missing-text
+   (không phải .muted) để không bị quy tắc :has(.btn-row) ẩn đi. */
+.audio-box.audio-missing{
+  border:1.5px dashed #D8A24A !important; background:#FFF7E6 !important;
+}
+.audio-box.audio-missing .btn:disabled{opacity:1; cursor:not-allowed}
+.audio-missing-text{margin:0; font-size:.9rem; color:var(--ink); flex:1 1 220px; min-width:0}
 
 ::selection{background:var(--accent-soft); color:var(--ink)}
 @media(max-width:640px){
