@@ -163,6 +163,15 @@ function seedQuestions() {
     });
     console.log('[seed] da tao ETS 2024 Test 10 TS-013.');
   }
+  if (!db.getTestSet('TS-014')) {
+    db.createTestSet({
+      id: 'TS-014',
+      title: 'ETS 2026 - Test 01',
+      description: 'ETS 2026 Test 01 - LC + RC (200 câu)',
+      isPublished: 1,
+    });
+    console.log('[seed] da tao ETS 2026 Test 01 TS-014.');
+  }
   let inserted = 0;
   for (const q of list) {
     try {
@@ -183,6 +192,7 @@ function seedQuestions() {
   if (db.getTestSet('TS-011')) db.refreshTestSetTotal('TS-011');
   if (db.getTestSet('TS-012')) db.refreshTestSetTotal('TS-012');
   if (db.getTestSet('TS-013')) db.refreshTestSetTotal('TS-013');
+  if (db.getTestSet('TS-014')) db.refreshTestSetTotal('TS-014');
   return inserted;
 }
 
