@@ -52502,5 +52502,5588 @@
   "difficulty": "medium",
   "topic": null,
   "passageText": "From: Frank Zubiri To: Soon-Yee Kim. Welcome to Jacobi Technologies! Your first day is Monday, Feb 28. Outline: 1. Sign contract & get ID. 2. Visit cubicle in Yellow Building. 3. Attend luncheon with team. 4. Guided tour of campus.\n\nFrom: Tom Hada To: New Hires. Next tour dates: Feb 21, 28, March 7, 14. Reply with start date to sign up. Tours start 3:00 P.M. at Blue Building lobby.\n\nWeb page: Jacobi Technologies develops microprocessors. 8,000 employees in Naperville, IL, 4,000 in Providence, RI. Campus has 10 eco-friendly buildings, power plant, labs, cafes, gym, and childcare center."
+ },
+ {
+  "id": "TS-012-P1-001",
+  "testSetId": "TS-012",
+  "part": 1,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   },
+   {
+    "label": "D",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794474006/toeic/images/p0srhbbbq1rhyq0xrupa.png"
+ },
+ {
+  "id": "TS-012-P1-002",
+  "testSetId": "TS-012",
+  "part": 1,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   },
+   {
+    "label": "D",
+    "content": ""
+   }
+  ],
+  "correct": "D",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794474003/toeic/images/voskufmnirr2qjpuyiuz.png"
+ },
+ {
+  "id": "TS-012-P1-003",
+  "testSetId": "TS-012",
+  "part": 1,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   },
+   {
+    "label": "D",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794474004/toeic/images/taz9cltljr3zcdbfexc7.png"
+ },
+ {
+  "id": "TS-012-P1-004",
+  "testSetId": "TS-012",
+  "part": 1,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   },
+   {
+    "label": "D",
+    "content": ""
+   }
+  ],
+  "correct": "B",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794474000/toeic/images/ouk2kfi2kgjdw180iyfo.png"
+ },
+ {
+  "id": "TS-012-P1-005",
+  "testSetId": "TS-012",
+  "part": 1,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   },
+   {
+    "label": "D",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794474002/toeic/images/au222kheievwdimq6pph.png"
+ },
+ {
+  "id": "TS-012-P1-006",
+  "testSetId": "TS-012",
+  "part": 1,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   },
+   {
+    "label": "D",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794473999/toeic/images/xfr0gdhwb3tq3z9g9rng.png"
+ },
+ {
+  "id": "TS-012-P2-001",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-002",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-003",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "B",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-004",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-005",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-006",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-007",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-008",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-009",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "B",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-010",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "B",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-011",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-012",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-013",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "B",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-014",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-015",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-016",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "B",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-017",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-018",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-019",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-020",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "B",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-021",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-022",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-023",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "A",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-024",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P2-025",
+  "testSetId": "TS-012",
+  "part": 2,
+  "content": "",
+  "options": [
+   {
+    "label": "A",
+    "content": ""
+   },
+   {
+    "label": "B",
+    "content": ""
+   },
+   {
+    "label": "C",
+    "content": ""
+   }
+  ],
+  "correct": "C",
+  "explanation": "",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-001",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Where is the conversation taking place?",
+  "options": [
+   {
+    "label": "A",
+    "content": "At an athletic club"
+   },
+   {
+    "label": "B",
+    "content": "At a hospital"
+   },
+   {
+    "label": "C",
+    "content": "At a shipping company"
+   },
+   {
+    "label": "D",
+    "content": "At an accounting firm"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Cuộc hội thoại diễn ra tại bệnh viện.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-002",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What was the man’s previous job?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Receptionist"
+   },
+   {
+    "label": "B",
+    "content": "Custodian"
+   },
+   {
+    "label": "C",
+    "content": "Tour guide"
+   },
+   {
+    "label": "D",
+    "content": "Bus driver"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Công việc trước đây của người đàn ông là lễ tân.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-003",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What does the woman emphasize about the job being offered?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It demands long hours."
+   },
+   {
+    "label": "B",
+    "content": "It requires a lot of experience."
+   },
+   {
+    "label": "C",
+    "content": "It offers a competitive salary."
+   },
+   {
+    "label": "D",
+    "content": "It involves a lot of walking."
+   }
+  ],
+  "correct": "D",
+  "explanation": "Người phụ nữ nhấn mạnh rằng công việc đòi hỏi phải đi bộ rất nhiều.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-004",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What kind of business will the men open?",
+  "options": [
+   {
+    "label": "A",
+    "content": "An electronics repair shop"
+   },
+   {
+    "label": "B",
+    "content": "A car dealership"
+   },
+   {
+    "label": "C",
+    "content": "A restaurant"
+   },
+   {
+    "label": "D",
+    "content": "A clothing store"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Những người đàn ông sẽ mở một cửa hàng quần áo.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-005",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "How did the men learn about the woman’s consulting service?",
+  "options": [
+   {
+    "label": "A",
+    "content": "From a local business owner"
+   },
+   {
+    "label": "B",
+    "content": "From a marketing course"
+   },
+   {
+    "label": "C",
+    "content": "From a friend who works in retail"
+   },
+   {
+    "label": "D",
+    "content": "From a newspaper advertisement"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Họ biết về dịch vụ tư vấn từ một người bạn làm trong ngành bán lẻ.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-006",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What does the woman say should be emphasized about a business?",
+  "options": [
+   {
+    "label": "A",
+    "content": "That it will provide many jobs"
+   },
+   {
+    "label": "B",
+    "content": "That it will be run by family members"
+   },
+   {
+    "label": "C",
+    "content": "That its owners have a lot of experience"
+   },
+   {
+    "label": "D",
+    "content": "That its owners live in the neighborhood"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Người phụ nữ khuyên nên nhấn mạnh việc doanh nghiệp do gia đình điều hành.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-007",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What are the speakers excited about?",
+  "options": [
+   {
+    "label": "A",
+    "content": "An upcoming holiday"
+   },
+   {
+    "label": "B",
+    "content": "A staff training session"
+   },
+   {
+    "label": "C",
+    "content": "Some new equipment"
+   },
+   {
+    "label": "D",
+    "content": "Some staff discounts"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Những người nói đang hào hứng về một số thiết bị mới.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-008",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Where most likely do the speakers work?",
+  "options": [
+   {
+    "label": "A",
+    "content": "At a train station"
+   },
+   {
+    "label": "B",
+    "content": "At a grocery store"
+   },
+   {
+    "label": "C",
+    "content": "At an electronics store"
+   },
+   {
+    "label": "D",
+    "content": "At a medical center"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Những người nói có khả năng nhất là làm việc tại cửa hàng thực phẩm/tạp hóa.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-009",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What will the woman tell her manager?",
+  "options": [
+   {
+    "label": "A",
+    "content": "She can work extra hours."
+   },
+   {
+    "label": "B",
+    "content": "She needs more supplies."
+   },
+   {
+    "label": "C",
+    "content": "She stocked some shelves."
+   },
+   {
+    "label": "D",
+    "content": "She completed a project."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người phụ nữ sẽ báo với quản lý rằng cô có thể làm thêm giờ.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-010",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What type of business do the women work at?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A furniture store"
+   },
+   {
+    "label": "B",
+    "content": "A hardware store"
+   },
+   {
+    "label": "C",
+    "content": "A construction company"
+   },
+   {
+    "label": "D",
+    "content": "A landscaping service"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Những người phụ nữ làm việc tại một công ty xây dựng.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-011",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "According to the man, what may be surprising about a product?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Its weight"
+   },
+   {
+    "label": "B",
+    "content": "Its durability"
+   },
+   {
+    "label": "C",
+    "content": "Its cost"
+   },
+   {
+    "label": "D",
+    "content": "Its color"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Theo người đàn ông, chi phí của sản phẩm có thể gây bất ngờ.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-012",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What will Ms. Taylor most likely ask the man for?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Some samples"
+   },
+   {
+    "label": "B",
+    "content": "A software demonstration"
+   },
+   {
+    "label": "C",
+    "content": "Some equipment"
+   },
+   {
+    "label": "D",
+    "content": "Free delivery"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Cô Taylor có khả năng cao sẽ yêu cầu người đàn ông cung cấp một số mẫu thử.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-013",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Who most likely is the man?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A history professor"
+   },
+   {
+    "label": "B",
+    "content": "A mechanic"
+   },
+   {
+    "label": "C",
+    "content": "A lawyer"
+   },
+   {
+    "label": "D",
+    "content": "A journalist"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Người đàn ông có khả năng nhất là một nhà báo.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-014",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What does the man say he read about the company?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It was started by the woman’s father."
+   },
+   {
+    "label": "B",
+    "content": "It manufactures automobile parts."
+   },
+   {
+    "label": "C",
+    "content": "It was recently purchased by a competitor."
+   },
+   {
+    "label": "D",
+    "content": "It is the area ’s largest employer."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người đàn ông đã đọc được rằng công ty được thành lập bởi cha của người phụ nữ.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-015",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Why does the woman say, “We export to fifty-nine countries around the world”?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To correct an error"
+   },
+   {
+    "label": "B",
+    "content": "To justify a decision"
+   },
+   {
+    "label": "C",
+    "content": "To confirm an assumption"
+   },
+   {
+    "label": "D",
+    "content": "To explain a delay"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Câu nói nhằm khẳng định một giả định/thông tin trước đó về quy mô xuất khẩu.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-016",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Who most likely are the speakers?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Artists"
+   },
+   {
+    "label": "B",
+    "content": "Engineers"
+   },
+   {
+    "label": "C",
+    "content": "Accountants"
+   },
+   {
+    "label": "D",
+    "content": "Lawyers"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Dựa trên nội dung công việc (ước tính chi phí, tính toán), họ có khả năng là kỹ sư.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-017",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What does the woman ask the man to do?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Lead part of a meeting"
+   },
+   {
+    "label": "B",
+    "content": "Revise a cost estimate"
+   },
+   {
+    "label": "C",
+    "content": "Contact a client"
+   },
+   {
+    "label": "D",
+    "content": "Perform an inspection"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người phụ nữ yêu cầu người đàn ông điều hành một phần của cuộc họp.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-018",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What will the man send the woman?",
+  "options": [
+   {
+    "label": "A",
+    "content": "An itinerary"
+   },
+   {
+    "label": "B",
+    "content": "A contract"
+   },
+   {
+    "label": "C",
+    "content": "Some driving directions"
+   },
+   {
+    "label": "D",
+    "content": "Some calculations"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Người đàn ông sẽ gửi cho người phụ nữ một số bảng tính toán.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-019",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What products are the speakers discussing?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Software programs"
+   },
+   {
+    "label": "B",
+    "content": "Screen protectors"
+   },
+   {
+    "label": "C",
+    "content": "Computer keyboards"
+   },
+   {
+    "label": "D",
+    "content": "Wireless printers"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Họ đang thảo luận về sản phẩm bàn phím máy tính.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-020",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "According to the man, how are the products currently being advertised?",
+  "options": [
+   {
+    "label": "A",
+    "content": "On television"
+   },
+   {
+    "label": "B",
+    "content": "On a Web site"
+   },
+   {
+    "label": "C",
+    "content": "In magazines"
+   },
+   {
+    "label": "D",
+    "content": "By direct mail"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Sản phẩm hiện đang được quảng cáo trên một trang web.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-021",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What topic will the speakers discuss at a meeting?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Budget changes"
+   },
+   {
+    "label": "B",
+    "content": "Design modifications"
+   },
+   {
+    "label": "C",
+    "content": "Production delays"
+   },
+   {
+    "label": "D",
+    "content": "Open job positions"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Họ sẽ thảo luận về những thay đổi trong ngân sách tại cuộc họp.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-022",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What project are the speakers mainly discussing?",
+  "options": [
+   {
+    "label": "A",
+    "content": "The demolition of a shopping center"
+   },
+   {
+    "label": "B",
+    "content": "The construction of a skyscraper"
+   },
+   {
+    "label": "C",
+    "content": "The replacement of a bridge"
+   },
+   {
+    "label": "D",
+    "content": "The redesign of a train station"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Dự án chính được thảo luận là việc thay thế một cây cầu.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-023",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What does the woman imply when she says “steel costs per ton are in the thousands for every bid”?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A coworker ’s calculations are incorrect."
+   },
+   {
+    "label": "B",
+    "content": "The man’s concern is justified."
+   },
+   {
+    "label": "C",
+    "content": "A contractor should be replaced."
+   },
+   {
+    "label": "D",
+    "content": "A new construction method will be used."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Người phụ nữ ngụ ý rằng lo ngại của người đàn ông về chi phí là có cơ sở.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-024",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What will the speakers do this afternoon?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Take some photographs"
+   },
+   {
+    "label": "B",
+    "content": "Organize a site visit"
+   },
+   {
+    "label": "C",
+    "content": "Create a spreadsheet"
+   },
+   {
+    "label": "D",
+    "content": "Speak to an accountant"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Họ sẽ lập một bảng tính vào chiều nay.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-025",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Why was the man in Vancouver?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To attend a trade show"
+   },
+   {
+    "label": "B",
+    "content": "To meet with a client"
+   },
+   {
+    "label": "C",
+    "content": "To take a vacation"
+   },
+   {
+    "label": "D",
+    "content": "To facilitate a workshop"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người đàn ông đến Vancouver để tham dự một triển lãm thương mại.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-026",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What does the woman say about a hotel?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It was a suitable venue for an event."
+   },
+   {
+    "label": "B",
+    "content": "It was reserved by a professional organization."
+   },
+   {
+    "label": "C",
+    "content": "It is environmentally friendly."
+   },
+   {
+    "label": "D",
+    "content": "It is convenient to public transportation."
+   }
+  ],
+  "correct": "C",
+  "explanation": "Người phụ nữ nói rằng khách sạn đó rất thân thiện với môi trường.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-027",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Why will the hotel close temporarily?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To allow staff to conduct a training session"
+   },
+   {
+    "label": "B",
+    "content": "To be subject to an inspection"
+   },
+   {
+    "label": "C",
+    "content": "To accommodate an expansion"
+   },
+   {
+    "label": "D",
+    "content": "To ensure movers have access to the rooms"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Khách sạn tạm đóng cửa để phục vụ việc mở rộng.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-028",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What did the woman apply for?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A professional license"
+   },
+   {
+    "label": "B",
+    "content": "A job at a bank"
+   },
+   {
+    "label": "C",
+    "content": "A business loan"
+   },
+   {
+    "label": "D",
+    "content": "A credit card"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Người phụ nữ đã đăng ký một khoản vay kinh doanh.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-029",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What information does the man ask the woman to verify?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Her income"
+   },
+   {
+    "label": "B",
+    "content": "Her account number"
+   },
+   {
+    "label": "C",
+    "content": "Her phone number"
+   },
+   {
+    "label": "D",
+    "content": "Her address"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Người đàn ông yêu cầu người phụ nữ xác minh địa chỉ.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-030",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What will the woman most likely do next?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Sign some documents"
+   },
+   {
+    "label": "B",
+    "content": "Download some software"
+   },
+   {
+    "label": "C",
+    "content": "Speak with a friend"
+   },
+   {
+    "label": "D",
+    "content": "Make an appointment"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Bước tiếp theo người phụ nữ có khả năng làm là ký một số tài liệu.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-031",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "When will the man stay at the resort?",
+  "options": [
+   {
+    "label": "A",
+    "content": "On Monday night"
+   },
+   {
+    "label": "B",
+    "content": "On Tuesday night"
+   },
+   {
+    "label": "C",
+    "content": "On Wednesday night"
+   },
+   {
+    "label": "D",
+    "content": "On Thursday night"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người đàn ông sẽ ở tại khu nghỉ dưỡng vào tối thứ Hai.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-032",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Look at the graphic. Which cabin does the man agree to reserve?",
+  "options": [
+   {
+    "label": "A",
+    "content": "North cabin"
+   },
+   {
+    "label": "B",
+    "content": "East cabin"
+   },
+   {
+    "label": "C",
+    "content": "South cabin"
+   },
+   {
+    "label": "D",
+    "content": "West cabin"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Dựa vào bảng giá và số người, người đàn ông chọn West cabin (cho 5-7 người).",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794473997/toeic/images/tw377krdxaak0nailnpf.png"
+ },
+ {
+  "id": "TS-012-P3-033",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What can cabin guests receive free of charge?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Shuttle rides"
+   },
+   {
+    "label": "B",
+    "content": "Swimming pool access"
+   },
+   {
+    "label": "C",
+    "content": "A hot breakfast"
+   },
+   {
+    "label": "D",
+    "content": "A guided tour"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Khách ở cabin được nhận một tour hướng dẫn miễn phí.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-034",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What problem does the man mention?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A worker has not yet arrived."
+   },
+   {
+    "label": "B",
+    "content": "Some tools have been misplaced."
+   },
+   {
+    "label": "C",
+    "content": "A tractor is not working."
+   },
+   {
+    "label": "D",
+    "content": "Some crops are damaged."
+   }
+  ],
+  "correct": "C",
+  "explanation": "Người đàn ông đề cập đến vấn đề máy kéo không hoạt động.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-035",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Look at the graphic. Where does the woman tell the man to go?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To building 1"
+   },
+   {
+    "label": "B",
+    "content": "To building 2"
+   },
+   {
+    "label": "C",
+    "content": "To building 3"
+   },
+   {
+    "label": "D",
+    "content": "To building 4"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người phụ nữ bảo người đàn ông đi đến tòa nhà số 1.",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794473995/toeic/images/kdmue5ykd3uwjakwaux5.png"
+ },
+ {
+  "id": "TS-012-P3-036",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "What does the woman offer to do?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Complete the man ’ s work shift"
+   },
+   {
+    "label": "B",
+    "content": "Go with the man"
+   },
+   {
+    "label": "C",
+    "content": "Move some boxes"
+   },
+   {
+    "label": "D",
+    "content": "Unlock a gate"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Người phụ nữ đề nghị đi cùng người đàn ông.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-037",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Where do the speakers most likely work?",
+  "options": [
+   {
+    "label": "A",
+    "content": "At a fabric store"
+   },
+   {
+    "label": "B",
+    "content": "At an employee staffing service"
+   },
+   {
+    "label": "C",
+    "content": "At a health-inspection department"
+   },
+   {
+    "label": "D",
+    "content": "At a commercial laundry facility"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Họ có khả năng cao là làm việc tại một cơ sở giặt là công nghiệp.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P3-038",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "Look at the graphic. Which business did the man receive a request from?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Larkston Hotel"
+   },
+   {
+    "label": "B",
+    "content": "Trissler Hotel"
+   },
+   {
+    "label": "C",
+    "content": "Benchlal Restaurant"
+   },
+   {
+    "label": "D",
+    "content": "Cho Fine Dining"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Dựa trên bảng công việc, người đàn ông nhận yêu cầu từ Benchlal Restaurant.",
+  "difficulty": "medium",
+  "topic": null,
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794474007/toeic/images/cim7idhjnjt7rek7nkns.png"
+ },
+ {
+  "id": "TS-012-P3-039",
+  "testSetId": "TS-012",
+  "part": 3,
+  "content": "How does the woman suggest resolving an issue?",
+  "options": [
+   {
+    "label": "A",
+    "content": "By issuing a refund"
+   },
+   {
+    "label": "B",
+    "content": "By consulting with a supervisor"
+   },
+   {
+    "label": "C",
+    "content": "By explaining a policy to a customer"
+   },
+   {
+    "label": "D",
+    "content": "By adjusting the order of some work"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Người phụ nữ đề xuất giải quyết bằng cách điều chỉnh thứ tự thực hiện công việc.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-001",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Where is the announcement most likely being made?",
+  "options": [
+   {
+    "label": "A",
+    "content": "At a clothing shop"
+   },
+   {
+    "label": "B",
+    "content": "At a bookstore"
+   },
+   {
+    "label": "C",
+    "content": "At a hardware store"
+   },
+   {
+    "label": "D",
+    "content": "At an auto dealership"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Dựa trên nội dung thông báo thường thấy tại một hiệu sách.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-002",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker say is happening this week?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Discounts are being offered."
+   },
+   {
+    "label": "B",
+    "content": "An area is being remodeled."
+   },
+   {
+    "label": "C",
+    "content": "New merchandise is arriving."
+   },
+   {
+    "label": "D",
+    "content": "Interviews are being conducted."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người nói đề cập đến việc giảm giá đang diễn ra trong tuần này.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-003",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker remind the listeners about?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A return policy"
+   },
+   {
+    "label": "B",
+    "content": "A rewards program"
+   },
+   {
+    "label": "C",
+    "content": "An updated Web site"
+   },
+   {
+    "label": "D",
+    "content": "An additional location"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Người nói nhắc nhở về một địa điểm bổ sung mới.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-004",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What is the speaker discussing?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A vacation schedule"
+   },
+   {
+    "label": "B",
+    "content": "A professional-development opportunity"
+   },
+   {
+    "label": "C",
+    "content": "A department’s social event"
+   },
+   {
+    "label": "D",
+    "content": "A marketing campaign"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Nội dung thảo luận xoay quanh một sự kiện xã hội của phòng ban.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-005",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Why does the speaker say, “there’s a bank across the street”?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To request assistance"
+   },
+   {
+    "label": "B",
+    "content": "To make a suggestion"
+   },
+   {
+    "label": "C",
+    "content": "To provide driving directions"
+   },
+   {
+    "label": "D",
+    "content": "To complain about a location"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Câu nói được dùng để đưa ra một gợi ý liên quan đến tài chính cho sự kiện.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-006",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker ask the listeners to do?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Fill out a sign-up sheet"
+   },
+   {
+    "label": "B",
+    "content": "E-mail agenda items"
+   },
+   {
+    "label": "C",
+    "content": "Attend an additional meeting"
+   },
+   {
+    "label": "D",
+    "content": "Complete an evaluation form"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người nói yêu cầu người nghe điền vào tờ đăng ký tham gia.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-007",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Why is Malton Supermarket hosting a party?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To welcome a new manager"
+   },
+   {
+    "label": "B",
+    "content": "To celebrate an anniversary"
+   },
+   {
+    "label": "C",
+    "content": "To thank local suppliers"
+   },
+   {
+    "label": "D",
+    "content": "To promote new products"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Bữa tiệc được tổ chức để kỷ niệm ngày thành lập của siêu thị.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-008",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "According to Antonella Lambert, why is Malton Supermarket successful?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It is open 24 hours a day."
+   },
+   {
+    "label": "B",
+    "content": "It is near public transportation."
+   },
+   {
+    "label": "C",
+    "content": "It offers international products."
+   },
+   {
+    "label": "D",
+    "content": "It provides friendly service."
+   }
+  ],
+  "correct": "C",
+  "explanation": "Sự thành công đến từ việc cung cấp các sản phẩm quốc tế.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-009",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Why is Antonella Lambert raising funds?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To open additional locations"
+   },
+   {
+    "label": "B",
+    "content": "To remodel a space"
+   },
+   {
+    "label": "C",
+    "content": "To increase advertising"
+   },
+   {
+    "label": "D",
+    "content": "To support a charity"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Mục tiêu gây quỹ là để mở thêm các chi nhánh mới.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-010",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What is not working properly?",
+  "options": [
+   {
+    "label": "A",
+    "content": "The lighting"
+   },
+   {
+    "label": "B",
+    "content": "The plumbing"
+   },
+   {
+    "label": "C",
+    "content": "A payment portal"
+   },
+   {
+    "label": "D",
+    "content": "An Internet connection"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Đang có sự cố xảy ra với kết nối Internet.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-011",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "According to the speaker, what will happen in the next few hours?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A technician will come in."
+   },
+   {
+    "label": "B",
+    "content": "A complaint will be filed."
+   },
+   {
+    "label": "C",
+    "content": "A Web site will be updated."
+   },
+   {
+    "label": "D",
+    "content": "An office will close."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Một kỹ thuật viên sẽ đến để khắc phục sự cố trong vài giờ tới.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-012",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker mean when he says “I’ve talked to your team leads about the issue”?",
+  "options": [
+   {
+    "label": "A",
+    "content": "The team leads will take over a project."
+   },
+   {
+    "label": "B",
+    "content": "A deadline will be adjusted."
+   },
+   {
+    "label": "C",
+    "content": "New teams will be formed."
+   },
+   {
+    "label": "D",
+    "content": "An extra expense will be approved."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Việc thảo luận với trưởng nhóm ngụ ý rằng thời hạn công việc sẽ được thay đổi do sự cố kỹ thuật.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-013",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What type of business does the speaker own?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A tea shop"
+   },
+   {
+    "label": "B",
+    "content": "A childcare center"
+   },
+   {
+    "label": "C",
+    "content": "A pottery studio"
+   },
+   {
+    "label": "D",
+    "content": "A party supply store"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Theo đáp án, người nói sở hữu một cửa hàng trà.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-014",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker imply when she says, “you’ve worked here for five months now”?",
+  "options": [
+   {
+    "label": "A",
+    "content": "The listener is capable of doing a task."
+   },
+   {
+    "label": "B",
+    "content": "The listener should apply for a promotion."
+   },
+   {
+    "label": "C",
+    "content": "The speaker is ready to retire."
+   },
+   {
+    "label": "D",
+    "content": "A training period is too short."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Câu này ngụ ý rằng người nghe đã đủ kinh nghiệm để tự thực hiện một nhiệm vụ.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-015",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker say is located in the back room?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Some decorations"
+   },
+   {
+    "label": "B",
+    "content": "A video projector"
+   },
+   {
+    "label": "C",
+    "content": "Some furniture"
+   },
+   {
+    "label": "D",
+    "content": "Some dishes"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Một số đồ nội thất được để ở trong phòng phía sau.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-016",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What industry does the speaker most likely work in?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Transportation"
+   },
+   {
+    "label": "B",
+    "content": "Health care"
+   },
+   {
+    "label": "C",
+    "content": "Hospitality"
+   },
+   {
+    "label": "D",
+    "content": "Entertainment"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Dựa trên ngữ cảnh công việc liên quan đến vận tải.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-017",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker say is a priority?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Upgrading some equipment"
+   },
+   {
+    "label": "B",
+    "content": "Promoting an industry event"
+   },
+   {
+    "label": "C",
+    "content": "Hiring more staff"
+   },
+   {
+    "label": "D",
+    "content": "Increasing inventory"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Ưu tiên hàng đầu hiện nay là tuyển dụng thêm nhân viên.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-018",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What change does the speaker mention?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A shuttle bus will be provided."
+   },
+   {
+    "label": "B",
+    "content": "Free meals will be available."
+   },
+   {
+    "label": "C",
+    "content": "A work schedule will be reduced."
+   },
+   {
+    "label": "D",
+    "content": "An additional branch has opened."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Người nói đề cập đến thay đổi là sẽ có các bữa ăn miễn phí.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-019",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Where do the listeners most likely work?",
+  "options": [
+   {
+    "label": "A",
+    "content": "At a jewelry store"
+   },
+   {
+    "label": "B",
+    "content": "At a security company"
+   },
+   {
+    "label": "C",
+    "content": "At a factory"
+   },
+   {
+    "label": "D",
+    "content": "At a university"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Người nghe thường là công nhân làm việc tại nhà máy.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-020",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Why does the speaker apologize?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A wait time increased."
+   },
+   {
+    "label": "B",
+    "content": "A hiring was delayed."
+   },
+   {
+    "label": "C",
+    "content": "A new rule may be unpopular."
+   },
+   {
+    "label": "D",
+    "content": "Some items cannot be stored on- site."
+   }
+  ],
+  "correct": "C",
+  "explanation": "Người nói xin lỗi vì một quy định mới có thể gây khó chịu cho mọi người.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-021",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What are the listeners reminded to do?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Secure their belongings"
+   },
+   {
+    "label": "B",
+    "content": "Verify their appointment time"
+   },
+   {
+    "label": "C",
+    "content": "Provide detailed information"
+   },
+   {
+    "label": "D",
+    "content": "Arrive early"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Người nghe được nhắc nhở phải bảo quản kỹ đồ dùng cá nhân.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-022",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What is the speaker announcing?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A security update"
+   },
+   {
+    "label": "B",
+    "content": "A menu adjustment"
+   },
+   {
+    "label": "C",
+    "content": "A mandatory uniform"
+   },
+   {
+    "label": "D",
+    "content": "A schedule change"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Thông báo về sự thay đổi trong lịch trình làm việc.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-023",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Where do the listeners most likely work?",
+  "options": [
+   {
+    "label": "A",
+    "content": "At a farm"
+   },
+   {
+    "label": "B",
+    "content": "At a restaurant"
+   },
+   {
+    "label": "C",
+    "content": "At a public park"
+   },
+   {
+    "label": "D",
+    "content": "At an electronics store"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Dựa trên nội dung về thực đơn và lịch trình, người nghe làm việc tại nhà hàng.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-024",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker reassure the listeners about?",
+  "options": [
+   {
+    "label": "A",
+    "content": "They will be paid overtime."
+   },
+   {
+    "label": "B",
+    "content": "They will receive annual bonuses."
+   },
+   {
+    "label": "C",
+    "content": "Their paycheck mistake will be corrected."
+   },
+   {
+    "label": "D",
+    "content": "There will still be work available."
+   }
+  ],
+  "correct": "D",
+  "explanation": "Người nói trấn an rằng dù có thay đổi nhưng vẫn sẽ có đủ việc làm cho mọi người.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-025",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "According to the speaker, what has changed at the farm?",
+  "options": [
+   {
+    "label": "A",
+    "content": "The prices"
+   },
+   {
+    "label": "B",
+    "content": "The type of crops"
+   },
+   {
+    "label": "C",
+    "content": "The management"
+   },
+   {
+    "label": "D",
+    "content": "The hours of operation"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Trang trại vừa có sự thay đổi về bộ máy quản lý.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-026",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Look at the graphic. When does the mentioned activity take place?",
+  "options": [
+   {
+    "label": "A",
+    "content": "On June 2"
+   },
+   {
+    "label": "B",
+    "content": "On June 9"
+   },
+   {
+    "label": "C",
+    "content": "On June 16"
+   },
+   {
+    "label": "D",
+    "content": "On June 23"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Dựa vào hình ảnh, lớp học nấu ăn (Cooking Class) diễn ra vào ngày 2 tháng 6.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Cooking Class - June 2; Starting a Garden - June 9; Music with Larry Bowen - June 16; Harvest Festival - June 23",
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794473994/toeic/images/lirtbmhyh76lolnk7578.png"
+ },
+ {
+  "id": "TS-012-P4-027",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What are visitors to the business advised to do?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Come on weekdays"
+   },
+   {
+    "label": "B",
+    "content": "Park in a designated area"
+   },
+   {
+    "label": "C",
+    "content": "Bring reusable containers"
+   },
+   {
+    "label": "D",
+    "content": "Use an alternate entrance"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Khách tham quan được khuyên nên sử dụng lối vào phụ.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-028",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What does the speaker say residents have noticed?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Rising fuel prices"
+   },
+   {
+    "label": "B",
+    "content": "Limited housing options"
+   },
+   {
+    "label": "C",
+    "content": "Traffic congestion"
+   },
+   {
+    "label": "D",
+    "content": "Increased taxes"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Người dân trong khu vực đã nhận thấy sự gia tăng về thuế.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P4-029",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "Look at the graphic . What is the cost of the project currently being worked on?",
+  "options": [
+   {
+    "label": "A",
+    "content": "$425,000"
+   },
+   {
+    "label": "B",
+    "content": "$375,000"
+   },
+   {
+    "label": "C",
+    "content": "$328,000"
+   },
+   {
+    "label": "D",
+    "content": "$460,000"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Dựa trên biểu đồ chi phí các dự án hạ tầng đô thị, dự án nâng cấp trạm cứu hỏa có giá 328.000 USD.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Library Expansion: $425,000; Street Renovations: $375,000; Firehouse Upgrades: $328,000; Parkland Restoration: $460,000",
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1794473998/toeic/images/kdlvugmg6y7fga3fbrib.png"
+ },
+ {
+  "id": "TS-012-P4-030",
+  "testSetId": "TS-012",
+  "part": 4,
+  "content": "What is scheduled for Wednesday?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A fund-raiser"
+   },
+   {
+    "label": "B",
+    "content": "A festival"
+   },
+   {
+    "label": "C",
+    "content": "An election"
+   },
+   {
+    "label": "D",
+    "content": "A debate"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Một buổi tranh luận được lên kế hoạch tổ chức vào thứ Tư.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-001",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Mr. Liu is known for negotiating employee disputes ________.",
+  "options": [
+   {
+    "label": "A",
+    "content": "calm"
+   },
+   {
+    "label": "B",
+    "content": "calmly"
+   },
+   {
+    "label": "C",
+    "content": "calmest"
+   },
+   {
+    "label": "D",
+    "content": "calmness"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Cần một trạng từ (calmly) để bổ nghĩa cho động từ 'negotiating'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-002",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The city is accepting proposals for the redesign of Oshida Public Park ________ January 25.",
+  "options": [
+   {
+    "label": "A",
+    "content": "when"
+   },
+   {
+    "label": "B",
+    "content": "until"
+   },
+   {
+    "label": "C",
+    "content": "a few"
+   },
+   {
+    "label": "D",
+    "content": "whether"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Dùng 'until' để chỉ thời điểm kết thúc nhận hồ sơ.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-003",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Sales ________ maintain client files and provide logistical support.",
+  "options": [
+   {
+    "label": "A",
+    "content": "assists"
+   },
+   {
+    "label": "B",
+    "content": "assisted"
+   },
+   {
+    "label": "C",
+    "content": "assisting"
+   },
+   {
+    "label": "D",
+    "content": "assistants"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Cần một danh từ số nhiều (assistants) để làm chủ ngữ cho câu.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-004",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Tonight at Harbor Falls Library, writer Delroy Greene will be ________ stories from his childhood in Jamaica.",
+  "options": [
+   {
+    "label": "A",
+    "content": "dividing"
+   },
+   {
+    "label": "B",
+    "content": "sharing"
+   },
+   {
+    "label": "C",
+    "content": "using"
+   },
+   {
+    "label": "D",
+    "content": "awarding"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Cụm từ 'sharing stories' (chia sẻ các câu chuyện) phù hợp về nghĩa.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-005",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Mr. Kam has invited all staff members to attend ________ retirement party.",
+  "options": [
+   {
+    "label": "A",
+    "content": "he"
+   },
+   {
+    "label": "B",
+    "content": "his"
+   },
+   {
+    "label": "C",
+    "content": "him"
+   },
+   {
+    "label": "D",
+    "content": "himself"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Dùng tính từ sở hữu 'his' trước cụm danh từ 'retirement party'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-006",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Stanley Point Theater in downtown Detroit will produce four plays and three ________ next season.",
+  "options": [
+   {
+    "label": "A",
+    "content": "actors"
+   },
+   {
+    "label": "B",
+    "content": "audiences"
+   },
+   {
+    "label": "C",
+    "content": "tickets"
+   },
+   {
+    "label": "D",
+    "content": "musicals"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Trong ngữ cảnh nhà hát sản xuất các vở diễn, 'musicals' (vở nhạc kịch) là lựa chọn phù hợp.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-007",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "There is enough money ________ in the budget to cover travel expenses.",
+  "options": [
+   {
+    "label": "A",
+    "content": "remains"
+   },
+   {
+    "label": "B",
+    "content": "remainder"
+   },
+   {
+    "label": "C",
+    "content": "remained"
+   },
+   {
+    "label": "D",
+    "content": "remaining"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Dùng phân từ 'remaining' như một tính từ để bổ nghĩa cho 'money'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-008",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Romm Industries staff trained nine new associates who were hired ________ the same day.",
+  "options": [
+   {
+    "label": "A",
+    "content": "as"
+   },
+   {
+    "label": "B",
+    "content": "into"
+   },
+   {
+    "label": "C",
+    "content": "on"
+   },
+   {
+    "label": "D",
+    "content": "once"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Giới từ 'on' đi với 'the same day'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-009",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Taylor Kanagawa wrote several books on effective team management ________ his 40-year career at Sapp Publishers Ltd.",
+  "options": [
+   {
+    "label": "A",
+    "content": "between"
+   },
+   {
+    "label": "B",
+    "content": "while"
+   },
+   {
+    "label": "C",
+    "content": "beside"
+   },
+   {
+    "label": "D",
+    "content": "during"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Dùng giới từ 'during' trước một khoảng thời gian.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-010",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The community clinic project is designed to improve health ________ in isolated areas.",
+  "options": [
+   {
+    "label": "A",
+    "content": "outcomes"
+   },
+   {
+    "label": "B",
+    "content": "reasons"
+   },
+   {
+    "label": "C",
+    "content": "corrections"
+   },
+   {
+    "label": "D",
+    "content": "grades"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Cụm danh từ 'health outcomes' nghĩa là kết quả về sức khỏe.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-011",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Jingshen Airlines announced that it will be hiring 200 ________ employees next year.",
+  "options": [
+   {
+    "label": "A",
+    "content": "add"
+   },
+   {
+    "label": "B",
+    "content": "adding"
+   },
+   {
+    "label": "C",
+    "content": "additional"
+   },
+   {
+    "label": "D",
+    "content": "additionally"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Cần tính từ 'additional' để bổ nghĩa cho danh từ 'employees'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-012",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The customer was impressed by how ________ Mr. Schmid operated the complicated machinery.",
+  "options": [
+   {
+    "label": "A",
+    "content": "skillfully"
+   },
+   {
+    "label": "B",
+    "content": "primarily"
+   },
+   {
+    "label": "C",
+    "content": "obviously"
+   },
+   {
+    "label": "D",
+    "content": "richly"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Cần trạng từ 'skillfully' (khéo léo) để bổ nghĩa cho cách vận hành máy móc.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-013",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Staff are invited to participate in a ________ of social events during the first week of May.",
+  "options": [
+   {
+    "label": "A",
+    "content": "series"
+   },
+   {
+    "label": "B",
+    "content": "status"
+   },
+   {
+    "label": "C",
+    "content": "theory"
+   },
+   {
+    "label": "D",
+    "content": "guest"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Cụm 'a series of' (một chuỗi/loạt các sự kiện).",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-014",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The contract states that Solcus Corporation will be ________ for any costs resulting from work delays.",
+  "options": [
+   {
+    "label": "A",
+    "content": "accountable"
+   },
+   {
+    "label": "B",
+    "content": "manageable"
+   },
+   {
+    "label": "C",
+    "content": "knowledgeable"
+   },
+   {
+    "label": "D",
+    "content": "flexible"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Cụm 'be accountable for' (chịu trách nhiệm cho các chi phí phát sinh).",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-015",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Author Minh Phan’s latest novel was ________ influenced by Vietnamese folk stories.",
+  "options": [
+   {
+    "label": "A",
+    "content": "heavy"
+   },
+   {
+    "label": "B",
+    "content": "heavily"
+   },
+   {
+    "label": "C",
+    "content": "heaviest"
+   },
+   {
+    "label": "D",
+    "content": "heavier"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Cần trạng từ 'heavily' để bổ nghĩa cho động từ 'influenced'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-016",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Tourists are expected to flock to the Sorachi Discovery Museum when it opens ________ in Mikasa, Hokkaido.",
+  "options": [
+   {
+    "label": "A",
+    "content": "soon"
+   },
+   {
+    "label": "B",
+    "content": "as"
+   },
+   {
+    "label": "C",
+    "content": "almost"
+   },
+   {
+    "label": "D",
+    "content": "initial"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Trạng từ 'soon' chỉ thời gian trong tương lai gần.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-017",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The factory floor is divided into four ________ sections: one for each stage of product assembly.",
+  "options": [
+   {
+    "label": "A",
+    "content": "previous"
+   },
+   {
+    "label": "B",
+    "content": "eligible"
+   },
+   {
+    "label": "C",
+    "content": "distinct"
+   },
+   {
+    "label": "D",
+    "content": "installed"
+   }
+  ],
+  "correct": "C",
+  "explanation": "'Distinct sections' (các khu vực riêng biệt/khác biệt).",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-018",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Handouts for the afternoon seminar must be prepared ________ the lunch break.",
+  "options": [
+   {
+    "label": "A",
+    "content": "down"
+   },
+   {
+    "label": "B",
+    "content": "beside"
+   },
+   {
+    "label": "C",
+    "content": "before"
+   },
+   {
+    "label": "D",
+    "content": "off"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Cần chuẩn bị tài liệu 'trước' (before) giờ nghỉ trưa.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-019",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Chat Mobile will determine, based on end-of-the-year sales numbers, ________ the company will open any additional stores.",
+  "options": [
+   {
+    "label": "A",
+    "content": "whether"
+   },
+   {
+    "label": "B",
+    "content": "who"
+   },
+   {
+    "label": "C",
+    "content": "since"
+   },
+   {
+    "label": "D",
+    "content": "that"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Dùng 'whether' để diễn đạt sự cân nhắc có hay không mở thêm cửa hàng.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-020",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The red line will ________ only express stops from Finn Street to Boone Street on weekends.",
+  "options": [
+   {
+    "label": "A",
+    "content": "made"
+   },
+   {
+    "label": "B",
+    "content": "makes"
+   },
+   {
+    "label": "C",
+    "content": "make"
+   },
+   {
+    "label": "D",
+    "content": "making"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Sau trợ động từ 'will' phải là động từ nguyên mẫu (make).",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-021",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The company’s latest video game, Hunting for Treasure, has been praised ________ by reviewers.",
+  "options": [
+   {
+    "label": "A",
+    "content": "enthusiastically"
+   },
+   {
+    "label": "B",
+    "content": "enthusiastic"
+   },
+   {
+    "label": "C",
+    "content": "enthusiasm"
+   },
+   {
+    "label": "D",
+    "content": "enthusiast"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Cần một trạng từ (enthusiastically) để bổ nghĩa cho động từ 'praised'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-022",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "During the off-season, the Great Mountain Amusement Park operates on ________ hours.",
+  "options": [
+   {
+    "label": "A",
+    "content": "reduced"
+   },
+   {
+    "label": "B",
+    "content": "employed"
+   },
+   {
+    "label": "C",
+    "content": "slow"
+   },
+   {
+    "label": "D",
+    "content": "busy"
+   }
+  ],
+  "correct": "A",
+  "explanation": "'Reduced hours' nghĩa là thời gian hoạt động bị cắt giảm.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-023",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The construction project will ________ 30 residential units and 10 commercial spaces.",
+  "options": [
+   {
+    "label": "A",
+    "content": "overall"
+   },
+   {
+    "label": "B",
+    "content": "first"
+   },
+   {
+    "label": "C",
+    "content": "about"
+   },
+   {
+    "label": "D",
+    "content": "include"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Câu cần một động từ chính, 'include' (bao gồm) là lựa chọn hợp lý nhất.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-024",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Ms. Pham’s employment contract cannot be finalized ________ her starting salary is still being negotiated.",
+  "options": [
+   {
+    "label": "A",
+    "content": "once"
+   },
+   {
+    "label": "B",
+    "content": "because"
+   },
+   {
+    "label": "C",
+    "content": "after"
+   },
+   {
+    "label": "D",
+    "content": "until"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Dùng liên từ 'because' để chỉ nguyên nhân chưa thể hoàn tất hợp đồng.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-025",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Office supplies are available in our resources cabinet for ________ who needs them.",
+  "options": [
+   {
+    "label": "A",
+    "content": "anyone"
+   },
+   {
+    "label": "B",
+    "content": "whichever"
+   },
+   {
+    "label": "C",
+    "content": "such"
+   },
+   {
+    "label": "D",
+    "content": "more"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Đại từ 'anyone' phù hợp làm chủ ngữ đứng trước mệnh đề quan hệ 'who needs them'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-026",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Through its network of local agents, new housing start-up Philocenia intends to ________ the rental sector.",
+  "options": [
+   {
+    "label": "A",
+    "content": "exercise"
+   },
+   {
+    "label": "B",
+    "content": "indicate"
+   },
+   {
+    "label": "C",
+    "content": "participate"
+   },
+   {
+    "label": "D",
+    "content": "revolutionize"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Động từ 'revolutionize' (cách mạng hóa) phù hợp với ngữ cảnh khởi nghiệp.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-027",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Rapid Books has the payroll solutions every company needs, allowing users ________ invoices in three easy steps.",
+  "options": [
+   {
+    "label": "A",
+    "content": "sent"
+   },
+   {
+    "label": "B",
+    "content": "have sent"
+   },
+   {
+    "label": "C",
+    "content": "sending"
+   },
+   {
+    "label": "D",
+    "content": "to send"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Cấu trúc 'allow someone to do something'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-028",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Epky Electronics will open eight additional retail stores ________ the next two years.",
+  "options": [
+   {
+    "label": "A",
+    "content": "above"
+   },
+   {
+    "label": "B",
+    "content": "behind"
+   },
+   {
+    "label": "C",
+    "content": "about"
+   },
+   {
+    "label": "D",
+    "content": "within"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Giới từ 'within' dùng để chỉ một hành động sẽ xảy ra trong vòng một khoảng thời gian.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-029",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "The three-day workshop focuses on the public speaking ________ that are central to delivering memorable presentations.",
+  "options": [
+   {
+    "label": "A",
+    "content": "strategies"
+   },
+   {
+    "label": "B",
+    "content": "strategized"
+   },
+   {
+    "label": "C",
+    "content": "strategically"
+   },
+   {
+    "label": "D",
+    "content": "strategic"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Cần một danh từ (strategies) để làm tiền ngữ cho mệnh đề quan hệ 'that are'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P5-030",
+  "testSetId": "TS-012",
+  "part": 5,
+  "content": "Critics agree that the movie An Unusual Introduction ________ combines computer-generated images and live action.",
+  "options": [
+   {
+    "label": "A",
+    "content": "seamlessly"
+   },
+   {
+    "label": "B",
+    "content": "collectively"
+   },
+   {
+    "label": "C",
+    "content": "factually"
+   },
+   {
+    "label": "D",
+    "content": "distantly"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Trạng từ 'seamlessly' (vô cùng khéo léo/mượt mà) thường đi với động từ 'combine'.",
+  "difficulty": "medium",
+  "topic": null
+ },
+ {
+  "id": "TS-012-P6-001",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "131. Thank you for flying Sky Air First with ________.",
+  "options": [
+   {
+    "label": "A",
+    "content": "them"
+   },
+   {
+    "label": "B",
+    "content": "theirs"
+   },
+   {
+    "label": "C",
+    "content": "us"
+   },
+   {
+    "label": "D",
+    "content": "ours"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Dùng đại từ tân ngữ 'us' để chỉ hãng hàng không đang nói với khách hàng.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Sky Air First Pass\n\nThank you for flying Sky Air First with [131]. We hope you enjoy your flight.\n\nYou can take advantage of our best prices on future flights [132] purchasing a Sky Air First Pass. For a [133] annual fee, you will get special discounts, seat upgrades, and the use of our exclusive travelers’ lounge. [134]. Ask your flight attendant for more information and an application."
+ },
+ {
+  "id": "TS-012-P6-002",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "132. You can take advantage of our best prices on future flights ________ purchasing a Sky Air First Pass.",
+  "options": [
+   {
+    "label": "A",
+    "content": "at"
+   },
+   {
+    "label": "B",
+    "content": "on"
+   },
+   {
+    "label": "C",
+    "content": "by"
+   },
+   {
+    "label": "D",
+    "content": "to"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Giới từ 'by' đi với V-ing để chỉ phương thức thực hiện hành động.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Sky Air First Pass\n\nThank you for flying Sky Air First with [131]. We hope you enjoy your flight.\n\nYou can take advantage of our best prices on future flights [132] purchasing a Sky Air First Pass. For a [133] annual fee, you will get special discounts, seat upgrades, and the use of our exclusive travelers’ lounge. [134]. Ask your flight attendant for more information and an application."
+ },
+ {
+  "id": "TS-012-P6-003",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "133. For a ________ annual fee, you will get special discounts, seat upgrades, and the use of our exclusive travelers’ lounge.",
+  "options": [
+   {
+    "label": "A",
+    "content": "lowers"
+   },
+   {
+    "label": "B",
+    "content": "low"
+   },
+   {
+    "label": "C",
+    "content": "lowly"
+   },
+   {
+    "label": "D",
+    "content": "lowest"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Cần một tính từ bổ nghĩa cho danh từ 'annual fee'.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Sky Air First Pass\n\nThank you for flying Sky Air First with [131]. We hope you enjoy your flight.\n\nYou can take advantage of our best prices on future flights [132] purchasing a Sky Air First Pass. For a [133] annual fee, you will get special discounts, seat upgrades, and the use of our exclusive travelers’ lounge. [134]. Ask your flight attendant for more information and an application."
+ },
+ {
+  "id": "TS-012-P6-004",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "134. ________",
+  "options": [
+   {
+    "label": "A",
+    "content": "We hope you will fly Sky Air First again."
+   },
+   {
+    "label": "B",
+    "content": "You will also get priority boarding."
+   },
+   {
+    "label": "C",
+    "content": "Please find your seat immediately."
+   },
+   {
+    "label": "D",
+    "content": "The flight delay will be minimal."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Câu này bổ sung thêm một quyền lợi khi mua Sky Air First Pass, phù hợp với ngữ cảnh liệt kê ưu đãi.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Sky Air First Pass\n\nThank you for flying Sky Air First with [131]. We hope you enjoy your flight.\n\nYou can take advantage of our best prices on future flights [132] purchasing a Sky Air First Pass. For a [133] annual fee, you will get special discounts, seat upgrades, and the use of our exclusive travelers’ lounge. [134]. Ask your flight attendant for more information and an application."
+ },
+ {
+  "id": "TS-012-P6-005",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "135. Ms. Dees is now ________ for coordinating schedules, booking guests for the show, and managing media relations.",
+  "options": [
+   {
+    "label": "A",
+    "content": "responsive"
+   },
+   {
+    "label": "B",
+    "content": "responsibly"
+   },
+   {
+    "label": "C",
+    "content": "responding"
+   },
+   {
+    "label": "D",
+    "content": "responsible"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Cấu trúc 'be responsible for' mang nghĩa chịu trách nhiệm cho việc gì.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "CJOK Radio Show Welcomes New Staff\n\nQUEENSVILLE (7 July)—Local radio station CJOK announced Katherine Dees as the new producer of the popular show Out and About in Queensvilie. Ms. Dees is now [135] for coordinating schedules, booking guests for the show, and managing media relations. [136] the station hired sound editor Virginia Thacker and production assistant Reggie Dietrich to support Ms. Dees in her new role. [137].\n\nOut and About in Queensvilie, which has been airing for 30 years, is performed live weekly from September to May in the Orpheum Theater in downtown Queensvilie. The show [138] musical guests, writers, and storytellers for an hour of weekly programming."
+ },
+ {
+  "id": "TS-012-P6-006",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "136. ________ the station hired sound editor Virginia Thacker and production assistant Reggie Dietrich to support Ms. Dees in her new role.",
+  "options": [
+   {
+    "label": "A",
+    "content": "Even so"
+   },
+   {
+    "label": "B",
+    "content": "In fact"
+   },
+   {
+    "label": "C",
+    "content": "For example"
+   },
+   {
+    "label": "D",
+    "content": "In addition"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Dùng trạng từ liên kết để bổ sung thêm thông tin về việc thuê thêm nhân viên mới.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "CJOK Radio Show Welcomes New Staff\n\nQUEENSVILLE (7 July)—Local radio station CJOK announced Katherine Dees as the new producer of the popular show Out and About in Queensvilie. Ms. Dees is now [135] for coordinating schedules, booking guests for the show, and managing media relations. [136] the station hired sound editor Virginia Thacker and production assistant Reggie Dietrich to support Ms. Dees in her new role. [137].\n\nOut and About in Queensvilie, which has been airing for 30 years, is performed live weekly from September to May in the Orpheum Theater in downtown Queensvilie. The show [138] musical guests, writers, and storytellers for an hour of weekly programming."
+ },
+ {
+  "id": "TS-012-P6-007",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "137. ________",
+  "options": [
+   {
+    "label": "A",
+    "content": "CJOK was founded 60 years ago."
+   },
+   {
+    "label": "B",
+    "content": "These recent hires follow the retirement of producer Ed Evans."
+   },
+   {
+    "label": "C",
+    "content": "Ms. Dees was born and raised in Cedarburg."
+   },
+   {
+    "label": "D",
+    "content": "CJOK has more than one popular show in its lineup."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Câu này giải thích lý do tại sao có các đợt tuyển dụng mới vừa nêu ở trên.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "CJOK Radio Show Welcomes New Staff\n\nQUEENSVILLE (7 July)—Local radio station CJOK announced Katherine Dees as the new producer of the popular show Out and About in Queensvilie. Ms. Dees is now [135] for coordinating schedules, booking guests for the show, and managing media relations. [136] the station hired sound editor Virginia Thacker and production assistant Reggie Dietrich to support Ms. Dees in her new role. [137].\n\nOut and About in Queensvilie, which has been airing for 30 years, is performed live weekly from September to May in the Orpheum Theater in downtown Queensvilie. The show [138] musical guests, writers, and storytellers for an hour of weekly programming."
+ },
+ {
+  "id": "TS-012-P6-008",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "138. The show ________ musical guests, writers, and storytellers for an hour of weekly programming.",
+  "options": [
+   {
+    "label": "A",
+    "content": "gives"
+   },
+   {
+    "label": "B",
+    "content": "marks"
+   },
+   {
+    "label": "C",
+    "content": "features"
+   },
+   {
+    "label": "D",
+    "content": "holds"
+   }
+  ],
+  "correct": "C",
+  "explanation": "'Features' có nghĩa là 'có sự góp mặt của' hoặc 'đưa ra điểm đặc trưng', phù hợp với chương trình radio.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "CJOK Radio Show Welcomes New Staff\n\nQUEENSVILLE (7 July)—Local radio station CJOK announced Katherine Dees as the new producer of the popular show Out and About in Queensvilie. Ms. Dees is now [135] for coordinating schedules, booking guests for the show, and managing media relations. [136] the station hired sound editor Virginia Thacker and production assistant Reggie Dietrich to support Ms. Dees in her new role. [137].\n\nOut and About in Queensvilie, which has been airing for 30 years, is performed live weekly from September to May in the Orpheum Theater in downtown Queensvilie. The show [138] musical guests, writers, and storytellers for an hour of weekly programming."
+ },
+ {
+  "id": "TS-012-P6-009",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "139. We are ________ eager to complete your order.",
+  "options": [
+   {
+    "label": "A",
+    "content": "still"
+   },
+   {
+    "label": "B",
+    "content": "besides"
+   },
+   {
+    "label": "C",
+    "content": "of course"
+   },
+   {
+    "label": "D",
+    "content": "nevertheless"
+   }
+  ],
+  "correct": "C",
+  "explanation": "'Of course' dùng để nhấn mạnh sự sẵn lòng, nhiệt tình của người bán.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Sandra Barga <sbarga 97@hjmail.ca>\nFrom: Artie Romanche <service@ northwestbags.ca>\nDate: 12 July\nSubject: Order number 71280\n\nDear Ms. Barga:\n\nWe received your recent order asking for your name to be stitched on a Klamath Kool handbag. We are [139] eager to complete your order. Unfortunately, our seamstress who fulfills personalisation requirements will be on leave for the next three days. We wanted to let you know that her [140] will cause a delay in shipping your bag. [141] for the wait, we would like to offer you a 10 percent discount on your current order. Or, if you prefer, you can opt for free personalisation on your next order. [142]. At Northwest Bags we strive for 100 percent customer satisfaction!\n\nSincerely,\nArtie Romanche\nCustomer Service Representative, Northwest Bags"
+ },
+ {
+  "id": "TS-012-P6-010",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "140. We wanted to let you know that her ________ will cause a delay in shipping your bag.",
+  "options": [
+   {
+    "label": "A",
+    "content": "absence"
+   },
+   {
+    "label": "B",
+    "content": "arrival"
+   },
+   {
+    "label": "C",
+    "content": "request"
+   },
+   {
+    "label": "D",
+    "content": "investigation"
+   }
+  ],
+  "correct": "A",
+  "explanation": "'Absence' (sự vắng mặt) dùng để thay thế cho việc người thợ may đang nghỉ phép (on leave).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Sandra Barga <sbarga 97@hjmail.ca>\nFrom: Artie Romanche <service@ northwestbags.ca>\nDate: 12 July\nSubject: Order number 71280\n\nDear Ms. Barga:\n\nWe received your recent order asking for your name to be stitched on a Klamath Kool handbag. We are [139] eager to complete your order. Unfortunately, our seamstress who fulfills personalisation requirements will be on leave for the next three days. We wanted to let you know that her [140] will cause a delay in shipping your bag. [141] for the wait, we would like to offer you a 10 percent discount on your current order. Or, if you prefer, you can opt for free personalisation on your next order. [142]. At Northwest Bags we strive for 100 percent customer satisfaction!\n\nSincerely,\nArtie Romanche\nCustomer Service Representative, Northwest Bags"
+ },
+ {
+  "id": "TS-012-P6-011",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "141. ________ for the wait, we would like to offer you a 10 percent discount on your current order.",
+  "options": [
+   {
+    "label": "A",
+    "content": "Compensated"
+   },
+   {
+    "label": "B",
+    "content": "To compensate"
+   },
+   {
+    "label": "C",
+    "content": "For compensating"
+   },
+   {
+    "label": "D",
+    "content": "It is compensation"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Dùng 'To + V' đứng đầu câu để chỉ mục đích (Để bù đắp cho sự chờ đợi).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Sandra Barga <sbarga 97@hjmail.ca>\nFrom: Artie Romanche <service@ northwestbags.ca>\nDate: 12 July\nSubject: Order number 71280\n\nDear Ms. Barga:\n\nWe received your recent order asking for your name to be stitched on a Klamath Kool handbag. We are [139] eager to complete your order. Unfortunately, our seamstress who fulfills personalisation requirements will be on leave for the next three days. We wanted to let you know that her [140] will cause a delay in shipping your bag. [141] for the wait, we would like to offer you a 10 percent discount on your current order. Or, if you prefer, you can opt for free personalisation on your next order. [142]. At Northwest Bags we strive for 100 percent customer satisfaction!\n\nSincerely,\nArtie Romanche\nCustomer Service Representative, Northwest Bags"
+ },
+ {
+  "id": "TS-012-P6-012",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "142. ________",
+  "options": [
+   {
+    "label": "A",
+    "content": "The choice is yours."
+   },
+   {
+    "label": "B",
+    "content": "We appreciate your review."
+   },
+   {
+    "label": "C",
+    "content": "The bag will look great with your initials on it."
+   },
+   {
+    "label": "D",
+    "content": "We are the only local retailer offering custom services."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Câu này kết luận sau khi đưa ra hai phương án bồi thường cho khách hàng lựa chọn.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Sandra Barga <sbarga 97@hjmail.ca>\nFrom: Artie Romanche <service@ northwestbags.ca>\nDate: 12 July\nSubject: Order number 71280\n\nDear Ms. Barga:\n\nWe received your recent order asking for your name to be stitched on a Klamath Kool handbag. We are [139] eager to complete your order. Unfortunately, our seamstress who fulfills personalisation requirements will be on leave for the next three days. We wanted to let you know that her [140] will cause a delay in shipping your bag. [141] for the wait, we would like to offer you a 10 percent discount on your current order. Or, if you prefer, you can opt for free personalisation on your next order. [142]. At Northwest Bags we strive for 100 percent customer satisfaction!\n\nSincerely,\nArtie Romanche\nCustomer Service Representative, Northwest Bags"
+ },
+ {
+  "id": "TS-012-P6-013",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "143. Sehelec Ltd. announced it will begin construction on a 500-megawatt wind-solar hybrid power ________ outside of Bangalore, India.",
+  "options": [
+   {
+    "label": "A",
+    "content": "plant"
+   },
+   {
+    "label": "B",
+    "content": "planter"
+   },
+   {
+    "label": "C",
+    "content": "planting"
+   },
+   {
+    "label": "D",
+    "content": "planted"
+   }
+  ],
+  "correct": "A",
+  "explanation": "'Power plant' là danh từ ghép có nghĩa là nhà máy điện.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Sehelec Announces Wind-Solar Hybrid Project\n\nMUMBAI (15 March)—Sehelec Ltd. announced it will begin construction on a 500-megawatt wind-solar hybrid power [143] outside of Bangalore, India. [144]. Sehelec expects to begin operations within 24 months, and it will sell the power to Indian energy giant Novaseon Industries.\n\n“Our contract with Novaseon to provide [145] power moves us closer to our long-term corporate goal,” said Sumit Varma, CEO of Sehelec. “Our objective is to achieve a capacity of 20 gigawatts within five years. Doing so will make us one of India’s largest green power companies. And that, in turn, will help the country [146] its carbon-reduction target.”"
+ },
+ {
+  "id": "TS-012-P6-014",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "144. ________",
+  "options": [
+   {
+    "label": "A",
+    "content": "Windy conditions can cause damage to tall buildings."
+   },
+   {
+    "label": "B",
+    "content": "The facility will consist of a mix of solar panels and wind turbines."
+   },
+   {
+    "label": "C",
+    "content": "Electric vehicles have fewer emissions than other vehicles have."
+   },
+   {
+    "label": "D",
+    "content": "The pace of upgrades to India’s power grid slowed slightly this year."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Câu này cung cấp chi tiết về dự án hybrid (lai giữa gió và mặt trời) vừa được đề cập.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Sehelec Announces Wind-Solar Hybrid Project\n\nMUMBAI (15 March)—Sehelec Ltd. announced it will begin construction on a 500-megawatt wind-solar hybrid power [143] outside of Bangalore, India. [144]. Sehelec expects to begin operations within 24 months, and it will sell the power to Indian energy giant Novaseon Industries.\n\n“Our contract with Novaseon to provide [145] power moves us closer to our long-term corporate goal,” said Sumit Varma, CEO of Sehelec. “Our objective is to achieve a capacity of 20 gigawatts within five years. Doing so will make us one of India’s largest green power companies. And that, in turn, will help the country [146] its carbon-reduction target.”"
+ },
+ {
+  "id": "TS-012-P6-015",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "145. Our contract with Novaseon to provide ________ power moves us closer to our long-term corporate goal.",
+  "options": [
+   {
+    "label": "A",
+    "content": "renew"
+   },
+   {
+    "label": "B",
+    "content": "renewers"
+   },
+   {
+    "label": "C",
+    "content": "renewable"
+   },
+   {
+    "label": "D",
+    "content": "to renew"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Tính từ 'renewable' bổ nghĩa cho danh từ 'power' để chỉ năng lượng tái tạo.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Sehelec Announces Wind-Solar Hybrid Project\n\nMUMBAI (15 March)—Sehelec Ltd. announced it will begin construction on a 500-megawatt wind-solar hybrid power [143] outside of Bangalore, India. [144]. Sehelec expects to begin operations within 24 months, and it will sell the power to Indian energy giant Novaseon Industries.\n\n“Our contract with Novaseon to provide [145] power moves us closer to our long-term corporate goal,” said Sumit Varma, CEO of Sehelec. “Our objective is to achieve a capacity of 20 gigawatts within five years. Doing so will make us one of India’s largest green power companies. And that, in turn, will help the country [146] its carbon-reduction target.”"
+ },
+ {
+  "id": "TS-012-P6-016",
+  "testSetId": "TS-012",
+  "part": 6,
+  "content": "146. And that, in turn, will help the country ________ its carbon-reduction target.",
+  "options": [
+   {
+    "label": "A",
+    "content": "understand"
+   },
+   {
+    "label": "B",
+    "content": "explain"
+   },
+   {
+    "label": "C",
+    "content": "block"
+   },
+   {
+    "label": "D",
+    "content": "reach"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Cụm từ 'reach a target' có nghĩa là đạt được một mục tiêu.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Sehelec Announces Wind-Solar Hybrid Project\n\nMUMBAI (15 March)—Sehelec Ltd. announced it will begin construction on a 500-megawatt wind-solar hybrid power [143] outside of Bangalore, India. [144]. Sehelec expects to begin operations within 24 months, and it will sell the power to Indian energy giant Novaseon Industries.\n\n“Our contract with Novaseon to provide [145] power moves us closer to our long-term corporate goal,” said Sumit Varma, CEO of Sehelec. “Our objective is to achieve a capacity of 20 gigawatts within five years. Doing so will make us one of India’s largest green power companies. And that, in turn, will help the country [146] its carbon-reduction target.”"
+ },
+ {
+  "id": "TS-012-P7-001",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What does each lunch special include?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A soup"
+   },
+   {
+    "label": "B",
+    "content": "Carrots"
+   },
+   {
+    "label": "C",
+    "content": "Tomatoes"
+   },
+   {
+    "label": "D",
+    "content": "A beverage"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Thực đơn ghi rõ với 8 đô la, khách hàng có thể kết hợp món 'soup of the day' với một trong các món được liệt kê.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Carina’s Cafe Lunch Specials\nMonday through Friday from 11:00 A.M. to 3:00 P.M.\nFor only $8, combine the soup of the day with one of the following items:\nTurkey Sandwich - Turkey, avocado, tomato, lettuce, and mayonnaise on wheat bread\nVegetable Panini - Sourdough bread filled with tomato, cucumber, spinach, and mayonnaise, then grilled\nMushroom Chicken Cavatappi - Chicken in a mushroom, celery, and onion sauce, served over S-shaped pasta\nVegetable Wrap - Fresh tomato, cucumber, and carrots with hummus (made with our secret recipe) on flatbread"
+ },
+ {
+  "id": "TS-012-P7-002",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What item contains an ingredient that is only available from Carina’s Cafe?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Turkey sandwich"
+   },
+   {
+    "label": "B",
+    "content": "Vegetable panini"
+   },
+   {
+    "label": "C",
+    "content": "Mushroom chicken cavatappi"
+   },
+   {
+    "label": "D",
+    "content": "Vegetable wrap"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Món Vegetable Wrap chứa hummus được làm bằng 'công thức bí mật' (secret recipe) của quán, nghĩa là chỉ có tại đây.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Carina’s Cafe Lunch Specials\nMonday through Friday from 11:00 A.M. to 3:00 P.M.\nFor only $8, combine the soup of the day with one of the following items:\nTurkey Sandwich - Turkey, avocado, tomato, lettuce, and mayonnaise on wheat bread\nVegetable Panini - Sourdough bread filled with tomato, cucumber, spinach, and mayonnaise, then grilled\nMushroom Chicken Cavatappi - Chicken in a mushroom, celery, and onion sauce, served over S-shaped pasta\nVegetable Wrap - Fresh tomato, cucumber, and carrots with hummus (made with our secret recipe) on flatbread"
+ },
+ {
+  "id": "TS-012-P7-003",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "The word “design” in paragraph 1, line 2, is closest in meaning to",
+  "options": [
+   {
+    "label": "A",
+    "content": "find"
+   },
+   {
+    "label": "B",
+    "content": "create"
+   },
+   {
+    "label": "C",
+    "content": "draw"
+   },
+   {
+    "label": "D",
+    "content": "name"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Trong ngữ cảnh 'thiết kế các lớp học dưới nước', từ 'design' có nghĩa là tạo ra (create) chương trình học.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Certified Aqua Instructor Workshop\nThis workshop helps fitness professionals become certified aqua instructors by demonstrating how to design challenging and effective aquatic classes. Join instructor Deshonte Smith for a full-day course to learn a sequence of pool-based workouts that will motivate your students. Mr. Smith started his journey to instructor certification by taking classes at Valley Floor Fitness. He is also a professor at Wilkinson University.\nThe workshop costs $99 and will be held at Valley Floor Fitness in Missoula on August 27 from 9 a.m. to 5 p.m. For more information and to register, e-mail Maya Cramer at certification@valleyfloorfitness.com."
+ },
+ {
+  "id": "TS-012-P7-004",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is indicated about the workshop?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It will be held at a pool at Wilkinson University."
+   },
+   {
+    "label": "B",
+    "content": "It is being offered on two different dates."
+   },
+   {
+    "label": "C",
+    "content": "It is available at a discounted rate in August."
+   },
+   {
+    "label": "D",
+    "content": "It will be taught by a former student of Valley Floor Fitness."
+   }
+  ],
+  "correct": "D",
+  "explanation": "Đoạn văn cho biết ông Smith (người dạy workshop) đã bắt đầu hành trình cấp chứng chỉ bằng cách tham gia các lớp học tại Valley Floor Fitness.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Certified Aqua Instructor Workshop\nThis workshop helps fitness professionals become certified aqua instructors by demonstrating how to design challenging and effective aquatic classes. Join instructor Deshonte Smith for a full-day course to learn a sequence of pool-based workouts that will motivate your students. Mr. Smith started his journey to instructor certification by taking classes at Valley Floor Fitness. He is also a professor at Wilkinson University.\nThe workshop costs $99 and will be held at Valley Floor Fitness in Missoula on August 27 from 9 a.m. to 5 p.m. For more information and to register, e-mail Maya Cramer at certification@valleyfloorfitness.com."
+ },
+ {
+  "id": "TS-012-P7-005",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "At 3:29 P.M., what does Ms. Duchemin most likely mean when she writes, “Saturday is good for me”?",
+  "options": [
+   {
+    "label": "A",
+    "content": "She prefers to work morning shifts."
+   },
+   {
+    "label": "B",
+    "content": "She is able to do a favor for Mr. Cho."
+   },
+   {
+    "label": "C",
+    "content": "She will attend a conference."
+   },
+   {
+    "label": "D",
+    "content": "She would like to meet Mr. Cho’s friend."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Stephanie trả lời tin nhắn nhờ đổi ca làm của Hyun-Jun, ý nói cô ấy có thể làm thay vào thứ Bảy.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Hyun-Jun Cho (3:27 P.M.): I'm scheduled to work the front desk on Saturday from 7 A.M. to 3 P.M. A friend of mine is coming to town then, and he's only going to be here for one day. I was wondering if I could switch shifts with you. I can work on Sunday.\nStephanie Duchemin (3:29 P.M.): Saturday is good for me. I hope you don't have a Sunday like last week. It was so busy. All the doctors attending the medical conference were checking in at the front desk.\nHyun-Jun Cho (3:31 P.M.): And I heard that all the accountants from the other conference were also at the front desk reviewing their room charges at the same time!\nStephanie Duchemin (3:32 P.M.): The lobby was certainly bustling.\nHyun-Jun Cho (3:34 P.M.): Thank you for helping me out. I haven't seen my friend Kai since we graduated from university."
+ },
+ {
+  "id": "TS-012-P7-006",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "Where most likely do Mr. Cho and Ms. Duchemin work?",
+  "options": [
+   {
+    "label": "A",
+    "content": "At a hotel"
+   },
+   {
+    "label": "B",
+    "content": "At a university"
+   },
+   {
+    "label": "C",
+    "content": "At a medical center"
+   },
+   {
+    "label": "D",
+    "content": "At an accounting firm"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Họ nhắc đến việc làm việc tại bàn lễ tân (front desk), khách hàng làm thủ tục nhận phòng (checking in) và kiểm tra tiền phòng (room charges), điều này chỉ ra họ làm ở khách sạn.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Hyun-Jun Cho (3:27 P.M.): I'm scheduled to work the front desk on Saturday from 7 A.M. to 3 P.M. A friend of mine is coming to town then, and he's only going to be here for one day. I was wondering if I could switch shifts with you. I can work on Sunday.\nStephanie Duchemin (3:29 P.M.): Saturday is good for me. I hope you don't have a Sunday like last week. It was so busy. All the doctors attending the medical conference were checking in at the front desk.\nHyun-Jun Cho (3:31 P.M.): And I heard that all the accountants from the other conference were also at the front desk reviewing their room charges at the same time!\nStephanie Duchemin (3:32 P.M.): The lobby was certainly bustling.\nHyun-Jun Cho (3:34 P.M.): Thank you for helping me out. I haven't seen my friend Kai since we graduated from university."
+ },
+ {
+  "id": "TS-012-P7-007",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What does Mr. Jones indicate in his e-mail?",
+  "options": [
+   {
+    "label": "A",
+    "content": "He used to work with Ms. Navas."
+   },
+   {
+    "label": "B",
+    "content": "He is an associate manager."
+   },
+   {
+    "label": "C",
+    "content": "Another company wishes to hire him."
+   },
+   {
+    "label": "D",
+    "content": "His interview has been scheduled for next week."
+   }
+  ],
+  "correct": "C",
+  "explanation": "Hugo Jones viết rằng anh ấy đã nhận được một lời mời làm việc từ một công ty khác (received a job offer from another company).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Madalena Navas <mnavas@cordovacreations.com>\nFrom: Hugo Jones <hkjones@sunmail.com>\nDate: April 2\nSubject: Thank you\nDear Ms. Navas,\nI enjoyed speaking with you about the associate manager position last week, and as I mentioned, I am very excited about the possibility of working with you at Cordova Creations. I wanted to let you know that I have received a job offer from another company, and I have to respond to that hiring manager soon. I realize it has only been a few days since my interview, but if it is at all possible for you to update me on the status of my application before the end of the week, that would be very helpful. I have long admired Cordova Creations and would really like to be a part of it. I am hoping to hear positive news from you.\nThank you,\nHugo Jones"
+ },
+ {
+  "id": "TS-012-P7-008",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What does Mr. Jones want to know by the end of the week?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Whether an important decision has been made yet"
+   },
+   {
+    "label": "B",
+    "content": "Whether Ms. Navas is available for a meeting"
+   },
+   {
+    "label": "C",
+    "content": "Whether Ms. Navas would like to apply for a new position"
+   },
+   {
+    "label": "D",
+    "content": "Whether the company will expand its product offerings"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Anh ấy muốn được cập nhật về trạng thái đơn ứng tuyển của mình (status of my application), tức là một quyết định tuyển dụng quan trọng.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Madalena Navas <mnavas@cordovacreations.com>\nFrom: Hugo Jones <hkjones@sunmail.com>\nDate: April 2\nSubject: Thank you\nDear Ms. Navas,\nI enjoyed speaking with you about the associate manager position last week, and as I mentioned, I am very excited about the possibility of working with you at Cordova Creations. I wanted to let you know that I have received a job offer from another company, and I have to respond to that hiring manager soon. I realize it has only been a few days since my interview, but if it is at all possible for you to update me on the status of my application before the end of the week, that would be very helpful. I have long admired Cordova Creations and would really like to be a part of it. I am hoping to hear positive news from you.\nThank you,\nHugo Jones"
+ },
+ {
+  "id": "TS-012-P7-009",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What products does Hibiscus Supply most likely sell?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Construction materials"
+   },
+   {
+    "label": "B",
+    "content": "Pillows and sheets"
+   },
+   {
+    "label": "C",
+    "content": "Wholesale food items"
+   },
+   {
+    "label": "D",
+    "content": "Spare automobile parts"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Bài báo giới thiệu Hibiscus Supply là một trong những nhà xuất khẩu vật liệu xây dựng nhà (home building supplies) lớn nhất.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "BUSAN (15 October) — As international shipping continues to increase, companies that transport goods between continents have found themselves competing for expensive space on container ships, [1]. Delays in getting goods to factories and into stores have become more common. — [2] —.\nAs one of the biggest exporters of home building supplies in the country, Hibiscus Supply is particularly vulnerable to these issues. [3]. To avoid potential shipping problems, Hibiscus Supply has decided to operate its own container ship to export products overseas. — [4].\nAccording to Hibiscus Supply president James Koh, operating the company's own ship should improve efficiency at ports and decrease overall shipping costs. Says Mr. Koh, “The cost to ship with freight companies has doubled in the past year. By shipping our products ourselves, we'll be able to avoid passing shipping-related price increases on to our customers.”"
+ },
+ {
+  "id": "TS-012-P7-010",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "Why does Hibiscus Supply want to operate its own container ship?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To provide shipping services to other companies"
+   },
+   {
+    "label": "B",
+    "content": "To ship its products quickly and cheaply"
+   },
+   {
+    "label": "C",
+    "content": "To deliver its products to unusual locations"
+   },
+   {
+    "label": "D",
+    "content": "To ship more goods than most freight companies can handle"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Chủ tịch James Koh cho biết việc này giúp cải thiện hiệu quả (nhanh hơn) và giảm chi phí vận chuyển tổng thể (rẻ hơn).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "BUSAN (15 October) — As international shipping continues to increase, companies that transport goods between continents have found themselves competing for expensive space on container ships, [1]. Delays in getting goods to factories and into stores have become more common. — [2] —.\nAs one of the biggest exporters of home building supplies in the country, Hibiscus Supply is particularly vulnerable to these issues. [3]. To avoid potential shipping problems, Hibiscus Supply has decided to operate its own container ship to export products overseas. — [4].\nAccording to Hibiscus Supply president James Koh, operating the company's own ship should improve efficiency at ports and decrease overall shipping costs. Says Mr. Koh, “The cost to ship with freight companies has doubled in the past year. By shipping our products ourselves, we'll be able to avoid passing shipping-related price increases on to our customers.”"
+ },
+ {
+  "id": "TS-012-P7-011",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "In which of the positions marked [1], [2], [3], and [4] does the following sentence best belong? “The newly acquired ship is scheduled to begin running later this month.”",
+  "options": [
+   {
+    "label": "A",
+    "content": "[1]"
+   },
+   {
+    "label": "B",
+    "content": "[2]"
+   },
+   {
+    "label": "C",
+    "content": "[3]"
+   },
+   {
+    "label": "D",
+    "content": "[4]"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Câu này nói về kế hoạch bắt đầu hoạt động của con tàu mới mua, phù hợp nhất khi đặt ở vị trí [4] sau khi đã nói về quyết định tự vận hành tàu của công ty.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "BUSAN (15 October) — As international shipping continues to increase, companies that transport goods between continents have found themselves competing for expensive space on container ships, [1]. Delays in getting goods to factories and into stores have become more common. — [2] —.\nAs one of the biggest exporters of home building supplies in the country, Hibiscus Supply is particularly vulnerable to these issues. [3]. To avoid potential shipping problems, Hibiscus Supply has decided to operate its own container ship to export products overseas. — [4].\nAccording to Hibiscus Supply president James Koh, operating the company's own ship should improve efficiency at ports and decrease overall shipping costs. Says Mr. Koh, “The cost to ship with freight companies has doubled in the past year. By shipping our products ourselves, we'll be able to avoid passing shipping-related price increases on to our customers.”"
+ },
+ {
+  "id": "TS-012-P7-012",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "Why did Ms. Snow send the memo?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To invite employees to an office party"
+   },
+   {
+    "label": "B",
+    "content": "To announce a change to an employee’s job"
+   },
+   {
+    "label": "C",
+    "content": "To inform employees about a reduction in work hours"
+   },
+   {
+    "label": "D",
+    "content": "To request employee feedback on a departmental policy"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Bản ghi nhớ được gửi để chúc mừng Pedro Allende nhận vai trò mới là trợ lý hành chính toàn thời gian trong bộ phận kế toán.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: All Accounting Staff\nFrom: Jennifer Snow, Senior Manager\nDate: January 8\nSubject: Pedro Allende\nPlease join me in congratulating Pedro Allende as he prepares to enter his new role as a full-time administrative assistant in our accounting department. Mr. Allende, a part-time clerk in our mail room, completed a certificate program in computer support at Lander Vocational Institute last month. He was first hired by our company as a delivery driver, a role he held for two years before transferring to the mail room.\nMr. Allende’s first day in the accounting department will be Monday, January 11. We all wish him well!"
+ },
+ {
+  "id": "TS-012-P7-013",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "The word “prepares” in paragraph 1, line 1 is closest in meaning to",
+  "options": [
+   {
+    "label": "A",
+    "content": "assembles"
+   },
+   {
+    "label": "B",
+    "content": "returns"
+   },
+   {
+    "label": "C",
+    "content": "reaches out"
+   },
+   {
+    "label": "D",
+    "content": "gets ready"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Trong câu 'prepares to enter his new role', 'prepares' có nghĩa là đang chuẩn bị sẵn sàng (gets ready).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: All Accounting Staff\nFrom: Jennifer Snow, Senior Manager\nDate: January 8\nSubject: Pedro Allende\nPlease join me in congratulating Pedro Allende as he prepares to enter his new role as a full-time administrative assistant in our accounting department. Mr. Allende, a part-time clerk in our mail room, completed a certificate program in computer support at Lander Vocational Institute last month. He was first hired by our company as a delivery driver, a role he held for two years before transferring to the mail room.\nMr. Allende’s first day in the accounting department will be Monday, January 11. We all wish him well!"
+ },
+ {
+  "id": "TS-012-P7-014",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is indicated about Mr. Allende?",
+  "options": [
+   {
+    "label": "A",
+    "content": "He currently works as a delivery driver."
+   },
+   {
+    "label": "B",
+    "content": "He recently completed a training program."
+   },
+   {
+    "label": "C",
+    "content": "He previously assisted Ms. Snow in a different department."
+   },
+   {
+    "label": "D",
+    "content": "He will begin working part-time next week."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Văn bản nêu rõ ông Allende đã hoàn thành một chương trình chứng chỉ về hỗ trợ máy tính vào tháng trước.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: All Accounting Staff\nFrom: Jennifer Snow, Senior Manager\nDate: January 8\nSubject: Pedro Allende\nPlease join me in congratulating Pedro Allende as he prepares to enter his new role as a full-time administrative assistant in our accounting department. Mr. Allende, a part-time clerk in our mail room, completed a certificate program in computer support at Lander Vocational Institute last month. He was first hired by our company as a delivery driver, a role he held for two years before transferring to the mail room.\nMr. Allende’s first day in the accounting department will be Monday, January 11. We all wish him well!"
+ },
+ {
+  "id": "TS-012-P7-015",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What type of business placed the advertisement?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A land developer"
+   },
+   {
+    "label": "B",
+    "content": "A car-repair shop"
+   },
+   {
+    "label": "C",
+    "content": "A factory"
+   },
+   {
+    "label": "D",
+    "content": "A hardware store"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Camerley Corp có một xưởng chế tạo (fabrication plant) sản xuất các công cụ và bộ phận máy móc, nên đây là một nhà máy.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Help Wanted: Machinist\nCamerley Corp. of Napier, New Zealand, has an opening for an experienced machinist to work in our 15,000-square-metre fabrication plant, which produces custom tools and machine parts for a variety of industries. Requirements for the position include:\n• Ability to collaborate with engineers to fabricate tools and machine parts\n• Familiarity with specialised equipment\n• Skill with doing precision work based on technical drawings\n• Comfort working with metal and various other materials, such as wood and plastics\n• Ability to work both independently and as part of a team\nTo apply, please send CV and two references to jobs@camerleycorp.co.nz."
+ },
+ {
+  "id": "TS-012-P7-016",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What material is NOT specified in the advertisement?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Metal"
+   },
+   {
+    "label": "B",
+    "content": "Glass"
+   },
+   {
+    "label": "C",
+    "content": "Wood"
+   },
+   {
+    "label": "D",
+    "content": "Plastic"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Quảng cáo liệt kê các vật liệu là kim loại (metal), gỗ (wood) và nhựa (plastics). Không có đề cập đến thủy tinh (glass).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Help Wanted: Machinist\nCamerley Corp. of Napier, New Zealand, has an opening for an experienced machinist to work in our 15,000-square-metre fabrication plant, which produces custom tools and machine parts for a variety of industries. Requirements for the position include:\n• Ability to collaborate with engineers to fabricate tools and machine parts\n• Familiarity with specialised equipment\n• Skill with doing precision work based on technical drawings\n• Comfort working with metal and various other materials, such as wood and plastics\n• Ability to work both independently and as part of a team\nTo apply, please send CV and two references to jobs@camerleycorp.co.nz."
+ },
+ {
+  "id": "TS-012-P7-017",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is listed as a requirement for the job?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Training in business-to-business sales"
+   },
+   {
+    "label": "B",
+    "content": "A university degree in engineering"
+   },
+   {
+    "label": "C",
+    "content": "Experience creating technical drawings"
+   },
+   {
+    "label": "D",
+    "content": "The ability to work alone and with others"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Yêu cầu cuối cùng trong danh sách là khả năng làm việc cả độc lập (independently) và theo nhóm (as part of a team).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Help Wanted: Machinist\nCamerley Corp. of Napier, New Zealand, has an opening for an experienced machinist to work in our 15,000-square-metre fabrication plant, which produces custom tools and machine parts for a variety of industries. Requirements for the position include:\n• Ability to collaborate with engineers to fabricate tools and machine parts\n• Familiarity with specialised equipment\n• Skill with doing precision work based on technical drawings\n• Comfort working with metal and various other materials, such as wood and plastics\n• Ability to work both independently and as part of a team\nTo apply, please send CV and two references to jobs@camerleycorp.co.nz."
+ },
+ {
+  "id": "TS-012-P7-018",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is probably true about the writers?",
+  "options": [
+   {
+    "label": "A",
+    "content": "They are registering people for a bike-to-work program."
+   },
+   {
+    "label": "B",
+    "content": "They are coordinating a public event."
+   },
+   {
+    "label": "C",
+    "content": "They work for a city parks department."
+   },
+   {
+    "label": "D",
+    "content": "They are members of a club that walks in a park."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Dựa trên các tin nhắn về việc dọn dẹp biển quảng cáo hội chợ và chuẩn bị bàn đón khách, họ đang cùng điều phối một sự kiện.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Lanie McGinnis (7:16 A.M.): Good morning, Kelly and Matthieu. I removed the Funfair preregistration signs from the park entrances, but I think I forgot one at the north gate. Could one of you check to see if it is still there?\nKelly Sen (7:18 A.M.): Hi, Lanie. I rode my bike to the park earlier this morning to help put pamphlets and other materials on the welcome table in the main tent. But I could head over to that entrance now since there are other volunteers here who can finish up.\nLanie McGinnis (7:19 A.M.): That would be great, since I'm going to be on the other side of the park at the south entrance for a while. I'm meeting some representatives from the city parks department.\nMatthieu Herman (7:21 A.M.): I've got it, Kelly. I just arrived at the north entrance and will take down the sign we hung here. Lanie, what would you like me to do with it?\nLanie McGinnis (7:22 A.M.): Perfect! Can you put it with the others behind the welcome table in the main tent? I will pick them up later today. We can change the dates and use them again next year.\nMatthieu Herman (7:23 A.M.): Will do. Here's to a successful fair!"
+ },
+ {
+  "id": "TS-012-P7-019",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What was Ms. Sen doing?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Erecting a tent"
+   },
+   {
+    "label": "B",
+    "content": "Designing pamphlets"
+   },
+   {
+    "label": "C",
+    "content": "Placing items on the welcome table"
+   },
+   {
+    "label": "D",
+    "content": "Attaching signs to the park entrance"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Kelly Sen nói cô ấy đến công viên để 'help put pamphlets and other materials on the welcome table'.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Lanie McGinnis (7:16 A.M.): Good morning, Kelly and Matthieu. I removed the Funfair preregistration signs from the park entrances, but I think I forgot one at the north gate. Could one of you check to see if it is still there?\nKelly Sen (7:18 A.M.): Hi, Lanie. I rode my bike to the park earlier this morning to help put pamphlets and other materials on the welcome table in the main tent. But I could head over to that entrance now since there are other volunteers here who can finish up.\nLanie McGinnis (7:19 A.M.): That would be great, since I'm going to be on the other side of the park at the south entrance for a while. I'm meeting some representatives from the city parks department.\nMatthieu Herman (7:21 A.M.): I've got it, Kelly. I just arrived at the north entrance and will take down the sign we hung here. Lanie, what would you like me to do with it?\nLanie McGinnis (7:22 A.M.): Perfect! Can you put it with the others behind the welcome table in the main tent? I will pick them up later today. We can change the dates and use them again next year.\nMatthieu Herman (7:23 A.M.): Will do. Here's to a successful fair!"
+ },
+ {
+  "id": "TS-012-P7-020",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "At 7:21 A.M., what does Mr. Herman mean when he writes, “I’ve got it, Kelly”?",
+  "options": [
+   {
+    "label": "A",
+    "content": "He has already taken down a sign."
+   },
+   {
+    "label": "B",
+    "content": "He will perform a task requested by Ms. McGinnis."
+   },
+   {
+    "label": "C",
+    "content": "He will return unused materials to the office."
+   },
+   {
+    "label": "D",
+    "content": "He realizes that Ms. Sen does not need help."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Anh ấy nói mình đã có mặt ở cổng phía Bắc và sẽ đảm nhận việc gỡ biển hiệu thay cho Kelly.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Lanie McGinnis (7:16 A.M.): Good morning, Kelly and Matthieu. I removed the Funfair preregistration signs from the park entrances, but I think I forgot one at the north gate. Could one of you check to see if it is still there?\nKelly Sen (7:18 A.M.): Hi, Lanie. I rode my bike to the park earlier this morning to help put pamphlets and other materials on the welcome table in the main tent. But I could head over to that entrance now since there are other volunteers here who can finish up.\nLanie McGinnis (7:19 A.M.): That would be great, since I'm going to be on the other side of the park at the south entrance for a while. I'm meeting some representatives from the city parks department.\nMatthieu Herman (7:21 A.M.): I've got it, Kelly. I just arrived at the north entrance and will take down the sign we hung here. Lanie, what would you like me to do with it?\nLanie McGinnis (7:22 A.M.): Perfect! Can you put it with the others behind the welcome table in the main tent? I will pick them up later today. We can change the dates and use them again next year.\nMatthieu Herman (7:23 A.M.): Will do. Here's to a successful fair!"
+ },
+ {
+  "id": "TS-012-P7-021",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What does Ms. McGinnis instruct Mr. Herman to do?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Help her locate the main tent"
+   },
+   {
+    "label": "B",
+    "content": "Meet her at the south entrance"
+   },
+   {
+    "label": "C",
+    "content": "Write down participants ’ information"
+   },
+   {
+    "label": "D",
+    "content": "Leave an object behind the welcome table"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Lanie bảo Matthieu để tấm biển vừa gỡ xuống vào phía sau bàn chào mừng ở lều chính.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Lanie McGinnis (7:16 A.M.): Good morning, Kelly and Matthieu. I removed the Funfair preregistration signs from the park entrances, but I think I forgot one at the north gate. Could one of you check to see if it is still there?\nKelly Sen (7:18 A.M.): Hi, Lanie. I rode my bike to the park earlier this morning to help put pamphlets and other materials on the welcome table in the main tent. But I could head over to that entrance now since there are other volunteers here who can finish up.\nLanie McGinnis (7:19 A.M.): That would be great, since I'm going to be on the other side of the park at the south entrance for a while. I'm meeting some representatives from the city parks department.\nMatthieu Herman (7:21 A.M.): I've got it, Kelly. I just arrived at the north entrance and will take down the sign we hung here. Lanie, what would you like me to do with it?\nLanie McGinnis (7:22 A.M.): Perfect! Can you put it with the others behind the welcome table in the main tent? I will pick them up later today. We can change the dates and use them again next year.\nMatthieu Herman (7:23 A.M.): Will do. Here's to a successful fair!"
+ },
+ {
+  "id": "TS-012-P7-022",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "The word “exceeded” in paragraph 1, line 2 is closest in meaning to",
+  "options": [
+   {
+    "label": "A",
+    "content": "surpassed"
+   },
+   {
+    "label": "B",
+    "content": "excelled"
+   },
+   {
+    "label": "C",
+    "content": "perfected"
+   },
+   {
+    "label": "D",
+    "content": "decided"
+   }
+  ],
+  "correct": "A",
+  "explanation": "'Exceeded' có nghĩa là vượt quá, tương đương với 'surpassed'.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zealandia Airlines Fact Sheet for Fiscal Year Ending 30 June\nService Levels and Capacity: Zealandia Airlines provides regional service among four cities. In each case, average flight capacity exceeded the company goal of 85 percent.\nOn-Time Performance (OTP): For the purpose of measuring OTP, flights are considered “on time” when they reach their destination within fifteen minutes of the scheduled arrival time. Regional airlines are subject to fines when OTP drops below 50 percent. The following chart shows Zealandia ’s commendable OTP rates for the recent fiscal year.\nCity OTP\nKelton Falls 52%\nGrangerton 68%\nSatcherville 79%\nBarbour City 64%\nProposed Expansion: Zealandia Airlines provides regional passenger air service and is seeking to expand its fleet to begin providing commercial airfreight delivery. Establishing this service is a component of the airline’s growth plan and corporate vision. The airline is currently in negotiations with aviation authorities to explore options.\nTerminal and Service Improvements: Zealandia Airlines is participating in discussions with airport management about comprehensive renovations to its passenger lounge and cafe and has offered to commit $5 million from its budget to the project. Company executives have also finalized a plan and committed funds to overhaul its rewards program. The initiative supports the aim to be a leading service provider among similar airlines and capture an increasing percentage of the market share."
+ },
+ {
+  "id": "TS-012-P7-023",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "According to the fact sheet, what is true about Zealandia Airlines?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Executives aim to improve its flight capacity."
+   },
+   {
+    "label": "B",
+    "content": "Most of its flights arrive at their destinations on time."
+   },
+   {
+    "label": "C",
+    "content": "It is larger than 85 percent of regional airlines."
+   },
+   {
+    "label": "D",
+    "content": "It has received a fine from aviation authorities."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Theo bảng OTP, tất cả các thành phố đều có tỷ lệ trên 50%, nghĩa là phần lớn chuyến bay đến đúng giờ.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zealandia Airlines Fact Sheet for Fiscal Year Ending 30 June\nService Levels and Capacity: Zealandia Airlines provides regional service among four cities. In each case, average flight capacity exceeded the company goal of 85 percent.\nOn-Time Performance (OTP): For the purpose of measuring OTP, flights are considered “on time” when they reach their destination within fifteen minutes of the scheduled arrival time. Regional airlines are subject to fines when OTP drops below 50 percent. The following chart shows Zealandia ’s commendable OTP rates for the recent fiscal year.\nCity OTP\nKelton Falls 52%\nGrangerton 68%\nSatcherville 79%\nBarbour City 64%\nProposed Expansion: Zealandia Airlines provides regional passenger air service and is seeking to expand its fleet to begin providing commercial airfreight delivery. Establishing this service is a component of the airline’s growth plan and corporate vision. The airline is currently in negotiations with aviation authorities to explore options.\nTerminal and Service Improvements: Zealandia Airlines is participating in discussions with airport management about comprehensive renovations to its passenger lounge and cafe and has offered to commit $5 million from its budget to the project. Company executives have also finalized a plan and committed funds to overhaul its rewards program. The initiative supports the aim to be a leading service provider among similar airlines and capture an increasing percentage of the market share."
+ },
+ {
+  "id": "TS-012-P7-024",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What does Zealandia Airlines want to provide in the future?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Private charter flights"
+   },
+   {
+    "label": "B",
+    "content": "Luxury travel tours"
+   },
+   {
+    "label": "C",
+    "content": "Commercial shipping"
+   },
+   {
+    "label": "D",
+    "content": "Aircraft leasing"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Đoạn 'Proposed Expansion' ghi hãng muốn bắt đầu cung cấp 'commercial airfreight delivery' (vận chuyển hàng hóa thương mại).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zealandia Airlines Fact Sheet for Fiscal Year Ending 30 June\nService Levels and Capacity: Zealandia Airlines provides regional service among four cities. In each case, average flight capacity exceeded the company goal of 85 percent.\nOn-Time Performance (OTP): For the purpose of measuring OTP, flights are considered “on time” when they reach their destination within fifteen minutes of the scheduled arrival time. Regional airlines are subject to fines when OTP drops below 50 percent. The following chart shows Zealandia ’s commendable OTP rates for the recent fiscal year.\nCity OTP\nKelton Falls 52%\nGrangerton 68%\nSatcherville 79%\nBarbour City 64%\nProposed Expansion: Zealandia Airlines provides regional passenger air service and is seeking to expand its fleet to begin providing commercial airfreight delivery. Establishing this service is a component of the airline’s growth plan and corporate vision. The airline is currently in negotiations with aviation authorities to explore options.\nTerminal and Service Improvements: Zealandia Airlines is participating in discussions with airport management about comprehensive renovations to its passenger lounge and cafe and has offered to commit $5 million from its budget to the project. Company executives have also finalized a plan and committed funds to overhaul its rewards program. The initiative supports the aim to be a leading service provider among similar airlines and capture an increasing percentage of the market share."
+ },
+ {
+  "id": "TS-012-P7-025",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "How does Zealandia Airlines hope to improve service for passengers?",
+  "options": [
+   {
+    "label": "A",
+    "content": "By remodeling the passenger waiting area"
+   },
+   {
+    "label": "B",
+    "content": "By moving to a new location within the terminal"
+   },
+   {
+    "label": "C",
+    "content": "By upgrading the seating inside the aircraft"
+   },
+   {
+    "label": "D",
+    "content": "By offering improved meal service on all flights"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Văn bản đề cập đến việc cải tạo phòng chờ (lounge) và quán cà phê cho hành khách.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zealandia Airlines Fact Sheet for Fiscal Year Ending 30 June\nService Levels and Capacity: Zealandia Airlines provides regional service among four cities. In each case, average flight capacity exceeded the company goal of 85 percent.\nOn-Time Performance (OTP): For the purpose of measuring OTP, flights are considered “on time” when they reach their destination within fifteen minutes of the scheduled arrival time. Regional airlines are subject to fines when OTP drops below 50 percent. The following chart shows Zealandia ’s commendable OTP rates for the recent fiscal year.\nCity OTP\nKelton Falls 52%\nGrangerton 68%\nSatcherville 79%\nBarbour City 64%\nProposed Expansion: Zealandia Airlines provides regional passenger air service and is seeking to expand its fleet to begin providing commercial airfreight delivery. Establishing this service is a component of the airline’s growth plan and corporate vision. The airline is currently in negotiations with aviation authorities to explore options.\nTerminal and Service Improvements: Zealandia Airlines is participating in discussions with airport management about comprehensive renovations to its passenger lounge and cafe and has offered to commit $5 million from its budget to the project. Company executives have also finalized a plan and committed funds to overhaul its rewards program. The initiative supports the aim to be a leading service provider among similar airlines and capture an increasing percentage of the market share."
+ },
+ {
+  "id": "TS-012-P7-026",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is Logiens Transport ’ s role?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To recommend ways to reduce pollution"
+   },
+   {
+    "label": "B",
+    "content": "To acquire financing for a purchase"
+   },
+   {
+    "label": "C",
+    "content": "To familiarize train engineers with new technology"
+   },
+   {
+    "label": "D",
+    "content": "To manufacture and service the replacement fleet"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Northeast Railways đã ký hợp đồng với Logiens để cung cấp đoàn tàu mới và thỏa thuận bảo trì dài hạn.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Northeast Railways expects to spend $5.6 billion to replace its fleet of 65 passenger trains, many of which are more than 40 years old. — [1] —. The company has entered into a contract with Logiens Transport for a new fleet of trains that will operate on electrified tracks when those track systems are available and on diesel fuel at all other times. — [2] —. The trains will be capable of traveling at speeds of up to 130 kilometers per hour and will produce far less pollution than the current fleet does.\nLogiens also promises an enhanced passenger experience. The train cars will have panoramic windows, improved ventilation, and wider aisles. — [3] —. Northeast’s contract with Logiens also includes equipment and replacement parts and provides a long-term service agreement. — [4] —."
+ },
+ {
+  "id": "TS-012-P7-027",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What information is included in the press release?",
+  "options": [
+   {
+    "label": "A",
+    "content": "The date on which the trains will be delivered"
+   },
+   {
+    "label": "B",
+    "content": "The budget for replacing the current trains"
+   },
+   {
+    "label": "C",
+    "content": "The annual cost for parts and service"
+   },
+   {
+    "label": "D",
+    "content": "The number of passenger seats in each train car"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Thông cáo báo chí nêu rõ ngân sách dự kiến là 5.6 tỷ đô la.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Northeast Railways expects to spend $5.6 billion to replace its fleet of 65 passenger trains, many of which are more than 40 years old. — [1] —. The company has entered into a contract with Logiens Transport for a new fleet of trains that will operate on electrified tracks when those track systems are available and on diesel fuel at all other times. — [2] —. The trains will be capable of traveling at speeds of up to 130 kilometers per hour and will produce far less pollution than the current fleet does.\nLogiens also promises an enhanced passenger experience. The train cars will have panoramic windows, improved ventilation, and wider aisles. — [3] —. Northeast’s contract with Logiens also includes equipment and replacement parts and provides a long-term service agreement. — [4] —."
+ },
+ {
+  "id": "TS-012-P7-028",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is suggested about the tracks that Northeast Railways uses?",
+  "options": [
+   {
+    "label": "A",
+    "content": "They are owned by the government."
+   },
+   {
+    "label": "B",
+    "content": "They are not shared with freight trains."
+   },
+   {
+    "label": "C",
+    "content": "Most are in urgent need of repair."
+   },
+   {
+    "label": "D",
+    "content": "Some are not electrified."
+   }
+  ],
+  "correct": "D",
+  "explanation": "Đoạn văn nói tàu sẽ chạy bằng điện khi có sẵn hệ thống điện và chạy bằng dầu diesel vào những lúc khác, suy ra có những đoạn đường ray chưa điện hóa.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Northeast Railways expects to spend $5.6 billion to replace its fleet of 65 passenger trains, many of which are more than 40 years old. — [1] —. The company has entered into a contract with Logiens Transport for a new fleet of trains that will operate on electrified tracks when those track systems are available and on diesel fuel at all other times. — [2] —. The trains will be capable of traveling at speeds of up to 130 kilometers per hour and will produce far less pollution than the current fleet does.\nLogiens also promises an enhanced passenger experience. The train cars will have panoramic windows, improved ventilation, and wider aisles. — [3] —. Northeast’s contract with Logiens also includes equipment and replacement parts and provides a long-term service agreement. — [4] —."
+ },
+ {
+  "id": "TS-012-P7-029",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "In which of the positions marked [1], [ 2 ], [ 3] , and [4 ] does the following sentence best belong? “Each reclinable seat will have an individual power supply and USB port. ”",
+  "options": [
+   {
+    "label": "A",
+    "content": "[1]"
+   },
+   {
+    "label": "B",
+    "content": "[2]"
+   },
+   {
+    "label": "C",
+    "content": "[3]"
+   },
+   {
+    "label": "D",
+    "content": "[4]"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Câu này nói về tiện nghi ghế ngồi, nên đặt sau đoạn mô tả về trải nghiệm hành khách (cửa sổ, thông gió, lối đi).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Northeast Railways expects to spend $5.6 billion to replace its fleet of 65 passenger trains, many of which are more than 40 years old. — [1] —. The company has entered into a contract with Logiens Transport for a new fleet of trains that will operate on electrified tracks when those track systems are available and on diesel fuel at all other times. — [2] —. The trains will be capable of traveling at speeds of up to 130 kilometers per hour and will produce far less pollution than the current fleet does.\nLogiens also promises an enhanced passenger experience. The train cars will have panoramic windows, improved ventilation, and wider aisles. — [3] —. Northeast’s contract with Logiens also includes equipment and replacement parts and provides a long-term service agreement. — [4] —."
+ },
+ {
+  "id": "TS-012-P7-030",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is indicated about Seonwu Law Firm?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It focuses on real estate law."
+   },
+   {
+    "label": "B",
+    "content": "It has a large advertising budget."
+   },
+   {
+    "label": "C",
+    "content": "It serves clients across the country."
+   },
+   {
+    "label": "D",
+    "content": "It is headquartered in San Francisco."
+   }
+  ],
+  "correct": "D",
+  "explanation": "Trong email có nhắc đến việc nhân viên thường làm việc tại trụ sở ở San Francisco.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: headquartersstaff@seonwulawfirm.com\nFrom: iqalandar@seonwulawfirm.com\nDate: October 1, 9:39 A.M.\nSubject: Remote work setup\nAttachment: Equipment request form\n\nDear Associates,\nOn December 3, our headquarters will close for a month for renovation. As all of you normally work out of these offices in San Francisco, please plan to work off-site and collect everything you may need (your laptop, files, etc.) before December 1. Entry to the building will be restricted after that date.\n\nIf you would like a temporary space at our San Jose offices, please e-mail me, and I will reserve one for you. If you plan to work from home and need additional equipment (such as a printer), fill out the attached form from our technology department and return it to me. A representative of that department will mail the equipment to your home address. We realize this work on the building is a disruption, but timing it with our slow season should make the situation easier. We think you will be happy with the changes when the building reopens on January 5. If you have any questions, please reach out to me.\nBest,\nIan Qalandar, Manager\nSeonwu Law Firm\n(415) 555-0177\n\n---Equipment Request Form---\nEmployee name: Jason Kang\nEmployee ID: 102899\nE-mail: jkang@seonwulawfirm.com\nDate to receive: November 30\nEquipment: desktop monitor, printer\n\n(This section is to be completed by the technology department.)\nRequest completed: Yes\nRequest filled by: Aubrey Smith\nEquipment serial numbers: VN3902556, MXE96400\nDate sent: November 27 via overnight mail"
+ },
+ {
+  "id": "TS-012-P7-031",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "According to the e-mail, what will the technology department do?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Install updates on employee laptops"
+   },
+   {
+    "label": "B",
+    "content": "Send office equipment to employees"
+   },
+   {
+    "label": "C",
+    "content": "Train employees to use new software"
+   },
+   {
+    "label": "D",
+    "content": "Place equipment in renovated offices"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Email nêu rõ đại diện bộ phận công nghệ sẽ gửi thiết bị đến địa chỉ nhà của nhân viên.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: headquartersstaff@seonwulawfirm.com\nFrom: iqalandar@seonwulawfirm.com\nDate: October 1, 9:39 A.M.\nSubject: Remote work setup\nAttachment: Equipment request form\n\nDear Associates,\nOn December 3, our headquarters will close for a month for renovation. As all of you normally work out of these offices in San Francisco, please plan to work off-site and collect everything you may need (your laptop, files, etc.) before December 1. Entry to the building will be restricted after that date.\n\nIf you would like a temporary space at our San Jose offices, please e-mail me, and I will reserve one for you. If you plan to work from home and need additional equipment (such as a printer), fill out the attached form from our technology department and return it to me. A representative of that department will mail the equipment to your home address. We realize this work on the building is a disruption, but timing it with our slow season should make the situation easier. We think you will be happy with the changes when the building reopens on January 5. If you have any questions, please reach out to me.\nBest,\nIan Qalandar, Manager\nSeonwu Law Firm\n(415) 555-0177\n\n---Equipment Request Form---\nEmployee name: Jason Kang\nEmployee ID: 102899\nE-mail: jkang@seonwulawfirm.com\nDate to receive: November 30\nEquipment: desktop monitor, printer\n\n(This section is to be completed by the technology department.)\nRequest completed: Yes\nRequest filled by: Aubrey Smith\nEquipment serial numbers: VN3902556, MXE96400\nDate sent: November 27 via overnight mail"
+ },
+ {
+  "id": "TS-012-P7-032",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is suggested in the e-mail about Seonwu Law Firm?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It plans to expand its operations."
+   },
+   {
+    "label": "B",
+    "content": "It mostly employs remote workers."
+   },
+   {
+    "label": "C",
+    "content": "It is usually not busy in December."
+   },
+   {
+    "label": "D",
+    "content": "It handles many high-profile cases."
+   }
+  ],
+  "correct": "C",
+  "explanation": "Ian Qalandar đề cập rằng việc thi công diễn ra vào tháng 12 vì đó là 'slow season' (mùa thấp điểm/ít việc).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: headquartersstaff@seonwulawfirm.com\nFrom: iqalandar@seonwulawfirm.com\nDate: October 1, 9:39 A.M.\nSubject: Remote work setup\nAttachment: Equipment request form\n\nDear Associates,\nOn December 3, our headquarters will close for a month for renovation. As all of you normally work out of these offices in San Francisco, please plan to work off-site and collect everything you may need (your laptop, files, etc.) before December 1. Entry to the building will be restricted after that date.\n\nIf you would like a temporary space at our San Jose offices, please e-mail me, and I will reserve one for you. If you plan to work from home and need additional equipment (such as a printer), fill out the attached form from our technology department and return it to me. A representative of that department will mail the equipment to your home address. We realize this work on the building is a disruption, but timing it with our slow season should make the situation easier. We think you will be happy with the changes when the building reopens on January 5. If you have any questions, please reach out to me.\nBest,\nIan Qalandar, Manager\nSeonwu Law Firm\n(415) 555-0177\n\n---Equipment Request Form---\nEmployee name: Jason Kang\nEmployee ID: 102899\nE-mail: jkang@seonwulawfirm.com\nDate to receive: November 30\nEquipment: desktop monitor, printer\n\n(This section is to be completed by the technology department.)\nRequest completed: Yes\nRequest filled by: Aubrey Smith\nEquipment serial numbers: VN3902556, MXE96400\nDate sent: November 27 via overnight mail"
+ },
+ {
+  "id": "TS-012-P7-033",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What can be concluded about Mr. Kang?",
+  "options": [
+   {
+    "label": "A",
+    "content": "He chose not to work in the San Jose office."
+   },
+   {
+    "label": "B",
+    "content": "He is a senior partner at the Seonwu Law Firm."
+   },
+   {
+    "label": "C",
+    "content": "He will be on vacation after November."
+   },
+   {
+    "label": "D",
+    "content": "He has requested a larger office."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Jason Kang điền đơn yêu cầu thiết bị gửi về nhà, nghĩa là anh ấy chọn làm việc tại nhà thay vì đến văn phòng ở San Jose.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: headquartersstaff@seonwulawfirm.com\nFrom: iqalandar@seonwulawfirm.com\nDate: October 1, 9:39 A.M.\nSubject: Remote work setup\nAttachment: Equipment request form\n\nDear Associates,\nOn December 3, our headquarters will close for a month for renovation. As all of you normally work out of these offices in San Francisco, please plan to work off-site and collect everything you may need (your laptop, files, etc.) before December 1. Entry to the building will be restricted after that date.\n\nIf you would like a temporary space at our San Jose offices, please e-mail me, and I will reserve one for you. If you plan to work from home and need additional equipment (such as a printer), fill out the attached form from our technology department and return it to me. A representative of that department will mail the equipment to your home address. We realize this work on the building is a disruption, but timing it with our slow season should make the situation easier. We think you will be happy with the changes when the building reopens on January 5. If you have any questions, please reach out to me.\nBest,\nIan Qalandar, Manager\nSeonwu Law Firm\n(415) 555-0177\n\n---Equipment Request Form---\nEmployee name: Jason Kang\nEmployee ID: 102899\nE-mail: jkang@seonwulawfirm.com\nDate to receive: November 30\nEquipment: desktop monitor, printer\n\n(This section is to be completed by the technology department.)\nRequest completed: Yes\nRequest filled by: Aubrey Smith\nEquipment serial numbers: VN3902556, MXE96400\nDate sent: November 27 via overnight mail"
+ },
+ {
+  "id": "TS-012-P7-034",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What most likely is Ms. Smith ’ s occupation?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Lawyer"
+   },
+   {
+    "label": "B",
+    "content": "Office manager"
+   },
+   {
+    "label": "C",
+    "content": "Technical support staff"
+   },
+   {
+    "label": "D",
+    "content": "Administrative assistant"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Aubrey Smith là người điền vào phần dành cho bộ phận công nghệ (technology department) trong đơn yêu cầu thiết bị.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: headquartersstaff@seonwulawfirm.com\nFrom: iqalandar@seonwulawfirm.com\nDate: October 1, 9:39 A.M.\nSubject: Remote work setup\nAttachment: Equipment request form\n\nDear Associates,\nOn December 3, our headquarters will close for a month for renovation. As all of you normally work out of these offices in San Francisco, please plan to work off-site and collect everything you may need (your laptop, files, etc.) before December 1. Entry to the building will be restricted after that date.\n\nIf you would like a temporary space at our San Jose offices, please e-mail me, and I will reserve one for you. If you plan to work from home and need additional equipment (such as a printer), fill out the attached form from our technology department and return it to me. A representative of that department will mail the equipment to your home address. We realize this work on the building is a disruption, but timing it with our slow season should make the situation easier. We think you will be happy with the changes when the building reopens on January 5. If you have any questions, please reach out to me.\nBest,\nIan Qalandar, Manager\nSeonwu Law Firm\n(415) 555-0177\n\n---Equipment Request Form---\nEmployee name: Jason Kang\nEmployee ID: 102899\nE-mail: jkang@seonwulawfirm.com\nDate to receive: November 30\nEquipment: desktop monitor, printer\n\n(This section is to be completed by the technology department.)\nRequest completed: Yes\nRequest filled by: Aubrey Smith\nEquipment serial numbers: VN3902556, MXE96400\nDate sent: November 27 via overnight mail"
+ },
+ {
+  "id": "TS-012-P7-035",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is one problem mentioned about factory tours in the article?",
+  "options": [
+   {
+    "label": "A",
+    "content": "They are often rescheduled at the last minute."
+   },
+   {
+    "label": "B",
+    "content": "They give the same information to all types of visitors."
+   },
+   {
+    "label": "C",
+    "content": "They fail to supply protective gear that fits everyone."
+   },
+   {
+    "label": "D",
+    "content": "They allow groups that are too large."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Đoạn văn đề cập rằng quá nhiều công ty mắc sai lầm khi áp dụng cách tiếp cận 'one-size-fits-all' (một kiểu cho tất cả) thay vì tùy chỉnh theo nhu cầu khách.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Planning a Tour of Your Facility by Didiane Lessard\nPlant tours are commonplace in many factories, but not all tours are as effective as they could be. Too many companies make the mistake of adopting a one-size-fits all approach rather than tailoring tours to maximize their usefulness...\n\nTo: Masumi Toda <mt978@vidatechsystems.com>\nFrom: Ana Miftaroski <am680@vidatechsystems.com>\nDate: May 1\nSubject: Upcoming plant tour\nAttachment: Lessard article\nHi, Masumi, I have attached an April 15 article by Didiane Lessard to help you plan the tour we will be giving later this month. I especially agree with the section on timing. Since the tour, by necessity, will have to cover the entire plant, it must be conducted as efficiently as possible. As for a guide, I would have recommended Nathan Zarate, but he will be traveling on May 21. Perhaps Maja Clausen could do it. She has also worked here for several years; she is very knowledgeable about our facility, processes, policies, and procedures. I am confident that she will be able to handle any questions the visitors might ask."
+ },
+ {
+  "id": "TS-012-P7-036",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "According to the article, what is the maximum amount of time that a tour should stay in one area?",
+  "options": [
+   {
+    "label": "A",
+    "content": "10 minutes"
+   },
+   {
+    "label": "B",
+    "content": "20 minutes"
+   },
+   {
+    "label": "C",
+    "content": "30 minutes"
+   },
+   {
+    "label": "D",
+    "content": "60 minutes"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Bài báo nêu rằng ngay cả căn phòng ấn tượng nhất cũng trở nên nhàm chán sau nửa giờ (30 phút).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Planning a Tour of Your Facility by Didiane Lessard\nPlant tours are commonplace in many factories, but not all tours are as effective as they could be. Too many companies make the mistake of adopting a one-size-fits all approach rather than tailoring tours to maximize their usefulness...\n\nTo: Masumi Toda <mt978@vidatechsystems.com>\nFrom: Ana Miftaroski <am680@vidatechsystems.com>\nDate: May 1\nSubject: Upcoming plant tour\nAttachment: Lessard article\nHi, Masumi, I have attached an April 15 article by Didiane Lessard to help you plan the tour we will be giving later this month. I especially agree with the section on timing. Since the tour, by necessity, will have to cover the entire plant, it must be conducted as efficiently as possible. As for a guide, I would have recommended Nathan Zarate, but he will be traveling on May 21. Perhaps Maja Clausen could do it. She has also worked here for several years; she is very knowledgeable about our facility, processes, policies, and procedures. I am confident that she will be able to handle any questions the visitors might ask."
+ },
+ {
+  "id": "TS-012-P7-037",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is NOT indicated in the article as a characteristic of a good tour guide?",
+  "options": [
+   {
+    "label": "A",
+    "content": "A friendly personality"
+   },
+   {
+    "label": "B",
+    "content": "The ability to stand for long periods"
+   },
+   {
+    "label": "C",
+    "content": "A deep knowledge of processes"
+   },
+   {
+    "label": "D",
+    "content": "The ability to pay close attention to time"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Bài báo nói rằng khách tham quan sẽ mệt khi đứng lâu, nhưng không nêu khả năng đứng lâu là đặc điểm cần thiết của người hướng dẫn.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Planning a Tour of Your Facility by Didiane Lessard\nPlant tours are commonplace in many factories, but not all tours are as effective as they could be. Too many companies make the mistake of adopting a one-size-fits all approach rather than tailoring tours to maximize their usefulness...\n\nTo: Masumi Toda <mt978@vidatechsystems.com>\nFrom: Ana Miftaroski <am680@vidatechsystems.com>\nDate: May 1\nSubject: Upcoming plant tour\nAttachment: Lessard article\nHi, Masumi, I have attached an April 15 article by Didiane Lessard to help you plan the tour we will be giving later this month. I especially agree with the section on timing. Since the tour, by necessity, will have to cover the entire plant, it must be conducted as efficiently as possible. As for a guide, I would have recommended Nathan Zarate, but he will be traveling on May 21. Perhaps Maja Clausen could do it. She has also worked here for several years; she is very knowledgeable about our facility, processes, policies, and procedures. I am confident that she will be able to handle any questions the visitors might ask."
+ },
+ {
+  "id": "TS-012-P7-038",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "For whom is Mr. Toda most likely planning a tour?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Casual tourists"
+   },
+   {
+    "label": "B",
+    "content": "New employees"
+   },
+   {
+    "label": "C",
+    "content": "Potential investors"
+   },
+   {
+    "label": "D",
+    "content": "Safety inspectors"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Ana Miftaroski đề cập rằng chuyến tham quan 'bắt buộc phải bao quát toàn bộ nhà máy'. Bài báo nói rằng việc đi xem mọi phần của nhà máy chỉ dành cho mục đích thanh tra an toàn (safety inspection).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Planning a Tour of Your Facility by Didiane Lessard\nPlant tours are commonplace in many factories, but not all tours are as effective as they could be. Too many companies make the mistake of adopting a one-size-fits all approach rather than tailoring tours to maximize their usefulness...\n\nTo: Masumi Toda <mt978@vidatechsystems.com>\nFrom: Ana Miftaroski <am680@vidatechsystems.com>\nDate: May 1\nSubject: Upcoming plant tour\nAttachment: Lessard article\nHi, Masumi, I have attached an April 15 article by Didiane Lessard to help you plan the tour we will be giving later this month. I especially agree with the section on timing. Since the tour, by necessity, will have to cover the entire plant, it must be conducted as efficiently as possible. As for a guide, I would have recommended Nathan Zarate, but he will be traveling on May 21. Perhaps Maja Clausen could do it. She has also worked here for several years; she is very knowledgeable about our facility, processes, policies, and procedures. I am confident that she will be able to handle any questions the visitors might ask."
+ },
+ {
+  "id": "TS-012-P7-039",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "When is the tour scheduled to take place?",
+  "options": [
+   {
+    "label": "A",
+    "content": "On April 15"
+   },
+   {
+    "label": "B",
+    "content": "On April 21"
+   },
+   {
+    "label": "C",
+    "content": "On May 1"
+   },
+   {
+    "label": "D",
+    "content": "On May 21"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Ana nói rằng cô không thể đề xuất Nathan Zarate vì anh ta sẽ đi du lịch vào ngày 21 tháng 5, ngụ ý đó là ngày diễn ra chuyến tham quan.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Planning a Tour of Your Facility by Didiane Lessard\nPlant tours are commonplace in many factories, but not all tours are as effective as they could be. Too many companies make the mistake of adopting a one-size-fits all approach rather than tailoring tours to maximize their usefulness...\n\nTo: Masumi Toda <mt978@vidatechsystems.com>\nFrom: Ana Miftaroski <am680@vidatechsystems.com>\nDate: May 1\nSubject: Upcoming plant tour\nAttachment: Lessard article\nHi, Masumi, I have attached an April 15 article by Didiane Lessard to help you plan the tour we will be giving later this month. I especially agree with the section on timing. Since the tour, by necessity, will have to cover the entire plant, it must be conducted as efficiently as possible. As for a guide, I would have recommended Nathan Zarate, but he will be traveling on May 21. Perhaps Maja Clausen could do it. She has also worked here for several years; she is very knowledgeable about our facility, processes, policies, and procedures. I am confident that she will be able to handle any questions the visitors might ask."
+ },
+ {
+  "id": "TS-012-P7-040",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What does the Web page indicate about Zone Catering?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It specializes in providing food at music concerts."
+   },
+   {
+    "label": "B",
+    "content": "It has lower prices than its competitors."
+   },
+   {
+    "label": "C",
+    "content": "It recently moved its corporate office to California."
+   },
+   {
+    "label": "D",
+    "content": "It provides customer support 24 hours a day."
+   }
+  ],
+  "correct": "D",
+  "explanation": "Trang web nêu rõ 'We even offer 24-hour support'.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zone Catering provides food trucks at film and television production sites throughout California. Just let us know where you need a food truck and how many people you need to feed. We can serve your entire cast and crew. Our trucks also move with you and your team if you are shooting scenes in various locations.\nAt Zone Catering, we offer a wide variety of cuisines. All the fruits and vegetables we use in our menus are grown here in California...\n\nZone Catering Food Trucks Schedule Date: June 10\nFilm: Trappings | Location: Harpin Lot | Contact: Erin Begg\nFilm: Make the Meeting | Location: 192 Laredo Street | Contact: Mark Lillo\n...\n\nTestimonial: June 10—I have been in the acting business for over 25 years... That was not the case today when we were filming Make the Meeting. The food truck had excellent coffee and the strawberries in the large fruit salad were so fresh and tasty! Even though there was a long line of customers on an extremely hot and uncomfortable day, the server was able to get everyone’s food ready quickly."
+ },
+ {
+  "id": "TS-012-P7-041",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "According to the schedule, who was the contact person for the filming of Trappings on June 10?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Erin Begg"
+   },
+   {
+    "label": "B",
+    "content": "Mark Lillo"
+   },
+   {
+    "label": "C",
+    "content": "Jun-Seo Kil"
+   },
+   {
+    "label": "D",
+    "content": "Donna Gawason"
+   }
+  ],
+  "correct": "A",
+  "explanation": "Dựa trên bảng lịch trình, người liên hệ cho phim 'Trappings' là Erin Begg.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zone Catering provides food trucks at film and television production sites throughout California. Just let us know where you need a food truck and how many people you need to feed. We can serve your entire cast and crew. Our trucks also move with you and your team if you are shooting scenes in various locations.\nAt Zone Catering, we offer a wide variety of cuisines. All the fruits and vegetables we use in our menus are grown here in California...\n\nZone Catering Food Trucks Schedule Date: June 10\nFilm: Trappings | Location: Harpin Lot | Contact: Erin Begg\nFilm: Make the Meeting | Location: 192 Laredo Street | Contact: Mark Lillo\n...\n\nTestimonial: June 10—I have been in the acting business for over 25 years... That was not the case today when we were filming Make the Meeting. The food truck had excellent coffee and the strawberries in the large fruit salad were so fresh and tasty! Even though there was a long line of customers on an extremely hot and uncomfortable day, the server was able to get everyone’s food ready quickly."
+ },
+ {
+  "id": "TS-012-P7-042",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "Where was the food truck that Mr. Chiodo visited?",
+  "options": [
+   {
+    "label": "A",
+    "content": "At Harpin Lot"
+   },
+   {
+    "label": "B",
+    "content": "At 192 Laredo Street"
+   },
+   {
+    "label": "C",
+    "content": "At Tandor Fields"
+   },
+   {
+    "label": "D",
+    "content": "At Spectrum Hall"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Ông Chiodo đề cập ông đang đóng phim 'Make the Meeting'. Theo lịch trình, phim này được quay tại 192 Laredo Street.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zone Catering provides food trucks at film and television production sites throughout California. Just let us know where you need a food truck and how many people you need to feed. We can serve your entire cast and crew. Our trucks also move with you and your team if you are shooting scenes in various locations.\nAt Zone Catering, we offer a wide variety of cuisines. All the fruits and vegetables we use in our menus are grown here in California...\n\nZone Catering Food Trucks Schedule Date: June 10\nFilm: Trappings | Location: Harpin Lot | Contact: Erin Begg\nFilm: Make the Meeting | Location: 192 Laredo Street | Contact: Mark Lillo\n...\n\nTestimonial: June 10—I have been in the acting business for over 25 years... That was not the case today when we were filming Make the Meeting. The food truck had excellent coffee and the strawberries in the large fruit salad were so fresh and tasty! Even though there was a long line of customers on an extremely hot and uncomfortable day, the server was able to get everyone’s food ready quickly."
+ },
+ {
+  "id": "TS-012-P7-043",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is probably true about the salad Mr. Chiodo ordered?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It had an unusual taste."
+   },
+   {
+    "label": "B",
+    "content": "It was too big for him to finish."
+   },
+   {
+    "label": "C",
+    "content": "It included several types of berries."
+   },
+   {
+    "label": "D",
+    "content": "It contained fruit grown in California."
+   }
+  ],
+  "correct": "D",
+  "explanation": "Ông Chiodo nói món salad dâu tây rất tươi ngon, và trang web của Zone Catering khẳng định tất cả rau quả họ dùng đều được trồng ở California.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zone Catering provides food trucks at film and television production sites throughout California. Just let us know where you need a food truck and how many people you need to feed. We can serve your entire cast and crew. Our trucks also move with you and your team if you are shooting scenes in various locations.\nAt Zone Catering, we offer a wide variety of cuisines. All the fruits and vegetables we use in our menus are grown here in California...\n\nZone Catering Food Trucks Schedule Date: June 10\nFilm: Trappings | Location: Harpin Lot | Contact: Erin Begg\nFilm: Make the Meeting | Location: 192 Laredo Street | Contact: Mark Lillo\n...\n\nTestimonial: June 10—I have been in the acting business for over 25 years... That was not the case today when we were filming Make the Meeting. The food truck had excellent coffee and the strawberries in the large fruit salad were so fresh and tasty! Even though there was a long line of customers on an extremely hot and uncomfortable day, the server was able to get everyone’s food ready quickly."
+ },
+ {
+  "id": "TS-012-P7-044",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is indicated about the food truck server in the testimonial?",
+  "options": [
+   {
+    "label": "A",
+    "content": "She had difficulty working in the heat."
+   },
+   {
+    "label": "B",
+    "content": "She paints murals in her spare time."
+   },
+   {
+    "label": "C",
+    "content": "She prepares orders quickly."
+   },
+   {
+    "label": "D",
+    "content": "She has worked in her industry for 25 years."
+   }
+  ],
+  "correct": "C",
+  "explanation": "Lời chứng thực nói rằng 'the server was able to get everyone’s food ready quickly' (người phục vụ có thể chuẩn bị thức ăn cho mọi người nhanh chóng).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Zone Catering provides food trucks at film and television production sites throughout California. Just let us know where you need a food truck and how many people you need to feed. We can serve your entire cast and crew. Our trucks also move with you and your team if you are shooting scenes in various locations.\nAt Zone Catering, we offer a wide variety of cuisines. All the fruits and vegetables we use in our menus are grown here in California...\n\nZone Catering Food Trucks Schedule Date: June 10\nFilm: Trappings | Location: Harpin Lot | Contact: Erin Begg\nFilm: Make the Meeting | Location: 192 Laredo Street | Contact: Mark Lillo\n...\n\nTestimonial: June 10—I have been in the acting business for over 25 years... That was not the case today when we were filming Make the Meeting. The food truck had excellent coffee and the strawberries in the large fruit salad were so fresh and tasty! Even though there was a long line of customers on an extremely hot and uncomfortable day, the server was able to get everyone’s food ready quickly."
+ },
+ {
+  "id": "TS-012-P7-045",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is the purpose of the first e-mail?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To schedule a meeting with a client"
+   },
+   {
+    "label": "B",
+    "content": "To ask for assistance with a project"
+   },
+   {
+    "label": "C",
+    "content": "To seek a suggestion from a colleague"
+   },
+   {
+    "label": "D",
+    "content": "To congratulate a colleague who was promoted"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Trong email đầu tiên, Julia hỏi Hae-won về việc khách sạn nào nên đặt ở Dallas cho hội nghị.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Hae-won Jeong | From: Julia Laurent | Date: July 28 | Subject: Dallas hotels | Attachment: List of downtown accommodations\nDear Hae-won, I plan to attend the National Digital Marketing Conference in October. I know you have traveled to this conference in Dallas many times... I would like to know which property you would recommend...\n\nList of Downtown Accommodations:\n- The Oaktree Hotel: $204/night\n- Alessi Dallas Hotel: $155/night\n- Bonita Suites Hotel: $125/night\n\nTo: Julia Laurent | From: Hae-won Jeong | Date: July 29 | Subject: RE: Dallas hotels\nDear Julia, I will be attending the National Digital Marketing Conference this year as well!... I will be staying at the Alessi Dallas Hotel. It is the closest to the convention center... For you, I would suggest the one you already seem to prefer. It so happens that the newcomers' reception will be held in one of the event rooms there... we are advised not to book hotels with rates that exceed our company's limit of $175/night."
+ },
+ {
+  "id": "TS-012-P7-046",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "According to the list, what is suggested about the Bonita Suites Hotel?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It is located in a historic building."
+   },
+   {
+    "label": "B",
+    "content": "It features resources for business travelers."
+   },
+   {
+    "label": "C",
+    "content": "It is near many downtown tourist attractions."
+   },
+   {
+    "label": "D",
+    "content": "It charges a daily fee for parking."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Danh sách ghi khách sạn này có văn phòng trong mỗi phòng và trung tâm máy tính ở sảnh, phục vụ cho khách đi công tác.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Hae-won Jeong | From: Julia Laurent | Date: July 28 | Subject: Dallas hotels | Attachment: List of downtown accommodations\nDear Hae-won, I plan to attend the National Digital Marketing Conference in October. I know you have traveled to this conference in Dallas many times... I would like to know which property you would recommend...\n\nList of Downtown Accommodations:\n- The Oaktree Hotel: $204/night\n- Alessi Dallas Hotel: $155/night\n- Bonita Suites Hotel: $125/night\n\nTo: Julia Laurent | From: Hae-won Jeong | Date: July 29 | Subject: RE: Dallas hotels\nDear Julia, I will be attending the National Digital Marketing Conference this year as well!... I will be staying at the Alessi Dallas Hotel. It is the closest to the convention center... For you, I would suggest the one you already seem to prefer. It so happens that the newcomers' reception will be held in one of the event rooms there... we are advised not to book hotels with rates that exceed our company's limit of $175/night."
+ },
+ {
+  "id": "TS-012-P7-047",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is true about Ms. Jeong?",
+  "options": [
+   {
+    "label": "A",
+    "content": "She has not attended a marketing conference before."
+   },
+   {
+    "label": "B",
+    "content": "She prefers the Alessi Dallas Hotel for its restaurant."
+   },
+   {
+    "label": "C",
+    "content": "She thinks Ms. Laurent should stay at the Bonita Suites Hotel."
+   },
+   {
+    "label": "D",
+    "content": "She works for a different company than Ms. Laurent."
+   }
+  ],
+  "correct": "C",
+  "explanation": "Hae-won nói: 'For you, I would suggest the one you already seem to prefer' (Đối với bạn, tôi gợi ý cái mà bạn có vẻ đã thích sẵn), mà Julia đã nêu là Bonita Suites.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Hae-won Jeong | From: Julia Laurent | Date: July 28 | Subject: Dallas hotels | Attachment: List of downtown accommodations\nDear Hae-won, I plan to attend the National Digital Marketing Conference in October. I know you have traveled to this conference in Dallas many times... I would like to know which property you would recommend...\n\nList of Downtown Accommodations:\n- The Oaktree Hotel: $204/night\n- Alessi Dallas Hotel: $155/night\n- Bonita Suites Hotel: $125/night\n\nTo: Julia Laurent | From: Hae-won Jeong | Date: July 29 | Subject: RE: Dallas hotels\nDear Julia, I will be attending the National Digital Marketing Conference this year as well!... I will be staying at the Alessi Dallas Hotel. It is the closest to the convention center... For you, I would suggest the one you already seem to prefer. It so happens that the newcomers' reception will be held in one of the event rooms there... we are advised not to book hotels with rates that exceed our company's limit of $175/night."
+ },
+ {
+  "id": "TS-012-P7-048",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "Why would Ms. Jeong most likely suggest that Ms. Laurent avoid the Oaktree Hotel?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It does not have an on-site restaurant."
+   },
+   {
+    "label": "B",
+    "content": "Its room rate exceeds the company’s limit."
+   },
+   {
+    "label": "C",
+    "content": "Its clients are mostly noisy tourists."
+   },
+   {
+    "label": "D",
+    "content": "It is too far from the conference location."
+   }
+  ],
+  "correct": "B",
+  "explanation": "Hae-won nhắc nhở rằng công ty giới hạn mức giá $175/đêm, trong khi Oaktree Hotel có giá $204/đêm.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Hae-won Jeong | From: Julia Laurent | Date: July 28 | Subject: Dallas hotels | Attachment: List of downtown accommodations\nDear Hae-won, I plan to attend the National Digital Marketing Conference in October. I know you have traveled to this conference in Dallas many times... I would like to know which property you would recommend...\n\nList of Downtown Accommodations:\n- The Oaktree Hotel: $204/night\n- Alessi Dallas Hotel: $155/night\n- Bonita Suites Hotel: $125/night\n\nTo: Julia Laurent | From: Hae-won Jeong | Date: July 29 | Subject: RE: Dallas hotels\nDear Julia, I will be attending the National Digital Marketing Conference this year as well!... I will be staying at the Alessi Dallas Hotel. It is the closest to the convention center... For you, I would suggest the one you already seem to prefer. It so happens that the newcomers' reception will be held in one of the event rooms there... we are advised not to book hotels with rates that exceed our company's limit of $175/night."
+ },
+ {
+  "id": "TS-012-P7-049",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What does the second e-mail indicate about the National Digital Marketing Conference?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Its location changes to a different city each year."
+   },
+   {
+    "label": "B",
+    "content": "Last year it was held at the Alessi Dallas Hotel."
+   },
+   {
+    "label": "C",
+    "content": "Ms. Jeong is on its executive planning committee."
+   },
+   {
+    "label": "D",
+    "content": "It includes an event for first-time attendees."
+   }
+  ],
+  "correct": "D",
+  "explanation": "Hae-won gợi ý Julia tham gia 'newcomers' reception' (buổi tiếp đón người mới) vào đêm đầu tiên.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "To: Hae-won Jeong | From: Julia Laurent | Date: July 28 | Subject: Dallas hotels | Attachment: List of downtown accommodations\nDear Hae-won, I plan to attend the National Digital Marketing Conference in October. I know you have traveled to this conference in Dallas many times... I would like to know which property you would recommend...\n\nList of Downtown Accommodations:\n- The Oaktree Hotel: $204/night\n- Alessi Dallas Hotel: $155/night\n- Bonita Suites Hotel: $125/night\n\nTo: Julia Laurent | From: Hae-won Jeong | Date: July 29 | Subject: RE: Dallas hotels\nDear Julia, I will be attending the National Digital Marketing Conference this year as well!... I will be staying at the Alessi Dallas Hotel. It is the closest to the convention center... For you, I would suggest the one you already seem to prefer. It so happens that the newcomers' reception will be held in one of the event rooms there... we are advised not to book hotels with rates that exceed our company's limit of $175/night."
+ },
+ {
+  "id": "TS-012-P7-050",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What is one purpose of the letter?",
+  "options": [
+   {
+    "label": "A",
+    "content": "To list customer benefits"
+   },
+   {
+    "label": "B",
+    "content": "To alert customers to a price change"
+   },
+   {
+    "label": "C",
+    "content": "To confirm the start of a service"
+   },
+   {
+    "label": "D",
+    "content": "To describe changes to a Web site"
+   }
+  ],
+  "correct": "C",
+  "explanation": "Bức thư bắt đầu bằng: 'This letter is to confirm that Dover Water Supply will begin service at your address...'.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Dover Water Supply, 7400 Rodney Boulevard, Dover, DE 19904. March 12.\nDear Ms. Cam, This letter is to confirm that Dover Water Supply will begin service at your address on Wednesday, April 6. Your customer account number, which is the same as your water meter number, is DWS4289. Billing is monthly, and payment is due on the fifteenth of each month...\n\nTo: questions@doverwatersupply.com | From: Na-Ri Cam | Date: March 17 | Subject: Account number DWS4289\nHello, I am in the process of moving to my new home in Dover. I received a letter stating that my water service will start on April 6... Also, I tried to use your secure page, but it gave me an error message saying that my account number was not valid. I will need your help in getting online access by the May 15 due date.\n\nTo: Na-Ri Cam | From: Customer Support | Date: March 18 | Subject: RE: Account number DWS4289\nDear Ms. Cam, Your water might look cloudy on April 6 when you first turn on your faucets. We recommend that you keep the water running until it is clear before you use it... I apologize for the problem you described. I have fixed it, so you should not have any further trouble."
+ },
+ {
+  "id": "TS-012-P7-051",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What most likely does Ms. Cam want to do online on May 15?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Request a new water meter"
+   },
+   {
+    "label": "B",
+    "content": "Complete a customer survey"
+   },
+   {
+    "label": "C",
+    "content": "Report a leaking pipe"
+   },
+   {
+    "label": "D",
+    "content": "Pay a water bill"
+   }
+  ],
+  "correct": "D",
+  "explanation": "Lá thư nói rằng hóa đơn có thể được thanh toán trực tuyến và hạn chót là ngày 15 hàng tháng.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Dover Water Supply, 7400 Rodney Boulevard, Dover, DE 19904. March 12.\nDear Ms. Cam, This letter is to confirm that Dover Water Supply will begin service at your address on Wednesday, April 6. Your customer account number, which is the same as your water meter number, is DWS4289. Billing is monthly, and payment is due on the fifteenth of each month...\n\nTo: questions@doverwatersupply.com | From: Na-Ri Cam | Date: March 17 | Subject: Account number DWS4289\nHello, I am in the process of moving to my new home in Dover. I received a letter stating that my water service will start on April 6... Also, I tried to use your secure page, but it gave me an error message saying that my account number was not valid. I will need your help in getting online access by the May 15 due date.\n\nTo: Na-Ri Cam | From: Customer Support | Date: March 18 | Subject: RE: Account number DWS4289\nDear Ms. Cam, Your water might look cloudy on April 6 when you first turn on your faucets. We recommend that you keep the water running until it is clear before you use it... I apologize for the problem you described. I have fixed it, so you should not have any further trouble."
+ },
+ {
+  "id": "TS-012-P7-052",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "According to the second e-mail, what should Ms. Cam do on April 6?",
+  "options": [
+   {
+    "label": "A",
+    "content": "Boil her drinking water for five minutes"
+   },
+   {
+    "label": "B",
+    "content": "Allow her water to run for some time"
+   },
+   {
+    "label": "C",
+    "content": "Contact her neighbors"
+   },
+   {
+    "label": "D",
+    "content": "Request a service visit"
+   }
+  ],
+  "correct": "B",
+  "explanation": "Trong email phản hồi, hỗ trợ khách hàng khuyên cô nên 'keep the water running until it is clear'.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Dover Water Supply, 7400 Rodney Boulevard, Dover, DE 19904. March 12.\nDear Ms. Cam, This letter is to confirm that Dover Water Supply will begin service at your address on Wednesday, April 6. Your customer account number, which is the same as your water meter number, is DWS4289. Billing is monthly, and payment is due on the fifteenth of each month...\n\nTo: questions@doverwatersupply.com | From: Na-Ri Cam | Date: March 17 | Subject: Account number DWS4289\nHello, I am in the process of moving to my new home in Dover. I received a letter stating that my water service will start on April 6... Also, I tried to use your secure page, but it gave me an error message saying that my account number was not valid. I will need your help in getting online access by the May 15 due date.\n\nTo: Na-Ri Cam | From: Customer Support | Date: March 18 | Subject: RE: Account number DWS4289\nDear Ms. Cam, Your water might look cloudy on April 6 when you first turn on your faucets. We recommend that you keep the water running until it is clear before you use it... I apologize for the problem you described. I have fixed it, so you should not have any further trouble."
+ },
+ {
+  "id": "TS-012-P7-053",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "In the second e-mail, what is indicated about the water from Dover Water Supply?",
+  "options": [
+   {
+    "label": "A",
+    "content": "It is safe to use."
+   },
+   {
+    "label": "B",
+    "content": "It is measured every month."
+   },
+   {
+    "label": "C",
+    "content": "It is distributed to many cities."
+   },
+   {
+    "label": "D",
+    "content": "It is naturally free of minerals."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Nhân viên hỗ trợ khẳng định: 'I assure you that the water is not harmful in any way' (Tôi cam đoan rằng nước không có hại theo bất kỳ cách nào).",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Dover Water Supply, 7400 Rodney Boulevard, Dover, DE 19904. March 12.\nDear Ms. Cam, This letter is to confirm that Dover Water Supply will begin service at your address on Wednesday, April 6. Your customer account number, which is the same as your water meter number, is DWS4289. Billing is monthly, and payment is due on the fifteenth of each month...\n\nTo: questions@doverwatersupply.com | From: Na-Ri Cam | Date: March 17 | Subject: Account number DWS4289\nHello, I am in the process of moving to my new home in Dover. I received a letter stating that my water service will start on April 6... Also, I tried to use your secure page, but it gave me an error message saying that my account number was not valid. I will need your help in getting online access by the May 15 due date.\n\nTo: Na-Ri Cam | From: Customer Support | Date: March 18 | Subject: RE: Account number DWS4289\nDear Ms. Cam, Your water might look cloudy on April 6 when you first turn on your faucets. We recommend that you keep the water running until it is clear before you use it... I apologize for the problem you described. I have fixed it, so you should not have any further trouble."
+ },
+ {
+  "id": "TS-012-P7-054",
+  "testSetId": "TS-012",
+  "part": 7,
+  "content": "What can be concluded about Ms. Hizon?",
+  "options": [
+   {
+    "label": "A",
+    "content": "She resolved the issue with Ms. Cam’s account."
+   },
+   {
+    "label": "B",
+    "content": "She sent a copy of the water analysis to Ms. Cam."
+   },
+   {
+    "label": "C",
+    "content": "She will offer Ms. Cam a discount for new customers."
+   },
+   {
+    "label": "D",
+    "content": "She lives in Ms. Cam’s area."
+   }
+  ],
+  "correct": "A",
+  "explanation": "Ramona Hizon nói rằng cô đã sửa lỗi liên quan đến việc số tài khoản không hợp lệ: 'I apologize for the problem you described. I have fixed it...'.",
+  "difficulty": "medium",
+  "topic": null,
+  "passageText": "Dover Water Supply, 7400 Rodney Boulevard, Dover, DE 19904. March 12.\nDear Ms. Cam, This letter is to confirm that Dover Water Supply will begin service at your address on Wednesday, April 6. Your customer account number, which is the same as your water meter number, is DWS4289. Billing is monthly, and payment is due on the fifteenth of each month...\n\nTo: questions@doverwatersupply.com | From: Na-Ri Cam | Date: March 17 | Subject: Account number DWS4289\nHello, I am in the process of moving to my new home in Dover. I received a letter stating that my water service will start on April 6... Also, I tried to use your secure page, but it gave me an error message saying that my account number was not valid. I will need your help in getting online access by the May 15 due date.\n\nTo: Na-Ri Cam | From: Customer Support | Date: March 18 | Subject: RE: Account number DWS4289\nDear Ms. Cam, Your water might look cloudy on April 6 when you first turn on your faucets. We recommend that you keep the water running until it is clear before you use it... I apologize for the problem you described. I have fixed it, so you should not have any further trouble."
  }
 ]
