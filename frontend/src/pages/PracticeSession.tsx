@@ -27,7 +27,6 @@ export default function PracticeSession() {
   const [resultById, setResultById] = useState<Record<string, AnswerResult>>({});
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
-  const [rate, setRate] = useState(1);
   const [score, setScore] = useState({ correct: 0, done: 0 });
   const [finished, setFinished] = useState(false);
   // Audio cấp Part (Part 1–4): fallback khi câu/đoạn chưa có audio riêng.
@@ -124,10 +123,7 @@ export default function PracticeSession() {
               // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
               audioUrl={q.audioUrl || partMedia[q.part]}
               ttsText={ttsTextFor(q)}
-              rate={rate}
-              onRateChange={setRate}
               stopKey={q.id}
-              variant="practice"
               onError={setError}
             />
           )}

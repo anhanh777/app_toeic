@@ -24,7 +24,6 @@ export default function MockTest() {
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
-  const [rate, setRate] = useState(1);
   const submittedRef = useRef(false);
   // Audio cấp Part (Part 1–4): fallback khi câu/đoạn chưa có audio riêng.
   const [partMedia, setPartMedia] = useState<Record<number, string>>({});
@@ -174,10 +173,7 @@ export default function MockTest() {
               // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
               audioUrl={q.audioUrl || partMedia[q.part]}
               ttsText={ttsTextFor(q)}
-              rate={rate}
-              onRateChange={setRate}
               stopKey={q.id}
-              variant="mock"
               onError={setError}
             />
           )}

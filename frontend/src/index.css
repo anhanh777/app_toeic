@@ -441,30 +441,30 @@ footer{
    margin 1rem của .btn-row mặc định */
 .paper-q > .btn-row{margin:.55rem 0 0}
 
-/* Hộp nghe/TTS trong tờ đề: 1 hàng gọn thay vì thẻ .card to —
-   nút phát + audio + tốc độ nằm cùng hàng (xuống dòng khi màn hẹp).
-   Dòng tiêu đề ("Nghe đoạn audio" / "Âm thanh đọc bằng giọng máy") được
-   ẩn khi đã có audio hoặc nút phát; chỉ giữ ghi chú "chưa có file audio"
-   khi hộp trống không có gì để phát — lúc đó components.tsx render khối
-   .audio-missing rõ ràng (nút "Nghe" to + chữ rõ), xem quy tắc dưới. */
+/* Hộp nghe/TTS trong tờ đề: CHỈ 1 NÚT duy nhất — bấm để phát, bấm lại
+   để tạm dừng, phát xong thành "Nghe lại". Không còn thanh điều khiển
+   mặc định của <audio> (thẻ audio ẩn), không còn hàng nhiều nút TTS,
+   không còn thanh trượt tốc độ (tốc độ cố định 1x). Chỉ thêm 1 vạch
+   tiến trình mỏng khi có file audio. Nút nằm ở đầu khối nội dung bên
+   trái (sau ảnh, trước chữ câu hỏi). */
 .paper .audio-box{
-  display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .6rem;
-  padding:.45rem .6rem; margin:.4rem 0; border-radius:10px; box-shadow:none;
+  display:flex; flex-direction:column; align-items:stretch; gap:.4rem;
+  padding:.5rem .6rem; margin:.4rem 0; border-radius:10px; box-shadow:none;
 }
-.paper .audio-box audio{flex:1 1 200px; min-width:0; height:36px}
-.paper .audio-box .btn-row{margin:0; gap:.4rem}
-.paper .audio-box .btn{padding:.35rem .65rem; font-size:.85rem; border-radius:9px; box-shadow:none}
-.paper .audio-box label{margin:0; font-size:.82rem}
-.paper .audio-box input[type='range']{width:90px}
-.paper .audio-box .muted{margin:0; font-size:.82rem}
-.paper .audio-box:has(audio) > .muted,
-.paper .audio-box:has(.btn-row) > .muted{display:none}
+.paper .audio-box audio{display:none}
+.paper .audio-box .listen-btn{
+  padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:10px;
+  box-shadow:none; text-align:left;
+}
+.listen-progress{height:4px; border-radius:2px; background:#DCE9FB; overflow:hidden}
+.listen-progress i{display:block; height:100%; background:var(--accent); border-radius:2px}
 /* Hộp nghe khi chưa có gì để phát (.audio-missing, render từ
    components.tsx): phải RÕ RÀNG, nổi bật như khi có audio — viền vàng
    đứt nét + nền vàng nhạt, nút "🔊 Nghe" to dễ thấy. Nút disabled nhưng
    giữ nguyên độ rõ (không mờ đi như .btn:disabled mặc định) để trông như
-   cố ý, không như bị thiếu/mất nút. Dòng chữ dùng .audio-missing-text
-   (không phải .muted) để không bị quy tắc :has(.btn-row) ẩn đi. */
+   cố ý, không như bị thiếu/mất nút. Hàng nút giữ gọn (không cộng margin
+   1rem của .btn-row mặc định). */
+.paper .audio-box.audio-missing .btn-row{margin:0}
 .audio-box.audio-missing{
   border:1.5px dashed #D8A24A !important; background:#FFF7E6 !important;
 }

@@ -63,77 +63,96 @@ export function RankChip({ rank }: { rank: number }) {
 
 /**
  * Trình phát audio cho phần Nghe (Part 1–4), dùng chung cho
- * PracticeSession và MockTest.
+ * PracticeSession và MockTest — CHỈ CÓ ĐÚNG 1 NÚT DUY NHẤT cho mỗi khối
+ * audio: bấm để phát, bấm lại để tạm dừng, phát xong nút thành
+ * "Nghe lại". Không còn thanh điều khiển mặc định của <audio>, không
+ * còn hàng nhiều nút TTS, không còn thanh trượt tốc độ (tốc độ cố
+ * định 1x). Thẻ <audio> ẩn, điều khiển bằng state React.
  * - Có audioUrl (file mp3 đã upload / AI sinh, gồm audio của đoạn cho
- *   Part 3/4 do backend gộp): trình phát HTML5 + thanh trượt tốc độ.
- * - Không có audioUrl: giữ nguyên nút TTS cũ làm fallback.
+ *   Part 3/4 do backend gộp): 1 nút + 1 vạch tiến trình mỏng.
+ * - Không có audioUrl: TTS (giọng máy) cũng chỉ 1 nút, cùng nhãn như
+ *   khi có file.
  * - Không có audioUrl lẫn chữ để đọc TTS (câu chỉ-nghe chưa có file):
- *   KHÔNG hiện ghi chú mờ nữa — hiện khối RÕ RÀNG (.audio-missing) với
- *   nút "🔊 Nghe" to, dễ thấy (disabled, bấm không làm gì) + dòng chữ rõ
- *   "Chưa có file audio cho Part này" + hướng dẫn admin upload. Nút phải
- *   trông như cố ý, không được trông như bị thiếu/mất.
+ *   khối .audio-missing với nút "🔊 Nghe" disabled — giữ nguyên.
  * Khi stopKey đổi (chuyển câu) thì dừng cả audio element lẫn TTS.
  */
 export function ListeningAudio({
-  audioUrl, ttsText, rate, onRateChange, stopKey, variant, onError,
+  audioUrl, ttsText, stopKey, onError,
 }: {
   audioUrl?: string | null;
   ttsText: string;
-  rate: number;
-  onRateChange: (r: number) => void;
   /** Đổi giá trị này khi chuyển câu — audio đang phát sẽ bị dừng. */
   stopKey: unknown;
-  /** 'practice': đủ nút TTS (phát / tạm dừng / tiếp tục / nghe lại). 'mock': chỉ phát / dừng. */
-  variant: 'practice' | 'mock';
   onError?: (e: unknown) => void;
 }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [playing, setPlaying] = useState(false);
+  // idle: chưa phát | playing: đang phát | paused: đã tạm dừng | ended: phát xong
+  const [status, setStatus] = useState<'idle' | 'playing' | 'paused' | 'ended'>('idle');
+  const [progress, setProgress] = useState(0);
+  // Thế hệ phát: để callback onEnd của TTS cũ không đổi nhầm trạng thái
+  // sau khi đã dừng (stopKey đổi / unmount).
+  const genRef = useRef(0);
 
   const stopAll = () => {
+    genRef.current += 1;
     audioRef.current?.pause();
     stopSpeak();
-    setPlaying(false);
+    setStatus('idle');
+    setProgress(0);
   };
 
   useEffect(() => { stopAll(); }, [stopKey]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => () => stopAll(), []); // eslint-disable-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    if (audioRef.current) audioRef.current.playbackRate = rate;
-  }, [rate, audioUrl]);
 
+  const playFile = () => {
+    const el = audioRef.current;
+    if (!el) return;
+    if (status === 'ended') { el.currentTime = 0; setProgress(0); }
+    el.play().catch(() => setStatus('idle'));
+    setStatus('playing');
+  };
+  const pauseFile = () => {
+    audioRef.current?.pause();
+    setStatus('paused');
+  };
   const playTts = () => {
     if (!ttsSupported()) {
       onError?.(new Error('Trình duyệt của bạn không hỗ trợ đọc giọng máy (TTS).'));
       return;
     }
-    setPlaying(true);
-    speak(ttsText, rate, () => setPlaying(false));
+    const gen = genRef.current;
+    setStatus('playing');
+    speak(ttsText, 1, () => { if (genRef.current === gen) setStatus('ended'); });
   };
+
+  const toggle = () => {
+    if (status === 'playing') { if (audioUrl) pauseFile(); else { pauseSpeak(); setStatus('paused'); } return; }
+    if (status === 'paused') { if (audioUrl) playFile(); else { resumeSpeak(); setStatus('playing'); } return; }
+    if (audioUrl) playFile(); else playTts();
+  };
+
+  const label =
+    status === 'playing' ? '⏸ Tạm dừng'
+    : status === 'paused' ? '▶ Tiếp tục'
+    : status === 'ended' ? '↻ Nghe lại'
+    : '🔊 Nghe';
 
   if (audioUrl) {
     return (
-      <div className="card audio-box">
-        <p className="muted">🎧 Nghe đoạn audio</p>
+      <div className="card audio-box audio-single">
         <audio
           ref={audioRef}
-          controls
           src={audioUrl}
           preload="metadata"
-          style={{ width: '100%' }}
-        />
-        <div className="btn-row">
-          <button className="btn secondary" onClick={stopAll}>⏹ Dừng</button>
-        </div>
-        <label htmlFor="audio-rate">Tốc độ phát: {rate.toFixed(2)}x</label>
-        <input
-          id="audio-rate" type="range" min={0.5} max={1.5} step={0.25} value={rate}
-          onChange={e => {
-            const r = Number(e.target.value);
-            onRateChange(r);
-            if (audioRef.current) audioRef.current.playbackRate = r;
+          style={{ display: 'none' }}
+          onEnded={() => { setStatus('ended'); setProgress(1); }}
+          onTimeUpdate={e => {
+            const el = e.currentTarget;
+            if (el.duration) setProgress(el.currentTime / el.duration);
           }}
         />
+        <button className="btn listen-btn" onClick={toggle}>{label}</button>
+        <div className="listen-progress" aria-hidden="true"><i style={{ width: `${Math.round(progress * 100)}%` }} /></div>
       </div>
     );
   }
@@ -157,22 +176,8 @@ export function ListeningAudio({
     );
   }
   return (
-    <div className="card audio-box">
-      <p className="muted">Âm thanh đọc bằng giọng máy (TTS)</p>
-      <div className="btn-row">
-        <button className={variant === 'practice' ? 'btn' : 'btn secondary'} onClick={playTts}>{playing ? '🔊 Đang đọc…' : '▶ Phát âm thanh'}</button>
-        {variant === 'practice' ? (
-          <>
-            <button className="btn secondary" onClick={() => { pauseSpeak(); setPlaying(false); }}>⏸ Tạm dừng</button>
-            <button className="btn secondary" onClick={() => { resumeSpeak(); setPlaying(true); }}>▶ Tiếp tục</button>
-            <button className="btn secondary" onClick={playTts}>↻ Nghe lại</button>
-          </>
-        ) : (
-          <button className="btn secondary" onClick={stopAll}>⏹ Dừng</button>
-        )}
-      </div>
-      <label htmlFor="rate">Tốc độ đọc: {rate.toFixed(2)}x</label>
-      <input id="rate" type="range" min={0.5} max={1.5} step={0.25} value={rate} onChange={e => onRateChange(Number(e.target.value))} />
+    <div className="card audio-box audio-single">
+      <button className="btn listen-btn" onClick={toggle}>{label}</button>
     </div>
   );
 }
