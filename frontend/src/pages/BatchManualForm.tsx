@@ -33,6 +33,44 @@ interface Cluster {
 const emptyOptRow = (): OptRow => ({ content: '', optA: '', optB: '', optC: '', optD: '', correct: 'A', imageUrl: '' });
 const makeCluster = (n: number): Cluster => ({ title: '', script: '', passageText: '', questions: Array.from({ length: n }, emptyOptRow) });
 
+// Ô dán link ảnh (module-level để state không mất khi form re-render):
+// hoạt động KỂ CẢ khi Cloudinary chưa cấu hình — không gọi upload, chỉ
+// gán URL vào câu. Dùng cho ảnh đã có sẵn trên Cloudinary (vd 6 ảnh
+// Part 1 của Đề số 3) mà chưa cần chờ cấu hình upload.
+// Hợp lệ: bắt đầu bằng https:// và phần trước dấu ?/# kết thúc bằng
+// .png/.jpg/.jpeg/.webp/.gif. Link sai chỉ báo lỗi, không ghi đè ảnh đã có.
+function PasteImageUrl({ setUrl }: { setUrl: (url: string) => void }) {
+  const [text, setText] = useState('');
+  const [err, setErr] = useState('');
+  const apply = () => {
+    const url = text.trim();
+    const noQuery = url.split(/[?#]/)[0];
+    const ok = url.startsWith('https://') && /\.(png|jpe?g|webp|gif)$/i.test(noQuery);
+    if (!ok) {
+      setErr('Link ảnh không hợp lệ — cần link https:// tới file .png/.jpg/.jpeg/.webp/.gif');
+      return;
+    }
+    setErr('');
+    setText('');
+    setUrl(url);
+  };
+  return (
+    <div>
+      <div className="paste-url-row">
+        <input
+          type="url"
+          value={text}
+          placeholder="hoặc dán link ảnh (https://…)"
+          onChange={e => setText(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); apply(); } }}
+        />
+        <button type="button" className="btn secondary" onClick={apply}>Dán</button>
+      </div>
+      {err && <p className="error-text">{err}</p>}
+    </div>
+  );
+}
+
 function optionsOf(row: OptRow, labels: string[]) {
   const byLabel: Record<string, string> = { A: row.optA, B: row.optB, C: row.optC, D: row.optD };
   return labels.map(label => ({ label, content: byLabel[label] }));
@@ -222,7 +260,7 @@ export default function BatchManualForm({
   // hàng "Đáp án:" + pill radio cùng 1 dòng — không còn hộp panel riêng.
   const optRowFields = (
     row: OptRow, setRow: (r: OptRow) => void, num: number,
-    opts: { withImage?: boolean; imageKey?: string; onImage?: (f: File) => void; contentOptional?: boolean } = {},
+    opts: { withImage?: boolean; imageKey?: string; onImage?: (f: File) => void; onPasteUrl?: (url: string) => void; contentOptional?: boolean } = {},
   ) => (
     <div className="paper-q" key={num}>
       <label><span className="q-num">{num}.</span>Nội dung câu hỏi{opts.contentOptional ? ' (không bắt buộc — chỗ trống đã nằm trong đoạn văn)' : ''}</label>
@@ -245,6 +283,7 @@ export default function BatchManualForm({
           <div className="btn-row">
             {opts.imageKey && opts.onImage && fileInput(opts.imageKey, opts.onImage)}
           </div>
+          {opts.onPasteUrl && <PasteImageUrl setUrl={opts.onPasteUrl} />}
           {row.imageUrl && <img src={row.imageUrl} alt="Ảnh minh họa" style={{ maxWidth: 280, borderRadius: 10 }} />}
         </>
       )}
@@ -283,6 +322,7 @@ export default function BatchManualForm({
             withImage: opts.withImage,
             imageKey: key,
             onImage: f => void onImage(f, key, url => setRow({ ...row, imageUrl: url })),
+            onPasteUrl: url => setRow({ ...row, imageUrl: url }),
             contentOptional: part === 6,
           });
         })}
@@ -360,6 +400,7 @@ export default function BatchManualForm({
                 <span className="q-num">Câu {stdNum(1, i)}</span>
                 <label>Ảnh minh họa</label>
                 <div className="btn-row">{fileInput(key, f => void onImage(f, key, url => setP1Rows(p1Rows.map((r, j) => j === i ? { ...r, imageUrl: url } : r))))}</div>
+                <PasteImageUrl setUrl={url => setP1Rows(p1Rows.map((r, j) => j === i ? { ...r, imageUrl: url } : r))} />
                 {row.imageUrl && <img src={row.imageUrl} alt="Ảnh minh họa" />}
                 <div className="answer-line">
                   <label>Đáp án:</label>
