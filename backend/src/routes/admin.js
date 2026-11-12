@@ -96,6 +96,10 @@ router.put('/admin/questions/:id', (req, res) => {
     difficulty: merged.difficulty,
     options: merged.options.map((o) => ({ label: o.label, content: o.content })),
     correct: merged.correct,
+    // Cho phep sua anh/audio cua cau hoi qua PUT (truoc day 2 truong nay
+    // bi bo qua nen sua anh qua API khong co tac dung).
+    imageUrl: merged.imageUrl,
+    audioUrl: merged.audioUrl,
   });
   return res.json(updated);
 });
