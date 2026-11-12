@@ -443,10 +443,10 @@ footer{
 
 /* Hộp nghe/TTS trong tờ đề: CHỈ 1 NÚT duy nhất — bấm để phát, bấm lại
    để tạm dừng, phát xong thành "Nghe lại". Không còn thanh điều khiển
-   mặc định của <audio> (thẻ audio ẩn), không còn hàng nhiều nút TTS,
-   không còn thanh trượt tốc độ (tốc độ cố định 1x). Chỉ thêm 1 vạch
-   tiến trình mỏng khi có file audio. Nút nằm ở đầu khối nội dung bên
-   trái (sau ảnh, trước chữ câu hỏi). */
+   mặc định của <audio> (thẻ audio ẩn), không còn hàng nhiều nút TTS.
+   Nhưng vẫn chỉnh được từng đoạn như bản đầu: vạch tiến trình bấm/kéo
+   được để tua tới đoạn cần nghe + thanh trượt tốc độ 0.5–1.5x. Nút nằm
+   ở đầu khối nội dung bên trái (sau ảnh, trước chữ câu hỏi). */
 .paper .audio-box{
   display:flex; flex-direction:column; align-items:stretch; gap:.4rem;
   padding:.5rem .6rem; margin:.4rem 0; border-radius:10px; box-shadow:none;
@@ -456,8 +456,14 @@ footer{
   padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:10px;
   box-shadow:none; text-align:left;
 }
-.listen-progress{height:4px; border-radius:2px; background:#DCE9FB; overflow:hidden}
-.listen-progress i{display:block; height:100%; background:var(--accent); border-radius:2px}
+.listen-progress{height:8px; border-radius:4px; background:#DCE9FB; overflow:hidden; cursor:pointer; touch-action:none}
+.listen-progress i{display:block; height:100%; background:var(--accent); border-radius:4px}
+.listen-seek-row{display:flex; align-items:center; gap:.5rem}
+.listen-seek-row .listen-progress{flex:1; min-width:0}
+.listen-time{font-size:.8rem; color:#5A6478; white-space:nowrap}
+.listen-rate{display:flex; align-items:center; gap:.5rem; font-size:.85rem; color:#5A6478}
+.listen-rate label{white-space:nowrap}
+.listen-rate input[type="range"]{flex:1; min-width:0; accent-color:var(--accent)}
 /* Nút nghe DUY NHẤT của cả Part (khi luyện/thi trong 1 đề có file audio
    cấp Part): 1 nút nằm ngay dưới tiêu đề PART X, trước câu đầu tiên của
    Part — bấm 1 lần nghe hết cả Part trong lúc làm các câu. Hộp dùng cùng

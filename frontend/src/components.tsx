@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { ApiError } from './api';
 import { speak, stopSpeak, pauseSpeak, resumeSpeak, ttsSupported } from './tts';
 
@@ -63,15 +63,18 @@ export function RankChip({ rank }: { rank: number }) {
 
 /**
  * Trình phát audio cho phần Nghe (Part 1–4), dùng chung cho
- * PracticeSession và MockTest — CHỈ CÓ ĐÚNG 1 NÚT DUY NHẤT cho mỗi khối
- * audio: bấm để phát, bấm lại để tạm dừng, phát xong nút thành
- * "Nghe lại". Không còn thanh điều khiển mặc định của <audio>, không
- * còn hàng nhiều nút TTS, không còn thanh trượt tốc độ (tốc độ cố
- * định 1x). Thẻ <audio> ẩn, điều khiển bằng state React.
+ * PracticeSession và MockTest — vẫn CHỈ CÓ ĐÚNG 1 NÚT PHÁT DUY NHẤT
+ * cho mỗi khối audio: bấm để phát, bấm lại để tạm dừng, phát xong nút
+ * thành "Nghe lại". Không còn thanh điều khiển mặc định của <audio>,
+ * không còn hàng nhiều nút TTS. Thẻ <audio> ẩn, điều khiển bằng state
+ * React. Nhưng vẫn chỉnh được từng đoạn như bản đầu: vạch tiến trình
+ * bấm/kéo được để nhảy tới đoạn cần nghe (seek) + thanh trượt tốc độ
+ * phát 0.5–1.5x (áp dụng cả file audio lẫn TTS).
  * - Có audioUrl (file mp3 đã upload / AI sinh, gồm audio của đoạn cho
- *   Part 3/4 do backend gộp): 1 nút + 1 vạch tiến trình mỏng.
+ *   Part 3/4 do backend gộp): 1 nút + vạch tiến trình bấm được + giờ
+ *   phát + thanh trượt tốc độ.
  * - Không có audioUrl: TTS (giọng máy) cũng chỉ 1 nút, cùng nhãn như
- *   khi có file.
+ *   khi có file, kèm thanh trượt tốc độ (TTS không tua được).
  * - Không có audioUrl lẫn chữ để đọc TTS (câu chỉ-nghe chưa có file):
  *   khối .audio-missing với nút "🔊 Nghe" disabled — giữ nguyên.
  * Khi stopKey đổi (chuyển câu) thì dừng cả audio element lẫn TTS.
@@ -94,6 +97,14 @@ export function ListeningAudio({
   // idle: chưa phát | playing: đang phát | paused: đã tạm dừng | ended: phát xong
   const [status, setStatus] = useState<'idle' | 'playing' | 'paused' | 'ended'>('idle');
   const [progress, setProgress] = useState(0);
+  // Tốc độ phát (khôi phục như bản đầu: 0.5–1.5x) + thời lượng/vị trí hiện tại
+  // để hiển thị giờ phát và tua tới từng đoạn.
+  const [rate, setRate] = useState(1);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const barRef = useRef<HTMLDivElement | null>(null);
+  const seekingRef = useRef(false);
+  const rateId = useId();
   // Thế hệ phát: để callback onEnd của TTS cũ không đổi nhầm trạng thái
   // sau khi đã dừng (stopKey đổi / unmount).
   const genRef = useRef(0);
@@ -105,6 +116,7 @@ export function ListeningAudio({
     stopSpeak();
     setStatus('idle');
     setProgress(0);
+    setCurrentTime(0);
     if (activeStop === stopAllRef.current) activeStop = null;
   };
   // Giữ ref luôn trỏ tới stopAll mới nhất (stopAll tạo lại mỗi lần render).
@@ -118,6 +130,30 @@ export function ListeningAudio({
 
   useEffect(() => { stopAll(); }, [stopKey]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => () => stopAll(), []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Áp tốc độ phát cho file audio (giống bản đầu).
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.playbackRate = rate;
+  }, [rate, audioUrl]);
+
+  const fmt = (s: number) => {
+    if (!isFinite(s) || s < 0) s = 0;
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60);
+    return `${m}:${sec.toString().padStart(2, '0')}`;
+  };
+  // Nhảy tới từng đoạn trong file audio: bấm hoặc kéo trên vạch tiến trình.
+  const seekFromEvent = (e: React.PointerEvent) => {
+    const el = audioRef.current;
+    const bar = barRef.current;
+    if (!el || !bar || !el.duration) return;
+    const r = bar.getBoundingClientRect();
+    const frac = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+    el.currentTime = frac * el.duration;
+    setProgress(frac);
+    setCurrentTime(frac * el.duration);
+    if (status === 'ended') setStatus('paused');
+  };
 
   const playFile = () => {
     const el = audioRef.current;
@@ -139,7 +175,7 @@ export function ListeningAudio({
     const gen = genRef.current;
     claimPlayback();
     setStatus('playing');
-    speak(ttsText, 1, () => { if (genRef.current === gen) setStatus('ended'); });
+    speak(ttsText, rate, () => { if (genRef.current === gen) setStatus('ended'); });
   };
 
   const toggle = () => {
@@ -162,14 +198,37 @@ export function ListeningAudio({
           src={audioUrl}
           preload="metadata"
           style={{ display: 'none' }}
+          onLoadedMetadata={e => { if (e.currentTarget.duration) setDuration(e.currentTarget.duration); }}
           onEnded={() => { setStatus('ended'); setProgress(1); }}
           onTimeUpdate={e => {
             const el = e.currentTarget;
-            if (el.duration) setProgress(el.currentTime / el.duration);
+            if (el.duration) { setProgress(el.currentTime / el.duration); setCurrentTime(el.currentTime); }
           }}
         />
         <button className="btn listen-btn" onClick={toggle}>{label}</button>
-        <div className="listen-progress" aria-hidden="true"><i style={{ width: `${Math.round(progress * 100)}%` }} /></div>
+        <div className="listen-seek-row">
+          <div
+            className="listen-progress"
+            ref={barRef}
+            role="slider"
+            aria-label="Tua tới đoạn cần nghe"
+            aria-valuemin={0}
+            aria-valuemax={Math.round(duration)}
+            aria-valuenow={Math.round(currentTime)}
+            onPointerDown={e => { seekingRef.current = true; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); seekFromEvent(e); }}
+            onPointerMove={e => { if (seekingRef.current) seekFromEvent(e); }}
+            onPointerUp={() => { seekingRef.current = false; }}
+            onPointerCancel={() => { seekingRef.current = false; }}
+          ><i style={{ width: `${Math.round(progress * 100)}%` }} /></div>
+          <span className="listen-time">{fmt(currentTime)} / {fmt(duration)}</span>
+        </div>
+        <div className="listen-rate">
+          <label htmlFor={rateId}>Tốc độ phát: {rate.toFixed(2)}x</label>
+          <input
+            id={rateId} type="range" min={0.5} max={1.5} step={0.25} value={rate}
+            onChange={e => setRate(Number(e.target.value))}
+          />
+        </div>
       </div>
     );
   }
@@ -195,6 +254,13 @@ export function ListeningAudio({
   return (
     <div className="card audio-box audio-single">
       <button className="btn listen-btn" onClick={toggle}>{label}</button>
+      <div className="listen-rate">
+        <label htmlFor={rateId}>Tốc độ phát: {rate.toFixed(2)}x</label>
+        <input
+          id={rateId} type="range" min={0.5} max={1.5} step={0.25} value={rate}
+          onChange={e => setRate(Number(e.target.value))}
+        />
+      </div>
     </div>
   );
 }
