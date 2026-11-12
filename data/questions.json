@@ -7038,5 +7038,2895 @@
     "script": null,
     "topic": "travel",
     "testSetId": "TS-001"
+  },
+  {
+    "id": "TS-003-P5-001",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Former Sendai Company CEO Ken Nakata spoke about ________career experiences.",
+    "options": [
+      {
+        "label": "A",
+        "content": "he"
+      },
+      {
+        "label": "B",
+        "content": "his"
+      },
+      {
+        "label": "C",
+        "content": "him"
+      },
+      {
+        "label": "D",
+        "content": "himself"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Đại từ sở hữu \"his\" đứng trước danh từ \"career experiences\" để chỉ sở hữu.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-002",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Passengers who will be taking a ________ domestic flight should go to Terminal A.",
+    "options": [
+      {
+        "label": "A",
+        "content": "connectivity"
+      },
+      {
+        "label": "B",
+        "content": "connects"
+      },
+      {
+        "label": "C",
+        "content": "connect"
+      },
+      {
+        "label": "D",
+        "content": "connecting"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Connecting\" là một hiện tại phân từ (present participle) đóng vai trò như tính từ để bổ nghĩa cho danh từ \"domestic flight\", tạo thành cụm \"connecting domestic flight\" (chuyến bay nội địa có nối chuyến).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-003",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Fresh and ________apple-cider donuts are available at Oakcrest Orchard's retail shop for £6 per dozen.",
+    "options": [
+      {
+        "label": "A",
+        "content": "eaten"
+      },
+      {
+        "label": "B",
+        "content": "open"
+      },
+      {
+        "label": "C",
+        "content": "tasty"
+      },
+      {
+        "label": "D",
+        "content": "free"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"Tasty\" là tính từ phù hợp nhất để mô tả chất lượng của bánh rán, đồng nghĩa với \"fresh\" (tươi ngon và ngon miệng).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-004",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Zahn Flooring has the widest selection of ________ in the United Kingdom.",
+    "options": [
+      {
+        "label": "A",
+        "content": "paints"
+      },
+      {
+        "label": "B",
+        "content": "tiles"
+      },
+      {
+        "label": "C",
+        "content": "furniture"
+      },
+      {
+        "label": "D",
+        "content": "curtains"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Dựa vào ngữ cảnh \"Zahn Flooring\" (sàn Zahn), \"tiles\" (gạch lát) là sản phẩm phù hợp nhất trong các lựa chọn.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-005",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "One responsibility of the IT department is to ensure that the company is using ________ software.",
+    "options": [
+      {
+        "label": "A",
+        "content": "update"
+      },
+      {
+        "label": "B",
+        "content": "updating"
+      },
+      {
+        "label": "C",
+        "content": "updates"
+      },
+      {
+        "label": "D",
+        "content": "updated"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Updated\" là một quá khứ phân từ (past participle) đóng vai trò tính từ, có nghĩa là \"được cập nhật\", bổ nghĩa cho danh từ \"software\" (phần mềm đã được cập nhật).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-006",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "It is wise to check a company's dress code ________ visiting its head office.",
+    "options": [
+      {
+        "label": "A",
+        "content": "so"
+      },
+      {
+        "label": "B",
+        "content": "how"
+      },
+      {
+        "label": "C",
+        "content": "like"
+      },
+      {
+        "label": "D",
+        "content": "before"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Before\" là giới từ chỉ thời gian, có nghĩa là \"trước khi\", phù hợp với ngữ cảnh \"kiểm tra quy định trang phục trước khi đến thăm\".",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-007",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Wexler Store's management team expects that employees will ________support any new hires.",
+    "options": [
+      {
+        "label": "A",
+        "content": "enthusiastically"
+      },
+      {
+        "label": "B",
+        "content": "enthusiasm"
+      },
+      {
+        "label": "C",
+        "content": "enthusiastic"
+      },
+      {
+        "label": "D",
+        "content": "enthused"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"Enthusiastically\" là trạng từ bổ nghĩa cho động từ \"support\" (ủng hộ một cách nhiệt tình).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-008",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Wheel alignments and brake system ________ are part of our vehicle service plan.",
+    "options": [
+      {
+        "label": "A",
+        "content": "inspects"
+      },
+      {
+        "label": "B",
+        "content": "inspector"
+      },
+      {
+        "label": "C",
+        "content": "inspected"
+      },
+      {
+        "label": "D",
+        "content": "inspections"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Inspections\" là danh từ số nhiều, phù hợp để song song với \"wheel alignments\" trong danh sách các hạng mục của gói dịch vụ.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-009",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Registration for the Marketing Coalition Conference is now open ________ September\n30.",
+    "options": [
+      {
+        "label": "A",
+        "content": "until"
+      },
+      {
+        "label": "B",
+        "content": "into"
+      },
+      {
+        "label": "C",
+        "content": "yet"
+      },
+      {
+        "label": "D",
+        "content": "while"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"Until\" là giới từ chỉ thời điểm kết thúc, có nghĩa là \"cho đến khi\", phù hợp với ngữ cảnh hạn chót đăng ký.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-010",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Growth in the home entertainment industry has been________ this quarter.",
+    "options": [
+      {
+        "label": "A",
+        "content": "separate"
+      },
+      {
+        "label": "B",
+        "content": "limited"
+      },
+      {
+        "label": "C",
+        "content": "willing"
+      },
+      {
+        "label": "D",
+        "content": "assorted"
+      }
+    ],
+    "correct": "B",
+    "explanation": "\"Limited\" (hạn chế) là tính từ phù hợp nhất để mô tả sự tăng trưởng trong một quý, mang ý nghĩa sự tăng trưởng không nhiều hoặc bị giới hạn.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-011",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Hawson Furniture will be making ________ on the east side of town on Thursday.",
+    "options": [
+      {
+        "label": "A",
+        "content": "deliveries"
+      },
+      {
+        "label": "B",
+        "content": "delivered"
+      },
+      {
+        "label": "C",
+        "content": "deliver"
+      },
+      {
+        "label": "D",
+        "content": "deliverable"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"Deliveries\" là danh từ số nhiều, tạo thành cụm \"making deliveries\" (thực hiện các chuyến giao hàng), là một cách diễn đạt phổ biến và phù hợp về ngữ pháp.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-012",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "The Marlton City Council does not have the authority to ________ parking on city streets.",
+    "options": [
+      {
+        "label": "A",
+        "content": "drive"
+      },
+      {
+        "label": "B",
+        "content": "prohibit"
+      },
+      {
+        "label": "C",
+        "content": "bother"
+      },
+      {
+        "label": "D",
+        "content": "travel"
+      }
+    ],
+    "correct": "B",
+    "explanation": "\"Prohibit\" (cấm) là động từ phù hợp nhất với ngữ cảnh một hội đồng thành phố có quyền hạn đối với việc đậu xe trên đường.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-013",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Project Earth Group is________ for ways to reduce transport-related greenhouse gas emissions.",
+    "options": [
+      {
+        "label": "A",
+        "content": "looking"
+      },
+      {
+        "label": "B",
+        "content": "seeing"
+      },
+      {
+        "label": "C",
+        "content": "driving"
+      },
+      {
+        "label": "D",
+        "content": "leaning"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"Looking for\" là cụm động từ có nghĩa là \"tìm kiếm\", phù hợp với ngữ cảnh một nhóm đang tìm cách để giảm khí thải.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-014",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Our skilled tailors are happy to design a custom-made suit that fits your style and budget ________.",
+    "options": [
+      {
+        "label": "A",
+        "content": "perfect"
+      },
+      {
+        "label": "B",
+        "content": "perfects"
+      },
+      {
+        "label": "C",
+        "content": "perfectly"
+      },
+      {
+        "label": "D",
+        "content": "perfection"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"Perfectly\" là trạng từ bổ nghĩa cho động từ \"fits\" (phù hợp một cách hoàn hảo).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-015",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Project manager Hannah Chung has proved to be very ________ with completing company projects.",
+    "options": [
+      {
+        "label": "A",
+        "content": "helpfulness"
+      },
+      {
+        "label": "B",
+        "content": "help"
+      },
+      {
+        "label": "C",
+        "content": "helpfully"
+      },
+      {
+        "label": "D",
+        "content": "helpful"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Sau \"to be very\", cần một tính từ. \"Helpful\" (có ích, hữu ích) là tính từ phù hợp.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-016",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Lehua Vacation Club members will receive double points ________ the month of August at participating hotels.",
+    "options": [
+      {
+        "label": "A",
+        "content": "onto"
+      },
+      {
+        "label": "B",
+        "content": "above"
+      },
+      {
+        "label": "C",
+        "content": "during"
+      },
+      {
+        "label": "D",
+        "content": "between"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"During\" là giới từ chỉ khoảng thời gian, có nghĩa là \"trong suốt\", phù hợp với ngữ cảnh \"trong tháng Tám\".",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-017",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "The costumes were not received ________ enough to be used in the first dress rehearsal.",
+    "options": [
+      {
+        "label": "A",
+        "content": "far"
+      },
+      {
+        "label": "B",
+        "content": "very"
+      },
+      {
+        "label": "C",
+        "content": "almost"
+      },
+      {
+        "label": "D",
+        "content": "soon"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Soon enough\" là cụm trạng từ chỉ thời gian, có nghĩa là \"đủ sớm\", phù hợp với ngữ cảnh trang phục không được nhận đủ sớm cho buổi tổng duyệt.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-018",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "As a former publicist for several renowned orchestras, Mr. Wu would excel in the role of event ________.",
+    "options": [
+      {
+        "label": "A",
+        "content": "organized"
+      },
+      {
+        "label": "B",
+        "content": "organizer"
+      },
+      {
+        "label": "C",
+        "content": "organizes"
+      },
+      {
+        "label": "D",
+        "content": "organizational"
+      }
+    ],
+    "correct": "B",
+    "explanation": "\"Organizer\" là danh từ chỉ người (người tổ chức), phù hợp với ngữ cảnh vị trí công việc \"event organizer\" (người tổ chức sự kiện).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-019",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "The northbound lane on Davis Street will be________ closed because of the city's bridge reinforcement project.",
+    "options": [
+      {
+        "label": "A",
+        "content": "temporarily"
+      },
+      {
+        "label": "B",
+        "content": "competitively"
+      },
+      {
+        "label": "C",
+        "content": "recently"
+      },
+      {
+        "label": "D",
+        "content": "collectively"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"Temporarily\" là trạng từ, có nghĩa là \"tạm thời\", phù hợp với ngữ cảnh một làn đường bị đóng cửa do dự án xây dựng cầu.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-020",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Airline representatives must handle a wide range of passenger issues, ________ missed connections to lost luggage.",
+    "options": [
+      {
+        "label": "A",
+        "content": "from"
+      },
+      {
+        "label": "B",
+        "content": "under"
+      },
+      {
+        "label": "C",
+        "content": "on"
+      },
+      {
+        "label": "D",
+        "content": "against"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Cụm \"from X to Y\" được sử dụng để chỉ một phạm vi, một loạt các vấn đề, từ \"missed connections\" (lỡ chuyến bay) đến \"lost luggage\" (hành lý thất lạc).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-021",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "The meeting notes were ________ deleted, but Mr. Hahm was able to recreate them from memory.",
+    "options": [
+      {
+        "label": "A",
+        "content": "accident"
+      },
+      {
+        "label": "B",
+        "content": "accidental"
+      },
+      {
+        "label": "C",
+        "content": "accidents"
+      },
+      {
+        "label": "D",
+        "content": "accidentally"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Accidentally\" là trạng từ bổ nghĩa cho động từ \"deleted\" (bị xóa một cách vô tình).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-022",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "The current issue of Farming Scene magazine predicts that the price of corn will rise 5 percent over the ________ year.",
+    "options": [
+      {
+        "label": "A",
+        "content": "next"
+      },
+      {
+        "label": "B",
+        "content": "with"
+      },
+      {
+        "label": "C",
+        "content": "which"
+      },
+      {
+        "label": "D",
+        "content": "now"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"Next year\" là cụm từ chỉ thời gian phổ biến, có nghĩa là \"năm tới\", phù hợp với ngữ cảnh dự đoán về giá cả.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-023",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Anyone who still ________ to take the fire safety training should do so before the end of the month.",
+    "options": [
+      {
+        "label": "A",
+        "content": "needing"
+      },
+      {
+        "label": "B",
+        "content": "needs"
+      },
+      {
+        "label": "C",
+        "content": "has needed"
+      },
+      {
+        "label": "D",
+        "content": "were needing"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Chủ ngữ là \"Anyone\" (ngôi thứ ba số ít), vì vậy động từ chia thì hiện tại đơn phải là \"needs\".",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-024",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Emerging technologies have ________ begun to transform the shipping industry in ways that were once unimaginable.",
+    "options": [
+      {
+        "label": "A",
+        "content": "already"
+      },
+      {
+        "label": "B",
+        "content": "exactly"
+      },
+      {
+        "label": "C",
+        "content": "hardly"
+      },
+      {
+        "label": "D",
+        "content": "closely"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"Already\" là trạng từ có nghĩa là \"đã\", nhấn mạnh rằng các công nghệ mới đã bắt đầu chuyển đổi ngành vận chuyển.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-025",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "The company handbook outlines the high ________ that employees are expected to meet every day.",
+    "options": [
+      {
+        "label": "A",
+        "content": "experts"
+      },
+      {
+        "label": "B",
+        "content": "accounts"
+      },
+      {
+        "label": "C",
+        "content": "recommendations"
+      },
+      {
+        "label": "D",
+        "content": "standards"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Standards\" (tiêu chuẩn) là danh từ phù hợp nhất với cụm \"high standards\" (tiêu chuẩn cao) mà nhân viên được kỳ vọng đạt được.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-026",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "Because ________ of the board members have scheduling conflicts, the board meeting will be moved to a date when all can attend.",
+    "options": [
+      {
+        "label": "A",
+        "content": "any"
+      },
+      {
+        "label": "B",
+        "content": "everybody"
+      },
+      {
+        "label": "C",
+        "content": "those"
+      },
+      {
+        "label": "D",
+        "content": "some"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Some\" là đại từ chỉ một phần của tập hợp, phù hợp với ngữ cảnh \"một số thành viên hội đồng có xung đột lịch trình\" dẫn đến việc dời cuộc họp để tất cả đều có thể tham dự.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-027",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "The project ________ the collaboration of several teams across the company.",
+    "options": [
+      {
+        "label": "A",
+        "content": "passed"
+      },
+      {
+        "label": "B",
+        "content": "decided"
+      },
+      {
+        "label": "C",
+        "content": "required"
+      },
+      {
+        "label": "D",
+        "content": "performed"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"Required\" (yêu cầu) là động từ phù hợp nhất, có nghĩa là dự án cần sự hợp tác của nhiều nhóm.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-028",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "We cannot send the store's coupon booklet to the printers until it ________ by Ms. Jeon.",
+    "options": [
+      {
+        "label": "A",
+        "content": "is approving"
+      },
+      {
+        "label": "B",
+        "content": "approves"
+      },
+      {
+        "label": "C",
+        "content": "has been approved"
+      },
+      {
+        "label": "D",
+        "content": "will be approved"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Cấu trúc \"until + mệnh đề thì hiện tại đơn/hiện tại hoàn thành\" được dùng để chỉ điều kiện trong tương lai. Ở đây, hành động \"approve\" (phê duyệt) được thực hiện bởi Ms. Jeon lên \"coupon booklet\" (thụ động), nên dùng thì hiện tại hoàn thành bị động \"has been approved\" để chỉ một hành động đã hoàn thành trước một thời điểm trong tương lai.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-029",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "________the closure of Verdigold Transport Services, we are looking for a new shipping company.",
+    "options": [
+      {
+        "label": "A",
+        "content": "In spite of"
+      },
+      {
+        "label": "B",
+        "content": "Just as"
+      },
+      {
+        "label": "C",
+        "content": "In light of"
+      },
+      {
+        "label": "D",
+        "content": "According to"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"In light of\" là cụm giới từ có nghĩa là \"xét đến, bởi vì\", chỉ ra nguyên nhân (việc đóng cửa công ty cũ) dẫn đến kết quả (tìm kiếm công ty vận chuyển mới).",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P5-030",
+    "testSetId": "TS-003",
+    "part": 5,
+    "content": "The________ information provided by Uniss Bank's brochure helps applicants understand the terms of their loans.",
+    "options": [
+      {
+        "label": "A",
+        "content": "arbitrary"
+      },
+      {
+        "label": "B",
+        "content": "supplemental"
+      },
+      {
+        "label": "C",
+        "content": "superfluous"
+      },
+      {
+        "label": "D",
+        "content": "potential"
+      }
+    ],
+    "correct": "B",
+    "explanation": "\"Supplemental\" là tính từ có nghĩa là \"bổ sung\", phù hợp với ngữ cảnh thông tin bổ sung trong tài liệu quảng cáo giúp người đăng ký hiểu rõ các điều khoản vay.",
+    "difficulty": "medium",
+    "topic": null
+  },
+  {
+    "id": "TS-003-P6-001",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "Come to the Maxley Heights Center for Horticulture and learn how to create a beautiful, eco-friendly garden for your home or business.131. ________ . We will teach you how to plant a rain garden, which is simply a shallow sunken garden 132. ________ a special soil mix to filter pollutants from rainwater flowing from nearby roads and rooftops. These gardens can be landscaped with native plants and flowers. 133. ________ , rain gardens are always beneficial to the local environment. Among other things, 134. ________improve drainage and protect rivers and streams. To register, visit www.maxley-horticulture.org.",
+    "options": [
+      {
+        "label": "A",
+        "content": "Children of all ages will enjoy the new exhibits."
+      },
+      {
+        "label": "B",
+        "content": "Learn about rainfall patterns across the region."
+      },
+      {
+        "label": "C",
+        "content": "Build a set of simple patio furniture with easy-to-acquire materials."
+      },
+      {
+        "label": "D",
+        "content": "Next Saturday at 4 P.M., we are hosting a free workshop for the public."
+      }
+    ],
+    "correct": "D",
+    "explanation": "Câu này là một quảng cáo mời gọi tham gia, và lựa chọn D cung cấp thông tin về một workshop miễn phí, phù hợp với ngữ cảnh tiếp theo “We will teach you...”.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Come to the Maxley Heights Center for Horticulture and learn how to create a beautiful, eco-friendly garden for your home or business.131. ________ . We will teach you how to plant a rain garden, which is simply a shallow sunken garden 132. ________ a special soil mix to filter pollutants from rainwater flowing from nearby roads and rooftops. These gardens can be landscaped with native plants and flowers. 133. ________ , rain gardens are always beneficial to the local environment. Among other things, 134. ________improve drainage and protect rivers and streams. To register, visit www.maxley-horticulture.org."
+  },
+  {
+    "id": "TS-003-P6-002",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "Come to the Maxley Heights Center for Horticulture and learn how to create a beautiful, eco-friendly garden for your home or business.131. ________ . We will teach you how to plant a rain garden, which is simply a shallow sunken garden 132. ________ a special soil mix to filter pollutants from rainwater flowing from nearby roads and rooftops. These gardens can be landscaped with native plants and flowers. 133. ________ , rain gardens are always beneficial to the local environment. Among other things, 134. ________improve drainage and protect rivers and streams. To register, visit www.maxley-horticulture.org.",
+    "options": [
+      {
+        "label": "A",
+        "content": "to use"
+      },
+      {
+        "label": "B",
+        "content": "used to"
+      },
+      {
+        "label": "C",
+        "content": "by using"
+      },
+      {
+        "label": "D",
+        "content": "that uses"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"that uses\" là một mệnh đề quan hệ rút gọn (hoặc đầy đủ) miêu tả đặc điểm của \"a shallow sunken garden\", rằng nó sử dụng một loại đất đặc biệt.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Come to the Maxley Heights Center for Horticulture and learn how to create a beautiful, eco-friendly garden for your home or business.131. ________ . We will teach you how to plant a rain garden, which is simply a shallow sunken garden 132. ________ a special soil mix to filter pollutants from rainwater flowing from nearby roads and rooftops. These gardens can be landscaped with native plants and flowers. 133. ________ , rain gardens are always beneficial to the local environment. Among other things, 134. ________improve drainage and protect rivers and streams. To register, visit www.maxley-horticulture.org."
+  },
+  {
+    "id": "TS-003-P6-003",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "Come to the Maxley Heights Center for Horticulture and learn how to create a beautiful, eco-friendly garden for your home or business.131. ________ . We will teach you how to plant a rain garden, which is simply a shallow sunken garden 132. ________ a special soil mix to filter pollutants from rainwater flowing from nearby roads and rooftops. These gardens can be landscaped with native plants and flowers. 133. ________ , rain gardens are always beneficial to the local environment. Among other things, 134. ________improve drainage and protect rivers and streams. To register, visit www.maxley-horticulture.org.",
+    "options": [
+      {
+        "label": "A",
+        "content": "Best of all"
+      },
+      {
+        "label": "B",
+        "content": "For example"
+      },
+      {
+        "label": "C",
+        "content": "In any event"
+      },
+      {
+        "label": "D",
+        "content": "As a matter of fact"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"Best of all\" giới thiệu lợi ích quan trọng nhất hoặc nổi bật nhất của vườn mưa, phù hợp với việc nhấn mạnh khía cạnh tích cực môi trường của chúng.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Come to the Maxley Heights Center for Horticulture and learn how to create a beautiful, eco-friendly garden for your home or business.131. ________ . We will teach you how to plant a rain garden, which is simply a shallow sunken garden 132. ________ a special soil mix to filter pollutants from rainwater flowing from nearby roads and rooftops. These gardens can be landscaped with native plants and flowers. 133. ________ , rain gardens are always beneficial to the local environment. Among other things, 134. ________improve drainage and protect rivers and streams. To register, visit www.maxley-horticulture.org."
+  },
+  {
+    "id": "TS-003-P6-004",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "Come to the Maxley Heights Center for Horticulture and learn how to create a beautiful, eco-friendly garden for your home or business.131. ________ . We will teach you how to plant a rain garden, which is simply a shallow sunken garden 132. ________ a special soil mix to filter pollutants from rainwater flowing from nearby roads and rooftops. These gardens can be landscaped with native plants and flowers. 133. ________ , rain gardens are always beneficial to the local environment. Among other things, 134. ________improve drainage and protect rivers and streams. To register, visit www.maxley-horticulture.org.",
+    "options": [
+      {
+        "label": "A",
+        "content": "we"
+      },
+      {
+        "label": "B",
+        "content": "they"
+      },
+      {
+        "label": "C",
+        "content": "both"
+      },
+      {
+        "label": "D",
+        "content": "yours"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Đại từ \"they\" thay thế cho chủ ngữ \"rain gardens\" được nhắc đến trước đó, chỉ ra rằng chính các khu vườn này cải thiện hệ thống thoát nước và bảo vệ sông suối.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Come to the Maxley Heights Center for Horticulture and learn how to create a beautiful, eco-friendly garden for your home or business.131. ________ . We will teach you how to plant a rain garden, which is simply a shallow sunken garden 132. ________ a special soil mix to filter pollutants from rainwater flowing from nearby roads and rooftops. These gardens can be landscaped with native plants and flowers. 133. ________ , rain gardens are always beneficial to the local environment. Among other things, 134. ________improve drainage and protect rivers and streams. To register, visit www.maxley-horticulture.org."
+  },
+  {
+    "id": "TS-003-P6-005",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "31 July\nAkwasi Dombo\nFourth Avenue\nGA 105\nAccra, Ghana\nDear Mr. Dombo,\nThank you for your 135._______ support in helping me to plan the opening gala for Tokyo's fashion week. The event was a huge success, and I was honored to work with you. I know that our attendees follow your work closely, and they loved the designs you contributed for this event.\nYour designs received a lot of 136._______ on social media. Shows like this will keep Tokyo on the map as a premier fashion centre. 137._______. I realize that the multiple delays made the planning no easy task. The auction 138._______ our Young Designers Award program is coming up soon and I look forward to working with you on that as well.\nSincerely,\nAsahi Ishioka\nDirector, Japanese Guild of Fashion Designers",
+    "options": [
+      {
+        "label": "A",
+        "content": "amazed"
+      },
+      {
+        "label": "B",
+        "content": "amazement"
+      },
+      {
+        "label": "C",
+        "content": "amazing"
+      },
+      {
+        "label": "D",
+        "content": "amazingly"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"Amazing\" là tính từ phù hợp nhất để bổ nghĩa cho danh từ \"support\", miêu tả sự hỗ trợ tuyệt vời, đáng kinh ngạc.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "31 July\nAkwasi Dombo\nFourth Avenue\nGA 105\nAccra, Ghana\nDear Mr. Dombo,\nThank you for your 135._______ support in helping me to plan the opening gala for Tokyo's fashion week. The event was a huge success, and I was honored to work with you. I know that our attendees follow your work closely, and they loved the designs you contributed for this event.\nYour designs received a lot of 136._______ on social media. Shows like this will keep Tokyo on the map as a premier fashion centre. 137._______. I realize that the multiple delays made the planning no easy task. The auction 138._______ our Young Designers Award program is coming up soon and I look forward to working with you on that as well.\nSincerely,\nAsahi Ishioka\nDirector, Japanese Guild of Fashion Designers"
+  },
+  {
+    "id": "TS-003-P6-006",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "31 July\nAkwasi Dombo\nFourth Avenue\nGA 105\nAccra, Ghana\nDear Mr. Dombo,\nThank you for your 135._______ support in helping me to plan the opening gala for Tokyo's fashion week. The event was a huge success, and I was honored to work with you. I know that our attendees follow your work closely, and they loved the designs you contributed for this event.\nYour designs received a lot of 136._______ on social media. Shows like this will keep Tokyo on the map as a premier fashion centre. 137._______. I realize that the multiple delays made the planning no easy task. The auction 138._______ our Young Designers Award program is coming up soon and I look forward to working with you on that as well.\nSincerely,\nAsahi Ishioka\nDirector, Japanese Guild of Fashion Designers",
+    "options": [
+      {
+        "label": "A",
+        "content": "attention"
+      },
+      {
+        "label": "B",
+        "content": "proposals"
+      },
+      {
+        "label": "C",
+        "content": "innovation"
+      },
+      {
+        "label": "D",
+        "content": "criticism"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Trong ngữ cảnh các thiết kế được yêu thích và giúp Tokyo trở thành trung tâm thời trang hàng đầu, việc nhận được \"attention\" (sự chú ý) trên mạng xã hội là hợp lý nhất.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "31 July\nAkwasi Dombo\nFourth Avenue\nGA 105\nAccra, Ghana\nDear Mr. Dombo,\nThank you for your 135._______ support in helping me to plan the opening gala for Tokyo's fashion week. The event was a huge success, and I was honored to work with you. I know that our attendees follow your work closely, and they loved the designs you contributed for this event.\nYour designs received a lot of 136._______ on social media. Shows like this will keep Tokyo on the map as a premier fashion centre. 137._______. I realize that the multiple delays made the planning no easy task. The auction 138._______ our Young Designers Award program is coming up soon and I look forward to working with you on that as well.\nSincerely,\nAsahi Ishioka\nDirector, Japanese Guild of Fashion Designers"
+  },
+  {
+    "id": "TS-003-P6-007",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "31 July\nAkwasi Dombo\nFourth Avenue\nGA 105\nAccra, Ghana\nDear Mr. Dombo,\nThank you for your 135._______ support in helping me to plan the opening gala for Tokyo's fashion week. The event was a huge success, and I was honored to work with you. I know that our attendees follow your work closely, and they loved the designs you contributed for this event.\nYour designs received a lot of 136._______ on social media. Shows like this will keep Tokyo on the map as a premier fashion centre. 137._______. I realize that the multiple delays made the planning no easy task. The auction 138._______ our Young Designers Award program is coming up soon and I look forward to working with you on that as well.\nSincerely,\nAsahi Ishioka\nDirector, Japanese Guild of Fashion Designers",
+    "options": [
+      {
+        "label": "A",
+        "content": "Several other events have gone surprisingly well."
+      },
+      {
+        "label": "B",
+        "content": "Thank you also for your flexibility in planning the event."
+      },
+      {
+        "label": "C",
+        "content": "Please stop by our office the next time you are in the city."
+      },
+      {
+        "label": "D",
+        "content": "Tokyo is a top tourism destination for many reasons."
+      }
+    ],
+    "correct": "B",
+    "explanation": "Câu trước đó ca ngợi sự kiện, câu sau đó thừa nhận những khó khăn do sự chậm trễ. Lựa chọn B, cảm ơn sự linh hoạt, kết nối hai ý này một cách hợp lý, tiếp tục bày tỏ lòng biết ơn trong khi chuyển sang chủ đề khó khăn.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "31 July\nAkwasi Dombo\nFourth Avenue\nGA 105\nAccra, Ghana\nDear Mr. Dombo,\nThank you for your 135._______ support in helping me to plan the opening gala for Tokyo's fashion week. The event was a huge success, and I was honored to work with you. I know that our attendees follow your work closely, and they loved the designs you contributed for this event.\nYour designs received a lot of 136._______ on social media. Shows like this will keep Tokyo on the map as a premier fashion centre. 137._______. I realize that the multiple delays made the planning no easy task. The auction 138._______ our Young Designers Award program is coming up soon and I look forward to working with you on that as well.\nSincerely,\nAsahi Ishioka\nDirector, Japanese Guild of Fashion Designers"
+  },
+  {
+    "id": "TS-003-P6-008",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "31 July\nAkwasi Dombo\nFourth Avenue\nGA 105\nAccra, Ghana\nDear Mr. Dombo,\nThank you for your 135._______ support in helping me to plan the opening gala for Tokyo's fashion week. The event was a huge success, and I was honored to work with you. I know that our attendees follow your work closely, and they loved the designs you contributed for this event.\nYour designs received a lot of 136._______ on social media. Shows like this will keep Tokyo on the map as a premier fashion centre. 137._______. I realize that the multiple delays made the planning no easy task. The auction 138._______ our Young Designers Award program is coming up soon and I look forward to working with you on that as well.\nSincerely,\nAsahi Ishioka\nDirector, Japanese Guild of Fashion Designers",
+    "options": [
+      {
+        "label": "A",
+        "content": "will benefit"
+      },
+      {
+        "label": "B",
+        "content": "to benefit"
+      },
+      {
+        "label": "C",
+        "content": "has benefited"
+      },
+      {
+        "label": "D",
+        "content": "benefits"
+      }
+    ],
+    "correct": "B",
+    "explanation": "\"To benefit\" là một cụm động từ nguyên mẫu (infinitive of purpose) diễn tả mục đích của buổi đấu giá, tức là để gây quỹ hoặc mang lại lợi ích cho chương trình Giải thưởng Nhà thiết kế trẻ.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "31 July\nAkwasi Dombo\nFourth Avenue\nGA 105\nAccra, Ghana\nDear Mr. Dombo,\nThank you for your 135._______ support in helping me to plan the opening gala for Tokyo's fashion week. The event was a huge success, and I was honored to work with you. I know that our attendees follow your work closely, and they loved the designs you contributed for this event.\nYour designs received a lot of 136._______ on social media. Shows like this will keep Tokyo on the map as a premier fashion centre. 137._______. I realize that the multiple delays made the planning no easy task. The auction 138._______ our Young Designers Award program is coming up soon and I look forward to working with you on that as well.\nSincerely,\nAsahi Ishioka\nDirector, Japanese Guild of Fashion Designers"
+  },
+  {
+    "id": "TS-003-P6-009",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "From: Patron Services <patronservices@menachinlibrary.org>\nTo: Edgar Hughes <hughese98@villachesta.com>\nSubject: Card expiration date approaching\nDate: December 3\nDear Mr. Hughes,\nPlease be advised that your Mena Chin Library card will expire one month from today.\n\n139. ______ must be renewed if you intend to keep your membership for the coming year.\n140.______. This can be done at the information desk at any branch location.\n141.______you decide to close your account, no action is necessary. Failure to complete your renewal by the 142._______ date will result in the expiration of your library privileges.\nIf you have any questions about this notice, or about general library services, you may reply directly to this e-mail.\nSincerely,\nPatron Services",
+    "options": [
+      {
+        "label": "A",
+        "content": "It"
+      },
+      {
+        "label": "B",
+        "content": "You"
+      },
+      {
+        "label": "C",
+        "content": "Our"
+      },
+      {
+        "label": "D",
+        "content": "Each"
+      }
+    ],
+    "correct": "A",
+    "explanation": "\"It\" là đại từ thay thế cho \"your Mena Chin Library card\" đã được nhắc đến ở câu trước, chỉ ra rằng tấm thẻ đó cần được gia hạn.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "From: Patron Services <patronservices@menachinlibrary.org>\nTo: Edgar Hughes <hughese98@villachesta.com>\nSubject: Card expiration date approaching\nDate: December 3\nDear Mr. Hughes,\nPlease be advised that your Mena Chin Library card will expire one month from today.\n\n139. ______ must be renewed if you intend to keep your membership for the coming year.\n140.______. This can be done at the information desk at any branch location.\n141.______you decide to close your account, no action is necessary. Failure to complete your renewal by the 142._______ date will result in the expiration of your library privileges.\nIf you have any questions about this notice, or about general library services, you may reply directly to this e-mail.\nSincerely,\nPatron Services"
+  },
+  {
+    "id": "TS-003-P6-010",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "From: Patron Services <patronservices@menachinlibrary.org>\nTo: Edgar Hughes <hughese98@villachesta.com>\nSubject: Card expiration date approaching\nDate: December 3\nDear Mr. Hughes,\nPlease be advised that your Mena Chin Library card will expire one month from today.\n\n139. ______ must be renewed if you intend to keep your membership for the coming year.\n140.______. This can be done at the information desk at any branch location.\n141.______you decide to close your account, no action is necessary. Failure to complete your renewal by the 142._______ date will result in the expiration of your library privileges.\nIf you have any questions about this notice, or about general library services, you may reply directly to this e-mail.\nSincerely,\nPatron Services",
+    "options": [
+      {
+        "label": "A",
+        "content": "To sign up for a card, visit your local library branch."
+      },
+      {
+        "label": "B",
+        "content": "For questions about library membership, please visit our Web site."
+      },
+      {
+        "label": "C",
+        "content": "Renewal must be completed at least one week before your card expires."
+      },
+      {
+        "label": "D",
+        "content": "You may opt out of this program at any time."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Câu tiếp theo nói về nơi gia hạn (\"This can be done at the information desk...\"). Lựa chọn C cung cấp thông tin thêm về thời điểm gia hạn, phù hợp với ngữ cảnh về quy trình gia hạn thẻ thư viện.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "From: Patron Services <patronservices@menachinlibrary.org>\nTo: Edgar Hughes <hughese98@villachesta.com>\nSubject: Card expiration date approaching\nDate: December 3\nDear Mr. Hughes,\nPlease be advised that your Mena Chin Library card will expire one month from today.\n\n139. ______ must be renewed if you intend to keep your membership for the coming year.\n140.______. This can be done at the information desk at any branch location.\n141.______you decide to close your account, no action is necessary. Failure to complete your renewal by the 142._______ date will result in the expiration of your library privileges.\nIf you have any questions about this notice, or about general library services, you may reply directly to this e-mail.\nSincerely,\nPatron Services"
+  },
+  {
+    "id": "TS-003-P6-011",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "From: Patron Services <patronservices@menachinlibrary.org>\nTo: Edgar Hughes <hughese98@villachesta.com>\nSubject: Card expiration date approaching\nDate: December 3\nDear Mr. Hughes,\nPlease be advised that your Mena Chin Library card will expire one month from today.\n\n139. ______ must be renewed if you intend to keep your membership for the coming year.\n140.______. This can be done at the information desk at any branch location.\n141.______you decide to close your account, no action is necessary. Failure to complete your renewal by the 142._______ date will result in the expiration of your library privileges.\nIf you have any questions about this notice, or about general library services, you may reply directly to this e-mail.\nSincerely,\nPatron Services",
+    "options": [
+      {
+        "label": "A",
+        "content": "Also"
+      },
+      {
+        "label": "B",
+        "content": "Should"
+      },
+      {
+        "label": "C",
+        "content": "Because"
+      },
+      {
+        "label": "D",
+        "content": "Although"
+      }
+    ],
+    "correct": "B",
+    "explanation": "\"Should\" ở đây được dùng để tạo một câu điều kiện đảo ngữ (inversion for conditional clauses), tương đương với \"If you should decide to close your account...\", rất phổ biến trong văn phong trang trọng.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "From: Patron Services <patronservices@menachinlibrary.org>\nTo: Edgar Hughes <hughese98@villachesta.com>\nSubject: Card expiration date approaching\nDate: December 3\nDear Mr. Hughes,\nPlease be advised that your Mena Chin Library card will expire one month from today.\n\n139. ______ must be renewed if you intend to keep your membership for the coming year.\n140.______. This can be done at the information desk at any branch location.\n141.______you decide to close your account, no action is necessary. Failure to complete your renewal by the 142._______ date will result in the expiration of your library privileges.\nIf you have any questions about this notice, or about general library services, you may reply directly to this e-mail.\nSincerely,\nPatron Services"
+  },
+  {
+    "id": "TS-003-P6-012",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "From: Patron Services <patronservices@menachinlibrary.org>\nTo: Edgar Hughes <hughese98@villachesta.com>\nSubject: Card expiration date approaching\nDate: December 3\nDear Mr. Hughes,\nPlease be advised that your Mena Chin Library card will expire one month from today.\n\n139. ______ must be renewed if you intend to keep your membership for the coming year.\n140.______. This can be done at the information desk at any branch location.\n141.______you decide to close your account, no action is necessary. Failure to complete your renewal by the 142._______ date will result in the expiration of your library privileges.\nIf you have any questions about this notice, or about general library services, you may reply directly to this e-mail.\nSincerely,\nPatron Services",
+    "options": [
+      {
+        "label": "A",
+        "content": "specifically"
+      },
+      {
+        "label": "B",
+        "content": "specifics"
+      },
+      {
+        "label": "C",
+        "content": "specified"
+      },
+      {
+        "label": "D",
+        "content": "specificity"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"Specified\" là quá khứ phân từ được dùng làm tính từ, có nghĩa là \"ngày đã được chỉ định\" hoặc \"ngày đã được quy định\", phù hợp để bổ nghĩa cho danh từ \"date\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "From: Patron Services <patronservices@menachinlibrary.org>\nTo: Edgar Hughes <hughese98@villachesta.com>\nSubject: Card expiration date approaching\nDate: December 3\nDear Mr. Hughes,\nPlease be advised that your Mena Chin Library card will expire one month from today.\n\n139. ______ must be renewed if you intend to keep your membership for the coming year.\n140.______. This can be done at the information desk at any branch location.\n141.______you decide to close your account, no action is necessary. Failure to complete your renewal by the 142._______ date will result in the expiration of your library privileges.\nIf you have any questions about this notice, or about general library services, you may reply directly to this e-mail.\nSincerely,\nPatron Services"
+  },
+  {
+    "id": "TS-003-P6-013",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "April 7\nNaomi Burwell\n43 Waymire Road\nSouth Portland, ME 04109\nDear Ms. Burwell,\nI am Omar Ridha, the manager of Droplight Studio. 143________. We offer a full range of photography services for real estate professionals like you. We take pride in composing interior and exterior shots that make a property look its best. Droplight Studio spares no effort in 144.________superior digital images.145._______ , our professional-grade equipment, lighting, and staging techniques allow us to highlight the best features of a property. And once the photo shoot is over, every image 146._______ expert editing. All these services come standard in every package.\nPlease visit our Web site to view our work as well as our pricing and scheduling information. We are happy to work with you to customize orders.\nSincerely,\nOmar Ridha, Droplight Studio",
+    "options": [
+      {
+        "label": "A",
+        "content": "I would like to introduce you to our business."
+      },
+      {
+        "label": "B",
+        "content": "Great photographs can make your property stand out."
+      },
+      {
+        "label": "C",
+        "content": "We are looking forward to your visit."
+      },
+      {
+        "label": "D",
+        "content": "It was the first studio of its kind to open in this area."
+      }
+    ],
+    "correct": "A",
+    "explanation": "Câu A giới thiệu mục đích của bức thư là giới thiệu về công ty, rất phù hợp với câu giới thiệu người gửi và câu tiếp theo mô tả dịch vụ của công ty.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "April 7\nNaomi Burwell\n43 Waymire Road\nSouth Portland, ME 04109\nDear Ms. Burwell,\nI am Omar Ridha, the manager of Droplight Studio. 143________. We offer a full range of photography services for real estate professionals like you. We take pride in composing interior and exterior shots that make a property look its best. Droplight Studio spares no effort in 144.________superior digital images.145._______ , our professional-grade equipment, lighting, and staging techniques allow us to highlight the best features of a property. And once the photo shoot is over, every image 146._______ expert editing. All these services come standard in every package.\nPlease visit our Web site to view our work as well as our pricing and scheduling information. We are happy to work with you to customize orders.\nSincerely,\nOmar Ridha, Droplight Studio"
+  },
+  {
+    "id": "TS-003-P6-014",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "April 7\nNaomi Burwell\n43 Waymire Road\nSouth Portland, ME 04109\nDear Ms. Burwell,\nI am Omar Ridha, the manager of Droplight Studio. 143________. We offer a full range of photography services for real estate professionals like you. We take pride in composing interior and exterior shots that make a property look its best. Droplight Studio spares no effort in 144.________superior digital images.145._______ , our professional-grade equipment, lighting, and staging techniques allow us to highlight the best features of a property. And once the photo shoot is over, every image 146._______ expert editing. All these services come standard in every package.\nPlease visit our Web site to view our work as well as our pricing and scheduling information. We are happy to work with you to customize orders.\nSincerely,\nOmar Ridha, Droplight Studio",
+    "options": [
+      {
+        "label": "A",
+        "content": "researching"
+      },
+      {
+        "label": "B",
+        "content": "creating"
+      },
+      {
+        "label": "C",
+        "content": "purchasing"
+      },
+      {
+        "label": "D",
+        "content": "displaying"
+      }
+    ],
+    "correct": "B",
+    "explanation": "\"Creating\" (tạo ra) phù hợp nhất với ngữ cảnh của một studio nhiếp ảnh chuyên chụp và tạo ra những hình ảnh kỹ thuật số chất lượng cao.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "April 7\nNaomi Burwell\n43 Waymire Road\nSouth Portland, ME 04109\nDear Ms. Burwell,\nI am Omar Ridha, the manager of Droplight Studio. 143________. We offer a full range of photography services for real estate professionals like you. We take pride in composing interior and exterior shots that make a property look its best. Droplight Studio spares no effort in 144.________superior digital images.145._______ , our professional-grade equipment, lighting, and staging techniques allow us to highlight the best features of a property. And once the photo shoot is over, every image 146._______ expert editing. All these services come standard in every package.\nPlease visit our Web site to view our work as well as our pricing and scheduling information. We are happy to work with you to customize orders.\nSincerely,\nOmar Ridha, Droplight Studio"
+  },
+  {
+    "id": "TS-003-P6-015",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "April 7\nNaomi Burwell\n43 Waymire Road\nSouth Portland, ME 04109\nDear Ms. Burwell,\nI am Omar Ridha, the manager of Droplight Studio. 143________. We offer a full range of photography services for real estate professionals like you. We take pride in composing interior and exterior shots that make a property look its best. Droplight Studio spares no effort in 144.________superior digital images.145._______ , our professional-grade equipment, lighting, and staging techniques allow us to highlight the best features of a property. And once the photo shoot is over, every image 146._______ expert editing. All these services come standard in every package.\nPlease visit our Web site to view our work as well as our pricing and scheduling information. We are happy to work with you to customize orders.\nSincerely,\nOmar Ridha, Droplight Studio",
+    "options": [
+      {
+        "label": "A",
+        "content": "If not"
+      },
+      {
+        "label": "B",
+        "content": "By comparison"
+      },
+      {
+        "label": "C",
+        "content": "Otherwise"
+      },
+      {
+        "label": "D",
+        "content": "Indeed"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Indeed\" được sử dụng để nhấn mạnh hoặc xác nhận ý đã nói trước đó, rằng studio không ngừng nỗ lực tạo ra hình ảnh chất lượng cao, và câu sau đó giải thích chi tiết cách họ làm được điều đó.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "April 7\nNaomi Burwell\n43 Waymire Road\nSouth Portland, ME 04109\nDear Ms. Burwell,\nI am Omar Ridha, the manager of Droplight Studio. 143________. We offer a full range of photography services for real estate professionals like you. We take pride in composing interior and exterior shots that make a property look its best. Droplight Studio spares no effort in 144.________superior digital images.145._______ , our professional-grade equipment, lighting, and staging techniques allow us to highlight the best features of a property. And once the photo shoot is over, every image 146._______ expert editing. All these services come standard in every package.\nPlease visit our Web site to view our work as well as our pricing and scheduling information. We are happy to work with you to customize orders.\nSincerely,\nOmar Ridha, Droplight Studio"
+  },
+  {
+    "id": "TS-003-P6-016",
+    "testSetId": "TS-003",
+    "part": 6,
+    "content": "April 7\nNaomi Burwell\n43 Waymire Road\nSouth Portland, ME 04109\nDear Ms. Burwell,\nI am Omar Ridha, the manager of Droplight Studio. 143________. We offer a full range of photography services for real estate professionals like you. We take pride in composing interior and exterior shots that make a property look its best. Droplight Studio spares no effort in 144.________superior digital images.145._______ , our professional-grade equipment, lighting, and staging techniques allow us to highlight the best features of a property. And once the photo shoot is over, every image 146._______ expert editing. All these services come standard in every package.\nPlease visit our Web site to view our work as well as our pricing and scheduling information. We are happy to work with you to customize orders.\nSincerely,\nOmar Ridha, Droplight Studio",
+    "options": [
+      {
+        "label": "A",
+        "content": "receives"
+      },
+      {
+        "label": "B",
+        "content": "is receiving"
+      },
+      {
+        "label": "C",
+        "content": "had received"
+      },
+      {
+        "label": "D",
+        "content": "had to receive"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Câu này miêu tả một quy trình tiêu chuẩn, một sự thật hiển nhiên về dịch vụ của studio. Do đó, thì hiện tại đơn \"receives\" là phù hợp nhất để diễn tả hành động thường xuyên hoặc quy tắc.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "April 7\nNaomi Burwell\n43 Waymire Road\nSouth Portland, ME 04109\nDear Ms. Burwell,\nI am Omar Ridha, the manager of Droplight Studio. 143________. We offer a full range of photography services for real estate professionals like you. We take pride in composing interior and exterior shots that make a property look its best. Droplight Studio spares no effort in 144.________superior digital images.145._______ , our professional-grade equipment, lighting, and staging techniques allow us to highlight the best features of a property. And once the photo shoot is over, every image 146._______ expert editing. All these services come standard in every package.\nPlease visit our Web site to view our work as well as our pricing and scheduling information. We are happy to work with you to customize orders.\nSincerely,\nOmar Ridha, Droplight Studio"
+  },
+  {
+    "id": "TS-003-P7-001",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "147. Where is the information most likely\nfound?",
+    "options": [
+      {
+        "label": "A",
+        "content": "On a door"
+      },
+      {
+        "label": "B",
+        "content": "On a receipt"
+      },
+      {
+        "label": "C",
+        "content": "In a box"
+      },
+      {
+        "label": "D",
+        "content": "On a Web site"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Văn bản hướng dẫn việc tháo dỡ, lắp ráp sản phẩm và đặt trên bề mặt mềm hoặc hộp rỗng, cho thấy đây là thông tin đi kèm trong hộp sản phẩm.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "STOP! PLEASE READ FIRST.\nThank you for purchasing this item.\nAs you do the unpacking, please verify that all components are included and place them in a safe area\nto avoid loss or damage. Assemble the item on a soft surface or on the flattened empty box.\nFollow the pictures and begin the assembly by placing the main part on its side. Never overtighten\nany screws or bolts, or you may damage the wood or cushioning. Please visit our Web site to obtain\nmaintenance tips and register your product for warranty coverage: www.indoordelight.com."
+  },
+  {
+    "id": "TS-003-P7-002",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "148. What kind of item is most likely discussed?",
+    "options": [
+      {
+        "label": "A",
+        "content": "A desktop computer"
+      },
+      {
+        "label": "B",
+        "content": "A piece of furniture"
+      },
+      {
+        "label": "C",
+        "content": "A household appliance"
+      },
+      {
+        "label": "D",
+        "content": "A power tool"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Các từ khóa như \"assemble,\" \"screws or bolts,\" \"wood or cushioning\" gợi ý rằng đây là hướng dẫn lắp ráp một món đồ nội thất.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "STOP! PLEASE READ FIRST.\nThank you for purchasing this item.\nAs you do the unpacking, please verify that all components are included and place them in a safe area\nto avoid loss or damage. Assemble the item on a soft surface or on the flattened empty box.\nFollow the pictures and begin the assembly by placing the main part on its side. Never overtighten\nany screws or bolts, or you may damage the wood or cushioning. Please visit our Web site to obtain\nmaintenance tips and register your product for warranty coverage: www.indoordelight.com."
+  },
+  {
+    "id": "TS-003-P7-003",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "149. What is suggested by the schedule?",
+    "options": [
+      {
+        "label": "A",
+        "content": "A conference has been scheduled."
+      },
+      {
+        "label": "B",
+        "content": "A firm has offices in two time zones."
+      },
+      {
+        "label": "C",
+        "content": "Administrative assistants make travel plans."
+      },
+      {
+        "label": "D",
+        "content": "Some meeting times have been changed."
+      }
+    ],
+    "correct": "B",
+    "explanation": "Lịch trình hiển thị giờ làm việc tương ứng giữa hai địa điểm Winnipeg và Toulouse, cho thấy công ty có văn phòng ở hai múi giờ khác nhau để sắp xếp các cuộc họp nội bộ.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "We are asking all Winnipeg staff to keep a copy of this schedule at their desks as a quick reference\ntool for scheduling interoffice meetings. Whenever possible, please schedule these meetings during\none of the underlined hours, that is, after 7:00 A.M. but before 11:00 A.M.\nWinnipeg Toulouse\n7:00 A.M. 2:00 P.M.\n8:00 A.M. 3:00 P.M.\n9:00 A.M. 4:00 P.M.\n10:00 A.M. 5:00 P.M.\n11:00 A.M. 6:00 P.M.\n12:00 noon 7:00 P.M."
+  },
+  {
+    "id": "TS-003-P7-004",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "150. What is indicated about 11:00 A.M.\nWinnipeg time?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It is when the Winnipeg office closes for\nlunch."
+      },
+      {
+        "label": "B",
+        "content": "It is when staff in Toulouse begin their\nworkday."
+      },
+      {
+        "label": "C",
+        "content": "It is not a preferred time to schedule a\nmeeting."
+      },
+      {
+        "label": "D",
+        "content": "It has just been added to the schedule."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Văn bản yêu cầu sắp xếp cuộc họp trong \"underlined hours,\" tức là \"after 7:00 A.M. but before 11:00 A.M.\", điều này có nghĩa 11:00 A.M. không phải là thời gian ưu tiên.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "We are asking all Winnipeg staff to keep a copy of this schedule at their desks as a quick reference\ntool for scheduling interoffice meetings. Whenever possible, please schedule these meetings during\none of the underlined hours, that is, after 7:00 A.M. but before 11:00 A.M.\nWinnipeg Toulouse\n7:00 A.M. 2:00 P.M.\n8:00 A.M. 3:00 P.M.\n9:00 A.M. 4:00 P.M.\n10:00 A.M. 5:00 P.M.\n11:00 A.M. 6:00 P.M.\n12:00 noon 7:00 P.M."
+  },
+  {
+    "id": "TS-003-P7-005",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "151. What is indicated about the Bryant Foyer?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It is located on the shores of a lake."
+      },
+      {
+        "label": "B",
+        "content": "It has recently been renovated."
+      },
+      {
+        "label": "C",
+        "content": "It will build a botanical garden for guests."
+      },
+      {
+        "label": "D",
+        "content": "It is reserved solely for corporate events."
+      }
+    ],
+    "correct": "B",
+    "explanation": "Văn bản nêu rõ \"until its renovation just over a year ago\", tức là nó đã được cải tạo cách đây hơn một năm.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "The Bryant Foyer is one of the premier event spaces in our area. Set on a hill, it has expansive\nwindows that provide sweeping views of the adjacent botanical gardens and the river. Built in 1897, it\nwas the home of the Francona Charitable Trust until its renovation just over a year ago. Today, the\nspace can accommodate up to 200 guests and is ideal for wedding receptions, office parties, and panel\npresentations. With its marble floors, cathedral ceiling, and stunning artwork, the Bryant Foyer is the\nideal location for your next gathering.\nThe on-site restaurant, Andito's, caters our events and also operates as its own business. This farm-to-\ntable restaurant, headed by chef Michaela Rymond, meets all dietary needs and has revolutionized the\nlocal food scene. Area residents know to plan far in advance to get a seat.\nTo reserve the event space or to make a dinner reservation, give us a call at 216-555-0157."
+  },
+  {
+    "id": "TS-003-P7-006",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "152. What is suggested about Andito's?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It was started by an international chef."
+      },
+      {
+        "label": "B",
+        "content": "It offers limited menu options."
+      },
+      {
+        "label": "C",
+        "content": "It is now funded by a charitable\norganization."
+      },
+      {
+        "label": "D",
+        "content": "It is very popular with local residents."
+      }
+    ],
+    "correct": "D",
+    "explanation": "Câu \"Area residents know to plan far in advance to get a seat\" chỉ ra rằng nhà hàng Andito's rất phổ biến với người dân địa phương.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "The Bryant Foyer is one of the premier event spaces in our area. Set on a hill, it has expansive\nwindows that provide sweeping views of the adjacent botanical gardens and the river. Built in 1897, it\nwas the home of the Francona Charitable Trust until its renovation just over a year ago. Today, the\nspace can accommodate up to 200 guests and is ideal for wedding receptions, office parties, and panel\npresentations. With its marble floors, cathedral ceiling, and stunning artwork, the Bryant Foyer is the\nideal location for your next gathering.\nThe on-site restaurant, Andito's, caters our events and also operates as its own business. This farm-to-\ntable restaurant, headed by chef Michaela Rymond, meets all dietary needs and has revolutionized the\nlocal food scene. Area residents know to plan far in advance to get a seat.\nTo reserve the event space or to make a dinner reservation, give us a call at 216-555-0157."
+  },
+  {
+    "id": "TS-003-P7-007",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "153. At 1:00 P.M., what does Ms. Chi most\nlikely mean when she writes, \"Sure thing,\nMina\"?",
+    "options": [
+      {
+        "label": "A",
+        "content": "She will bring lunch for Ms. Evers."
+      },
+      {
+        "label": "B",
+        "content": "She can provide a tool that Ms. Evers needs."
+      },
+      {
+        "label": "C",
+        "content": "Some site coordinates are correct."
+      },
+      {
+        "label": "D",
+        "content": "Some measurements must be double-\nchecked."
+      }
+    ],
+    "correct": "A",
+    "explanation": "Đoạn hội thoại cho thấy Joan hỏi có nên mang thức ăn về cho Mina không, và Mina yêu cầu một chiếc bánh sandwich gà. \"Sure thing\" của Joan xác nhận cô ấy sẽ thực hiện yêu cầu đó.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Joan Chi (12:39 P.M.)\nHello Mina. Are you almost finished with the field measurements? I'm getting hungry.\nMina Evers (12:40 P.M.)\nSorry, Joan. I'm afraid you and Ms. Lim will have to go to lunch without me today. There's a problem\nwith the site coordinates. This is going to take some time.\nJoan Chi (12:51 P.M.)\nOh no. Should we bring something back for you?\nMina Evers (12:59 P.M.)\nGet me a chicken sandwich.\nJoan Chi (1:00 P.M.)\nSure thing, Mina. See you in a while."
+  },
+  {
+    "id": "TS-003-P7-008",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "154. What will happen next?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Ms. Chi will get new site coordinates."
+      },
+      {
+        "label": "B",
+        "content": "Ms. Chi and Ms. Lim will be out for a\nwhile."
+      },
+      {
+        "label": "C",
+        "content": "Ms. Evers will share a recipe."
+      },
+      {
+        "label": "D",
+        "content": "Ms. Lim will begin taking measurements."
+      }
+    ],
+    "correct": "B",
+    "explanation": "Mina nói \"you and Ms. Lim will have to go to lunch without me today,\" và Joan xác nhận sẽ mang đồ ăn về cho Mina. Điều này có nghĩa Joan và Ms. Lim sẽ ra ngoài ăn trưa.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Joan Chi (12:39 P.M.)\nHello Mina. Are you almost finished with the field measurements? I'm getting hungry.\nMina Evers (12:40 P.M.)\nSorry, Joan. I'm afraid you and Ms. Lim will have to go to lunch without me today. There's a problem\nwith the site coordinates. This is going to take some time.\nJoan Chi (12:51 P.M.)\nOh no. Should we bring something back for you?\nMina Evers (12:59 P.M.)\nGet me a chicken sandwich.\nJoan Chi (1:00 P.M.)\nSure thing, Mina. See you in a while."
+  },
+  {
+    "id": "TS-003-P7-009",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "155. For whom is the notice most likely\nintended?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Farmers"
+      },
+      {
+        "label": "B",
+        "content": "Professional chefs"
+      },
+      {
+        "label": "C",
+        "content": "Truck drivers"
+      },
+      {
+        "label": "D",
+        "content": "Supermarket managers"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Thông báo đề cập đến \"growers\" (người trồng trọt) có \"surplus produce\" (nông sản dư thừa) và chủ đề \"farming and gardening,\" cho thấy đối tượng là nông dân.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "This season's excellent weather has yielded a substantial harvest of fruits and vegetables, in many\ncases more than growers may find buyers for. Those of you wishing to donate surplus produce to\ncommunity organizations can do so by visiting Vosey Farm and Garden's Web site (www.vfgrdn.org),\nwhere you will find our list of drop-off locations.\nIf you need us to come to you instead, please contact us. We will reach out to one of the many\nindependent truck drivers who have kindly volunteered to transport and quickly distribute your food\ndonations to vetted groups that need it. Check our Web site for more information about this service as\nwell as for insights into topics related to farming and gardening in the Northern Great Plains region."
+  },
+  {
+    "id": "TS-003-P7-010",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "156. What does the notice indicate about the\nweather?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It caused transportation delays."
+      },
+      {
+        "label": "B",
+        "content": "It included heavier rain than usual."
+      },
+      {
+        "label": "C",
+        "content": "It was frequently a topic in the local news."
+      },
+      {
+        "label": "D",
+        "content": "It was beneficial for crops."
+      }
+    ],
+    "correct": "D",
+    "explanation": "Câu \"This season's excellent weather has yielded a substantial harvest\" trực tiếp chỉ ra rằng thời tiết thuận lợi cho vụ mùa.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "This season's excellent weather has yielded a substantial harvest of fruits and vegetables, in many\ncases more than growers may find buyers for. Those of you wishing to donate surplus produce to\ncommunity organizations can do so by visiting Vosey Farm and Garden's Web site (www.vfgrdn.org),\nwhere you will find our list of drop-off locations.\nIf you need us to come to you instead, please contact us. We will reach out to one of the many\nindependent truck drivers who have kindly volunteered to transport and quickly distribute your food\ndonations to vetted groups that need it. Check our Web site for more information about this service as\nwell as for insights into topics related to farming and gardening in the Northern Great Plains region."
+  },
+  {
+    "id": "TS-003-P7-011",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "157. What service does the notice mention?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Staffing for local businesses"
+      },
+      {
+        "label": "B",
+        "content": "Food collection and distribution"
+      },
+      {
+        "label": "C",
+        "content": "Farm machinery repair"
+      },
+      {
+        "label": "D",
+        "content": "Gardening workshops"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Thông báo mô tả việc thu thập nông sản dư thừa từ người trồng trọt và phân phối chúng đến các tổ chức cộng đồng, tức là dịch vụ thu gom và phân phối thực phẩm.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "This season's excellent weather has yielded a substantial harvest of fruits and vegetables, in many\ncases more than growers may find buyers for. Those of you wishing to donate surplus produce to\ncommunity organizations can do so by visiting Vosey Farm and Garden's Web site (www.vfgrdn.org),\nwhere you will find our list of drop-off locations.\nIf you need us to come to you instead, please contact us. We will reach out to one of the many\nindependent truck drivers who have kindly volunteered to transport and quickly distribute your food\ndonations to vetted groups that need it. Check our Web site for more information about this service as\nwell as for insights into topics related to farming and gardening in the Northern Great Plains region."
+  },
+  {
+    "id": "TS-003-P7-012",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "158. Where most likely is the notice posted?",
+    "options": [
+      {
+        "label": "A",
+        "content": "In an airplane"
+      },
+      {
+        "label": "B",
+        "content": "In a concert hall"
+      },
+      {
+        "label": "C",
+        "content": "At a restaurant"
+      },
+      {
+        "label": "D",
+        "content": "At a post office"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Các từ khóa như \"performers,\" \"audience members,\" \"recording of the performance\" và \"attendants\" cho thấy đây là một địa điểm tổ chức sự kiện biểu diễn như phòng hòa nhạc.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "We are delighted that you are joining us for today's event. - [1] -. We ask that you adhere to the\nfollowing guidelines to ensure that all attendees have an enjoyable experience.\nUpon entering the venue, please put any and all electronic devices in silent mode. Ringtones and lit\nscreens are very distracting to both the performers and your fellow audience members.\n- [2] -. Moreover, audience members are not allowed to make an audio or visual recording of the\nperformance.\nBags and other items in the aisles pose a safety concern. - [3] -. If your bag is too big to fit properly\nunder a seat, consider storing it in a locker for just $2. - [4]-. One of our attendants will gladly assist\nyou with that.\nThank you for your cooperation."
+  },
+  {
+    "id": "TS-003-P7-013",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "159. What is stated about large bags?",
+    "options": [
+      {
+        "label": "A",
+        "content": "They can be put in a locked box for a fee."
+      },
+      {
+        "label": "B",
+        "content": "They must be left outside the building."
+      },
+      {
+        "label": "C",
+        "content": "They will be inspected by an attendant."
+      },
+      {
+        "label": "D",
+        "content": "They must be stored under a seat."
+      }
+    ],
+    "correct": "A",
+    "explanation": "Văn bản nói \"If your bag is too big to fit properly under a seat, consider storing it in a locker for just $2,\" nghĩa là có thể cất túi lớn vào tủ khóa có trả phí.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "We are delighted that you are joining us for today's event. - [1] -. We ask that you adhere to the\nfollowing guidelines to ensure that all attendees have an enjoyable experience.\nUpon entering the venue, please put any and all electronic devices in silent mode. Ringtones and lit\nscreens are very distracting to both the performers and your fellow audience members.\n- [2] -. Moreover, audience members are not allowed to make an audio or visual recording of the\nperformance.\nBags and other items in the aisles pose a safety concern. - [3] -. If your bag is too big to fit properly\nunder a seat, consider storing it in a locker for just $2. - [4]-. One of our attendants will gladly assist\nyou with that.\nThank you for your cooperation."
+  },
+  {
+    "id": "TS-003-P7-014",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "160. In which of the positions marked [1], [2],\n[3], and [4] does the following sentence best\nbelong?\n\"Please refrain from making phone calls or\ntexting at all times.\"",
+    "options": [
+      {
+        "label": "A",
+        "content": "[1]"
+      },
+      {
+        "label": "B",
+        "content": "[2]"
+      },
+      {
+        "label": "C",
+        "content": "[3]"
+      },
+      {
+        "label": "D",
+        "content": "[4]"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Câu cần chèn liên quan đến việc sử dụng điện thoại (phone calls, texting), phù hợp nhất khi đặt vào vị trí [2], ngay sau các quy định về việc để thiết bị điện tử ở chế độ im lặng và không ghi âm/ghi hình.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "We are delighted that you are joining us for today's event. - [1] -. We ask that you adhere to the\nfollowing guidelines to ensure that all attendees have an enjoyable experience.\nUpon entering the venue, please put any and all electronic devices in silent mode. Ringtones and lit\nscreens are very distracting to both the performers and your fellow audience members.\n- [2] -. Moreover, audience members are not allowed to make an audio or visual recording of the\nperformance.\nBags and other items in the aisles pose a safety concern. - [3] -. If your bag is too big to fit properly\nunder a seat, consider storing it in a locker for just $2. - [4]-. One of our attendants will gladly assist\nyou with that.\nThank you for your cooperation."
+  },
+  {
+    "id": "TS-003-P7-015",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is the main purpose of the e-mail?",
+    "options": [
+      {
+        "label": "A",
+        "content": "To request confirmation of an order"
+      },
+      {
+        "label": "B",
+        "content": "To adjust some delivery dates"
+      },
+      {
+        "label": "C",
+        "content": "To announce the expansion of a business"
+      },
+      {
+        "label": "D",
+        "content": "To promote new dessert products"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Email yêu cầu Camille Ayala xem lại và xác nhận mẫu đơn đặt hàng đính kèm.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "E-mail\nTo: Camille Ayala <ayala@esplinelectronics.com>\nFrom: Masae Adachi <madachi@sweeterspecialties.com>\nDate: February 12\nSubject: Event order\nAttachment: Sweeter Specialties Request Form\nDear Ms. Ayala,\nThank you for selecting our business to provide baked goods for the Esplin Electronics conference\nevent in March. We are honored that you chose us for a fourth year in a row! On March 29, we will\nprovide a large vanilla cake for each of the ten venues you indicated, and we will deliver a custom-\nbaked multilayer cake on the following day. You will be billed on March 28. Please review the\nattached order form and return it to me within seven days.\nRegarding the cake you ordered for March 30, our head pastry chef will produce it according to your\nspecifications. In fact, he created a sample of the complete recipe earlier today - almond crème cake\nwith fresh raspberry filling. We have judged it to be a delectable treat, and we are sure that you will\nbe pleased.\nIf you have any concerns, just send me an e-mail. As always, we value your business.\nMasae Adachi, Owner\nSweeter Specialties",
+    "passageTitle": "E-mail"
+  },
+  {
+    "id": "TS-003-P7-016",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is suggested about Ms. Ayala?",
+    "options": [
+      {
+        "label": "A",
+        "content": "She is receiving a professional award."
+      },
+      {
+        "label": "B",
+        "content": "She has worked as a pastry chef."
+      },
+      {
+        "label": "C",
+        "content": "She has been a Sweeter Specialties client in\nthe past."
+      },
+      {
+        "label": "D",
+        "content": "She received a positive recommendation\nabout a chef."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Đoạn \"chose us for a fourth year in a row\" cho thấy cô ấy là khách hàng cũ của Sweeter Specialties.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "E-mail\nTo: Camille Ayala <ayala@esplinelectronics.com>\nFrom: Masae Adachi <madachi@sweeterspecialties.com>\nDate: February 12\nSubject: Event order\nAttachment: Sweeter Specialties Request Form\nDear Ms. Ayala,\nThank you for selecting our business to provide baked goods for the Esplin Electronics conference\nevent in March. We are honored that you chose us for a fourth year in a row! On March 29, we will\nprovide a large vanilla cake for each of the ten venues you indicated, and we will deliver a custom-\nbaked multilayer cake on the following day. You will be billed on March 28. Please review the\nattached order form and return it to me within seven days.\nRegarding the cake you ordered for March 30, our head pastry chef will produce it according to your\nspecifications. In fact, he created a sample of the complete recipe earlier today - almond crème cake\nwith fresh raspberry filling. We have judged it to be a delectable treat, and we are sure that you will\nbe pleased.\nIf you have any concerns, just send me an e-mail. As always, we value your business.\nMasae Adachi, Owner\nSweeter Specialties",
+    "passageTitle": "E-mail"
+  },
+  {
+    "id": "TS-003-P7-017",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is indicated about the multilayer\ncake?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It has been a best-selling product with\nclients."
+      },
+      {
+        "label": "B",
+        "content": "It is the most expensive cake at Sweeter\nSpecialties."
+      },
+      {
+        "label": "C",
+        "content": "It is baked for Esplin Electronics annually."
+      },
+      {
+        "label": "D",
+        "content": "It is a new flavor combination for Sweeter\nSpecialties."
+      }
+    ],
+    "correct": "D",
+    "explanation": "Đầu bếp chính đã tạo ra một mẫu công thức mới - \"almond crème cake with fresh raspberry filling\" - cho thấy đây là sự kết hợp hương vị mới.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "E-mail\nTo: Camille Ayala <ayala@esplinelectronics.com>\nFrom: Masae Adachi <madachi@sweeterspecialties.com>\nDate: February 12\nSubject: Event order\nAttachment: Sweeter Specialties Request Form\nDear Ms. Ayala,\nThank you for selecting our business to provide baked goods for the Esplin Electronics conference\nevent in March. We are honored that you chose us for a fourth year in a row! On March 29, we will\nprovide a large vanilla cake for each of the ten venues you indicated, and we will deliver a custom-\nbaked multilayer cake on the following day. You will be billed on March 28. Please review the\nattached order form and return it to me within seven days.\nRegarding the cake you ordered for March 30, our head pastry chef will produce it according to your\nspecifications. In fact, he created a sample of the complete recipe earlier today - almond crème cake\nwith fresh raspberry filling. We have judged it to be a delectable treat, and we are sure that you will\nbe pleased.\nIf you have any concerns, just send me an e-mail. As always, we value your business.\nMasae Adachi, Owner\nSweeter Specialties",
+    "passageTitle": "E-mail"
+  },
+  {
+    "id": "TS-003-P7-018",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "The word \"judged\" in paragraph 2, line 3,\nis closest in meaning to",
+    "options": [
+      {
+        "label": "A",
+        "content": "criticized"
+      },
+      {
+        "label": "B",
+        "content": "settled"
+      },
+      {
+        "label": "C",
+        "content": "determined"
+      },
+      {
+        "label": "D",
+        "content": "described"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"Judged\" trong ngữ cảnh này có nghĩa là đánh giá, quyết định, tương đương với \"determined\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "E-mail\nTo: Camille Ayala <ayala@esplinelectronics.com>\nFrom: Masae Adachi <madachi@sweeterspecialties.com>\nDate: February 12\nSubject: Event order\nAttachment: Sweeter Specialties Request Form\nDear Ms. Ayala,\nThank you for selecting our business to provide baked goods for the Esplin Electronics conference\nevent in March. We are honored that you chose us for a fourth year in a row! On March 29, we will\nprovide a large vanilla cake for each of the ten venues you indicated, and we will deliver a custom-\nbaked multilayer cake on the following day. You will be billed on March 28. Please review the\nattached order form and return it to me within seven days.\nRegarding the cake you ordered for March 30, our head pastry chef will produce it according to your\nspecifications. In fact, he created a sample of the complete recipe earlier today - almond crème cake\nwith fresh raspberry filling. We have judged it to be a delectable treat, and we are sure that you will\nbe pleased.\nIf you have any concerns, just send me an e-mail. As always, we value your business.\nMasae Adachi, Owner\nSweeter Specialties",
+    "passageTitle": "E-mail"
+  },
+  {
+    "id": "TS-003-P7-019",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "Why did Ms. Yakovleva choose the Dish\nMagic 300 dishwasher?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It was less expensive than most models."
+      },
+      {
+        "label": "B",
+        "content": "It was the largest model available."
+      },
+      {
+        "label": "C",
+        "content": "It was rated very highly."
+      },
+      {
+        "label": "D",
+        "content": "It was the same brand as her other\nappliances."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Người viết nói \"all of the reviews were excellent\", cho thấy máy rửa bát này được đánh giá rất cao.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Great Dishwasher!\nI never had a dishwasher before. After remodeling my kitchen, I finally had room for a compact\ndishwasher. I did a lot of research, and the Dish Magic 300 seemed to be the best choice. It was\npricier than other models, but all of the reviews were excellent. So, I decided to spend the extra\nmoney. I have had the dishwasher for one month now, and I could not be happier with my decision.\nMost importantly, the dishes come out sparkling clean, no matter how dirty they were going in. Also,\nthe machine is so quiet, you do not even know it is running. Lastly, it is designed to use water\nefficiently, which is very important to me. Overall, I am very pleased with this dishwasher.\n- Anna Yakovleva",
+    "passageTitle": "Great Dishwasher!"
+  },
+  {
+    "id": "TS-003-P7-020",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "The word \"running\" in paragraph 1, line 7,\nis closest in meaning to",
+    "options": [
+      {
+        "label": "A",
+        "content": "adjusting"
+      },
+      {
+        "label": "B",
+        "content": "controlling"
+      },
+      {
+        "label": "C",
+        "content": "moving"
+      },
+      {
+        "label": "D",
+        "content": "operating"
+      }
+    ],
+    "correct": "D",
+    "explanation": "\"Running\" trong ngữ cảnh máy móc có nghĩa là hoạt động, vận hành, tương đương với \"operating\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Great Dishwasher!\nI never had a dishwasher before. After remodeling my kitchen, I finally had room for a compact\ndishwasher. I did a lot of research, and the Dish Magic 300 seemed to be the best choice. It was\npricier than other models, but all of the reviews were excellent. So, I decided to spend the extra\nmoney. I have had the dishwasher for one month now, and I could not be happier with my decision.\nMost importantly, the dishes come out sparkling clean, no matter how dirty they were going in. Also,\nthe machine is so quiet, you do not even know it is running. Lastly, it is designed to use water\nefficiently, which is very important to me. Overall, I am very pleased with this dishwasher.\n- Anna Yakovleva",
+    "passageTitle": "Great Dishwasher!"
+  },
+  {
+    "id": "TS-003-P7-021",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is indicated about Ms. Yakovleva?",
+    "options": [
+      {
+        "label": "A",
+        "content": "She cares about saving water."
+      },
+      {
+        "label": "B",
+        "content": "She recently moved to a new home."
+      },
+      {
+        "label": "C",
+        "content": "She bought the dishwasher a year ago."
+      },
+      {
+        "label": "D",
+        "content": "She remodels kitchens professionally."
+      }
+    ],
+    "correct": "A",
+    "explanation": "Đoạn văn có ghi \"it is designed to use water efficiently, which is very important to me\", cho thấy cô ấy quan tâm đến việc tiết kiệm nước.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Great Dishwasher!\nI never had a dishwasher before. After remodeling my kitchen, I finally had room for a compact\ndishwasher. I did a lot of research, and the Dish Magic 300 seemed to be the best choice. It was\npricier than other models, but all of the reviews were excellent. So, I decided to spend the extra\nmoney. I have had the dishwasher for one month now, and I could not be happier with my decision.\nMost importantly, the dishes come out sparkling clean, no matter how dirty they were going in. Also,\nthe machine is so quiet, you do not even know it is running. Lastly, it is designed to use water\nefficiently, which is very important to me. Overall, I am very pleased with this dishwasher.\n- Anna Yakovleva",
+    "passageTitle": "Great Dishwasher!"
+  },
+  {
+    "id": "TS-003-P7-022",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "For whom is the information intended?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Skyler Airlines employees"
+      },
+      {
+        "label": "B",
+        "content": "Skyler Airlines customers"
+      },
+      {
+        "label": "C",
+        "content": "Potential journal subscribers"
+      },
+      {
+        "label": "D",
+        "content": "Current job seekers"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Đoạn văn mô tả các vị trí tuyển dụng, phúc lợi và cơ hội nghề nghiệp tại Skyler Airlines, nhắm đến những người đang tìm việc.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Skyler Airlines employs more than 20,000 people from all over the world. We're growing fast and\nhave many positions available. - [1] -. So regardless of your background, there's probably a place for\nyou on our team. Skyler employees enjoy many perks. - [2] -. For example, our discount program\nenables them to fly to any of our destinations for a fraction of the average ticket price. - [3] -. We\noffer upward and global mobility, tuition reimbursement, a mentorship program, and a generous\ncompensation package. - [4] -. Annual paid vacations enable a comfortable work-life balance. It's no\nwonder that Skyler Airlines was named \"Best Airline to Work For\" by Travel Vista Journal three\nyears in a row.",
+    "passageTitle": "Skyler Airlines"
+  },
+  {
+    "id": "TS-003-P7-023",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "In the information, what is NOT mentioned\nas being offered to employees?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Payment for educational expenses"
+      },
+      {
+        "label": "B",
+        "content": "Free airline tickets"
+      },
+      {
+        "label": "C",
+        "content": "Opportunities for mentoring"
+      },
+      {
+        "label": "D",
+        "content": "Paid days off"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Đoạn văn nhắc đến \"discount program\" cho vé máy bay, chứ không phải \"free airline tickets\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Skyler Airlines employs more than 20,000 people from all over the world. We're growing fast and\nhave many positions available. - [1] -. So regardless of your background, there's probably a place for\nyou on our team. Skyler employees enjoy many perks. - [2] -. For example, our discount program\nenables them to fly to any of our destinations for a fraction of the average ticket price. - [3] -. We\noffer upward and global mobility, tuition reimbursement, a mentorship program, and a generous\ncompensation package. - [4] -. Annual paid vacations enable a comfortable work-life balance. It's no\nwonder that Skyler Airlines was named \"Best Airline to Work For\" by Travel Vista Journal three\nyears in a row.",
+    "passageTitle": "Skyler Airlines"
+  },
+  {
+    "id": "TS-003-P7-024",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is mentioned about Skyler Airlines?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It flies to the most destinations around the\nworld."
+      },
+      {
+        "label": "B",
+        "content": "It is planning to merge with another airline."
+      },
+      {
+        "label": "C",
+        "content": "It has been praised by a trade publication."
+      },
+      {
+        "label": "D",
+        "content": "It has replaced its seats with more\ncomfortable ones."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Đoạn văn cho biết Skyler Airlines được vinh danh là \"Best Airline to Work For\" bởi tạp chí Travel Vista Journal.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Skyler Airlines employs more than 20,000 people from all over the world. We're growing fast and\nhave many positions available. - [1] -. So regardless of your background, there's probably a place for\nyou on our team. Skyler employees enjoy many perks. - [2] -. For example, our discount program\nenables them to fly to any of our destinations for a fraction of the average ticket price. - [3] -. We\noffer upward and global mobility, tuition reimbursement, a mentorship program, and a generous\ncompensation package. - [4] -. Annual paid vacations enable a comfortable work-life balance. It's no\nwonder that Skyler Airlines was named \"Best Airline to Work For\" by Travel Vista Journal three\nyears in a row.",
+    "passageTitle": "Skyler Airlines"
+  },
+  {
+    "id": "TS-003-P7-025",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "In which of the positions marked [1], [2],\n[3], and [4] does the following sentence best\nbelong?\n\"Our openings cover a broad range of skill sets.\"",
+    "options": [
+      {
+        "label": "A",
+        "content": "[1]"
+      },
+      {
+        "label": "B",
+        "content": "[2]"
+      },
+      {
+        "label": "C",
+        "content": "[3]"
+      },
+      {
+        "label": "D",
+        "content": "[4]"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Câu cần điền (\"Our openings cover a broad range of skill sets.\") giải thích lý do \"regardless of your background, there's probably a place for you on our team\", nên nó phù hợp nhất ở vị trí [1].",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Skyler Airlines employs more than 20,000 people from all over the world. We're growing fast and\nhave many positions available. - [1] -. So regardless of your background, there's probably a place for\nyou on our team. Skyler employees enjoy many perks. - [2] -. For example, our discount program\nenables them to fly to any of our destinations for a fraction of the average ticket price. - [3] -. We\noffer upward and global mobility, tuition reimbursement, a mentorship program, and a generous\ncompensation package. - [4] -. Annual paid vacations enable a comfortable work-life balance. It's no\nwonder that Skyler Airlines was named \"Best Airline to Work For\" by Travel Vista Journal three\nyears in a row.",
+    "passageTitle": "Skyler Airlines"
+  },
+  {
+    "id": "TS-003-P7-026",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is indicated about a presentation?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It will be expensive to produce."
+      },
+      {
+        "label": "B",
+        "content": "It will highlight some best-selling products."
+      },
+      {
+        "label": "C",
+        "content": "It will be Ms. Gowan's first project."
+      },
+      {
+        "label": "D",
+        "content": "It will be sent to multiple locations."
+      }
+    ],
+    "correct": "D",
+    "explanation": "Các slide thuyết trình sẽ được gửi đến \"many partner stores\", tức là nhiều địa điểm.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Susan Gowan 9:16 A.M.\nGood morning. The presentation slides about the new line of headphones are almost ready for\ndistribution to our many partner stores. We are on track to send them out next Monday.\nMaggie Lorenz 9:17 A.M.\nHow do they look?\nSusan Gowan 9:20 A.M.\nThere are still some missing elements.\nAlan Woodson 9:21 A.M.\nWe mainly need the information from the user studies that reviewed the headphones for sport use. We\nshould have that report from the research and development office by Wednesday.\nMaggie Lorenz 9:22 A.M.\nYes, let's not overlook that. And if you're concerned about the report not arriving by Wednesday,\nplease contact Matt Harven and remind him to expedite a summary to us.\nSusan Gowan 9:23 A.M.\nAssuming we receive that summary soon enough to incorporate its findings into the slides, should the\nthree of us schedule a trial run through the presentation on Thursday or Friday?\nMaggie Lorenz 9:24 A.M.\nLet's try for Thursday afternoon. Then we will still have Friday to make any necessary changes.\nAlan Woodson 9:25 A.M.\nFine by me. I'm free after 2 P.M.",
+    "passageTitle": "Team Chat"
+  },
+  {
+    "id": "TS-003-P7-027",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "At 9:22 A.M., what does Ms. Lorenz imply\nwhen she writes, \"let's not overlook that\"?",
+    "options": [
+      {
+        "label": "A",
+        "content": "More staff should attend a meeting."
+      },
+      {
+        "label": "B",
+        "content": "Information from the user studies is\nimportant."
+      },
+      {
+        "label": "C",
+        "content": "The presentation must run smoothly."
+      },
+      {
+        "label": "D",
+        "content": "Partner stores must be notified about an\nupcoming report."
+      }
+    ],
+    "correct": "B",
+    "explanation": "Sau khi Alan Woodson nói về việc cần thông tin từ các nghiên cứu người dùng, Maggie Lorenz nói \"let's not overlook that\" ám chỉ tầm quan trọng của thông tin này.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Susan Gowan 9:16 A.M.\nGood morning. The presentation slides about the new line of headphones are almost ready for\ndistribution to our many partner stores. We are on track to send them out next Monday.\nMaggie Lorenz 9:17 A.M.\nHow do they look?\nSusan Gowan 9:20 A.M.\nThere are still some missing elements.\nAlan Woodson 9:21 A.M.\nWe mainly need the information from the user studies that reviewed the headphones for sport use. We\nshould have that report from the research and development office by Wednesday.\nMaggie Lorenz 9:22 A.M.\nYes, let's not overlook that. And if you're concerned about the report not arriving by Wednesday,\nplease contact Matt Harven and remind him to expedite a summary to us.\nSusan Gowan 9:23 A.M.\nAssuming we receive that summary soon enough to incorporate its findings into the slides, should the\nthree of us schedule a trial run through the presentation on Thursday or Friday?\nMaggie Lorenz 9:24 A.M.\nLet's try for Thursday afternoon. Then we will still have Friday to make any necessary changes.\nAlan Woodson 9:25 A.M.\nFine by me. I'm free after 2 P.M.",
+    "passageTitle": "Team Chat"
+  },
+  {
+    "id": "TS-003-P7-028",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "Who most likely is Mr. Harven?",
+    "options": [
+      {
+        "label": "A",
+        "content": "A store manager"
+      },
+      {
+        "label": "B",
+        "content": "An amateur athlete"
+      },
+      {
+        "label": "C",
+        "content": "A product researcher"
+      },
+      {
+        "label": "D",
+        "content": "An advertising executive"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Matt Harven được yêu cầu đẩy nhanh bản tóm tắt báo cáo từ văn phòng R&D về nghiên cứu người dùng, cho thấy anh ấy có thể là một nhà nghiên cứu sản phẩm.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Susan Gowan 9:16 A.M.\nGood morning. The presentation slides about the new line of headphones are almost ready for\ndistribution to our many partner stores. We are on track to send them out next Monday.\nMaggie Lorenz 9:17 A.M.\nHow do they look?\nSusan Gowan 9:20 A.M.\nThere are still some missing elements.\nAlan Woodson 9:21 A.M.\nWe mainly need the information from the user studies that reviewed the headphones for sport use. We\nshould have that report from the research and development office by Wednesday.\nMaggie Lorenz 9:22 A.M.\nYes, let's not overlook that. And if you're concerned about the report not arriving by Wednesday,\nplease contact Matt Harven and remind him to expedite a summary to us.\nSusan Gowan 9:23 A.M.\nAssuming we receive that summary soon enough to incorporate its findings into the slides, should the\nthree of us schedule a trial run through the presentation on Thursday or Friday?\nMaggie Lorenz 9:24 A.M.\nLet's try for Thursday afternoon. Then we will still have Friday to make any necessary changes.\nAlan Woodson 9:25 A.M.\nFine by me. I'm free after 2 P.M.",
+    "passageTitle": "Team Chat"
+  },
+  {
+    "id": "TS-003-P7-029",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "When do the writers plan to meet to review\na slide presentation?",
+    "options": [
+      {
+        "label": "A",
+        "content": "On Monday"
+      },
+      {
+        "label": "B",
+        "content": "On Wednesday"
+      },
+      {
+        "label": "C",
+        "content": "On Thursday"
+      },
+      {
+        "label": "D",
+        "content": "On Friday"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Maggie Lorenz đề nghị \"Let's try for Thursday afternoon\" và Alan Woodson đồng ý, xác nhận họ sẽ gặp vào thứ Năm.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Susan Gowan 9:16 A.M.\nGood morning. The presentation slides about the new line of headphones are almost ready for\ndistribution to our many partner stores. We are on track to send them out next Monday.\nMaggie Lorenz 9:17 A.M.\nHow do they look?\nSusan Gowan 9:20 A.M.\nThere are still some missing elements.\nAlan Woodson 9:21 A.M.\nWe mainly need the information from the user studies that reviewed the headphones for sport use. We\nshould have that report from the research and development office by Wednesday.\nMaggie Lorenz 9:22 A.M.\nYes, let's not overlook that. And if you're concerned about the report not arriving by Wednesday,\nplease contact Matt Harven and remind him to expedite a summary to us.\nSusan Gowan 9:23 A.M.\nAssuming we receive that summary soon enough to incorporate its findings into the slides, should the\nthree of us schedule a trial run through the presentation on Thursday or Friday?\nMaggie Lorenz 9:24 A.M.\nLet's try for Thursday afternoon. Then we will still have Friday to make any necessary changes.\nAlan Woodson 9:25 A.M.\nFine by me. I'm free after 2 P.M.",
+    "passageTitle": "Team Chat"
+  },
+  {
+    "id": "TS-003-P7-030",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is the purpose of the press release?",
+    "options": [
+      {
+        "label": "A",
+        "content": "To promote the opening of a restaurant"
+      },
+      {
+        "label": "B",
+        "content": "To announce a business partnership"
+      },
+      {
+        "label": "C",
+        "content": "To introduce a travel program"
+      },
+      {
+        "label": "D",
+        "content": "To congratulate an award recipient"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Tiêu đề và nội dung chính của thông cáo báo chí là \"Kitchen Swifts and Chef Darius Cordero are joining together\", tức là thông báo về một mối quan hệ đối tác kinh doanh.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Aparna Kothari, Media Contact\nKitchen Swifts\nakothari@kitchenswifts.com.au\nFOR IMMEDIATE RELEASE\nSYDNEY (4 June)-Kitchen Swifts and Chef Darius Cordero are joining together to give home cooks\na new culinary experience. The award-winning chef is the owner of restaurants in both the Philippines\nand Australia, including the recently opened Enriqua's. He says his cooking reflects his Filipino\nheritage, which is a blend of many cultures.\n\"I've designed these simplified recipes for Kitchen Swifts so that cooks at home can enjoy new and\nexciting flavours with ease,\" he said. \"While preparing and eating these meals, you can feel like you\nare travelling the world with me.\"\nZahra Chambers, vice president of Kitchen Swifts, says she is pleased to work with Chef Cordero and\nto offer delicious new recipes to their customers. Kitchen Swifts supplies menus, recipes, and\ningredients for two people, four people, or six people, including a range of vegetarian selections.\nCustomers choose the most appropriate meal options, and then a box is delivered weekly. Current\ncustomers will see no price increase with the partnership. To find out more, visit the Kitchen Swifts\nWeb site at www.kitchenswifts.com.au.\nhttps://www.sydneyrestaurants.com.au\nA colleague arranged for us to eat at Enriqua's while I was at a conference in Sydney. It is usually\nfully booked for dinner; you may need to call months in advance for a table. We had a wonderful\nlunch there instead. Everything was delicious, and the bread and desserts are baked on-site! It was a\nworthwhile treat before I flew back to Hong Kong.\n-Meili Guan",
+    "passageTitle": "Kitchen Swifts and Chef Darius Cordero Partnership"
+  },
+  {
+    "id": "TS-003-P7-031",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "In the press release, the word \"reflects\" in\nparagraph 1, line 4, is closest in meaning to",
+    "options": [
+      {
+        "label": "A",
+        "content": "results in"
+      },
+      {
+        "label": "B",
+        "content": "changes"
+      },
+      {
+        "label": "C",
+        "content": "shows"
+      },
+      {
+        "label": "D",
+        "content": "thoughts about"
+      }
+    ],
+    "correct": "C",
+    "explanation": "\"Reflects\" trong ngữ cảnh này có nghĩa là thể hiện, cho thấy, tương đương với \"shows\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Aparna Kothari, Media Contact\nKitchen Swifts\nakothari@kitchenswifts.com.au\nFOR IMMEDIATE RELEASE\nSYDNEY (4 June)-Kitchen Swifts and Chef Darius Cordero are joining together to give home cooks\na new culinary experience. The award-winning chef is the owner of restaurants in both the Philippines\nand Australia, including the recently opened Enriqua's. He says his cooking reflects his Filipino\nheritage, which is a blend of many cultures.\n\"I've designed these simplified recipes for Kitchen Swifts so that cooks at home can enjoy new and\nexciting flavours with ease,\" he said. \"While preparing and eating these meals, you can feel like you\nare travelling the world with me.\"\nZahra Chambers, vice president of Kitchen Swifts, says she is pleased to work with Chef Cordero and\nto offer delicious new recipes to their customers. Kitchen Swifts supplies menus, recipes, and\ningredients for two people, four people, or six people, including a range of vegetarian selections.\nCustomers choose the most appropriate meal options, and then a box is delivered weekly. Current\ncustomers will see no price increase with the partnership. To find out more, visit the Kitchen Swifts\nWeb site at www.kitchenswifts.com.au.\nhttps://www.sydneyrestaurants.com.au\nA colleague arranged for us to eat at Enriqua's while I was at a conference in Sydney. It is usually\nfully booked for dinner; you may need to call months in advance for a table. We had a wonderful\nlunch there instead. Everything was delicious, and the bread and desserts are baked on-site! It was a\nworthwhile treat before I flew back to Hong Kong.\n-Meili Guan",
+    "passageTitle": "Kitchen Swifts and Chef Darius Cordero Partnership"
+  },
+  {
+    "id": "TS-003-P7-032",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is indicated about Kitchen Swifts?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It raised its prices for all customers."
+      },
+      {
+        "label": "B",
+        "content": "It revised its delivery schedule."
+      },
+      {
+        "label": "C",
+        "content": "It offers several meal options."
+      },
+      {
+        "label": "D",
+        "content": "It has a new vice president."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Đoạn văn nói Kitchen Swifts cung cấp các lựa chọn bữa ăn cho \"two people, four people, or six people, including a range of vegetarian selections\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Aparna Kothari, Media Contact\nKitchen Swifts\nakothari@kitchenswifts.com.au\nFOR IMMEDIATE RELEASE\nSYDNEY (4 June)-Kitchen Swifts and Chef Darius Cordero are joining together to give home cooks\na new culinary experience. The award-winning chef is the owner of restaurants in both the Philippines\nand Australia, including the recently opened Enriqua's. He says his cooking reflects his Filipino\nheritage, which is a blend of many cultures.\n\"I've designed these simplified recipes for Kitchen Swifts so that cooks at home can enjoy new and\nexciting flavours with ease,\" he said. \"While preparing and eating these meals, you can feel like you\nare travelling the world with me.\"\nZahra Chambers, vice president of Kitchen Swifts, says she is pleased to work with Chef Cordero and\nto offer delicious new recipes to their customers. Kitchen Swifts supplies menus, recipes, and\ningredients for two people, four people, or six people, including a range of vegetarian selections.\nCustomers choose the most appropriate meal options, and then a box is delivered weekly. Current\ncustomers will see no price increase with the partnership. To find out more, visit the Kitchen Swifts\nWeb site at www.kitchenswifts.com.au.\nhttps://www.sydneyrestaurants.com.au\nA colleague arranged for us to eat at Enriqua's while I was at a conference in Sydney. It is usually\nfully booked for dinner; you may need to call months in advance for a table. We had a wonderful\nlunch there instead. Everything was delicious, and the bread and desserts are baked on-site! It was a\nworthwhile treat before I flew back to Hong Kong.\n-Meili Guan",
+    "passageTitle": "Kitchen Swifts and Chef Darius Cordero Partnership"
+  },
+  {
+    "id": "TS-003-P7-033",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is most likely true about Ms. Guan?",
+    "options": [
+      {
+        "label": "A",
+        "content": "She went to Mr. Cordero's restaurant."
+      },
+      {
+        "label": "B",
+        "content": "She recently went to Sydney for a vacation."
+      },
+      {
+        "label": "C",
+        "content": "She is a colleague of Ms. Chambers."
+      },
+      {
+        "label": "D",
+        "content": "She regularly orders from Kitchen Swifts."
+      }
+    ],
+    "correct": "A",
+    "explanation": "Meili Guan viết rằng cô ấy đã ăn tại Enriqua's, đây là một nhà hàng của Chef Darius Cordero.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Aparna Kothari, Media Contact\nKitchen Swifts\nakothari@kitchenswifts.com.au\nFOR IMMEDIATE RELEASE\nSYDNEY (4 June)-Kitchen Swifts and Chef Darius Cordero are joining together to give home cooks\na new culinary experience. The award-winning chef is the owner of restaurants in both the Philippines\nand Australia, including the recently opened Enriqua's. He says his cooking reflects his Filipino\nheritage, which is a blend of many cultures.\n\"I've designed these simplified recipes for Kitchen Swifts so that cooks at home can enjoy new and\nexciting flavours with ease,\" he said. \"While preparing and eating these meals, you can feel like you\nare travelling the world with me.\"\nZahra Chambers, vice president of Kitchen Swifts, says she is pleased to work with Chef Cordero and\nto offer delicious new recipes to their customers. Kitchen Swifts supplies menus, recipes, and\ningredients for two people, four people, or six people, including a range of vegetarian selections.\nCustomers choose the most appropriate meal options, and then a box is delivered weekly. Current\ncustomers will see no price increase with the partnership. To find out more, visit the Kitchen Swifts\nWeb site at www.kitchenswifts.com.au.\nhttps://www.sydneyrestaurants.com.au\nA colleague arranged for us to eat at Enriqua's while I was at a conference in Sydney. It is usually\nfully booked for dinner; you may need to call months in advance for a table. We had a wonderful\nlunch there instead. Everything was delicious, and the bread and desserts are baked on-site! It was a\nworthwhile treat before I flew back to Hong Kong.\n-Meili Guan",
+    "passageTitle": "Kitchen Swifts and Chef Darius Cordero Partnership"
+  },
+  {
+    "id": "TS-003-P7-034",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What did Ms. Guan suggest about\nEnriqua's in the review?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It has a limited lunch menu."
+      },
+      {
+        "label": "B",
+        "content": "It takes dinner reservations."
+      },
+      {
+        "label": "C",
+        "content": "It serves bread from a local bakery."
+      },
+      {
+        "label": "D",
+        "content": "It has a location in Hong Kong."
+      }
+    ],
+    "correct": "B",
+    "explanation": "Meili Guan nói rằng nhà hàng \"is usually fully booked for dinner; you may need to call months in advance for a table\", điều này cho thấy họ nhận đặt bàn ăn tối.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Aparna Kothari, Media Contact\nKitchen Swifts\nakothari@kitchenswifts.com.au\nFOR IMMEDIATE RELEASE\nSYDNEY (4 June)-Kitchen Swifts and Chef Darius Cordero are joining together to give home cooks\na new culinary experience. The award-winning chef is the owner of restaurants in both the Philippines\nand Australia, including the recently opened Enriqua's. He says his cooking reflects his Filipino\nheritage, which is a blend of many cultures.\n\"I've designed these simplified recipes for Kitchen Swifts so that cooks at home can enjoy new and\nexciting flavours with ease,\" he said. \"While preparing and eating these meals, you can feel like you\nare travelling the world with me.\"\nZahra Chambers, vice president of Kitchen Swifts, says she is pleased to work with Chef Cordero and\nto offer delicious new recipes to their customers. Kitchen Swifts supplies menus, recipes, and\ningredients for two people, four people, or six people, including a range of vegetarian selections.\nCustomers choose the most appropriate meal options, and then a box is delivered weekly. Current\ncustomers will see no price increase with the partnership. To find out more, visit the Kitchen Swifts\nWeb site at www.kitchenswifts.com.au.\nhttps://www.sydneyrestaurants.com.au\nA colleague arranged for us to eat at Enriqua's while I was at a conference in Sydney. It is usually\nfully booked for dinner; you may need to call months in advance for a table. We had a wonderful\nlunch there instead. Everything was delicious, and the bread and desserts are baked on-site! It was a\nworthwhile treat before I flew back to Hong Kong.\n-Meili Guan",
+    "passageTitle": "Kitchen Swifts and Chef Darius Cordero Partnership"
+  },
+  {
+    "id": "TS-003-P7-035",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is the purpose of the e-mail?",
+    "options": [
+      {
+        "label": "A",
+        "content": "To finalize a plan"
+      },
+      {
+        "label": "B",
+        "content": "To accept an invitation"
+      },
+      {
+        "label": "C",
+        "content": "To promote a new service"
+      },
+      {
+        "label": "D",
+        "content": "To request feedback on a policy"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Email giải thích cách thức giao hàng và xác nhận thời gian, địa điểm, tức là hoàn thiện một kế hoạch.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "To: laura.savard@orbitmail.scot\nFrom: cboyle@ceoleire.co.uk\nDate: 25 May\nSubject: RE: Some suggestions\nDear Ms. Savard,\nThank you for your kind offer to either pick up your online order from my shop or to pay extra for air\nor train transport. Neither arrangement is necessary, as I am happy to deliver your items to you in\nStranraer myself. It so happens that my sister and her children live nearby in Kirkcolm. Before seeing\nthem, I will drive my rental car to your house and hand deliver the items to you.\nAs you know, my merchandise is 100 percent handcrafted. If any damage occurs in transit, the repair\nturns into an expensive, time-consuming ordeal. Over the years, I've seen too much damage done by\ninattentive baggage handlers. My policy is to deliver items personally whenever feasible or hire a\nground- or sea-based courier service I trust.\nI look forward to meeting you on 5 June. I expect to arrive at your house no later than 5 p.m.\nSincerely,\nConor Boyle\nCeoleire Classics\nTMGROUP\n \n- ZALO 0945179246\n\n-- 19 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nNorthern Ireland Ferry Service\nDate of Issuance: 26 May\nPassenger Name: Conor Boyle\nDeparting Belfast: Friday, 5 June, 1:05 PM\nDocking at Cairnryan: Friday, 5 June, 3:20 PM\nBaggage: 1 suitcase (small), 2 instrument cases\n(1 mandolin, 1 guitar)\nVehicle transport: No\nAdult Standard Class: £55.00\nPlease arrive 30 minutes prior to departure."
+  },
+  {
+    "id": "TS-003-P7-036",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "Why will Mr. Boyle travel from Stranraer\nto Kirkcolm?",
+    "options": [
+      {
+        "label": "A",
+        "content": "To make a delivery"
+      },
+      {
+        "label": "B",
+        "content": "To attend a meeting"
+      },
+      {
+        "label": "C",
+        "content": "To drop off a rental car"
+      },
+      {
+        "label": "D",
+        "content": "To visit with family members"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Ông Boyle sẽ đến Stranraer để giao hàng, sau đó đến Kirkcolm để thăm chị gái và các cháu. Do đó, việc ông đi từ Stranraer đến Kirkcolm là để thăm gia đình.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "To: laura.savard@orbitmail.scot\nFrom: cboyle@ceoleire.co.uk\nDate: 25 May\nSubject: RE: Some suggestions\nDear Ms. Savard,\nThank you for your kind offer to either pick up your online order from my shop or to pay extra for air\nor train transport. Neither arrangement is necessary, as I am happy to deliver your items to you in\nStranraer myself. It so happens that my sister and her children live nearby in Kirkcolm. Before seeing\nthem, I will drive my rental car to your house and hand deliver the items to you.\nAs you know, my merchandise is 100 percent handcrafted. If any damage occurs in transit, the repair\nturns into an expensive, time-consuming ordeal. Over the years, I've seen too much damage done by\ninattentive baggage handlers. My policy is to deliver items personally whenever feasible or hire a\nground- or sea-based courier service I trust.\nI look forward to meeting you on 5 June. I expect to arrive at your house no later than 5 p.m.\nSincerely,\nConor Boyle\nCeoleire Classics\nTMGROUP\n \n- ZALO 0945179246\n\n-- 19 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nNorthern Ireland Ferry Service\nDate of Issuance: 26 May\nPassenger Name: Conor Boyle\nDeparting Belfast: Friday, 5 June, 1:05 PM\nDocking at Cairnryan: Friday, 5 June, 3:20 PM\nBaggage: 1 suitcase (small), 2 instrument cases\n(1 mandolin, 1 guitar)\nVehicle transport: No\nAdult Standard Class: £55.00\nPlease arrive 30 minutes prior to departure."
+  },
+  {
+    "id": "TS-003-P7-037",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is indicated in the e-mail?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Mr. Boyle's sister is a cofounder of Ceoleire\nClassics."
+      },
+      {
+        "label": "B",
+        "content": "Mr. Boyle has been disappointed by air- and\ntrain-freight companies."
+      },
+      {
+        "label": "C",
+        "content": "Ms. Savard has purchased items from Mr.\nBoyle in the past."
+      },
+      {
+        "label": "D",
+        "content": "Ms. Savard prefers a specific brand of\nluggage."
+      }
+    ],
+    "correct": "B",
+    "explanation": "Ông Boyle nhắc đến việc hàng hóa bị hỏng hóc do nhân viên xử lý hành lý, cho thấy ông không hài lòng với dịch vụ vận chuyển trước đây.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "To: laura.savard@orbitmail.scot\nFrom: cboyle@ceoleire.co.uk\nDate: 25 May\nSubject: RE: Some suggestions\nDear Ms. Savard,\nThank you for your kind offer to either pick up your online order from my shop or to pay extra for air\nor train transport. Neither arrangement is necessary, as I am happy to deliver your items to you in\nStranraer myself. It so happens that my sister and her children live nearby in Kirkcolm. Before seeing\nthem, I will drive my rental car to your house and hand deliver the items to you.\nAs you know, my merchandise is 100 percent handcrafted. If any damage occurs in transit, the repair\nturns into an expensive, time-consuming ordeal. Over the years, I've seen too much damage done by\ninattentive baggage handlers. My policy is to deliver items personally whenever feasible or hire a\nground- or sea-based courier service I trust.\nI look forward to meeting you on 5 June. I expect to arrive at your house no later than 5 p.m.\nSincerely,\nConor Boyle\nCeoleire Classics\nTMGROUP\n \n- ZALO 0945179246\n\n-- 19 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nNorthern Ireland Ferry Service\nDate of Issuance: 26 May\nPassenger Name: Conor Boyle\nDeparting Belfast: Friday, 5 June, 1:05 PM\nDocking at Cairnryan: Friday, 5 June, 3:20 PM\nBaggage: 1 suitcase (small), 2 instrument cases\n(1 mandolin, 1 guitar)\nVehicle transport: No\nAdult Standard Class: £55.00\nPlease arrive 30 minutes prior to departure."
+  },
+  {
+    "id": "TS-003-P7-038",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is most likely true about Ms. Savard?",
+    "options": [
+      {
+        "label": "A",
+        "content": "She often travels for her job."
+      },
+      {
+        "label": "B",
+        "content": "She paid extra to have items hand delivered."
+      },
+      {
+        "label": "C",
+        "content": "She recently purchased musical instruments."
+      },
+      {
+        "label": "D",
+        "content": "She will meet Mr. Boyle at the rental car\noffice."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Vé phà liệt kê \"2 instrument cases (1 mandolin, 1 guitar)\" là hành lý của ông Boyle, đây chính là những món hàng ông sẽ giao. Điều này ngụ ý cô Savard đã mua nhạc cụ.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "To: laura.savard@orbitmail.scot\nFrom: cboyle@ceoleire.co.uk\nDate: 25 May\nSubject: RE: Some suggestions\nDear Ms. Savard,\nThank you for your kind offer to either pick up your online order from my shop or to pay extra for air\nor train transport. Neither arrangement is necessary, as I am happy to deliver your items to you in\nStranraer myself. It so happens that my sister and her children live nearby in Kirkcolm. Before seeing\nthem, I will drive my rental car to your house and hand deliver the items to you.\nAs you know, my merchandise is 100 percent handcrafted. If any damage occurs in transit, the repair\nturns into an expensive, time-consuming ordeal. Over the years, I've seen too much damage done by\ninattentive baggage handlers. My policy is to deliver items personally whenever feasible or hire a\nground- or sea-based courier service I trust.\nI look forward to meeting you on 5 June. I expect to arrive at your house no later than 5 p.m.\nSincerely,\nConor Boyle\nCeoleire Classics\nTMGROUP\n \n- ZALO 0945179246\n\n-- 19 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nNorthern Ireland Ferry Service\nDate of Issuance: 26 May\nPassenger Name: Conor Boyle\nDeparting Belfast: Friday, 5 June, 1:05 PM\nDocking at Cairnryan: Friday, 5 June, 3:20 PM\nBaggage: 1 suitcase (small), 2 instrument cases\n(1 mandolin, 1 guitar)\nVehicle transport: No\nAdult Standard Class: £55.00\nPlease arrive 30 minutes prior to departure."
+  },
+  {
+    "id": "TS-003-P7-039",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "How is Mr. Boyle traveling to Cairnryan\non June 5?",
+    "options": [
+      {
+        "label": "A",
+        "content": "By car"
+      },
+      {
+        "label": "B",
+        "content": "By train"
+      },
+      {
+        "label": "C",
+        "content": "By boat"
+      },
+      {
+        "label": "D",
+        "content": "By plane"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Vé của Dịch vụ Phà Bắc Ireland (Northern Ireland Ferry Service) cho thấy ông Boyle sẽ đi phà, tức là bằng thuyền, đến Cairnryan.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "To: laura.savard@orbitmail.scot\nFrom: cboyle@ceoleire.co.uk\nDate: 25 May\nSubject: RE: Some suggestions\nDear Ms. Savard,\nThank you for your kind offer to either pick up your online order from my shop or to pay extra for air\nor train transport. Neither arrangement is necessary, as I am happy to deliver your items to you in\nStranraer myself. It so happens that my sister and her children live nearby in Kirkcolm. Before seeing\nthem, I will drive my rental car to your house and hand deliver the items to you.\nAs you know, my merchandise is 100 percent handcrafted. If any damage occurs in transit, the repair\nturns into an expensive, time-consuming ordeal. Over the years, I've seen too much damage done by\ninattentive baggage handlers. My policy is to deliver items personally whenever feasible or hire a\nground- or sea-based courier service I trust.\nI look forward to meeting you on 5 June. I expect to arrive at your house no later than 5 p.m.\nSincerely,\nConor Boyle\nCeoleire Classics\nTMGROUP\n \n- ZALO 0945179246\n\n-- 19 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nNorthern Ireland Ferry Service\nDate of Issuance: 26 May\nPassenger Name: Conor Boyle\nDeparting Belfast: Friday, 5 June, 1:05 PM\nDocking at Cairnryan: Friday, 5 June, 3:20 PM\nBaggage: 1 suitcase (small), 2 instrument cases\n(1 mandolin, 1 guitar)\nVehicle transport: No\nAdult Standard Class: £55.00\nPlease arrive 30 minutes prior to departure."
+  },
+  {
+    "id": "TS-003-P7-040",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is indicated about TTA?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It was founded by a graphic designer."
+      },
+      {
+        "label": "B",
+        "content": "It publishes its own online newsletter."
+      },
+      {
+        "label": "C",
+        "content": "It offers classes led by industry\nprofessionals."
+      },
+      {
+        "label": "D",
+        "content": "It has classroom facilities in cities across\nWest Africa."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Quảng cáo của TTA nói rõ \"All classes... are taught by recognized professionals in their respective fields.\"",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Train to Achieve (TTA)-Our classes prepare you to succeed!\nProfiled in the latest Business Directions Nigeria newsletter, Train to Achieve (TTA) is one of the\nmost innovative training providers in West Africa. By offering our classes entirely in online format,\nwe bring the classroom to your home. All classes include individualized instruction and are taught by\nrecognized professionals in their respective fields. Upon successful completion of a class, you will\nreceive an official Certificate of Training, a valuable addition to any résumé. For a complete list of\nclass fees and schedules, visit our Web site at www.traintoachieve.org.ng. The following are some of\nour most popular classes.\nIntroduction to Social Media Marketing (TTA1504): Taught by marketing consultant Marcus\nAkpan, the class equips you with the know-how to promote your business online.\nBecome a Successful Freelance Writer (TTA3283): Business writer Brenda Akande gives you\nexpert guidance on how to hone your writing skills and sell your writing services.\nStarting an Internet Radio Station (TTA7629): Online radio host Natalie Kabiru shows you how to\nappeal to your target market and gives practical tips for setting up your broadcast service.\nBasics of Graphic Design (TTA7633): Veteran graphic designer Doug Umaru helps you acquire the\nbasic skills needed to start a graphic design business.\nDiscussion forum for students enrolled in Train to Achieve Class TTA1504\nPosted on: 21 May, 9:41 A.M. Posted by: Joseph Egbe Subject: Presentations\nViewing the list of students enrolled in this class, I remembered chatting with some of you on the\nforum for January's poster design class. I look forward to sharing our learning experiences again for\nthis class. Yesterday I was the second student to meet with Mr. Akpan for an individual\nvideoconference about my business. I own a food truck from which I sell baked goods, and when I\nshared with Mr. Akpan the outline for my Web site, he suggested that I add a section with vivid\nimages of all my baked goods. It was helpful advice.\nEgbe's Bakery-Unique baked-in flavours in every bite!\n• Section 1: Explore our menu and price list\n• Section 2: Browse photos of our delicious treats\n• Section 3: Learn about our catering services\n• Section 4: View lists of ingredients"
+  },
+  {
+    "id": "TS-003-P7-041",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "According to the advertisement, what does\nTTA provide to students who finish a class?",
+    "options": [
+      {
+        "label": "A",
+        "content": "A résumé-writing workshop"
+      },
+      {
+        "label": "B",
+        "content": "A discount on a follow-up class"
+      },
+      {
+        "label": "C",
+        "content": "A list of current job postings"
+      },
+      {
+        "label": "D",
+        "content": "A certification document"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Quảng cáo nêu rõ rằng học viên sẽ nhận được \"an official Certificate of Training\" khi hoàn thành khóa học.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Train to Achieve (TTA)-Our classes prepare you to succeed!\nProfiled in the latest Business Directions Nigeria newsletter, Train to Achieve (TTA) is one of the\nmost innovative training providers in West Africa. By offering our classes entirely in online format,\nwe bring the classroom to your home. All classes include individualized instruction and are taught by\nrecognized professionals in their respective fields. Upon successful completion of a class, you will\nreceive an official Certificate of Training, a valuable addition to any résumé. For a complete list of\nclass fees and schedules, visit our Web site at www.traintoachieve.org.ng. The following are some of\nour most popular classes.\nIntroduction to Social Media Marketing (TTA1504): Taught by marketing consultant Marcus\nAkpan, the class equips you with the know-how to promote your business online.\nBecome a Successful Freelance Writer (TTA3283): Business writer Brenda Akande gives you\nexpert guidance on how to hone your writing skills and sell your writing services.\nStarting an Internet Radio Station (TTA7629): Online radio host Natalie Kabiru shows you how to\nappeal to your target market and gives practical tips for setting up your broadcast service.\nBasics of Graphic Design (TTA7633): Veteran graphic designer Doug Umaru helps you acquire the\nbasic skills needed to start a graphic design business.\nDiscussion forum for students enrolled in Train to Achieve Class TTA1504\nPosted on: 21 May, 9:41 A.M. Posted by: Joseph Egbe Subject: Presentations\nViewing the list of students enrolled in this class, I remembered chatting with some of you on the\nforum for January's poster design class. I look forward to sharing our learning experiences again for\nthis class. Yesterday I was the second student to meet with Mr. Akpan for an individual\nvideoconference about my business. I own a food truck from which I sell baked goods, and when I\nshared with Mr. Akpan the outline for my Web site, he suggested that I add a section with vivid\nimages of all my baked goods. It was helpful advice.\nEgbe's Bakery-Unique baked-in flavours in every bite!\n• Section 1: Explore our menu and price list\n• Section 2: Browse photos of our delicious treats\n• Section 3: Learn about our catering services\n• Section 4: View lists of ingredients"
+  },
+  {
+    "id": "TS-003-P7-042",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is most likely true about Mr. Egbe?",
+    "options": [
+      {
+        "label": "A",
+        "content": "He helped design a discussion forum."
+      },
+      {
+        "label": "B",
+        "content": "He has previously taken a TTA class."
+      },
+      {
+        "label": "C",
+        "content": "He develops videoconferencing software."
+      },
+      {
+        "label": "D",
+        "content": "He recently sold a bakery food truck."
+      }
+    ],
+    "correct": "B",
+    "explanation": "Ông Egbe nhắc đến việc đã từng trò chuyện với các học viên khác trong diễn đàn \"poster design class\" vào tháng Giêng, chứng tỏ ông đã tham gia một khóa học TTA trước đây.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Train to Achieve (TTA)-Our classes prepare you to succeed!\nProfiled in the latest Business Directions Nigeria newsletter, Train to Achieve (TTA) is one of the\nmost innovative training providers in West Africa. By offering our classes entirely in online format,\nwe bring the classroom to your home. All classes include individualized instruction and are taught by\nrecognized professionals in their respective fields. Upon successful completion of a class, you will\nreceive an official Certificate of Training, a valuable addition to any résumé. For a complete list of\nclass fees and schedules, visit our Web site at www.traintoachieve.org.ng. The following are some of\nour most popular classes.\nIntroduction to Social Media Marketing (TTA1504): Taught by marketing consultant Marcus\nAkpan, the class equips you with the know-how to promote your business online.\nBecome a Successful Freelance Writer (TTA3283): Business writer Brenda Akande gives you\nexpert guidance on how to hone your writing skills and sell your writing services.\nStarting an Internet Radio Station (TTA7629): Online radio host Natalie Kabiru shows you how to\nappeal to your target market and gives practical tips for setting up your broadcast service.\nBasics of Graphic Design (TTA7633): Veteran graphic designer Doug Umaru helps you acquire the\nbasic skills needed to start a graphic design business.\nDiscussion forum for students enrolled in Train to Achieve Class TTA1504\nPosted on: 21 May, 9:41 A.M. Posted by: Joseph Egbe Subject: Presentations\nViewing the list of students enrolled in this class, I remembered chatting with some of you on the\nforum for January's poster design class. I look forward to sharing our learning experiences again for\nthis class. Yesterday I was the second student to meet with Mr. Akpan for an individual\nvideoconference about my business. I own a food truck from which I sell baked goods, and when I\nshared with Mr. Akpan the outline for my Web site, he suggested that I add a section with vivid\nimages of all my baked goods. It was helpful advice.\nEgbe's Bakery-Unique baked-in flavours in every bite!\n• Section 1: Explore our menu and price list\n• Section 2: Browse photos of our delicious treats\n• Section 3: Learn about our catering services\n• Section 4: View lists of ingredients"
+  },
+  {
+    "id": "TS-003-P7-043",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What TTA class is Mr. Egbe enrolled in?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Introduction to Social Media Marketing"
+      },
+      {
+        "label": "B",
+        "content": "Become a Successful Freelance Writer"
+      },
+      {
+        "label": "C",
+        "content": "Starting an Internet Radio Station"
+      },
+      {
+        "label": "D",
+        "content": "Basics of Graphic Design"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Tiêu đề diễn đàn ghi rõ \"Train to Achieve Class TTA1504\", và danh sách khóa học cho thấy TTA1504 là \"Introduction to Social Media Marketing\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Train to Achieve (TTA)-Our classes prepare you to succeed!\nProfiled in the latest Business Directions Nigeria newsletter, Train to Achieve (TTA) is one of the\nmost innovative training providers in West Africa. By offering our classes entirely in online format,\nwe bring the classroom to your home. All classes include individualized instruction and are taught by\nrecognized professionals in their respective fields. Upon successful completion of a class, you will\nreceive an official Certificate of Training, a valuable addition to any résumé. For a complete list of\nclass fees and schedules, visit our Web site at www.traintoachieve.org.ng. The following are some of\nour most popular classes.\nIntroduction to Social Media Marketing (TTA1504): Taught by marketing consultant Marcus\nAkpan, the class equips you with the know-how to promote your business online.\nBecome a Successful Freelance Writer (TTA3283): Business writer Brenda Akande gives you\nexpert guidance on how to hone your writing skills and sell your writing services.\nStarting an Internet Radio Station (TTA7629): Online radio host Natalie Kabiru shows you how to\nappeal to your target market and gives practical tips for setting up your broadcast service.\nBasics of Graphic Design (TTA7633): Veteran graphic designer Doug Umaru helps you acquire the\nbasic skills needed to start a graphic design business.\nDiscussion forum for students enrolled in Train to Achieve Class TTA1504\nPosted on: 21 May, 9:41 A.M. Posted by: Joseph Egbe Subject: Presentations\nViewing the list of students enrolled in this class, I remembered chatting with some of you on the\nforum for January's poster design class. I look forward to sharing our learning experiences again for\nthis class. Yesterday I was the second student to meet with Mr. Akpan for an individual\nvideoconference about my business. I own a food truck from which I sell baked goods, and when I\nshared with Mr. Akpan the outline for my Web site, he suggested that I add a section with vivid\nimages of all my baked goods. It was helpful advice.\nEgbe's Bakery-Unique baked-in flavours in every bite!\n• Section 1: Explore our menu and price list\n• Section 2: Browse photos of our delicious treats\n• Section 3: Learn about our catering services\n• Section 4: View lists of ingredients"
+  },
+  {
+    "id": "TS-003-P7-044",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What section did Mr. Egbe most likely add\nto the outline after speaking with Mr. Akpan?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Section 1"
+      },
+      {
+        "label": "B",
+        "content": "Section 2"
+      },
+      {
+        "label": "C",
+        "content": "Section 3"
+      },
+      {
+        "label": "D",
+        "content": "Section 4"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Ông Akpan đã gợi ý thêm một phần có \"vivid images of all my baked goods\", tương ứng với \"Section 2: Browse photos of our delicious treats\" trong bản phác thảo của tiệm bánh của ông Egbe.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Train to Achieve (TTA)-Our classes prepare you to succeed!\nProfiled in the latest Business Directions Nigeria newsletter, Train to Achieve (TTA) is one of the\nmost innovative training providers in West Africa. By offering our classes entirely in online format,\nwe bring the classroom to your home. All classes include individualized instruction and are taught by\nrecognized professionals in their respective fields. Upon successful completion of a class, you will\nreceive an official Certificate of Training, a valuable addition to any résumé. For a complete list of\nclass fees and schedules, visit our Web site at www.traintoachieve.org.ng. The following are some of\nour most popular classes.\nIntroduction to Social Media Marketing (TTA1504): Taught by marketing consultant Marcus\nAkpan, the class equips you with the know-how to promote your business online.\nBecome a Successful Freelance Writer (TTA3283): Business writer Brenda Akande gives you\nexpert guidance on how to hone your writing skills and sell your writing services.\nStarting an Internet Radio Station (TTA7629): Online radio host Natalie Kabiru shows you how to\nappeal to your target market and gives practical tips for setting up your broadcast service.\nBasics of Graphic Design (TTA7633): Veteran graphic designer Doug Umaru helps you acquire the\nbasic skills needed to start a graphic design business.\nDiscussion forum for students enrolled in Train to Achieve Class TTA1504\nPosted on: 21 May, 9:41 A.M. Posted by: Joseph Egbe Subject: Presentations\nViewing the list of students enrolled in this class, I remembered chatting with some of you on the\nforum for January's poster design class. I look forward to sharing our learning experiences again for\nthis class. Yesterday I was the second student to meet with Mr. Akpan for an individual\nvideoconference about my business. I own a food truck from which I sell baked goods, and when I\nshared with Mr. Akpan the outline for my Web site, he suggested that I add a section with vivid\nimages of all my baked goods. It was helpful advice.\nEgbe's Bakery-Unique baked-in flavours in every bite!\n• Section 1: Explore our menu and price list\n• Section 2: Browse photos of our delicious treats\n• Section 3: Learn about our catering services\n• Section 4: View lists of ingredients"
+  },
+  {
+    "id": "TS-003-P7-045",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What does the article mention about\nOrange Bay Kitchen?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It is currently hiring servers."
+      },
+      {
+        "label": "B",
+        "content": "It is located on a quiet street."
+      },
+      {
+        "label": "C",
+        "content": "It has another location in Jamaica."
+      },
+      {
+        "label": "D",
+        "content": "It opened six months ago."
+      }
+    ],
+    "correct": "D",
+    "explanation": "Bài báo nói rằng nhà hàng Orange Bay Kitchen đã hoạt động được \"six months now\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Caribbean Flavours Abound\nBy Rebecca Roats\nNOTTINGHAM (1 August)-Orange Bay Kitchen has been serving up an infusion of Jamaican\nflavours in a laid-back Caribbean atmosphere for six months now. Managed by Keron Deslandes, the\n150-seat restaurant is an aromatic jewel amid the bustling shops and eateries in Wester Square. The\nservers are always happy to help diners select from the variety of delights on the extensive menu,\nwhich includes curried goat, oxtail soup, and red snapper. The restaurant is most famous for its jerk\nchicken. Marinated for 24 hours prior to grilling and served with sides of stewed cabbage and coconut\nrice, the dish is a good deal at £12.\nIf you stop in on any Friday night between 7 and 11 P.M., you will enjoy live reggae music.\nhttps://www.dinerreviews.co.uk/orangebaykitchen\nPosted on 22 August by Tamika Peterkin, tpeterkin@sunmail.co.uk\nOrange Bay Kitchen: 2/5 Stars\nAfter reading a glowing article about Orange Bay Kitchen by Rebecca Roats, I was eager to give this\nplace a try. My husband and I arrived there at 7 P.M. yesterday, keen to enjoy live music with our\ndinner. Unfortunately, the band's performance that night had been cancelled. Undeterred, we stayed\nand both ordered the jerk chicken. While the chicken's smoky flavour was outstanding, the stewed\ncabbage was lacking in flavour. Also, the portion size was smaller than we had anticipated, so we\nordered another appetiser to avoid going home hungry. The head chef came out to apologise and was\nextremely nice, but we will probably not go back anytime soon.\nE-Mail Message\nTo: tpeterkin@sunmail.co.uk\nFrom: vsmith@orangebaykitchen.co.uk\nDate: 24 August\nSubject: Your review\nAttachment: 0258\nDear Ms. Peterkin,\nThank you for visiting Orange Bay Kitchen and leaving a review. Our manager, Keron Deslandes,\ntold me more about your visit and our failure to live up to your expectations that evening. Please\naccept the attached £20 gift certificate; I do hope that you will give us another try.\nDuring your visit, our band had an equipment malfunction, which is what led to the last-minute\ncancellation. However, the band will be back performing weekly beginning in September. Also, I\nwant you to know that Head Chef Adio Brown has changed the spices he uses in the stewed cabbage.\nI am sure you will find them delightful.\"\nSincerely,\nVea Smith, Owner\nOrange Bay Kitchen"
+  },
+  {
+    "id": "TS-003-P7-046",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "According to the article, what is the most\npopular menu item at Orange Bay Kitchen?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Red snapper"
+      },
+      {
+        "label": "B",
+        "content": "Oxtail soup"
+      },
+      {
+        "label": "C",
+        "content": "Jerk chicken"
+      },
+      {
+        "label": "D",
+        "content": "Curried goat"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Bài báo nêu rõ \"The restaurant is most famous for its jerk chicken.\"",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Caribbean Flavours Abound\nBy Rebecca Roats\nNOTTINGHAM (1 August)-Orange Bay Kitchen has been serving up an infusion of Jamaican\nflavours in a laid-back Caribbean atmosphere for six months now. Managed by Keron Deslandes, the\n150-seat restaurant is an aromatic jewel amid the bustling shops and eateries in Wester Square. The\nservers are always happy to help diners select from the variety of delights on the extensive menu,\nwhich includes curried goat, oxtail soup, and red snapper. The restaurant is most famous for its jerk\nchicken. Marinated for 24 hours prior to grilling and served with sides of stewed cabbage and coconut\nrice, the dish is a good deal at £12.\nIf you stop in on any Friday night between 7 and 11 P.M., you will enjoy live reggae music.\nhttps://www.dinerreviews.co.uk/orangebaykitchen\nPosted on 22 August by Tamika Peterkin, tpeterkin@sunmail.co.uk\nOrange Bay Kitchen: 2/5 Stars\nAfter reading a glowing article about Orange Bay Kitchen by Rebecca Roats, I was eager to give this\nplace a try. My husband and I arrived there at 7 P.M. yesterday, keen to enjoy live music with our\ndinner. Unfortunately, the band's performance that night had been cancelled. Undeterred, we stayed\nand both ordered the jerk chicken. While the chicken's smoky flavour was outstanding, the stewed\ncabbage was lacking in flavour. Also, the portion size was smaller than we had anticipated, so we\nordered another appetiser to avoid going home hungry. The head chef came out to apologise and was\nextremely nice, but we will probably not go back anytime soon.\nE-Mail Message\nTo: tpeterkin@sunmail.co.uk\nFrom: vsmith@orangebaykitchen.co.uk\nDate: 24 August\nSubject: Your review\nAttachment: 0258\nDear Ms. Peterkin,\nThank you for visiting Orange Bay Kitchen and leaving a review. Our manager, Keron Deslandes,\ntold me more about your visit and our failure to live up to your expectations that evening. Please\naccept the attached £20 gift certificate; I do hope that you will give us another try.\nDuring your visit, our band had an equipment malfunction, which is what led to the last-minute\ncancellation. However, the band will be back performing weekly beginning in September. Also, I\nwant you to know that Head Chef Adio Brown has changed the spices he uses in the stewed cabbage.\nI am sure you will find them delightful.\"\nSincerely,\nVea Smith, Owner\nOrange Bay Kitchen"
+  },
+  {
+    "id": "TS-003-P7-047",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is suggested about Ms. Peterkin's\nvisit to Orange Bay Kitchen?",
+    "options": [
+      {
+        "label": "A",
+        "content": "She was there on a Friday."
+      },
+      {
+        "label": "B",
+        "content": "She dined alone."
+      },
+      {
+        "label": "C",
+        "content": "She requested extra rice."
+      },
+      {
+        "label": "D",
+        "content": "She ordered dessert."
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bài báo nói rằng nhạc reggae trực tiếp có vào các tối thứ Sáu từ 7-11 P.M. Cô Peterkin đến lúc 7 P.M. và muốn thưởng thức nhạc sống, cho thấy cô đã đến vào một tối thứ Sáu.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Caribbean Flavours Abound\nBy Rebecca Roats\nNOTTINGHAM (1 August)-Orange Bay Kitchen has been serving up an infusion of Jamaican\nflavours in a laid-back Caribbean atmosphere for six months now. Managed by Keron Deslandes, the\n150-seat restaurant is an aromatic jewel amid the bustling shops and eateries in Wester Square. The\nservers are always happy to help diners select from the variety of delights on the extensive menu,\nwhich includes curried goat, oxtail soup, and red snapper. The restaurant is most famous for its jerk\nchicken. Marinated for 24 hours prior to grilling and served with sides of stewed cabbage and coconut\nrice, the dish is a good deal at £12.\nIf you stop in on any Friday night between 7 and 11 P.M., you will enjoy live reggae music.\nhttps://www.dinerreviews.co.uk/orangebaykitchen\nPosted on 22 August by Tamika Peterkin, tpeterkin@sunmail.co.uk\nOrange Bay Kitchen: 2/5 Stars\nAfter reading a glowing article about Orange Bay Kitchen by Rebecca Roats, I was eager to give this\nplace a try. My husband and I arrived there at 7 P.M. yesterday, keen to enjoy live music with our\ndinner. Unfortunately, the band's performance that night had been cancelled. Undeterred, we stayed\nand both ordered the jerk chicken. While the chicken's smoky flavour was outstanding, the stewed\ncabbage was lacking in flavour. Also, the portion size was smaller than we had anticipated, so we\nordered another appetiser to avoid going home hungry. The head chef came out to apologise and was\nextremely nice, but we will probably not go back anytime soon.\nE-Mail Message\nTo: tpeterkin@sunmail.co.uk\nFrom: vsmith@orangebaykitchen.co.uk\nDate: 24 August\nSubject: Your review\nAttachment: 0258\nDear Ms. Peterkin,\nThank you for visiting Orange Bay Kitchen and leaving a review. Our manager, Keron Deslandes,\ntold me more about your visit and our failure to live up to your expectations that evening. Please\naccept the attached £20 gift certificate; I do hope that you will give us another try.\nDuring your visit, our band had an equipment malfunction, which is what led to the last-minute\ncancellation. However, the band will be back performing weekly beginning in September. Also, I\nwant you to know that Head Chef Adio Brown has changed the spices he uses in the stewed cabbage.\nI am sure you will find them delightful.\"\nSincerely,\nVea Smith, Owner\nOrange Bay Kitchen"
+  },
+  {
+    "id": "TS-003-P7-048",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is a purpose of the e-mail?",
+    "options": [
+      {
+        "label": "A",
+        "content": "To answer a question"
+      },
+      {
+        "label": "B",
+        "content": "To offer an apology"
+      },
+      {
+        "label": "C",
+        "content": "To ask for feedback"
+      },
+      {
+        "label": "D",
+        "content": "To confirm a reservation"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Email của chủ nhà hàng gửi sau khi nhận được đánh giá tiêu cực, trong đó có lời xin lỗi về trải nghiệm không tốt của khách hàng và đề nghị phiếu quà tặng.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Caribbean Flavours Abound\nBy Rebecca Roats\nNOTTINGHAM (1 August)-Orange Bay Kitchen has been serving up an infusion of Jamaican\nflavours in a laid-back Caribbean atmosphere for six months now. Managed by Keron Deslandes, the\n150-seat restaurant is an aromatic jewel amid the bustling shops and eateries in Wester Square. The\nservers are always happy to help diners select from the variety of delights on the extensive menu,\nwhich includes curried goat, oxtail soup, and red snapper. The restaurant is most famous for its jerk\nchicken. Marinated for 24 hours prior to grilling and served with sides of stewed cabbage and coconut\nrice, the dish is a good deal at £12.\nIf you stop in on any Friday night between 7 and 11 P.M., you will enjoy live reggae music.\nhttps://www.dinerreviews.co.uk/orangebaykitchen\nPosted on 22 August by Tamika Peterkin, tpeterkin@sunmail.co.uk\nOrange Bay Kitchen: 2/5 Stars\nAfter reading a glowing article about Orange Bay Kitchen by Rebecca Roats, I was eager to give this\nplace a try. My husband and I arrived there at 7 P.M. yesterday, keen to enjoy live music with our\ndinner. Unfortunately, the band's performance that night had been cancelled. Undeterred, we stayed\nand both ordered the jerk chicken. While the chicken's smoky flavour was outstanding, the stewed\ncabbage was lacking in flavour. Also, the portion size was smaller than we had anticipated, so we\nordered another appetiser to avoid going home hungry. The head chef came out to apologise and was\nextremely nice, but we will probably not go back anytime soon.\nE-Mail Message\nTo: tpeterkin@sunmail.co.uk\nFrom: vsmith@orangebaykitchen.co.uk\nDate: 24 August\nSubject: Your review\nAttachment: 0258\nDear Ms. Peterkin,\nThank you for visiting Orange Bay Kitchen and leaving a review. Our manager, Keron Deslandes,\ntold me more about your visit and our failure to live up to your expectations that evening. Please\naccept the attached £20 gift certificate; I do hope that you will give us another try.\nDuring your visit, our band had an equipment malfunction, which is what led to the last-minute\ncancellation. However, the band will be back performing weekly beginning in September. Also, I\nwant you to know that Head Chef Adio Brown has changed the spices he uses in the stewed cabbage.\nI am sure you will find them delightful.\"\nSincerely,\nVea Smith, Owner\nOrange Bay Kitchen"
+  },
+  {
+    "id": "TS-003-P7-049",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "Whom did Ms. Peterkin meet at Orange\nBay Kitchen?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Ms. Roats"
+      },
+      {
+        "label": "B",
+        "content": "Mr. Deslandes"
+      },
+      {
+        "label": "C",
+        "content": "Mr. Brown"
+      },
+      {
+        "label": "D",
+        "content": "Ms. Smith"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Cô Peterkin nói \"The head chef came out to apologise\", và email của Vea Smith nhắc đến \"Head Chef Adio Brown\", tức là cô Peterkin đã gặp ông Brown.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Caribbean Flavours Abound\nBy Rebecca Roats\nNOTTINGHAM (1 August)-Orange Bay Kitchen has been serving up an infusion of Jamaican\nflavours in a laid-back Caribbean atmosphere for six months now. Managed by Keron Deslandes, the\n150-seat restaurant is an aromatic jewel amid the bustling shops and eateries in Wester Square. The\nservers are always happy to help diners select from the variety of delights on the extensive menu,\nwhich includes curried goat, oxtail soup, and red snapper. The restaurant is most famous for its jerk\nchicken. Marinated for 24 hours prior to grilling and served with sides of stewed cabbage and coconut\nrice, the dish is a good deal at £12.\nIf you stop in on any Friday night between 7 and 11 P.M., you will enjoy live reggae music.\nhttps://www.dinerreviews.co.uk/orangebaykitchen\nPosted on 22 August by Tamika Peterkin, tpeterkin@sunmail.co.uk\nOrange Bay Kitchen: 2/5 Stars\nAfter reading a glowing article about Orange Bay Kitchen by Rebecca Roats, I was eager to give this\nplace a try. My husband and I arrived there at 7 P.M. yesterday, keen to enjoy live music with our\ndinner. Unfortunately, the band's performance that night had been cancelled. Undeterred, we stayed\nand both ordered the jerk chicken. While the chicken's smoky flavour was outstanding, the stewed\ncabbage was lacking in flavour. Also, the portion size was smaller than we had anticipated, so we\nordered another appetiser to avoid going home hungry. The head chef came out to apologise and was\nextremely nice, but we will probably not go back anytime soon.\nE-Mail Message\nTo: tpeterkin@sunmail.co.uk\nFrom: vsmith@orangebaykitchen.co.uk\nDate: 24 August\nSubject: Your review\nAttachment: 0258\nDear Ms. Peterkin,\nThank you for visiting Orange Bay Kitchen and leaving a review. Our manager, Keron Deslandes,\ntold me more about your visit and our failure to live up to your expectations that evening. Please\naccept the attached £20 gift certificate; I do hope that you will give us another try.\nDuring your visit, our band had an equipment malfunction, which is what led to the last-minute\ncancellation. However, the band will be back performing weekly beginning in September. Also, I\nwant you to know that Head Chef Adio Brown has changed the spices he uses in the stewed cabbage.\nI am sure you will find them delightful.\"\nSincerely,\nVea Smith, Owner\nOrange Bay Kitchen"
+  },
+  {
+    "id": "TS-003-P7-050",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What does the invoice suggest about Green\nCanyon?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It does landscaping projects."
+      },
+      {
+        "label": "B",
+        "content": "It designs highways."
+      },
+      {
+        "label": "C",
+        "content": "It repairs old houses."
+      },
+      {
+        "label": "D",
+        "content": "It operates a farm."
+      }
+    ],
+    "correct": "A",
+    "explanation": "Hóa đơn liệt kê các mặt hàng như đất vườn, sỏi, đá trang trí, gạch lát đường, cho thấy Green Canyon có thể thực hiện các dự án cảnh quan.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Orbys Distributors\nClient: Green Canyon Date: June 10\nAccount: 4352-0\nItem Price\nGarden soil, 33 cubic meters $1,170.00\nCrushed gravel, 30 metric tons 1,710.00\nDecorative stone, 20 metric tons 1,140.00\n70 paving stones, .6 x .6 meters 630.00\nSubtotal 4,650.00\nDiscount (10%) 465.00\nDelivery charge 350.00\nGrand Total 4,535.00\nPlease see the enclosed notice outlining important changes to your billing.\nOrbys Distributors\nTo our valued customers:\nOur current invoicing system has been in use since Orbys Distributors was founded over twenty years\nago. As a much-needed upgrade, we are switching to electronic invoicing. Starting August 1, invoices\nwill be generated automatically each month and will be sent to the e-mail address associated with\nyour company's account.\nRest assured that our long-standing incentives remain in place:\n• A 10% discount for orders of more than $4,000\n• A 20% discount for charitable organizations\n• Free deliveries to locations within 5 miles of one of our supply centers\n• Free samples for members of our Frequent Buyer Club\nMore information about our transition to electronic invoicing is available on our Web site. Thank you\nfor your support. Orbys Distributors appreciates your business.\nE-mail\nTo: Mary Peterson, Billing Department\nFrom: Tanvir Singh, Account Manager\nDate: September 12\nSubject: Account 1012-4\nHello Mary,\nI received a query today from William Tesoriero at Tesoriero Remodeling. His monthly invoice for\nAugust never arrived.\nAs you know, Mr. Tesoriero was one of our very first customers. Since we first opened for business,\nhe has made purchases from us on a regular basis. He is also a member of the Frequent Buyer Club.\nTMGROUP\n \n- ZALO 0945179246\n\n-- 25 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nThis is a customer we absolutely do not want to lose. I explained to him that the rollout of our\nelectronic invoicing system did not go as smoothly as we had hoped and promised that this would not\nhappen again.\nI would appreciate it if you could please investigate the problem without delay and send the invoice\nfor August to Mr. Tesoriero.\nTanvir"
+  },
+  {
+    "id": "TS-003-P7-051",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "Why most likely did Green Canyon receive\na discount on its order dated June 10 ?",
+    "options": [
+      {
+        "label": "A",
+        "content": "It is a charitable organization."
+      },
+      {
+        "label": "B",
+        "content": "It belongs to the Frequent Buyer Club."
+      },
+      {
+        "label": "C",
+        "content": "It spent more than $4,000 on merchandise."
+      },
+      {
+        "label": "D",
+        "content": "It is located near an Orbys Distributors\nsupply center."
+      }
+    ],
+    "correct": "C",
+    "explanation": "Hóa đơn cho thấy tổng phụ là $4,650.00 và thông báo ưu đãi có ghi \"A 10% discount for orders of more than $4,000\".",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Orbys Distributors\nClient: Green Canyon Date: June 10\nAccount: 4352-0\nItem Price\nGarden soil, 33 cubic meters $1,170.00\nCrushed gravel, 30 metric tons 1,710.00\nDecorative stone, 20 metric tons 1,140.00\n70 paving stones, .6 x .6 meters 630.00\nSubtotal 4,650.00\nDiscount (10%) 465.00\nDelivery charge 350.00\nGrand Total 4,535.00\nPlease see the enclosed notice outlining important changes to your billing.\nOrbys Distributors\nTo our valued customers:\nOur current invoicing system has been in use since Orbys Distributors was founded over twenty years\nago. As a much-needed upgrade, we are switching to electronic invoicing. Starting August 1, invoices\nwill be generated automatically each month and will be sent to the e-mail address associated with\nyour company's account.\nRest assured that our long-standing incentives remain in place:\n• A 10% discount for orders of more than $4,000\n• A 20% discount for charitable organizations\n• Free deliveries to locations within 5 miles of one of our supply centers\n• Free samples for members of our Frequent Buyer Club\nMore information about our transition to electronic invoicing is available on our Web site. Thank you\nfor your support. Orbys Distributors appreciates your business.\nE-mail\nTo: Mary Peterson, Billing Department\nFrom: Tanvir Singh, Account Manager\nDate: September 12\nSubject: Account 1012-4\nHello Mary,\nI received a query today from William Tesoriero at Tesoriero Remodeling. His monthly invoice for\nAugust never arrived.\nAs you know, Mr. Tesoriero was one of our very first customers. Since we first opened for business,\nhe has made purchases from us on a regular basis. He is also a member of the Frequent Buyer Club.\nTMGROUP\n \n- ZALO 0945179246\n\n-- 25 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nThis is a customer we absolutely do not want to lose. I explained to him that the rollout of our\nelectronic invoicing system did not go as smoothly as we had hoped and promised that this would not\nhappen again.\nI would appreciate it if you could please investigate the problem without delay and send the invoice\nfor August to Mr. Tesoriero.\nTanvir"
+  },
+  {
+    "id": "TS-003-P7-052",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "According to the notice, what is changing\nat Orbys Distributors?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Its e-mail address"
+      },
+      {
+        "label": "B",
+        "content": "Its list of incentives"
+      },
+      {
+        "label": "C",
+        "content": "Its invoicing system"
+      },
+      {
+        "label": "D",
+        "content": "Its delivery schedule"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Thông báo nói rõ \"we are switching to electronic invoicing\", tức là hệ thống hóa đơn đang thay đổi.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Orbys Distributors\nClient: Green Canyon Date: June 10\nAccount: 4352-0\nItem Price\nGarden soil, 33 cubic meters $1,170.00\nCrushed gravel, 30 metric tons 1,710.00\nDecorative stone, 20 metric tons 1,140.00\n70 paving stones, .6 x .6 meters 630.00\nSubtotal 4,650.00\nDiscount (10%) 465.00\nDelivery charge 350.00\nGrand Total 4,535.00\nPlease see the enclosed notice outlining important changes to your billing.\nOrbys Distributors\nTo our valued customers:\nOur current invoicing system has been in use since Orbys Distributors was founded over twenty years\nago. As a much-needed upgrade, we are switching to electronic invoicing. Starting August 1, invoices\nwill be generated automatically each month and will be sent to the e-mail address associated with\nyour company's account.\nRest assured that our long-standing incentives remain in place:\n• A 10% discount for orders of more than $4,000\n• A 20% discount for charitable organizations\n• Free deliveries to locations within 5 miles of one of our supply centers\n• Free samples for members of our Frequent Buyer Club\nMore information about our transition to electronic invoicing is available on our Web site. Thank you\nfor your support. Orbys Distributors appreciates your business.\nE-mail\nTo: Mary Peterson, Billing Department\nFrom: Tanvir Singh, Account Manager\nDate: September 12\nSubject: Account 1012-4\nHello Mary,\nI received a query today from William Tesoriero at Tesoriero Remodeling. His monthly invoice for\nAugust never arrived.\nAs you know, Mr. Tesoriero was one of our very first customers. Since we first opened for business,\nhe has made purchases from us on a regular basis. He is also a member of the Frequent Buyer Club.\nTMGROUP\n \n- ZALO 0945179246\n\n-- 25 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nThis is a customer we absolutely do not want to lose. I explained to him that the rollout of our\nelectronic invoicing system did not go as smoothly as we had hoped and promised that this would not\nhappen again.\nI would appreciate it if you could please investigate the problem without delay and send the invoice\nfor August to Mr. Tesoriero.\nTanvir"
+  },
+  {
+    "id": "TS-003-P7-053",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What is suggested about Mr. Tesoriero?",
+    "options": [
+      {
+        "label": "A",
+        "content": "He asked to meet with Mr. Singh."
+      },
+      {
+        "label": "B",
+        "content": "He is interested in employment at Orbys\nDistributors."
+      },
+      {
+        "label": "C",
+        "content": "He recently placed an order for some\nconstruction machinery."
+      },
+      {
+        "label": "D",
+        "content": "He has been a customer of Orbys\nDistributors for about twenty years."
+      }
+    ],
+    "correct": "D",
+    "explanation": "Thông báo nói rằng hệ thống hóa đơn đã được sử dụng từ khi Orbys Distributors thành lập hơn 20 năm trước, và ông Tesoriero là \"one of our very first customers\", ngụ ý ông đã là khách hàng khoảng 20 năm.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Orbys Distributors\nClient: Green Canyon Date: June 10\nAccount: 4352-0\nItem Price\nGarden soil, 33 cubic meters $1,170.00\nCrushed gravel, 30 metric tons 1,710.00\nDecorative stone, 20 metric tons 1,140.00\n70 paving stones, .6 x .6 meters 630.00\nSubtotal 4,650.00\nDiscount (10%) 465.00\nDelivery charge 350.00\nGrand Total 4,535.00\nPlease see the enclosed notice outlining important changes to your billing.\nOrbys Distributors\nTo our valued customers:\nOur current invoicing system has been in use since Orbys Distributors was founded over twenty years\nago. As a much-needed upgrade, we are switching to electronic invoicing. Starting August 1, invoices\nwill be generated automatically each month and will be sent to the e-mail address associated with\nyour company's account.\nRest assured that our long-standing incentives remain in place:\n• A 10% discount for orders of more than $4,000\n• A 20% discount for charitable organizations\n• Free deliveries to locations within 5 miles of one of our supply centers\n• Free samples for members of our Frequent Buyer Club\nMore information about our transition to electronic invoicing is available on our Web site. Thank you\nfor your support. Orbys Distributors appreciates your business.\nE-mail\nTo: Mary Peterson, Billing Department\nFrom: Tanvir Singh, Account Manager\nDate: September 12\nSubject: Account 1012-4\nHello Mary,\nI received a query today from William Tesoriero at Tesoriero Remodeling. His monthly invoice for\nAugust never arrived.\nAs you know, Mr. Tesoriero was one of our very first customers. Since we first opened for business,\nhe has made purchases from us on a regular basis. He is also a member of the Frequent Buyer Club.\nTMGROUP\n \n- ZALO 0945179246\n\n-- 25 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nThis is a customer we absolutely do not want to lose. I explained to him that the rollout of our\nelectronic invoicing system did not go as smoothly as we had hoped and promised that this would not\nhappen again.\nI would appreciate it if you could please investigate the problem without delay and send the invoice\nfor August to Mr. Tesoriero.\nTanvir"
+  },
+  {
+    "id": "TS-003-P7-054",
+    "testSetId": "TS-003",
+    "part": 7,
+    "content": "What does Mr. Singh ask Ms. Peterson to\ndo?",
+    "options": [
+      {
+        "label": "A",
+        "content": "Make a bill payment"
+      },
+      {
+        "label": "B",
+        "content": "Solve a problem"
+      },
+      {
+        "label": "C",
+        "content": "Confirm an order"
+      },
+      {
+        "label": "D",
+        "content": "Update an account number"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Ông Singh yêu cầu cô Peterson \"investigate the problem without delay\" và gửi hóa đơn, tức là ông muốn cô giải quyết vấn đề hóa đơn bị thiếu.",
+    "difficulty": "medium",
+    "topic": null,
+    "passageText": "Orbys Distributors\nClient: Green Canyon Date: June 10\nAccount: 4352-0\nItem Price\nGarden soil, 33 cubic meters $1,170.00\nCrushed gravel, 30 metric tons 1,710.00\nDecorative stone, 20 metric tons 1,140.00\n70 paving stones, .6 x .6 meters 630.00\nSubtotal 4,650.00\nDiscount (10%) 465.00\nDelivery charge 350.00\nGrand Total 4,535.00\nPlease see the enclosed notice outlining important changes to your billing.\nOrbys Distributors\nTo our valued customers:\nOur current invoicing system has been in use since Orbys Distributors was founded over twenty years\nago. As a much-needed upgrade, we are switching to electronic invoicing. Starting August 1, invoices\nwill be generated automatically each month and will be sent to the e-mail address associated with\nyour company's account.\nRest assured that our long-standing incentives remain in place:\n• A 10% discount for orders of more than $4,000\n• A 20% discount for charitable organizations\n• Free deliveries to locations within 5 miles of one of our supply centers\n• Free samples for members of our Frequent Buyer Club\nMore information about our transition to electronic invoicing is available on our Web site. Thank you\nfor your support. Orbys Distributors appreciates your business.\nE-mail\nTo: Mary Peterson, Billing Department\nFrom: Tanvir Singh, Account Manager\nDate: September 12\nSubject: Account 1012-4\nHello Mary,\nI received a query today from William Tesoriero at Tesoriero Remodeling. His monthly invoice for\nAugust never arrived.\nAs you know, Mr. Tesoriero was one of our very first customers. Since we first opened for business,\nhe has made purchases from us on a regular basis. He is also a member of the Frequent Buyer Club.\nTMGROUP\n \n- ZALO 0945179246\n\n-- 25 of 26 --\n\nLuyện thi TOEIC (Nghe - Đọc) cấp tốc mục tiêu 550-700+\nBiên soạn và giảng dạy: Cô Vũ Thị Mai Phương || Độc quyền và duy nhất tại: Ngoaingu24h.vn\nVì quyền lợi chính đáng của chính các em. TUYỆT ĐỐI KHÔNG chia sẻ tài liệu ĐỘC QUYỀN này cho người khác!\nThis is a customer we absolutely do not want to lose. I explained to him that the rollout of our\nelectronic invoicing system did not go as smoothly as we had hoped and promised that this would not\nhappen again.\nI would appreciate it if you could please investigate the problem without delay and send the invoice\nfor August to Mr. Tesoriero.\nTanvir"
   }
 ]

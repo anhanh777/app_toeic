@@ -133,6 +133,7 @@ select + .card{margin-top:1rem}
 .btn.neon:hover{background:#CDE8E2}
 .btn.gold{background:var(--cream); color:#8A6D1F; box-shadow:0 1px 4px rgba(93,64,28,.06)}
 .btn.gold:hover{background:#F8E7AC}
+.btn-sm{padding:.42rem .85rem; font-size:.88rem; border-radius:10px}
 .btn-row{display:flex; gap:.7rem; flex-wrap:wrap; margin-bottom:1rem}
 .card .btn-row{margin-top:.8rem; margin-bottom:0}
 
@@ -202,7 +203,7 @@ select + .card{margin-top:1rem}
 .flashcard-face .big{font-size:1.05rem; word-break:break-word}
 .passage{
   white-space:pre-wrap; background:var(--surface-soft); color:var(--ink); border:1px solid var(--border);
-  padding:.9rem; border-radius:12px; margin-bottom:.8rem; line-height:1.7;
+  padding:.65rem .85rem; border-radius:10px; margin-bottom:.55rem; line-height:1.6;
 }
 .audio-box{background:var(--sky) !important; border:1px solid #C6D9F5 !important}
 .audio-box .muted{color:#5A6478}
@@ -211,13 +212,13 @@ select + .card{margin-top:1rem}
 .option{
   display:block; width:100%; text-align:left; font-size:1rem;
   background:#fff; color:var(--ink); border:1px solid var(--border);
-  border-radius:12px; padding:.7rem .85rem; margin:.45rem 0;
+  border-radius:12px; padding:.55rem .75rem; margin:.35rem 0;
   transition:border-color .15s, background .15s;
 }
 .option:hover{border-color:var(--accent)}
 .option strong{
   font-weight:700; font-size:.85rem; color:var(--accent-dark); background:var(--accent-soft);
-  padding:.3rem .55rem; margin-right:.55rem; border-radius:8px;
+  padding:.22rem .5rem; margin-right:.5rem; border-radius:8px;
 }
 .option.selected{border-color:var(--accent); background:var(--accent-soft)}
 .option.correct{border-color:var(--green); background:var(--green-bg)}
@@ -297,11 +298,14 @@ footer{
    tiếp nhau bằng đường kẻ mảnh thay vì hộp .panel lồng nhau. */
 .paper{
   background:#fff; border:1px solid var(--border); border-radius:16px;
-  padding:.4rem 1.2rem 1rem; margin-top:1rem;
+  padding:.3rem 1rem .7rem; margin-top:.7rem;
 }
 /* 1 câu hỏi trong tờ đề: kẻ mảnh phân cách, nhịp dọc gọn */
-.paper-q{padding:.85rem 0; border-bottom:1px solid var(--border-soft)}
-.paper-q:last-child{border-bottom:none; padding-bottom:.3rem}
+.paper-q{padding:.6rem 0; border-bottom:1px solid var(--border-soft)}
+.paper-q:last-child{border-bottom:none; padding-bottom:.15rem}
+/* Đề mục / kết quả chấm trong câu: bỏ margin mặc định của <p> (~1em) */
+.paper-q p{margin:.3rem 0}
+.paper-q > img{display:block; margin:.35rem 0}
 .paper-q label{margin:.35rem 0 .25rem}
 .paper-q .q-num{font-weight:800; color:var(--ink); margin-right:.35rem}
 .paper-q textarea{margin-top:.15rem}
@@ -320,8 +324,8 @@ footer{
 .radio-pill input{width:auto; margin:0; padding:0; border:none; accent-color:var(--accent)}
 .radio-pill:has(input:checked){background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
 /* 1 cụm (đoạn hội thoại / bài nói / bài đọc): khối không viền, chỉ kẻ ngăn cụm */
-.paper-cluster{padding:.9rem 0 1rem; border-bottom:1px solid var(--border)}
-.paper-cluster:last-child{border-bottom:none; padding-bottom:.3rem}
+.paper-cluster{padding:.55rem 0 .6rem; border-bottom:1px solid var(--border)}
+.paper-cluster:last-child{border-bottom:none; padding-bottom:.15rem}
 .paper-cluster h4{margin:.1rem 0 .5rem}
 .paper-cluster > label{margin:.5rem 0 .25rem}
 .paper-cluster .btn-row{margin-top:.7rem}
@@ -361,24 +365,46 @@ footer{
    Toàn bộ câu của đợt luyện nằm trong 1 tờ giấy (.paper), các câu nối
    tiếp bằng đường kẻ mảnh. Đáp án gọn: Part 1/2 là 1 hàng pill chữ cái,
    Part 3–7 là lưới phương án (1 cột trên điện thoại, 2 cột từ 640px). */
-.letter-row{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.5rem}
+.letter-row{display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.35rem}
 .option.letter-pill{
   flex:1 1 0; min-width:3rem; width:auto; text-align:center;
   padding:.55rem .4rem; margin:0;
 }
 .option.letter-pill strong{font-size:1.15rem; padding:.2rem .55rem; margin-right:0}
-.opts-grid{display:grid; grid-template-columns:1fr; gap:.45rem; margin-top:.5rem}
+.opts-grid{display:grid; grid-template-columns:1fr; gap:.35rem; margin-top:.35rem}
 .opts-grid .option{margin:0}
-@media(min-width:640px){.opts-grid{grid-template-columns:1fr 1fr; gap:.45rem .6rem}}
+@media(min-width:640px){.opts-grid{grid-template-columns:1fr 1fr; gap:.35rem .5rem}}
 /* Tiêu đề Part trong tờ đề thi thử full (Part 1 → Part 7 nối tiếp nhau) */
-.paper-part{margin:.4rem 0 .2rem; font-size:1.05rem; color:var(--accent-dark)}
+.paper-part{margin:.55rem 0 .15rem; font-size:1.05rem; color:var(--accent-dark)}
 /* Thanh tiến độ dính cuối màn luyện: luôn thấy "Xem kết quả" khi cuộn */
 .practice-bar{
   position:sticky; bottom:0; z-index:5; background:#fff;
-  border-top:1px solid var(--border); padding:.7rem 0 .4rem; margin-top:1rem;
+  border-top:1px solid var(--border); padding:.5rem 0 .3rem; margin-top:.8rem;
   display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap;
 }
 .practice-bar .progress{font-weight:700; color:var(--ink)}
+
+/* Nút "Nộp đáp án" từng câu (Practice): hàng inline gọn, không cộng
+   margin 1rem của .btn-row mặc định */
+.paper-q > .btn-row{margin:.55rem 0 0}
+
+/* Hộp nghe/TTS trong tờ đề: 1 hàng gọn thay vì thẻ .card to —
+   nút phát + audio + tốc độ nằm cùng hàng (xuống dòng khi màn hẹp).
+   Dòng tiêu đề ("Nghe đoạn audio" / "Âm thanh đọc bằng giọng máy") được
+   ẩn khi đã có audio hoặc nút phát; chỉ giữ ghi chú "chưa có file audio"
+   khi hộp trống không có gì để phát. Không sửa components.tsx. */
+.paper .audio-box{
+  display:flex; flex-wrap:wrap; align-items:center; gap:.35rem .6rem;
+  padding:.45rem .6rem; margin:.4rem 0; border-radius:10px; box-shadow:none;
+}
+.paper .audio-box audio{flex:1 1 200px; min-width:0; height:36px}
+.paper .audio-box .btn-row{margin:0; gap:.4rem}
+.paper .audio-box .btn{padding:.35rem .65rem; font-size:.85rem; border-radius:9px; box-shadow:none}
+.paper .audio-box label{margin:0; font-size:.82rem}
+.paper .audio-box input[type='range']{width:90px}
+.paper .audio-box .muted{margin:0; font-size:.82rem}
+.paper .audio-box:has(audio) > .muted,
+.paper .audio-box:has(.btn-row) > .muted{display:none}
 
 ::selection{background:var(--accent-soft); color:var(--ink)}
 @media(max-width:640px){

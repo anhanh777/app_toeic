@@ -202,7 +202,7 @@ export default function MockTest() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '.5rem' }}>
-        <p className="muted">{testSet ? `📚 ${testSet.title} — ` : ''}Đã trả lời: {answeredCount}/{questions.length}</p>
+        <p className="muted" style={{ margin: 0 }}>{testSet ? `📚 ${testSet.title} — ` : ''}Đã trả lời: {answeredCount}/{questions.length}</p>
         <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
       </div>
       <ErrorBox error={error} />
@@ -226,9 +226,9 @@ export default function MockTest() {
       </div>
       <div className="practice-bar">
         <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
-        <button className="btn" onClick={() => void submit()}>Nộp bài</button>
+        <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
       </div>
-      <p className="muted">Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>
+      <p className="muted" style={{ margin: '.45rem 0 0' }}>Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>
     </div>
   );
 }

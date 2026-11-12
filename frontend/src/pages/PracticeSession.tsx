@@ -144,7 +144,7 @@ export default function PracticeSession() {
           })}
         </div>
         {!result ? (
-          <div className="btn-row"><button className="btn" disabled={!selected} onClick={() => void submit(q)}>Nộp đáp án</button></div>
+          <div className="btn-row"><button className="btn btn-sm" disabled={!selected} onClick={() => void submit(q)}>Nộp đáp án</button></div>
         ) : (
           <div>
             <p style={{ color: result.correct ? '#3E6B4A' : '#A84A4A', fontWeight: 700 }}>
@@ -160,8 +160,8 @@ export default function PracticeSession() {
 
   return (
     <div>
-      {testSetTitle && <p className="tag">📚 {testSetTitle}</p>}
-      <p className="muted">{partName(part)} — Đã làm {score.done}/{questions.length} • Đúng {score.correct}</p>
+      {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
+      <p className="muted" style={{ margin: '.3rem 0 0' }}>{partName(part)} — Đã làm {score.done}/{questions.length} • Đúng {score.correct}</p>
       <ErrorBox error={error} />
       <div className="paper">
         {blocks.map(block => block.passageText ? (
@@ -175,7 +175,7 @@ export default function PracticeSession() {
       </div>
       <div className="practice-bar">
         <span className="progress">Đã làm {score.done}/{questions.length} • Đúng {score.correct}</span>
-        <button className="btn" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
+        <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
       </div>
     </div>
   );
