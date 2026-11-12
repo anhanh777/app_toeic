@@ -84,16 +84,17 @@ function seedQuestions() {
     });
     console.log('[seed] da tao de mau TS-001.');
   }
-  // De so 01 (Bo de 2024): 100 cau RC trong data/questions.json (testSetId TS-003).
-  // Tao truoc khi seed cau hoi de insertQuestion gan dung test_set_id.
+  // ETS 2024 - Test 01 (= De so 01, Bo de 2024): 200 cau trong
+  // data/questions.json (testSetId TS-003). Tao truoc khi seed cau hoi de
+  // insertQuestion gan dung test_set_id.
   if (!db.getTestSet('TS-003')) {
     db.createTestSet({
       id: 'TS-003',
-      title: 'Đề số 01 (Bộ đề 2024)',
-      description: 'Đề thi thử sát đề thi thật nhất - RC Parts 5-7',
+      title: 'ETS 2024 - Test 01',
+      description: 'ETS 2024 Test 01 - LC + RC (200 câu)',
       isPublished: 1,
     });
-    console.log('[seed] da tao de so 01 TS-003.');
+    console.log('[seed] da tao ETS 2024 Test 01 TS-003.');
   }
   let inserted = 0;
   for (const q of list) {
