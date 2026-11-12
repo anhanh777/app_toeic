@@ -130,9 +130,6 @@ router.put('/admin/test-sets/:id', authMiddleware, requireAdmin, (req, res) => {
 });
 
 router.delete('/admin/test-sets/:id', authMiddleware, requireAdmin, (req, res) => {
-  if (req.params.id === 'TS-001') {
-    return res.status(400).json({ error: 'khong the xoa de mau' });
-  }
   const ok = db.deleteTestSet(req.params.id);
   if (!ok) return res.status(404).json({ error: 'khong tim thay bo de' });
   return res.json({ ok: true });

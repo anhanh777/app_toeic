@@ -139,7 +139,6 @@ export default function Admin() {
   };
 
   const deleteTestSet = async (ts: TestSet) => {
-    if (ts.id === 'TS-001') { setError(new Error('Không xóa được đề mẫu TS-001.')); return; }
     if (!confirm(`Xóa bộ đề "${ts.title}" cùng toàn bộ câu hỏi trong đề?`)) return;
     setError(null);
     try { await api.adminDeleteTestSet(ts.id); setMsg(`Đã xóa bộ đề "${ts.title}".`); loadTestSets(); }

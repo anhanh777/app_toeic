@@ -33,7 +33,7 @@ export default function MockTest() {
     try {
       // Tải audio cấp Part trước khi bắt đầu để câu đầu tiên đã có audio.
       // Lỗi (backend chưa có endpoint) thì bỏ qua, fallback về {}.
-      try { setPartMedia(await api.partMedia(testSetId || 'TS-001')); } catch { setPartMedia({}); }
+      try { setPartMedia(testSetId ? await api.partMedia(testSetId) : {}); } catch { setPartMedia({}); }
       const t = testSetId
         ? await api.createTest('full', undefined, 120, testSetId)
         : await api.createTest(mode, mode === 'mini' ? part : undefined, 120);

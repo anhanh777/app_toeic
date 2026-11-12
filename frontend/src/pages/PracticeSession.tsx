@@ -41,7 +41,7 @@ export default function PracticeSession() {
     setPartMediaLoaded(false);
     if (testSetId) api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => undefined);
     if (part <= 4) {
-      api.partMedia(testSetId || 'TS-001')
+      (testSetId ? api.partMedia(testSetId) : Promise.resolve<Record<number, string>>({}))
         .then(setPartMedia)
         .catch(() => setPartMedia({}))
         .finally(() => setPartMediaLoaded(true));

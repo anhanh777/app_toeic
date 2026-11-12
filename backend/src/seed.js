@@ -39,9 +39,7 @@ function readJsonArray(file) {
 
 function validSeedQuestion(q) {
   // Luat seed rieng (rong hon db.validateImportQuestion o 1 diem):
-  // Part 2 chap nhan 3 phuong an (de moi AI-parse) HOAC 4 phuong an
-  // (ngan hang cu 220 cau co 4 phuong an cho Part 2) — chi dung
-  // validateImportQuestion se lam rot het 30 cau Part 2 cu.
+  // Part 2 chap nhan 3 phuong an (de ETS chuan) HOAC 4 phuong an.
   // Part 1/2 chi-nghe duoc rong noi dung (nhu validateImportQuestion).
   if (!q || typeof q.id !== 'string') return false;
   if (!Number.isInteger(q.part) || q.part < 1 || q.part > 7) return false;
@@ -69,21 +67,9 @@ function validSeedQuestion(q) {
 function seedQuestions() {
   if (db.countQuestions() > 0) {
     console.log(`[seed] questions da co ${db.countQuestions()} cau — bo qua seed cau hoi.`);
-    // DB cu da seed truoc khi co total_questions: dong bo lai tong so cau cua TS-001.
-    if (db.getTestSet('TS-001')) db.refreshTestSetTotal('TS-001');
     return 0;
   }
   const list = readJsonArray('questions.json').filter(validSeedQuestion);
-  // Gom toan bo cau hien co thanh de mau TS-001 (neu chua co).
-  if (!db.getTestSet('TS-001')) {
-    db.createTestSet({
-      id: 'TS-001',
-      title: 'Đề mẫu 01 (ngân hàng hiện tại)',
-      description: 'Bộ đề mẫu gồm toàn bộ 220 câu hỏi hiện có trong ngân hàng.',
-      isPublished: 1,
-    });
-    console.log('[seed] da tao de mau TS-001.');
-  }
   // ETS 2024 - Test 01 (= De so 01, Bo de 2024): 200 cau trong
   // data/questions.json (testSetId TS-003). Tao truoc khi seed cau hoi de
   // insertQuestion gan dung test_set_id.
@@ -180,14 +166,13 @@ function seedQuestions() {
   let inserted = 0;
   for (const q of list) {
     try {
-      db.insertQuestion({ ...q, testSetId: q.testSetId || 'TS-001' });
+      db.insertQuestion({ ...q, testSetId: q.testSetId });
       inserted += 1;
     } catch (err) {
       console.warn(`[seed] bo qua cau ${q.id}: ${err.message}`);
     }
   }
   console.log(`[seed] da seed ${inserted}/${list.length} cau hoi.`);
-  if (db.getTestSet('TS-001')) db.refreshTestSetTotal('TS-001');
   if (db.getTestSet('TS-003')) db.refreshTestSetTotal('TS-003');
   if (db.getTestSet('TS-004')) db.refreshTestSetTotal('TS-004');
   if (db.getTestSet('TS-005')) db.refreshTestSetTotal('TS-005');
