@@ -8,6 +8,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <meta name="theme-color" content="#FDF8F3" />
+    <script>
+      /* Đặt chế độ sáng/tối trước khi trang vẽ để không bị chớp sáng:
+         ưu tiên lựa chọn đã lưu, chưa có thì theo hệ thống. */
+      try {
+        var t = localStorage.getItem('toeic_theme');
+        var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.content = dark ? '#211E1B' : '#FDF8F3';
+      } catch (e) {}
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luyện thi TOEIC</title>
   </head>

@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { AuthProvider, useAuth } from './auth';
+import { applyTheme, resolveTheme, type Theme } from './theme';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Practice from './pages/Practice';
@@ -23,6 +25,27 @@ function RequireAuth({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+/* Nút đổi sáng/tối ở góc phải header — hiện cả khi chưa đăng nhập. */
+function ThemeToggle() {
+  const [theme, setTheme] = useState<Theme>(() => resolveTheme());
+  const toggle = () => {
+    const next: Theme = theme === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    setTheme(next);
+  };
+  return (
+    <button
+      type="button"
+      className="theme-toggle"
+      onClick={toggle}
+      aria-label={theme === 'dark' ? 'Chuyển sang chế độ sáng' : 'Chuyển sang chế độ tối'}
+      title={theme === 'dark' ? 'Chế độ sáng' : 'Chế độ tối'}
+    >
+      {theme === 'dark' ? '☀️' : '🌙'}
+    </button>
+  );
+}
+
 function Layout() {
   const { user, logout } = useAuth();
   const nav = useNavigate();
@@ -44,6 +67,7 @@ function Layout() {
             <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { logout(); nav('/login'); }}>Đăng xuất ({user.name})</button>
           </nav>
         )}
+        <ThemeToggle />
       </header>
       <main className="container">
         <Routes>
