@@ -93,7 +93,7 @@ export default function MockTest() {
               <p><span className="stat-num">{testSet.totalQuestions}</span> câu • 120 phút</p>
               <p className="muted">{testSet.parts.map(p => `P${p.part} ${p.count}`).join(' · ')}</p>
               {testSet.missing.length > 0 && (
-                <p style={{ color: '#B98A1D' }}>⚠ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}.</p>
+                <p style={{ color: 'var(--amber)' }}>⚠ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}.</p>
               )}
             </div>
           ) : <p>Đang tải thông tin đề thi…</p>}

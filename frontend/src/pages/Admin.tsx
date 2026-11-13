@@ -224,7 +224,7 @@ export default function Admin() {
             </tbody></table>
             {uploadPreview.errors.length > 0 && (
               <div style={{ marginTop: '.6rem' }}>
-                <p style={{ color: '#A84A4A' }}>Câu lỗi:</p>
+                <p style={{ color: 'var(--red-ink)' }}>Câu lỗi:</p>
                 <table><thead><tr><th>#</th><th>Lý do</th></tr></thead><tbody>
                   {uploadPreview.errors.map(e => <tr key={e.index}><td>{e.index + 1}{e.id ? ` (${e.id})` : ''}</td><td>{e.reason}</td></tr>)}
                 </tbody></table>

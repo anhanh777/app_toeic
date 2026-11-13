@@ -164,7 +164,7 @@ export default function PracticeSession() {
         </div>
         {result && (
           <div className="exam-q-result">
-            <p style={{ color: result.correct ? '#3E6B4A' : '#A84A4A', fontWeight: 700 }}>
+            <p style={{ color: result.correct ? 'var(--green-ink)' : 'var(--red-ink)', fontWeight: 700 }}>
               {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${result.correctLabel}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
             </p>
             {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}

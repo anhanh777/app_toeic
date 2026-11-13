@@ -59,7 +59,7 @@ export default function TestSetDetail() {
         <p><span className="stat-num">{total}</span> câu • Đã làm {answered}/{total} câu ({pct}%) • Đúng {correct} câu</p>
         <div className="bar green"><i style={{ width: `${pct}%` }} /></div>
         {ts.missing.length > 0 && (
-          <p style={{ color: '#B98A1D', marginTop: '.6rem' }}>
+          <p style={{ color: 'var(--amber)', marginTop: '.6rem' }}>
             ⚠ Đề chưa đủ câu chuẩn: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}. Bạn vẫn có thể luyện các câu hiện có.
           </p>
         )}

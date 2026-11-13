@@ -67,7 +67,7 @@ export default function Practice() {
                     {ts.parts.map(p => `P${p.part} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
                   </p>
                   {ts.missing.length > 0 && (
-                    <p style={{ color: '#B98A1D' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
+                    <p style={{ color: 'var(--amber)' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
                   )}
                   {ts.progress ? (
                     <div>

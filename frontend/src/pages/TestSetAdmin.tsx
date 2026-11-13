@@ -358,7 +358,7 @@ export default function TestSetAdmin() {
           {' '}• Tạo ngày {ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : '—'}
         </p>
         {ts.missing.length > 0 && (
-          <p style={{ color: '#B98A1D' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
+          <p style={{ color: 'var(--amber)' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
         )}
         <div className="btn-row">
           <button className="btn gold" onClick={togglePublish}>{ts.isPublished ? '⏸ Bỏ phát hành' : '🚀 Phát hành đề'}</button>
@@ -424,7 +424,7 @@ export default function TestSetAdmin() {
             <h3>Xem trước AI — {aiPreview.fileName}</h3>
             <p>{aiPreview.questions.length} câu parse được • {aiLiveErrorCount} câu còn lỗi</p>
             {aiPreview.warnings.length > 0 && (
-              <p style={{ color: '#B98A1D' }}>⚠ {aiPreview.warnings.join(' ')}</p>
+              <p style={{ color: 'var(--amber)' }}>⚠ {aiPreview.warnings.join(' ')}</p>
             )}
             {aiPreview.structure?.mode === 'split' && (
               <>
@@ -436,7 +436,7 @@ export default function TestSetAdmin() {
                   {' · '}{aiPreview.structure.answerKeyFound ? 'Đã thấy bảng đáp án' : 'Chưa thấy bảng đáp án'}
                 </p>
                 {(aiPreview.structure.warnings ?? []).length > 0 && (
-                  <p style={{ color: '#B98A1D' }}>⚠ {(aiPreview.structure.warnings ?? []).join(' ')}</p>
+                  <p style={{ color: 'var(--amber)' }}>⚠ {(aiPreview.structure.warnings ?? []).join(' ')}</p>
                 )}
               </>
             )}
@@ -469,7 +469,7 @@ export default function TestSetAdmin() {
                       </td>
                       <td>
                         {q.confidence === 'low' && (
-                          <span style={{ color: '#B98A1D', fontSize: '0.85rem' }}>⚠ Kiểm tra lại</span>
+                          <span style={{ color: 'var(--amber)', fontSize: '0.85rem' }}>⚠ Kiểm tra lại</span>
                         )}
                       </td>
                       <td>{reason}</td>
@@ -508,7 +508,7 @@ export default function TestSetAdmin() {
               <>
                 <p>Đã đọc được {akResult.found} đáp án (nguồn: {akResult.source === 'ai' ? 'AI' : 'tự động'})</p>
                 {akResult.warnings.length > 0 && (
-                  <p style={{ color: '#B98A1D' }}>⚠ {akResult.warnings.join(' ')}</p>
+                  <p style={{ color: 'var(--amber)' }}>⚠ {akResult.warnings.join(' ')}</p>
                 )}
                 {akPreviewText && <p className="muted">{akPreviewText}</p>}
                 <div className="btn-row">
@@ -520,7 +520,7 @@ export default function TestSetAdmin() {
               <>
                 <p>Đã điền đáp án cho {akApplied.filled}/{akApplied.total} câu.</p>
                 {akApplied.missing.length > 0 && (
-                  <p style={{ color: '#B98A1D' }}>
+                  <p style={{ color: 'var(--amber)' }}>
                     Chưa có đáp án: câu {akApplied.missing.slice(0, 20).join(', ')}{akApplied.missing.length > 20 ? ', …' : ''} — chọn tay nốt trong bảng xem trước phía trên.
                   </p>
                 )}
