@@ -1,35 +1,17 @@
 'use strict';
 
-// Bo de thi (test sets): xem danh sach/chi tiet (public) + CRUD/import (admin).
+// Bo de thi (test sets): xem danh sach/chi tiet (can dang nhap) + CRUD/import (admin).
 
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const db = require('../db');
 const { validateCloudinaryUrl } = require('./media');
 const { authMiddleware, requireAdmin } = require('../auth');
 
 const router = express.Router();
 
-const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
-
 // Chuan 1 de TOEIC 200 cau (ke hoach muc 3.3).
 const STANDARD = { 1: 6, 2: 25, 3: 39, 4: 30, 5: 30, 6: 16, 7: 54 };
 const PARTS = [1, 2, 3, 4, 5, 6, 7];
-
-/** Middleware tuy chon: co token hop le thi gan req.user, khong thi req.user = null. */
-function optionalAuth(req, res, next) {
-  const header = req.headers.authorization || '';
-  const match = header.match(/^Bearer\s+(.+)$/i);
-  req.user = null;
-  if (!match) return next();
-  try {
-    const payload = jwt.verify(match[1], JWT_SECRET);
-    req.user = { id: payload.id, email: payload.email, role: payload.role || 'user' };
-  } catch (_) {
-    req.user = null;
-  }
-  return next();
-}
 
 function partsWithCounts(testSetId) {
   const counts = db.countByPartForTestSet(testSetId);
@@ -72,15 +54,15 @@ function serializeTestSet(testSet, user) {
   };
 }
 
-/* ---------- public ---------- */
+/* ---------- can dang nhap ---------- */
 
-router.get('/test-sets', optionalAuth, (req, res) => {
+router.get('/test-sets', authMiddleware, (req, res) => {
   const isAdmin = req.user && req.user.role === 'admin';
   const sets = db.listTestSets({ includeDrafts: !!isAdmin });
   return res.json(sets.map((s) => serializeTestSet(s, req.user)));
 });
 
-router.get('/test-sets/:id', optionalAuth, (req, res) => {
+router.get('/test-sets/:id', authMiddleware, (req, res) => {
   const testSet = db.getTestSet(req.params.id);
   if (!testSet) return res.status(404).json({ error: 'khong tim thay bo de' });
   const isAdmin = req.user && req.user.role === 'admin';
@@ -90,8 +72,8 @@ router.get('/test-sets/:id', optionalAuth, (req, res) => {
   return res.json(serializeTestSet(testSet, req.user));
 });
 
-/* Audio cap Part (Part 1-4, 1 file cho toan bo Part) — public, khong can dang nhap. */
-router.get('/test-sets/:id/part-media', (req, res) => {
+/* Audio cap Part (Part 1-4, 1 file cho toan bo Part) — can dang nhap. */
+router.get('/test-sets/:id/part-media', authMiddleware, (req, res) => {
   const testSet = db.getTestSet(req.params.id);
   if (!testSet) return res.status(404).json({ error: 'khong tim thay bo de' });
   return res.json(db.getPartMedia(req.params.id));
