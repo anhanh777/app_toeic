@@ -100,7 +100,38 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 .topbar-actions{display:flex; gap:.35rem; align-items:center; flex:0 0 auto}
 .topbar-actions .btn{white-space:nowrap}
 
-/* Nút menu 3 gạch + bảng chọn mục ghim lên thanh nav (tối đa 4). */
+/* Nút icon tròn (đổi bài thi) + avatar (hồ sơ) ở cụm phải header. */
+.icon-btn{
+  flex:0 0 auto; width:2.35rem; height:2.35rem; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--surface); color:var(--ink); border:1px solid var(--border);
+  font-size:1.25rem; line-height:1; padding:0;
+}
+.icon-btn:hover{background:var(--surface-soft)}
+.avatar-btn{
+  flex:0 0 auto; width:2.35rem; height:2.35rem; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--accent); color:#fff; border:1px solid transparent;
+  font-size:1.05rem; font-weight:800; line-height:1; padding:0;
+}
+.avatar-btn:hover{filter:brightness(1.08)}
+.avatar-btn.big{width:2.8rem; height:2.8rem; font-size:1.25rem}
+.profile-menu{
+  position:absolute; right:0; top:calc(100% + .5rem); z-index:21;
+  width:min(19rem, calc(100vw - 1rem));
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18); padding:.6rem;
+}
+.profile-menu-head{display:flex; align-items:center; gap:.6rem; padding:.4rem .5rem .6rem; border-bottom:1px solid var(--border); margin-bottom:.4rem}
+.profile-menu-head > div{display:flex; flex-direction:column; min-width:0}
+.profile-menu-head strong{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.profile-menu-head .muted{font-size:.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.profile-menu-item{
+  display:flex; align-items:center; gap:.5rem; width:100%;
+  padding:.55rem .6rem; border-radius:10px; color:var(--ink); font-weight:600;
+  background:transparent; border:none; text-align:left; font-size:.95rem; cursor:pointer;
+}
+.profile-menu-item:hover{background:var(--surface-soft); text-decoration:none}
 .nav-menu-wrap{position:relative; flex:0 0 auto}
 .nav-menu-btn{
   flex:0 0 auto; width:2.35rem; height:2.35rem; border-radius:10px;

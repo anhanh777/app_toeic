@@ -140,7 +140,10 @@ function Layout() {
       : '📚 Luyện thi TOEIC · IELTS';
   const { pins, save: savePins } = useNavPins();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileOpen, setProfileOpen] = useState(false);
   const [pinMsg, setPinMsg] = useState<string | null>(null);
+  // Tên hiển thị: tên tài khoản, thiếu thì lấy phần trước @ của email.
+  const displayName = (user?.name || '').trim() || (user?.email || '').split('@')[0] || 'Tài khoản';
   const availableItems = NAV_ITEMS.filter(it =>
     (!it.ieltsOnly || exam === 'ielts') && (!it.adminOnly || user?.role === 'admin'));
   const pinnedItems = availableItems.filter(it => pins.includes(it.path));
@@ -169,7 +172,7 @@ function Layout() {
         {user && exam && (
           <div className="nav-menu-wrap">
             <button type="button" className="nav-menu-btn" aria-label="Mở menu" aria-expanded={menuOpen}
-              title="Tất cả mục" onClick={() => { setMenuOpen(o => !o); setPinMsg(null); }}>☰</button>
+              title="Tất cả mục" onClick={() => { setMenuOpen(o => !o); setProfileOpen(false); setPinMsg(null); }}>☰</button>
             {menuOpen && (
               <>
                 <div className="nav-menu-backdrop" onClick={() => setMenuOpen(false)} />
@@ -198,8 +201,33 @@ function Layout() {
         )}
         {user && (
           <div className="topbar-actions">
-            {exam && <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { clearExam(); nav('/'); }}>↔ Đổi bài thi</button>}
-            <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { logout(); nav('/login'); }}>Đăng xuất ({(user.name || '').trim() || (user.email || '').split('@')[0] || 'Tài khoản'})</button>
+            {exam && (
+              <button type="button" className="icon-btn" aria-label="Đổi bài thi" title="Đổi bài thi"
+                onClick={() => { clearExam(); nav('/'); }}>⇄</button>
+            )}
+            <div className="nav-menu-wrap">
+              <button type="button" className="avatar-btn" aria-label="Tài khoản của tôi" aria-expanded={profileOpen}
+                title={displayName} onClick={() => { setProfileOpen(o => !o); setMenuOpen(false); }}>
+                {displayName[0]?.toUpperCase() ?? '👤'}
+              </button>
+              {profileOpen && (
+                <>
+                  <div className="nav-menu-backdrop" onClick={() => setProfileOpen(false)} />
+                  <div className="profile-menu" role="menu">
+                    <div className="profile-menu-head">
+                      <span className="avatar-btn big" aria-hidden>{displayName[0]?.toUpperCase() ?? '👤'}</span>
+                      <div>
+                        <strong>{displayName}</strong>
+                        <span className="muted">{user.email}</span>
+                      </div>
+                    </div>
+                    <Link className="profile-menu-item" to="/settings" onClick={() => setProfileOpen(false)}>👤 Hồ sơ &amp; Cài đặt</Link>
+                    <button type="button" className="profile-menu-item"
+                      onClick={() => { setProfileOpen(false); logout(); nav('/login'); }}>🚪 Đăng xuất</button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         )}
         <ThemeToggle />

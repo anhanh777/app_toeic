@@ -5,6 +5,7 @@ import { ErrorBox } from '../components';
 
 export default function Settings() {
   const { user, setUser } = useAuth();
+  const [name, setName] = useState(user?.name ?? '');
   const [target, setTarget] = useState(targetScoreOf(user));
   const [hide, setHide] = useState(hideOnLbOf(user));
   const [current, setCurrent] = useState('');
@@ -15,7 +16,7 @@ export default function Settings() {
   const saveProfile = async (e: React.FormEvent) => {
     e.preventDefault(); setError(null); setMsg('');
     try {
-      const u = await api.updateMe({ targetScore: target, hideOnLeaderboard: hide });
+      const u = await api.updateMe({ name: name.trim() || undefined, targetScore: target, hideOnLeaderboard: hide });
       setUser(u); setMsg('Đã lưu cài đặt.');
     } catch (err) { setError(err); }
   };
@@ -31,7 +32,9 @@ export default function Settings() {
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
       <form className="card" onSubmit={saveProfile}>
-        <h2>Mục tiêu &amp; bảng xếp hạng</h2>
+        <h2>Hồ sơ của bạn</h2>
+        <label htmlFor="displayName">Tên hiển thị</label>
+        <input id="displayName" value={name} onChange={e => setName(e.target.value)} placeholder="Tên bạn muốn hiện trên app" />
         <label htmlFor="target">Mục tiêu điểm TOEIC (10–990)</label>
         <input id="target" type="number" min={10} max={990} value={target} onChange={e => setTarget(Number(e.target.value))} />
         <label><input type="checkbox" checked={hide} onChange={e => setHide(e.target.checked)} style={{ width: 'auto' }} /> Ẩn tên trên bảng xếp hạng (hiện là “Người dùng ẩn danh”)</label>
