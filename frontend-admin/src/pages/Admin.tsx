@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api, type ImportQuestion, type Question, type TestSet, type Vocab } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox, partName } from '../components';
+import { ErrorBox, Modal, partName } from '../components';
 import { countByPart, normalizeImportFile, splitValid, type QuestionError } from '../testSetUtils';
 import { isFillIn, QUESTION_TYPE_NAMES, questionTypeName } from '../exam';
 
@@ -78,7 +78,6 @@ export default function Admin() {
     const get = (l: string) => q.options.find(o => o.label === l)?.content || '';
     setOptA(get('A')); setOptB(get('B')); setOptC(get('C')); setOptD(get('D'));
     setCorrect(q.correct || q.options.find(o => o.is_correct)?.label || 'A');
-    window.scrollTo({ top: 0 });
   };
 
   const importQuestions = async () => {
@@ -145,7 +144,6 @@ export default function Admin() {
   const editTestSet = (ts: TestSet) => {
     setEditingSet(ts.id);
     setTsForm({ title: ts.title, description: ts.description || '', isPublished: ts.isPublished, exam: ts.exam || 'toeic' });
-    window.scrollTo({ top: 0 });
   };
 
   const deleteTestSet = async (ts: TestSet) => {
@@ -193,6 +191,73 @@ export default function Admin() {
     } catch (e) { setError(e); } finally { setUploadBusy(false); }
   };
 
+  const testSetForm = (
+  <form onSubmit={saveTestSet}>
+    <label>Tên đề</label>
+    <input value={tsForm.title} onChange={e => setTsForm({ ...tsForm, title: e.target.value })} placeholder="VD: ETS 2024 - Test 01" required />
+    <label>Mô tả</label>
+    <input value={tsForm.description} onChange={e => setTsForm({ ...tsForm, description: e.target.value })} placeholder="Nguồn đề, năm…" />
+    <label>Kỳ thi</label>
+    <select value={tsForm.exam} onChange={e => setTsForm({ ...tsForm, exam: e.target.value })}>
+      <option value="toeic">TOEIC</option>
+      <option value="ielts">IELTS Academic</option>
+    </select>
+    <label><input type="checkbox" checked={tsForm.isPublished} onChange={e => setTsForm({ ...tsForm, isPublished: e.target.checked })} /> Phát hành ngay (người học thấy đề)</label>
+    <div className="btn-row">
+      <button className="btn btn-block">{editingSet ? 'Cập nhật đề' : '＋ Tạo đề mới'}</button>
+      {editingSet && <button type="button" className="btn secondary" onClick={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false, exam: 'toeic' }); }}>Hủy sửa</button>}
+    </div>
+  </form>
+  );
+
+  const questionForm = (
+  <form onSubmit={saveQuestion}>
+    <div className="form-grid">
+    <div><label>Mã câu (VD: P5-001)</label><input value={form.id} onChange={e => setForm({ ...form, id: e.target.value })} required disabled={!!editing} /></div>
+    <div><label>Kỳ thi</label><select value={form.exam} onChange={e => setForm({ ...form, exam: e.target.value })}>
+      <option value="toeic">TOEIC</option>
+      <option value="ielts">IELTS Academic</option>
+    </select></div>
+    </div>
+    <div className="form-grid">
+    <div><label>Dạng câu hỏi</label><select value={form.questionType} onChange={e => setForm({ ...form, questionType: e.target.value })}>
+      {Object.entries(QUESTION_TYPE_NAMES).map(([v, n]) => <option key={v} value={v}>{n}</option>)}
+    </select></div>
+    <div><label>Part</label><select value={form.part} onChange={e => setForm({ ...form, part: Number(e.target.value) })}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}</select></div>
+    </div>
+    <label>Nội dung câu hỏi (tiếng Anh)</label><textarea rows={3} value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} required />
+    {isFillIn(form.questionType) ? (
+      <>
+        <div className="form-grid">
+        <div><label>Đáp án đúng (dạng text, câu điền từ)</label><input value={form.correctText} onChange={e => setForm({ ...form, correctText: e.target.value })} required placeholder="VD: library" /></div>
+        <div><label>Giới hạn số từ (word_limit — để trống nếu không giới hạn)</label><input type="number" min={1} value={form.wordLimit} onChange={e => setForm({ ...form, wordLimit: e.target.value })} placeholder="VD: 2" /></div>
+        </div>
+        <label>Đáp án chấp nhận thêm (mỗi dòng 1 đáp án)</label><textarea rows={2} value={form.acceptedAnswers} onChange={e => setForm({ ...form, acceptedAnswers: e.target.value })} placeholder={'the library\nlibraries'} />
+      </>
+    ) : (
+      <>
+        <div className="form-grid">
+        <div><label>Phương án A</label><input value={optA} onChange={e => setOptA(e.target.value)} required /></div>
+        <div><label>Phương án B</label><input value={optB} onChange={e => setOptB(e.target.value)} required /></div>
+        </div>
+        <div className="form-grid">
+        <div><label>Phương án C</label><input value={optC} onChange={e => setOptC(e.target.value)} required /></div>
+        <div><label>Phương án D</label><input value={optD} onChange={e => setOptD(e.target.value)} required /></div>
+        </div>
+        <label>Đáp án đúng</label><select value={correct} onChange={e => setCorrect(e.target.value)}>{['A', 'B', 'C', 'D'].map(l => <option key={l}>{l}</option>)}</select>
+      </>
+    )}
+    <label>Giải thích (tiếng Việt, ngắn)</label><textarea rows={2} value={form.explanation} onChange={e => setForm({ ...form, explanation: e.target.value })} />
+    <div className="form-grid">
+    <div><label>Chủ đề</label><input value={form.topic} onChange={e => setForm({ ...form, topic: e.target.value })} /></div>
+    <div><label>Độ khó</label><select value={form.difficulty} onChange={e => setForm({ ...form, difficulty: e.target.value })}><option value="easy">Dễ</option><option value="medium">Trung bình</option><option value="hard">Khó</option></select></div>
+    </div>
+    <label>Script / transcript (Part 1–4, để đọc TTS)</label><textarea rows={2} value={form.script} onChange={e => setForm({ ...form, script: e.target.value })} />
+    <label>Đoạn văn (Part 3/4/6/7)</label><textarea rows={3} value={form.passageText} onChange={e => setForm({ ...form, passageText: e.target.value })} />
+    <div className="btn-row"><button className="btn">{editing ? 'Cập nhật' : 'Thêm câu hỏi'}</button>{editing && <button type="button" className="btn secondary" onClick={() => { setEditing(null); setForm(emptyQ); }}>Hủy sửa</button>}</div>
+  </form>
+  );
+
   return (
     <div>
       <h1>Quản trị (Admin)</h1>
@@ -202,25 +267,17 @@ export default function Admin() {
 
       <div className="split">
       <div>
+      {editingSet == null && (
       <div className="card">
         <h2>📚 Bộ đề</h2>
-        <form onSubmit={saveTestSet}>
-          <label>Tên đề</label>
-          <input value={tsForm.title} onChange={e => setTsForm({ ...tsForm, title: e.target.value })} placeholder="VD: ETS 2024 - Test 01" required />
-          <label>Mô tả</label>
-          <input value={tsForm.description} onChange={e => setTsForm({ ...tsForm, description: e.target.value })} placeholder="Nguồn đề, năm…" />
-          <label>Kỳ thi</label>
-          <select value={tsForm.exam} onChange={e => setTsForm({ ...tsForm, exam: e.target.value })}>
-            <option value="toeic">TOEIC</option>
-            <option value="ielts">IELTS Academic</option>
-          </select>
-          <label><input type="checkbox" checked={tsForm.isPublished} onChange={e => setTsForm({ ...tsForm, isPublished: e.target.checked })} /> Phát hành ngay (người học thấy đề)</label>
-          <div className="btn-row">
-            <button className="btn btn-block">{editingSet ? 'Cập nhật đề' : '＋ Tạo đề mới'}</button>
-            {editingSet && <button type="button" className="btn secondary" onClick={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false, exam: 'toeic' }); }}>Hủy sửa</button>}
-          </div>
-        </form>
+        {testSetForm}
       </div>
+      )}
+      {editingSet != null && (
+      <Modal title={`Sửa bộ đề — ${tsForm.title || editingSet}`} onClose={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false, exam: 'toeic' }); }}>
+        {testSetForm}
+      </Modal>
+      )}
       <div className="card">
         <h2>⬆ Nhập đề từ file JSON</h2>
         <label>Upload file đề (.json)</label>
@@ -233,8 +290,7 @@ export default function Admin() {
         </div>
         <p className="muted">File JSON chấp nhận dạng {'{title, description?, questions: [...]}'} hoặc {'{parts: {"1": [...], ...}}'}. Mỗi câu cần đủ 4 phương án, đúng 1 đáp án, Part 1–7. File Word/PDF/ảnh: tạo đề trước, rồi bấm vào tên đề trong danh sách bên dưới để mở trang chi tiết đề và dùng mục 🤖 Nhận diện bằng AI.</p>
         {uploadPreview && (
-          <div className="panel">
-            <h3>Xem trước — {uploadPreview.fileName}</h3>
+          <Modal title={`Xem trước — ${uploadPreview.fileName}`} wide onClose={() => setUploadPreview(null)}>
             <p><strong>{uploadPreview.title}</strong>{uploadPreview.description ? ` — ${uploadPreview.description}` : ''}</p>
             <p>{uploadPreview.valid.length} câu hợp lệ • {uploadPreview.errors.length} câu lỗi (sẽ bị bỏ qua khi import)</p>
             <table><thead><tr><th>Part</th><th>Số câu</th></tr></thead><tbody>
@@ -255,7 +311,7 @@ export default function Admin() {
               </button>
               <button className="btn secondary" onClick={() => setUploadPreview(null)}>Hủy</button>
             </div>
-          </div>
+          </Modal>
         )}
       </div>
       </div>
@@ -288,52 +344,16 @@ export default function Admin() {
       </div>
       </div>
 
-      <form className="card" onSubmit={saveQuestion}>
-        <h2>{editing ? `Sửa câu hỏi ${editing}` : 'Thêm câu hỏi'}</h2>
-        <div className="form-grid">
-        <div><label>Mã câu (VD: P5-001)</label><input value={form.id} onChange={e => setForm({ ...form, id: e.target.value })} required disabled={!!editing} /></div>
-        <div><label>Kỳ thi</label><select value={form.exam} onChange={e => setForm({ ...form, exam: e.target.value })}>
-          <option value="toeic">TOEIC</option>
-          <option value="ielts">IELTS Academic</option>
-        </select></div>
+      {editing == null ? (
+        <div className="card">
+          <h2>Thêm câu hỏi</h2>
+          {questionForm}
         </div>
-        <div className="form-grid">
-        <div><label>Dạng câu hỏi</label><select value={form.questionType} onChange={e => setForm({ ...form, questionType: e.target.value })}>
-          {Object.entries(QUESTION_TYPE_NAMES).map(([v, n]) => <option key={v} value={v}>{n}</option>)}
-        </select></div>
-        <div><label>Part</label><select value={form.part} onChange={e => setForm({ ...form, part: Number(e.target.value) })}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}</select></div>
-        </div>
-        <label>Nội dung câu hỏi (tiếng Anh)</label><textarea rows={3} value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} required />
-        {isFillIn(form.questionType) ? (
-          <>
-            <div className="form-grid">
-            <div><label>Đáp án đúng (dạng text, câu điền từ)</label><input value={form.correctText} onChange={e => setForm({ ...form, correctText: e.target.value })} required placeholder="VD: library" /></div>
-            <div><label>Giới hạn số từ (word_limit — để trống nếu không giới hạn)</label><input type="number" min={1} value={form.wordLimit} onChange={e => setForm({ ...form, wordLimit: e.target.value })} placeholder="VD: 2" /></div>
-            </div>
-            <label>Đáp án chấp nhận thêm (mỗi dòng 1 đáp án)</label><textarea rows={2} value={form.acceptedAnswers} onChange={e => setForm({ ...form, acceptedAnswers: e.target.value })} placeholder={'the library\nlibraries'} />
-          </>
-        ) : (
-          <>
-            <div className="form-grid">
-            <div><label>Phương án A</label><input value={optA} onChange={e => setOptA(e.target.value)} required /></div>
-            <div><label>Phương án B</label><input value={optB} onChange={e => setOptB(e.target.value)} required /></div>
-            </div>
-            <div className="form-grid">
-            <div><label>Phương án C</label><input value={optC} onChange={e => setOptC(e.target.value)} required /></div>
-            <div><label>Phương án D</label><input value={optD} onChange={e => setOptD(e.target.value)} required /></div>
-            </div>
-            <label>Đáp án đúng</label><select value={correct} onChange={e => setCorrect(e.target.value)}>{['A', 'B', 'C', 'D'].map(l => <option key={l}>{l}</option>)}</select>
-          </>
-        )}
-        <label>Giải thích (tiếng Việt, ngắn)</label><textarea rows={2} value={form.explanation} onChange={e => setForm({ ...form, explanation: e.target.value })} />
-        <div className="form-grid">
-        <div><label>Chủ đề</label><input value={form.topic} onChange={e => setForm({ ...form, topic: e.target.value })} /></div>
-        <div><label>Độ khó</label><select value={form.difficulty} onChange={e => setForm({ ...form, difficulty: e.target.value })}><option value="easy">Dễ</option><option value="medium">Trung bình</option><option value="hard">Khó</option></select></div>
-        </div>
-        <label>Script / transcript (Part 1–4, để đọc TTS)</label><textarea rows={2} value={form.script} onChange={e => setForm({ ...form, script: e.target.value })} />
-        <label>Đoạn văn (Part 3/4/6/7)</label><textarea rows={3} value={form.passageText} onChange={e => setForm({ ...form, passageText: e.target.value })} />
-        <div className="btn-row"><button className="btn">{editing ? 'Cập nhật' : 'Thêm câu hỏi'}</button>{editing && <button type="button" className="btn secondary" onClick={() => { setEditing(null); setForm(emptyQ); }}>Hủy sửa</button>}</div>
-      </form>
+      ) : (
+        <Modal title={`Sửa câu hỏi ${editing}`} onClose={() => { setEditing(null); setForm(emptyQ); }}>
+          {questionForm}
+        </Modal>
+      )}
 
       <div className="split">
       <div className="card">
