@@ -86,16 +86,20 @@ function Layout() {
         )}
         <div className="sidebar-footer">
           {user ? (
-            <div className="sidebar-account">
-              <span className="sidebar-avatar" aria-hidden="true">{displayName.charAt(0).toUpperCase()}</span>
-              <span className="sidebar-account-info">
-                <span className="sidebar-user">{displayName}</span>
-                <span className="sidebar-role muted">{user.role === 'admin' ? 'Quản trị viên' : 'Học viên'}</span>
-              </span>
-              <button type="button" className="icon-btn sidebar-logout" aria-label="Đăng xuất" title="Đăng xuất"
-                onClick={() => { logout(); nav('/login'); }}>🚪</button>
-              <ThemeToggle />
-            </div>
+            <>
+              <div className="sidebar-account">
+                <span className="sidebar-avatar" aria-hidden="true">{displayName.charAt(0).toUpperCase()}</span>
+                <span className="sidebar-account-info">
+                  <span className="sidebar-user">{displayName}</span>
+                  <span className="sidebar-role muted">{user.role === 'admin' ? 'Quản trị viên' : 'Học viên'}</span>
+                </span>
+              </div>
+              <div className="sidebar-account-actions">
+                <button type="button" className="btn secondary btn-sm"
+                  onClick={() => { logout(); nav('/login'); }}>🚪 Đăng xuất</button>
+                <ThemeToggle />
+              </div>
+            </>
           ) : (
             <ThemeToggle />
           )}
