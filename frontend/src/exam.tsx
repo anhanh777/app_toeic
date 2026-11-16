@@ -101,6 +101,12 @@ export function TextSizeControl({ level, setLevel }: { level: number; setLevel: 
   return (
     <span className="text-size" role="group" aria-label="Cỡ chữ">
       <button type="button" className="btn btn-sm" disabled={level <= 0} onClick={() => setLevel(level - 1)} aria-label="Giảm cỡ chữ">A-</button>
+      <input
+        type="range" min={0} max={3} step={1} value={level}
+        onChange={e => setLevel(Number(e.target.value))}
+        className="ts-slider" aria-label="Kéo chọn cỡ chữ"
+        title={`Cỡ chữ: ${TEXT_SIZE_LABELS[level]}`}
+      />
       <span className="text-size-label" aria-live="polite">{TEXT_SIZE_LABELS[level]}</span>
       <button type="button" className="btn btn-sm" disabled={level >= 3} onClick={() => setLevel(level + 1)} aria-label="Tăng cỡ chữ">A+</button>
     </span>

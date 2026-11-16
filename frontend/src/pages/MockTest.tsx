@@ -161,6 +161,12 @@ export default function MockTest() {
     q.options.length > 0 &&
     q.options.every(o => !o.content || !o.content.trim());
 
+  // Câu Reading trắc nghiệm: xếp 2 câu 1 hàng (lưới 2 cột), đáp án 1 dọc.
+  const isDuoQuestion = (q: Question) => {
+    const t = q.questionType || 'multiple_choice';
+    return q.part >= 5 && (t === 'multiple_choice' || t === 'choosing_title') && !isListeningOnly(q);
+  };
+
   // Nhóm các câu liên tiếp cùng 1 đoạn văn (Part 3/4/6/7) để đoạn chỉ hiện
   // 1 lần, các câu hỏi của đoạn nối tiếp ngay bên dưới — như tờ đề thi thật.
   // Số thứ tự n là SỐ THẬT trong đề (mốc đầu Part + vị trí trong Part).
@@ -201,12 +207,10 @@ export default function MockTest() {
     // Part 6 (TOEIC): câu hỏi chỉ còn số + phương án — câu chứa chỗ trống
     // đã nằm trong đoạn văn phía trên (chip số), không hiện lại gây lặp.
     const isP6 = exam === 'toeic' && q.part === 6;
-    // Reading trắc nghiệm (TOEIC P5/P7, IELTS R): xếp chồng 1 cột,
-    // phương án lưới 2 cột — 1 màn hình được ~2 câu thay vì 1 câu.
-    // Part 6 riêng: 2 câu 1 hàng (lưới ở khối đoạn văn), đáp án 1 dọc.
-    const isReadingMC = q.part >= 5 && !letterOnly && !isP6 && (qType === 'multiple_choice' || qType === 'choosing_title');
+    // Reading trắc nghiệm: 2 câu 1 hàng, đáp án 1 dọc.
+    const isDuo = isDuoQuestion(q);
     return (
-      <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isReadingMC ? ' exam-q--stacked' : ''}${isP6 ? ' exam-q--p6' : ''}`} key={q.id}>
+      <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isDuo ? ' exam-q--duo' : ''}`} key={q.id}>
         <div className="exam-q-body">
           {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
               audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
@@ -258,7 +262,7 @@ export default function MockTest() {
               onCommit={v => void saveAnswer(q, v)}
             />
           ) : (
-            <div className={`exam-opts${isReadingMC ? ' exam-opts--grid2' : ''}`}>
+            <div className="exam-opts">
               {q.options.map(o => (
                 <button
                   key={o.label}
@@ -306,6 +310,66 @@ export default function MockTest() {
     nav('/');
   };
 
+  // Tờ đề: câu Reading trắc nghiệm xếp 2 câu 1 hàng (lưới 2 cột); các khối
+  // liên tiếp không có đoạn văn (Part 5) gom chung 1 lưới; khối có đoạn văn
+  // (Part 6/7) thì lưới nằm trong cụm đoạn văn. Tiêu đề Part vẫn hiện khi
+  // chuyển Part.
+  const renderPaper = () => {
+    const out: React.ReactNode[] = [];
+    let duoRun: { q: Question; n: number }[] = [];
+    const flushDuo = (key: string) => {
+      if (!duoRun.length) return;
+      out.push(<div className="exam-q-grid2" key={key}>{duoRun.map(item => renderQuestion(item))}</div>);
+      duoRun = [];
+    };
+    blocks.forEach((block, bi) => {
+      const showPart = bi === 0 || blocks[bi - 1].part !== block.part;
+      const duoBlock = !block.passageText && block.questions.every(({ q }) => isDuoQuestion(q));
+      if (duoBlock) {
+        if (showPart) {
+          flushDuo(`duo-${block.key}`);
+          out.push(<div key={`ph-${block.key}`}><h3 className="paper-part">{isIelts ? partNameFor(block.part, exam) : partName(block.part)}</h3></div>);
+        }
+        duoRun.push(...block.questions);
+        return;
+      }
+      flushDuo(`duo-${block.key}`);
+      out.push(
+        <div key={block.key}>
+          {showPart && <h3 className="paper-part">{isIelts ? partNameFor(block.part, exam) : partName(block.part)}</h3>}
+          {showPart && usePartAudioFor(block.part) && (
+            <div className="part-audio">
+              <ListeningAudio
+                audioUrl={partMedia[block.part]} ttsText="" stopKey={`part-${block.part}`} onError={setError}
+                playOnce={isIelts} onFirstPlay={() => markPlayed(block.part)}
+              />
+              <p className="muted">🎧 Nghe cả {isIelts ? `Section ${block.part}` : `Part ${block.part}`} — {isIelts ? 'thi thử: audio mỗi Section chỉ phát 1 lần, bấm 1 lần rồi làm hết các câu của Section trong lúc nghe.' : 'bấm 1 lần rồi làm hết các câu của Part trong lúc nghe.'}</p>
+              {isIelts && playedSections[block.part] && <p className="muted">✓ Đã phát Section này (thi thử chỉ phát 1 lần).</p>}
+            </div>
+          )}
+          {showPart && isIelts && block.part <= 4 && !partMedia[block.part]
+            && !questions.some(q => q.part === block.part && q.audioUrl) && (
+            <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
+          )}
+          {block.passageText ? (
+            <div className="paper-cluster">
+              {renderPassage(block)}
+              {block.questions.every(({ q }) => isDuoQuestion(q)) ? (
+                <div className="exam-q-grid2">{block.questions.map(item => renderQuestion(item))}</div>
+              ) : (
+                block.questions.map(item => renderQuestion(item))
+              )}
+            </div>
+          ) : (
+            block.questions.map(item => renderQuestion(item))
+          )}
+        </div>
+      );
+    });
+    flushDuo('duo-last');
+    return out;
+  };
+
   return (
     <div className={`ts-${textLevel}`}>
       <div className="exam-head">
@@ -320,40 +384,7 @@ export default function MockTest() {
       </div>
       <ErrorBox error={error} />
       <div className="paper">
-        {blocks.map((block, bi) => {
-          const showPart = bi === 0 || blocks[bi - 1].part !== block.part;
-          return (
-            <div key={block.key}>
-              {showPart && <h3 className="paper-part">{isIelts ? partNameFor(block.part, exam) : partName(block.part)}</h3>}
-              {showPart && usePartAudioFor(block.part) && (
-                <div className="part-audio">
-                  <ListeningAudio
-                    audioUrl={partMedia[block.part]} ttsText="" stopKey={`part-${block.part}`} onError={setError}
-                    playOnce={isIelts} onFirstPlay={() => markPlayed(block.part)}
-                  />
-                  <p className="muted">🎧 Nghe cả {isIelts ? `Section ${block.part}` : `Part ${block.part}`} — {isIelts ? 'thi thử: audio mỗi Section chỉ phát 1 lần, bấm 1 lần rồi làm hết các câu của Section trong lúc nghe.' : 'bấm 1 lần rồi làm hết các câu của Part trong lúc nghe.'}</p>
-                  {isIelts && playedSections[block.part] && <p className="muted">✓ Đã phát Section này (thi thử chỉ phát 1 lần).</p>}
-                </div>
-              )}
-              {showPart && isIelts && block.part <= 4 && !partMedia[block.part]
-                && !questions.some(q => q.part === block.part && q.audioUrl) && (
-                <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
-              )}
-              {block.passageText ? (
-                <div className="paper-cluster">
-                  {renderPassage(block)}
-                  {exam === 'toeic' && block.questions[0]?.q.part === 6 ? (
-                    <div className="exam-p6-grid">{block.questions.map(item => renderQuestion(item))}</div>
-                  ) : (
-                    block.questions.map(item => renderQuestion(item))
-                  )}
-                </div>
-              ) : (
-                block.questions.map(item => renderQuestion(item))
-              )}
-            </div>
-          );
-        })}
+        {renderPaper()}
       </div>
       <div className="practice-bar">
         <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>

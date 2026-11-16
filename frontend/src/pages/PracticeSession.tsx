@@ -132,6 +132,12 @@ export default function PracticeSession() {
     );
   }
 
+  // Câu Reading trắc nghiệm: xếp 2 câu 1 hàng (lưới 2 cột), đáp án 1 dọc.
+  const isDuoQuestion = (q: Question) => {
+    const t = q.questionType || 'multiple_choice';
+    return q.part >= 5 && (t === 'multiple_choice' || t === 'choosing_title') && !isListeningOnly(q);
+  };
+
   // Nhóm các câu liên tiếp cùng 1 đoạn văn (Part 3/4/6/7) để đoạn chỉ hiện
   // 1 lần, các câu hỏi của đoạn nối tiếp ngay bên dưới — như tờ đề thi thật.
   // Số thứ tự n là SỐ THẬT trong đề (mốc đầu Part + vị trí trong Part),
@@ -168,16 +174,14 @@ export default function PracticeSession() {
     // Part 6 (TOEIC): câu hỏi chỉ còn số + phương án — câu chứa chỗ trống
     // đã nằm trong đoạn văn phía trên (chip số), không hiện lại gây lặp.
     const isP6 = exam === 'toeic' && q.part === 6;
-    // Reading trắc nghiệm (TOEIC P5/P7, IELTS R): xếp chồng 1 cột,
-    // phương án lưới 2 cột — 1 màn hình được ~2 câu thay vì 1 câu.
-    // Part 6 riêng: 2 câu 1 hàng (lưới ở khối đoạn văn), đáp án 1 dọc.
-    const isReadingMC = q.part >= 5 && !letterOnly && !isP6 && (qType === 'multiple_choice' || qType === 'choosing_title');
+    // Reading trắc nghiệm: 2 câu 1 hàng, đáp án 1 dọc.
+    const isDuo = isDuoQuestion(q);
     const showContent = !!q.content && !hideListeningText && !isP6;
     // Câu điền từ: chặn nút Nộp khi vượt giới hạn số từ. list_selection
     // không bị chặn này (chọn thiếu chỉ là sai, backend chấm set equality).
     const overLimit = isFillIn(qType) && q.wordLimit != null && wordCount(selected) > q.wordLimit;
     return (
-      <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isReadingMC ? ' exam-q--stacked' : ''}${isP6 ? ' exam-q--p6' : ''}`} key={q.id}>
+      <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isDuo ? ' exam-q--duo' : ''}`} key={q.id}>
         <div className="exam-q-body">
           {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
               audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
@@ -225,7 +229,7 @@ export default function PracticeSession() {
               duplicateHeading={qType === 'matching_headings' && !!selected && (headingCounts[selected] ?? 0) > 1}
             />
           ) : (
-            <div className={`exam-opts${isReadingMC ? ' exam-opts--grid2' : ''}`}>
+            <div className="exam-opts">
               {q.options.map(o => {
                 let cls = 'option';
                 if (selected === o.label) cls += ' selected';
@@ -312,6 +316,38 @@ export default function PracticeSession() {
     );
   };
 
+  // Tờ đề: câu Reading trắc nghiệm xếp 2 câu 1 hàng (lưới 2 cột); các khối
+  // liên tiếp không có đoạn văn (Part 5) gom chung 1 lưới; khối có đoạn văn
+  // (Part 6/7) thì lưới nằm trong cụm đoạn văn.
+  const renderPaper = () => {
+    const out: React.ReactNode[] = [];
+    let duoRun: { q: Question; n: number }[] = [];
+    const flushDuo = (key: string) => {
+      if (!duoRun.length) return;
+      out.push(<div className="exam-q-grid2" key={key}>{duoRun.map(item => renderQuestion(item))}</div>);
+      duoRun = [];
+    };
+    for (const block of blocks) {
+      const duoBlock = !block.passageText && block.questions.every(({ q }) => isDuoQuestion(q));
+      if (duoBlock) { duoRun.push(...block.questions); continue; }
+      flushDuo(`duo-${block.key}`);
+      out.push(block.passageText ? (
+        <div className="paper-cluster" key={block.key}>
+          {renderPassage(block)}
+          {block.questions.every(({ q }) => isDuoQuestion(q)) ? (
+            <div className="exam-q-grid2">{block.questions.map(item => renderQuestion(item))}</div>
+          ) : (
+            block.questions.map(item => renderQuestion(item))
+          )}
+        </div>
+      ) : (
+        <div key={block.key}>{block.questions.map(item => renderQuestion(item))}</div>
+      ));
+    }
+    flushDuo('duo-last');
+    return out;
+  };
+
   return (
     <div className={`ts-${textLevel}`}>
       {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
@@ -337,18 +373,7 @@ export default function PracticeSession() {
       )}
       <ErrorBox error={error} />
       <div className="paper">
-        {blocks.map(block => block.passageText ? (
-          <div className="paper-cluster" key={block.key}>
-            {renderPassage(block)}
-            {exam === 'toeic' && block.questions[0]?.q.part === 6 ? (
-              <div className="exam-p6-grid">{block.questions.map(item => renderQuestion(item))}</div>
-            ) : (
-              block.questions.map(item => renderQuestion(item))
-            )}
-          </div>
-        ) : (
-          block.questions.map(item => renderQuestion(item))
-        ))}
+        {renderPaper()}
       </div>
       <div className="practice-bar">
         <span className="progress">Đã làm {score.done}/{questions.length} • Đúng {score.correct}</span>
