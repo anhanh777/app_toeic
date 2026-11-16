@@ -357,7 +357,7 @@ export default function TestSetAdmin() {
       <div className="card">
         <p>
           <span className="stat-num">{ts.totalQuestions}</span> / 200 câu •
-          {' '}<span className="pill">{ts.isPublished ? 'ĐÃ PHÁT HÀNH' : 'NHÁP'}</span>
+          {' '}<span className={`pill ${ts.isPublished ? 'pill--live' : 'pill--draft'}`}>{ts.isPublished ? 'ĐÃ PHÁT HÀNH' : 'NHÁP'}</span>
           {' '}• Tạo ngày {ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : '—'}
         </p>
         {ts.missing.length > 0 && (
@@ -372,7 +372,8 @@ export default function TestSetAdmin() {
         <h2>🎧 Audio cả Part</h2>
         <p className="muted">1 file audio cho cả Part (Part 1–4). Khi luyện/thi, câu nào chưa có audio riêng sẽ phát audio này. Chọn file mp3 để upload lên Cloudinary rồi bấm Lưu.</p>
         {mediaCfg?.configured ? (
-          [1, 2, 3, 4].map(p => {
+          <div className="audio-grid">
+          {[1, 2, 3, 4].map(p => {
             const savedUrl = partMedia[p];
             const pendingUrl = pendingPartAudio[p];
             const url = pendingUrl || savedUrl;
@@ -394,7 +395,8 @@ export default function TestSetAdmin() {
                 {!url && <p className="muted">Chưa có audio cho Part {p}.</p>}
               </div>
             );
-          })
+          })}
+          </div>
         ) : (
           <p className="muted">Chưa cấu hình Cloudinary — xem README</p>
         )}
@@ -449,6 +451,7 @@ export default function TestSetAdmin() {
             {aiPreview.structure?.mode === 'vision' && (
               <p className="muted">File scan/ảnh — AI đã đọc trực tiếp từ ảnh, không tách cấu trúc được.</p>
             )}
+            <div className="table-scroll">
             <table>
               <thead><tr><th>#</th><th>Part</th><th>Nội dung</th><th>Đáp án đúng</th><th>AI chưa chắc</th><th>Lý do lỗi</th></tr></thead>
               <tbody>
@@ -461,7 +464,7 @@ export default function TestSetAdmin() {
                     <tr key={i}>
                       <td>{i + 1}</td>
                       <td>Part {q.part}</td>
-                      <td>{q.content.length > 120 ? `${q.content.slice(0, 120)}…` : q.content}</td>
+                      <td><span className="cell-trunc cell-trunc--wide" title={q.content}>{q.content}</span></td>
                       <td>
                         {needsFix ? (
                           <select value={q.correct || ''} onChange={e => setAiCorrect(i, e.target.value)}>
@@ -481,6 +484,7 @@ export default function TestSetAdmin() {
                 })}
               </tbody>
             </table>
+            </div>
             <div className="btn-row">
               <button className="btn" disabled={busy} onClick={() => void confirmAiImport()}>
                 {busy ? 'Đang import…' : `✅ Xác nhận thêm vào đề (${aiPreview.questions.length - aiLiveErrorCount} câu)`}
@@ -647,7 +651,8 @@ export default function TestSetAdmin() {
           {listPart === p && (
             <div style={{ marginTop: '1rem' }}>
               <p className="muted">{listQuestions.length} câu đã tải (tối đa 100).</p>
-              <table><thead><tr><th>Mã</th><th>Nội dung</th><th>Audio AI</th></tr></thead><tbody>
+              <div className="table-scroll">
+              <table><thead><tr><th>Mã</th><th>Nội dung</th><th>Đáp án</th><th>Giải thích</th><th>Audio AI</th></tr></thead><tbody>
                 {(() => {
                   // Part 3/4: nút sinh audio nằm ở cấp đoạn văn — mỗi passageId
                   // chỉ hiện nút 1 lần (các câu chung đoạn không lặp nút).
@@ -671,10 +676,12 @@ export default function TestSetAdmin() {
                         audioCell = audioGenCell(`q:${q.id}`, 'question', q.id, q.audioUrl);
                       }
                     }
-                    return <tr key={q.id}><td>{q.id}</td><td>{q.content.slice(0, 100)}</td><td>{audioCell}</td></tr>;
+                    return <tr key={q.id}><td>{q.id}</td><td><span className="cell-trunc cell-trunc--wide" title={q.content}>{q.content}</span></td><td>{q.correctLabel || q.correct || q.correctText || '—'}</td><td>{q.explanation ? '✓' : '—'}</td><td>{audioCell}</td></tr>;
                   });
                 })()}
               </tbody></table>
+              </div>
+              {listQuestions.length === 0 && <p className="muted">Chưa có câu hỏi nào trong Part này.</p>}
             </div>
           )}
         </div>

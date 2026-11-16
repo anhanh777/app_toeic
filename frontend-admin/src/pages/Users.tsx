@@ -159,25 +159,28 @@ export default function Users() {
             <option value="admin">Admin</option>
           </select>
         </div>
-        <table><thead><tr><th>Email</th><th>Tên</th><th>Quyền</th><th>Điểm mục tiêu</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
+        <div className="table-scroll">
+        <table><thead><tr><th>Email</th><th>Tên</th><th>Quyền</th><th>Điểm mục tiêu</th><th>Ngày tạo</th><th>Ẩn BXH</th><th></th></tr></thead><tbody>
           {filtered.map(u => (
             <tr key={u.id}>
               <td>{u.email}{isSelf(u) ? ' (bạn)' : ''}</td>
-              <td>{u.name || ''}</td>
+              <td>{u.name || '—'}</td>
               <td>{u.role === 'admin' ? 'Admin' : 'Học viên'}</td>
               <td>{u.targetScore ?? 650}</td>
-              <td>{u.createdAt ? new Date(u.createdAt).toLocaleDateString('vi-VN') : ''}</td>
+              <td>{u.createdAt ? new Date(u.createdAt).toLocaleDateString('vi-VN') : '—'}</td>
+              <td>{u.hideOnLeaderboard ? '✓' : '—'}</td>
               <td>
                 <div className="btn-row">
-                  <button className="btn secondary" onClick={() => startEdit(u)}>Sửa</button>
-                  <button className="btn secondary" onClick={() => { setResetId(u.id); setResetPassword(''); setEditingId(null); }}>Đặt lại MK</button>
-                  <button className="btn danger" disabled={cannotDelete(u)} title={guardNote(u) || 'Xóa tài khoản'} onClick={() => void deleteUser(u)}>Xóa</button>
+                  <button className="btn secondary btn-sm" onClick={() => startEdit(u)}>Sửa</button>
+                  <button className="btn secondary btn-sm" onClick={() => { setResetId(u.id); setResetPassword(''); setEditingId(null); }}>Đặt lại MK</button>
+                  <button className="btn danger btn-sm" disabled={cannotDelete(u)} title={guardNote(u) || 'Xóa tài khoản'} onClick={() => void deleteUser(u)}>Xóa</button>
                 </div>
                 {guardNote(u) && <p className="muted">{guardNote(u)}</p>}
               </td>
             </tr>
           ))}
         </tbody></table>
+        </div>
         {filtered.length === 0 && !loading && <p className="muted">Không tìm thấy tài khoản nào.</p>}
       </div>
 

@@ -251,7 +251,7 @@ export default function IeltsTestSetAdmin() {
     <div>
       <p><Link to="/ielts">← Quay lại quản lý đề IELTS</Link></p>
       <h1>{ts.title}</h1>
-      <p className="muted">{ts.id} • IELTS Academic • {ts.isPublished ? 'Đã phát hành' : 'Nháp'}</p>
+      <p className="muted">{ts.id} • IELTS Academic • <span className={`pill ${ts.isPublished ? 'pill--live' : 'pill--draft'}`}>{ts.isPublished ? 'ĐÃ PHÁT HÀNH' : 'NHÁP'}</span></p>
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
       <div className="btn-row">
@@ -262,7 +262,8 @@ export default function IeltsTestSetAdmin() {
         <h2>🎧 Audio cả Section</h2>
         <p className="muted">1 file audio cho cả Section (Section 1–4). Khi luyện/thi, câu nào chưa có audio riêng sẽ phát audio này. Chọn file mp3 để upload lên Cloudinary rồi bấm Lưu.</p>
         {mediaCfg?.configured ? (
-          [1, 2, 3, 4].map(p => {
+          <div className="audio-grid">
+          {[1, 2, 3, 4].map(p => {
             const savedUrl = partMedia[p];
             const pendingUrl = pendingPartAudio[p];
             const url = pendingUrl || savedUrl;
@@ -284,7 +285,8 @@ export default function IeltsTestSetAdmin() {
                 {!url && <p className="muted">Chưa có audio cho {IELTS_PART_LABELS[p]}.</p>}
               </div>
             );
-          })
+          })}
+          </div>
         ) : (
           <p className="muted">Chưa cấu hình Cloudinary — xem README</p>
         )}
@@ -472,17 +474,22 @@ export default function IeltsTestSetAdmin() {
           {listPart === p && (
             <div style={{ marginTop: '1rem' }}>
               <p className="muted">{listQuestions.length} câu đã tải (tối đa 100).</p>
-              <table><thead><tr><th>Mã</th><th>Dạng</th><th>Nội dung</th><th>Đáp án</th><th></th></tr></thead><tbody>
+              <div className="table-scroll">
+              <table><thead><tr><th>Mã</th><th>Dạng</th><th>Nội dung</th><th>Đáp án</th><th>Giải thích</th><th>Media</th><th></th></tr></thead><tbody>
                 {listQuestions.map(q => (
                   <tr key={q.id}>
                     <td>{q.id}</td>
-                    <td>{QUESTION_TYPE_NAMES[q.questionType || 'multiple_choice'] || q.questionType}</td>
-                    <td>{(q.content || '').slice(0, 100)}</td>
+                    <td><span className="cell-trunc" title={QUESTION_TYPE_NAMES[q.questionType || 'multiple_choice'] || q.questionType}>{QUESTION_TYPE_NAMES[q.questionType || 'multiple_choice'] || q.questionType}</span></td>
+                    <td><span className="cell-trunc cell-trunc--wide" title={q.content || ''}>{q.content || ''}</span></td>
                     <td>{isFillIn(q.questionType) ? (q.correctText || '') : (q.correctLabel || (q as unknown as { correct?: string }).correct || '')}</td>
+                    <td>{q.explanation ? '✓' : '—'}</td>
+                    <td>{(q.audioUrl || q.imageUrl) ? '✓' : '—'}</td>
                     <td><button className="btn danger" onClick={() => void deleteQuestion(q)}>Xóa</button></td>
                   </tr>
                 ))}
               </tbody></table>
+              </div>
+              {listQuestions.length === 0 && <p className="muted">Chưa có câu hỏi nào trong phần này.</p>}
             </div>
           )}
         </div>

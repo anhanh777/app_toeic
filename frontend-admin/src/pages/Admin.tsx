@@ -4,7 +4,7 @@ import { api, type ImportQuestion, type Question, type TestSet, type Vocab } fro
 import { useAuth } from '../auth';
 import { ErrorBox, partName } from '../components';
 import { countByPart, normalizeImportFile, splitValid, type QuestionError } from '../testSetUtils';
-import { isFillIn, QUESTION_TYPE_NAMES } from '../exam';
+import { isFillIn, QUESTION_TYPE_NAMES, questionTypeName } from '../exam';
 
 interface UploadPreview {
   title: string; description: string;
@@ -255,21 +255,29 @@ export default function Admin() {
         )}
         <hr />
         <h3>Danh sách đề ({testSets.length})</h3>
-        <table><thead><tr><th>Tên đề</th><th>Số câu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
-          {testSets.map(ts => (
+        <div className="table-scroll">
+        <table><thead><tr><th>Tên đề</th><th>Số câu</th><th>Part</th><th>Thiếu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
+          {testSets.map(ts => {
+            const missingTotal = (ts.missing || []).reduce((n, m) => n + m.missing, 0);
+            return (
             <tr key={ts.id}>
               <td><Link to={`/toeic/test-set/${ts.id}`}><strong>{ts.title}</strong></Link><br /><span className="muted">{ts.id}</span></td>
               <td>{ts.totalQuestions}</td>
-              <td>{ts.isPublished ? <span className="pill">ĐÃ PHÁT HÀNH</span> : <span className="pill">NHÁP</span>}</td>
+              <td>{ts.parts?.length ?? 0} Part</td>
+              <td>{missingTotal === 0 ? 'Đủ' : `Thiếu ${missingTotal}`}</td>
+              <td>{ts.isPublished ? <span className="pill pill--live">ĐÃ PHÁT HÀNH</span> : <span className="pill pill--draft">NHÁP</span>}</td>
               <td>{ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : '—'}</td>
               <td>
-                <button className="btn ghost" onClick={() => editTestSet(ts)}>Sửa</button>{' '}
-                <button className="btn secondary" onClick={() => void togglePublishSet(ts)}>{ts.isPublished ? 'Bỏ phát hành' : 'Phát hành'}</button>{' '}
-                <button className="btn danger" onClick={() => void deleteTestSet(ts)}>Xóa</button>
+                <div className="tbl-actions">
+                  <button className="btn ghost" onClick={() => editTestSet(ts)}>Sửa</button>
+                  <button className="btn secondary" onClick={() => void togglePublishSet(ts)}>{ts.isPublished ? 'Bỏ phát hành' : 'Phát hành'}</button>
+                  <button className="btn danger" onClick={() => void deleteTestSet(ts)}>Xóa</button>
+                </div>
               </td>
-            </tr>
-          ))}
+            </tr>);
+          })}
         </tbody></table>
+        </div>
         {!testSets.length && <p className="muted">Chưa có bộ đề nào.</p>}
       </div>
 
@@ -326,11 +334,19 @@ export default function Admin() {
         <select value={partFilter ?? ''} onChange={e => setPartFilter(e.target.value ? Number(e.target.value) : undefined)}>
           <option value="">Tất cả</option>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}
         </select>
-        <table><thead><tr><th>Mã</th><th>Part</th><th>Nội dung</th><th></th></tr></thead><tbody>
-          {questions.map(q => <tr key={q.id}><td>{q.id}</td><td>{q.part}</td><td>{q.content.slice(0, 80)}</td>
-            <td><button className="btn ghost" onClick={() => editQ(q)}>Sửa</button>{' '}
-              <button className="btn danger" onClick={async () => { if (confirm(`Xóa câu ${q.id}?`)) { try { await api.adminDeleteQuestion(q.id); load(); } catch (err) { setError(err); } } }}>Xóa</button></td></tr>)}
+        <div className="table-scroll">
+        <table><thead><tr><th>Mã</th><th>Part</th><th>Dạng</th><th>Nội dung</th><th>Đáp án</th><th>Giải thích</th><th>Media</th><th></th></tr></thead><tbody>
+          {questions.map(q => <tr key={q.id}><td>{q.id}</td><td>{q.part}</td>
+            <td><span className="cell-trunc" title={questionTypeName(q.questionType)}>{questionTypeName(q.questionType)}</span></td>
+            <td><span className="cell-trunc cell-trunc--wide" title={q.content}>{q.content}</span></td>
+            <td>{q.correctLabel || q.correct || q.correctText || '—'}</td>
+            <td>{q.explanation ? '✓' : '—'}</td>
+            <td>{q.imageUrl || q.audioUrl ? '✓' : '—'}</td>
+            <td><div className="tbl-actions"><button className="btn ghost" onClick={() => editQ(q)}>Sửa</button>
+              <button className="btn danger" onClick={async () => { if (confirm(`Xóa câu ${q.id}?`)) { try { await api.adminDeleteQuestion(q.id); load(); } catch (err) { setError(err); } } }}>Xóa</button></div></td></tr>)}
         </tbody></table>
+        </div>
+        {questions.length === 0 && <p className="muted">Chưa có câu hỏi nào khớp bộ lọc.</p>}
       </div>
 
       <form className="card" onSubmit={saveVocab}>
@@ -353,10 +369,13 @@ export default function Admin() {
 
       <div className="card">
         <h2>Danh sách từ vựng ({vocabs.length})</h2>
-        <table><thead><tr><th>Từ</th><th>Nghĩa</th><th>Chủ đề</th><th></th></tr></thead><tbody>
-          {vocabs.map(v => <tr key={v.id}><td><strong>{v.word}</strong></td><td>{v.meaning}</td><td>{v.topic || ''}</td>
+        <div className="table-scroll">
+        <table><thead><tr><th>Từ</th><th>Phiên âm</th><th>Nghĩa</th><th>Chủ đề</th><th></th></tr></thead><tbody>
+          {vocabs.map(v => <tr key={v.id}><td><strong>{v.word}</strong></td><td>{v.phonetic || '—'}</td><td>{v.meaning}</td><td>{v.topic || ''}</td>
             <td><button className="btn danger" onClick={async () => { if (confirm(`Xóa từ ${v.word}?`)) { try { await api.adminDeleteVocab(v.id); load(); } catch (err) { setError(err); } } }}>Xóa</button></td></tr>)}
         </tbody></table>
+        </div>
+        {vocabs.length === 0 && <p className="muted">Chưa có từ vựng nào.</p>}
       </div>
     </div>
   );

@@ -147,23 +147,29 @@ export default function IeltsAdmin() {
 
       <div className="card">
         <h2>Danh sách đề IELTS ({testSets.length})</h2>
-        <table><thead><tr><th>Tên đề</th><th>Số câu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
-          {testSets.map(ts => (
+        <div className="table-scroll">
+        <table><thead><tr><th>Tên đề</th><th>Số câu</th><th>Part</th><th>Thiếu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
+          {testSets.map(ts => {
+            const missingTotal = (ts.missing || []).reduce((n, m) => n + m.missing, 0);
+            return (
             <tr key={ts.id}>
               <td><Link to={`/ielts/test-set/${ts.id}`}><strong>{ts.title}</strong></Link><br /><span className="muted">{ts.id}</span></td>
               <td>{ts.totalQuestions ?? 0}</td>
-              <td>{ts.isPublished ? 'Đã phát hành' : 'Nháp'}</td>
+              <td>{ts.parts?.length ?? 0} Part</td>
+              <td>{missingTotal === 0 ? 'Đủ' : `Thiếu ${missingTotal}`}</td>
+              <td>{ts.isPublished ? <span className="pill pill--live">ĐÃ PHÁT HÀNH</span> : <span className="pill pill--draft">NHÁP</span>}</td>
               <td>{ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : ''}</td>
               <td>
-                <div className="btn-row">
+                <div className="tbl-actions">
                   <button className="btn secondary" onClick={() => togglePublishSet(ts)}>{ts.isPublished ? 'Về Nháp' : 'Phát hành'}</button>
                   <button className="btn secondary" onClick={() => editTestSet(ts)}>Sửa</button>
                   <button className="btn danger" onClick={() => void deleteTestSet(ts)}>Xóa</button>
                 </div>
               </td>
-            </tr>
-          ))}
+            </tr>);
+          })}
         </tbody></table>
+        </div>
         {testSets.length === 0 && <p className="muted">Chưa có đề IELTS nào. Tạo đề mới ở trên hoặc tải lên từ file JSON.</p>}
       </div>
     </div>
