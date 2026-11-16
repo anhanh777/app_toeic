@@ -52,7 +52,7 @@ export default function Practice() {
           <ErrorBox error={setsError} />
           {setsLoading && <p>Đang tải danh sách bộ đề…</p>}
           {!setsLoading && !testSets.length && !setsError && (
-            <div className="card"><p>Chưa có bộ đề nào. Admin có thể tạo đề mới ở trang Quản trị.</p></div>
+            <div className="card"><p>Chưa có bộ đề nào.</p></div>
           )}
           <div className="grid">
             {testSets.map(ts => {

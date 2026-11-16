@@ -198,9 +198,6 @@ export interface ImportQuestion {
 export interface MediaConfig {
   cloudName: string; uploadPreset: string; configured: boolean;
 }
-export interface GeneratedAudio {
-  audioUrl: string; level: string;
-}
 
 // Ảnh + audio cho phần Nghe: cấu hình Cloudinary, lưu media thủ công,
 // sinh audio bằng AI (Gemini TTS). Lỗi 501 (gemini/cloudinary chưa cấu
@@ -213,21 +210,9 @@ export interface AiParseStructure {
   answerKey: Record<string, string> | null;
   warnings: string[];
 }
-export interface AiParseResult {
-  questions: ImportQuestion[];
-  invalid: AiParseInvalid[];
-  warnings: string[];
-  structure?: AiParseStructure | null;
-}
 
 // Kết quả đọc bảng đáp án: key là số câu chuẩn TOEIC → đáp án A–D.
 // source "rule" = đọc bằng quy tắc (không tốn Gemini), "ai" = đọc bằng AI.
-export interface AnswerKeyResult {
-  key: Record<string, string>;
-  found: number;
-  source: 'rule' | 'ai';
-  warnings: string[];
-}
 
 export const api = {
   health: () => req<{ ok: boolean; service: string; time: string }>('/health'),
@@ -331,110 +316,11 @@ export const api = {
   // Test sets (bộ đề thi)
   testSets: (exam?: string) => req<TestSet[]>(exam ? `/api/test-sets?exam=${encodeURIComponent(exam)}` : '/api/test-sets'),
   testSet: (id: string) => req<TestSet>(`/api/test-sets/${encodeURIComponent(id)}`),
-  adminCreateTestSet: (body: { title: string; description?: string; isPublished?: boolean; exam?: string }) =>
-    req<TestSet>('/api/admin/test-sets', { method: 'POST', body: JSON.stringify(body) }),
-  adminUpdateTestSet: (id: string, body: { title?: string; description?: string; isPublished?: boolean; exam?: string }) =>
-    req<TestSet>(`/api/admin/test-sets/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) }),
-  adminDeleteTestSet: (id: string) =>
-    req<{ ok: boolean }>(`/api/admin/test-sets/${encodeURIComponent(id)}`, { method: 'DELETE' }),
-  adminImportTestSet: (id: string, questions: unknown[]) =>
-    req<{ imported: number; errors: { index: number; id?: string; reason: string }[] }>(
-      `/api/admin/test-sets/${encodeURIComponent(id)}/import`, { method: 'POST', body: JSON.stringify({ questions }) }),
-  adminAddTestSetQuestion: (id: string, question: Record<string, unknown>) =>
-    req<Question>(`/api/admin/test-sets/${encodeURIComponent(id)}/questions`, { method: 'POST', body: JSON.stringify(question) }),
-  // Nhận diện đề bằng AI: upload 1 file (.txt/.docx/.pdf/.png/.jpg/.jpeg),
-  // backend parse thành câu hỏi (KHÔNG tự lưu DB). Dùng fetch + FormData
-  // trực tiếp vì helper req() đặt Content-Type application/json.
-  aiParseTestSet: async (id: string, file: File): Promise<AiParseResult> => {
-    const token = getToken();
-    const form = new FormData();
-    form.append('file', file);
-    let res: Response;
-    try {
-      res = await fetch(`${API_URL}/api/admin/test-sets/${encodeURIComponent(id)}/ai-parse`, {
-        method: 'POST',
-        body: form,
-        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
-      });
-    } catch {
-      throw new ApiError(0, 'Không kết nối được tới máy chủ. Hãy kiểm tra backend có đang chạy không (mặc định http://localhost:4000).');
-    }
-    let data: unknown = null;
-    try { data = await res.json(); } catch { /* empty body */ }
-    if (!res.ok) {
-      const err = (data as { error?: string })?.error;
-      if (err === 'gemini_not_configured') {
-        throw new ApiError(501, 'Chưa cấu hình GEMINI_API_KEY trên máy chủ.', err);
-      }
-      if (res.status === 403 || err === 'forbidden') {
-        throw new ApiError(403, 'Tính năng này chỉ dành cho tài khoản admin. Hãy đăng nhập bằng tài khoản demo@toeic.app.', err || 'forbidden');
-      }
-      const msg = (data as { message?: string })?.message
-        || (err && VI_ERRORS[err]) || err || `Lỗi máy chủ (${res.status}).`;
-      throw new ApiError(res.status, msg, err);
-    }
-    return data as AiParseResult;
-  },
-
-  // Nhận diện bảng đáp án: upload 1 file (.txt/.docx/.pdf/.png/.jpg/.jpeg),
-  // backend đọc thành { số câu: đáp án } (KHÔNG tự lưu DB). Cùng pattern
-  // FormData + dịch lỗi như aiParseTestSet.
-  parseAnswerKey: async (id: string, file: File): Promise<AnswerKeyResult> => {
-    const token = getToken();
-    const form = new FormData();
-    form.append('file', file);
-    let res: Response;
-    try {
-      res = await fetch(`${API_URL}/api/admin/test-sets/${encodeURIComponent(id)}/answer-key`, {
-        method: 'POST',
-        body: form,
-        ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
-      });
-    } catch {
-      throw new ApiError(0, 'Không kết nối được tới máy chủ. Hãy kiểm tra backend có đang chạy không (mặc định http://localhost:4000).');
-    }
-    let data: unknown = null;
-    try { data = await res.json(); } catch { /* empty body */ }
-    if (!res.ok) {
-      const err = (data as { error?: string })?.error;
-      if (err === 'gemini_not_configured') {
-        throw new ApiError(501, 'Chưa cấu hình GEMINI_API_KEY trên máy chủ.', err);
-      }
-      if (res.status === 403 || err === 'forbidden') {
-        throw new ApiError(403, 'Tính năng này chỉ dành cho tài khoản admin. Hãy đăng nhập bằng tài khoản demo@toeic.app.', err || 'forbidden');
-      }
-      const msg = (data as { message?: string })?.message
-        || (err && VI_ERRORS[err]) || err || `Lỗi máy chủ (${res.status}).`;
-      throw new ApiError(res.status, msg, err);
-    }
-    return data as AnswerKeyResult;
-  },
-
-  // Media cho phần Nghe (ảnh + audio)
-  mediaConfig: () => req<MediaConfig>('/api/admin/media/config'),
   // Cấu hình upload cho tài khoản thường (đổi ảnh đại diện) — không cần quyền admin.
   mediaConfigPublic: () => req<MediaConfig>('/api/media/config'),
-  saveQuestionMedia: (id: string, body: { imageUrl?: string; audioUrl?: string }) =>
-    req<Question>(`/api/admin/questions/${encodeURIComponent(id)}/media`, { method: 'POST', body: JSON.stringify(body) }),
-  savePassageMedia: (id: string, body: { audioUrl: string }) =>
-    req<{ id: string; part: number; title?: string; content?: string; script?: string; audioUrl?: string | null }>(
-      `/api/admin/passages/${encodeURIComponent(id)}/media`, { method: 'POST', body: JSON.stringify(body) }),
-  generateQuestionAudio: (id: string) =>
-    req<GeneratedAudio>(`/api/admin/questions/${encodeURIComponent(id)}/generate-audio`, { method: 'POST' }),
-  generatePassageAudio: (id: string) =>
-    req<GeneratedAudio>(`/api/admin/passages/${encodeURIComponent(id)}/generate-audio`, { method: 'POST' }),
-
   // Audio cấp Part (Part 1–4): 1 file audio cho cả Part, dùng làm fallback
   // khi câu hỏi/đoạn văn chưa có audio riêng (xem PracticeSession/MockTest).
   partMedia: (id: string) => req<Record<number, string>>(`/api/test-sets/${encodeURIComponent(id)}/part-media`),
-  savePartMedia: (id: string, part: number, audioUrl: string) =>
-    req<{ part: number; audioUrl: string }>(`/api/admin/test-sets/${encodeURIComponent(id)}/parts/${part}/media`, { method: 'POST', body: JSON.stringify({ audioUrl }) }),
-  // Thêm nhiều câu thủ công theo loạt (tối đa 200 câu/lần). Backend tự sinh
-  // id cho câu chưa có id; câu lỗi được trả về trong errors, câu hợp lệ
-  // vẫn được thêm.
-  adminBulkAddTestSetQuestions: (id: string, questions: unknown[]) =>
-    req<{ imported: number; errors: { index: number; reason: string }[] }>(
-      `/api/admin/test-sets/${encodeURIComponent(id)}/questions/bulk`, { method: 'POST', body: JSON.stringify({ questions }) }),
 
   // ---- IELTS Giai đoạn 1 (v3) ----
   ieltsProfile: () => req<IeltsProfile>('/api/ielts/profile'),
@@ -473,40 +359,6 @@ export const api = {
   monsters: () => req<Monster[]>('/api/ielts/monsters'),
   errorCodes: () => req<ErrorCode[]>('/api/ielts/error-codes'),
 
-  // Admin
-  adminQuestions: async (part?: number, limit = 50, offset = 0, exam?: string) => {
-    const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
-    if (part) q.set('part', String(part));
-    if (exam) q.set('exam', exam);
-    const data = await req<{ total: number; items: Question[] }>(`/api/admin/questions?${q}`);
-    return data.items;
-  },
-  adminCreateQuestion: (body: Record<string, unknown>) =>
-    req<Question>('/api/admin/questions', { method: 'POST', body: JSON.stringify(body) }),
-  adminUpdateQuestion: (id: string, body: Record<string, unknown>) =>
-    req<Question>(`/api/admin/questions/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) }),
-  adminDeleteQuestion: (id: string) =>
-    req(`/api/admin/questions/${encodeURIComponent(id)}`, { method: 'DELETE' }),
-  adminImportQuestions: (questions: unknown[]) =>
-    req<{ imported: number; errors: { index: number; reason: string }[] }>('/api/admin/questions/import', { method: 'POST', body: JSON.stringify({ questions }) }),
-  adminVocabulary: async () => {
-    const data = await req<{ total: number; items: Vocab[] }>('/api/admin/vocabulary');
-    return data.items;
-  },
-  adminCreateVocab: (body: Record<string, unknown>) =>
-    req<Vocab>('/api/admin/vocabulary', { method: 'POST', body: JSON.stringify(body) }),
-  adminUpdateVocab: (id: string, body: Record<string, unknown>) =>
-    req<Vocab>(`/api/admin/vocabulary/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) }),
-  adminDeleteVocab: (id: string) =>
-    req(`/api/admin/vocabulary/${encodeURIComponent(id)}`, { method: 'DELETE' }),
-  adminImportVocab: (items: unknown[]) =>
-    req<{ imported: number; errors: { index: number; reason: string }[] }>('/api/admin/vocabulary/import', { method: 'POST', body: JSON.stringify({ items }) }),
-  adminBackup: async () => {
-    const token = getToken();
-    const res = await fetch(`${API_URL}/api/admin/backup`, { headers: token ? { Authorization: `Bearer ${token}` } : {} });
-    if (!res.ok) throw new ApiError(res.status, 'Không tải được bản sao lưu.');
-    return res.blob();
-  },
 };
 
 export function targetScoreOf(u: User | null): number {

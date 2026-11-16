@@ -307,7 +307,6 @@ export function ListeningAudio({
   // Câu chỉ-nghe (Part 1/2) chưa có audio lẫn transcript thì không có gì
   // để đọc — hiện KHỐI RÕ RÀNG thay vì ghi chú mờ: nút "Nghe" to, dễ thấy
   // (disabled — bấm không làm gì, trông như cố ý chứ không như bị mất nút)
-  // + dòng chữ rõ + hướng dẫn admin upload file cho Part này.
   if (!ttsText.trim()) {
     return (
       <div className="card audio-box audio-missing">
@@ -315,8 +314,7 @@ export function ListeningAudio({
           <button className="btn" disabled title="Chưa có file audio cho Part này">🔊 Nghe</button>
         </div>
         <p className="audio-missing-text">
-          <strong>Chưa có file audio cho Part này.</strong>{' '}
-          Admin: vào trang Quản trị → chi tiết đề → mục 🎧 Audio cả Part để upload file mp3.
+          <strong>Chưa có file audio cho Part này.</strong>
         </p>
       </div>
     );

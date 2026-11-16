@@ -1,6 +1,6 @@
 // Upload trực tiếp từ trình duyệt lên Cloudinary (unsigned preset).
 // Không qua backend: backend chỉ cấp cloudName + uploadPreset qua
-// GET /api/admin/media/config, file đi thẳng tới Cloudinary.
+// GET /api/media/config, file đi thẳng tới Cloudinary.
 
 export type CloudinaryFolder = 'toeic/images' | 'toeic/audio' | 'toeic/avatars';
 

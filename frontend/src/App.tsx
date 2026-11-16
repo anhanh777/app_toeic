@@ -20,8 +20,6 @@ import WrongQuestions from './pages/WrongQuestions';
 import Vocabulary from './pages/Vocabulary';
 import Stats from './pages/Stats';
 import Leaderboard from './pages/Leaderboard';
-import Admin from './pages/Admin';
-import TestSetAdmin from './pages/TestSetAdmin';
 import Settings from './pages/Settings';
 import type { ReactNode } from 'react';
 
@@ -115,7 +113,7 @@ function ThemeToggle() {
 
 /* ---- Thanh nav kiểu ghim: chỉ tối đa 4 mục ghim hiện trên thanh trên,
    còn lại nằm trong menu ☰ bên phải. Lựa chọn ghim lưu localStorage. ---- */
-type NavItem = { path: string; label: string; icon: string; end?: boolean; ieltsOnly?: boolean; adminOnly?: boolean };
+type NavItem = { path: string; label: string; icon: string; end?: boolean; ieltsOnly?: boolean };
 const NAV_ITEMS: NavItem[] = [
   { path: '/', label: 'Trang chủ', icon: '🏠', end: true },
   { path: '/today', label: 'Hôm nay', icon: '📅' },
@@ -129,7 +127,6 @@ const NAV_ITEMS: NavItem[] = [
   { path: '/vocabulary', label: 'Từ vựng', icon: '📖' },
   { path: '/stats', label: 'Thống kê', icon: '📊' },
   { path: '/leaderboard', label: 'Xếp hạng', icon: '🏆' },
-  { path: '/admin', label: 'Quản trị', icon: '🛠️', adminOnly: true },
   { path: '/settings', label: 'Cài đặt', icon: '⚙️' },
 ];
 const NAV_PINS_KEY = 'app_nav_pins';
@@ -173,7 +170,7 @@ function Layout() {
   // Tên hiển thị: tên tài khoản, thiếu thì lấy phần trước @ của email.
   const displayName = (user?.name || '').trim() || (user?.email || '').split('@')[0] || 'Tài khoản';
   const availableItems = NAV_ITEMS.filter(it =>
-    (!it.ieltsOnly || exam === 'ielts') && (!it.adminOnly || user?.role === 'admin'));
+    (!it.ieltsOnly || exam === 'ielts'));
   const pinnedItems = availableItems.filter(it => pins.includes(it.path));
   const togglePin = (path: string) => {
     if (pins.includes(path)) { savePins(pins.filter(p => p !== path)); setPinMsg(null); return; }
@@ -295,8 +292,6 @@ function Layout() {
             <Route path="/vocabulary" element={<RequireAuth><Vocabulary /></RequireAuth>} />
             <Route path="/stats" element={<RequireAuth><Stats /></RequireAuth>} />
             <Route path="/leaderboard" element={<RequireAuth><Leaderboard /></RequireAuth>} />
-            <Route path="/admin" element={<RequireAuth><Admin /></RequireAuth>} />
-            <Route path="/admin/test-set/:id" element={<RequireAuth><TestSetAdmin /></RequireAuth>} />
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="/profile" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
