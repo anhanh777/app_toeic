@@ -582,6 +582,13 @@ footer{
 @media(min-width:640px){
   .exam-opts--grid2{display:grid; grid-template-columns:1fr 1fr; gap:.4rem .5rem}
 }
+/* Part 6 (TOEIC): 2 câu 1 hàng (mỗi câu chỉ còn số + 4 phương án), đáp án
+   xếp 1 dọc A/B/C/D như phiếu trả lời — không chia phương án thành 2 cột. */
+@media(min-width:760px){
+  .exam-p6-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 1.25rem}
+}
+.exam-q--p6{display:block}
+.exam-q--p6 .exam-q-body:empty{display:none}
 /* Chip chỗ trống trong đoạn văn Part 6: số câu nổi bật, bấm để tới câu hỏi. */
 .blank-chip{
   display:inline-flex; align-items:center; gap:.15rem;

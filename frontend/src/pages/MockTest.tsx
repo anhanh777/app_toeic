@@ -201,11 +201,12 @@ export default function MockTest() {
     // Part 6 (TOEIC): câu hỏi chỉ còn số + phương án — câu chứa chỗ trống
     // đã nằm trong đoạn văn phía trên (chip số), không hiện lại gây lặp.
     const isP6 = exam === 'toeic' && q.part === 6;
-    // Reading trắc nghiệm (TOEIC P5–P7, IELTS R): xếp chồng 1 cột,
+    // Reading trắc nghiệm (TOEIC P5/P7, IELTS R): xếp chồng 1 cột,
     // phương án lưới 2 cột — 1 màn hình được ~2 câu thay vì 1 câu.
-    const isReadingMC = q.part >= 5 && !letterOnly && (qType === 'multiple_choice' || qType === 'choosing_title');
+    // Part 6 riêng: 2 câu 1 hàng (lưới ở khối đoạn văn), đáp án 1 dọc.
+    const isReadingMC = q.part >= 5 && !letterOnly && !isP6 && (qType === 'multiple_choice' || qType === 'choosing_title');
     return (
-      <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isReadingMC ? ' exam-q--stacked' : ''}`} key={q.id}>
+      <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isReadingMC ? ' exam-q--stacked' : ''}${isP6 ? ' exam-q--p6' : ''}`} key={q.id}>
         <div className="exam-q-body">
           {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
               audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
@@ -339,7 +340,11 @@ export default function MockTest() {
               {block.passageText ? (
                 <div className="paper-cluster">
                   {renderPassage(block)}
-                  {block.questions.map(item => renderQuestion(item))}
+                  {exam === 'toeic' && block.questions[0]?.q.part === 6 ? (
+                    <div className="exam-p6-grid">{block.questions.map(item => renderQuestion(item))}</div>
+                  ) : (
+                    block.questions.map(item => renderQuestion(item))
+                  )}
                 </div>
               ) : (
                 block.questions.map(item => renderQuestion(item))
