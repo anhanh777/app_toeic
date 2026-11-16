@@ -64,8 +64,9 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: unknown 
   }
 }
 
-/* Nút cỡ chữ trên thanh nav: bấm hoặc rê chuột vào thì hiện bảng kéo chọn
-   cỡ chữ (A- / thanh kéo / A+). Bấm ra ngoài hoặc bấm Esc thì đóng. */
+/* Nút cỡ chữ trên thanh nav: chỉ bấm mới mở/đóng bảng kéo chọn cỡ chữ
+   (A- / thanh kéo / A+). KHÔNG mở bằng hover nữa — rê chuột qua khe hở
+   giữa nút và bảng sẽ làm bảng tự đóng mất. Bấm ra ngoài hoặc Esc thì đóng. */
 function TextSizeMenu() {
   const { level, setLevel, label } = useTextSize();
   const [open, setOpen] = useState(false);
@@ -79,11 +80,9 @@ function TextSizeMenu() {
     return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
   }, [open ]);
   return (
-    <div className="nav-menu-wrap" ref={ref}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}>
+    <div className="nav-menu-wrap" ref={ref}>
       <button type="button" className="icon-btn" aria-label="Cỡ chữ" aria-expanded={open}
-        title={`Cỡ chữ: ${label}`} onClick={() => setOpen(true)}>🔠</button>
+        title={`Cỡ chữ: ${label}`} onClick={() => setOpen(o => !o)}>🔠</button>
       {open && (
         <div className="text-size-popover" role="menu" aria-label="Chọn cỡ chữ">
           <TextSizeControl level={level} setLevel={setLevel} />

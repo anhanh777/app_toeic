@@ -576,13 +576,16 @@ tbody tr:hover{background:var(--surface-soft)}
 }
 .exam-q--duo{display:block}
 .exam-q--duo .exam-q-body:empty{display:none}
-/* Chip chỗ trống trong đoạn văn Part 6: số câu nổi bật, bấm để tới câu hỏi. */
+/* Chip chỗ trống trong đoạn văn Part 6: số câu nổi bật + gạch ngang dài
+   như chỗ trống trong đề thật, bấm để tới câu hỏi. */
 .blank-chip{
   display:inline-flex; align-items:center; gap:.15rem;
   font-weight:800; font-size:.9em; line-height:1; color:var(--accent-dark);
   background:var(--accent-soft); border:1.5px solid var(--accent); border-radius:999px;
   padding:.3rem .6rem; margin:0 .1rem; cursor:pointer;
 }
+/* Vạch ngang làm chỗ trống cần điền (mượt hơn dấu gạch dưới liền). */
+.blank-line{display:inline-block; width:3.2rem; height:.55em; border-bottom:2px solid currentColor; margin:0 .15rem}
 .blank-chip:hover{filter:brightness(.96)}
 .blank-chip.answered{background:var(--accent); border-color:var(--accent); color:#fff}
 .blank-chip.correct{background:var(--green); border-color:var(--green); color:#fff}

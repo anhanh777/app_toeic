@@ -59,6 +59,7 @@ export function PassageWithBlanks({ text, blanks, onBlankClick }: {
         title={num != null ? `Chỗ trống câu ${num} — bấm để tới câu hỏi` : 'Chỗ trống'}
       >
         {num != null ? num : '…'}
+        <span className="blank-line" aria-hidden />
         {st?.selected ? ` · ${st.selected}` : ''}
       </button>
     );
