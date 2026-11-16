@@ -47,6 +47,37 @@ export function useExam(): ExamCtx {
   return c;
 }
 
+// ---- Cỡ chữ luyện/thi (A- / A+) — lưu localStorage, áp cho đoạn văn,
+// chữ câu hỏi và phương án ở màn Luyện tập, Thi thử và Ôn câu sai. ----
+const TEXT_SIZE_KEY = 'app_text_size';
+export const TEXT_SIZE_LABELS = ['Nhỏ', 'Vừa', 'Lớn', 'Rất lớn'];
+export function useTextSize() {
+  const [level, setLevelState] = useState<number>(() => {
+    try {
+      const v = Number(localStorage.getItem(TEXT_SIZE_KEY));
+      return Number.isInteger(v) && v >= 0 && v <= 3 ? v : 1;
+    } catch {
+      return 1;
+    }
+  });
+  const setLevel = (n: number) => {
+    const v = Math.max(0, Math.min(3, n));
+    try { localStorage.setItem(TEXT_SIZE_KEY, String(v)); } catch { /* bỏ qua */ }
+    setLevelState(v);
+  };
+  return { level, setLevel, label: TEXT_SIZE_LABELS[level] };
+}
+
+export function TextSizeControl({ level, setLevel }: { level: number; setLevel: (n: number) => void }) {
+  return (
+    <span className="text-size" role="group" aria-label="Cỡ chữ">
+      <button type="button" className="btn btn-sm" disabled={level <= 0} onClick={() => setLevel(level - 1)} aria-label="Giảm cỡ chữ">A-</button>
+      <span className="text-size-label" aria-live="polite">{TEXT_SIZE_LABELS[level]}</span>
+      <button type="button" className="btn btn-sm" disabled={level >= 3} onClick={() => setLevel(level + 1)} aria-label="Tăng cỡ chữ">A+</button>
+    </span>
+  );
+}
+
 /** Nhãn ngắn cho 1 Part theo kỳ thi: "Part 1" / "Section 1" / "Passage 1". */
 export function partLabel(part: number, exam: ExamId | null | undefined): string {
   if (exam === 'ielts') return part <= 4 ? `Section ${part}` : `Passage ${part - 4}`;

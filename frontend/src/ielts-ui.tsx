@@ -36,20 +36,22 @@ export function IeltsAnswerControl({ q, value, onChange, onCommit, disabled, gra
   const type = q.questionType || 'multiple_choice';
 
   // --- True / False / Not Given & Yes / No / Not Given ---
+  // 3 nhãn dài (đặc biệt "NOT GIVEN") hiển thị dạng hàng nút pill ngang,
+  // KHÔNG dùng ô tròn 1.7rem của phương án A/B/C/D (ô đó chỉ vừa 1 chữ).
   if (type === 'true_false_not_given' || type === 'yes_no_not_given') {
     const labels = type === 'true_false_not_given' ? TFNG_LABELS : YNNG_LABELS;
     // Ưu tiên options backend trả (label + content); thiếu thì dùng nhãn cố định.
     const opts = labels.map(l => q.options.find(o => o.label === l) || { label: l, content: l });
     return (
-      <div>
+      <div className="ielts-tfng">
         <p className="muted" style={{ marginTop: 0 }}>
           {type === 'true_false_not_given'
             ? '💡 FALSE = bài nói ngược lại, NOT GIVEN = bài không nhắc tới.'
             : '💡 NO = tác giả phản đối, NOT GIVEN = bài không nhắc tới.'}
         </p>
-        <div className="exam-opts">
+        <div className="ielts-tfng-row">
           {opts.map(o => {
-            let cls = 'option';
+            let cls = 'option ielts-tfng-opt';
             if (value === o.label) cls += ' selected';
             if (graded) {
               if (o.label === graded.correctLabel) cls += ' correct';
@@ -58,7 +60,7 @@ export function IeltsAnswerControl({ q, value, onChange, onCommit, disabled, gra
             return (
               <button key={o.label} className={cls} disabled={disabled || !!graded}
                 onClick={() => { onChange(o.label); onCommit?.(o.label); }}>
-                <strong>{o.label}</strong>{o.content && o.content !== o.label ? ` ${o.content}` : ''}
+                <strong>{o.label}</strong>
               </button>
             );
           })}

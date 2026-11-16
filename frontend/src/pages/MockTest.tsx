@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, type Question, type TestSet } from '../api';
 import { ErrorBox, ListeningAudio, partName } from '../components';
-import { partLabel, partNameFor, useExam } from '../exam';
+import { partLabel, partNameFor, TextSizeControl, useExam, useTextSize } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 
@@ -16,6 +16,8 @@ export default function MockTest() {
   const [params] = useSearchParams();
   const testSetId = params.get('testSetId') || undefined;
   const { exam: ctxExam } = useExam();
+  // Cỡ chữ thi thử (A- / A+), lưu localStorage.
+  const { level: textLevel, setLevel: setTextLevel } = useTextSize();
   const [testSet, setTestSet] = useState<TestSet | null>(null);
   // Kỳ thi: ưu tiên ?exam=, rồi exam của bộ đề, rồi kỳ thi đang chọn.
   const qExam = params.get('exam');
@@ -187,7 +189,7 @@ export default function MockTest() {
     const qType = q.questionType || 'multiple_choice';
     const isIeltsSpecial = isIelts && qType !== 'multiple_choice';
     return (
-      <div className="paper-q exam-q" key={q.id}>
+      <div className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}`} key={q.id}>
         <div className="exam-q-body">
           {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
               audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
@@ -218,10 +220,12 @@ export default function MockTest() {
               onFirstPlay={() => markPlayed(q.part)}
             />
           )}
-          {!hideListeningText && q.content ? <p><strong>{q.content}</strong></p> : null}
+          {!hideListeningText && q.content ? (
+            <p>{isIeltsSpecial ? <span className="exam-q-num">{n}.</span> : null}<strong>{q.content}</strong></p>
+          ) : null}
         </div>
         <div className="exam-q-side">
-          <div className="exam-q-num">{n}.</div>
+          {!isIeltsSpecial && <div className="exam-q-num">{n}.</div>}
           {isIeltsSpecial ? (
             <IeltsAnswerControl
               q={q}
@@ -248,13 +252,16 @@ export default function MockTest() {
   };
 
   return (
-    <div>
+    <div className={`ts-${textLevel}`}>
       <div className="exam-head">
         <div style={{ display: 'flex', alignItems: 'center', gap: '.8rem', flexWrap: 'wrap', minWidth: 0 }}>
           <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
           <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
         </div>
-        <span className="progress-badge">Đã trả lời {answeredCount}/{questions.length}</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
+          <TextSizeControl level={textLevel} setLevel={setTextLevel} />
+          <span className="progress-badge">Đã trả lời {answeredCount}/{questions.length}</span>
+        </span>
       </div>
       <ErrorBox error={error} />
       <div className="paper">

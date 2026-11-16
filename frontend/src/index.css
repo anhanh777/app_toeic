@@ -471,6 +471,30 @@ footer{
 .exam-q-side > .btn-row{margin:.6rem 0 0}
 /* Kết quả chấm từng câu (Practice): trải hết chiều rộng dưới 2 cột */
 .exam-q-result{grid-column:1/-1}
+/* Câu IELTS dạng riêng (T/F/NG, Y/N/NG, matching, điền từ): xếp chồng 1 cột
+   — số câu gắn ngay trước chữ câu hỏi, đáp án trải hết chiều rộng bên dưới,
+   thay vì tách chữ câu hỏi (cột trái) và số câu + đáp án (cột phải). */
+@media(min-width:760px){
+  .exam-q--ielts{grid-template-columns:minmax(0,1fr)}
+}
+.exam-q-body .exam-q-num{display:inline; margin:0 .35rem 0 0}
+/* T/F/NG & Y/N/NG: 3 nhãn dài thành hàng nút pill ngang, chữ đầy đủ
+   không bị nhét vào ô tròn 1 chữ như phương án A/B/C/D. */
+.ielts-tfng-row{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.1rem}
+.ielts-tfng-row .option{flex:1 1 auto; justify-content:center; text-align:center; padding:.55rem .5rem; white-space:nowrap}
+.ielts-tfng-row .option strong{background:none; color:inherit; font-size:1rem; margin:0; padding:0}
+.ielts-tfng-row .option.selected strong{background:none; color:inherit}
+/* Nút tăng/giảm cỡ chữ (A- / A+) ở đầu màn luyện/thi */
+.text-size{display:inline-flex; align-items:center; gap:.35rem}
+.text-size-label{font-weight:700; font-size:.85rem; color:var(--ink-soft); min-width:3.4rem; text-align:center}
+/* Cỡ chữ luyện/thi: Nhỏ (0) / Vừa (1, mặc định) / Lớn (2) / Rất lớn (3) —
+   chỉ đổi chữ đoạn văn, chữ câu hỏi, phương án và kết quả chấm. */
+.ts-0 .passage, .ts-0 .paper-q p, .ts-0 .exam-opts .option, .ts-0 .ielts-tfng-row .option, .ts-0 .exam-q-result p, .ts-0 .paper-q input, .ts-0 .paper-q select{font-size:.9rem}
+.ts-0 .exam-q-num{font-size:1.05rem}
+.ts-2 .passage, .ts-2 .paper-q p, .ts-2 .exam-opts .option, .ts-2 .ielts-tfng-row .option, .ts-2 .exam-q-result p, .ts-2 .paper-q input, .ts-2 .paper-q select{font-size:1.12rem}
+.ts-2 .exam-q-num{font-size:1.3rem}
+.ts-3 .passage, .ts-3 .paper-q p, .ts-3 .exam-opts .option, .ts-3 .ielts-tfng-row .option, .ts-3 .exam-q-result p, .ts-3 .paper-q input, .ts-3 .paper-q select{font-size:1.25rem}
+.ts-3 .exam-q-num{font-size:1.45rem}
 /* Thanh tiến độ dính cuối màn luyện: luôn thấy "Xem kết quả" khi cuộn */
 .practice-bar{
   position:sticky; bottom:0; z-index:5; background:var(--surface);

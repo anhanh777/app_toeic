@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { api, type Question } from '../api';
 import { ErrorBox, partName } from '../components';
-import { isFillIn, partNameFor, useExam, wordCount } from '../exam';
+import { isFillIn, partNameFor, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 
 type Item = Question & { wrongCount?: number };
 
 export default function WrongQuestions() {
   const { exam } = useExam();
+  // Cỡ chữ ôn câu sai (A- / A+), lưu localStorage.
+  const { level: textLevel, setLevel: setTextLevel } = useTextSize();
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
   const [items, setItems] = useState<Item[]>([]);
@@ -31,8 +33,12 @@ export default function WrongQuestions() {
   };
 
   return (
-    <div>
+    <div className={`ts-${textLevel}`}>
       <h1>Câu đã làm sai</h1>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '.8rem', flexWrap: 'wrap', marginBottom: '.4rem' }}>
+        <span className="muted">Cỡ chữ:</span>
+        <TextSizeControl level={textLevel} setLevel={setTextLevel} />
+      </div>
       <ErrorBox error={error} />
       <label htmlFor="filter">{isIelts ? 'Lọc theo Section/Passage' : 'Lọc theo Part'}</label>
       <select id="filter" value={part ?? ''} onChange={e => setPart(e.target.value ? Number(e.target.value) : undefined)}>

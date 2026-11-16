@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, partName } from '../components';
-import { isFillIn, partLabel, useExam, wordCount } from '../exam';
+import { isFillIn, partLabel, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 
@@ -43,6 +43,8 @@ export default function PracticeSession() {
   // Đã tải xong part-media hay chưa — để quyết định "1 nút cả Part" hay
   // "nút từng câu" rồi mới render, tránh nhấp nháy đổi dạng giữa chừng.
   const [partMediaLoaded, setPartMediaLoaded] = useState(false);
+  // Cỡ chữ luyện (A- / A+), lưu localStorage.
+  const { level: textLevel, setLevel: setTextLevel } = useTextSize();
 
   useEffect(() => {
     setLoading(true);
@@ -150,7 +152,7 @@ export default function PracticeSession() {
     // Câu điền từ: chặn nút Nộp khi vượt giới hạn số từ.
     const overLimit = isFillIn(qType) && q.wordLimit != null && wordCount(selected) > q.wordLimit;
     return (
-      <div className="paper-q exam-q" key={q.id}>
+      <div className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}`} key={q.id}>
         <div className="exam-q-body">
           {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
               audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
@@ -178,10 +180,12 @@ export default function PracticeSession() {
               onError={setError}
             />
           )}
-          {!hideListeningText && q.content ? <p><strong>{q.content}</strong></p> : null}
+          {!hideListeningText && q.content ? (
+            <p>{isIeltsSpecial ? <span className="exam-q-num">{n}.</span> : null}<strong>{q.content}</strong></p>
+          ) : null}
         </div>
         <div className="exam-q-side">
-          <div className="exam-q-num">{n}.</div>
+          {!isIeltsSpecial && <div className="exam-q-num">{n}.</div>}
           {isIeltsSpecial ? (
             <IeltsAnswerControl
               q={q}
@@ -221,7 +225,7 @@ export default function PracticeSession() {
   };
 
   return (
-    <div>
+    <div className={`ts-${textLevel}`}>
       {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
       <div className="exam-head">
         <h2 className="exam-part">
@@ -229,7 +233,10 @@ export default function PracticeSession() {
             ? <>{partLabel(part, exam)}<span> — {part <= 4 ? 'Listening' : 'Reading'}</span></>
             : <>Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</>}
         </h2>
-        <span className="progress-badge">Đã làm {score.done}/{questions.length}</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
+          <TextSizeControl level={textLevel} setLevel={setTextLevel} />
+          <span className="progress-badge">Đã làm {score.done}/{questions.length}</span>
+        </span>
       </div>
       {usePartAudio && (
         <div className="part-audio">
