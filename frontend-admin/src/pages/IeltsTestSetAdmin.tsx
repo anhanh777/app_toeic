@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, type Question, type TestSet, type MediaConfig } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox } from '../components';
+import { ErrorBox, Modal } from '../components';
 import { uploadToCloudinary } from '../cloudinary';
 import { normalizeImportFile, type QuestionError } from '../testSetUtils';
 import { QUESTION_TYPE_NAMES, isFillIn } from '../exam';
@@ -308,8 +308,7 @@ export default function IeltsTestSetAdmin() {
           <p className="muted">Nút này chỉ nhận file JSON câu hỏi IELTS (part {p}, đúng 19 dạng). Nhận diện bằng AI hiện chưa hỗ trợ đề IELTS.</p>
 
           {preview && preview.part === p && (
-            <div className="panel">
-              <h3>Xem trước — {preview.fileName}</h3>
+            <Modal title={`Xem trước — ${preview.fileName}`} wide onClose={() => setPreview(null)}>
               <p>{preview.valid.length} câu hợp lệ cho {IELTS_PART_LABELS[p]} • {preview.errors.length} câu lỗi (sẽ bị bỏ qua)</p>
               {preview.errors.length > 0 && (
                 <table><thead><tr><th>#</th><th>Lý do</th></tr></thead><tbody>
@@ -320,12 +319,12 @@ export default function IeltsTestSetAdmin() {
                 <button className="btn" disabled={busy || !preview.valid.length} onClick={() => void confirmPartImport()}>{busy ? 'Đang import…' : `Xác nhận import ${preview.valid.length} câu`}</button>
                 <button className="btn secondary" onClick={() => setPreview(null)}>Hủy</button>
               </div>
-            </div>
+            </Modal>
           )}
 
           {manualPart === p && (
-            <form className="panel" onSubmit={saveManual}>
-              <h3>Thêm câu thủ công — {IELTS_PART_LABELS[p]}</h3>
+            <Modal title={`Thêm câu thủ công — ${IELTS_PART_LABELS[p]}`} onClose={() => setManualPart(null)}>
+              <form onSubmit={saveManual}>
               <label>Dạng câu hỏi</label>
               <select value={manual.questionType} onChange={e => {
                 const t = e.target.value;
@@ -468,11 +467,12 @@ export default function IeltsTestSetAdmin() {
                 <button className="btn" disabled={busy}>{busy ? 'Đang lưu…' : 'Lưu câu hỏi'}</button>
                 <button type="button" className="btn secondary" onClick={() => setManualPart(null)}>Hủy</button>
               </div>
-            </form>
+              </form>
+            </Modal>
           )}
 
           {listPart === p && (
-            <div style={{ marginTop: '1rem' }}>
+            <Modal title={`Danh sách câu — ${IELTS_PART_LABELS[p]}`} wide onClose={() => setListPart(null)}>
               <p className="muted">{listQuestions.length} câu đã tải (tối đa 100).</p>
               <div className="table-scroll">
               <table><thead><tr><th>Mã</th><th>Dạng</th><th>Nội dung</th><th>Đáp án</th><th>Giải thích</th><th>Media</th><th></th></tr></thead><tbody>
@@ -490,7 +490,7 @@ export default function IeltsTestSetAdmin() {
               </tbody></table>
               </div>
               {listQuestions.length === 0 && <p className="muted">Chưa có câu hỏi nào trong phần này.</p>}
-            </div>
+            </Modal>
           )}
         </div>
       ))}
