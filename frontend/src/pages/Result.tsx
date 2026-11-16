@@ -4,9 +4,11 @@ import { api, scoreLevel } from '../api';
 import { ErrorBox, partName, TierBadge } from '../components';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor } from '../exam';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
+import { LoadingLine, useUiSettings } from '../uiSettings';
 
 export default function Result() {
   const { id } = useParams();
+  const { settings } = useUiSettings();
   const [data, setData] = useState<Awaited<ReturnType<typeof api.testResult>> | null>(null);
   const [error, setError] = useState<unknown>(null);
   // IELTS-only: mã nguyên nhân đã ghi + đánh dấu đoán mò, theo id câu.
@@ -20,7 +22,7 @@ export default function Result() {
   }, [id]);
 
   if (error) return <div><ErrorBox error={error} /><Link to="/">Về trang chủ</Link></div>;
-  if (!data) return <p>Đang tải kết quả…</p>;
+  if (!data) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải kết quả…" />;
 
   const isFull = data.mode === 'full';
   const isIelts = data.exam === 'ielts' || data.overallBand != null;

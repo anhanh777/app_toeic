@@ -3,6 +3,7 @@ import { Component, useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import { ExamProvider, ExamPicker, TextSizeControl, TextSizeProvider, useExam, useIeltsSetupRedirect, useTextSize } from './exam';
 import { applyTheme, resolveTheme, type Theme } from './theme';
+import { LoadingEffect, UiSettingsProvider, useUiSettings } from './uiSettings';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Today from './pages/Today';
@@ -25,14 +26,17 @@ import type { ReactNode } from 'react';
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
+  const { settings } = useUiSettings();
   // Đang chờ máy chủ (Render bản miễn phí ngủ khi không dùng, dậy mất vài
   // giây): hiện thẻ chờ rõ ràng thay vì 1 dòng "Đang tải…" trên nền tối
-  // trống — nhìn như trang bị đen.
+  // trống — nhìn như trang bị đen. Hiệu ứng + câu chờ theo cài đặt giao diện.
   if (loading) return (
     <div className="card" style={{ marginTop: '1rem', textAlign: 'center', padding: '2rem 1rem' }}>
-      <p style={{ fontSize: '1.6rem', margin: 0 }}>⏳</p>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <LoadingEffect effect={settings.ui.loading.page} speed={settings.ui.loading.speed} size="lg" />
+      </div>
       <p style={{ fontWeight: 700, margin: '.4rem 0' }}>Đang mở app…</p>
-      <p className="muted" style={{ margin: 0 }}>Máy chủ đang khởi động, chờ vài giây nhé.</p>
+      <p className="muted" style={{ margin: 0 }}>{settings.ui.loading.text}</p>
     </div>
   );
   if (!user) return <Navigate to="/login" replace />;
@@ -306,7 +310,7 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider><ExamProvider><TextSizeProvider><Layout /></TextSizeProvider></ExamProvider></AuthProvider>
+      <UiSettingsProvider><AuthProvider><ExamProvider><TextSizeProvider><Layout /></TextSizeProvider></ExamProvider></AuthProvider></UiSettingsProvider>
     </BrowserRouter>
   );
 }

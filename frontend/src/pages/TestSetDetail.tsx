@@ -3,11 +3,13 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
 import { partLabel, partNameFor, useExam } from '../exam';
+import { LoadingLine, useUiSettings } from '../uiSettings';
 
 export default function TestSetDetail() {
   const { id } = useParams<{ id: string }>();
   const nav = useNavigate();
   const { exam: ctxExam } = useExam();
+  const { settings } = useUiSettings();
   const [ts, setTs] = useState<TestSet | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
@@ -17,7 +19,7 @@ export default function TestSetDetail() {
     api.testSet(id).then(setTs).catch(setError).finally(() => setLoading(false));
   }, [id]);
 
-  if (loading) return <p>Đang tải đề thi…</p>;
+  if (loading) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải đề thi…" />;
   if (!ts) return <div><ErrorBox error={error} /><p>Không tìm thấy bộ đề. <Link to="/practice">Quay lại danh sách đề</Link></p></div>;
 
   // Kỳ thi của đề (backend trả exam); fallback về kỳ thi đang chọn.

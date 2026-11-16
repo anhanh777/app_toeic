@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { api, type BadDayTask, type ErrorLogEntry, type Question, type TodayData, type WeeklyError } from '../api';
 import { ErrorBox } from '../components';
 import { bandLevel, isFillIn, isMultiAnswer, partNameFor, questionTypeName, useExam, wordCount } from '../exam';
+import { LoadingLine, useUiSettings } from '../uiSettings';
 import { errorCodeName, fmtClock, useCountdown } from '../ielts-phase1';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { speak, stopSpeak, ttsSupported } from '../tts';
@@ -23,6 +24,7 @@ function readDone(date: string): string[] {
 
 export default function Today() {
   const { exam } = useExam();
+  const { settings } = useUiSettings();
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
   const [data, setData] = useState<TodayData | null>(null);
@@ -70,7 +72,7 @@ export default function Today() {
     });
   };
 
-  if (loading) return <p>Đang tải kế hoạch hôm nay…</p>;
+  if (loading) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải kế hoạch hôm nay…" />;
   const review = data?.blocks.find(b => b.id === 'review');
   const drill = data?.blocks.find(b => b.id === 'drill');
   const streak = data?.streak;
@@ -222,6 +224,7 @@ export default function Today() {
 
 /* ================= IELTS: khối 1 — hàng đợi ôn lỗi inline ================= */
 function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () => void }) {
+  const { settings } = useUiSettings();
   const [items, setItems] = useState<ErrorLogEntry[] | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [reviewed, setReviewed] = useState(0);
@@ -236,7 +239,7 @@ function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () =
       if (r.xpAwarded) setError(null);
     } catch (e) { setError(e); }
   };
-  if (!items) return <p>Đang tải câu đến hạn…</p>;
+  if (!items) return <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải câu đến hạn…" />;
   return (
     <div>
       <ErrorBox error={error} />
@@ -268,6 +271,7 @@ function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () =
 function IeltsDrillBlock({ diagnosticDone, weakestType, questionCount, onDone }: {
   diagnosticDone: boolean; weakestType: string | null; questionCount: number; onDone: () => void;
 }) {
+  const { settings } = useUiSettings();
   const [qs, setQs] = useState<Question[] | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [answers, setAnswers] = useState<Record<string, { ok: boolean; correctLabel?: string; correctText?: string }>>({});
@@ -308,7 +312,7 @@ function IeltsDrillBlock({ diagnosticDone, weakestType, questionCount, onDone }:
         </div>
       )}
       <ErrorBox error={error} />
-      {started && !qs && <p>Đang tải câu hỏi…</p>}
+      {started && !qs && <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải câu hỏi…" />}
       {qs?.map((q, i) => {
         const a = answers[q.id];
         const qType = q.questionType || 'multiple_choice';

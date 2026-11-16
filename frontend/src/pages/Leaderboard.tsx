@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { api, type LeaderboardEntry } from '../api';
 import { ErrorBox, RankChip } from '../components';
 import { useExam } from '../exam';
+import { LoadingLine, useUiSettings } from '../uiSettings';
 
 type Metric = 'score' | 'xp' | 'band';
 type Tab = 'week' | 'month' | 'all';
@@ -9,6 +10,7 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 
 export default function Leaderboard() {
   const { exam } = useExam();
+  const { settings } = useUiSettings();
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
   const [metric, setMetric] = useState<Metric>(isIelts ? 'band' : 'score');
@@ -52,7 +54,7 @@ export default function Leaderboard() {
           </button>
         ))}
       </div>
-      {loading ? <p>Đang tải…</p> : (
+      {loading ? <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải…" /> : (
         <>
           {entries.length >= 3 && (
             <div className="top3-list" aria-label="Top 3">

@@ -3,10 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { api, type PartInfo, type StatsOverview, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
 import { partLabel, partNameFor, useExam } from '../exam';
+import { LoadingLine, useUiSettings } from '../uiSettings';
 
 export default function Practice() {
   const nav = useNavigate();
   const { exam } = useExam();
+  const { settings } = useUiSettings();
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
   const [tab, setTab] = useState<'sets' | 'parts'>('sets');
@@ -50,7 +52,7 @@ export default function Practice() {
       {tab === 'sets' && (
         <div>
           <ErrorBox error={setsError} />
-          {setsLoading && <p>Đang tải danh sách bộ đề…</p>}
+          {setsLoading && <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải danh sách bộ đề…" />}
           {!setsLoading && !testSets.length && !setsError && (
             <div className="card"><p>Chưa có bộ đề nào.</p></div>
           )}

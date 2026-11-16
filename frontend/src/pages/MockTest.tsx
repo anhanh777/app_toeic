@@ -5,6 +5,7 @@ import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState 
 import { partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
+import { LoadingLine, useUiSettings } from '../uiSettings';
 
 function fmt(s: number) {
   const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
@@ -16,6 +17,7 @@ export default function MockTest() {
   const [params] = useSearchParams();
   const testSetId = params.get('testSetId') || undefined;
   const { exam: ctxExam } = useExam();
+  const { settings } = useUiSettings();
   // Cỡ chữ thi thử (A- / A+), lưu localStorage.
   const { level: textLevel } = useTextSize();
   const [testSet, setTestSet] = useState<TestSet | null>(null);
@@ -131,7 +133,7 @@ export default function MockTest() {
                 <p style={{ color: 'var(--amber)' }}>⚠ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `${partLabel(m.part, exam)} thiếu ${m.missing} câu`).join(', ')}.</p>
               )}
             </div>
-          ) : <p>Đang tải thông tin đề thi…</p>}
+          ) : <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải thông tin đề thi…" />}
           <p className="muted">Làm đủ {testSet?.totalQuestions || ''} câu, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9).</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990).</>}</p>
           {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
           <div className="btn-row">
@@ -158,7 +160,7 @@ export default function MockTest() {
     );
   }
 
-  if (!questions.length) return <p>Đang tải đề thi…</p>;
+  if (!questions.length) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải đề thi…" />;
   const answeredCount = Object.keys(answers).length;
 
   // Câu chỉ-nghe (Part 1/2 TOEIC): toàn bộ phương án đều rỗng nội dung
