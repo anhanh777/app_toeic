@@ -4,7 +4,7 @@
 
 const express = require('express');
 const db = require('../db');
-const { authMiddleware, requireAdmin } = require('../auth');
+const { authMiddleware, requireAdmin, hashPassword, toPublicUser } = require('../auth');
 const { isTypedType, isMultiAnswerType } = require('../ieltsGrading');
 
 const router = express.Router();
@@ -240,6 +240,107 @@ router.post('/admin/vocabulary/import', (req, res) => {
     }
   });
   return res.json({ imported, errors });
+});
+
+/* ---------- users (quan ly tai khoan) ----------
+ * Danh sach KHONG bao gio tra password_hash (map qua toPublicUser).
+ * Bao ve: khong duoc xoa / ha quyen chinh minh, khong duoc xoa / ha quyen
+ * admin cuoi cung. Reset o day chi la dat lai MAT KHAU (khong reset tien do). */
+
+router.get('/admin/users', (req, res) => {
+  return res.json({ users: db.listAllUsersPublic() });
+});
+
+router.post('/admin/users', (req, res) => {
+  const { email, password, name, role } = req.body || {};
+  if (
+    typeof email !== 'string' ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
+  ) {
+    return res.status(400).json({ error: 'email khong hop le' });
+  }
+  if (typeof password !== 'string' || password.length < 6) {
+    return res.status(400).json({ error: 'mat khau phai co it nhat 6 ky tu' });
+  }
+  if (role !== undefined && !['user', 'admin'].includes(role)) {
+    return res.status(400).json({ error: 'role phai la user hoac admin' });
+  }
+  if (db.findUserByEmail(email.trim().toLowerCase())) {
+    return res.status(409).json({ error: 'email da ton tai' });
+  }
+  const row = db.createUser({
+    email: email.trim().toLowerCase(),
+    passwordHash: hashPassword(password),
+    name: typeof name === 'string' && name.trim() ? name.trim() : null,
+    role: role || 'user',
+  });
+  return res.status(201).json({ user: toPublicUser(row) });
+});
+
+router.put('/admin/users/:id', (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) return res.status(400).json({ error: 'id khong hop le' });
+  const target = db.findUserById(id);
+  if (!target) return res.status(404).json({ error: 'khong tim thay tai khoan' });
+  const { name, role, targetScore, hideOnLeaderboard } = req.body || {};
+  if (name !== undefined && (typeof name !== 'string' || !name.trim())) {
+    return res.status(400).json({ error: 'ten khong hop le' });
+  }
+  if (role !== undefined && !['user', 'admin'].includes(role)) {
+    return res.status(400).json({ error: 'role phai la user hoac admin' });
+  }
+  if (
+    targetScore !== undefined &&
+    (!Number.isInteger(targetScore) || targetScore < 10 || targetScore > 990)
+  ) {
+    return res.status(400).json({ error: 'targetScore phai tu 10 den 990' });
+  }
+  if (hideOnLeaderboard !== undefined && typeof hideOnLeaderboard !== 'boolean') {
+    return res.status(400).json({ error: 'hideOnLeaderboard phai la boolean' });
+  }
+  if (target.role === 'admin' && role === 'user') {
+    if (target.id === req.user.id) {
+      return res.status(403).json({ error: 'khong the tu ha quyen cua minh' });
+    }
+    if (db.countAdmins() <= 1) {
+      return res.status(403).json({ error: 'khong the ha quyen admin cuoi cung' });
+    }
+  }
+  const row = db.adminUpdateUser(id, {
+    name: name !== undefined ? name.trim() : undefined,
+    role,
+    targetScore,
+    hideOnLeaderboard,
+  });
+  return res.json({ user: toPublicUser(row) });
+});
+
+router.delete('/admin/users/:id', (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) return res.status(400).json({ error: 'id khong hop le' });
+  const target = db.findUserById(id);
+  if (!target) return res.status(404).json({ error: 'khong tim thay tai khoan' });
+  if (target.id === req.user.id) {
+    return res.status(403).json({ error: 'khong the xoa chinh minh' });
+  }
+  if (target.role === 'admin' && db.countAdmins() <= 1) {
+    return res.status(403).json({ error: 'khong the xoa admin cuoi cung' });
+  }
+  const ok = db.deleteUser(id);
+  return res.json({ ok });
+});
+
+router.post('/admin/users/:id/reset-password', (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id)) return res.status(400).json({ error: 'id khong hop le' });
+  const target = db.findUserById(id);
+  if (!target) return res.status(404).json({ error: 'khong tim thay tai khoan' });
+  const { password } = req.body || {};
+  if (typeof password !== 'string' || password.length < 6) {
+    return res.status(400).json({ error: 'mat khau moi phai co it nhat 6 ky tu' });
+  }
+  db.updateUserPassword(id, hashPassword(password));
+  return res.json({ ok: true });
 });
 
 /* ---------- backup ---------- */

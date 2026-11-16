@@ -547,6 +547,62 @@ function countUsers() {
   return db.prepare('SELECT COUNT(*) AS c FROM users').get().c;
 }
 
+function countAdmins() {
+  return db.prepare("SELECT COUNT(*) AS c FROM users WHERE role = 'admin'").get().c;
+}
+
+/** Admin cap nhat tai khoan: ten, quyen, target_score, an tren bang xep hang. */
+function adminUpdateUser(id, { name, role, targetScore, hideOnLeaderboard }) {
+  const cur = findUserById(id);
+  if (!cur) return null;
+  db.prepare(
+    'UPDATE users SET name = ?, role = ?, target_score = ?, hide_on_leaderboard = ? WHERE id = ?'
+  ).run(
+    name !== undefined ? name : cur.name,
+    role !== undefined ? role : cur.role,
+    targetScore !== undefined ? targetScore : cur.target_score,
+    hideOnLeaderboard !== undefined ? (hideOnLeaderboard ? 1 : 0) : cur.hide_on_leaderboard,
+    id
+  );
+  return findUserById(id);
+}
+
+/**
+ * Xoa THAT 1 tai khoan cung toan bo du lieu hoc cua ho (attempts + answers,
+ * cau sai, tu vung ca nhan, xp, error log, monster, sessions, mock tests,
+ * plan, ielts profile, bai viet/noi). Tat ca trong 1 transaction.
+ */
+function deleteUser(id) {
+  return transaction(() => {
+    const attemptIds = db
+      .prepare('SELECT id FROM attempts WHERE user_id = ?')
+      .all(id)
+      .map((r) => r.id);
+    if (attemptIds.length) {
+      const placeholders = attemptIds.map(() => '?').join(',');
+      db.prepare(`DELETE FROM answers WHERE attempt_id IN (${placeholders})`).run(...attemptIds);
+    }
+    db.prepare('DELETE FROM attempts WHERE user_id = ?').run(id);
+    for (const table of [
+      'wrong_questions',
+      'user_vocabulary',
+      'xp_events',
+      'ielts_profiles',
+      'error_log',
+      'monster_state',
+      'sessions',
+      'mock_tests',
+      'plan',
+      'writing_submissions',
+      'speaking_recordings',
+    ]) {
+      db.prepare(`DELETE FROM ${table} WHERE user_id = ?`).run(id);
+    }
+    const info = db.prepare('DELETE FROM users WHERE id = ?').run(id);
+    return info.changes > 0;
+  });
+}
+
 /* ---------------- passages ---------------- */
 
 function upsertPassage({ id, part, title, content, script, type, testSetId, audioUrl, exam, passageType }) {
@@ -2191,6 +2247,9 @@ module.exports = {
   updateUserPassword,
   linkGoogleAccount,
   countUsers,
+  countAdmins,
+  adminUpdateUser,
+  deleteUser,
   listAllUsersPublic,
   // passages
   upsertPassage,
