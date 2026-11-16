@@ -1,0 +1,722 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ============ Luyện thi TOEIC — Pastel nhẹ nhàng ============
+   Nền trắng kem ấm, thẻ trắng bo tròn mềm, bóng đổ nhẹ,
+   một màu nhấn duy nhất (xanh sage), các màu pastel nhạt để
+   phân biệt trạng thái. Không font pixel, không neon, không CRT. */
+
+:root{
+  color-scheme:light;
+  --bg:#FDF8F3; --surface:#FFFFFF; --surface-soft:#FBF6F0;
+  --ink:#3D3A36; --ink-soft:#5C564F; --muted:#8A837B;
+  --border:#EFE6DB; --border-soft:#F5EEE5;
+  --accent:#5FA8A0; --accent-dark:#4A8A83; --accent-soft:#DCEFEA; --accent-soft-strong:#CDE8E2;
+  --mint:#D9F2E6; --pink:#FBDCE2; --cream:#FCEFC7; --cream-strong:#F8E7AC; --sky:#DCE9FB; --lavender:#E8DEF8; --lavender-border:#DCCDF5;
+  --green:#5E9E6E; --green-bg:#E4F3E6; --green-ink:#3E6B4A; --green-soft:#CFE6D4; --green-border:#CFE6D4;
+  --red:#D96C6C; --red-bg:#FBEAEA; --red-ink:#A84A4A; --red-soft:#F0D3D3; --red-border:#F0D3D3;
+  --amber:#B98A1D; --amber-bg:#FCF3D9;
+  --gold:#E9B949; --gold-ink:#8A6D1F; --silver:#B9C2D4; --bronze:#D89B6A;
+  --exam-blue:#0B5CAD; --exam-orange:#F5821F;
+  --track:#F1EAE1; --input-bg:#FFFFFF; --audio-border:#C6D9F5;
+  --warn-bg:#FFF7E6; --warn-border:#D8A24A;
+  --body:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+/* Chế độ tối — giữ đúng bảng Pastel (nền kem ấm -> nâu than ấm, nhấn sage
+   sáng hơn một chút để đủ tương phản), mọi màu cứng khác đều ăn theo biến. */
+[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#211E1B; --surface:#2B2723; --surface-soft:#332E28;
+  --ink:#F2EEE7; --ink-soft:#CFC8BC; --muted:#C4BBB0;
+  --border:#453E35; --border-soft:#38322B;
+  --accent:#6FBFB6; --accent-dark:#8FD0C7; --accent-soft:#234642; --accent-soft-strong:#2E5750;
+  --mint:#1E3A2C; --pink:#3D2A30; --cream:#3A3220; --cream-strong:#453A24; --sky:#22334A; --lavender:#2E2842; --lavender-border:#453D63;
+  --green:#7FBF8E; --green-bg:#1E3325; --green-ink:#9AD6A8; --green-soft:#2A4A32; --green-border:#33573D;
+  --red:#E88F8F; --red-bg:#3A2323; --red-ink:#F2A8A8; --red-soft:#4A2A2A; --red-border:#5A3434;
+  --amber:#E3B93E; --amber-bg:#3A2F18;
+  --gold:#E9B949; --gold-ink:#E8C86A; --silver:#9AA3B8; --bronze:#D89B6A;
+  --exam-blue:#6FB3F2; --exam-orange:#F59A4D;
+  --track:#3A342C; --input-bg:#2B2723; --audio-border:#2E4A66;
+  --warn-bg:#3A2F18; --warn-border:#8A6D2B;
+}
+[data-theme="dark"] .tier-bronze{background:#3A2A1A; color:#E0B184}
+[data-theme="dark"] .tier-silver{background:#2A2E38; color:#C3CADB}
+[data-theme="dark"] .tier-gold{background:#3A2F18; color:#E8C86A}
+[data-theme="dark"] .tier-platinum{background:#1E3238; color:#7FC4D4}
+[data-theme="dark"] .tier-diamond{background:#2E2842; color:#B9A3E8}
+[data-theme="dark"] .rank-other{background:#4A443C}
+*{box-sizing:border-box}
+html{scrollbar-color:var(--accent) var(--bg); scroll-behavior:smooth}
+/* Chuyển sáng/tối mượt: chỉ các bề mặt chính đổi màu từ từ, không chạm
+   vào transition riêng của nút/flashcard để không phá hiệu ứng hover/lật. */
+body,.topbar,.card,.panel,.paper,.screen,.option,.flashcard-face,.top3-place,
+.exam-head,.practice-bar,.paper-savebar,.hero,.passage,.audio-box,.radio-pill,
+input,select,textarea,.exam-q-num,.tier,.pill{
+  transition:background-color .25s ease, border-color .25s ease, color .25s ease;
+}
+body{
+  margin:0; font-family:var(--body); background:var(--bg); color:var(--ink);
+  line-height:1.6;
+}
+a{color:var(--accent-dark); text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit; cursor:pointer; color:var(--ink)}
+input,select,textarea{
+  font:inherit; width:100%; padding:.65rem .8rem; color:var(--ink);
+  background:var(--input-bg); border:1px solid var(--border); border-radius:10px;
+}
+input:focus,select:focus,textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(95,168,160,.22)}
+label{display:block; font-weight:600; font-size:.9rem; color:var(--ink-soft); margin:.8rem 0 .3rem}
+input[type='checkbox'],input[type='range']{width:auto; accent-color:var(--accent)}
+input[type='range']{border:none; padding:0}
+
+h1,h2,h3{font-family:var(--body); font-weight:700; line-height:1.4; letter-spacing:-.01em; color:var(--ink)}
+h1{font-size:1.4rem; margin:.4rem 0 1rem}
+h1 .glow{color:var(--accent-dark)}
+h2{font-size:1.1rem; margin:0 0 .8rem}
+h3{font-size:1rem; margin:0 0 .6rem}
+hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
+
+.app{min-height:100vh; display:flex; flex-direction:column}
+.topbar{
+  background:color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 12px rgba(93,64,28,.05);
+  padding:.7rem 1rem; display:flex; gap:.6rem; align-items:center; flex-wrap:nowrap;
+  position:sticky; top:0; z-index:10;
+}
+.topbar a{color:var(--ink-soft); font-weight:600}
+.topbar a:hover{color:var(--accent-dark); text-decoration:none}
+.topbar .brand{
+  font-weight:800; font-size:1.05rem; color:var(--accent-dark);
+  letter-spacing:-.01em; white-space:nowrap;
+}
+.topbar nav{display:flex; gap:.35rem; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; flex:1 1 auto; min-width:0; align-items:center}
+/* Nhóm mục ghim căn giữa khoảng trống giữa logo và cụm nút phải
+   (margin auto: đủ chỗ thì căn giữa, hẹp quá thì dạt trái và cuộn được). */
+.topbar-nav-inner{display:flex; gap:.35rem; align-items:center; margin:0 auto}
+.topbar nav::-webkit-scrollbar{display:none}
+.topbar nav a{
+  font-size:.92rem; padding:.45rem .7rem; border-radius:999px; white-space:nowrap;
+  border:1px solid transparent; color:var(--ink-soft);
+}
+/* Cụm nút bên phải header: luôn cố định 1 hàng, không bị cuốn vào menu trượt. */
+.topbar-actions{display:flex; gap:.35rem; align-items:center; flex:0 0 auto}
+.topbar-actions .btn{white-space:nowrap}
+
+/* Nút icon tròn (đổi bài thi) + avatar (hồ sơ) ở cụm phải header. */
+.icon-btn{
+  flex:0 0 auto; width:2.35rem; height:2.35rem; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--surface); color:var(--ink); border:1px solid var(--border);
+  font-size:1.25rem; line-height:1; padding:0;
+}
+.icon-btn:hover{background:var(--surface-soft)}
+.avatar-btn{
+  flex:0 0 auto; width:2.35rem; height:2.35rem; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--accent); color:#fff; border:1px solid transparent;
+  font-size:1.05rem; font-weight:800; line-height:1; padding:0;
+}
+.avatar-btn:hover{filter:brightness(1.08)}
+.avatar-btn img{width:100%; height:100%; object-fit:cover; border-radius:50%}
+.avatar-btn.big{width:2.8rem; height:2.8rem; font-size:1.25rem}
+/* Trang hồ sơ cá nhân: ảnh đại diện + bảng xem thông tin. */
+.profile-avatar-row{display:flex; gap:1rem; align-items:center; margin-bottom:.8rem}
+.profile-avatar{
+  flex:0 0 auto; width:4.5rem; height:4.5rem; border-radius:50%;
+  background:var(--accent); color:#fff; display:inline-flex; align-items:center; justify-content:center;
+  font-size:1.8rem; font-weight:800; overflow:hidden;
+}
+.profile-avatar img{width:100%; height:100%; object-fit:cover}
+.profile-avatar-actions{display:flex; flex-direction:column; gap:.4rem; align-items:flex-start}
+.profile-view{margin:.4rem 0 .8rem}
+.profile-view > div{display:flex; gap:.8rem; padding:.35rem 0; border-bottom:1px dashed var(--border)}
+.profile-view dt{flex:0 0 9rem; color:var(--ink-soft); font-weight:600}
+.profile-view dd{margin:0; min-width:0; overflow-wrap:anywhere}
+.ielts-band-grid{display:grid; grid-template-columns:1fr 1fr; gap:0 .8rem}
+@media(max-width:560px){.ielts-band-grid{grid-template-columns:1fr}}
+.profile-menu{
+  position:absolute; right:0; top:calc(100% + .5rem); z-index:21;
+  width:min(19rem, calc(100vw - 1rem));
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18); padding:.6rem;
+}
+.profile-menu-head{display:flex; align-items:center; gap:.6rem; padding:.4rem .5rem .6rem; border-bottom:1px solid var(--border); margin-bottom:.4rem}
+.profile-menu-head > div{display:flex; flex-direction:column; min-width:0}
+.profile-menu-head strong{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.profile-menu-head .muted{font-size:.85rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.profile-menu-item{
+  display:flex; align-items:center; gap:.5rem; width:100%;
+  padding:.55rem .6rem; border-radius:10px; color:var(--ink); font-weight:600;
+  background:transparent; border:none; text-align:left; font-size:.95rem; cursor:pointer;
+}
+.profile-menu-item:hover{background:var(--surface-soft); text-decoration:none}
+.nav-menu-wrap{position:relative; flex:0 0 auto}
+.nav-menu-btn{
+  flex:0 0 auto; width:2.35rem; height:2.35rem; border-radius:10px;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--surface); color:var(--ink); border:1px solid var(--border);
+  font-size:1.15rem; line-height:1; padding:0;
+}
+.nav-menu-btn:hover{background:var(--surface-soft)}
+.nav-menu-backdrop{position:fixed; inset:0; z-index:20}
+.nav-menu{
+  position:absolute; right:0; top:calc(100% + .5rem); z-index:21;
+  width:min(28rem, calc(100vw - 1rem)); max-height:70vh; overflow-y:auto;
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18); padding:.6rem;
+  /* Bảng 2 cột như mẫu: mỗi ô = icon + tên mục + nút ghim ở mép phải. */
+  display:grid; grid-template-columns:1fr 1fr; gap:.25rem;
+}
+.nav-menu-title{grid-column:1 / -1; font-size:.82rem; color:var(--ink-soft); margin:.3rem .5rem .5rem; text-align:center}
+/* Mỗi ô: nhóm icon + tên mục căn giữa ô (lưới 1fr auto 1fr),
+   nút ghim nằm ở mép phải ô — 2 cột nhìn cân đối. */
+.nav-menu-row{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:.45rem; border-radius:10px; padding:.15rem .35rem}
+.nav-menu-row:hover{background:var(--surface-soft)}
+.nav-menu-mid{grid-column:2; display:flex; align-items:center; gap:.45rem; min-width:0}
+.nav-menu-ico{flex:0 0 auto; font-size:1.05rem; line-height:1}
+.nav-menu-row a{flex:0 1 auto; min-width:0; padding:.5rem 0; color:var(--ink); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.nav-menu-row a:hover{text-decoration:none}
+.nav-menu-row a.active{color:var(--accent-dark)}
+.pin-btn{
+  grid-column:3; justify-self:end;
+  width:2rem; height:2rem; border-radius:8px; border:1px solid transparent;
+  background:transparent; font-size:1rem; line-height:1; opacity:.45; padding:0;
+}
+.pin-btn:hover{opacity:1; background:var(--surface-soft)}
+.pin-btn.pinned{opacity:1; background:var(--green-bg); border-color:var(--green-border)}
+.pin-limit-msg{grid-column:1 / -1; font-size:.85rem; color:var(--amber); margin:.4rem .5rem .3rem}
+
+/* Màn hẹp: bảng ghim về 1 cột cho khỏi tràn. */
+@media(max-width:560px){
+  .nav-menu{grid-template-columns:1fr}
+}
+.topbar nav a:hover{border-color:var(--border); color:var(--ink); background:var(--surface-soft)}
+.topbar nav a.active{border-color:transparent; color:#fff; background:var(--accent)}
+/* Nút đổi sáng/tối — luôn hiện ở góc phải header, kể cả trang đăng nhập */
+.theme-toggle{
+  flex:0 0 auto; width:2.35rem; height:2.35rem; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--surface); color:var(--ink); border:1px solid var(--border);
+  font-size:1.1rem; line-height:1; padding:0;
+  transition:background .2s, border-color .2s, transform .2s;
+}
+.theme-toggle:hover{border-color:var(--accent); transform:translateY(-1px)}
+.container{max-width:960px; width:100%; margin:0 auto; padding:1rem; flex:1}
+.card{
+  background:var(--surface);
+  border:1px solid var(--border); border-radius:16px; padding:1.1rem 1.2rem; margin-bottom:1rem;
+  box-shadow:0 2px 12px rgba(93,64,28,.06);
+}
+.card h2{margin-top:0}
+/* Đáy card gọn: phần tử cuối không cộng thêm margin, chỉ còn padding của card */
+.card > :last-child{margin-bottom:0}
+/* Box con trong card (xem trước import, form con): nền nhạt, không viền dày, không bóng */
+.panel{
+  background:var(--surface-soft); border:1px solid var(--border-soft);
+  border-radius:12px; padding:1rem 1.1rem; margin-top:1rem; box-shadow:none;
+}
+.panel h3{margin-top:0}
+/* Lưới phòng hờ: card nào còn lồng trong card cũng không bị 2 lớp viền dày */
+.card .card{box-shadow:none; border-color:var(--border-soft); background:var(--surface-soft)}
+/* Nhịp dọc duy nhất: lưới dùng gap, không cộng thêm margin-bottom của card */
+.grid{display:grid; gap:1rem; grid-template-columns:1fr; margin-bottom:1rem}
+.grid > .card{
+  margin-bottom:0; display:flex; flex-direction:column; gap:.45rem;
+}
+.grid > .card > *{margin-top:0; margin-bottom:0}
+.grid > .card p{margin:.25rem 0}
+/* Nút và chân card trong lưới luôn thẳng hàng ở đáy, dù nội dung dài ngắn khác nhau */
+.grid > .card .btn-row:last-child{margin-top:auto; padding-top:.5rem}
+.card-foot{
+  margin-top:auto; padding-top:.5rem;
+  display:flex; flex-direction:column; gap:.35rem;
+}
+.card-foot > *{margin:0}
+.grid > .card .card-foot p{margin:0}
+@media(min-width:640px){.grid{grid-template-columns:1fr 1fr}}
+/* 3 cột chỉ từ 960px; ở 2 cột (640–959px) nhóm đúng 3 thẻ không để thẻ cuối lẻ trơ trọi */
+@media(min-width:960px){.grid3{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:640px) and (max-width:959px){
+  .grid3 > :last-child:nth-child(odd){grid-column:1 / -1}
+}
+/* Lưới Part (7 thẻ, chia nhóm Nghe/Đọc): thẻ lẻ cuối nhóm luôn span full-width */
+@media(min-width:640px){
+  .parts-grid > :last-child:nth-child(odd){grid-column:1 / -1}
+}
+/* Select đứng trước card (lọc chủ đề từ vựng, lọc câu sai): chừa 1 nhịp cách */
+select + .card{margin-top:1rem}
+/* Ô chọn số câu đặt trong card thông tin đề: label + select nằm 1 hàng */
+.field-inline{display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-top:.9rem}
+.field-inline label{margin:0; flex:0 0 auto}
+.field-inline select{width:auto; min-width:130px; flex:0 0 auto}
+
+/* Nút phẳng bo tròn — 1 màu nhấn duy nhất, hover nâng nhẹ */
+.btn{
+  display:inline-block; font-weight:600; font-size:.95rem; line-height:1.5;
+  color:#fff; background:var(--accent);
+  border:1px solid transparent; border-radius:12px; padding:.65rem 1.1rem; text-align:center;
+  box-shadow:0 2px 8px rgba(95,168,160,.28);
+  transition:background .18s, transform .18s, box-shadow .18s;
+}
+.btn:hover{background:var(--accent-dark); transform:translateY(-1px); box-shadow:0 4px 12px rgba(95,168,160,.32); text-decoration:none}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.5; cursor:not-allowed; transform:none; box-shadow:none}
+.btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 1px 4px rgba(93,64,28,.05)}
+.btn.secondary:hover{background:var(--surface-soft); border-color:var(--border)}
+.btn.danger{background:var(--surface); color:var(--red-ink); border-color:var(--red-border); box-shadow:none}
+.btn.danger:hover{background:var(--red-bg)}
+.btn.ghost{background:transparent; color:var(--accent-dark); border-color:var(--accent); box-shadow:none}
+.btn.ghost:hover{background:var(--accent-soft)}
+.btn.neon{background:var(--accent-soft); color:var(--accent-dark); box-shadow:none}
+.btn.neon:hover{background:var(--accent-soft-strong)}
+.btn.gold{background:var(--cream); color:var(--gold-ink); box-shadow:0 1px 4px rgba(93,64,28,.06)}
+.btn.gold:hover{background:var(--cream-strong)}
+.btn-sm{padding:.42rem .85rem; font-size:.88rem; border-radius:10px}
+.btn-row{display:flex; gap:.7rem; flex-wrap:wrap; margin-bottom:1rem}
+.card .btn-row{margin-top:.8rem; margin-bottom:0}
+
+.error{background:var(--red-bg); color:var(--red-ink); border:1px solid var(--red-border); border-radius:12px; padding:.65rem .9rem; margin:.6rem 0}
+.success{background:var(--green-bg); color:var(--green-ink); border:1px solid var(--green-border); border-radius:12px; padding:.65rem .9rem; margin:.6rem 0}
+.muted{color:var(--muted); font-size:.9rem}
+.big{font-weight:800; font-size:1.5rem; line-height:1.4; color:var(--ink)}
+.stat-num{font-weight:800; font-size:1.2rem; line-height:1.4; color:var(--accent-dark)}
+.pill{
+  display:inline-block; font-weight:600; font-size:.78rem; background:var(--accent-soft);
+  color:var(--accent-dark); border-radius:999px; padding:.25rem .6rem;
+}
+.tag{font-weight:600; font-size:.85rem; color:var(--accent-dark)}
+
+/* Thanh XP / tiến trình — bo tròn mềm, màu pastel */
+.xpbar{height:12px; background:var(--track); border-radius:999px; overflow:hidden}
+.xpbar>i{display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .3s ease}
+.xpbar.gold>i{background:var(--gold)}
+.xp-label{font-weight:600; font-size:.85rem; color:var(--ink-soft); display:flex; justify-content:space-between; gap:.5rem; flex-wrap:wrap}
+.bar{height:10px; background:var(--track); border-radius:999px; overflow:hidden}
+.bar>i{display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .3s ease}
+.bar.green>i{background:var(--green)}
+
+/* Bậc hạng — nền pastel, chữ trầm */
+.tier{
+  display:inline-block; font-weight:700; font-size:.85rem;
+  padding:.35rem .7rem; border-radius:999px;
+}
+.tier-bronze{background:#F7E8D5; color:#8A5A2B}
+.tier-silver{background:#EDEFF5; color:#5A6478}
+.tier-gold{background:var(--amber-bg); color:#8A6D1F}
+.tier-platinum{background:#E6F4F7; color:#2F6B78}
+.tier-diamond{background:#F1EAFB; color:#6B4FA3}
+.hearts{font-size:1.05rem; letter-spacing:.15rem; color:#E58E9A}
+.streak-flame{color:#E8A25C}
+
+/* Hero — dải pastel rất nhạt */
+.hero{
+  border:1px solid var(--border); border-radius:16px;
+  background:linear-gradient(135deg, var(--mint), var(--sky) 55%, var(--pink));
+  box-shadow:0 2px 12px rgba(93,64,28,.06);
+  padding:1.3rem 1.2rem; margin-bottom:1rem; text-align:center;
+}
+.hero h1{font-size:1.5rem; margin:.2rem 0 .5rem}
+.hero .sub{color:var(--ink-soft); font-weight:500}
+.stat-card{position:relative; overflow:hidden}
+.stat-card::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:5px;
+  background:linear-gradient(90deg,var(--mint),var(--sky),var(--pink));
+}
+.stat-card .ico{font-size:1.5rem}
+
+/* Thẻ chọn Part — hover nâng nhẹ, chọn thì viền nhấn */
+.part-card{cursor:pointer; transition:transform .18s, box-shadow .18s, border-color .18s}
+.part-card:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:0 6px 16px rgba(93,64,28,.09)}
+.part-card.selected{border-color:var(--accent); box-shadow:0 0 0 3px rgba(95,168,160,.22), 0 4px 14px rgba(93,64,28,.08)}
+.part-ico{font-weight:700; font-size:.95rem; color:var(--accent-dark)}
+
+/* Khung làm bài — nền trắng sạch, chữ xám đen đậm */
+.screen{
+  background:var(--surface) !important; color:var(--ink) !important;
+  border:1px solid var(--border) !important; box-shadow:0 2px 12px rgba(93,64,28,.06);
+}
+.screen p, .screen strong{color:var(--ink)}
+.screen .muted{color:var(--muted)}
+.screen .tag{color:var(--accent-dark)}
+.flashcard-face .big{font-size:1.05rem; word-break:break-word}
+.passage{
+  white-space:pre-wrap; background:var(--surface-soft); color:var(--ink); border:1px solid var(--border);
+  padding:.65rem .85rem; border-radius:10px; margin-bottom:.55rem; line-height:1.6;
+}
+.audio-box{background:var(--sky) !important; border:1px solid var(--audio-border) !important}
+.audio-box .muted{color:var(--ink-soft)}
+
+/* Phương án trả lời */
+.option{
+  display:block; width:100%; text-align:left; font-size:1rem;
+  background:var(--surface); color:var(--ink); border:1px solid var(--border);
+  border-radius:12px; padding:.55rem .75rem; margin:.35rem 0;
+  transition:border-color .15s, background .15s;
+}
+.option:hover{border-color:var(--accent)}
+.option strong{
+  font-weight:700; font-size:.85rem; color:var(--accent-dark); background:var(--accent-soft);
+  padding:.22rem .5rem; margin-right:.5rem; border-radius:8px;
+}
+.option.selected{border-color:var(--accent); background:var(--accent-soft)}
+.option.correct{border-color:var(--green); background:var(--green-bg)}
+.option.correct strong{background:var(--green-soft); color:var(--green-ink)}
+.option.wrong{border-color:var(--red); background:var(--red-bg)}
+.option.wrong strong{background:var(--red-soft); color:var(--red-ink)}
+.option:disabled{cursor:default}
+/* Câu chỉ-nghe (Part 1/2): nút đáp án chỉ hiện chữ cái, to và căn giữa */
+.option.letter-only{text-align:center; padding:1rem .85rem}
+.option.letter-only strong{font-size:1.5rem; padding:.45rem .9rem; margin-right:0}
+
+table{width:100%; border-collapse:collapse}
+/* Bảng trong card hẹp: cuộn ngang trong card thay vì tràn ra ngoài */
+.card:has(table), .panel:has(table){overflow-x:auto}
+th,td{padding:.6rem .5rem; border-bottom:1px solid var(--border-soft); text-align:left}
+th{font-weight:700; font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.03em}
+tbody tr:hover{background:var(--surface-soft)}
+
+.timer{font-weight:800; font-size:1.15rem; color:var(--ink); font-variant-numeric:tabular-nums}
+.timer.low{color:var(--red-ink)}
+
+/* Flashcards — mặt trước trắng, mặt sau lavender nhạt, lật mượt */
+.flashcard{perspective:800px; cursor:pointer; min-height:190px}
+.flashcard-inner{position:relative; width:100%; min-height:190px; transition:transform .45s ease; transform-style:preserve-3d}
+.flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
+.flashcard-face{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1rem;
+  backface-visibility:hidden; text-align:center; box-shadow:0 2px 12px rgba(93,64,28,.06);
+}
+.flashcard-face .big{color:var(--accent-dark)}
+.flashcard-face.back{transform:rotateY(180deg); background:var(--lavender); border-color:var(--lavender-border)}
+.flashcard-face.back, .flashcard-face.back .muted{color:var(--ink)}
+
+/* Bảng xếp hạng — top 3 dạng thẻ mềm với huy chương tròn */
+.top3-list{display:grid; gap:.6rem; margin:0 0 1rem}
+@media(min-width:640px){.top3-list{grid-template-columns:repeat(3,1fr)}}
+.top3-place{
+  display:flex; flex-direction:column; align-items:center; gap:.3rem; text-align:center;
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1rem .6rem;
+  box-shadow:0 2px 10px rgba(93,64,28,.05);
+}
+.top3-place .medal{
+  width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; font-weight:800; color:#fff;
+}
+.top3-place .medal-1{background:var(--gold)}
+.top3-place .medal-2{background:var(--silver)}
+.top3-place .medal-3{background:var(--bronze)}
+.top3-place .p-name{font-weight:700; word-break:break-word}
+.top3-place .p-score{font-weight:800; color:var(--accent-dark)}
+.rank-chip{
+  display:inline-flex; align-items:center; justify-content:center; font-weight:700; font-size:.85rem;
+  min-width:2rem; height:2rem; border-radius:50%; color:#fff; padding:0 .4rem;
+}
+.rank-1{background:var(--gold)}
+.rank-2{background:var(--silver)}
+.rank-3{background:var(--bronze)}
+.rank-other{background:#CFC8BE; color:#fff}
+.top3{background:var(--amber-bg)}
+.me-row{
+  background:var(--mint) !important;
+  border:1px solid var(--green-border) !important;
+  font-weight:600;
+}
+.lb-row-name{font-weight:700; color:var(--ink)}
+.lb-row-name img{border-radius:50%; border:2px solid var(--accent-soft)}
+.seg{display:flex; gap:.5rem; flex-wrap:wrap}
+.seg .btn{flex:1 1 auto}
+
+/* ============ Form thêm thủ công theo loạt — bố cục "tờ đề thi" ============
+   Toàn bộ 1 Part nằm trong 1 khối giấy (.paper) duy nhất, các câu nối
+   tiếp nhau bằng đường kẻ mảnh thay vì hộp .panel lồng nhau. */
+.paper{
+  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  padding:.3rem 1rem .7rem; margin-top:.7rem;
+}
+/* 1 câu hỏi trong tờ đề: kẻ mảnh phân cách, nhịp dọc gọn */
+.paper-q{padding:.45rem 0; border-bottom:1px solid var(--border-soft)}
+.paper-q:last-child{border-bottom:none; padding-bottom:.15rem}
+/* Đề mục / kết quả chấm trong câu: bỏ margin mặc định của <p> (~1em) */
+.paper-q p{margin:.3rem 0}
+.paper-q > img{display:block; margin:.35rem 0}
+.paper-q label{margin:.35rem 0 .25rem}
+.paper-q .q-num{font-weight:800; color:var(--ink); margin-right:.35rem}
+.paper-q textarea{margin-top:.15rem}
+/* 4 phương án xếp lưới 2 cột như đề thi thật (A B / C D) */
+.paper-opts{display:grid; grid-template-columns:1fr 1fr; gap:.1rem .6rem; margin-top:.4rem}
+.paper-opts label{font-size:.85rem; margin:.2rem 0 .2rem}
+/* Hàng "Đáp án:" + pill radio nằm cùng 1 dòng */
+.answer-line{display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-top:.6rem}
+.answer-line > label{margin:0}
+.radio-pills{display:inline-flex; gap:.4rem; flex-wrap:wrap}
+.radio-pill{
+  display:inline-flex; align-items:center; gap:.3rem; margin:0;
+  border:1px solid var(--border); border-radius:999px; padding:.3rem .75rem;
+  font-weight:700; font-size:.9rem; cursor:pointer; background:var(--surface); color:var(--ink);
+}
+.radio-pill input{width:auto; margin:0; padding:0; border:none; accent-color:var(--accent)}
+.radio-pill:has(input:checked){background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+/* 1 cụm (đoạn hội thoại / bài nói / bài đọc): khối không viền, chỉ kẻ ngăn cụm */
+.paper-cluster{padding:.55rem 0 .6rem; border-bottom:1px solid var(--border)}
+.paper-cluster:last-child{border-bottom:none; padding-bottom:.15rem}
+.paper-cluster h4{margin:.1rem 0 .5rem}
+.paper-cluster > label{margin:.5rem 0 .25rem}
+.paper-cluster .btn-row{margin-top:.7rem}
+/* Part 1: lưới ảnh — 1 cột trên điện thoại, 2 cột từ 640px */
+.p1-grid{display:grid; gap:0 1.2rem; grid-template-columns:1fr}
+.p1-cell{padding:.85rem 0; border-bottom:1px solid var(--border-soft)}
+.p1-cell:last-child{border-bottom:none}
+.p1-cell .q-num{font-weight:800}
+.p1-cell label{margin:.5rem 0 .25rem}
+.p1-cell img{max-width:280px; border-radius:10px; margin-top:.5rem}
+@media(min-width:640px){
+  .p1-grid{grid-template-columns:1fr 1fr}
+  .p1-cell:nth-last-child(-n+2){border-bottom:none}
+}
+/* Part 2: phiếu trả lời — mỗi dòng chỉ số câu + 3 pill A/B/C */
+.p2-list{display:grid; gap:0 1.5rem; grid-template-columns:1fr}
+.p2-row{display:flex; align-items:center; gap:.7rem; padding:.5rem 0; border-bottom:1px solid var(--border-soft)}
+.p2-row:last-child{border-bottom:none}
+.p2-row .q-num{font-weight:800; min-width:2rem}
+@media(min-width:640px){.p2-list{grid-template-columns:1fr 1fr}}
+/* Thanh lưu dính cuối form: luôn thấy nút Lưu khi cuộn */
+.paper-savebar{
+  position:sticky; bottom:0; z-index:5; background:var(--surface);
+  border-top:1px solid var(--border); padding:.8rem 0 .3rem; margin-top:1rem;
+}
+.paper-savebar .btn{width:100%}
+@media(min-width:640px){.paper-savebar .btn{width:auto; min-width:280px}}
+
+/* Ô dán link ảnh (form thêm thủ công): hoạt động kể cả khi Cloudinary
+   chưa cấu hình. Hàng gọn: ô nhập co giãn, nút Dán không tràn màn hẹp. */
+.paste-url-row{display:flex; gap:.5rem; align-items:center; margin:.4rem 0 .2rem}
+.paste-url-row input{flex:1 1 auto; min-width:0; margin:0}
+.paste-url-row .btn{flex:0 0 auto}
+.error-text{color:var(--red-ink); font-size:.85rem; margin:.25rem 0 0}
+
+/* ============ Luyện tập — bố cục "tờ đề thi" liền mạch ============
+   Toàn bộ câu của đợt luyện nằm trong 1 tờ giấy (.paper), các câu nối
+   tiếp bằng đường kẻ mảnh. Đáp án gọn: Part 1/2 là 1 hàng pill chữ cái,
+   Part 3–7 là lưới phương án (1 cột trên điện thoại, 2 cột từ 640px). */
+.letter-row{display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.35rem}
+.option.letter-pill{
+  flex:1 1 0; min-width:3rem; width:auto; text-align:center;
+  padding:.55rem .4rem; margin:0;
+}
+.option.letter-pill strong{font-size:1.15rem; padding:.2rem .55rem; margin-right:0}
+.opts-grid{display:grid; grid-template-columns:1fr; gap:.35rem; margin-top:.35rem}
+.opts-grid .option{margin:0}
+@media(min-width:640px){.opts-grid{grid-template-columns:1fr 1fr; gap:.35rem .5rem}}
+/* ============ Giao diện thi theo ảnh mẫu — 2 cột, tiêu đề Part xanh ============
+   Giữ danh sách liền mạch (.paper): mỗi câu là 1 hàng 2 cột trên màn
+   rộng — trái là nội dung (ảnh/audio/đoạn/câu hỏi), phải là số câu +
+   phương án radio tròn; màn hẹp xếp chồng. Chỉ dùng cho Practice/Mock
+   (.exam-q), KHÔNG đổi .paper-q gốc của form nhập tay. */
+/* Đầu trang bài làm dính khi cuộn (ngay dưới topbar sticky): tiêu đề
+   Part xanh dương đậm + badge cam tiến độ góc phải */
+.exam-head{
+  position:sticky; top:60px; z-index:9; background:var(--surface);
+  display:flex; align-items:center; justify-content:space-between; gap:.8rem;
+  padding:.55rem 0 .5rem; margin:0 0 .1rem; border-bottom:1px solid var(--border-soft);
+}
+.exam-part{
+  margin:0; font-size:1.35rem; font-weight:800; color:var(--exam-blue);
+  text-transform:uppercase; letter-spacing:.02em; line-height:1.2;
+}
+.exam-part span{font-size:.85rem; font-weight:600; color:var(--muted); text-transform:none; letter-spacing:0}
+.exam-head .timer{font-size:1.05rem}
+.progress-badge{
+  flex:0 0 auto; background:var(--exam-orange); color:#fff; font-weight:800;
+  font-size:.95rem; padding:.4rem .9rem; border-radius:10px;
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+/* Tiêu đề Part trong tờ đề thi thử full (Part 1 → Part 7 nối tiếp nhau) */
+.paper-part{margin:.7rem 0 .15rem; font-size:1.3rem; font-weight:800; color:var(--exam-blue); text-transform:uppercase; letter-spacing:.02em}
+/* 1 câu hỏi dạng 2 cột: nội dung | số câu + phương án */
+.exam-q{display:grid; grid-template-columns:minmax(0,1fr); gap:.1rem .5rem}
+@media(min-width:760px){
+  .exam-q{grid-template-columns:minmax(0,1.12fr) minmax(0,1fr); gap:.3rem 1.6rem; align-items:start}
+}
+.exam-q-body{min-width:0}
+.exam-q-body > img{display:block; max-width:100%; border-radius:12px; margin:.35rem 0}
+.exam-q-side{min-width:0}
+.exam-q-num{font-weight:800; font-size:1.15rem; color:var(--ink); margin:.3rem 0 .45rem; font-variant-numeric:tabular-nums}
+/* Phương án radio tròn xếp dọc */
+.exam-opts{display:flex; flex-direction:column; gap:.4rem; margin-top:.1rem}
+.exam-opts .option{
+  margin:0; display:flex; align-items:flex-start; gap:.6rem;
+  text-align:left; padding:.5rem .7rem;
+}
+.exam-opts .option strong{
+  flex:0 0 auto; width:1.7rem; height:1.7rem; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size:.95rem; font-weight:800; margin:0; padding:0;
+  background:var(--surface); color:var(--ink); border:1.5px solid var(--border);
+}
+.exam-opts .option.selected{border-color:var(--accent)}
+.exam-opts .option.selected strong{border-color:var(--accent); background:var(--accent); color:#fff}
+.exam-opts .option.correct strong{border-color:var(--green); background:var(--green); color:#fff}
+.exam-opts .option.wrong strong{border-color:var(--red); background:var(--red); color:#fff}
+.exam-opts .option:disabled{cursor:default}
+.exam-q-side > .btn-row{margin:.6rem 0 0}
+/* Kết quả chấm từng câu (Practice): trải hết chiều rộng dưới 2 cột */
+.exam-q-result{grid-column:1/-1}
+/* Câu IELTS dạng riêng (T/F/NG, Y/N/NG, matching, điền từ): xếp chồng 1 cột
+   — số câu gắn ngay trước chữ câu hỏi, đáp án trải hết chiều rộng bên dưới,
+   thay vì tách chữ câu hỏi (cột trái) và số câu + đáp án (cột phải). */
+@media(min-width:760px){
+  .exam-q--ielts{grid-template-columns:minmax(0,1fr)}
+}
+/* Câu Reading trắc nghiệm (TOEIC P5–P7, IELTS R): 2 câu 1 hàng (mỗi câu
+   chỉ có số + 4 phương án xếp 1 dọc A/B/C/D như phiếu trả lời). */
+@media(min-width:760px){
+  .exam-q-grid2{display:grid; grid-template-columns:1fr 1fr; gap:0 1.25rem}
+}
+.exam-q--duo{display:block}
+.exam-q--duo .exam-q-body:empty{display:none}
+/* Chip chỗ trống trong đoạn văn Part 6: trông như chữ trong đoạn văn —
+   chỉ khác màu chữ (số câu + vạch ngang màu nhấn), còn cỡ chữ và độ đậm
+   đồng nhất với văn bản. Bấm để tới câu hỏi. */
+.blank-chip{
+  display:inline-flex; align-items:center; gap:.15rem;
+  font:inherit; color:var(--accent-dark);
+  background:none; border:none; padding:0 .1rem; margin:0; cursor:pointer;
+}
+.blank-chip:hover{text-decoration:underline}
+.blank-chip.answered{color:var(--accent-dark)}
+.blank-chip.correct{color:var(--green)}
+.blank-chip.wrong{color:var(--red)}
+/* Vạch ngang làm chỗ trống cần điền (mượt hơn dấu gạch dưới liền). */
+.blank-line{display:inline-block; width:3.2rem; height:.55em; border-bottom:2px solid currentColor; margin:0 .15rem}
+.blank-chip:hover{filter:brightness(.96)}
+.blank-chip.answered{background:var(--accent); border-color:var(--accent); color:#fff}
+.blank-chip.correct{background:var(--green); border-color:var(--green); color:#fff}
+.blank-chip.wrong{background:var(--red); border-color:var(--red); color:#fff}
+.exam-q-body .exam-q-num{display:inline; margin:0 .35rem 0 0}
+/* T/F/NG & Y/N/NG: 3 nhãn dài thành hàng nút pill ngang, chữ đầy đủ
+   không bị nhét vào ô tròn 1 chữ như phương án A/B/C/D. */
+.ielts-tfng-row{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.1rem}
+.ielts-tfng-row .option{flex:1 1 auto; justify-content:center; text-align:center; padding:.55rem .5rem; white-space:nowrap}
+.ielts-tfng-row .option strong{background:none; color:inherit; font-size:1rem; margin:0; padding:0}
+.ielts-tfng-row .option.selected strong{background:none; color:inherit}
+/* List Selection (IELTS): nhóm checkbox chọn 2–3 đáp án, dùng lại kiểu
+   .option dọc của .exam-opts — ô checkbox hiện rõ trước nhãn chữ cái. */
+.ielts-multi .option input[type="checkbox"]{accent-color:var(--accent); width:1.05rem; height:1.05rem; flex:0 0 auto; margin-top:.15rem; cursor:pointer}
+/* Nút tăng/giảm cỡ chữ (A- / A+) ở đầu màn luyện/thi */
+.text-size{display:inline-flex; align-items:center; gap:.35rem}
+.text-size-label{font-weight:700; font-size:.85rem; color:var(--ink-soft); min-width:3.4rem; text-align:center}
+/* Thanh kéo chọn cỡ chữ (cùng 4 mức Nhỏ/Vừa/Lớn/Rất lớn như nút A-/A+). */
+.ts-slider{accent-color:var(--accent); width:110px; cursor:pointer}
+/* Bảng chọn cỡ chữ bật ra từ icon 🔠 trên thanh nav. */
+.text-size-popover{
+  position:absolute; right:0; top:calc(100% + .5rem); z-index:21;
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18); padding:.7rem .8rem; white-space:nowrap;
+}
+/* Cỡ chữ luyện/thi: Nhỏ (0) / Vừa (1, mặc định) / Lớn (2) / Rất lớn (3) —
+   chỉ đổi chữ đoạn văn, chữ câu hỏi, phương án và kết quả chấm. */
+.ts-0 .passage, .ts-0 .paper-q p, .ts-0 .exam-opts .option, .ts-0 .ielts-tfng-row .option, .ts-0 .exam-q-result p, .ts-0 .paper-q input, .ts-0 .paper-q select{font-size:.9rem}
+.ts-0 .exam-q-num{font-size:1.05rem}
+.ts-2 .passage, .ts-2 .paper-q p, .ts-2 .exam-opts .option, .ts-2 .ielts-tfng-row .option, .ts-2 .exam-q-result p, .ts-2 .paper-q input, .ts-2 .paper-q select{font-size:1.12rem}
+.ts-2 .exam-q-num{font-size:1.3rem}
+.ts-3 .passage, .ts-3 .paper-q p, .ts-3 .exam-opts .option, .ts-3 .ielts-tfng-row .option, .ts-3 .exam-q-result p, .ts-3 .paper-q input, .ts-3 .paper-q select{font-size:1.25rem}
+.ts-3 .exam-q-num{font-size:1.45rem}
+/* Thanh tiến độ dính cuối màn luyện: luôn thấy "Xem kết quả" khi cuộn */
+.practice-bar{
+  position:sticky; bottom:0; z-index:5; background:var(--surface);
+  border-top:1px solid var(--border); padding:.5rem 0 .3rem; margin-top:.8rem;
+  display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap;
+}
+.practice-bar .progress{font-weight:700; color:var(--ink)}
+
+/* Nút "Nộp đáp án" từng câu (Practice): hàng inline gọn, không cộng
+   margin 1rem của .btn-row mặc định */
+.paper-q > .btn-row{margin:.55rem 0 0}
+
+/* Hộp nghe/TTS trong tờ đề: CHỈ 1 NÚT duy nhất — bấm để phát, bấm lại
+   để tạm dừng, phát xong thành "Nghe lại". Không còn thanh điều khiển
+   mặc định của <audio> (thẻ audio ẩn), không còn hàng nhiều nút TTS.
+   Nhưng vẫn chỉnh được từng đoạn như bản đầu: vạch tiến trình bấm/kéo
+   được để tua tới đoạn cần nghe + thanh trượt tốc độ 0.5–1.5x. Nút nằm
+   ở đầu khối nội dung bên trái (sau ảnh, trước chữ câu hỏi). */
+.paper .audio-box{
+  display:flex; flex-direction:column; align-items:stretch; gap:.4rem;
+  padding:.5rem .6rem; margin:.4rem 0; border-radius:10px; box-shadow:none;
+}
+.paper .audio-box audio{display:none}
+.paper .audio-box .listen-btn{
+  padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:10px;
+  box-shadow:none; text-align:left;
+}
+.listen-progress{height:8px; border-radius:4px; background:var(--track); overflow:hidden; cursor:pointer; touch-action:none}
+.listen-progress i{display:block; height:100%; background:var(--accent); border-radius:4px}
+.listen-seek-row{display:flex; align-items:center; gap:.5rem}
+.listen-seek-row .listen-progress{flex:1; min-width:0}
+.listen-time{font-size:.8rem; color:var(--ink-soft); white-space:nowrap}
+.listen-rate{display:flex; align-items:center; gap:.5rem; font-size:.85rem; color:var(--ink-soft)}
+.listen-rate label{white-space:nowrap}
+.listen-rate input[type="range"]{flex:1; min-width:0; accent-color:var(--accent)}
+/* Nút nghe DUY NHẤT của cả Part (khi luyện/thi trong 1 đề có file audio
+   cấp Part): 1 nút nằm ngay dưới tiêu đề PART X, trước câu đầu tiên của
+   Part — bấm 1 lần nghe hết cả Part trong lúc làm các câu. Hộp dùng cùng
+   kiểu với hộp audio trong tờ đề, chỉ khác là nằm ngoài .paper. */
+.part-audio{margin:.1rem 0 .6rem}
+.part-audio .audio-box{
+  display:flex; flex-direction:column; align-items:stretch; gap:.4rem;
+  padding:.5rem .6rem; border-radius:10px; box-shadow:none;
+}
+.part-audio .audio-box audio{display:none}
+.part-audio .audio-box .listen-btn{
+  padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:10px;
+  box-shadow:none; text-align:left;
+}
+.part-audio > p{margin:.3rem 0 0}
+/* Hộp nghe khi chưa có gì để phát (.audio-missing, render từ
+   components.tsx): phải RÕ RÀNG, nổi bật như khi có audio — viền vàng
+   đứt nét + nền vàng nhạt, nút "🔊 Nghe" to dễ thấy. Nút disabled nhưng
+   giữ nguyên độ rõ (không mờ đi như .btn:disabled mặc định) để trông như
+   cố ý, không như bị thiếu/mất nút. Hàng nút giữ gọn (không cộng margin
+   1rem của .btn-row mặc định). */
+.paper .audio-box.audio-missing .btn-row{margin:0}
+.audio-box.audio-missing{
+  border:1.5px dashed var(--warn-border) !important; background:var(--warn-bg) !important;
+}
+.audio-box.audio-missing .btn:disabled{opacity:1; cursor:not-allowed}
+.audio-missing-text{margin:0; font-size:.9rem; color:var(--ink); flex:1 1 220px; min-width:0}
+
+::selection{background:var(--accent-soft); color:var(--ink)}
+
+/* ============ IELTS giai đoạn 2 — màn chọn kỳ thi, đáp án điền từ, band ============ */
+.exam-pick{display:grid; gap:1rem}
+@media(min-width:640px){.exam-pick{grid-template-columns:1fr 1fr}}
+.exam-pick .card{cursor:pointer; text-align:center; padding:1.6rem 1.2rem}
+.exam-pick .card:hover{border-color:var(--accent); transform:translateY(-2px)}
+.exam-pick .card h2{margin:.4rem 0 .2rem}
+.word-count{font-size:.85rem; color:var(--muted); margin:.25rem 0 0}
+.word-count.over{color:var(--red-ink); font-weight:700}
+.band-num{font-weight:800; font-size:2rem; line-height:1.2; color:var(--accent-dark)}
+
+@media(max-width:640px){
+  h1{font-size:1.2rem}
+  .hero h1{font-size:1.25rem}
+  .big{font-size:1.2rem}
+  .topbar .brand{font-size:.95rem}
+  .container{padding:.8rem}
+  .card{padding:.9rem}
+  /* Header 1 hàng trên điện thoại: menu trượt ngang thay vì xếp chồng nhiều dòng */
+  .topbar{flex-wrap:nowrap; gap:.6rem}
+  .topbar nav{flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; flex:1 1 auto; min-width:0}
+  .topbar nav::-webkit-scrollbar{display:none}
+  .topbar nav a{white-space:nowrap}
+}
+
+/* ============ IELTS Giai đoạn 1 (v3): Hôm nay, quái, HP ============ */
+/* Dùng đúng biến Pastel sẵn có — không đổi giá trị theme cũ. */
+.monster-card{border:1px solid var(--border)}
+.monster-killed{border-color:var(--green-border); background:var(--green-bg)}
+.hp-bar{height:.6rem; background:var(--track); border-radius:999px; overflow:hidden}
+.hp-bar i{display:block; height:100%; background:var(--red); border-radius:999px}
+.monster-killed .hp-bar i{background:var(--green)}
+.today-bad-day{border:1px dashed var(--amber); background:var(--amber-bg)}

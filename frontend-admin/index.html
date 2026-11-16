@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <meta name="theme-color" content="#FDF8F3" />
+    <script>
+      /* Đặt chế độ sáng/tối trước khi trang vẽ để không bị chớp sáng:
+         ưu tiên lựa chọn đã lưu, chưa có thì theo hệ thống. */
+      try {
+        var t = localStorage.getItem('toeic_theme');
+        var dark = t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.content = dark ? '#211E1B' : '#FDF8F3';
+      } catch (e) {}
+    </script>
+    <style>
+      #root .boot{min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif}
+      html[data-theme='dark'] #root .boot{background:#211E1B;color:#a99e93}
+      html:not([data-theme='dark']) #root .boot{background:#FDF8F3;color:#8a7f74}
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản trị — Luyện thi TOEIC · IELTS</title>
+  </head>
+  <body>
+    <div id="root">
+      <div class="boot"><p style="text-align:center">⏳<br />Đang mở app…</p></div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
