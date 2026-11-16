@@ -100,9 +100,17 @@ hr{border:none; border-top:1px solid var(--border); margin:.9rem 0}
 }
 .sidebar nav a:hover{border-color:var(--border); color:var(--ink); background:var(--surface-soft)}
 .sidebar nav a.active{border-color:transparent; color:#fff; background:var(--accent)}
-/* Đáy thanh bên: tên tài khoản + nút đăng xuất + đổi sáng/tối. */
-.sidebar-footer{margin-top:auto; display:flex; flex-direction:column; gap:.5rem; align-items:flex-start; padding:.5rem}
-.sidebar-user{font-weight:600}
+/* Cụm tài khoản ở cuối sidebar: đặt ngay sau mục điều hướng (không ép
+   dính đáy — tránh khoảng trống lớn giữa nav và cụm cuối), ngăn cách
+   bằng đường kẻ; avatar + tên/vai trò + đăng xuất + đổi sáng/tối gom
+   thành một hàng gọn. */
+.sidebar-footer{margin-top:.9rem; padding:.7rem .5rem 0; border-top:1px solid var(--border)}
+.sidebar-account{display:flex; align-items:center; gap:.55rem; min-width:0}
+.sidebar-avatar{flex:0 0 auto; width:2rem; height:2rem; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; background:var(--accent); color:#fff; font-size:.95rem; font-weight:800; line-height:1}
+.sidebar-account-info{flex:1; min-width:0; display:flex; flex-direction:column; line-height:1.25}
+.sidebar-user{font-weight:700; font-size:.9rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.sidebar-role{font-size:.78rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.sidebar-account .theme-toggle, .sidebar-logout{width:2rem; height:2rem; font-size:1rem}
 
 /* Nút icon tròn (đổi bài thi) + avatar (hồ sơ) ở cụm phải header. */
 .icon-btn{
@@ -743,7 +751,7 @@ tbody tr:hover{background:var(--surface-soft)}
   .sidebar nav{flex-direction:row; overflow-x:auto; scrollbar-width:none; flex:1 1 auto; min-width:0}
   .sidebar nav::-webkit-scrollbar{display:none}
   .sidebar nav a{white-space:nowrap}
-  .sidebar-footer{margin-top:0; flex-direction:row; align-items:center; margin-left:auto}
+  .sidebar-footer{margin-top:0; padding:0; border-top:none; margin-left:auto}
 }
 
 /* ============ IELTS Giai đoạn 1 (v3): Hôm nay, quái, HP ============ */
