@@ -1,0 +1,2495 @@
+[
+  {
+    "id": "IELTS-L-S1-001",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "Name of the visitor: ______",
+    "explanation": "Trong đoạn hội thoại, khách nói tên của mình là Daniel Carter.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "form_completion",
+    "wordLimit": 2,
+    "acceptedAnswers": [],
+    "correctText": "Daniel Carter",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-002",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "The library tour starts at ______.",
+    "explanation": "Nhân viên nói tour bắt đầu lúc 9.30 sáng.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "form_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [
+      "9:30",
+      "half past nine"
+    ],
+    "correctText": "9.30",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-003",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "Phone number of the visitor: ______",
+    "explanation": "Khách đọc số điện thoại là 0798 456 213.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "form_completion",
+    "wordLimit": 3,
+    "acceptedAnswers": [],
+    "correctText": "0798 456 213",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-004",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "Number of people on the tour: ______",
+    "explanation": "Khách đi cùng em gái nên tổng cộng là hai người.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "form_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [
+      "2"
+    ],
+    "correctText": "two",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-005",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "Price of the tour per person: ______",
+    "explanation": "Tour có giá mười hai bảng một người; chỉ sinh viên mới được giảm còn tám bảng.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "form_completion",
+    "wordLimit": 2,
+    "acceptedAnswers": [
+      "12 pounds"
+    ],
+    "correctText": "twelve pounds",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-006",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "The tour lasts about ______.",
+    "explanation": "Nhân viên nói tour kéo dài khoảng hai giờ.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "sentence_completion",
+    "wordLimit": 2,
+    "acceptedAnswers": [
+      "2 hours"
+    ],
+    "correctText": "two hours",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-007",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "Visitors should meet at the ______.",
+    "explanation": "Điểm hẹn là ở lối vào chính, gần quầy thông tin.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "sentence_completion",
+    "wordLimit": 2,
+    "acceptedAnswers": [],
+    "correctText": "main entrance",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-008",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "The tour ends in the ______ on the ground floor.",
+    "explanation": "Tour kết thúc ở quán cà phê tại tầng trệt.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [
+      "café"
+    ],
+    "correctText": "cafe",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-009",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "What does Daniel do?",
+    "explanation": "Daniel nói rõ anh ấy không phải sinh viên mà làm việc tại một trường học địa phương.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "He works at a local school"
+      },
+      {
+        "label": "B",
+        "content": "He is a student"
+      },
+      {
+        "label": "C",
+        "content": "He works at the library"
+      },
+      {
+        "label": "D",
+        "content": "He is a tour guide"
+      }
+    ],
+    "correct": "A",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S1-010",
+    "exam": "ielts",
+    "part": 1,
+    "passageId": "IELTS-L-S1",
+    "passageTitle": "Section 1 — Library tour booking",
+    "passageText": null,
+    "script": "Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours. Can I take your name, please? Yes, it is Daniel Carter. Daniel Carter. And your phone number? It is 0798 456 213. Thank you. How many people will come with you? Just my sister. So, two people in total. Fine. The tour costs twelve pounds per person, but students pay only eight pounds. Are you a student? No, I am not. I work at a local school, actually. I see. The meeting point is at the main entrance, near the information desk. Please arrive ten minutes early. OK. Is there anything I should bring? Just your booking reference. I will send it to your email. What is your email address? It is daniel.carter at example dot com. Thank you. The tour will visit the reading room, the old maps collection, and the children's library. It ends in the cafe on the ground floor. That sounds great. Thank you very much. You are welcome. See you on Saturday.",
+    "content": "What should Daniel bring to the tour?",
+    "explanation": "Nhân viên nói chỉ cần mang theo mã đặt chỗ (booking reference) được gửi qua email.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "His student card"
+      },
+      {
+        "label": "B",
+        "content": "His booking reference"
+      },
+      {
+        "label": "C",
+        "content": "Some money"
+      },
+      {
+        "label": "D",
+        "content": "A map of the library"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-001",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "When did Greenfield Botanical Garden first open?",
+    "explanation": "Người hướng dẫn nói vườn mở cửa lần đầu vào năm 1985.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "1975"
+      },
+      {
+        "label": "B",
+        "content": "1985"
+      },
+      {
+        "label": "C",
+        "content": "1995"
+      },
+      {
+        "label": "D",
+        "content": "2005"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-002",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "When does the garden close on Mondays in winter?",
+    "explanation": "Vào mùa đông, thứ Hai vườn đóng cửa sớm hơn, lúc bốn giờ chiều.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "At 4 o'clock"
+      },
+      {
+        "label": "B",
+        "content": "At 5 o'clock"
+      },
+      {
+        "label": "C",
+        "content": "At 6 o'clock"
+      },
+      {
+        "label": "D",
+        "content": "At 7 o'clock"
+      }
+    ],
+    "correct": "A",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-003",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "What can visitors do in the Lake Area in summer?",
+    "explanation": "Ở khu vực hồ, du khách có thể thuê một chiếc thuyền nhỏ vào mùa hè.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Swim in the lake"
+      },
+      {
+        "label": "B",
+        "content": "Fish in the lake"
+      },
+      {
+        "label": "C",
+        "content": "Hire a small boat"
+      },
+      {
+        "label": "D",
+        "content": "Feed the ducks"
+      }
+    ],
+    "correct": "C",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-004",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "According to the speaker, what should visitors NOT do?",
+    "explanation": "Người hướng dẫn nhắc du khách đi trên lối đi và không được hái hoa.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Stay on the paths"
+      },
+      {
+        "label": "B",
+        "content": "Pick the flowers"
+      },
+      {
+        "label": "C",
+        "content": "Ask a member of staff"
+      },
+      {
+        "label": "D",
+        "content": "Visit the cafe"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-005",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "Which area has more than two hundred kinds of roses?",
+    "explanation": "Vườn hồng ở phía đông có hơn hai trăm loại hoa hồng.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "matching",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Rose Garden"
+      },
+      {
+        "label": "B",
+        "content": "Tropical House"
+      },
+      {
+        "label": "C",
+        "content": "Children's Garden"
+      },
+      {
+        "label": "D",
+        "content": "Lake Area"
+      }
+    ],
+    "correct": "A",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-006",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "Which area has plants from hot countries?",
+    "explanation": "Nhà kính nhiệt đới là tòa nhà kính ấm, bên trong có cây từ các nước nóng.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "matching",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Rose Garden"
+      },
+      {
+        "label": "B",
+        "content": "Tropical House"
+      },
+      {
+        "label": "C",
+        "content": "Children's Garden"
+      },
+      {
+        "label": "D",
+        "content": "Lake Area"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-007",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "Which area has a garden where children can plant seeds?",
+    "explanation": "Vườn trẻ em gần hồ có khu vườn để trẻ em trồng hạt giống.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "matching",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Rose Garden"
+      },
+      {
+        "label": "B",
+        "content": "Tropical House"
+      },
+      {
+        "label": "C",
+        "content": "Children's Garden"
+      },
+      {
+        "label": "D",
+        "content": "Lake Area"
+      }
+    ],
+    "correct": "C",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-008",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "On the map, the building just inside the entrance, on the left, is the ______.",
+    "explanation": "Quán cà phê nằm ngay bên trong lối vào, phía bên trái.",
+    "topic": "ielts-listening",
+    "difficulty": "hard",
+    "questionType": "labelling",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Entrance"
+      },
+      {
+        "label": "B",
+        "content": "Cafe"
+      },
+      {
+        "label": "C",
+        "content": "Gift Shop"
+      },
+      {
+        "label": "D",
+        "content": "Greenhouse"
+      },
+      {
+        "label": "E",
+        "content": "Pond"
+      },
+      {
+        "label": "F",
+        "content": "Car Park"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-009",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "On the map, the building in the north, behind the Tropical House, is the ______.",
+    "explanation": "Nhà kính nằm ở phía bắc, phía sau Nhà kính nhiệt đới.",
+    "topic": "ielts-listening",
+    "difficulty": "hard",
+    "questionType": "labelling",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Entrance"
+      },
+      {
+        "label": "B",
+        "content": "Cafe"
+      },
+      {
+        "label": "C",
+        "content": "Gift Shop"
+      },
+      {
+        "label": "D",
+        "content": "Greenhouse"
+      },
+      {
+        "label": "E",
+        "content": "Pond"
+      },
+      {
+        "label": "F",
+        "content": "Car Park"
+      }
+    ],
+    "correct": "D",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S2-010",
+    "exam": "ielts",
+    "part": 2,
+    "passageId": "IELTS-L-S2",
+    "passageTitle": "Section 2 — Greenfield Botanical Garden",
+    "passageText": null,
+    "script": "Good morning, everyone, and welcome to Greenfield Botanical Garden. My name is Sarah, and I will show you around today. The garden first opened in 1985, and it now covers more than forty hectares of land. We open every day from nine in the morning until six in the evening. In winter, on Mondays, we close earlier, at four o'clock. There are four main areas to visit. First, the Rose Garden, in the east of the park, has more than two hundred kinds of roses, and it is most beautiful in June. Second, the Tropical House is a large warm glass building in the north. Inside, you can see plants from hot countries, and the temperature is always above twenty degrees. Third, the Children's Garden, near the lake, has a small play area and a garden where children can plant seeds. Finally, the Lake Area, in the west, is a quiet place for walking, and visitors can hire a small boat there in summer. On the map, the main entrance is in the south, next to the car park. The cafe is just inside the entrance, on the left. The gift shop is near the cafe, and the greenhouse is in the north, behind the Tropical House. Please stay on the paths, and do not pick the flowers. If you need help, please ask a member of staff. Now, let us begin our walk at the Rose Garden.",
+    "content": "On the map, the area in the south, next to the main entrance, is the ______.",
+    "explanation": "Bãi đỗ xe nằm ở phía nam, cạnh lối vào chính.",
+    "topic": "ielts-listening",
+    "difficulty": "hard",
+    "questionType": "labelling",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Entrance"
+      },
+      {
+        "label": "B",
+        "content": "Cafe"
+      },
+      {
+        "label": "C",
+        "content": "Gift Shop"
+      },
+      {
+        "label": "D",
+        "content": "Greenhouse"
+      },
+      {
+        "label": "E",
+        "content": "Pond"
+      },
+      {
+        "label": "F",
+        "content": "Car Park"
+      }
+    ],
+    "correct": "F",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-001",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "Who will talk about solar power?",
+    "explanation": "Jack nói anh ấy sẽ nói về năng lượng mặt trời, với ví dụ ở một ngôi làng tại Tây Ban Nha.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "matching",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Emma"
+      },
+      {
+        "label": "B",
+        "content": "Jack"
+      },
+      {
+        "label": "C",
+        "content": "Maria"
+      },
+      {
+        "label": "D",
+        "content": "Dr Patel"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-002",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "Who will make a short video about a wind farm?",
+    "explanation": "Emma nói cô ấy có thể làm video hai phút về trang trại gió gần nhà mình.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "matching",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Emma"
+      },
+      {
+        "label": "B",
+        "content": "Jack"
+      },
+      {
+        "label": "C",
+        "content": "Maria"
+      },
+      {
+        "label": "D",
+        "content": "Dr Patel"
+      }
+    ],
+    "correct": "A",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-003",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "Who was going to talk about wind power?",
+    "explanation": "Maria đã nói sẽ phụ trách phần năng lượng gió, nhưng cô ấy đang ốm trong tuần này.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "matching",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Emma"
+      },
+      {
+        "label": "B",
+        "content": "Jack"
+      },
+      {
+        "label": "C",
+        "content": "Maria"
+      },
+      {
+        "label": "D",
+        "content": "Dr Patel"
+      }
+    ],
+    "correct": "C",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-004",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "Who said the presentation must be fifteen minutes long?",
+    "explanation": "Giáo viên hướng dẫn, Dr Patel, nói bài thuyết trình phải dài mười lăm phút và không thể đổi ngày.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "matching",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Emma"
+      },
+      {
+        "label": "B",
+        "content": "Jack"
+      },
+      {
+        "label": "C",
+        "content": "Maria"
+      },
+      {
+        "label": "D",
+        "content": "Dr Patel"
+      }
+    ],
+    "correct": "D",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-005",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "What is the group presentation about?",
+    "explanation": "Hai sinh viên đã thống nhất chủ đề là năng lượng tái tạo.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Wind farms"
+      },
+      {
+        "label": "B",
+        "content": "Renewable energy"
+      },
+      {
+        "label": "C",
+        "content": "Solar power in Spain"
+      },
+      {
+        "label": "D",
+        "content": "Energy use in villages"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-006",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "When is the presentation?",
+    "explanation": "Jack nói bài thuyết trình diễn ra vào thứ Sáu tuần sau và không thể đổi ngày.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Next Monday"
+      },
+      {
+        "label": "B",
+        "content": "Next Wednesday"
+      },
+      {
+        "label": "C",
+        "content": "Next Thursday"
+      },
+      {
+        "label": "D",
+        "content": "Next Friday"
+      }
+    ],
+    "correct": "D",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-007",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "How long must the presentation be?",
+    "explanation": "Dr Patel yêu cầu bài thuyết trình dài mười lăm phút.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Ten minutes"
+      },
+      {
+        "label": "B",
+        "content": "Fifteen minutes"
+      },
+      {
+        "label": "C",
+        "content": "Twenty minutes"
+      },
+      {
+        "label": "D",
+        "content": "Two minutes"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-008",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "Emma and Jack will meet again in the ______.",
+    "explanation": "Hai bạn hẹn gặp lại nhau vào thứ Tư lúc mười giờ tại thư viện.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "short_answer",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "library",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-009",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "Emma and Jack will meet again on ______.",
+    "explanation": "Hai bạn hẹn gặp lại vào thứ Tư để kiểm tra công việc.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "short_answer",
+    "wordLimit": 1,
+    "acceptedAnswers": [
+      "Wed"
+    ],
+    "correctText": "Wednesday",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S3-010",
+    "exam": "ielts",
+    "part": 3,
+    "passageId": "IELTS-L-S3",
+    "passageTitle": "Section 3 — Planning a group presentation",
+    "passageText": null,
+    "script": "Emma: Hi Jack, have we decided the topic for our group presentation yet? Jack: Yes, we agreed on renewable energy, but we still need to plan the parts. Emma: I think we should start with a short introduction about why energy use is growing. I can do that part. Jack: Good. Then I can talk about solar power. I found some clear examples from a village in Spain. Emma: That sounds interesting. What about wind power? Who will cover that? Jack: Maria said she would do wind power, but she is ill this week, so maybe I should do both solar and wind. Emma: That is a lot of work for one person. Perhaps we can ask our tutor for more time? Jack: Our tutor, Dr Patel, said the presentation must be fifteen minutes long, and we cannot change the date. It is next Friday. Emma: OK, so we have one week. We also need a short video. I can make a two-minute video about a wind farm near my home. Jack: Great. And we need a handout for the class. I can prepare that on Thursday. Emma: Perfect. Let us meet again on Wednesday to check our work. Jack: Wednesday at ten in the library? That works for me. Emma: Yes, see you then.",
+    "content": "The video Emma will make will be ______ long.",
+    "explanation": "Emma nói cô ấy sẽ làm một video dài hai phút.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "short_answer",
+    "wordLimit": 2,
+    "acceptedAnswers": [
+      "2 minutes"
+    ],
+    "correctText": "two minutes",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-001",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "The queen is the only bee that ______.",
+    "explanation": "Bài giảng nói ong chúa là con ong duy nhất đẻ trứng.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "sentence_completion",
+    "wordLimit": 2,
+    "acceptedAnswers": [],
+    "correctText": "lays eggs",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-002",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "The dance tells other bees the direction and the ______ of the flowers.",
+    "explanation": "Điệu nhảy của ong thợ cho các con ong khác biết hướng và khoảng cách tới hoa.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "distance",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-003",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "The process of moving pollen from one flower to another is called ______.",
+    "explanation": "Quá trình ong chuyển phấn hoa từ hoa này sang hoa khác được gọi là thụ phấn.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "pollination",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-004",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "Bee numbers are falling partly because of the loss of ______.",
+    "explanation": "Một nguyên nhân khiến số lượng ong giảm là mất đi các loài hoa dại.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "sentence_completion",
+    "wordLimit": 2,
+    "acceptedAnswers": [],
+    "correctText": "wild flowers",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-005",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "A honeybee colony has one queen, many worker bees and some ______.",
+    "explanation": "Một đàn ong mật gồm một ong chúa, nhiều ong thợ và một số ong đực gọi là drones.",
+    "topic": "ielts-listening",
+    "difficulty": "easy",
+    "questionType": "summary_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "drones",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-006",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "The queen can lay up to ______ eggs in one day in summer.",
+    "explanation": "Ong chúa có thể đẻ tới hai nghìn trứng trong một ngày vào mùa hè.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "summary_completion",
+    "wordLimit": 2,
+    "acceptedAnswers": [
+      "2000",
+      "2,000"
+    ],
+    "correctText": "two thousand",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-007",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "Farmers can help bees by planting more flowers and using ______ chemicals.",
+    "explanation": "Nông dân có thể giúp ong bằng cách trồng thêm hoa và dùng ít hóa chất hơn.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "summary_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "fewer",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-008",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "Worker bees collect ______ from flowers.",
+    "explanation": "Ong thợ thu thập mật hoa từ các bông hoa.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "short_answer",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "nectar",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-009",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "Bees help plants produce fruit and ______.",
+    "explanation": "Nhờ thụ phấn, cây có thể tạo ra quả và hạt.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "short_answer",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "seeds",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-L-S4-010",
+    "exam": "ielts",
+    "part": 4,
+    "passageId": "IELTS-L-S4",
+    "passageTitle": "Section 4 — Honeybees and farming",
+    "passageText": null,
+    "script": "Today, I would like to talk about honeybees and why they are important for farming. A honeybee colony has one queen, many worker bees, and some male bees, called drones. The queen is the only bee that lays eggs. She can lay up to two thousand eggs in one day in summer. Worker bees do almost all the work. They clean the hive, feed the young bees, and collect nectar from flowers. When a worker bee finds flowers with nectar, it returns to the hive and performs a special dance. This dance tells other bees the direction and the distance of the flowers. Bees are important because they move pollen from one flower to another. This process, called pollination, helps plants produce fruit and seeds. In fact, about one third of the food we eat depends on pollination by bees and other insects. However, bee numbers are falling in many countries. One reason is the loss of wild flowers. Another reason is the use of some chemicals on farms. Farmers can help bees by planting more flowers and by using fewer chemicals. In conclusion, honeybees are small, but they play a very large role in our food system, and we need to protect them.",
+    "content": "Honeybees play a very large role in our ______.",
+    "explanation": "Bài giảng kết luận ong mật đóng vai trò rất lớn trong hệ thống thực phẩm của chúng ta.",
+    "topic": "ielts-listening",
+    "difficulty": "medium",
+    "questionType": "short_answer",
+    "wordLimit": 2,
+    "acceptedAnswers": [],
+    "correctText": "food system",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-001",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "Urban parks were first created in the twentieth century.",
+    "explanation": "Bài đọc nói công viên đô thị bắt đầu xuất hiện từ thế kỷ 19, khi các thành phố phát triển nhanh, nên câu này là FALSE.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "true_false_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "TRUE",
+        "content": "TRUE"
+      },
+      {
+        "label": "FALSE",
+        "content": "FALSE"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "FALSE",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-002",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "Birkenhead Park was the first park paid for with public money.",
+    "explanation": "Bài đọc nói rõ Birkenhead Park là công viên đầu tiên trên thế giới được trả bằng tiền công, nên là TRUE.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "true_false_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "TRUE",
+        "content": "TRUE"
+      },
+      {
+        "label": "FALSE",
+        "content": "FALSE"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "TRUE",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-003",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "Central Park was designed by Frederick Law Olmsted and Calvert Vaux.",
+    "explanation": "Bài đọc nêu tên hai nhà thiết kế này, nên là TRUE.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "true_false_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "TRUE",
+        "content": "TRUE"
+      },
+      {
+        "label": "FALSE",
+        "content": "FALSE"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "TRUE",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-004",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "Early parks were built mainly for sport.",
+    "explanation": "Bài đọc nói công viên thời đầu chủ yếu để hít thở không khí trong lành và đi dạo, thể thao chỉ được thêm vào sau này, nên là FALSE.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "true_false_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "TRUE",
+        "content": "TRUE"
+      },
+      {
+        "label": "FALSE",
+        "content": "FALSE"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "FALSE",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-005",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "More people visit urban parks in summer than in winter.",
+    "explanation": "Bài chỉ nói công viên giúp làm mát thành phố vào mùa hè, không nói số lượng khách theo mùa nên là NOT GIVEN, không phải FALSE.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "true_false_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "TRUE",
+        "content": "TRUE"
+      },
+      {
+        "label": "FALSE",
+        "content": "FALSE"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "NOT GIVEN",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-006",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "In the nineteenth century, cities became crowded and ______.",
+    "explanation": "Bài đọc mô tả các thành phố trở nên đông đúc và bẩn thỉu khi nhiều người chuyển đến làm việc trong nhà máy.",
+    "topic": "ielts-reading",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "dirty",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-007",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "Birkenhead Park opened in ______.",
+    "explanation": "Công viên Birkenhead mở cửa vào năm 1847.",
+    "topic": "ielts-reading",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "1847",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-008",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "Central Park was designed in ______.",
+    "explanation": "Công viên Trung tâm ở New York được thiết kế vào năm 1858.",
+    "topic": "ielts-reading",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "1858",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-009",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "Today, urban parks help to cool cities in ______.",
+    "explanation": "Bài đọc nói công viên giúp làm mát thành phố vào mùa hè.",
+    "topic": "ielts-reading",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "summer",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-010",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "Why did city leaders begin to build public parks?",
+    "explanation": "Các bác sĩ thời đó tin rằng không khí trong lành và đi dạo trong thiên nhiên tốt cho sức khỏe, nên công viên được xây để cho người dân có không gian xanh.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "To provide places for sport"
+      },
+      {
+        "label": "B",
+        "content": "To give people fresh air and green space"
+      },
+      {
+        "label": "C",
+        "content": "To protect wild animals"
+      },
+      {
+        "label": "D",
+        "content": "To make money for the city"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-011",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "What gave ideas to the designers of Central Park?",
+    "explanation": "Olmsted và Vaux đã đến thăm Birkenhead Park, và công viên này đã truyền cảm hứng cho họ.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Birkenhead Park"
+      },
+      {
+        "label": "B",
+        "content": "A park in France"
+      },
+      {
+        "label": "C",
+        "content": "A large lake in New York"
+      },
+      {
+        "label": "D",
+        "content": "A sports field in London"
+      }
+    ],
+    "correct": "A",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-012",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "What problem do many urban parks face today?",
+    "explanation": "Bài đọc nói nhiều công viên gặp khó khăn về tiền vì chính quyền địa phương thường phải cắt giảm ngân sách.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Too many visitors"
+      },
+      {
+        "label": "B",
+        "content": "A lack of money for care"
+      },
+      {
+        "label": "C",
+        "content": "Too many trees"
+      },
+      {
+        "label": "D",
+        "content": "No space for concerts"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P1-013",
+    "exam": "ielts",
+    "part": 5,
+    "passageId": "IELTS-R-P1",
+    "passageTitle": "Passage 1 — The history of urban parks",
+    "passageText": "In the nineteenth century, cities in Europe and North America grew very quickly. Many people moved from the countryside to work in factories. Cities became crowded and dirty, and most people had little green space near their homes. Doctors at the time believed that fresh air and walking in nature were good for people's health, so city leaders began to think about building public parks.\n\nOne of the first parks of this kind was Birkenhead Park in England, which opened in 1847. It was the first park in the world paid for with public money, so everyone could visit it for free. The park had lakes, trees, and long paths for walking. It became very popular, and it gave ideas to park designers in other countries.\n\nIn the United States, the most famous example is Central Park in New York. It was designed in 1858 by Frederick Law Olmsted and Calvert Vaux, who had visited Birkenhead Park. They wanted to create a quiet, green place in the middle of a busy city. The park has large open lawns, a lake for boating, and many trees. It is still one of the most visited parks in the world today.\n\nEarly parks were not built mainly for sport. Their main purpose was to give people fresh air, a place to walk, and a break from busy city life. Later, in the twentieth century, parks began to add playgrounds, sports fields, and swimming pools, so they became places for active fun as well as for rest.\n\nToday, urban parks have many uses. They help to cool cities in summer, give homes to birds and insects, and provide a place for markets, concerts, and community events. Many people also use them to exercise and to meet friends. At weekends, families often meet in parks for picnics, games, and quiet walks under the trees, and children play safely far from busy roads. However, many parks now face problems with money, because local governments often have to cut their budgets. Without enough care, trees die and paths become broken. Many cities are now looking for new ways to protect their parks for the future.",
+    "script": null,
+    "content": "What is the main idea of the passage?",
+    "explanation": "Toàn bài kể lại lịch sử công viên đô thị từ thế kỷ 19 đến vai trò và khó khăn của chúng ngày nay.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "The history and present role of urban parks"
+      },
+      {
+        "label": "B",
+        "content": "How to design a sports field"
+      },
+      {
+        "label": "C",
+        "content": "Why cities need more factories"
+      },
+      {
+        "label": "D",
+        "content": "The life of Frederick Law Olmsted"
+      }
+    ],
+    "correct": "A",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-001",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Working from home has become more common in recent years.",
+    "explanation": "Bài đọc mở đầu rằng làm việc tại nhà đã trở nên rất phổ biến trong vài năm qua, nên là YES.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "yes_no_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "YES",
+        "content": "YES"
+      },
+      {
+        "label": "NO",
+        "content": "NO"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "YES",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-002",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "All workers prefer to work from home all the time.",
+    "explanation": "Bài chỉ nói một số người làm việc tại nhà toàn thời gian, một số làm theo hình thức kết hợp, không nói tất cả đều thích làm ở nhà, nên là NO.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "yes_no_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "YES",
+        "content": "YES"
+      },
+      {
+        "label": "NO",
+        "content": "NO"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "NO",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-003",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Companies can save money on office rent when fewer people come to the office.",
+    "explanation": "Bài đọc nói công ty cần ít không gian văn phòng hơn nên tiết kiệm được tiền thuê, nên là YES.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "yes_no_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "YES",
+        "content": "YES"
+      },
+      {
+        "label": "NO",
+        "content": "NO"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "YES",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-004",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Working from home always makes people feel less stressed.",
+    "explanation": "Bài đọc nói làm việc tại nhà có thể dẫn đến căng thẳng và mệt mỏi vì giờ làm kéo dài, nên là NO, không phải YES.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "yes_no_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "YES",
+        "content": "YES"
+      },
+      {
+        "label": "NO",
+        "content": "NO"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "NO",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-005",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Hybrid working is the most popular working pattern in every country.",
+    "explanation": "Bài chỉ nói nhiều chuyên gia cho rằng tương lai là làm việc kết hợp, không nói nó phổ biến nhất ở mọi quốc gia nên là NOT GIVEN, không phải NO.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "yes_no_not_given",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "YES",
+        "content": "YES"
+      },
+      {
+        "label": "NO",
+        "content": "NO"
+      },
+      {
+        "label": "NOT GIVEN",
+        "content": "NOT GIVEN"
+      }
+    ],
+    "correct": "NOT GIVEN",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-006",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Choose the correct heading for Paragraph 2.",
+    "explanation": "Đoạn 2 nói về lợi ích lớn nhất cho người lao động là thời gian: không phải đi lại, tiết kiệm tiền đi lại và có thêm thời gian cho gia đình.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "matching_headings",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "i",
+        "content": "The growth of remote work"
+      },
+      {
+        "label": "ii",
+        "content": "Saving time and money for workers"
+      },
+      {
+        "label": "iii",
+        "content": "Advantages for employers"
+      },
+      {
+        "label": "iv",
+        "content": "The problem of feeling alone"
+      },
+      {
+        "label": "v",
+        "content": "When work and home life mix"
+      },
+      {
+        "label": "vi",
+        "content": "A mix of office and home"
+      },
+      {
+        "label": "vii",
+        "content": "The future of city centres"
+      }
+    ],
+    "correct": "ii",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-007",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Choose the correct heading for Paragraph 3.",
+    "explanation": "Đoạn 3 nói về lợi ích cho công ty: tiết kiệm tiền thuê văn phòng và tuyển người ở xa.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "matching_headings",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "i",
+        "content": "The growth of remote work"
+      },
+      {
+        "label": "ii",
+        "content": "Saving time and money for workers"
+      },
+      {
+        "label": "iii",
+        "content": "Advantages for employers"
+      },
+      {
+        "label": "iv",
+        "content": "The problem of feeling alone"
+      },
+      {
+        "label": "v",
+        "content": "When work and home life mix"
+      },
+      {
+        "label": "vi",
+        "content": "A mix of office and home"
+      },
+      {
+        "label": "vii",
+        "content": "The future of city centres"
+      }
+    ],
+    "correct": "iii",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-008",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Choose the correct heading for Paragraph 4.",
+    "explanation": "Đoạn 4 nói về cảm giác cô đơn vì không gặp đồng nghiệp trực tiếp.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "matching_headings",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "i",
+        "content": "The growth of remote work"
+      },
+      {
+        "label": "ii",
+        "content": "Saving time and money for workers"
+      },
+      {
+        "label": "iii",
+        "content": "Advantages for employers"
+      },
+      {
+        "label": "iv",
+        "content": "The problem of feeling alone"
+      },
+      {
+        "label": "v",
+        "content": "When work and home life mix"
+      },
+      {
+        "label": "vi",
+        "content": "A mix of office and home"
+      },
+      {
+        "label": "vii",
+        "content": "The future of city centres"
+      }
+    ],
+    "correct": "iv",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-009",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Choose the correct heading for Paragraph 6.",
+    "explanation": "Đoạn 6 nói về tương lai là sự kết hợp giữa văn phòng và làm việc tại nhà.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "matching_headings",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "i",
+        "content": "The growth of remote work"
+      },
+      {
+        "label": "ii",
+        "content": "Saving time and money for workers"
+      },
+      {
+        "label": "iii",
+        "content": "Advantages for employers"
+      },
+      {
+        "label": "iv",
+        "content": "The problem of feeling alone"
+      },
+      {
+        "label": "v",
+        "content": "When work and home life mix"
+      },
+      {
+        "label": "vi",
+        "content": "A mix of office and home"
+      },
+      {
+        "label": "vii",
+        "content": "The future of city centres"
+      }
+    ],
+    "correct": "vi",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-010",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "New technology makes it easy for people to join ______ online.",
+    "explanation": "Bài đọc nói công nghệ mới giúp mọi người dễ dàng tham gia các cuộc họp trực tuyến.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "summary_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "meetings",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-011",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "People who work from home save money on ______.",
+    "explanation": "Người làm việc tại nhà tiết kiệm tiền đi lại vì không cần đến văn phòng mỗi ngày.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "summary_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "travel",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-012",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "Some people work longer hours at home because they do not have a clear end to the ______.",
+    "explanation": "Bài đọc nói một số người làm việc lâu hơn vì không có điểm kết thúc rõ ràng cho ngày làm việc.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "summary_completion",
+    "wordLimit": 2,
+    "acceptedAnswers": [
+      "work day"
+    ],
+    "correctText": "working day",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P2-013",
+    "exam": "ielts",
+    "part": 6,
+    "passageId": "IELTS-R-P2",
+    "passageTitle": "Passage 2 — Working from home",
+    "passageText": "Paragraph 1: In the past few years, working from home has become very common in many countries. New technology makes it easy for people to talk to their workmates, share files, and join meetings online. Many workers now spend some days at home and some days in the office, and some work from home all the time.\n\nParagraph 2: For workers, the biggest benefit is time. People who work from home do not need to travel to the office every day, so they save money on travel and have more time for family and rest. They can also choose the hours when they work best, for example early in the morning or late in the evening.\n\nParagraph 3: Companies can also benefit. When fewer people come to the office, a company needs less office space, so it can save money on rent. It can also employ people who live far away, even in other cities or countries, so it has a wider choice of workers.\n\nParagraph 4: However, working from home is not always easy. Some people feel lonely because they do not see their workmates face to face. They may also find it hard to ask for help quickly, and new workers may take longer to learn how the team works.\n\nParagraph 5: Another problem is that work and home life can mix together. Some people work longer hours at home because they do not have a clear end to the working day. They may check emails late at night and find it hard to relax, which can lead to stress and tiredness.\n\nParagraph 6: For these reasons, many experts think the future is a mix of office and home, often called hybrid working. People come to the office on some days to meet their team and work together, and they work from home on other days to do work that needs quiet and focus.\n\nParagraph 7: In conclusion, working from home brings clear benefits, but it also has problems. The best result may come from a careful balance, where workers, companies, and managers agree on a pattern that works for everyone.",
+    "script": null,
+    "content": "In hybrid working, people work from home on days when they need quiet and ______.",
+    "explanation": "Trong mô hình kết hợp, người ta làm việc tại nhà vào những ngày cần sự yên tĩnh và tập trung.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "summary_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "focus",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-001",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "Which paragraph describes a study comparing students who slept with students who stayed awake?",
+    "explanation": "Đoạn B mô tả nghiên cứu của Dr Helen Marsh so sánh nhóm ngủ tám giờ với nhóm thức.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "matching_information",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Paragraph A"
+      },
+      {
+        "label": "B",
+        "content": "Paragraph B"
+      },
+      {
+        "label": "C",
+        "content": "Paragraph C"
+      },
+      {
+        "label": "D",
+        "content": "Paragraph D"
+      },
+      {
+        "label": "E",
+        "content": "Paragraph E"
+      },
+      {
+        "label": "F",
+        "content": "Paragraph F"
+      },
+      {
+        "label": "G",
+        "content": "Paragraph G"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-002",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "Which paragraph explains that the brain moves memories to a long-term store during deep sleep?",
+    "explanation": "Đoạn C giải thích trong giai đoạn ngủ sóng chậm, não chuyển ký ức từ bộ nhớ ngắn hạn sang dài hạn.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "matching_information",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Paragraph A"
+      },
+      {
+        "label": "B",
+        "content": "Paragraph B"
+      },
+      {
+        "label": "C",
+        "content": "Paragraph C"
+      },
+      {
+        "label": "D",
+        "content": "Paragraph D"
+      },
+      {
+        "label": "E",
+        "content": "Paragraph E"
+      },
+      {
+        "label": "F",
+        "content": "Paragraph F"
+      },
+      {
+        "label": "G",
+        "content": "Paragraph G"
+      }
+    ],
+    "correct": "C",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-003",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "Which paragraph describes the benefits of a short afternoon nap?",
+    "explanation": "Đoạn E nói giấc ngủ trưa ngắn hai mươi phút có thể giúp ghi nhớ thông tin mới.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "matching_information",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Paragraph A"
+      },
+      {
+        "label": "B",
+        "content": "Paragraph B"
+      },
+      {
+        "label": "C",
+        "content": "Paragraph C"
+      },
+      {
+        "label": "D",
+        "content": "Paragraph D"
+      },
+      {
+        "label": "E",
+        "content": "Paragraph E"
+      },
+      {
+        "label": "F",
+        "content": "Paragraph F"
+      },
+      {
+        "label": "G",
+        "content": "Paragraph G"
+      }
+    ],
+    "correct": "E",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-004",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "Which paragraph gives advice on how much sleep adults should get?",
+    "explanation": "Đoạn G khuyên người lớn nên ngủ bảy đến chín giờ mỗi đêm và đi ngủ đúng giờ.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "matching_information",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Paragraph A"
+      },
+      {
+        "label": "B",
+        "content": "Paragraph B"
+      },
+      {
+        "label": "C",
+        "content": "Paragraph C"
+      },
+      {
+        "label": "D",
+        "content": "Paragraph D"
+      },
+      {
+        "label": "E",
+        "content": "Paragraph E"
+      },
+      {
+        "label": "F",
+        "content": "Paragraph F"
+      },
+      {
+        "label": "G",
+        "content": "Paragraph G"
+      }
+    ],
+    "correct": "G",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-005",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "Who found that the time of sleep matters, not only the length of sleep?",
+    "explanation": "Dr Sara Kim phát hiện thời điểm đi ngủ cũng quan trọng, không chỉ thời lượng ngủ.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "matching_features",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Dr Helen Marsh"
+      },
+      {
+        "label": "B",
+        "content": "Professor David Chen"
+      },
+      {
+        "label": "C",
+        "content": "Dr Sara Kim"
+      }
+    ],
+    "correct": "C",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-006",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "Who studied the brain during slow-wave sleep?",
+    "explanation": "Giáo sư David Chen nghiên cứu não bộ trong giấc ngủ và thấy giai đoạn ngủ sóng chậm rất quan trọng cho trí nhớ.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "matching_features",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Dr Helen Marsh"
+      },
+      {
+        "label": "B",
+        "content": "Professor David Chen"
+      },
+      {
+        "label": "C",
+        "content": "Dr Sara Kim"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-007",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "Who studied students learning new words in a foreign language?",
+    "explanation": "Dr Helen Marsh nghiên cứu sinh viên học từ mới ngoại ngữ và so sánh nhóm ngủ với nhóm thức.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "matching_features",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "Dr Helen Marsh"
+      },
+      {
+        "label": "B",
+        "content": "Professor David Chen"
+      },
+      {
+        "label": "C",
+        "content": "Dr Sara Kim"
+      }
+    ],
+    "correct": "A",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-008",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "According to the passage, what happens to new memories during sleep?",
+    "explanation": "Bài đọc nói vào ban đêm, não xử lý các ký ức mới và làm chúng mạnh hơn.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "They become weaker"
+      },
+      {
+        "label": "B",
+        "content": "They are made stronger"
+      },
+      {
+        "label": "C",
+        "content": "They move to the eyes"
+      },
+      {
+        "label": "D",
+        "content": "They are forgotten at once"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-009",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "What can happen if people often sleep less than six hours a night?",
+    "explanation": "Bài đọc cảnh báo người thường ngủ dưới sáu giờ có thể gặp khó khăn về chú ý và học tập.",
+    "topic": "ielts-reading",
+    "difficulty": "medium",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "They remember more words"
+      },
+      {
+        "label": "B",
+        "content": "They have trouble with attention and learning"
+      },
+      {
+        "label": "C",
+        "content": "They need no naps"
+      },
+      {
+        "label": "D",
+        "content": "They sleep better the next night"
+      }
+    ],
+    "correct": "B",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-010",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "What is the main purpose of the passage?",
+    "explanation": "Toàn bài trình bày các nghiên cứu về giấc ngủ và trí nhớ cùng lời khuyên để ngủ tốt hơn.",
+    "topic": "ielts-reading",
+    "difficulty": "hard",
+    "questionType": "multiple_choice",
+    "wordLimit": null,
+    "acceptedAnswers": [],
+    "correctText": null,
+    "options": [
+      {
+        "label": "A",
+        "content": "To describe research on sleep and memory"
+      },
+      {
+        "label": "B",
+        "content": "To compare two universities"
+      },
+      {
+        "label": "C",
+        "content": "To explain how to learn a language"
+      },
+      {
+        "label": "D",
+        "content": "To warn people not to take naps"
+      }
+    ],
+    "correct": "A",
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-011",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "If we do not sleep enough, we often forget things more ______.",
+    "explanation": "Bài đọc nói nếu ngủ không đủ, chúng ta thường quên mọi thứ nhanh hơn.",
+    "topic": "ielts-reading",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [],
+    "correctText": "quickly",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-012",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "A deep stage of sleep is called ______ sleep.",
+    "explanation": "Giai đoạn ngủ sâu quan trọng cho trí nhớ được gọi là ngủ sóng chậm.",
+    "topic": "ielts-reading",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [
+      "slow wave"
+    ],
+    "correctText": "slow-wave",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-013",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "A short nap of ______ minutes in the afternoon can help memory.",
+    "explanation": "Bài đọc nói giấc ngủ trưa ngắn hai mươi phút buổi chiều có thể giúp ghi nhớ.",
+    "topic": "ielts-reading",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [
+      "20"
+    ],
+    "correctText": "twenty",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  },
+  {
+    "id": "IELTS-R-P3-014",
+    "exam": "ielts",
+    "part": 7,
+    "passageId": "IELTS-R-P3",
+    "passageTitle": "Passage 3 — Sleep and memory",
+    "passageText": "Paragraph A: Sleep is important for memory, but scientists are still learning exactly how it works. During the day, we learn many new things. At night, while we sleep, the brain works on these new memories and makes them stronger. If we do not sleep enough, we often forget things more quickly.\n\nParagraph B: Dr Helen Marsh, a scientist at Greenfield University, studied students who were learning new words in a foreign language. One group slept for eight hours after learning, and the other group stayed awake. The next day, the group that had slept remembered far more words than the group that had stayed awake.\n\nParagraph C: Professor David Chen studied the brain during sleep. He found that a deep stage of sleep, called slow-wave sleep, is very important for memory. During this stage, the brain moves memories from a short-term store to a long-term store. People who get more slow-wave sleep often remember facts better.\n\nParagraph D: However, sleep is not only about how long we sleep. Dr Sara Kim found that the time when we sleep also matters. In her study, students who went to bed early and woke up early remembered more than students who went to bed very late, even when both groups slept for the same number of hours.\n\nParagraph E: Another important finding is about naps. A short nap of twenty minutes in the afternoon can help people remember new information. However, a very long nap of more than one hour can make people feel tired and may not help memory as much.\n\nParagraph F: Scientists also warn that too little sleep over a long time can cause serious problems. People who often sleep less than six hours a night may have more trouble with attention and learning. They may also have a higher risk of health problems later in life.\n\nParagraph G: In conclusion, good sleep helps us learn and remember. Experts suggest that adults should sleep for seven to nine hours a night, go to bed at a regular time, and avoid bright screens before bed. These simple habits may help the brain keep new memories for longer.",
+    "script": null,
+    "content": "Experts suggest that adults should sleep for seven to ______ hours a night.",
+    "explanation": "Chuyên gia khuyên người lớn nên ngủ từ bảy đến chín giờ mỗi đêm.",
+    "topic": "ielts-reading",
+    "difficulty": "easy",
+    "questionType": "sentence_completion",
+    "wordLimit": 1,
+    "acceptedAnswers": [
+      "9"
+    ],
+    "correctText": "nine",
+    "options": [],
+    "correct": null,
+    "testSetId": "TS-024"
+  }
+]

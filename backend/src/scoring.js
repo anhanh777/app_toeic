@@ -95,4 +95,85 @@ function levelLabel(totalScore) {
   return 'Xuat sac';
 }
 
-module.exports = { SCORE_TABLE, scoreSection, scoreFullTest, levelLabel };
+/* ---------------- IELTS band (Listening + Reading, 0-9) ----------------
+ * Bang quy doi tham khao cong khai, band uoc luong de tham khao — moi de
+ * that co the lech 1 cau o moc quy doi. Moi bang la danh sach
+ * [so cau dung TOI THIEU cho band do, band], sap xep giam dan theo so cau.
+ * Nguon: bang quy doi IELTS tham khao cong khai (vi du cac bang tren
+ * ielts.org va cac trang luyen thi).
+ */
+const IELTS_LISTENING_BAND_TABLE = [
+  [39, 9.0],
+  [37, 8.5],
+  [35, 8.0],
+  [33, 7.5],
+  [30, 7.0],
+  [28, 6.5],
+  [26, 6.0],
+  [23, 5.5],
+  [20, 5.0],
+  [18, 4.5],
+  [16, 4.0],
+  [13, 3.5],
+  [10, 3.0],
+  [8, 2.5],
+  [6, 2.0],
+  [4, 1.5],
+  [0, 1.0],
+];
+
+const IELTS_READING_BAND_TABLE = [
+  [39, 9.0],
+  [37, 8.5],
+  [35, 8.0],
+  [33, 7.5],
+  [31, 7.0],
+  [29, 6.5],
+  [27, 6.0],
+  [25, 5.5],
+  [23, 5.0],
+  [21, 4.5],
+  [19, 4.0],
+  [17, 3.5],
+  [15, 3.0],
+  [13, 2.5],
+  [11, 2.0],
+  [9, 1.5],
+  [0, 1.0],
+];
+
+/**
+ * So cau dung (0..40) -> band mot ky nang.
+ * @param {number} correct - so cau dung
+ * @param {'listening'|'reading'} skill
+ * @returns {number} band 1.0..9.0
+ */
+function ieltsBandForSkill(correct, skill) {
+  const table = skill === 'reading' ? IELTS_READING_BAND_TABLE : IELTS_LISTENING_BAND_TABLE;
+  const c = Math.max(0, Math.min(40, Number(correct) || 0));
+  for (const [minCorrect, band] of table) {
+    if (c >= minCorrect) return band;
+  }
+  return 1.0;
+}
+
+/**
+ * Band tong giai doan 2 (chi Listening + Reading) = trung binh 2 band,
+ * lam tron toi 0.5 gan nhat.
+ */
+function ieltsOverallBand(listeningBand, readingBand) {
+  const avg = (Number(listeningBand) + Number(readingBand)) / 2;
+  return Math.round(avg * 2) / 2;
+}
+
+/** Nhan muc danh gia goi y theo band tong (tham khao, khong phai chuan chinh thuc). */
+function ieltsBandLabel(band) {
+  if (band == null) return null;
+  if (band < 5) return 'Cơ bản';
+  if (band < 6) return 'Trung bình';
+  if (band < 7) return 'Khá';
+  if (band < 8) return 'Tốt';
+  return 'Xuất sắc';
+}
+
+module.exports = { SCORE_TABLE, scoreSection, scoreFullTest, levelLabel, IELTS_LISTENING_BAND_TABLE, IELTS_READING_BAND_TABLE, ieltsBandForSkill, ieltsOverallBand, ieltsBandLabel };

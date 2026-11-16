@@ -63,6 +63,7 @@ CREATE TABLE IF NOT EXISTS test_sets (
   description TEXT,
   total_questions INTEGER DEFAULT 0,
   is_published INTEGER DEFAULT 0,
+  exam TEXT DEFAULT 'toeic',
   created_at TEXT
 );
 CREATE TABLE IF NOT EXISTS questions (
@@ -78,7 +79,11 @@ CREATE TABLE IF NOT EXISTS questions (
   script TEXT,
   passage_text TEXT,
   image_url TEXT,
-  audio_url TEXT
+  audio_url TEXT,
+  question_type TEXT,
+  word_limit INTEGER,
+  accepted_answers TEXT,
+  correct_text TEXT
 );
 CREATE TABLE IF NOT EXISTS options (
   question_id TEXT,
@@ -95,7 +100,9 @@ CREATE TABLE IF NOT EXISTS passages (
   content TEXT,
   script TEXT,
   type TEXT,
-  audio_url TEXT
+  audio_url TEXT,
+  exam TEXT,
+  passage_type TEXT
 );
 CREATE TABLE IF NOT EXISTS part_media (
   test_set_id TEXT NOT NULL,
@@ -109,7 +116,8 @@ CREATE TABLE IF NOT EXISTS vocabulary (
   phonetic TEXT,
   meaning TEXT,
   example TEXT,
-  topic TEXT
+  topic TEXT,
+  exam TEXT DEFAULT 'toeic'
 );
 CREATE TABLE IF NOT EXISTS attempts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -127,7 +135,11 @@ CREATE TABLE IF NOT EXISTS attempts (
   reading_score INTEGER,
   total_score INTEGER,
   xp_earned INTEGER,
-  leaderboard_eligible INTEGER DEFAULT 1
+  leaderboard_eligible INTEGER DEFAULT 1,
+  exam TEXT DEFAULT 'toeic',
+  listening_band REAL,
+  reading_band REAL,
+  overall_band REAL
 );
 CREATE TABLE IF NOT EXISTS answers (
   attempt_id INTEGER,
@@ -169,6 +181,18 @@ function initDb() {
   ensureColumn('questions', 'test_set_id', 'TEXT');
   ensureColumn('questions', 'image_url', 'TEXT');
   ensureColumn('questions', 'audio_url', 'TEXT');
+  ensureColumn('questions', 'question_type', 'TEXT');
+  ensureColumn('questions', 'word_limit', 'INTEGER');
+  ensureColumn('questions', 'accepted_answers', 'TEXT');
+  ensureColumn('questions', 'correct_text', 'TEXT');
+  ensureColumn('test_sets', 'exam', "TEXT DEFAULT 'toeic'");
+  ensureColumn('attempts', 'exam', "TEXT DEFAULT 'toeic'");
+  ensureColumn('attempts', 'listening_band', 'REAL');
+  ensureColumn('attempts', 'reading_band', 'REAL');
+  ensureColumn('attempts', 'overall_band', 'REAL');
+  ensureColumn('passages', 'exam', 'TEXT');
+  ensureColumn('passages', 'passage_type', 'TEXT');
+  ensureColumn('vocabulary', 'exam', "TEXT DEFAULT 'toeic'");
   ensureColumn('passages', 'test_set_id', 'TEXT');
   ensureColumn('passages', 'audio_url', 'TEXT');
   ensureColumn('attempts', 'test_set_id', 'TEXT');
@@ -231,8 +255,21 @@ function mapQuestion(row, opts, passage) {
     difficulty: row.difficulty || null,
     imageUrl: row.image_url || null,
     audioUrl: row.audio_url || (passage && passage.audio_url) || null,
+    questionType: row.question_type || 'multiple_choice',
+    wordLimit: row.word_limit != null ? row.word_limit : null,
     options: (opts || []).map((o) => ({ label: o.label, content: o.content })),
   };
+}
+
+function parseAcceptedAnswersField(value) {
+  if (Array.isArray(value)) return value;
+  if (typeof value !== 'string' || !value.trim()) return [];
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (_) {
+    return [];
+  }
 }
 
 function mapQuestionAdmin(row, opts, passage) {
@@ -242,6 +279,8 @@ function mapQuestionAdmin(row, opts, passage) {
     ...base,
     explanation: row.explanation || null,
     correct: correct ? correct.label : null,
+    correctText: row.correct_text || null,
+    acceptedAnswers: parseAcceptedAnswersField(row.accepted_answers),
     options: (opts || []).map((o) => ({
       label: o.label,
       content: o.content,
@@ -275,6 +314,10 @@ function mapAttempt(row) {
     totalScore: row.total_score,
     xpEarned: row.xp_earned,
     leaderboardEligible: row.leaderboard_eligible === 1,
+    exam: row.exam || 'toeic',
+    listeningBand: row.listening_band != null ? row.listening_band : null,
+    readingBand: row.reading_band != null ? row.reading_band : null,
+    overallBand: row.overall_band != null ? row.overall_band : null,
   };
 }
 
@@ -386,14 +429,16 @@ function countUsers() {
 
 /* ---------------- passages ---------------- */
 
-function upsertPassage({ id, part, title, content, script, type, testSetId, audioUrl }) {
+function upsertPassage({ id, part, title, content, script, type, testSetId, audioUrl, exam, passageType }) {
   db.prepare(
-    `INSERT INTO passages (id, part, title, content, script, type, test_set_id, audio_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `INSERT INTO passages (id, part, title, content, script, type, test_set_id, audio_url, exam, passage_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
      ON CONFLICT(id) DO UPDATE SET part = excluded.part, title = excluded.title,
        content = excluded.content, script = excluded.script, type = excluded.type,
        test_set_id = excluded.test_set_id,
-       audio_url = COALESCE(excluded.audio_url, passages.audio_url)`
-  ).run(id, part || null, title || null, content || null, script || null, type || null, testSetId || null, audioUrl || null);
+       audio_url = COALESCE(excluded.audio_url, passages.audio_url),
+       exam = COALESCE(excluded.exam, passages.exam),
+       passage_type = COALESCE(excluded.passage_type, passages.passage_type)`
+  ).run(id, part || null, title || null, content || null, script || null, type || null, testSetId || null, audioUrl || null, exam || null, passageType || null);
 }
 
 function getPassage(id) {
@@ -411,6 +456,8 @@ function getPassage(id) {
     script: row.script,
     type: row.type,
     audioUrl: row.audio_url || null,
+    exam: row.exam || null,
+    passageType: row.passage_type || null,
     questionIds: qids,
   };
 }
@@ -448,14 +495,16 @@ function insertQuestionTx(q) {
       script: q.script || null,
       type: q.part <= 4 ? 'listening' : 'reading',
       testSetId: q.testSetId || null,
+      exam: q.exam || 'toeic',
+      passageType: q.passageType || null,
     });
   }
   db.prepare(
-    `INSERT INTO questions (id, exam, part, passage_id, test_set_id, content, explanation, topic, difficulty, script, passage_text, image_url, audio_url)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO questions (id, exam, part, passage_id, test_set_id, content, explanation, topic, difficulty, script, passage_text, image_url, audio_url, question_type, word_limit, accepted_answers, correct_text)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).run(
     q.id,
-    'toeic',
+    q.exam || 'toeic',
     q.part,
     q.passageId || null,
     q.testSetId || null,
@@ -466,12 +515,16 @@ function insertQuestionTx(q) {
     q.script || null,
     q.passageText || null,
     q.imageUrl || null,
-    q.audioUrl || null
+    q.audioUrl || null,
+    q.questionType || 'multiple_choice',
+    q.wordLimit != null ? q.wordLimit : null,
+    Array.isArray(q.acceptedAnswers) ? JSON.stringify(q.acceptedAnswers) : (typeof q.acceptedAnswers === 'string' ? q.acceptedAnswers : null),
+    q.correctText != null ? q.correctText : null
   );
   const optStmt = db.prepare(
     'INSERT INTO options (question_id, label, content, is_correct) VALUES (?, ?, ?, ?)'
   );
-  for (const o of q.options) {
+  for (const o of (q.options || [])) {
     optStmt.run(q.id, o.label, o.content, o.label === q.correct ? 1 : 0);
   }
 }
@@ -488,12 +541,16 @@ function updateQuestion(id, fields) {
         content: fields.passageText || null,
         script: fields.script || null,
         type: (fields.part !== undefined ? fields.part : cur.part) <= 4 ? 'listening' : 'reading',
+        exam: fields.exam !== undefined ? fields.exam : cur.exam,
+        passageType: fields.passageType !== undefined ? fields.passageType : cur.passage_type,
       });
     }
     db.prepare(
-      `UPDATE questions SET part = ?, passage_id = ?, content = ?, explanation = ?,
-       topic = ?, difficulty = ?, script = ?, passage_text = ?, image_url = ?, audio_url = ? WHERE id = ?`
+      `UPDATE questions SET exam = ?, part = ?, passage_id = ?, content = ?, explanation = ?,
+       topic = ?, difficulty = ?, script = ?, passage_text = ?, image_url = ?, audio_url = ?,
+       question_type = ?, word_limit = ?, accepted_answers = ?, correct_text = ? WHERE id = ?`
     ).run(
+      fields.exam !== undefined ? fields.exam : cur.exam,
       fields.part !== undefined ? fields.part : cur.part,
       fields.passageId !== undefined ? fields.passageId : cur.passage_id,
       fields.content !== undefined ? fields.content : cur.content,
@@ -504,9 +561,15 @@ function updateQuestion(id, fields) {
       fields.passageText !== undefined ? fields.passageText : cur.passage_text,
       fields.imageUrl !== undefined ? fields.imageUrl : cur.image_url,
       fields.audioUrl !== undefined ? fields.audioUrl : cur.audio_url,
+      fields.questionType !== undefined ? fields.questionType : cur.question_type,
+      fields.wordLimit !== undefined ? fields.wordLimit : cur.word_limit,
+      fields.acceptedAnswers !== undefined
+        ? (Array.isArray(fields.acceptedAnswers) ? JSON.stringify(fields.acceptedAnswers) : fields.acceptedAnswers)
+        : cur.accepted_answers,
+      fields.correctText !== undefined ? fields.correctText : cur.correct_text,
       id
     );
-    if (fields.options && fields.correct) {
+    if (Array.isArray(fields.options)) {
       db.prepare('DELETE FROM options WHERE question_id = ?').run(id);
       const optStmt = db.prepare(
         'INSERT INTO options (question_id, label, content, is_correct) VALUES (?, ?, ?, ?)'
@@ -540,26 +603,39 @@ function getQuestionRowById(id) {
   const opts = db
     .prepare('SELECT label, content, is_correct FROM options WHERE question_id = ? ORDER BY label')
     .all(id);
-  return { ...row, options: opts };
+  return { ...row, options: opts, acceptedAnswers: parseAcceptedAnswersField(row.accepted_answers) };
 }
 
-function countQuestions() {
+function countQuestions(exam) {
+  if (exam) {
+    return db.prepare('SELECT COUNT(*) AS c FROM questions WHERE exam = ?').get(exam).c;
+  }
   return db.prepare('SELECT COUNT(*) AS c FROM questions').get().c;
 }
 
-function countByPart() {
+function countByPart(exam) {
+  if (exam) {
+    const rows = db
+      .prepare('SELECT part, COUNT(*) AS c FROM questions WHERE exam = ? GROUP BY part ORDER BY part')
+      .all(exam);
+    return rows.map((r) => ({ part: r.part, count: r.c }));
+  }
   const rows = db
     .prepare('SELECT part, COUNT(*) AS c FROM questions GROUP BY part ORDER BY part')
     .all();
   return rows.map((r) => ({ part: r.part, count: r.c }));
 }
 
-function listQuestions({ part, limit, offset, search, admin, testSetId }) {
+function listQuestions({ part, limit, offset, search, admin, testSetId, exam }) {
   const where = [];
   const params = [];
   if (part) {
     where.push('part = ?');
     params.push(part);
+  }
+  if (exam) {
+    where.push('exam = ?');
+    params.push(exam);
   }
   if (testSetId) {
     where.push('test_set_id = ?');
@@ -581,12 +657,20 @@ function listQuestions({ part, limit, offset, search, admin, testSetId }) {
   return { total, items: hydrateQuestions(rows, !!admin) };
 }
 
-function getQuestionsByPart(part) {
+function getQuestionsByPart(part, exam) {
+  if (exam) {
+    const rows = db.prepare('SELECT * FROM questions WHERE part = ? AND exam = ? ORDER BY id').all(part, exam);
+    return hydrateQuestions(rows, false);
+  }
   const rows = db.prepare('SELECT * FROM questions WHERE part = ? ORDER BY id').all(part);
   return hydrateQuestions(rows, false);
 }
 
-function getAllQuestionsOrdered() {
+function getAllQuestionsOrdered(exam) {
+  if (exam) {
+    const rows = db.prepare('SELECT * FROM questions WHERE exam = ? ORDER BY part, id').all(exam);
+    return hydrateQuestions(rows, false);
+  }
   const rows = db.prepare('SELECT * FROM questions ORDER BY part, id').all();
   return hydrateQuestions(rows, false);
 }
@@ -606,6 +690,7 @@ function mapTestSet(row) {
     description: row.description || null,
     totalQuestions: row.total_questions != null ? row.total_questions : 0,
     isPublished: row.is_published === 1,
+    exam: row.exam || 'toeic',
     createdAt: row.created_at,
   };
 }
@@ -621,11 +706,11 @@ function nextTestSetId() {
   return `TS-${String(max + 1).padStart(3, '0')}`;
 }
 
-function createTestSet({ id, title, description, isPublished }) {
+function createTestSet({ id, title, description, isPublished, exam }) {
   const newId = id || nextTestSetId();
   db.prepare(
-    'INSERT INTO test_sets (id, title, description, total_questions, is_published, created_at) VALUES (?, ?, ?, 0, ?, ?)'
-  ).run(newId, title, description || null, isPublished ? 1 : 0, nowIso());
+    'INSERT INTO test_sets (id, title, description, total_questions, is_published, exam, created_at) VALUES (?, ?, ?, 0, ?, ?, ?)'
+  ).run(newId, title, description || null, isPublished ? 1 : 0, exam || 'toeic', nowIso());
   return getTestSet(newId);
 }
 
@@ -634,22 +719,28 @@ function getTestSet(id) {
   return mapTestSet(row);
 }
 
-function listTestSets({ includeDrafts }) {
-  const sql = includeDrafts
-    ? 'SELECT * FROM test_sets ORDER BY id'
-    : 'SELECT * FROM test_sets WHERE is_published = 1 ORDER BY id';
-  return db.prepare(sql).all().map(mapTestSet);
+function listTestSets({ includeDrafts, exam }) {
+  const where = [];
+  const params = [];
+  if (!includeDrafts) where.push('is_published = 1');
+  if (exam) {
+    where.push('exam = ?');
+    params.push(exam);
+  }
+  const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
+  return db.prepare(`SELECT * FROM test_sets ${whereSql} ORDER BY id`).all(...params).map(mapTestSet);
 }
 
 function updateTestSet(id, fields) {
   const cur = getTestSet(id);
   if (!cur) return null;
   db.prepare(
-    'UPDATE test_sets SET title = ?, description = ?, is_published = ? WHERE id = ?'
+    'UPDATE test_sets SET title = ?, description = ?, is_published = ?, exam = ? WHERE id = ?'
   ).run(
     fields.title !== undefined ? fields.title : cur.title,
     fields.description !== undefined ? fields.description : cur.description,
     fields.isPublished !== undefined ? (fields.isPublished ? 1 : 0) : (cur.isPublished ? 1 : 0),
+    fields.exam !== undefined ? fields.exam : cur.exam,
     id
   );
   return getTestSet(id);
@@ -717,6 +808,8 @@ function validateImportQuestion(q, index) {
   if (!Number.isInteger(q.part) || q.part < 1 || q.part > 7) {
     return 'Part phải là số nguyên từ 1 đến 7';
   }
+  // Nhanh IELTS: exam === 'ielts' (question_type mac dinh multiple_choice).
+  if (q.exam === 'ielts') return validateIeltsImportQuestion(q);
   const listeningOnly = q.part === 1 || q.part === 2;
   const expectedLabels = q.part === 2 ? ['A', 'B', 'C'] : ['A', 'B', 'C', 'D'];
   if (!listeningOnly && (typeof q.content !== 'string' || !q.content.trim())) {
@@ -746,6 +839,89 @@ function validateImportQuestion(q, index) {
     return q.part === 2
       ? 'Đáp án đúng phải là một trong 3 nhãn A, B, C'
       : 'Đáp án đúng phải là một trong 4 nhãn A, B, C, D';
+  }
+  return null;
+}
+
+/**
+ * Kiem tra 1 cau IELTS (exam === 'ielts'). Tra ve null neu hop le.
+ * - Dang dien tu (form/sentence/summary completion, short_answer): options
+ *   rong duoc phep, bat buoc correct_text (string non-empty); word_limit neu
+ *   co phai la so nguyen duong.
+ * - Dang chon/nn: options phai dung nhan theo quy uoc tung dang va correct
+ *   phai thuoc cac nhan do.
+ */
+const IELTS_TYPES = [
+  'multiple_choice', 'true_false_not_given', 'yes_no_not_given',
+  'matching_headings', 'matching_information', 'matching_features',
+  'matching', 'labelling', 'form_completion', 'sentence_completion',
+  'summary_completion', 'short_answer',
+];
+const IELTS_TYPED_TYPES = ['form_completion', 'sentence_completion', 'summary_completion', 'short_answer'];
+
+function romanNumeral(n) {
+  const table = [[10, 'x'], [9, 'ix'], [5, 'v'], [4, 'iv'], [1, 'i']];
+  let out = '';
+  let rest = n;
+  for (const [value, sym] of table) {
+    while (rest >= value) { out += sym; rest -= value; }
+  }
+  return out;
+}
+
+function validateIeltsImportQuestion(q) {
+  const type = q.questionType || 'multiple_choice';
+  if (!IELTS_TYPES.includes(type)) return 'question_type IELTS không hợp lệ';
+  const listeningOnly = q.part === 1 || q.part === 2;
+  if (!listeningOnly && (typeof q.content !== 'string' || !q.content.trim())) {
+    return 'Thiếu nội dung câu hỏi';
+  }
+  if (q.wordLimit !== undefined && q.wordLimit !== null) {
+    if (!Number.isInteger(q.wordLimit) || q.wordLimit <= 0) {
+      return 'word_limit phải là số nguyên dương';
+    }
+  }
+  if (IELTS_TYPED_TYPES.includes(type)) {
+    if (typeof q.correctText !== 'string' || !q.correctText.trim()) {
+      return 'Câu điền từ phải có correct_text';
+    }
+    if (q.options !== undefined && q.options !== null && !Array.isArray(q.options)) {
+      return 'options của câu điền từ phải là mảng (có thể rỗng)';
+    }
+    return null;
+  }
+  // Dang chon/noi: can options dung nhan.
+  if (!Array.isArray(q.options) || q.options.length < 2) {
+    return 'Câu IELTS dạng chọn/nối phải có ít nhất 2 phương án';
+  }
+  let expectedLabels;
+  if (type === 'true_false_not_given') {
+    expectedLabels = ['TRUE', 'FALSE', 'NOT GIVEN'];
+  } else if (type === 'yes_no_not_given') {
+    expectedLabels = ['YES', 'NO', 'NOT GIVEN'];
+  } else if (type === 'matching_headings') {
+    expectedLabels = q.options.map((_, i) => romanNumeral(i + 1));
+  } else if (type === 'multiple_choice') {
+    if (q.options.length !== 3 && q.options.length !== 4) {
+      return 'Câu multiple choice IELTS phải có 3 hoặc 4 phương án';
+    }
+    expectedLabels = ['A', 'B', 'C', 'D'].slice(0, q.options.length);
+  } else {
+    // matching_information (A..G), matching_features (A..C), matching, labelling (A..F)
+    expectedLabels = q.options.map((_, i) => String.fromCharCode(65 + i));
+  }
+  const labels = q.options.map((o) => o && o.label);
+  if (
+    new Set(labels).size !== expectedLabels.length ||
+    !labels.every((l, i) => l === expectedLabels[i])
+  ) {
+    return `Các phương án phải có đủ nhãn ${expectedLabels.join(', ')} theo đúng thứ tự`;
+  }
+  if (q.options.some((o) => !o || typeof o.content !== 'string' || !o.content.trim())) {
+    return 'Mỗi phương án phải có nội dung';
+  }
+  if (typeof q.correct !== 'string' || !expectedLabels.includes(q.correct)) {
+    return `Đáp án đúng phải là một trong các nhãn ${expectedLabels.join(', ')}`;
   }
   return null;
 }
@@ -824,11 +1000,11 @@ function setPartMedia(testSetId, part, audioUrl) {
 
 /* ---------------- attempts & answers ---------------- */
 
-function createAttempt({ userId, mode, part, questionIds, durationSec, testSetId }) {
+function createAttempt({ userId, mode, part, questionIds, durationSec, testSetId, exam }) {
   const info = db
     .prepare(
-      `INSERT INTO attempts (user_id, mode, part, test_set_id, question_ids, started_at, duration_sec, leaderboard_eligible)
-       VALUES (?, ?, ?, ?, ?, ?, ?, 1)`
+      `INSERT INTO attempts (user_id, mode, part, test_set_id, question_ids, started_at, duration_sec, leaderboard_eligible, exam)
+       VALUES (?, ?, ?, ?, ?, ?, ?, 1, ?)`
     )
     .run(
       userId,
@@ -837,7 +1013,8 @@ function createAttempt({ userId, mode, part, questionIds, durationSec, testSetId
       testSetId || null,
       JSON.stringify(questionIds || []),
       nowIso(),
-      durationSec || null
+      durationSec || null,
+      exam || 'toeic'
     );
   return getAttempt(Number(info.lastInsertRowid));
 }
@@ -847,12 +1024,16 @@ function getAttempt(id) {
   return mapAttempt(row);
 }
 
-function listAttemptsByUser(userId, { modes, limit }) {
+function listAttemptsByUser(userId, { modes, limit, exam }) {
   let sql = 'SELECT * FROM attempts WHERE user_id = ?';
   const params = [userId];
   if (modes && modes.length) {
     sql += ` AND mode IN (${modes.map(() => '?').join(',')})`;
     params.push(...modes);
+  }
+  if (exam) {
+    sql += ' AND exam = ?';
+    params.push(exam);
   }
   sql += ' ORDER BY started_at DESC LIMIT ?';
   params.push(limit || 50);
@@ -863,7 +1044,8 @@ function finishAttempt(id, fields) {
   db.prepare(
     `UPDATE attempts SET finished_at = ?, duration_sec = ?, listening_correct = ?,
      reading_correct = ?, listening_score = ?, reading_score = ?, total_score = ?,
-     xp_earned = ?, leaderboard_eligible = ? WHERE id = ?`
+     xp_earned = ?, leaderboard_eligible = ?,
+     listening_band = ?, reading_band = ?, overall_band = ? WHERE id = ?`
   ).run(
     fields.finishedAt,
     fields.durationSec,
@@ -874,6 +1056,9 @@ function finishAttempt(id, fields) {
     fields.totalScore != null ? fields.totalScore : null,
     fields.xpEarned != null ? fields.xpEarned : null,
     fields.leaderboardEligible ? 1 : 0,
+    fields.listeningBand != null ? fields.listeningBand : null,
+    fields.readingBand != null ? fields.readingBand : null,
+    fields.overallBand != null ? fields.overallBand : null,
     id
   );
   return getAttempt(id);
@@ -908,18 +1093,20 @@ function getAnswersByAttempt(attemptId) {
     }));
 }
 
-function getUserAnswerStats(userId) {
-  const rows = db
-    .prepare(
-      `SELECT q.part AS part, COUNT(*) AS answered,
+function getUserAnswerStats(userId, exam) {
+  let sql = `SELECT q.part AS part, COUNT(*) AS answered,
               COALESCE(SUM(a.is_correct), 0) AS correct
        FROM answers a
        JOIN questions q ON q.id = a.question_id
        JOIN attempts t ON t.id = a.attempt_id
-       WHERE t.user_id = ? AND a.is_correct IS NOT NULL
-       GROUP BY q.part ORDER BY q.part`
-    )
-    .all(userId);
+       WHERE t.user_id = ? AND a.is_correct IS NOT NULL`;
+  const params = [userId];
+  if (exam) {
+    sql += ' AND q.exam = ?';
+    params.push(exam);
+  }
+  sql += ' GROUP BY q.part ORDER BY q.part';
+  const rows = db.prepare(sql).all(...params);
   return rows.map((r) => ({
     part: r.part,
     answered: r.answered,
@@ -927,7 +1114,38 @@ function getUserAnswerStats(userId) {
   }));
 }
 
-function countAnsweredByUser(userId) {
+/** Thong ke theo dang cau hoi (IELTS): [{questionType, answered, correct}]. */
+function getUserAnswerStatsByType(userId, exam) {
+  let sql = `SELECT COALESCE(q.question_type, 'multiple_choice') AS questionType,
+              COUNT(*) AS answered,
+              COALESCE(SUM(a.is_correct), 0) AS correct
+       FROM answers a
+       JOIN questions q ON q.id = a.question_id
+       JOIN attempts t ON t.id = a.attempt_id
+       WHERE t.user_id = ? AND a.is_correct IS NOT NULL`;
+  const params = [userId];
+  if (exam) {
+    sql += ' AND q.exam = ?';
+    params.push(exam);
+  }
+  sql += ' GROUP BY questionType ORDER BY answered DESC';
+  return db.prepare(sql).all(...params).map((r) => ({
+    questionType: r.questionType,
+    answered: r.answered,
+    correct: r.correct,
+  }));
+}
+
+function countAnsweredByUser(userId, exam) {
+  if (exam) {
+    return db
+      .prepare(
+        `SELECT COUNT(*) AS c FROM answers a JOIN attempts t ON t.id = a.attempt_id
+         JOIN questions q ON q.id = a.question_id
+         WHERE t.user_id = ? AND a.is_correct IS NOT NULL AND q.exam = ?`
+      )
+      .get(userId, exam).c;
+  }
   return db
     .prepare(
       `SELECT COUNT(*) AS c FROM answers a JOIN attempts t ON t.id = a.attempt_id
@@ -956,6 +1174,23 @@ function getRecentFullScores(userId, limit) {
     .map((r) => ({ date: r.finished_at, totalScore: r.total_score }));
 }
 
+/** Lich su band cua cac bai full IELTS, moi nhat truoc. */
+function getRecentFullBands(userId, limit) {
+  return db
+    .prepare(
+      `SELECT finished_at, listening_band, reading_band, overall_band FROM attempts
+       WHERE user_id = ? AND mode = 'full' AND exam = 'ielts' AND overall_band IS NOT NULL
+       ORDER BY finished_at DESC LIMIT ?`
+    )
+    .all(userId, limit || 20)
+    .map((r) => ({
+      date: r.finished_at,
+      listeningBand: r.listening_band,
+      readingBand: r.reading_band,
+      overallBand: r.overall_band,
+    }));
+}
+
 /* ---------------- wrong questions ---------------- */
 
 function upsertWrongQuestion(userId, questionId) {
@@ -968,7 +1203,7 @@ function upsertWrongQuestion(userId, questionId) {
   ).run(userId, questionId, ts);
 }
 
-function listWrongQuestions(userId, part) {
+function listWrongQuestions(userId, part, exam) {
   let sql = `SELECT w.question_id AS qid, w.wrong_count AS wrongCount,
                     w.last_wrong_at AS lastWrongAt, q.*
              FROM wrong_questions w JOIN questions q ON q.id = w.question_id
@@ -978,6 +1213,10 @@ function listWrongQuestions(userId, part) {
     sql += ' AND q.part = ?';
     params.push(part);
   }
+  if (exam) {
+    sql += ' AND q.exam = ?';
+    params.push(exam);
+  }
   sql += ' ORDER BY w.last_wrong_at DESC';
   const rows = db.prepare(sql).all(...params);
   const hydrated = hydrateQuestions(
@@ -986,6 +1225,7 @@ function listWrongQuestions(userId, part) {
       exam: r.exam,
       part: r.part,
       passage_id: r.passage_id,
+      test_set_id: r.test_set_id,
       content: r.content,
       explanation: r.explanation,
       topic: r.topic,
@@ -994,6 +1234,10 @@ function listWrongQuestions(userId, part) {
       passage_text: r.passage_text,
       image_url: r.image_url,
       audio_url: r.audio_url,
+      question_type: r.question_type,
+      word_limit: r.word_limit,
+      accepted_answers: r.accepted_answers,
+      correct_text: r.correct_text,
     })),
     false
   );
@@ -1017,12 +1261,16 @@ function countVocabulary() {
   return db.prepare('SELECT COUNT(*) AS c FROM vocabulary').get().c;
 }
 
-function listVocabulary({ topic, limit, offset }) {
+function listVocabulary({ topic, limit, offset, exam }) {
   const where = [];
   const params = [];
   if (topic) {
     where.push('topic = ?');
     params.push(topic);
+  }
+  if (exam) {
+    where.push('exam = ?');
+    params.push(exam);
   }
   const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
   const total = db.prepare(`SELECT COUNT(*) AS c FROM vocabulary ${whereSql}`).get(...params).c;
@@ -1038,21 +1286,22 @@ function getVocabularyById(id) {
 
 function insertVocabulary(v) {
   db.prepare(
-    'INSERT INTO vocabulary (id, word, phonetic, meaning, example, topic) VALUES (?, ?, ?, ?, ?, ?)'
-  ).run(v.id, v.word, v.phonetic || null, v.meaning, v.example || null, v.topic || null);
+    'INSERT INTO vocabulary (id, word, phonetic, meaning, example, topic, exam) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).run(v.id, v.word, v.phonetic || null, v.meaning, v.example || null, v.topic || null, v.exam || 'toeic');
 }
 
 function updateVocabulary(id, fields) {
   const cur = getVocabularyById(id);
   if (!cur) return null;
   db.prepare(
-    'UPDATE vocabulary SET word = ?, phonetic = ?, meaning = ?, example = ?, topic = ? WHERE id = ?'
+    'UPDATE vocabulary SET word = ?, phonetic = ?, meaning = ?, example = ?, topic = ?, exam = ? WHERE id = ?'
   ).run(
     fields.word !== undefined ? fields.word : cur.word,
     fields.phonetic !== undefined ? fields.phonetic : cur.phonetic,
     fields.meaning !== undefined ? fields.meaning : cur.meaning,
     fields.example !== undefined ? fields.example : cur.example,
     fields.topic !== undefined ? fields.topic : cur.topic,
+    fields.exam !== undefined ? fields.exam : cur.exam,
     id
   );
   return getVocabularyById(id);
@@ -1134,6 +1383,27 @@ function getBestFullScores(sinceIso) {
   return [...best.values()].sort((a, b) => b.score - a.score || (a.date < b.date ? -1 : 1));
 }
 
+/** Bang band IELTS: overall_band cao nhat cua moi user (bai full IELTS hop le
+ *  trong khoang); bang nhau thi nguoi nop truoc xep tren. */
+function getBestFullBands(sinceIso) {
+  let sql = `SELECT user_id, overall_band, finished_at FROM attempts
+             WHERE mode = 'full' AND exam = 'ielts' AND leaderboard_eligible = 1 AND overall_band IS NOT NULL`;
+  const params = [];
+  if (sinceIso) {
+    sql += ' AND finished_at >= ?';
+    params.push(sinceIso);
+  }
+  sql += ' ORDER BY overall_band DESC, finished_at ASC';
+  const rows = db.prepare(sql).all(...params);
+  const best = new Map();
+  for (const r of rows) {
+    if (!best.has(r.user_id)) {
+      best.set(r.user_id, { userId: r.user_id, score: r.overall_band, date: r.finished_at });
+    }
+  }
+  return [...best.values()].sort((a, b) => b.score - a.score || (a.date < b.date ? -1 : 1));
+}
+
 /** Bang XP: tong XP cua moi user trong khoang (sinceIso null = moi luc). */
 function getXpTotals(sinceIso) {
   let sql = 'SELECT user_id, COALESCE(SUM(xp), 0) AS xp FROM xp_events';
@@ -1209,9 +1479,11 @@ module.exports = {
   upsertAnswer,
   getAnswersByAttempt,
   getUserAnswerStats,
+  getUserAnswerStatsByType,
   countAnsweredByUser,
   getActivityStartedAt,
   getRecentFullScores,
+  getRecentFullBands,
   // wrong questions
   upsertWrongQuestion,
   listWrongQuestions,
@@ -1231,5 +1503,6 @@ module.exports = {
   sumXp,
   hasXpReason,
   getBestFullScores,
+  getBestFullBands,
   getXpTotals,
 };

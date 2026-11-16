@@ -85,17 +85,26 @@ export function RankChip({ rank }: { rank: number }) {
 let activeStop: (() => void) | null = null;
 
 export function ListeningAudio({
-  audioUrl, ttsText, stopKey, onError,
+  audioUrl, ttsText, stopKey, onError, playOnce, onFirstPlay,
 }: {
   audioUrl?: string | null;
   ttsText: string;
   /** Đổi giá trị này khi chuyển câu — audio đang phát sẽ bị dừng. */
   stopKey: unknown;
   onError?: (e: unknown) => void;
+  /** Thi thử IELTS: audio mỗi Section chỉ phát 1 lần — bấm phát rồi thì
+   * nút nghe bị vô hiệu (vẫn tạm dừng/tiếp tục được trong lần phát đó,
+   * phát xong thì không nghe lại được nữa). */
+  playOnce?: boolean;
+  /** Gọi 1 lần khi lần phát đầu tiên bắt đầu (để trang thi đánh dấu
+   * Section đã phát). */
+  onFirstPlay?: () => void;
 }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   // idle: chưa phát | playing: đang phát | paused: đã tạm dừng | ended: phát xong
   const [status, setStatus] = useState<'idle' | 'playing' | 'paused' | 'ended'>('idle');
+  // Đã bắt đầu lần phát duy nhất (chỉ dùng khi playOnce).
+  const [playedOnce, setPlayedOnce] = useState(false);
   const [progress, setProgress] = useState(0);
   // Tốc độ phát (khôi phục như bản đầu: 0.5–1.5x) + thời lượng/vị trí hiện tại
   // để hiển thị giờ phát và tua tới từng đoạn.
@@ -158,6 +167,7 @@ export function ListeningAudio({
   const playFile = () => {
     const el = audioRef.current;
     if (!el) return;
+    markPlayed();
     claimPlayback();
     if (status === 'ended') { el.currentTime = 0; setProgress(0); }
     el.play().catch(() => setStatus('idle'));
@@ -173,19 +183,35 @@ export function ListeningAudio({
       return;
     }
     const gen = genRef.current;
+    markPlayed();
     claimPlayback();
     setStatus('playing');
     speak(ttsText, rate, () => { if (genRef.current === gen) setStatus('ended'); });
   };
 
   const toggle = () => {
+    // Chế độ phát 1 lần: đã bắt đầu phát rồi thì không phát lại từ đầu
+    // (vẫn tạm dừng/tiếp tục được trong lần phát đó — nút chỉ khóa hẳn
+    // khi audio đã phát xong, xử lý ở `playDisabled` bên dưới).
+    if (playOnce && playedOnce && status !== 'playing' && status !== 'paused') return;
     if (status === 'playing') { if (audioUrl) pauseFile(); else { pauseSpeak(); setStatus('paused'); } return; }
     if (status === 'paused') { if (audioUrl) playFile(); else { resumeSpeak(); setStatus('playing'); } return; }
     if (audioUrl) playFile(); else playTts();
   };
 
+  // Ghi nhận lần phát đầu tiên (chỉ khi playOnce): nút nghe bị vô hiệu
+  // hẳn khi lần phát đó đã kết thúc; trong lúc đang phát/tạm dừng thì
+  // nút vẫn là Tạm dừng/Tiếp tục để nghe hết 1 lượt.
+  const markPlayed = () => {
+    if (playOnce && !playedOnce) {
+      setPlayedOnce(true);
+      onFirstPlay?.();
+    }
+  };
+  const playDisabled = !!playOnce && playedOnce && (status === 'ended' || status === 'idle');
   const label =
-    status === 'playing' ? '⏸ Tạm dừng'
+    playDisabled ? '🔊 Đã nghe 1 lần'
+    : status === 'playing' ? '⏸ Tạm dừng'
     : status === 'paused' ? '▶ Tiếp tục'
     : status === 'ended' ? '↻ Nghe lại'
     : '🔊 Nghe';
@@ -205,7 +231,7 @@ export function ListeningAudio({
             if (el.duration) { setProgress(el.currentTime / el.duration); setCurrentTime(el.currentTime); }
           }}
         />
-        <button className="btn listen-btn" onClick={toggle}>{label}</button>
+        <button className="btn listen-btn" disabled={playDisabled} onClick={toggle}>{label}</button>
         <div className="listen-seek-row">
           <div
             className="listen-progress"
@@ -253,7 +279,7 @@ export function ListeningAudio({
   }
   return (
     <div className="card audio-box audio-single">
-      <button className="btn listen-btn" onClick={toggle}>{label}</button>
+      <button className="btn listen-btn" disabled={playDisabled} onClick={toggle}>{label}</button>
       <div className="listen-rate">
         <label htmlFor={rateId}>Tốc độ phát: {rate.toFixed(2)}x</label>
         <input

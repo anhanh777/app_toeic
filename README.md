@@ -3,6 +3,16 @@
 Web app luyện thi TOEIC (Listening + Reading), mobile-first, cài được như app (PWA).
 Giai đoạn 1 chỉ làm TOEIC. Giai đoạn 2 sẽ thêm IELTS, dùng chung khung này.
 
+## IELTS Academic — Giai đoạn 2 (Listening + Reading)
+
+- **Chọn kỳ thi:** sau đăng nhập, app hiện 2 ô TOEIC / IELTS Academic; bấm ô nào mới tải dữ liệu kỳ thi đó, lựa chọn được nhớ (localStorage), nút "Đổi bài thi" ở header để chuyển qua lại.
+- **Listening:** 4 Section, 40 câu — Multiple Choice, Matching, Labelling, Form/Note/Table Completion, Sentence Completion, Short-answer. Mỗi Section 1 audio riêng; luyện tập nghe lại thoải mái, thi thử mỗi Section chỉ phát 1 lần.
+- **Reading:** 3 Passage, 40 câu — True/False/Not Given, Yes/No/Not Given, Matching Headings, Matching Information/Features, Sentence/Summary Completion (giới hạn số từ), Multiple Choice, Short-answer. Bài đọc hiện dạng tờ đề liền mạch như TOEIC.
+- **Thi thử + band điểm:** thi thử full L+R 80 câu, 90 phút; band 0–9 theo bảng quy đổi tham khảo công khai — **band ước lượng để tham khảo**, band tổng = trung bình band Listening + Reading, làm tròn tới 0.5. Câu điền từ chấm sau khi chuẩn hóa (bỏ hoa/thường, bỏ mạo từ the/a/an ở đầu, bỏ dấu câu cuối) + `accepted_answers`.
+- **Thống kê + xếp hạng:** tỉ lệ đúng theo Section/Passage và theo dạng câu hỏi, lịch sử band; bảng xếp hạng IELTS xếp theo band tổng (tách khỏi bảng TOEIC 10–990), bảng XP giữ chung cho cả 2 kỳ thi.
+- **Dữ liệu mẫu (TS-024 "IELTS Academic — Đề mẫu (Sample)", 80 câu + 24 từ vựng):** nội dung TỰ SOẠN để test tính năng, KHÔNG phải đề thi thật; đề mẫu CHƯA CÓ audio (app hiện ghi chú và vẫn cho làm bài bình thường). Dữ liệu thật (Cambridge IELTS, tối thiểu 3 đề full + audio + transcript) sẽ nhập sau khi chốt nguồn — xem kế hoạch `../ke-hoach-chi-tiet-giai-doan-2-ielts.md`.
+- Writing/Speaking là Giai đoạn 3, chưa làm.
+
 ## Chức năng chính
 
 - Đăng ký / đăng nhập bằng email + mật khẩu, đổi mật khẩu, phân quyền user/admin

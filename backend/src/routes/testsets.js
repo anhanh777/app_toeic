@@ -11,6 +11,8 @@ const router = express.Router();
 
 // Chuan 1 de TOEIC 200 cau (ke hoach muc 3.3).
 const STANDARD = { 1: 6, 2: 25, 3: 39, 4: 30, 5: 30, 6: 16, 7: 54 };
+// Chuan 1 de IELTS full 80 cau: Listening 4 Section x 10, Reading 3 Passage.
+const IELTS_STANDARD = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 13, 6: 13, 7: 14 };
 const PARTS = [1, 2, 3, 4, 5, 6, 7];
 
 function partsWithCounts(testSetId) {
@@ -19,9 +21,10 @@ function partsWithCounts(testSetId) {
   return PARTS.map((part) => ({ part, count: byPart.get(part) || 0 }));
 }
 
-function missingParts(parts) {
+function missingParts(parts, exam) {
+  const standard = exam === 'ielts' ? IELTS_STANDARD : STANDARD;
   return parts
-    .map((p) => ({ part: p.part, missing: Math.max(0, STANDARD[p.part] - p.count) }))
+    .map((p) => ({ part: p.part, missing: Math.max(0, standard[p.part] - p.count) }))
     .filter((m) => m.missing > 0);
 }
 
@@ -47,18 +50,34 @@ function serializeTestSet(testSet, user) {
     description: testSet.description,
     totalQuestions: testSet.totalQuestions,
     isPublished: testSet.isPublished,
+    exam: testSet.exam || 'toeic',
     createdAt: testSet.createdAt,
     parts,
-    missing: missingParts(parts),
+    missing: missingParts(parts, testSet.exam),
     progress: progressFor(user, testSet),
   };
 }
 
 /* ---------- can dang nhap ---------- */
 
+router.get('/exams', authMiddleware, (req, res) => {
+  const defs = [
+    { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990' },
+    { id: 'ielts', title: 'IELTS Academic', subtitle: 'Listening + Reading', scale: 'Band 0–9' },
+  ];
+  return res.json(
+    defs.map((d) => ({
+      ...d,
+      testSetCount: db.listTestSets({ includeDrafts: false, exam: d.id }).length,
+      questionCount: db.countQuestions(d.id),
+    }))
+  );
+});
+
 router.get('/test-sets', authMiddleware, (req, res) => {
   const isAdmin = req.user && req.user.role === 'admin';
-  const sets = db.listTestSets({ includeDrafts: !!isAdmin });
+  const exam = req.query.exam === 'ielts' ? 'ielts' : 'toeic';
+  const sets = db.listTestSets({ includeDrafts: !!isAdmin, exam });
   return res.json(sets.map((s) => serializeTestSet(s, req.user)));
 });
 
@@ -82,7 +101,7 @@ router.get('/test-sets/:id/part-media', authMiddleware, (req, res) => {
 /* ---------- admin ---------- */
 
 router.post('/admin/test-sets', authMiddleware, requireAdmin, (req, res) => {
-  const { title, description, isPublished } = req.body || {};
+  const { title, description, isPublished, exam } = req.body || {};
   if (typeof title !== 'string' || !title.trim()) {
     return res.status(400).json({ error: 'thieu title' });
   }
@@ -91,6 +110,7 @@ router.post('/admin/test-sets', authMiddleware, requireAdmin, (req, res) => {
     title: title.trim(),
     description: typeof description === 'string' ? description : null,
     isPublished: !!isPublished,
+    exam: exam === 'ielts' ? 'ielts' : 'toeic',
   });
   return res.status(201).json(created);
 });

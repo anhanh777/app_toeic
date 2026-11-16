@@ -4,13 +4,14 @@ import { api, type ImportQuestion, type Question, type TestSet, type Vocab } fro
 import { useAuth } from '../auth';
 import { ErrorBox, partName } from '../components';
 import { countByPart, normalizeImportFile, splitValid, type QuestionError } from '../testSetUtils';
+import { isFillIn, QUESTION_TYPE_NAMES } from '../exam';
 
 interface UploadPreview {
   title: string; description: string;
   valid: ImportQuestion[]; errors: QuestionError[]; fileName: string;
 }
 
-const emptyQ = { id: '', part: 5, content: '', explanation: '', topic: '', difficulty: 'medium', script: '', passageText: '' };
+const emptyQ = { id: '', part: 5, content: '', explanation: '', topic: '', difficulty: 'medium', script: '', passageText: '', exam: 'toeic', questionType: 'multiple_choice', wordLimit: '', correctText: '', acceptedAnswers: '' };
 
 export default function Admin() {
   const { user } = useAuth();
@@ -20,8 +21,9 @@ export default function Admin() {
   const [error, setError] = useState<unknown>(null);
   const [msg, setMsg] = useState('');
   const [partFilter, setPartFilter] = useState<number | undefined>(undefined);
+  const [examFilter, setExamFilter] = useState<'all' | 'toeic' | 'ielts'>('all');
   const [testSets, setTestSets] = useState<TestSet[]>([]);
-  const [tsForm, setTsForm] = useState({ title: '', description: '', isPublished: false });
+  const [tsForm, setTsForm] = useState({ title: '', description: '', isPublished: false, exam: 'toeic' });
   const [editingSet, setEditingSet] = useState<string | null>(null);
   const [uploadPreview, setUploadPreview] = useState<UploadPreview | null>(null);
   const [uploadBusy, setUploadBusy] = useState(false);
@@ -35,13 +37,14 @@ export default function Admin() {
   const [vocabImport, setVocabImport] = useState('');
 
   const load = () => {
-    api.adminQuestions(partFilter).then(setQuestions).catch(setError);
+    const ex = examFilter === 'all' ? undefined : examFilter;
+    api.adminQuestions(partFilter, 50, 0, ex).then(setQuestions).catch(setError);
     api.adminVocabulary().then(setVocabs).catch(() => undefined);
-    api.testSets().then(setTestSets).catch(() => undefined);
+    api.testSets(ex).then(setTestSets).catch(() => undefined);
   };
-  useEffect(load, [partFilter]);
+  useEffect(load, [partFilter, examFilter]);
 
-  const loadTestSets = () => api.testSets().then(setTestSets).catch(setError);
+  const loadTestSets = () => api.testSets(examFilter === 'all' ? undefined : examFilter).then(setTestSets).catch(setError);
 
   if (user?.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Trang quản trị chỉ dành cho tài khoản admin. Tài khoản của bạn không có quyền xem trang này.</p></div>;
@@ -49,11 +52,18 @@ export default function Admin() {
 
   const saveQuestion = async (e: React.FormEvent) => {
     e.preventDefault(); setError(null); setMsg('');
+    const fillIn = isFillIn(form.questionType);
+    const accepted = form.acceptedAnswers.split('\n').map(s => s.trim()).filter(Boolean);
     const body = {
       id: form.id, part: form.part, content: form.content, explanation: form.explanation,
       topic: form.topic, difficulty: form.difficulty, script: form.script, passageText: form.passageText,
-      options: [{ label: 'A', content: optA }, { label: 'B', content: optB }, { label: 'C', content: optC }, { label: 'D', content: optD }],
-      correct,
+      exam: form.exam, questionType: form.questionType,
+      wordLimit: form.wordLimit ? Number(form.wordLimit) : undefined,
+      correctText: fillIn ? form.correctText : undefined,
+      acceptedAnswers: accepted.length ? accepted : undefined,
+      // Câu điền từ không dùng options A–D: đáp án đúng là correctText.
+      options: fillIn ? [] : [{ label: 'A', content: optA }, { label: 'B', content: optB }, { label: 'C', content: optC }, { label: 'D', content: optD }],
+      correct: fillIn ? form.correctText : correct,
     };
     try {
       if (editing) await api.adminUpdateQuestion(editing, body);
@@ -64,7 +74,7 @@ export default function Admin() {
 
   const editQ = (q: Question) => {
     setEditing(q.id);
-    setForm({ id: q.id, part: q.part, content: q.content, explanation: q.explanation || '', topic: q.topic || '', difficulty: q.difficulty || 'medium', script: q.script || '', passageText: q.passageText || '' });
+    setForm({ id: q.id, part: q.part, content: q.content, explanation: q.explanation || '', topic: q.topic || '', difficulty: q.difficulty || 'medium', script: q.script || '', passageText: q.passageText || '', exam: q.exam || 'toeic', questionType: q.questionType || 'multiple_choice', wordLimit: q.wordLimit != null ? String(q.wordLimit) : '', correctText: q.correctText || '', acceptedAnswers: (q.acceptedAnswers || []).join('\n') });
     const get = (l: string) => q.options.find(o => o.label === l)?.content || '';
     setOptA(get('A')); setOptB(get('B')); setOptC(get('C')); setOptD(get('D'));
     setCorrect(q.correct || q.options.find(o => o.is_correct)?.label || 'A');
@@ -121,20 +131,20 @@ export default function Admin() {
     e.preventDefault(); setError(null); setMsg('');
     try {
       if (editingSet) {
-        await api.adminUpdateTestSet(editingSet, { title: tsForm.title, description: tsForm.description, isPublished: tsForm.isPublished });
+        await api.adminUpdateTestSet(editingSet, { title: tsForm.title, description: tsForm.description, isPublished: tsForm.isPublished, exam: tsForm.exam });
         setMsg('Đã cập nhật bộ đề.');
       } else {
-        await api.adminCreateTestSet({ title: tsForm.title, description: tsForm.description, isPublished: tsForm.isPublished });
+        await api.adminCreateTestSet({ title: tsForm.title, description: tsForm.description, isPublished: tsForm.isPublished, exam: tsForm.exam });
         setMsg('Đã tạo bộ đề mới.');
       }
-      setTsForm({ title: '', description: '', isPublished: false }); setEditingSet(null);
+      setTsForm({ title: '', description: '', isPublished: false, exam: 'toeic' }); setEditingSet(null);
       loadTestSets();
     } catch (err) { setError(err); }
   };
 
   const editTestSet = (ts: TestSet) => {
     setEditingSet(ts.id);
-    setTsForm({ title: ts.title, description: ts.description || '', isPublished: ts.isPublished });
+    setTsForm({ title: ts.title, description: ts.description || '', isPublished: ts.isPublished, exam: ts.exam || 'toeic' });
     window.scrollTo({ top: 0 });
   };
 
@@ -197,10 +207,15 @@ export default function Admin() {
           <input value={tsForm.title} onChange={e => setTsForm({ ...tsForm, title: e.target.value })} placeholder="VD: ETS 2024 - Test 01" required />
           <label>Mô tả</label>
           <input value={tsForm.description} onChange={e => setTsForm({ ...tsForm, description: e.target.value })} placeholder="Nguồn đề, năm…" />
+          <label>Kỳ thi</label>
+          <select value={tsForm.exam} onChange={e => setTsForm({ ...tsForm, exam: e.target.value })}>
+            <option value="toeic">TOEIC</option>
+            <option value="ielts">IELTS Academic</option>
+          </select>
           <label><input type="checkbox" checked={tsForm.isPublished} onChange={e => setTsForm({ ...tsForm, isPublished: e.target.checked })} /> Phát hành ngay (người học thấy đề)</label>
           <div className="btn-row">
             <button className="btn">{editingSet ? 'Cập nhật đề' : '＋ Tạo đề mới'}</button>
-            {editingSet && <button type="button" className="btn secondary" onClick={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false }); }}>Hủy sửa</button>}
+            {editingSet && <button type="button" className="btn secondary" onClick={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false, exam: 'toeic' }); }}>Hủy sửa</button>}
           </div>
         </form>
         <hr />
@@ -261,13 +276,30 @@ export default function Admin() {
       <form className="card" onSubmit={saveQuestion}>
         <h2>{editing ? `Sửa câu hỏi ${editing}` : 'Thêm câu hỏi'}</h2>
         <label>Mã câu (VD: P5-001)</label><input value={form.id} onChange={e => setForm({ ...form, id: e.target.value })} required disabled={!!editing} />
+        <label>Kỳ thi</label><select value={form.exam} onChange={e => setForm({ ...form, exam: e.target.value })}>
+          <option value="toeic">TOEIC</option>
+          <option value="ielts">IELTS Academic</option>
+        </select>
+        <label>Dạng câu hỏi</label><select value={form.questionType} onChange={e => setForm({ ...form, questionType: e.target.value })}>
+          {Object.entries(QUESTION_TYPE_NAMES).map(([v, n]) => <option key={v} value={v}>{n}</option>)}
+        </select>
         <label>Part</label><select value={form.part} onChange={e => setForm({ ...form, part: Number(e.target.value) })}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}</select>
         <label>Nội dung câu hỏi (tiếng Anh)</label><textarea rows={3} value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} required />
-        <label>Phương án A</label><input value={optA} onChange={e => setOptA(e.target.value)} required />
-        <label>Phương án B</label><input value={optB} onChange={e => setOptB(e.target.value)} required />
-        <label>Phương án C</label><input value={optC} onChange={e => setOptC(e.target.value)} required />
-        <label>Phương án D</label><input value={optD} onChange={e => setOptD(e.target.value)} required />
-        <label>Đáp án đúng</label><select value={correct} onChange={e => setCorrect(e.target.value)}>{['A', 'B', 'C', 'D'].map(l => <option key={l}>{l}</option>)}</select>
+        {isFillIn(form.questionType) ? (
+          <>
+            <label>Đáp án đúng (dạng text, câu điền từ)</label><input value={form.correctText} onChange={e => setForm({ ...form, correctText: e.target.value })} required placeholder="VD: library" />
+            <label>Giới hạn số từ (word_limit — để trống nếu không giới hạn)</label><input type="number" min={1} value={form.wordLimit} onChange={e => setForm({ ...form, wordLimit: e.target.value })} placeholder="VD: 2" />
+            <label>Đáp án chấp nhận thêm (mỗi dòng 1 đáp án)</label><textarea rows={2} value={form.acceptedAnswers} onChange={e => setForm({ ...form, acceptedAnswers: e.target.value })} placeholder={'the library\nlibraries'} />
+          </>
+        ) : (
+          <>
+            <label>Phương án A</label><input value={optA} onChange={e => setOptA(e.target.value)} required />
+            <label>Phương án B</label><input value={optB} onChange={e => setOptB(e.target.value)} required />
+            <label>Phương án C</label><input value={optC} onChange={e => setOptC(e.target.value)} required />
+            <label>Phương án D</label><input value={optD} onChange={e => setOptD(e.target.value)} required />
+            <label>Đáp án đúng</label><select value={correct} onChange={e => setCorrect(e.target.value)}>{['A', 'B', 'C', 'D'].map(l => <option key={l}>{l}</option>)}</select>
+          </>
+        )}
         <label>Giải thích (tiếng Việt, ngắn)</label><textarea rows={2} value={form.explanation} onChange={e => setForm({ ...form, explanation: e.target.value })} />
         <label>Chủ đề</label><input value={form.topic} onChange={e => setForm({ ...form, topic: e.target.value })} />
         <label>Độ khó</label><select value={form.difficulty} onChange={e => setForm({ ...form, difficulty: e.target.value })}><option value="easy">Dễ</option><option value="medium">Trung bình</option><option value="hard">Khó</option></select>
@@ -286,6 +318,10 @@ export default function Admin() {
 
       <div className="card">
         <h2>Danh sách câu hỏi ({questions.length})</h2>
+        <label>Lọc theo kỳ thi</label>
+        <select value={examFilter} onChange={e => setExamFilter(e.target.value as 'all' | 'toeic' | 'ielts')}>
+          <option value="all">Tất cả</option><option value="toeic">TOEIC</option><option value="ielts">IELTS Academic</option>
+        </select>
         <label>Lọc theo Part</label>
         <select value={partFilter ?? ''} onChange={e => setPartFilter(e.target.value ? Number(e.target.value) : undefined)}>
           <option value="">Tất cả</option>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}

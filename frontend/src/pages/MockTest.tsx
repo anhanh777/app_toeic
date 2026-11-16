@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, type Question, type TestSet } from '../api';
 import { ErrorBox, ListeningAudio, partName } from '../components';
+import { partLabel, partNameFor, useExam } from '../exam';
+import { IeltsAnswerControl } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 
 function fmt(s: number) {
@@ -13,7 +15,14 @@ export default function MockTest() {
   const nav = useNavigate();
   const [params] = useSearchParams();
   const testSetId = params.get('testSetId') || undefined;
+  const { exam: ctxExam } = useExam();
   const [testSet, setTestSet] = useState<TestSet | null>(null);
+  // Kỳ thi: ưu tiên ?exam=, rồi exam của bộ đề, rồi kỳ thi đang chọn.
+  const qExam = params.get('exam');
+  const exam = qExam === 'ielts' || qExam === 'toeic'
+    ? qExam
+    : (testSet?.exam === 'ielts' || testSet?.exam === 'toeic' ? testSet.exam : ctxExam ?? 'toeic');
+  const isIelts = exam === 'ielts';
   const [mode, setMode] = useState<'mini' | 'full'>('mini');
   const [part, setPart] = useState(5);
   const [attemptId, setAttemptId] = useState<number | null>(null);
@@ -27,6 +36,14 @@ export default function MockTest() {
   const submittedRef = useRef(false);
   // Audio cấp Part (Part 1–4): fallback khi câu/đoạn chưa có audio riêng.
   const [partMedia, setPartMedia] = useState<Record<number, string>>({});
+  // IELTS thi thử: các Section đã phát audio (mỗi Section chỉ phát 1 lần).
+  const [playedSections, setPlayedSections] = useState<Record<number, boolean>>({});
+  const markPlayed = (p: number) => setPlayedSections(m => ({ ...m, [p]: true }));
+
+  // IELTS full: 80 câu, 90 phút. Mini IELTS: 1 Section Listening 30 phút,
+  // 1 Passage Reading 20 phút (contract chỉ quy định full = 90 phút).
+  const fullMinutes = isIelts ? 90 : 120;
+  const miniMinutes = isIelts ? (part <= 4 ? 30 : 20) : 120;
 
   const start = async () => {
     setBusy(true); setError(null);
@@ -35,10 +52,10 @@ export default function MockTest() {
       // Lỗi (backend chưa có endpoint) thì bỏ qua, fallback về {}.
       try { setPartMedia(testSetId ? await api.partMedia(testSetId) : {}); } catch { setPartMedia({}); }
       const t = testSetId
-        ? await api.createTest('full', undefined, 120, testSetId)
-        : await api.createTest(mode, mode === 'mini' ? part : undefined, 120);
+        ? await api.createTest('full', undefined, fullMinutes, testSetId, exam)
+        : await api.createTest(mode, mode === 'mini' ? part : undefined, mode === 'mini' ? miniMinutes : fullMinutes, undefined, exam);
       setAttemptId(t.attemptId);
-      setSecondsLeft(t.durationSec || 7200);
+      setSecondsLeft(t.durationSec || fullMinutes * 60);
       const qs: Question[] = [];
       for (const id of t.questionIds) {
         try { qs.push(await api.question(id)); } catch { /* skip missing */ }
@@ -73,11 +90,18 @@ export default function MockTest() {
 
   useEffect(() => () => stopSpeak(), []);
 
-  const choose = async (q: Question, label: string) => {
+  // Ghi lần chọn cuối (đổi đáp án thoải mái trước khi nộp).
+  const setAnswer = (q: Question, value: string) => {
     if (!q || !attemptId) return;
-    // Ghi lần chọn cuối (đổi đáp án thoải mái trước khi nộp).
-    setAnswers(a => ({ ...a, [q.id]: label }));
-    try { await api.saveTestAnswer(attemptId, q.id, label); } catch (e) { setError(e); }
+    setAnswers(a => ({ ...a, [q.id]: value }));
+  };
+  const saveAnswer = async (q: Question, value: string) => {
+    if (!q || !attemptId) return;
+    try { await api.saveTestAnswer(attemptId, q.id, value); } catch (e) { setError(e); }
+  };
+  const choose = async (q: Question, label: string) => {
+    setAnswer(q, label);
+    await saveAnswer(q, label);
   };
 
   if (!attemptId) {
@@ -90,14 +114,15 @@ export default function MockTest() {
             <div>
               <p><strong>{testSet.title}</strong></p>
               {testSet.description && <p className="muted">{testSet.description}</p>}
-              <p><span className="stat-num">{testSet.totalQuestions}</span> câu • 120 phút</p>
-              <p className="muted">{testSet.parts.map(p => `P${p.part} ${p.count}`).join(' · ')}</p>
+              <p><span className="stat-num">{testSet.totalQuestions}</span> câu • {fullMinutes} phút</p>
+              <p className="muted">{testSet.parts.map(p => `${partLabel(p.part, exam)} ${p.count}`).join(' · ')}</p>
               {testSet.missing.length > 0 && (
-                <p style={{ color: 'var(--amber)' }}>⚠ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}.</p>
+                <p style={{ color: 'var(--amber)' }}>⚠ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `${partLabel(m.part, exam)} thiếu ${m.missing} câu`).join(', ')}.</p>
               )}
             </div>
           ) : <p>Đang tải thông tin đề thi…</p>}
-          <p className="muted">Làm đủ {testSet?.totalQuestions || ''} câu, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990).</p>
+          <p className="muted">Làm đủ {testSet?.totalQuestions || ''} câu, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9).</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990).</>}</p>
+          {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
           <div className="btn-row">
             <button className="btn gold" disabled={busy || !testSet || !testSet.totalQuestions} onClick={start}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</button>
           </div>
@@ -110,11 +135,12 @@ export default function MockTest() {
         <ErrorBox error={error} />
         <label>Loại bài thi</label>
         <select value={mode} onChange={e => setMode(e.target.value as 'mini' | 'full')}>
-          <option value="mini">Thi mini — 1 Part</option>
-          <option value="full">Thi full — toàn bộ ngân hàng, 120 phút</option>
+          <option value="mini">{isIelts ? 'Thi mini — 1 Section/Passage' : 'Thi mini — 1 Part'}</option>
+          <option value="full">{isIelts ? 'Thi full — Listening + Reading (80 câu, 90 phút)' : 'Thi full — toàn bộ ngân hàng, 120 phút'}</option>
         </select>
-        {mode === 'mini' && (<><label>Chọn Part</label><select value={part} onChange={e => setPart(Number(e.target.value))}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}</select></>)}
-        <p className="muted">Thi full: làm đủ 120 phút, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990). Bài mini chỉ báo số câu đúng/tổng, không có điểm 10–990.</p>
+        {mode === 'mini' && (<><label>{isIelts ? 'Chọn Section/Passage' : 'Chọn Part'}</label><select value={part} onChange={e => setPart(Number(e.target.value))}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{isIelts ? `${partNameFor(p, exam)} — ${p <= 4 ? 'Listening' : 'Reading'}` : partName(p)}</option>)}</select></>)}
+        <p className="muted">Thi full: làm đủ {fullMinutes} phút, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9). Bài mini chỉ báo số câu đúng/tổng, không có band.</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990). Bài mini chỉ báo số câu đúng/tổng, không có điểm 10–990.</>}</p>
+        {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
         <div className="btn-row"><button className="btn" disabled={busy} onClick={start}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</button></div>
       </div>
     );
@@ -123,9 +149,10 @@ export default function MockTest() {
   if (!questions.length) return <p>Đang tải đề thi…</p>;
   const answeredCount = Object.keys(answers).length;
 
-  // Câu chỉ-nghe (Part 1/2): toàn bộ phương án đều rỗng nội dung (chỉ có
-  // nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
+  // Câu chỉ-nghe (Part 1/2 TOEIC): toàn bộ phương án đều rỗng nội dung
+  // (chỉ có nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
   const isListeningOnly = (q: Question) =>
+    exam === 'toeic' &&
     (q.part === 1 || q.part === 2) &&
     q.options.length > 0 &&
     q.options.every(o => !o.content || !o.content.trim());
@@ -151,12 +178,14 @@ export default function MockTest() {
 
   const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
     const listeningOnly = isListeningOnly(q);
-    // Part 1/2 thi that: trong bai thi chi hien tranh (Part 1) + audio +
-    // nut A/B/C/D, KHONG hien chu cau hoi/phuong an trong SUOT bai thi
-    // (xem lai o trang On cau sai sau khi nop bai) — KHONG hien lai chu
+    // Part 1/2 thi that (TOEIC): trong bai thi chi hien tranh (Part 1) +
+    // audio + nut A/B/C/D, KHONG hien chu cau hoi/phuong an trong SUOT bai
+    // thi (xem lai o trang On cau sai sau khi nop bai) — KHONG hien lai chu
     // sau khi chon dap an nhu man Luyen tap.
-    const hideListeningText = q.part === 1 || q.part === 2;
+    const hideListeningText = exam === 'toeic' && (q.part === 1 || q.part === 2);
     const letterOnly = listeningOnly || hideListeningText;
+    const qType = q.questionType || 'multiple_choice';
+    const isIeltsSpecial = isIelts && qType !== 'multiple_choice';
     return (
       <div className="paper-q exam-q" key={q.id}>
         <div className="exam-q-body">
@@ -172,34 +201,47 @@ export default function MockTest() {
           {listeningOnly && q.part === 1 && !q.imageUrl && (
             <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
           )}
-          {q.part <= 4 && !usePartAudioFor(q.part) && (
+          {q.part <= 4 && !usePartAudioFor(q.part) && (exam === 'toeic' || q.audioUrl || partMedia[q.part]) && (
             <ListeningAudio
               // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
               // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
               // Khi đề có file audio cấp Part thì KHÔNG render hộp này nữa —
               // cả Part chỉ còn 1 nút nghe duy nhất ở đầu Part (ngay dưới
-              // tiêu đề Part trong tờ đề).
+              // tiêu đề Part trong tờ đề). IELTS: chỉ render khi có file
+              // audio thật, không dùng TTS đọc transcript; thi thử thì mỗi
+              // audio chỉ phát 1 lần.
               audioUrl={q.audioUrl || partMedia[q.part]}
               ttsText={ttsTextFor(q)}
               stopKey={q.id}
               onError={setError}
+              playOnce={isIelts}
+              onFirstPlay={() => markPlayed(q.part)}
             />
           )}
           {!hideListeningText && q.content ? <p><strong>{q.content}</strong></p> : null}
         </div>
         <div className="exam-q-side">
           <div className="exam-q-num">{n}.</div>
-          <div className="exam-opts">
-            {q.options.map(o => (
-              <button
-                key={o.label}
-                className={`option ${answers[q.id] === o.label ? 'selected' : ''}`}
-                onClick={() => void choose(q, o.label)}
-              >
-                {letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}</strong> {o.content}</>}
-              </button>
-            ))}
-          </div>
+          {isIeltsSpecial ? (
+            <IeltsAnswerControl
+              q={q}
+              value={answers[q.id] ?? ''}
+              onChange={v => setAnswer(q, v)}
+              onCommit={v => void saveAnswer(q, v)}
+            />
+          ) : (
+            <div className="exam-opts">
+              {q.options.map(o => (
+                <button
+                  key={o.label}
+                  className={`option ${answers[q.id] === o.label ? 'selected' : ''}`}
+                  onClick={() => void choose(q, o.label)}
+                >
+                  {letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}</strong> {o.content}</>}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -220,12 +262,20 @@ export default function MockTest() {
           const showPart = bi === 0 || blocks[bi - 1].part !== block.part;
           return (
             <div key={block.key}>
-              {showPart && <h3 className="paper-part">{partName(block.part)}</h3>}
+              {showPart && <h3 className="paper-part">{isIelts ? partNameFor(block.part, exam) : partName(block.part)}</h3>}
               {showPart && usePartAudioFor(block.part) && (
                 <div className="part-audio">
-                  <ListeningAudio audioUrl={partMedia[block.part]} ttsText="" stopKey={`part-${block.part}`} onError={setError} />
-                  <p className="muted">🎧 Nghe cả Part {block.part} — bấm 1 lần rồi làm hết các câu của Part trong lúc nghe.</p>
+                  <ListeningAudio
+                    audioUrl={partMedia[block.part]} ttsText="" stopKey={`part-${block.part}`} onError={setError}
+                    playOnce={isIelts} onFirstPlay={() => markPlayed(block.part)}
+                  />
+                  <p className="muted">🎧 Nghe cả {isIelts ? `Section ${block.part}` : `Part ${block.part}`} — {isIelts ? 'thi thử: audio mỗi Section chỉ phát 1 lần, bấm 1 lần rồi làm hết các câu của Section trong lúc nghe.' : 'bấm 1 lần rồi làm hết các câu của Part trong lúc nghe.'}</p>
+                  {isIelts && playedSections[block.part] && <p className="muted">✓ Đã phát Section này (thi thử chỉ phát 1 lần).</p>}
                 </div>
+              )}
+              {showPart && isIelts && block.part <= 4 && !partMedia[block.part]
+                && !questions.some(q => q.part === block.part && q.audioUrl) && (
+                <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
               )}
               {block.passageText ? (
                 <div className="paper-cluster">

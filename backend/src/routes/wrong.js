@@ -4,6 +4,7 @@ const express = require('express');
 const db = require('../db');
 const { authMiddleware } = require('../auth');
 const { awardXp } = require('../xp');
+const { gradeTypedAnswer, isTypedType } = require('../ieltsGrading');
 
 const router = express.Router();
 
@@ -12,8 +13,9 @@ router.get('/wrong-questions', authMiddleware, (req, res) => {
   if (req.query.part && (!Number.isInteger(part) || part < 1 || part > 7)) {
     return res.status(400).json({ error: 'part phai tu 1 den 7' });
   }
+  const exam = req.query.exam === 'ielts' ? 'ielts' : req.query.exam === 'toeic' ? 'toeic' : undefined;
   // Cau hoi tra ve da redact (khong co dap an dung / giai thich).
-  return res.json(db.listWrongQuestions(req.user.id, part));
+  return res.json(db.listWrongQuestions(req.user.id, part, exam));
 });
 
 router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) => {
@@ -24,9 +26,23 @@ router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) =>
   }
   const q = db.getQuestionRowById(questionId);
   if (!q) return res.status(404).json({ error: 'khong tim thay cau hoi' });
-  const correctOpt = q.options.find((o) => o.is_correct === 1);
-  if (!correctOpt) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });
-  const correct = selected.trim().toUpperCase() === correctOpt.label;
+  let correct;
+  let correctLabel = null;
+  let correctText = null;
+  const typed = isTypedType(q.question_type);
+  if (typed) {
+    const graded = gradeTypedAnswer(selected, q.correct_text, q.acceptedAnswers, q.word_limit);
+    if (graded.overLimit) {
+      return res.status(400).json({ error: 'vuot_gioi_han_tu' });
+    }
+    correct = graded.correct;
+    correctText = q.correct_text || null;
+  } else {
+    const correctOpt = q.options.find((o) => o.is_correct === 1);
+    if (!correctOpt) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });
+    correct = selected.trim().toUpperCase() === correctOpt.label;
+    correctLabel = correctOpt.label;
+  }
   let xpAwarded = 0;
   if (correct) {
     db.deleteWrongQuestion(req.user.id, questionId);
@@ -40,7 +56,8 @@ router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) =>
   if (!transcript) transcript = q.passage_text || null;
   return res.json({
     correct,
-    correctLabel: correctOpt.label,
+    correctLabel,
+    ...(typed ? { correctText } : {}),
     explanation: q.explanation || null,
     transcript,
     xpAwarded,

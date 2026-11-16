@@ -12,7 +12,8 @@ router.get('/vocabulary', authMiddleware, (req, res) => {
   const topic = typeof req.query.topic === 'string' && req.query.topic.trim()
     ? req.query.topic.trim()
     : undefined;
-  const { total, items } = db.listVocabulary({ topic, limit, offset });
+  const exam = req.query.exam === 'ielts' ? 'ielts' : req.query.exam === 'toeic' ? 'toeic' : undefined;
+  const { total, items } = db.listVocabulary({ topic, limit, offset, exam });
   const statusMap = db.getUserVocabMap(req.user.id);
   return res.json({
     total,

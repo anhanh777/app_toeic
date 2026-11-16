@@ -29,6 +29,7 @@ const VI_ERRORS: Record<string, string> = {
   unauthorized: 'Bạn cần đăng nhập lại.',
   forbidden: 'Bạn không có quyền thực hiện thao tác này.',
   not_found: 'Không tìm thấy dữ liệu.',
+  vuot_gioi_han_tu: 'Quá giới hạn số từ cho câu này. Hãy rút gọn đáp án rồi nộp lại.',
 };
 
 async function req<T>(path: string, opts: RequestInit = {}): Promise<T> {
@@ -68,6 +69,23 @@ export interface Question {
   options: Option[]; topic?: string; difficulty?: string;
   explanation?: string; correct?: string; correctLabel?: string;
   imageUrl?: string | null; audioUrl?: string | null;
+  /** IELTS (giai đoạn 2): kỳ thi, dạng câu hỏi, giới hạn số từ (câu điền từ). */
+  exam?: string; questionType?: string; wordLimit?: number;
+  acceptedAnswers?: string[];
+  /** Đáp án đúng dạng text — chỉ có sau khi chấm câu điền từ. */
+  correctText?: string | null;
+}
+export interface ExamInfo {
+  id: string; title: string; subtitle: string; scale: string;
+  testSetCount: number; questionCount: number;
+}
+export interface IeltsBandTable {
+  listening: [number, number][]; reading: [number, number][]; note?: string;
+}
+export interface TestResultDetail {
+  questionId: string; questionType?: string; wordLimit?: number;
+  correctText?: string | null; correctLabel?: string | null;
+  selected?: string; correct?: boolean; content?: string;
 }
 export interface PartInfo { part: number; count: number; section?: string; listening?: boolean; reading?: boolean; }
 export interface Vocab { id: string; word: string; phonetic?: string; meaning: string; example?: string; topic?: string; }
@@ -76,9 +94,19 @@ export interface StatsOverview {
   byPart: { part: number; answered: number; correct: number; accuracy: number }[];
   weakestPart?: number | null; streakDays: number; targetScore: number;
   totalXp: number; recentScores: { date: string; totalScore: number }[];
+  /** IELTS (giai đoạn 2): tỉ lệ đúng từng dạng câu + band theo thời gian. */
+  byType?: { questionType: string; answered: number; correct: number; accuracy: number }[];
+  weakestType?: string | null;
+  bandHistory?: { date: string; listeningBand: number; readingBand: number; overallBand: number }[];
 }
 export interface LeaderboardEntry { rank: number; name: string; avatarUrl?: string; score: number; xp: number; answered?: number; }
-export interface Attempt { id: number; mode: string; part?: number; started_at?: string; finished_at?: string; total_score?: number; listening_score?: number; reading_score?: number; listening_correct?: number; reading_correct?: number; duration_sec?: number; }
+export interface Attempt {
+  id: number; mode: string; part?: number; started_at?: string; finished_at?: string;
+  total_score?: number; listening_score?: number; reading_score?: number;
+  listening_correct?: number; reading_correct?: number; duration_sec?: number;
+  /** IELTS (giai đoạn 2): kỳ thi + band (chỉ bài full IELTS mới có). */
+  exam?: string; listeningBand?: number; readingBand?: number; overallBand?: number;
+}
 export interface TestSetPartCount { part: number; count: number; }
 export interface TestSetMissing { part: number; missing: number; }
 export interface TestSetProgress {
@@ -90,6 +118,7 @@ export interface TestSet {
   isPublished: boolean; createdAt: string;
   parts: TestSetPartCount[]; missing: TestSetMissing[];
   progress: TestSetProgress | null;
+  exam?: string;
 }
 export interface ImportQuestion {
   id?: string; part: number; content: string;
@@ -147,19 +176,20 @@ export const api = {
   updateMe: (patch: { name?: string; targetScore?: number; hideOnLeaderboard?: boolean }) =>
     req<User>('/api/users/me', { method: 'PATCH', body: JSON.stringify(patch) }),
 
-  parts: () => req<PartInfo[]>('/api/parts'),
-  questions: async (part?: number, limit = 50, offset = 0, search = '', testSetId?: string) => {
+  parts: (exam?: string) => req<PartInfo[]>(exam ? `/api/parts?exam=${encodeURIComponent(exam)}` : '/api/parts'),
+  questions: async (part?: number, limit = 50, offset = 0, search = '', testSetId?: string, exam?: string) => {
     const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
     if (part) q.set('part', String(part));
     if (search) q.set('search', search);
     if (testSetId) q.set('testSetId', testSetId);
+    if (exam) q.set('exam', exam);
     const data = await req<{ total: number; items: Question[] }>(`/api/questions?${q}`);
     return data.items;
   },
   /** Lấy TOÀN BỘ câu của 1 Part (không giới hạn số lượng): backend giới hạn
    * tối đa 200 câu/cuộc gọi nên phân trang bằng offset tới khi đủ `total`
    * mà backend trả về. Dùng cho màn Luyện tập theo Part. */
-  questionsAll: async (part?: number, testSetId?: string) => {
+  questionsAll: async (part?: number, testSetId?: string, exam?: string) => {
     const PAGE = 200;
     const all: Question[] = [];
     let total = Infinity;
@@ -168,6 +198,7 @@ export const api = {
       const q = new URLSearchParams({ limit: String(PAGE), offset: String(offset) });
       if (part) q.set('part', String(part));
       if (testSetId) q.set('testSetId', testSetId);
+      if (exam) q.set('exam', exam);
       const data = await req<{ total: number; items: Question[] }>(`/api/questions?${q}`);
       total = data.total;
       if (!data.items.length) break;
@@ -179,50 +210,57 @@ export const api = {
   question: (id: string) => req<Question>(`/api/questions/${encodeURIComponent(id)}`),
   passage: (id: string) => req<{ id: string; part: number; title?: string; content?: string; script?: string; audioUrl?: string | null }>(`/api/passages/${encodeURIComponent(id)}`),
 
+  exams: () => req<ExamInfo[]>('/api/exams'),
+  bandTable: () => req<IeltsBandTable>('/api/ielts/band-table'),
+
   practiceAnswer: (questionId: string, selected: string) =>
-    req<{ correct: boolean; correctLabel: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
+    req<{ correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
       '/api/practice/answer', { method: 'POST', body: JSON.stringify({ questionId, selected }) }),
 
-  createTest: (mode: 'mini' | 'full', part?: number, durationMinutes = 120, testSetId?: string) =>
+  createTest: (mode: 'mini' | 'full', part?: number, durationMinutes = 120, testSetId?: string, exam?: string) =>
     req<{ attemptId: number; questionIds: string[]; durationSec: number; startedAt: string }>(
-      '/api/tests', { method: 'POST', body: JSON.stringify({ mode, part, durationMinutes, ...(testSetId ? { testSetId } : {}) }) }),
+      '/api/tests', { method: 'POST', body: JSON.stringify({ mode, part, durationMinutes, ...(testSetId ? { testSetId } : {}), ...(exam ? { exam } : {}) }) }),
   saveTestAnswer: (attemptId: number, questionId: string, selected: string) =>
     req(`/api/tests/${attemptId}/answers`, { method: 'POST', body: JSON.stringify({ questionId, selected }) }),
   submitTest: (attemptId: number) =>
-    req<{ listeningCorrect: number; readingCorrect: number; listeningScore?: number; readingScore?: number; totalScore?: number; byPart?: { part: number; correct: number; total: number }[]; wrongQuestionIds?: string[]; xpAwarded?: number; leaderboardEligible?: number }>(
+    req<{ listeningCorrect: number; readingCorrect: number; listeningScore?: number; readingScore?: number; totalScore?: number; byPart?: { part: number; correct: number; total: number }[]; wrongQuestionIds?: string[]; xpAwarded?: number; leaderboardEligible?: number; listeningBand?: number; readingBand?: number; overallBand?: number }>(
       `/api/tests/${attemptId}/submit`, { method: 'POST' }),
-  testResult: (attemptId: number) => req<Attempt & { byPart?: { part: number; correct: number; total: number }[]; wrongQuestionIds?: string[] }>(`/api/tests/${attemptId}/result`),
-  testHistory: () => req<Attempt[]>('/api/tests/history'),
+  testResult: (attemptId: number) => req<Attempt & { byPart?: { part: number; correct: number; total: number }[]; wrongQuestionIds?: string[]; detail?: TestResultDetail[] }>(`/api/tests/${attemptId}/result`),
+  testHistory: (exam?: string) => req<Attempt[]>(exam ? `/api/tests/history?exam=${encodeURIComponent(exam)}` : '/api/tests/history'),
 
-  wrongQuestions: (part?: number) => {
-    const q = part ? `?part=${part}` : '';
-    return req<(Question & { wrongCount?: number })[]>(`/api/wrong-questions${q}`);
+  wrongQuestions: (part?: number, exam?: string) => {
+    const q = new URLSearchParams();
+    if (part) q.set('part', String(part));
+    if (exam) q.set('exam', exam);
+    const s = q.toString();
+    return req<(Question & { wrongCount?: number })[]>(`/api/wrong-questions${s ? `?${s}` : ''}`);
   },
   reviewWrong: (questionId: string, selected: string) =>
-    req<{ correct: boolean; correctLabel?: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
+    req<{ correct: boolean; correctLabel?: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
       `/api/wrong-questions/${encodeURIComponent(questionId)}/review`, { method: 'POST', body: JSON.stringify({ selected }) }),
 
-  vocabulary: async (topic = '', limit = 100) => {
+  vocabulary: async (topic = '', limit = 100, exam?: string) => {
     const q = new URLSearchParams({ limit: String(limit) });
     if (topic) q.set('topic', topic);
+    if (exam) q.set('exam', exam);
     const data = await req<{ total: number; items: Vocab[] }>(`/api/vocabulary?${q}`);
     return data.items;
   },
   markVocab: (id: string, status: 'learning' | 'learned' | 'wrong') =>
     req(`/api/vocabulary/${encodeURIComponent(id)}/mark`, { method: 'POST', body: JSON.stringify({ status }) }),
 
-  statsOverview: () => req<StatsOverview>('/api/stats/overview'),
-  statsHistory: () => req<Attempt[]>('/api/stats/history'),
+  statsOverview: (exam?: string) => req<StatsOverview>(exam ? `/api/stats/overview?exam=${encodeURIComponent(exam)}` : '/api/stats/overview'),
+  statsHistory: (exam?: string) => req<Attempt[]>(exam ? `/api/stats/history?exam=${encodeURIComponent(exam)}` : '/api/stats/history'),
 
-  leaderboard: (metric: 'score' | 'xp' = 'score', tab: 'week' | 'month' | 'all' = 'all') =>
-    req<{ entries: LeaderboardEntry[]; me: (LeaderboardEntry & { rank: number }) | null }>(`/api/leaderboard?metric=${metric}&tab=${tab}`),
+  leaderboard: (metric: 'score' | 'xp' | 'band' = 'score', tab: 'week' | 'month' | 'all' = 'all', exam?: string) =>
+    req<{ entries: LeaderboardEntry[]; me: (LeaderboardEntry & { rank: number }) | null }>(`/api/leaderboard?metric=${metric}&tab=${tab}${exam ? `&exam=${encodeURIComponent(exam)}` : ''}`),
 
   // Test sets (bộ đề thi)
-  testSets: () => req<TestSet[]>('/api/test-sets'),
+  testSets: (exam?: string) => req<TestSet[]>(exam ? `/api/test-sets?exam=${encodeURIComponent(exam)}` : '/api/test-sets'),
   testSet: (id: string) => req<TestSet>(`/api/test-sets/${encodeURIComponent(id)}`),
-  adminCreateTestSet: (body: { title: string; description?: string; isPublished?: boolean }) =>
+  adminCreateTestSet: (body: { title: string; description?: string; isPublished?: boolean; exam?: string }) =>
     req<TestSet>('/api/admin/test-sets', { method: 'POST', body: JSON.stringify(body) }),
-  adminUpdateTestSet: (id: string, body: { title?: string; description?: string; isPublished?: boolean }) =>
+  adminUpdateTestSet: (id: string, body: { title?: string; description?: string; isPublished?: boolean; exam?: string }) =>
     req<TestSet>(`/api/admin/test-sets/${encodeURIComponent(id)}`, { method: 'PUT', body: JSON.stringify(body) }),
   adminDeleteTestSet: (id: string) =>
     req<{ ok: boolean }>(`/api/admin/test-sets/${encodeURIComponent(id)}`, { method: 'DELETE' }),
@@ -324,9 +362,10 @@ export const api = {
       `/api/admin/test-sets/${encodeURIComponent(id)}/questions/bulk`, { method: 'POST', body: JSON.stringify({ questions }) }),
 
   // Admin
-  adminQuestions: async (part?: number, limit = 50, offset = 0) => {
+  adminQuestions: async (part?: number, limit = 50, offset = 0, exam?: string) => {
     const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
     if (part) q.set('part', String(part));
+    if (exam) q.set('exam', exam);
     const data = await req<{ total: number; items: Question[] }>(`/api/admin/questions?${q}`);
     return data.items;
   },

@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api, type Vocab } from '../api';
 import { ErrorBox } from '../components';
+import { useExam } from '../exam';
 
 export default function Vocabulary() {
+  const { exam } = useExam();
+  const ex = exam ?? 'toeic';
   const [words, setWords] = useState<Vocab[]>([]);
   const [topic, setTopic] = useState('');
   const [error, setError] = useState<unknown>(null);
@@ -11,8 +14,8 @@ export default function Vocabulary() {
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
-    api.vocabulary(topic).then(w => { setWords(w); setIdx(0); }).catch(setError);
-  }, [topic]);
+    api.vocabulary(topic, 100, ex).then(w => { setWords(w); setIdx(0); }).catch(setError);
+  }, [topic, ex]);
 
   const topics = useMemo(() => [...new Set(words.map(w => w.topic || 'Chung'))], [words]);
   const w = words[idx];

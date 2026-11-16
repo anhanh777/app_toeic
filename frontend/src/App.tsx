@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AuthProvider, useAuth } from './auth';
+import { ExamProvider, ExamPicker, useExam } from './exam';
 import { applyTheme, resolveTheme, type Theme } from './theme';
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -48,47 +49,64 @@ function ThemeToggle() {
 
 function Layout() {
   const { user, logout } = useAuth();
+  const { exam, clearExam } = useExam();
   const nav = useNavigate();
+  const brand = exam === 'ielts'
+    ? '🎓 Luyện thi IELTS'
+    : exam === 'toeic'
+      ? '🌸 Luyện thi TOEIC'
+      : '📚 Luyện thi TOEIC · IELTS';
   return (
     <div className="app">
       <header className="topbar">
-        <Link className="brand" to="/">🌸 Luyện thi TOEIC</Link>
+        <Link className="brand" to="/">{brand}</Link>
         {user && (
           <nav>
-            <NavLink to="/" end>Trang chủ</NavLink>
-            <NavLink to="/practice">Luyện tập</NavLink>
-            <NavLink to="/mock">Thi thử</NavLink>
-            <NavLink to="/wrong">Câu sai</NavLink>
-            <NavLink to="/vocabulary">Từ vựng</NavLink>
-            <NavLink to="/stats">Thống kê</NavLink>
-            <NavLink to="/leaderboard">Xếp hạng</NavLink>
-            {user.role === 'admin' && <NavLink to="/admin">Quản trị</NavLink>}
-            <NavLink to="/settings">Cài đặt</NavLink>
+            {exam && (
+              <>
+                <NavLink to="/" end>Trang chủ</NavLink>
+                <NavLink to="/practice">Luyện tập</NavLink>
+                <NavLink to="/mock">Thi thử</NavLink>
+                <NavLink to="/wrong">Câu sai</NavLink>
+                <NavLink to="/vocabulary">Từ vựng</NavLink>
+                <NavLink to="/stats">Thống kê</NavLink>
+                <NavLink to="/leaderboard">Xếp hạng</NavLink>
+                {user.role === 'admin' && <NavLink to="/admin">Quản trị</NavLink>}
+                <NavLink to="/settings">Cài đặt</NavLink>
+                <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { clearExam(); nav('/'); }}>↔ Đổi bài thi</button>
+              </>
+            )}
             <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { logout(); nav('/login'); }}>Đăng xuất ({user.name})</button>
           </nav>
         )}
         <ThemeToggle />
       </header>
       <main className="container">
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
-          <Route path="/practice" element={<RequireAuth><Practice /></RequireAuth>} />
-          <Route path="/practice/test-set/:id" element={<RequireAuth><TestSetDetail /></RequireAuth>} />
-          <Route path="/practice/session" element={<RequireAuth><PracticeSession /></RequireAuth>} />
-          <Route path="/mock" element={<RequireAuth><MockTest /></RequireAuth>} />
-          <Route path="/result/:id" element={<RequireAuth><Result /></RequireAuth>} />
-          <Route path="/wrong" element={<RequireAuth><WrongQuestions /></RequireAuth>} />
-          <Route path="/vocabulary" element={<RequireAuth><Vocabulary /></RequireAuth>} />
-          <Route path="/stats" element={<RequireAuth><Stats /></RequireAuth>} />
-          <Route path="/leaderboard" element={<RequireAuth><Leaderboard /></RequireAuth>} />
-          <Route path="/admin" element={<RequireAuth><Admin /></RequireAuth>} />
-          <Route path="/admin/test-set/:id" element={<RequireAuth><TestSetAdmin /></RequireAuth>} />
-          <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
-          <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
-        </Routes>
+        {/* Sau đăng nhập mà chưa chọn kỳ thi thì hiện màn hình chọn kỳ thi;
+            các trang chỉ fetch dữ liệu sau khi đã chọn exam. */}
+        {user && exam === null ? (
+          <ExamPicker />
+        ) : (
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
+            <Route path="/practice" element={<RequireAuth><Practice /></RequireAuth>} />
+            <Route path="/practice/test-set/:id" element={<RequireAuth><TestSetDetail /></RequireAuth>} />
+            <Route path="/practice/session" element={<RequireAuth><PracticeSession /></RequireAuth>} />
+            <Route path="/mock" element={<RequireAuth><MockTest /></RequireAuth>} />
+            <Route path="/result/:id" element={<RequireAuth><Result /></RequireAuth>} />
+            <Route path="/wrong" element={<RequireAuth><WrongQuestions /></RequireAuth>} />
+            <Route path="/vocabulary" element={<RequireAuth><Vocabulary /></RequireAuth>} />
+            <Route path="/stats" element={<RequireAuth><Stats /></RequireAuth>} />
+            <Route path="/leaderboard" element={<RequireAuth><Leaderboard /></RequireAuth>} />
+            <Route path="/admin" element={<RequireAuth><Admin /></RequireAuth>} />
+            <Route path="/admin/test-set/:id" element={<RequireAuth><TestSetAdmin /></RequireAuth>} />
+            <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+            <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
+          </Routes>
+        )}
       </main>
-      <footer>LUYỆN THI TOEIC • ĐIỂM THI THỬ LÀ ĐIỂM ƯỚC LƯỢNG, KHÔNG PHẢI ĐIỂM CHÍNH THỨC CỦA ETS • ÂM THANH ĐỌC BẰNG GIỌNG MÁY (TTS)</footer>
+      <footer>LUYỆN THI TOEIC • ĐIỂM THI THỬ LÀ ĐIỂM ƯỚC LƯỢNG, KHÔNG PHẢI ĐIỂM CHÍNH THỨC CỦA ETS • ÂM THANH ĐỌC BẰNG GIỌNG MÁY (TTS) • BAND IELTS TRONG APP LÀ BAND ƯỚC LƯỢNG ĐỂ THAM KHẢO</footer>
     </div>
   );
 }
@@ -96,7 +114,7 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider><Layout /></AuthProvider>
+      <AuthProvider><ExamProvider><Layout /></ExamProvider></AuthProvider>
     </BrowserRouter>
   );
 }

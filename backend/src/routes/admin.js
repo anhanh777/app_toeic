@@ -18,6 +18,9 @@ router.use(authMiddleware, requireAdmin);
 function validateQuestion(q) {
   if (!q || typeof q !== 'object') return 'doi tuong cau hoi khong hop le';
   if (typeof q.id !== 'string' || !q.id.trim()) return 'thieu id';
+  // Cau IELTS: validate bang validateImportQuestion mo rong (khong bat buoc
+  // explanation nhu TOEIC — cau dien tu co the chua co giai thich).
+  if (q.exam === 'ielts') return db.validateImportQuestion(q, 0);
   const coreErr = db.validateImportQuestion(q, 0);
   if (coreErr) return coreErr;
   const correctCount = q.options.filter((o) => o.label === q.correct).length;
@@ -51,7 +54,8 @@ router.get('/admin/questions', (req, res) => {
   const search = typeof req.query.search === 'string' && req.query.search.trim()
     ? req.query.search.trim()
     : undefined;
-  const { total, items } = db.listQuestions({ part, limit, offset, search, admin: true });
+  const exam = req.query.exam === 'ielts' ? 'ielts' : req.query.exam === 'toeic' ? 'toeic' : undefined;
+  const { total, items } = db.listQuestions({ part, limit, offset, search, admin: true, exam });
   return res.json({ total, limit, offset, items });
 });
 
@@ -80,17 +84,26 @@ router.put('/admin/questions/:id', (req, res) => {
   const coreErr = db.validateImportQuestion(
     {
       id: merged.id,
+      exam: merged.exam,
       part: merged.part,
       content: merged.content,
       options: merged.options,
       correct: merged.correct,
+      questionType: merged.questionType,
+      correctText: merged.correctText,
+      acceptedAnswers: merged.acceptedAnswers,
+      wordLimit: merged.wordLimit,
     },
     0
   );
   if (coreErr) return res.status(400).json({ error: coreErr });
-  const correctCount = merged.options.filter((o) => o.label === merged.correct).length;
-  if (correctCount !== 1) return res.status(400).json({ error: 'phai co dung 1 dap an dung' });
+  const isTyped = ['form_completion', 'sentence_completion', 'summary_completion', 'short_answer'].includes(merged.questionType);
+  if (!isTyped) {
+    const correctCount = merged.options.filter((o) => o.label === merged.correct).length;
+    if (correctCount !== 1) return res.status(400).json({ error: 'phai co dung 1 dap an dung' });
+  }
   const updated = db.updateQuestion(req.params.id, {
+    exam: merged.exam,
     part: merged.part,
     passageId: merged.passageId,
     passageTitle: merged.passageTitle,
@@ -100,6 +113,10 @@ router.put('/admin/questions/:id', (req, res) => {
     explanation: merged.explanation,
     topic: merged.topic,
     difficulty: merged.difficulty,
+    questionType: merged.questionType,
+    wordLimit: merged.wordLimit,
+    acceptedAnswers: merged.acceptedAnswers,
+    correctText: merged.correctText,
     options: merged.options.map((o) => ({ label: o.label, content: o.content })),
     correct: merged.correct,
     // Cho phep sua anh/audio cua cau hoi qua PUT (truoc day 2 truong nay
@@ -152,7 +169,8 @@ router.get('/admin/vocabulary', (req, res) => {
   const topic = typeof req.query.topic === 'string' && req.query.topic.trim()
     ? req.query.topic.trim()
     : undefined;
-  const { total, items } = db.listVocabulary({ topic, limit, offset });
+  const exam = req.query.exam === 'ielts' ? 'ielts' : req.query.exam === 'toeic' ? 'toeic' : undefined;
+  const { total, items } = db.listVocabulary({ topic, limit, offset, exam });
   return res.json({ total, limit, offset, items });
 });
 

@@ -6,7 +6,8 @@ const express = require('express');
 const db = require('../db');
 const { authMiddleware } = require('../auth');
 const { awardXp } = require('../xp');
-const { scoreFullTest } = require('../scoring');
+const { scoreFullTest, ieltsBandForSkill, ieltsOverallBand } = require('../scoring');
+const { gradeTypedAnswer, isTypedType } = require('../ieltsGrading');
 
 const router = express.Router();
 
@@ -69,11 +70,15 @@ function buildSubmitResponse(attempt, answers) {
   return {
     attemptId: attempt.id,
     mode: attempt.mode,
+    exam: attempt.exam || 'toeic',
     listeningCorrect,
     readingCorrect,
     listeningScore: attempt.listeningScore,
     readingScore: attempt.readingScore,
     totalScore: attempt.totalScore,
+    listeningBand: attempt.listeningBand != null ? attempt.listeningBand : null,
+    readingBand: attempt.readingBand != null ? attempt.readingBand : null,
+    overallBand: attempt.overallBand != null ? attempt.overallBand : null,
     byPart,
     wrongQuestionIds,
     xpAwarded: attempt.xpEarned || 0,
@@ -82,7 +87,7 @@ function buildSubmitResponse(attempt, answers) {
 }
 
 router.post('/tests', authMiddleware, (req, res) => {
-  const { mode, part, count, durationMinutes, testSetId, questionIds: bodyQuestionIds } = req.body || {};
+  const { mode, part, count, durationMinutes, testSetId, questionIds: bodyQuestionIds, exam: bodyExam } = req.body || {};
   if (mode !== 'mini' && mode !== 'full') {
     return res.status(400).json({ error: 'mode phai la mini hoac full' });
   }
@@ -92,6 +97,7 @@ router.post('/tests', authMiddleware, (req, res) => {
     testSet = db.getTestSet(testSetId);
     if (!testSet) return res.status(404).json({ error: 'khong tim thay bo de' });
   }
+  const exam = testSet ? (testSet.exam || 'toeic') : (bodyExam === 'ielts' ? 'ielts' : 'toeic');
   let questionIds;
   let durationSec;
   let attemptPart = null;
@@ -102,7 +108,7 @@ router.post('/tests', authMiddleware, (req, res) => {
     }
     const bank = testSetId
       ? db.listQuestions({ testSetId, part: p, limit: 200, offset: 0 }).items
-      : db.getQuestionsByPart(p);
+      : db.getQuestionsByPart(p, exam);
     if (!bank.length) return res.status(400).json({ error: 'Part nay chua co cau hoi' });
     const n = count === undefined ? 10 : parseInt(count, 10);
     if (!Number.isInteger(n) || n < 1) {
@@ -120,13 +126,16 @@ router.post('/tests', authMiddleware, (req, res) => {
       if (!items.length) return res.status(400).json({ error: 'bo de nay chua co cau hoi' });
       questionIds = items.map((q) => q.id);
     } else {
-      const all = db.getAllQuestionsOrdered();
+      const all = db.getAllQuestionsOrdered(exam);
       if (!all.length) return res.status(400).json({ error: 'chua co cau hoi nao' });
       questionIds = all.map((q) => q.id);
     }
     if (!questionIds.length) return res.status(400).json({ error: 'chua co cau hoi nao' });
-    // Mac dinh 120 phut; durationMinutes chi de smoke-test, frontend luon dung 120.
-    durationSec = durationMinutes ? Math.round(durationMinutes * 60) : 7200;
+    // IELTS full mac dinh 90 phut (5400s); TOEIC full 120 phut nhu cu.
+    // durationMinutes chi de smoke-test, frontend luon dung mac dinh.
+    durationSec = durationMinutes
+      ? Math.round(durationMinutes * 60)
+      : (exam === 'ielts' ? 5400 : 7200);
   }
   const attempt = db.createAttempt({
     userId: req.user.id,
@@ -135,10 +144,12 @@ router.post('/tests', authMiddleware, (req, res) => {
     questionIds,
     durationSec,
     testSetId: testSet ? testSet.id : null,
+    exam,
   });
   return res.status(201).json({
     attemptId: attempt.id,
     testSetId: attempt.testSetId,
+    exam: attempt.exam,
     questionIds,
     durationSec,
     startedAt: attempt.startedAt,
@@ -158,7 +169,9 @@ router.post('/tests/:id/answers', authMiddleware, (req, res) => {
     return res.status(400).json({ error: 'cau hoi khong thuoc bai thi nay' });
   }
   // Autosave: chi luu, CHUA cham diem (is_correct = null).
-  db.upsertAnswer(attempt.id, questionId, selected.trim().toUpperCase(), null);
+  // Luu selected.trim() KHONG uppercase de khong hong dap an dien tu IELTS;
+  // luc cham o submit se uppercase khi so voi nhan MC.
+  db.upsertAnswer(attempt.id, questionId, selected.trim(), null);
   return res.json({ ok: true });
 });
 
@@ -186,13 +199,20 @@ router.post('/tests/:id/submit', authMiddleware, (req, res) => {
     const q = db.getQuestionRowById(qid);
     if (!q) continue;
     const ans = answers.find((a) => a.questionId === qid);
-    const correctOpt = q.options.find((o) => o.is_correct === 1);
-    const isCorrect = !!(
-      ans &&
-      ans.selected &&
-      correctOpt &&
-      ans.selected.toUpperCase() === correctOpt.label
-    );
+    let isCorrect;
+    if (isTypedType(q.question_type)) {
+      // Cau dien tu IELTS: qua word_limit = sai (van ghi cau sai).
+      const graded = gradeTypedAnswer(ans ? ans.selected : '', q.correct_text, q.acceptedAnswers, q.word_limit);
+      isCorrect = !!(ans && ans.selected && graded.correct);
+    } else {
+      const correctOpt = q.options.find((o) => o.is_correct === 1);
+      isCorrect = !!(
+        ans &&
+        ans.selected &&
+        correctOpt &&
+        ans.selected.toUpperCase() === correctOpt.label
+      );
+    }
     if (isListeningPart(q.part)) {
       listeningTotal += 1;
       if (isCorrect) listeningCorrect += 1;
@@ -212,12 +232,22 @@ router.post('/tests/:id/submit', authMiddleware, (req, res) => {
   let listeningScore = null;
   let readingScore = null;
   let totalScore = null;
+  let listeningBand = null;
+  let readingBand = null;
+  let overallBand = null;
   if (attempt.mode === 'full') {
-    // Chi de full moi co du ca 2 phan de quy doi 10-990 (diem uoc luong).
-    const scored = scoreFullTest(listeningCorrect, listeningTotal, readingCorrect, readingTotal);
-    listeningScore = scored.listeningScore;
-    readingScore = scored.readingScore;
-    totalScore = scored.totalScore;
+    if (attempt.exam === 'ielts') {
+      // IELTS full: tinh band L/R/tong, khong quy doi diem TOEIC 10-990.
+      listeningBand = ieltsBandForSkill(listeningCorrect, 'listening');
+      readingBand = ieltsBandForSkill(readingCorrect, 'reading');
+      overallBand = ieltsOverallBand(listeningBand, readingBand);
+    } else {
+      // Chi de full moi co du ca 2 phan de quy doi 10-990 (diem uoc luong).
+      const scored = scoreFullTest(listeningCorrect, listeningTotal, readingCorrect, readingTotal);
+      listeningScore = scored.listeningScore;
+      readingScore = scored.readingScore;
+      totalScore = scored.totalScore;
+    }
   }
   // Chong gian lan bang diem: bai full nop duoi 10 phut thi khong tinh.
   const leaderboardEligible = attempt.mode === 'full' && durationSec >= 600;
@@ -231,6 +261,9 @@ router.post('/tests/:id/submit', authMiddleware, (req, res) => {
     listeningScore,
     readingScore,
     totalScore,
+    listeningBand,
+    readingBand,
+    overallBand,
     xpEarned: xpAwarded,
     leaderboardEligible,
   });
@@ -255,9 +288,13 @@ router.get('/tests/:id/result', authMiddleware, (req, res) => {
     const q = db.getQuestionById(qid, true);
     const ans = answers.find((a) => a.questionId === qid);
     if (!q) return { questionId: qid, selected: ans ? ans.selected : null, correct: null };
+    const typed = isTypedType(q.questionType);
     return {
       questionId: qid,
+      exam: q.exam || 'toeic',
       part: q.part,
+      questionType: q.questionType,
+      wordLimit: q.wordLimit,
       content: q.content,
       passageId: q.passageId,
       passageTitle: q.passageTitle,
@@ -267,6 +304,7 @@ router.get('/tests/:id/result', authMiddleware, (req, res) => {
       selected: ans ? ans.selected : null,
       correct: ans ? ans.isCorrect : null,
       correctLabel: q.correct,
+      correctText: typed ? q.correctText : null,
       explanation: q.explanation,
       topic: q.topic,
       difficulty: q.difficulty,
@@ -276,12 +314,15 @@ router.get('/tests/:id/result', authMiddleware, (req, res) => {
 });
 
 router.get('/tests/history', authMiddleware, (req, res) => {
-  const attempts = db.listAttemptsByUser(req.user.id, { modes: ['mini', 'full'], limit: 50 });
+  const exam = req.query.exam === 'ielts' ? 'ielts' : req.query.exam === 'toeic' ? 'toeic' : undefined;
+  const attempts = db.listAttemptsByUser(req.user.id, { modes: ['mini', 'full'], limit: 50, exam });
   return res.json(
     attempts.map((a) => ({
       id: a.id,
       mode: a.mode,
+      exam: a.exam,
       part: a.part,
+      testSetId: a.testSetId,
       questionCount: a.questionIds.length,
       startedAt: a.startedAt,
       finishedAt: a.finishedAt,
@@ -291,6 +332,9 @@ router.get('/tests/history', authMiddleware, (req, res) => {
       listeningScore: a.listeningScore,
       readingScore: a.readingScore,
       totalScore: a.totalScore,
+      listeningBand: a.listeningBand,
+      readingBand: a.readingBand,
+      overallBand: a.overallBand,
       xpEarned: a.xpEarned,
       leaderboardEligible: a.leaderboardEligible,
     }))

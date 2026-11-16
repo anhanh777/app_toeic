@@ -2,9 +2,13 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, type PartInfo, type StatsOverview, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
+import { partLabel, partNameFor, useExam } from '../exam';
 
 export default function Practice() {
   const nav = useNavigate();
+  const { exam } = useExam();
+  const ex = exam ?? 'toeic';
+  const isIelts = ex === 'ielts';
   const [tab, setTab] = useState<'sets' | 'parts'>('sets');
   const [testSets, setTestSets] = useState<TestSet[]>([]);
   const [setsError, setSetsError] = useState<unknown>(null);
@@ -15,10 +19,10 @@ export default function Practice() {
   const [part, setPart] = useState(5);
 
   useEffect(() => {
-    api.testSets().then(setTestSets).catch(setSetsError).finally(() => setSetsLoading(false));
-    api.parts().then(setParts).catch(setError);
-    api.statsOverview().then(setStats).catch(() => undefined);
-  }, []);
+    api.testSets(ex).then(setTestSets).catch(setSetsError).finally(() => setSetsLoading(false));
+    api.parts(ex).then(setParts).catch(setError);
+    api.statsOverview(ex).then(setStats).catch(() => undefined);
+  }, [ex]);
 
   const acc = (p: number) => stats?.byPart.find(b => b.part === p);
   const partList: PartInfo[] = parts.length ? parts : [1, 2, 3, 4, 5, 6, 7].map(p => ({ part: p, count: 0 }));
@@ -26,8 +30,8 @@ export default function Practice() {
     const a = acc(p.part);
     return (
       <div key={p.part} className={`card part-card${part === p.part ? ' selected' : ''}`} onClick={() => setPart(p.part)}>
-        <div className="part-ico">{p.part <= 4 ? '🎧' : '📖'} Part {p.part}</div>
-        <strong>{partName(p.part)}</strong> <span className="pill">{sectionOf(p.part)}</span>
+        <div className="part-ico">{p.part <= 4 ? '🎧' : '📖'} {partLabel(p.part, ex)}</div>
+        <strong>{isIelts ? partNameFor(p.part, ex) : partName(p.part)}</strong> <span className="pill">{sectionOf(p.part)}</span>
         <p className="muted">{p.count ? `${p.count} câu trong ngân hàng` : 'Chưa rõ số câu'}</p>
         {a && <p>Tỉ lệ đúng: {Math.round(a.accuracy * 100)}% ({a.correct}/{a.answered} câu)</p>}
         {a && <div className="bar"><i style={{ width: `${a.accuracy * 100}%` }} /></div>}
@@ -40,7 +44,7 @@ export default function Practice() {
       <h1>Luyện tập</h1>
       <div className="seg" style={{ marginBottom: '1rem' }}>
         <button className={`btn${tab === 'sets' ? ' gold' : ' secondary'}`} onClick={() => setTab('sets')}>📚 Luyện theo Bộ đề</button>
-        <button className={`btn${tab === 'parts' ? ' gold' : ' secondary'}`} onClick={() => setTab('parts')}>🎧 Luyện theo Part</button>
+        <button className={`btn${tab === 'parts' ? ' gold' : ' secondary'}`} onClick={() => setTab('parts')}>{isIelts ? '🎧 Luyện theo Section/Passage' : '🎧 Luyện theo Part'}</button>
       </div>
 
       {tab === 'sets' && (
@@ -64,10 +68,10 @@ export default function Practice() {
                   {ts.description && <p className="muted">{ts.description}</p>}
                   <p><span className="stat-num">{total}</span> câu</p>
                   <p className="muted">
-                    {ts.parts.map(p => `P${p.part} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
+                    {ts.parts.map(p => `${partLabel(p.part, ex)} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
                   </p>
                   {ts.missing.length > 0 && (
-                    <p style={{ color: 'var(--amber)' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
+                    <p style={{ color: 'var(--amber)' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}</p>
                   )}
                   {ts.progress ? (
                     <div>
@@ -91,14 +95,14 @@ export default function Practice() {
 
       {tab === 'parts' && (
         <div>
-          <h2>Luyện theo Part</h2>
-          <p className="muted">Luyện 1 Part gom câu từ ngân hàng chung, không gắn đề cụ thể.</p>
+          <h2>{isIelts ? 'Luyện theo Section/Passage' : 'Luyện theo Part'}</h2>
+          <p className="muted">Luyện 1 {isIelts ? 'Section/Passage' : 'Part'} gom câu từ ngân hàng chung, không gắn đề cụ thể.</p>
           <ErrorBox error={error} />
-          <h2>🎧 Listening — Part 1–4</h2>
+          <h2>🎧 Listening — {isIelts ? 'Section 1–4' : 'Part 1–4'}</h2>
           <div className="grid parts-grid">
             {partList.filter(p => p.part <= 4).map(renderPartCard)}
           </div>
-          <h2>📖 Reading — Part 5–7</h2>
+          <h2>📖 Reading — {isIelts ? 'Passage 1–3' : 'Part 5–7'}</h2>
           <div className="grid parts-grid">
             {partList.filter(p => p.part > 4).map(renderPartCard)}
           </div>
@@ -106,13 +110,14 @@ export default function Practice() {
             <p style={{ margin: 0 }}>
               {(() => {
                 const n = partList.find(p => p.part === part)?.count || 0;
+                const label = isIelts ? partNameFor(part, ex) : partName(part);
                 return n > 0
-                  ? `Luyện hết ${n} câu của ${partName(part)} — không giới hạn số lượng.`
-                  : `Luyện hết tất cả các câu của ${partName(part)} — không giới hạn số lượng.`;
+                  ? `Luyện hết ${n} câu của ${label} — không giới hạn số lượng.`
+                  : `Luyện hết tất cả các câu của ${label} — không giới hạn số lượng.`;
               })()}
             </p>
             <div className="btn-row">
-              <button className="btn" onClick={() => nav(`/practice/session?part=${part}`)}>Bắt đầu luyện {partName(part)}</button>
+              <button className="btn" onClick={() => nav(`/practice/session?part=${part}&exam=${ex}`)}>Bắt đầu luyện {isIelts ? partNameFor(part, ex) : partName(part)}</button>
             </div>
           </div>
         </div>

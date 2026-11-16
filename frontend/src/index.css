@@ -535,6 +535,17 @@ footer{
 .audio-missing-text{margin:0; font-size:.9rem; color:var(--ink); flex:1 1 220px; min-width:0}
 
 ::selection{background:var(--accent-soft); color:var(--ink)}
+
+/* ============ IELTS giai đoạn 2 — màn chọn kỳ thi, đáp án điền từ, band ============ */
+.exam-pick{display:grid; gap:1rem}
+@media(min-width:640px){.exam-pick{grid-template-columns:1fr 1fr}}
+.exam-pick .card{cursor:pointer; text-align:center; padding:1.6rem 1.2rem}
+.exam-pick .card:hover{border-color:var(--accent); transform:translateY(-2px)}
+.exam-pick .card h2{margin:.4rem 0 .2rem}
+.word-count{font-size:.85rem; color:var(--muted); margin:.25rem 0 0}
+.word-count.over{color:var(--red-ink); font-weight:700}
+.band-num{font-weight:800; font-size:2rem; line-height:1.2; color:var(--accent-dark)}
+
 @media(max-width:640px){
   h1{font-size:1.2rem}
   .hero h1{font-size:1.25rem}

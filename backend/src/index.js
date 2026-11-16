@@ -60,6 +60,7 @@ app.use('/api', require('./routes/tests'));
 app.use('/api', require('./routes/wrong'));
 app.use('/api', require('./routes/vocab'));
 app.use('/api', require('./routes/stats'));
+app.use('/api', require('./routes/ielts'));
 app.use('/api', require('./routes/leaderboard'));
 app.use('/api', require('./routes/admin'));
 

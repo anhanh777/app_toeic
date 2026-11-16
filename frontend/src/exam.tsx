@@ -1,0 +1,165 @@
+// Bối cảnh kỳ thi đang chọn (TOEIC / IELTS Academic) — kế hoạch giai đoạn 2.
+// Mọi màn hình IELTS đi sau lựa chọn exam; mặc định TOEIC như cũ.
+// Quy ước chung: IELTS Listening Section N → part N (1–4); Reading
+// Passage N → part 4+N (5, 6, 7).
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { api, type ExamInfo } from './api';
+import { ErrorBox } from './components';
+
+export type ExamId = 'toeic' | 'ielts';
+
+const KEY = 'app_exam';
+
+interface ExamCtx {
+  exam: ExamId | null;
+  setExam: (e: ExamId) => void;
+  clearExam: () => void;
+}
+const Ctx = createContext<ExamCtx | null>(null);
+
+function readSaved(): ExamId | null {
+  try {
+    const v = localStorage.getItem(KEY);
+    if (v === 'toeic' || v === 'ielts') return v;
+  } catch {
+    /* localStorage không dùng được thì bắt chọn lại */
+  }
+  return null;
+}
+
+export function ExamProvider({ children }: { children: ReactNode }) {
+  const [exam, setExamState] = useState<ExamId | null>(() => readSaved());
+  const setExam = (e: ExamId) => {
+    try { localStorage.setItem(KEY, e); } catch { /* bỏ qua */ }
+    setExamState(e);
+  };
+  const clearExam = () => {
+    try { localStorage.removeItem(KEY); } catch { /* bỏ qua */ }
+    setExamState(null);
+  };
+  return <Ctx.Provider value={{ exam, setExam, clearExam }}>{children}</Ctx.Provider>;
+}
+
+export function useExam(): ExamCtx {
+  const c = useContext(Ctx);
+  if (!c) throw new Error('useExam phải dùng trong ExamProvider');
+  return c;
+}
+
+/** Nhãn ngắn cho 1 Part theo kỳ thi: "Part 1" / "Section 1" / "Passage 1". */
+export function partLabel(part: number, exam: ExamId | null | undefined): string {
+  if (exam === 'ielts') return part <= 4 ? `Section ${part}` : `Passage ${part - 4}`;
+  return `Part ${part}`;
+}
+
+/** Tên đầy đủ cho 1 Part theo kỳ thi (dùng cho tiêu đề, thẻ chọn, thống kê). */
+export function partNameFor(part: number, exam: ExamId | null | undefined): string {
+  if (exam === 'ielts') return partLabel(part, exam);
+  // TOEIC: tên đầy đủ nằm ở components.tsx (partName) — tránh vòng import.
+  return `Part ${part}`;
+}
+
+// ---- Dạng câu hỏi IELTS ----
+
+export const QUESTION_TYPE_NAMES: Record<string, string> = {
+  multiple_choice: 'Trắc nghiệm',
+  true_false_not_given: 'True / False / Not Given',
+  yes_no_not_given: 'Yes / No / Not Given',
+  matching_headings: 'Nối tiêu đề (Matching Headings)',
+  matching_information: 'Nối thông tin (Matching Information)',
+  matching_features: 'Nối đặc điểm (Matching Features)',
+  matching: 'Nối (Matching)',
+  labelling: 'Ghi nhãn (Labelling)',
+  form_completion: 'Điền form (Form Completion)',
+  sentence_completion: 'Hoàn thành câu (Sentence Completion)',
+  summary_completion: 'Hoàn thành tóm tắt (Summary Completion)',
+  short_answer: 'Trả lời ngắn (Short Answer)',
+};
+export function questionTypeName(t?: string | null): string {
+  return (t && QUESTION_TYPE_NAMES[t]) || 'Trắc nghiệm';
+}
+
+/** Dạng điền từ: form/sentence/summary completion + short_answer. */
+export const FILL_IN_TYPES = new Set([
+  'form_completion', 'sentence_completion', 'summary_completion', 'short_answer',
+]);
+export function isFillIn(t?: string | null): boolean {
+  return !!t && FILL_IN_TYPES.has(t);
+}
+export function isMatching(t?: string | null): boolean {
+  return !!t && (
+    t === 'matching_headings' || t === 'matching_information' ||
+    t === 'matching_features' || t === 'matching' || t === 'labelling'
+  );
+}
+
+export function wordCount(text: string): number {
+  const t = text.trim();
+  return t ? t.split(/\s+/).length : 0;
+}
+
+/** Nhãn mức cho band IELTS (chỉ để tham khảo). */
+export function bandLevel(band?: number | null): string {
+  if (band == null) return '—';
+  if (band < 5) return 'Cơ bản';
+  if (band < 6) return 'Trung bình';
+  if (band < 7) return 'Khá';
+  if (band < 8) return 'Tốt';
+  return 'Xuất sắc';
+}
+
+// ---- Màn hình chọn kỳ thi (hiện sau đăng nhập khi chưa chọn exam) ----
+
+const FALLBACK_EXAMS: ExamInfo[] = [
+  { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990', testSetCount: 20, questionCount: 4000 },
+  { id: 'ielts', title: 'IELTS Academic', subtitle: 'Listening + Reading', scale: 'Band 0–9', testSetCount: 1, questionCount: 80 },
+];
+
+export function ExamPicker() {
+  const { setExam } = useExam();
+  const nav = useNavigate();
+  const [exams, setExams] = useState<ExamInfo[] | null>(null);
+  const [error, setError] = useState<unknown>(null);
+
+  useEffect(() => {
+    api.exams().then(setExams).catch(setError);
+  }, []);
+
+  const list = exams?.length ? exams : FALLBACK_EXAMS;
+  const pick = (id: string) => {
+    if (id !== 'toeic' && id !== 'ielts') return;
+    setExam(id);
+    nav('/');
+  };
+
+  return (
+    <div>
+      <div className="hero">
+        <h1>📚 Chọn kỳ thi</h1>
+        <p className="sub">Chọn kỳ thi bạn muốn luyện — lần sau mở app sẽ vào thẳng kỳ thi này. Đổi được bất cứ lúc nào bằng nút “Đổi bài thi”.</p>
+      </div>
+      <ErrorBox error={error} />
+      <div className="exam-pick">
+        {list.map(e => (
+          <div key={e.id} className="card" role="button" tabIndex={0} onClick={() => pick(e.id)}
+            onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') pick(e.id); }}>
+            <div style={{ fontSize: '2rem' }}>{e.id === 'ielts' ? '🎓' : '🌸'}</div>
+            <h2 style={{ fontSize: '1.3rem' }}>{e.title}</h2>
+            <p className="muted">{e.subtitle}</p>
+            <p>
+              {e.id === 'ielts'
+                ? 'Listening 4 Section + Reading 3 Passage'
+                : 'Listening + Reading, 7 Part'}
+            </p>
+            <p><span className="stat-num">{e.testSetCount}</span> đề • <span className="stat-num">{e.questionCount}</span> câu</p>
+            <p>Thang điểm: <strong>{e.scale}</strong>{e.id === 'ielts' ? ' (band ước lượng để tham khảo)' : ' (điểm ước lượng)'}</p>
+            <div className="btn-row" style={{ justifyContent: 'center' }}>
+              <span className="btn">Chọn {e.title}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

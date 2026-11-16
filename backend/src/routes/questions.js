@@ -13,7 +13,9 @@ const router = express.Router();
 const SECTION = { 1: 'listening', 2: 'listening', 3: 'listening', 4: 'listening', 5: 'reading', 6: 'reading', 7: 'reading' };
 
 router.get('/parts', authMiddleware, (req, res) => {
-  const counts = db.countByPart();
+  // Mac dinh toeic de /parts cu tra counts TOEIC nhu truoc.
+  const exam = req.query.exam === 'ielts' ? 'ielts' : 'toeic';
+  const counts = db.countByPart(exam);
   const byPart = new Map(counts.map((c) => [c.part, c.count]));
   const parts = [1, 2, 3, 4, 5, 6, 7].map((part) => ({
     part,
@@ -36,7 +38,8 @@ router.get('/questions', authMiddleware, (req, res) => {
   const testSetId = typeof req.query.testSetId === 'string' && req.query.testSetId.trim()
     ? req.query.testSetId.trim()
     : undefined;
-  const { total, items } = db.listQuestions({ part, limit, offset, search, admin: false, testSetId });
+  const exam = req.query.exam === 'ielts' ? 'ielts' : 'toeic';
+  const { total, items } = db.listQuestions({ part, limit, offset, search, admin: false, testSetId, exam });
   return res.json({ total, limit, offset, items });
 });
 
