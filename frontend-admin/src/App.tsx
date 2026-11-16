@@ -1,8 +1,10 @@
-import { BrowserRouter, Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Link, NavLink, Route, Routes, useNavigate } from 'react-router-dom';
 import { useState, type ReactNode } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import { applyTheme, resolveTheme, type Theme } from './theme';
 import Login from './pages/Login';
+import Admin from './pages/Admin';
+import TestSetAdmin from './pages/TestSetAdmin';
 
 /* Nút đổi sáng/tối ở góc phải header. */
 function ThemeToggle() {
@@ -36,6 +38,40 @@ function RequireAdmin({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+/* Trang chờ cho module chưa chuyển xong. */
+function ComingSoon({ name }: { name: string }) {
+  return (
+    <div className="card">
+      <h1>{name}</h1>
+      <p>Module này đang được chuyển sang web quản trị riêng, sẽ có trong phần tiếp theo.</p>
+      <p><Link to="/">← Về trang chủ quản trị</Link></p>
+    </div>
+  );
+}
+
+function Dashboard() {
+  return (
+    <div>
+      <h1>Quản trị</h1>
+      <div className="card">
+        <h2>📚 Đề TOEIC</h2>
+        <p>Quản lý bộ đề, câu hỏi, nhận diện bằng AI, audio/ảnh theo Part, nhập tay theo loạt, từ vựng và sao lưu.</p>
+        <p><Link className="btn" to="/toeic">Mở quản lý đề TOEIC</Link></p>
+      </div>
+      <div className="card">
+        <h2>🎧 Đề IELTS</h2>
+        <p>Quản lý đề IELTS Academic riêng: 19 dạng câu hỏi, câu trả lời gõ tay, giới hạn số từ, ảnh bản đồ, audio từng Section.</p>
+        <p><Link className="btn" to="/ielts">Mở quản lý đề IELTS</Link></p>
+      </div>
+      <div className="card">
+        <h2>👤 Tài khoản</h2>
+        <p>Thêm, sửa, xóa tài khoản; cập nhật quyền và điểm mục tiêu; đặt lại mật khẩu.</p>
+        <p><Link className="btn" to="/users">Mở quản lý tài khoản</Link></p>
+      </div>
+    </div>
+  );
+}
+
 function Layout() {
   const { user, logout } = useAuth();
   const nav = useNavigate();
@@ -44,9 +80,19 @@ function Layout() {
     <div className="app">
       <header className="topbar">
         <Link className="brand" to="/">🛠️ Quản trị — Luyện thi TOEIC · IELTS</Link>
+        {user && user.role === 'admin' && (
+          <nav>
+            <div className="topbar-nav-inner">
+              <NavLink to="/" end>Trang chủ</NavLink>
+              <NavLink to="/toeic">Đề TOEIC</NavLink>
+              <NavLink to="/ielts">Đề IELTS</NavLink>
+              <NavLink to="/users">Tài khoản</NavLink>
+            </div>
+          </nav>
+        )}
         {user && (
           <div className="topbar-actions">
-            <span className="muted">{displayName} ({user.email})</span>
+            <span className="muted">{displayName}</span>
             <button type="button" className="icon-btn" aria-label="Đăng xuất" title="Đăng xuất"
               onClick={() => { logout(); nav('/login'); }}>🚪</button>
           </div>
@@ -56,20 +102,14 @@ function Layout() {
       <main className="container">
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<RequireAdmin><DashboardPlaceholder /></RequireAdmin>} />
+          <Route path="/" element={<RequireAdmin><Dashboard /></RequireAdmin>} />
+          <Route path="/toeic" element={<RequireAdmin><Admin /></RequireAdmin>} />
+          <Route path="/toeic/test-set/:id" element={<RequireAdmin><TestSetAdmin /></RequireAdmin>} />
+          <Route path="/ielts" element={<RequireAdmin><ComingSoon name="🎧 Quản lý đề IELTS" /></RequireAdmin>} />
+          <Route path="/users" element={<RequireAdmin><ComingSoon name="👤 Quản lý tài khoản" /></RequireAdmin>} />
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang quản trị</Link></p>} />
         </Routes>
       </main>
-    </div>
-  );
-}
-
-/* Trang chờ tạm thời — các module quản trị được chuyển sang ở phần 3–5. */
-function DashboardPlaceholder() {
-  return (
-    <div className="card">
-      <h1>Quản trị</h1>
-      <p>Web quản trị riêng đang được dựng. Các module (đề TOEIC, đề IELTS, câu hỏi, AI, audio/ảnh, nhập tay, từ vựng, sao lưu, tài khoản) sẽ lần lượt chuyển sang đây.</p>
     </div>
   );
 }
