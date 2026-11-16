@@ -85,6 +85,47 @@ function ThemeToggle() {
   );
 }
 
+/* ---- Thanh nav kiểu ghim: chỉ tối đa 4 mục ghim hiện trên thanh trên,
+   còn lại nằm trong menu ☰ bên phải. Lựa chọn ghim lưu localStorage. ---- */
+type NavItem = { path: string; label: string; end?: boolean; ieltsOnly?: boolean; adminOnly?: boolean };
+const NAV_ITEMS: NavItem[] = [
+  { path: '/', label: 'Trang chủ', end: true },
+  { path: '/today', label: 'Hôm nay' },
+  { path: '/practice', label: 'Luyện tập' },
+  { path: '/mock', label: 'Thi thử' },
+  { path: '/wrong', label: 'Câu sai' },
+  { path: '/ielts/diagnostic', label: 'Chẩn đoán', ieltsOnly: true },
+  { path: '/ielts/errors', label: 'Sổ lỗi', ieltsOnly: true },
+  { path: '/ielts/writing', label: 'Viết', ieltsOnly: true },
+  { path: '/ielts/speaking', label: 'Nói', ieltsOnly: true },
+  { path: '/vocabulary', label: 'Từ vựng' },
+  { path: '/stats', label: 'Thống kê' },
+  { path: '/leaderboard', label: 'Xếp hạng' },
+  { path: '/admin', label: 'Quản trị', adminOnly: true },
+  { path: '/settings', label: 'Cài đặt' },
+];
+const NAV_PINS_KEY = 'app_nav_pins';
+const MAX_PINS = 4;
+const DEFAULT_PINS = ['/', '/today', '/practice', '/mock'];
+
+function useNavPins() {
+  const [pins, setPins] = useState<string[]>(() => {
+    try {
+      const raw = localStorage.getItem(NAV_PINS_KEY);
+      if (raw) {
+        const arr = JSON.parse(raw);
+        if (Array.isArray(arr)) return arr.filter((p): p is string => typeof p === 'string');
+      }
+    } catch { /* bỏ qua, dùng mặc định */ }
+    return DEFAULT_PINS;
+  });
+  const save = (next: string[]) => {
+    setPins(next);
+    try { localStorage.setItem(NAV_PINS_KEY, JSON.stringify(next)); } catch { /* bỏ qua */ }
+  };
+  return { pins, save };
+}
+
 function Layout() {
   const { user, logout } = useAuth();
   const { exam, clearExam } = useExam();
@@ -97,32 +138,60 @@ function Layout() {
     : exam === 'toeic'
       ? '🌸 Luyện thi TOEIC'
       : '📚 Luyện thi TOEIC · IELTS';
+  const { pins, save: savePins } = useNavPins();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [pinMsg, setPinMsg] = useState<string | null>(null);
+  const availableItems = NAV_ITEMS.filter(it =>
+    (!it.ieltsOnly || exam === 'ielts') && (!it.adminOnly || user?.role === 'admin'));
+  const pinnedItems = availableItems.filter(it => pins.includes(it.path));
+  const togglePin = (path: string) => {
+    if (pins.includes(path)) { savePins(pins.filter(p => p !== path)); setPinMsg(null); return; }
+    // Giới hạn tính theo số mục ĐANG HIỆN được ghim (mục của kỳ thi khác
+    // vẫn giữ trong danh sách nhưng không chiếm chỗ).
+    if (pinnedItems.length >= MAX_PINS) {
+      setPinMsg(`Chỉ ghim tối đa ${MAX_PINS} mục thôi — bỏ ghim 1 mục rồi ghim mục khác nhé.`);
+      return;
+    }
+    setPinMsg(null);
+    savePins([...pins, path]);
+  };
   return (
     <div className="app">
       <header className="topbar">
         <Link className="brand" to="/">{brand}</Link>
         {user && exam && (
           <nav>
-            <NavLink to="/" end>Trang chủ</NavLink>
-            {/* "Hôm nay" dùng chung cho CẢ 2 kỳ thi (streak + bad-day dùng chung). */}
-            <NavLink to="/today">Hôm nay</NavLink>
-            <NavLink to="/practice">Luyện tập</NavLink>
-            <NavLink to="/mock">Thi thử</NavLink>
-            <NavLink to="/wrong">Câu sai</NavLink>
-            {exam === 'ielts' && (
+            {pinnedItems.map(it => (
+              <NavLink key={it.path} to={it.path} end={it.end}>{it.label}</NavLink>
+            ))}
+          </nav>
+        )}
+        {user && exam && (
+          <div className="nav-menu-wrap">
+            <button type="button" className="nav-menu-btn" aria-label="Mở menu" aria-expanded={menuOpen}
+              title="Tất cả mục" onClick={() => { setMenuOpen(o => !o); setPinMsg(null); }}>☰</button>
+            {menuOpen && (
               <>
-                <NavLink to="/ielts/diagnostic">Chẩn đoán</NavLink>
-                <NavLink to="/ielts/errors">Sổ lỗi</NavLink>
-                <NavLink to="/ielts/writing">Viết</NavLink>
-                <NavLink to="/ielts/speaking">Nói</NavLink>
+                <div className="nav-menu-backdrop" onClick={() => setMenuOpen(false)} />
+                <div className="nav-menu" role="menu">
+                  <p className="nav-menu-title">Tất cả mục — bấm 📌 để ghim lên thanh trên (tối đa {MAX_PINS})</p>
+                  {availableItems.map(it => {
+                    const pinned = pins.includes(it.path);
+                    return (
+                      <div key={it.path} className="nav-menu-row">
+                        <NavLink to={it.path} end={it.end} onClick={() => setMenuOpen(false)}>{it.label}</NavLink>
+                        <button type="button" className={`pin-btn${pinned ? ' pinned' : ''}`}
+                          aria-label={pinned ? `Bỏ ghim ${it.label}` : `Ghim ${it.label} lên thanh trên`}
+                          title={pinned ? 'Bỏ ghim khỏi thanh trên' : 'Ghim lên thanh trên'}
+                          onClick={() => togglePin(it.path)}>📌</button>
+                      </div>
+                    );
+                  })}
+                  {pinMsg && <p className="pin-limit-msg">{pinMsg}</p>}
+                </div>
               </>
             )}
-            <NavLink to="/vocabulary">Từ vựng</NavLink>
-            <NavLink to="/stats">Thống kê</NavLink>
-            <NavLink to="/leaderboard">Xếp hạng</NavLink>
-            {user.role === 'admin' && <NavLink to="/admin">Quản trị</NavLink>}
-            <NavLink to="/settings">Cài đặt</NavLink>
-          </nav>
+          </div>
         )}
         {user && (
           <div className="topbar-actions">
