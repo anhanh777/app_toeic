@@ -237,9 +237,12 @@ export const api = {
     req<{ token: string; user: User }>('/api/auth/google', { method: 'POST', body: JSON.stringify({ idToken }) }),
   changePassword: (currentPassword: string, newPassword: string) =>
     req('/api/auth/change-password', { method: 'POST', body: JSON.stringify({ currentPassword, newPassword }) }),
-  me: () => req<User>('/api/auth/me'),
-  updateMe: (patch: { name?: string; targetScore?: number; hideOnLeaderboard?: boolean }) =>
-    req<User>('/api/users/me', { method: 'PATCH', body: JSON.stringify(patch) }),
+  // GET /api/auth/me và PATCH /api/users/me đều trả {user: ...} — phải
+  // bóc .user ra, nếu không user.name/user.role/user.id đều undefined
+  // (nút "Đăng xuất ()" trống tên, mất link Quản trị sau khi tải lại).
+  me: async () => (await req<{ user: User }>('/api/auth/me')).user,
+  updateMe: async (patch: { name?: string; targetScore?: number; hideOnLeaderboard?: boolean }) =>
+    (await req<{ user: User }>('/api/users/me', { method: 'PATCH', body: JSON.stringify(patch) })).user,
 
   parts: (exam?: string) => req<PartInfo[]>(exam ? `/api/parts?exam=${encodeURIComponent(exam)}` : '/api/parts'),
   questions: async (part?: number, limit = 50, offset = 0, search = '', testSetId?: string, exam?: string) => {

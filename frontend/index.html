@@ -19,11 +19,19 @@
         if (m) m.content = dark ? '#211E1B' : '#FDF8F3';
       } catch (e) {}
     </script>
+    <style>
+      /* Màn hình chờ tĩnh trước khi JS tải xong (React sẽ thay thế khi mount). */
+      #root .boot{min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:system-ui,sans-serif}
+      html[data-theme='dark'] #root .boot{background:#211E1B;color:#a99e93}
+      html:not([data-theme='dark']) #root .boot{background:#FDF8F3;color:#8a7f74}
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Luyện thi TOEIC</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="boot"><p style="text-align:center">⏳<br />Đang mở app…</p></div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { Component, useState } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import { ExamProvider, ExamPicker, useExam, useIeltsSetupRedirect } from './exam';
 import { applyTheme, resolveTheme, type Theme } from './theme';
@@ -27,9 +27,41 @@ import type { ReactNode } from 'react';
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
-  if (loading) return <p>Đang tải…</p>;
+  // Đang chờ máy chủ (Render bản miễn phí ngủ khi không dùng, dậy mất vài
+  // giây): hiện thẻ chờ rõ ràng thay vì 1 dòng "Đang tải…" trên nền tối
+  // trống — nhìn như trang bị đen.
+  if (loading) return (
+    <div className="card" style={{ marginTop: '1rem', textAlign: 'center', padding: '2rem 1rem' }}>
+      <p style={{ fontSize: '1.6rem', margin: 0 }}>⏳</p>
+      <p style={{ fontWeight: 700, margin: '.4rem 0' }}>Đang mở app…</p>
+      <p className="muted" style={{ margin: 0 }}>Máy chủ đang khởi động, chờ vài giây nhé.</p>
+    </div>
+  );
   if (!user) return <Navigate to="/login" replace />;
   return <>{children}</>;
+}
+
+/* Lưới an toàn: 1 trang lỗi thì chỉ trang đó hiện thông báo + nút tải lại,
+   thay vì React gỡ cả cây và màn hình đen thui (không còn header). */
+class ErrorBoundary extends Component<{ children: ReactNode }, { error: unknown }> {
+  state: { error: unknown } = { error: null };
+  static getDerivedStateFromError(error: unknown) { return { error }; }
+  componentDidCatch(error: unknown) { console.error('App crash:', error); }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="card" style={{ marginTop: '1rem' }}>
+          <h1>😅 Trang này đang gặp lỗi</h1>
+          <p className="muted">App không tải được trang này. Thử tải lại trang — nếu vẫn lỗi thì chụp màn hình gửi mình nhé.</p>
+          <div className="btn-row">
+            <button className="btn" onClick={() => window.location.reload()}>Tải lại trang</button>
+            <Link className="btn secondary" to="/" onClick={() => this.setState({ error: null })}>Về trang chủ</Link>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 /* Nút đổi sáng/tối ở góc phải header — hiện cả khi chưa đăng nhập. */
@@ -69,34 +101,34 @@ function Layout() {
     <div className="app">
       <header className="topbar">
         <Link className="brand" to="/">{brand}</Link>
-        {user && (
+        {user && exam && (
           <nav>
-            {exam && (
+            <NavLink to="/" end>Trang chủ</NavLink>
+            {/* "Hôm nay" dùng chung cho CẢ 2 kỳ thi (streak + bad-day dùng chung). */}
+            <NavLink to="/today">Hôm nay</NavLink>
+            <NavLink to="/practice">Luyện tập</NavLink>
+            <NavLink to="/mock">Thi thử</NavLink>
+            <NavLink to="/wrong">Câu sai</NavLink>
+            {exam === 'ielts' && (
               <>
-                <NavLink to="/" end>Trang chủ</NavLink>
-                {/* "Hôm nay" dùng chung cho CẢ 2 kỳ thi (streak + bad-day dùng chung). */}
-                <NavLink to="/today">Hôm nay</NavLink>
-                <NavLink to="/practice">Luyện tập</NavLink>
-                <NavLink to="/mock">Thi thử</NavLink>
-                <NavLink to="/wrong">Câu sai</NavLink>
-                {exam === 'ielts' && (
-                  <>
-                    <NavLink to="/ielts/diagnostic">Chẩn đoán</NavLink>
-                    <NavLink to="/ielts/errors">Sổ lỗi</NavLink>
-                    <NavLink to="/ielts/writing">Viết</NavLink>
-                    <NavLink to="/ielts/speaking">Nói</NavLink>
-                  </>
-                )}
-                <NavLink to="/vocabulary">Từ vựng</NavLink>
-                <NavLink to="/stats">Thống kê</NavLink>
-                <NavLink to="/leaderboard">Xếp hạng</NavLink>
-                {user.role === 'admin' && <NavLink to="/admin">Quản trị</NavLink>}
-                <NavLink to="/settings">Cài đặt</NavLink>
-                <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { clearExam(); nav('/'); }}>↔ Đổi bài thi</button>
+                <NavLink to="/ielts/diagnostic">Chẩn đoán</NavLink>
+                <NavLink to="/ielts/errors">Sổ lỗi</NavLink>
+                <NavLink to="/ielts/writing">Viết</NavLink>
+                <NavLink to="/ielts/speaking">Nói</NavLink>
               </>
             )}
-            <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { logout(); nav('/login'); }}>Đăng xuất ({user.name})</button>
+            <NavLink to="/vocabulary">Từ vựng</NavLink>
+            <NavLink to="/stats">Thống kê</NavLink>
+            <NavLink to="/leaderboard">Xếp hạng</NavLink>
+            {user.role === 'admin' && <NavLink to="/admin">Quản trị</NavLink>}
+            <NavLink to="/settings">Cài đặt</NavLink>
           </nav>
+        )}
+        {user && (
+          <div className="topbar-actions">
+            {exam && <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { clearExam(); nav('/'); }}>↔ Đổi bài thi</button>}
+            <button className="btn secondary" style={{ padding: '.3rem .7rem' }} onClick={() => { logout(); nav('/login'); }}>Đăng xuất ({(user.name || '').trim() || (user.email || '').split('@')[0] || 'Tài khoản'})</button>
+          </div>
         )}
         <ThemeToggle />
       </header>
@@ -106,6 +138,7 @@ function Layout() {
         {user && exam === null ? (
           <ExamPicker />
         ) : (
+          <ErrorBoundary>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
@@ -130,6 +163,7 @@ function Layout() {
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
           </Routes>
+          </ErrorBoundary>
         )}
       </main>
       <footer>LUYỆN THI TOEIC • ĐIỂM THI THỬ LÀ ĐIỂM ƯỚC LƯỢNG, KHÔNG PHẢI ĐIỂM CHÍNH THỨC CỦA ETS • ÂM THANH ĐỌC BẰNG GIỌNG MÁY (TTS) • BAND IELTS TRONG APP LÀ BAND ƯỚC LƯỢNG ĐỂ THAM KHẢO</footer>

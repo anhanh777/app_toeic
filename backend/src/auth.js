@@ -34,7 +34,8 @@ function toPublicUser(row) {
   return {
     id: row.id,
     email: row.email,
-    name: row.name,
+    // Tài khoản cũ có thể lưu name rỗng -> hiển thị phần trước @ thay vì "()".
+    name: row.name && row.name.trim() ? row.name : row.email.split('@')[0],
     role: row.role || 'user',
     targetScore: row.target_score != null ? row.target_score : 650,
     googleId: row.google_id || null,

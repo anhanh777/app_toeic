@@ -9,8 +9,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, type BadDayTask, type ErrorLogEntry, type Question, type TodayData, type WeeklyError } from '../api';
 import { ErrorBox } from '../components';
-import { bandLevel, partNameFor, questionTypeName, useExam } from '../exam';
+import { bandLevel, isFillIn, isMultiAnswer, partNameFor, questionTypeName, useExam, wordCount } from '../exam';
 import { errorCodeName, fmtClock, useCountdown } from '../ielts-phase1';
+import { IeltsAnswerControl } from '../ielts-ui';
 import { speak, stopSpeak, ttsSupported } from '../tts';
 
 const TOPICS = ['du lịch', 'công nghệ', 'y học', 'môi trường'];
@@ -269,8 +270,10 @@ function IeltsDrillBlock({ diagnosticDone, weakestType, questionCount, onDone }:
 }) {
   const [qs, setQs] = useState<Question[] | null>(null);
   const [error, setError] = useState<unknown>(null);
-  const [answers, setAnswers] = useState<Record<string, { ok: boolean; correctLabel?: string }>>({});
+  const [answers, setAnswers] = useState<Record<string, { ok: boolean; correctLabel?: string; correctText?: string }>>({});
+  const [selected, setSelected] = useState<Record<string, string>>({});
   const [started, setStarted] = useState(false);
+  const answeringRef = useRef<Set<string>>(new Set());
   if (!diagnosticDone) {
     return (
       <div>
@@ -287,12 +290,13 @@ function IeltsDrillBlock({ diagnosticDone, weakestType, questionCount, onDone }:
       setQs(filtered.slice(0, 10));
     } catch (e) { setError(e); }
   };
-  const answer = async (q: Question, selected: string) => {
-    if (answers[q.id]) return;
+  const answer = async (q: Question, value: string) => {
+    if (answers[q.id] || answeringRef.current.has(q.id) || !value.trim()) return;
+    answeringRef.current.add(q.id);
     try {
-      const r = await api.practiceAnswer(q.id, selected);
-      setAnswers(m => ({ ...m, [q.id]: { ok: r.correct, correctLabel: r.correctLabel } }));
-    } catch (e) { setError(e); }
+      const r = await api.practiceAnswer(q.id, value);
+      setAnswers(m => ({ ...m, [q.id]: { ok: r.correct, correctLabel: r.correctLabel, correctText: r.correctText } }));
+    } catch (e) { setError(e); } finally { answeringRef.current.delete(q.id); }
   };
   return (
     <div>
@@ -307,19 +311,51 @@ function IeltsDrillBlock({ diagnosticDone, weakestType, questionCount, onDone }:
       {started && !qs && <p>Đang tải câu hỏi…</p>}
       {qs?.map((q, i) => {
         const a = answers[q.id];
+        const qType = q.questionType || 'multiple_choice';
+        // Dạng IELTS đặc biệt (điền từ, TFNG, matching, list_selection…)
+        // dùng chung IeltsAnswerControl như màn Luyện tập — trước đây chỉ
+        // vẽ nút phương án nên câu điền từ không có chỗ nhập đáp án.
+        const special = qType !== 'multiple_choice' && qType !== 'choosing_title';
+        // Điền từ + chọn nhiều đáp án: KHÔNG nộp ngay khi bấm/blur (người
+        // học cần gõ xong hoặc tick đủ 2–3 đáp án) — nộp bằng nút Kiểm tra.
+        // TFNG/matching: 1 lựa chọn là xong nên nộp ngay khi chọn.
+        const needsSubmit = isFillIn(qType) || isMultiAnswer(qType);
+        const overLimit = isFillIn(qType) && q.wordLimit != null && wordCount(selected[q.id] ?? '') > q.wordLimit;
         return (
           <div key={q.id} className="panel" style={{ marginBottom: '.5rem' }}>
             <p style={{ margin: '.1rem 0' }}><strong>{i + 1}. {q.content}</strong></p>
-            <div className="btn-row" style={{ flexWrap: 'wrap' }}>
-              {q.options.map(o => (
-                <button key={o.label} type="button" className="btn btn-sm secondary"
-                  disabled={!!a} onClick={() => void answer(q, o.label)}>
-                  {o.label}{o.content ? `. ${o.content}` : ''}
-                </button>
-              ))}
-            </div>
+            {special ? (
+              <>
+                <IeltsAnswerControl
+                  q={q}
+                  value={selected[q.id] ?? ''}
+                  onChange={v => setSelected(m => ({ ...m, [q.id]: v }))}
+                  onCommit={needsSubmit ? undefined : (v => void answer(q, v))}
+                  disabled={!!a}
+                  graded={a ? { correct: a.ok, correctLabel: a.correctLabel, correctText: a.correctText } : undefined}
+                />
+                {needsSubmit && !a && (
+                  <div className="btn-row" style={{ marginTop: '.5rem' }}>
+                    <button className="btn btn-sm" disabled={!selected[q.id]?.trim() || overLimit}
+                      onClick={() => void answer(q, selected[q.id] ?? '')}>
+                      Kiểm tra
+                    </button>
+                    {overLimit && <span className="muted">Vượt giới hạn số từ — rút gọn đáp án nhé.</span>}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="btn-row" style={{ flexWrap: 'wrap' }}>
+                {q.options.map(o => (
+                  <button key={o.label} type="button" className="btn btn-sm secondary"
+                    disabled={!!a} onClick={() => void answer(q, o.label)}>
+                    {o.label}{o.content ? `. ${o.content}` : ''}
+                  </button>
+                ))}
+              </div>
+            )}
             {a && <p style={{ margin: '.4rem 0 0', color: a.ok ? 'var(--green-ink)' : 'var(--red-ink)' }}>
-              {a.ok ? '✅ Đúng rồi!' : `❌ Sai rồi — đáp án đúng: ${a.correctLabel ?? ''}`}
+              {a.ok ? '✅ Đúng rồi!' : `❌ Sai rồi — đáp án đúng: ${a.correctText ?? a.correctLabel ?? ''}`}
             </p>}
           </div>
         );
