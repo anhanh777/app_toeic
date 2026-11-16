@@ -81,6 +81,13 @@ export default function MockTest() {
     if (testSetId) api.testSet(testSetId).then(setTestSet).catch(setError);
   }, [testSetId]);
 
+  // Danh sách đề để chọn ở màn hình Thi thử (khi mở /mock trực tiếp,
+  // chưa có testSetId trên URL).
+  const [testSets, setTestSets] = useState<TestSet[]>([]);
+  useEffect(() => {
+    if (!testSetId) api.testSets(exam).then(setTestSets).catch(() => undefined);
+  }, [exam, testSetId]);
+
   useEffect(() => {
     if (!attemptId || secondsLeft <= 0) return;
     const t = setInterval(() => setSecondsLeft(s => s - 1), 1000);
@@ -143,6 +150,7 @@ export default function MockTest() {
           <option value="full">{isIelts ? 'Thi full — Listening + Reading (80 câu, 90 phút)' : 'Thi full — toàn bộ ngân hàng, 120 phút'}</option>
         </select>
         {mode === 'mini' && (<><label>{isIelts ? 'Chọn Section/Passage' : 'Chọn Part'}</label><select value={part} onChange={e => setPart(Number(e.target.value))}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{isIelts ? `${partNameFor(p, exam)} — ${p <= 4 ? 'Listening' : 'Reading'}` : partName(p)}</option>)}</select></>)}
+        {mode === 'full' && (<><label>Chọn đề thi</label><select value="" onChange={e => { const id = e.target.value; if (id) nav(`/mock?testSetId=${id}&exam=${exam}`); }}><option value="">Toàn bộ ngân hàng</option>{testSets.map(s => <option key={s.id} value={s.id}>{s.title} ({s.totalQuestions} câu)</option>)}</select><p className="muted">Chọn một đề để thi thử cả đề đó; để nguyên "Toàn bộ ngân hàng" để thi từ tất cả các đề.</p></>)}
         <p className="muted">Thi full: làm đủ {fullMinutes} phút, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9). Bài mini chỉ báo số câu đúng/tổng, không có band.</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990). Bài mini chỉ báo số câu đúng/tổng, không có điểm 10–990.</>}</p>
         {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
         <div className="btn-row"><button className="btn" disabled={busy} onClick={start}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</button></div>
