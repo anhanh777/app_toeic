@@ -9,7 +9,7 @@ import IeltsAdmin from './pages/IeltsAdmin';
 import IeltsTestSetAdmin from './pages/IeltsTestSetAdmin';
 import Users from './pages/Users';
 
-/* Nút đổi sáng/tối ở góc phải header. */
+/* Nút đổi sáng/tối ở cuối thanh bên trái. */
 function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>(() => resolveTheme());
   const toggle = () => {
@@ -70,27 +70,28 @@ function Layout() {
   const displayName = (user?.name || '').trim() || (user?.email || '').split('@')[0] || 'Tài khoản';
   return (
     <div className="app">
-      <header className="topbar">
-        <Link className="brand" to="/">🛠️ Quản trị — Luyện thi TOEIC · IELTS</Link>
+      <aside className="sidebar">
+        <Link className="brand" to="/">🛠️ Quản trị</Link>
+        <p className="sidebar-sub muted">Luyện thi TOEIC · IELTS</p>
         {user && user.role === 'admin' && (
           <nav>
-            <div className="topbar-nav-inner">
-              <NavLink to="/" end>Trang chủ</NavLink>
-              <NavLink to="/toeic">Đề TOEIC</NavLink>
-              <NavLink to="/ielts">Đề IELTS</NavLink>
-              <NavLink to="/users">Tài khoản</NavLink>
-            </div>
+            <NavLink to="/" end>🏠 Trang chủ</NavLink>
+            <NavLink to="/toeic">📚 Đề TOEIC</NavLink>
+            <NavLink to="/ielts">🎧 Đề IELTS</NavLink>
+            <NavLink to="/users">👤 Tài khoản</NavLink>
           </nav>
         )}
-        {user && (
-          <div className="topbar-actions">
-            <span className="muted">{displayName}</span>
-            <button type="button" className="icon-btn" aria-label="Đăng xuất" title="Đăng xuất"
-              onClick={() => { logout(); nav('/login'); }}>🚪</button>
-          </div>
-        )}
-        <ThemeToggle />
-      </header>
+        <div className="sidebar-footer">
+          {user && (
+            <>
+              <span className="sidebar-user">{displayName}</span>
+              <button type="button" className="btn secondary btn-sm"
+                onClick={() => { logout(); nav('/login'); }}>🚪 Đăng xuất</button>
+            </>
+          )}
+          <ThemeToggle />
+        </div>
+      </aside>
       <main className="container">
         <Routes>
           <Route path="/login" element={<Login />} />
