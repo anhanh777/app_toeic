@@ -576,14 +576,18 @@ tbody tr:hover{background:var(--surface-soft)}
 }
 .exam-q--duo{display:block}
 .exam-q--duo .exam-q-body:empty{display:none}
-/* Chip chỗ trống trong đoạn văn Part 6: số câu nổi bật + gạch ngang dài
-   như chỗ trống trong đề thật, bấm để tới câu hỏi. */
+/* Chip chỗ trống trong đoạn văn Part 6: trông như chữ trong đoạn văn —
+   chỉ khác màu chữ (số câu + vạch ngang màu nhấn), còn cỡ chữ và độ đậm
+   đồng nhất với văn bản. Bấm để tới câu hỏi. */
 .blank-chip{
   display:inline-flex; align-items:center; gap:.15rem;
-  font-weight:800; font-size:.9em; line-height:1; color:var(--accent-dark);
-  background:var(--accent-soft); border:1.5px solid var(--accent); border-radius:999px;
-  padding:.3rem .6rem; margin:0 .1rem; cursor:pointer;
+  font:inherit; color:var(--accent-dark);
+  background:none; border:none; padding:0 .1rem; margin:0; cursor:pointer;
 }
+.blank-chip:hover{text-decoration:underline}
+.blank-chip.answered{color:var(--accent-dark)}
+.blank-chip.correct{color:var(--green)}
+.blank-chip.wrong{color:var(--red)}
 /* Vạch ngang làm chỗ trống cần điền (mượt hơn dấu gạch dưới liền). */
 .blank-line{display:inline-block; width:3.2rem; height:.55em; border-bottom:2px solid currentColor; margin:0 .15rem}
 .blank-chip:hover{filter:brightness(.96)}
