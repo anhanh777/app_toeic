@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api, type User } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox } from '../components';
+import { ErrorBox, Modal } from '../components';
 
 /* Quản lý tài khoản — thêm, sửa, xóa, cập nhật, đặt lại mật khẩu.
    Chỉ đặt lại MẬT KHẨU (không reset tiến độ học). Các luật bảo vệ ở
@@ -28,8 +28,6 @@ export default function Users() {
     api.adminUsers().then(setUsers).catch(setError).finally(() => setLoading(false));
   };
   useEffect(load, []);
-  useEffect(() => { if (editingId != null) document.getElementById('user-edit')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [editingId]);
-  useEffect(() => { if (resetId != null) document.getElementById('user-reset')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [resetId]);
 
   if (me?.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Trang quản trị chỉ dành cho tài khoản admin. Tài khoản của bạn không có quyền xem trang này.</p></div>;
@@ -189,8 +187,7 @@ export default function Users() {
       </div>
 
       {editingId != null && (
-        <div className="card" id="user-edit">
-          <h2>Sửa tài khoản #{editingId}</h2>
+        <Modal title={`Sửa tài khoản #${editingId}`} onClose={() => setEditingId(null)}>
           <form onSubmit={saveEdit}>
             <label>Tên hiển thị</label>
             <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} required />
@@ -212,12 +209,11 @@ export default function Users() {
               <button type="button" className="btn secondary" onClick={() => setEditingId(null)}>Hủy</button>
             </div>
           </form>
-        </div>
+        </Modal>
       )}
 
       {resetTarget && (
-        <div className="card" id="user-reset">
-          <h2>Đặt lại mật khẩu — {resetTarget.email}</h2>
+        <Modal title={`Đặt lại mật khẩu — ${resetTarget.email}`} onClose={() => { setResetId(null); setResetPassword(''); }}>
           <p className="muted">Đặt mật khẩu tạm mới cho tài khoản này. Gửi mật khẩu cho người dùng và nhắc họ đổi lại trong phần Hồ sơ sau khi đăng nhập.</p>
           <form onSubmit={resetUserPassword}>
             <label>Mật khẩu mới (ít nhất 6 ký tự)</label>
@@ -227,7 +223,7 @@ export default function Users() {
               <button type="button" className="btn secondary" onClick={() => { setResetId(null); setResetPassword(''); }}>Hủy</button>
             </div>
           </form>
-        </div>
+        </Modal>
       )}
     </div>
   );
