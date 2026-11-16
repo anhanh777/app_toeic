@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, ApiError, type Question, type TestSet, type ImportQuestion, type AiParseResult, type AnswerKeyResult, type MediaConfig } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox, partName } from '../components';
+import { ErrorBox, Modal, partName } from '../components';
 import { uploadToCloudinary } from '../cloudinary';
 import { STANDARD_COUNTS, normalizeImportFile, splitValid, validateQuestion, type QuestionError } from '../testSetUtils';
 import BatchManualForm from './BatchManualForm';
@@ -425,8 +425,7 @@ export default function TestSetAdmin() {
           </div>
         )}
         {aiPreview && (
-          <div className="panel">
-            <h3>Xem trước AI — {aiPreview.fileName}</h3>
+          <Modal title={`Xem trước AI — ${aiPreview.fileName}`} wide onClose={() => { setAiPreview(null); setAkFile(null); setAkResult(null); setAkApplied(null); }}>
             <p>{aiPreview.questions.length} câu parse được • {aiLiveErrorCount} câu còn lỗi</p>
             {aiPreview.warnings.length > 0 && (
               <p style={{ color: 'var(--amber)' }}>⚠ {aiPreview.warnings.join(' ')}</p>
@@ -491,10 +490,6 @@ export default function TestSetAdmin() {
               </button>
               <button className="btn secondary" onClick={() => { setAiPreview(null); setAkFile(null); setAkResult(null); setAkApplied(null); }}>Hủy</button>
             </div>
-          </div>
-        )}
-        {aiPreview && (
-          <div className="panel">
             <h3>📋 Nhận diện đáp án</h3>
             <p className="muted">Upload file đáp án (bảng đáp án) để điền đáp án đúng vào bản xem trước phía trên — khớp theo số câu chuẩn của TOEIC.</p>
             <div className="btn-row">
@@ -533,7 +528,7 @@ export default function TestSetAdmin() {
                 )}
               </>
             )}
-          </div>
+          </Modal>
         )}
       </div>
 
@@ -555,8 +550,7 @@ export default function TestSetAdmin() {
           <p className="muted">Nút này chỉ nhận file JSON. File Word/PDF/ảnh thì dùng mục 🤖 Nhận diện bằng AI ở phía trên trang này.</p>
 
           {preview && preview.part === p && (
-            <div className="panel">
-              <h3>Xem trước — {preview.fileName}</h3>
+            <Modal title={`Xem trước — ${preview.fileName}`} wide onClose={() => setPreview(null)}>
               <p>{preview.valid.length} câu hợp lệ cho Part {p} • {preview.errors.length} câu lỗi (sẽ bị bỏ qua)</p>
               {preview.errors.length > 0 && (
                 <table><thead><tr><th>#</th><th>Lý do</th></tr></thead><tbody>
@@ -567,12 +561,12 @@ export default function TestSetAdmin() {
                 <button className="btn" disabled={busy || !preview.valid.length} onClick={() => void confirmPartImport()}>{busy ? 'Đang import…' : `Xác nhận import ${preview.valid.length} câu`}</button>
                 <button className="btn secondary" onClick={() => setPreview(null)}>Hủy</button>
               </div>
-            </div>
+            </Modal>
           )}
 
           {manualPart === p && (
-            <form className="panel" onSubmit={saveManual}>
-              <h3>Thêm câu thủ công — Part {p}</h3>
+            <Modal title={`Thêm câu thủ công — Part ${p}`} onClose={() => setManualPart(null)}>
+              <form onSubmit={saveManual}>
               {(p === 1 || p === 2) ? (
                 <p className="muted">🎧 Câu chỉ-nghe: đề thi thật không in chữ cho Part này ({p === 1 ? 'chỉ có ảnh + 4 câu nói trong audio' : 'chỉ có câu hỏi + 3 câu trả lời trong audio'}) — chỉ cần ảnh (Part 1), file audio và đáp án đúng.</p>
               ) : (
@@ -645,11 +639,12 @@ export default function TestSetAdmin() {
                 <button className="btn" disabled={busy}>{busy ? 'Đang lưu…' : 'Lưu câu hỏi'}</button>
                 <button type="button" className="btn secondary" onClick={() => setManualPart(null)}>Hủy</button>
               </div>
-            </form>
+              </form>
+            </Modal>
           )}
 
           {listPart === p && (
-            <div style={{ marginTop: '1rem' }}>
+            <Modal title={`Danh sách câu — ${partName(p)}`} wide onClose={() => setListPart(null)}>
               <p className="muted">{listQuestions.length} câu đã tải (tối đa 100).</p>
               <div className="table-scroll">
               <table><thead><tr><th>Mã</th><th>Nội dung</th><th>Đáp án</th><th>Giải thích</th><th>Audio AI</th></tr></thead><tbody>
@@ -682,7 +677,7 @@ export default function TestSetAdmin() {
               </tbody></table>
               </div>
               {listQuestions.length === 0 && <p className="muted">Chưa có câu hỏi nào trong Part này.</p>}
-            </div>
+            </Modal>
           )}
         </div>
       ))}
