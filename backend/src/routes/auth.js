@@ -39,6 +39,9 @@ router.post('/login', (req, res) => {
   if (!row || !comparePassword(password, row.password_hash)) {
     return res.status(401).json({ error: 'email hoac mat khau khong dung' });
   }
+  if (row.is_active === 0) {
+    return res.status(403).json({ error: 'Tài khoản đã bị khóa, liên hệ quản trị viên.' });
+  }
   const user = toPublicUser(row);
   return res.json({ token: signToken(user), user });
 });
@@ -79,6 +82,9 @@ router.post('/google', async (req, res) => {
       googleId: payload.sub,
       avatarUrl: payload.picture || null,
     });
+  }
+  if (row.is_active === 0) {
+    return res.status(403).json({ error: 'Tài khoản đã bị khóa, liên hệ quản trị viên.' });
   }
   const user = toPublicUser(row);
   return res.json({ token: signToken(user), user });

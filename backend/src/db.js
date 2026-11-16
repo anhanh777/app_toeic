@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS users (
   google_id TEXT UNIQUE,
   avatar_url TEXT,
   hide_on_leaderboard INTEGER DEFAULT 0,
+  is_active INTEGER DEFAULT 1,
   created_at TEXT
 );
 CREATE TABLE IF NOT EXISTS test_sets (
@@ -310,6 +311,7 @@ function initDb() {
   ensureColumn('questions', 'accepted_answers', 'TEXT');
   ensureColumn('questions', 'correct_text', 'TEXT');
   ensureColumn('test_sets', 'exam', "TEXT DEFAULT 'toeic'");
+  ensureColumn('users', 'is_active', 'INTEGER DEFAULT 1');
   ensureColumn('attempts', 'exam', "TEXT DEFAULT 'toeic'");
   ensureColumn('attempts', 'listening_band', 'REAL');
   ensureColumn('attempts', 'reading_band', 'REAL');
@@ -360,6 +362,7 @@ function mapUser(row) {
     googleId: row.google_id || null,
     avatarUrl: row.avatar_url || null,
     hideOnLeaderboard: row.hide_on_leaderboard === 1,
+    isActive: row.is_active !== 0,
     createdAt: row.created_at,
   };
 }
@@ -556,17 +559,23 @@ function countAdmins() {
   return db.prepare("SELECT COUNT(*) AS c FROM users WHERE role = 'admin'").get().c;
 }
 
-/** Admin cap nhat tai khoan: ten, quyen, target_score, an tren bang xep hang. */
-function adminUpdateUser(id, { name, role, targetScore, hideOnLeaderboard }) {
+/** So admin DANG HOAT DONG — dung cho guard khoa tai khoan (khong duoc khoa admin cuoi cung). */
+function countActiveAdmins() {
+  return db.prepare("SELECT COUNT(*) AS c FROM users WHERE role = 'admin' AND is_active = 1").get().c;
+}
+
+/** Admin cap nhat tai khoan: ten, quyen, target_score, an tren bang xep hang, trang thai hoat dong. */
+function adminUpdateUser(id, { name, role, targetScore, hideOnLeaderboard, isActive }) {
   const cur = findUserById(id);
   if (!cur) return null;
   db.prepare(
-    'UPDATE users SET name = ?, role = ?, target_score = ?, hide_on_leaderboard = ? WHERE id = ?'
+    'UPDATE users SET name = ?, role = ?, target_score = ?, hide_on_leaderboard = ?, is_active = ? WHERE id = ?'
   ).run(
     name !== undefined ? name : cur.name,
     role !== undefined ? role : cur.role,
     targetScore !== undefined ? targetScore : cur.target_score,
     hideOnLeaderboard !== undefined ? (hideOnLeaderboard ? 1 : 0) : cur.hide_on_leaderboard,
+    isActive !== undefined ? (isActive ? 1 : 0) : cur.is_active,
     id
   );
   return findUserById(id);
@@ -2288,6 +2297,7 @@ module.exports = {
   linkGoogleAccount,
   countUsers,
   countAdmins,
+  countActiveAdmins,
   adminUpdateUser,
   deleteUser,
   listAllUsersPublic,

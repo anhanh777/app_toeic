@@ -61,7 +61,7 @@ export interface User {
   id: number; email: string; name: string; role: 'user' | 'admin';
   targetScore?: number; target_score?: number; hideOnLeaderboard?: boolean;
   hide_on_leaderboard?: number; avatarUrl?: string; avatar_url?: string;
-  googleId?: string | null; createdAt?: string;
+  googleId?: string | null; isActive?: boolean; createdAt?: string;
 }
 export interface Option { label: string; content: string; is_correct?: number; }
 export interface Question {
@@ -512,7 +512,7 @@ export const api = {
   adminUsers: async () => (await req<{ users: User[] }>('/api/admin/users')).users,
   adminCreateUser: (body: { email: string; password: string; name?: string; role?: 'user' | 'admin' }) =>
     req<{ user: User }>('/api/admin/users', { method: 'POST', body: JSON.stringify(body) }),
-  adminUpdateUser: (id: number, body: { name?: string; role?: 'user' | 'admin'; targetScore?: number; hideOnLeaderboard?: boolean }) =>
+  adminUpdateUser: (id: number, body: { name?: string; role?: 'user' | 'admin'; targetScore?: number; hideOnLeaderboard?: boolean; isActive?: boolean }) =>
     req<{ user: User }>(`/api/admin/users/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
   adminDeleteUser: (id: number) =>
     req<{ ok: boolean }>(`/api/admin/users/${id}`, { method: 'DELETE' }),

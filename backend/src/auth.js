@@ -7,6 +7,7 @@
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const db = require('./db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-me';
 const TOKEN_TTL = '7d';
@@ -41,17 +42,25 @@ function toPublicUser(row) {
     googleId: row.google_id || null,
     avatarUrl: row.avatar_url || null,
     hideOnLeaderboard: row.hide_on_leaderboard === 1,
+    isActive: row.is_active !== 0,
     createdAt: row.created_at,
   };
 }
 
-/** Middleware: yeu cau Bearer JWT hop le. Gan req.user = {id, email, role}. */
+/** Middleware: yeu cau Bearer JWT hop le. Gan req.user = {id, email, role}.
+ * Tai khoan da bi khoa (is_active = 0) thi token cu cung bi tu choi ngay —
+ * khong cho dung het han JWT 7 ngay. */
 function authMiddleware(req, res, next) {
   const header = req.headers.authorization || '';
   const match = header.match(/^Bearer\s+(.+)$/i);
   if (!match) return res.status(401).json({ error: 'unauthorized' });
   try {
     const payload = jwt.verify(match[1], JWT_SECRET);
+    const row = db.findUserById(payload.id);
+    if (!row) return res.status(401).json({ error: 'unauthorized' });
+    if (row.is_active === 0) {
+      return res.status(401).json({ error: 'Tài khoản đã bị khóa, liên hệ quản trị viên.' });
+    }
     req.user = { id: payload.id, email: payload.email, role: payload.role || 'user' };
     return next();
   } catch (_) {

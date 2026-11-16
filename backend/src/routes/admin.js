@@ -282,7 +282,7 @@ router.put('/admin/users/:id', (req, res) => {
   if (!Number.isInteger(id)) return res.status(400).json({ error: 'id khong hop le' });
   const target = db.findUserById(id);
   if (!target) return res.status(404).json({ error: 'khong tim thay tai khoan' });
-  const { name, role, targetScore, hideOnLeaderboard } = req.body || {};
+  const { name, role, targetScore, hideOnLeaderboard, isActive } = req.body || {};
   if (name !== undefined && (typeof name !== 'string' || !name.trim())) {
     return res.status(400).json({ error: 'ten khong hop le' });
   }
@@ -298,6 +298,9 @@ router.put('/admin/users/:id', (req, res) => {
   if (hideOnLeaderboard !== undefined && typeof hideOnLeaderboard !== 'boolean') {
     return res.status(400).json({ error: 'hideOnLeaderboard phai la boolean' });
   }
+  if (isActive !== undefined && typeof isActive !== 'boolean') {
+    return res.status(400).json({ error: 'isActive phai la boolean' });
+  }
   if (target.role === 'admin' && role === 'user') {
     if (target.id === req.user.id) {
       return res.status(403).json({ error: 'khong the tu ha quyen cua minh' });
@@ -306,11 +309,22 @@ router.put('/admin/users/:id', (req, res) => {
       return res.status(403).json({ error: 'khong the ha quyen admin cuoi cung' });
     }
   }
+  // Khoa tai khoan: khong duoc khoa chinh minh, khong duoc khoa admin
+  // dang hoat dong cuoi cung (mo khoa thi luon cho phep).
+  if (isActive === false) {
+    if (target.id === req.user.id) {
+      return res.status(403).json({ error: 'khong the khoa chinh minh' });
+    }
+    if (target.role === 'admin' && target.is_active !== 0 && db.countActiveAdmins() <= 1) {
+      return res.status(403).json({ error: 'khong the khoa admin dang hoat dong cuoi cung' });
+    }
+  }
   const row = db.adminUpdateUser(id, {
     name: name !== undefined ? name.trim() : undefined,
     role,
     targetScore,
     hideOnLeaderboard,
+    isActive,
   });
   return res.json({ user: toPublicUser(row) });
 });

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { api, type User } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox, Modal } from '../components';
+import { ErrorBox, Modal, Toggle } from '../components';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 
 /* Quản lý tài khoản — thêm, sửa, xóa, cập nhật, đặt lại mật khẩu.
@@ -24,6 +24,7 @@ export default function Users() {
   const [resetId, setResetId] = useState<number | null>(null);
   const [resetPassword, setResetPassword] = useState('');
   const [busy, setBusy] = useState(false);
+  const [togglingId, setTogglingId] = useState<number | null>(null);
 
   const load = () => {
     setLoading(true);
@@ -52,6 +53,29 @@ export default function Users() {
     if (isSelf(u)) return 'Tài khoản của bạn — không thể tự xóa / tự hạ quyền.';
     if (isLastAdmin(u)) return 'Admin cuối cùng — không thể xóa / hạ quyền.';
     return '';
+  };
+
+  // Trang thai khoa/mo: tai khoan cu (chua co isActive) mac dinh la dang hoat dong.
+  const isActive = (u: User) => u.isActive !== false;
+  const activeAdminCount = users.filter(u => u.role === 'admin' && isActive(u)).length;
+  // Chi chan KHOA (mo khoa thi luon cho phep): khong tu khoa minh,
+  // khong khoa admin dang hoat dong cuoi cung.
+  const cannotDeactivate = (u: User) => isActive(u) && (isSelf(u) || (u.role === 'admin' && activeAdminCount <= 1));
+  const lockNote = (u: User) => {
+    if (!isActive(u)) return '';
+    if (isSelf(u)) return 'Tài khoản của bạn — không thể tự khóa.';
+    if (u.role === 'admin' && activeAdminCount <= 1) return 'Admin đang hoạt động cuối cùng — không thể khóa.';
+    return '';
+  };
+
+  const toggleActive = async (u: User) => {
+    const next = !isActive(u);
+    setError(null); setMsg(''); setTogglingId(u.id);
+    try {
+      const { user } = await api.adminUpdateUser(u.id, { isActive: next });
+      setUsers(prev => prev.map(x => (x.id === u.id ? user : x)));
+      setMsg(next ? `Đã mở khóa tài khoản ${u.email}.` : `Đã khóa tài khoản ${u.email} — tài khoản này không đăng nhập được nữa.`);
+    } catch (err) { setError(err); } finally { setTogglingId(null); }
   };
 
   const createUser = async (e: React.FormEvent) => {
@@ -163,12 +187,19 @@ export default function Users() {
           </select>
         </div>
         <div className="table-scroll">
-        <table><thead><tr><th>Email</th><th>Tên</th><th>Quyền</th><th>Điểm mục tiêu</th><th>Ngày tạo</th><th>Ẩn BXH</th><th></th></tr></thead><tbody>
+        <table><thead><tr><th>Email</th><th>Tên</th><th>Quyền</th><th>Trạng thái</th><th>Điểm mục tiêu</th><th>Ngày tạo</th><th>Ẩn BXH</th><th></th></tr></thead><tbody>
           {filtered.map(u => (
             <tr key={u.id}>
               <td>{u.email}{isSelf(u) ? ' (bạn)' : ''}</td>
               <td>{u.name || '—'}</td>
               <td>{u.role === 'admin' ? 'Admin' : 'Học viên'}</td>
+              <td>
+                <div className="btn-row" style={{ alignItems: 'center' }}>
+                  <Toggle checked={isActive(u)} onChange={() => void toggleActive(u)} disabled={togglingId === u.id || cannotDeactivate(u)} label={isActive(u) ? 'Đang hoạt động' : 'Đã khóa'} />
+                  <span className="muted" style={{ fontSize: '.8rem' }}>{isActive(u) ? 'Đang hoạt động' : 'Đã khóa'}</span>
+                </div>
+                {lockNote(u) && <p className="muted">{lockNote(u)}</p>}
+              </td>
               <td>{u.targetScore ?? 650}</td>
               <td>{u.createdAt ? new Date(u.createdAt).toLocaleDateString('vi-VN') : '—'}</td>
               <td>{u.hideOnLeaderboard ? '✓' : '—'}</td>
