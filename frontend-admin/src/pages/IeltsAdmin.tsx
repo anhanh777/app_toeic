@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api, type TestSet } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox } from '../components';
+import { ErrorBox, Modal } from '../components';
 import { normalizeImportFile, type QuestionError } from '../testSetUtils';
 import { splitValidIelts } from '../ieltsAdminUtils';
 
@@ -48,7 +48,6 @@ export default function IeltsAdmin() {
   const editTestSet = (ts: TestSet) => {
     setEditingSet(ts.id);
     setTsForm({ title: ts.title, description: ts.description || '', isPublished: ts.isPublished });
-    window.scrollTo({ top: 0 });
   };
 
   const deleteTestSet = async (ts: TestSet) => {
@@ -99,6 +98,20 @@ export default function IeltsAdmin() {
     } catch (e) { setError(e); } finally { setUploadBusy(false); }
   };
 
+  const testSetForm = (
+  <form onSubmit={saveTestSet}>
+    <label>Tên đề</label>
+    <input value={tsForm.title} onChange={e => setTsForm({ ...tsForm, title: e.target.value })} required placeholder="VD: Cambridge IELTS 21 — Test 1" />
+    <label>Mô tả</label>
+    <input value={tsForm.description} onChange={e => setTsForm({ ...tsForm, description: e.target.value })} />
+    <label><input type="checkbox" checked={tsForm.isPublished} onChange={e => setTsForm({ ...tsForm, isPublished: e.target.checked })} /> Phát hành (học viên nhìn thấy)</label>
+    <div className="btn-row">
+      <button className="btn btn-block" type="submit">{editingSet ? 'Lưu thay đổi' : 'Tạo đề'}</button>
+      {editingSet && <button type="button" className="btn secondary" onClick={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false }); }}>Hủy</button>}
+    </div>
+  </form>
+  );
+
   return (
     <div>
       <h1>🎧 Quản lý đề IELTS</h1>
@@ -108,20 +121,17 @@ export default function IeltsAdmin() {
 
       <div className="split">
       <div>
+      {editingSet == null && (
       <div className="card">
-        <h2>{editingSet ? 'Sửa bộ đề IELTS' : 'Tạo bộ đề IELTS mới'}</h2>
-        <form onSubmit={saveTestSet}>
-          <label>Tên đề</label>
-          <input value={tsForm.title} onChange={e => setTsForm({ ...tsForm, title: e.target.value })} required placeholder="VD: Cambridge IELTS 21 — Test 1" />
-          <label>Mô tả</label>
-          <input value={tsForm.description} onChange={e => setTsForm({ ...tsForm, description: e.target.value })} />
-          <label><input type="checkbox" checked={tsForm.isPublished} onChange={e => setTsForm({ ...tsForm, isPublished: e.target.checked })} /> Phát hành (học viên nhìn thấy)</label>
-          <div className="btn-row">
-            <button className="btn btn-block" type="submit">{editingSet ? 'Lưu thay đổi' : 'Tạo đề'}</button>
-            {editingSet && <button type="button" className="btn secondary" onClick={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false }); }}>Hủy</button>}
-          </div>
-        </form>
+        <h2>Tạo bộ đề IELTS mới</h2>
+        {testSetForm}
       </div>
+      )}
+      {editingSet != null && (
+      <Modal title={`Sửa bộ đề IELTS — ${tsForm.title || editingSet}`} onClose={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false }); }}>
+        {testSetForm}
+      </Modal>
+      )}
 
       <div className="card">
         <h2>⬆ Tạo đề từ file JSON</h2>
@@ -131,8 +141,7 @@ export default function IeltsAdmin() {
           <input type="file" accept=".json,application/json" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) void onUploadTestSetFile(f); e.target.value = ''; }} />
         </label>
         {uploadPreview && (
-          <>
-            <h3>Xem trước — {uploadPreview.fileName}</h3>
+          <Modal title={`Xem trước — ${uploadPreview.fileName}`} wide onClose={() => setUploadPreview(null)}>
             <p>{uploadPreview.valid.length} câu hợp lệ • {uploadPreview.errors.length} câu lỗi (sẽ bị bỏ qua)</p>
             {uploadPreview.errors.length > 0 && (
               <table><thead><tr><th>#</th><th>Lý do</th></tr></thead><tbody>
@@ -143,7 +152,7 @@ export default function IeltsAdmin() {
               <button className="btn" disabled={uploadBusy || !uploadPreview.valid.length} onClick={() => void confirmUploadTestSet()}>{uploadBusy ? 'Đang tạo…' : `Tạo đề "${uploadPreview.title}" + import ${uploadPreview.valid.length} câu`}</button>
               <button className="btn secondary" onClick={() => setUploadPreview(null)}>Hủy</button>
             </div>
-          </>
+          </Modal>
         )}
       </div>
       </div>
