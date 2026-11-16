@@ -390,6 +390,23 @@ tbody tr:hover{background:var(--surface-soft)}
 /* Form 2 cột cho các trường ngắn (kỳ thi + dạng câu, Part + độ khó…). */
 .form-grid{display:grid; gap:0 .8rem; grid-template-columns:1fr 1fr}
 @media(max-width:560px){.form-grid{grid-template-columns:1fr}}
+/* Bố cục 2 cột: form thêm mới hẹp bên trái (~1/4), danh sách rộng bên phải (~3/4).
+   Dưới 900px xếp dọc. */
+.split{display:grid; gap:.8rem; align-items:start}
+.split>*{min-width:0}
+.split .card{margin-top:0}
+.split>div>.card+.card{margin-top:.8rem}
+@media(min-width:900px){.split{grid-template-columns:minmax(15rem,1fr) 3fr}}
+/* Audio theo Part/Section: 2 cột trên màn rộng, 1 cột trên màn hẹp. */
+.audio-grid{display:grid; gap:.8rem}
+.audio-grid .panel{margin-top:0}
+@media(min-width:640px){.audio-grid{grid-template-columns:1fr 1fr}}
+/* Trang chủ: 3 card tổng quan xếp ngang, nút xuống đáy card. */
+.grid3{display:grid; gap:.8rem}
+@media(min-width:640px){.grid3{grid-template-columns:repeat(3,1fr)}}
+.dash-card{display:flex; flex-direction:column}
+.dash-card p{flex:1}
+.dash-card .btn-row{margin-top:auto}
 /* Ô chữ dài trong bảng: cắt bằng dấu … + tooltip (title) khi rê chuột. */
 .cell-trunc{display:inline-block; max-width:12rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; vertical-align:bottom}
 .cell-trunc--wide{max-width:22rem}

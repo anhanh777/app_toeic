@@ -45,20 +45,23 @@ function Dashboard() {
   return (
     <div>
       <h1>Quản trị</h1>
-      <div className="card">
+      <p className="muted">Chọn một mục để quản lý nội dung và tài khoản của app học viên.</p>
+      <div className="grid3">
+      <div className="card dash-card">
         <h2>📚 Đề TOEIC</h2>
         <p>Quản lý bộ đề, câu hỏi, nhận diện bằng AI, audio/ảnh theo Part, nhập tay theo loạt, từ vựng và sao lưu.</p>
-        <p><Link className="btn" to="/toeic">Mở quản lý đề TOEIC</Link></p>
+        <div className="btn-row"><Link className="btn btn-block" to="/toeic">Mở quản lý đề TOEIC →</Link></div>
       </div>
-      <div className="card">
+      <div className="card dash-card">
         <h2>🎧 Đề IELTS</h2>
         <p>Quản lý đề IELTS Academic riêng: 19 dạng câu hỏi, câu trả lời gõ tay, giới hạn số từ, ảnh bản đồ, audio từng Section.</p>
-        <p><Link className="btn" to="/ielts">Mở quản lý đề IELTS</Link></p>
+        <div className="btn-row"><Link className="btn btn-block" to="/ielts">Mở quản lý đề IELTS →</Link></div>
       </div>
-      <div className="card">
+      <div className="card dash-card">
         <h2>👤 Tài khoản</h2>
         <p>Thêm, sửa, xóa tài khoản; cập nhật quyền và điểm mục tiêu; đặt lại mật khẩu.</p>
-        <p><Link className="btn" to="/users">Mở quản lý tài khoản</Link></p>
+        <div className="btn-row"><Link className="btn btn-block" to="/users">Mở quản lý tài khoản →</Link></div>
+      </div>
       </div>
     </div>
   );

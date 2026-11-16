@@ -106,6 +106,8 @@ export default function IeltsAdmin() {
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
 
+      <div className="split">
+      <div>
       <div className="card">
         <h2>{editingSet ? 'Sửa bộ đề IELTS' : 'Tạo bộ đề IELTS mới'}</h2>
         <form onSubmit={saveTestSet}>
@@ -115,7 +117,7 @@ export default function IeltsAdmin() {
           <input value={tsForm.description} onChange={e => setTsForm({ ...tsForm, description: e.target.value })} />
           <label><input type="checkbox" checked={tsForm.isPublished} onChange={e => setTsForm({ ...tsForm, isPublished: e.target.checked })} /> Phát hành (học viên nhìn thấy)</label>
           <div className="btn-row">
-            <button className="btn" type="submit">{editingSet ? 'Lưu thay đổi' : 'Tạo đề'}</button>
+            <button className="btn btn-block" type="submit">{editingSet ? 'Lưu thay đổi' : 'Tạo đề'}</button>
             {editingSet && <button type="button" className="btn secondary" onClick={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false }); }}>Hủy</button>}
           </div>
         </form>
@@ -144,6 +146,7 @@ export default function IeltsAdmin() {
           </>
         )}
       </div>
+      </div>
 
       <div className="card">
         <h2>Danh sách đề IELTS ({testSets.length})</h2>
@@ -171,6 +174,7 @@ export default function IeltsAdmin() {
         </tbody></table>
         </div>
         {testSets.length === 0 && <p className="muted">Chưa có đề IELTS nào. Tạo đề mới ở trên hoặc tải lên từ file JSON.</p>}
+      </div>
       </div>
     </div>
   );

@@ -28,6 +28,8 @@ export default function Users() {
     api.adminUsers().then(setUsers).catch(setError).finally(() => setLoading(false));
   };
   useEffect(load, []);
+  useEffect(() => { if (editingId != null) document.getElementById('user-edit')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [editingId]);
+  useEffect(() => { if (resetId != null) document.getElementById('user-reset')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, [resetId]);
 
   if (me?.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Trang quản trị chỉ dành cho tài khoản admin. Tài khoản của bạn không có quyền xem trang này.</p></div>;
@@ -129,6 +131,7 @@ export default function Users() {
       {msg && <div className="success">{msg}</div>}
       {loading && <p>Đang tải danh sách tài khoản…</p>}
 
+      <div className="split">
       <div className="card">
         <h2>Thêm tài khoản mới</h2>
         <form onSubmit={createUser}>
@@ -144,7 +147,7 @@ export default function Users() {
             <option value="admin">Admin</option>
           </select>
           <div className="btn-row">
-            <button className="btn" type="submit" disabled={busy}>{busy ? 'Đang tạo…' : 'Tạo tài khoản'}</button>
+            <button className="btn btn-block" type="submit" disabled={busy}>{busy ? 'Đang tạo…' : 'Tạo tài khoản'}</button>
           </div>
         </form>
       </div>
@@ -183,9 +186,10 @@ export default function Users() {
         </div>
         {filtered.length === 0 && !loading && <p className="muted">Không tìm thấy tài khoản nào.</p>}
       </div>
+      </div>
 
       {editingId != null && (
-        <div className="card">
+        <div className="card" id="user-edit">
           <h2>Sửa tài khoản #{editingId}</h2>
           <form onSubmit={saveEdit}>
             <label>Tên hiển thị</label>
@@ -212,7 +216,7 @@ export default function Users() {
       )}
 
       {resetTarget && (
-        <div className="card">
+        <div className="card" id="user-reset">
           <h2>Đặt lại mật khẩu — {resetTarget.email}</h2>
           <p className="muted">Đặt mật khẩu tạm mới cho tài khoản này. Gửi mật khẩu cho người dùng và nhắc họ đổi lại trong phần Hồ sơ sau khi đăng nhập.</p>
           <form onSubmit={resetUserPassword}>

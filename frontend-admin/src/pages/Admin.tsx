@@ -200,6 +200,8 @@ export default function Admin() {
       {msg && <div className="success">{msg}</div>}
       <div className="btn-row" style={{ marginBottom: '1rem' }}><button className="btn secondary" onClick={backup}>⬇ Tải bản sao lưu (backup JSON)</button></div>
 
+      <div className="split">
+      <div>
       <div className="card">
         <h2>📚 Bộ đề</h2>
         <form onSubmit={saveTestSet}>
@@ -214,11 +216,13 @@ export default function Admin() {
           </select>
           <label><input type="checkbox" checked={tsForm.isPublished} onChange={e => setTsForm({ ...tsForm, isPublished: e.target.checked })} /> Phát hành ngay (người học thấy đề)</label>
           <div className="btn-row">
-            <button className="btn">{editingSet ? 'Cập nhật đề' : '＋ Tạo đề mới'}</button>
+            <button className="btn btn-block">{editingSet ? 'Cập nhật đề' : '＋ Tạo đề mới'}</button>
             {editingSet && <button type="button" className="btn secondary" onClick={() => { setEditingSet(null); setTsForm({ title: '', description: '', isPublished: false, exam: 'toeic' }); }}>Hủy sửa</button>}
           </div>
         </form>
-        <hr />
+      </div>
+      <div className="card">
+        <h2>⬆ Nhập đề từ file JSON</h2>
         <label>Upload file đề (.json)</label>
         <div className="btn-row">
           <label className="btn" style={{ cursor: 'pointer' }}>
@@ -253,8 +257,10 @@ export default function Admin() {
             </div>
           </div>
         )}
-        <hr />
-        <h3>Danh sách đề ({testSets.length})</h3>
+      </div>
+      </div>
+      <div className="card">
+        <h2>Danh sách đề ({testSets.length})</h2>
         <div className="table-scroll">
         <table><thead><tr><th>Tên đề</th><th>Số câu</th><th>Part</th><th>Thiếu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
           {testSets.map(ts => {
@@ -280,60 +286,76 @@ export default function Admin() {
         </div>
         {!testSets.length && <p className="muted">Chưa có bộ đề nào.</p>}
       </div>
+      </div>
 
       <form className="card" onSubmit={saveQuestion}>
         <h2>{editing ? `Sửa câu hỏi ${editing}` : 'Thêm câu hỏi'}</h2>
-        <label>Mã câu (VD: P5-001)</label><input value={form.id} onChange={e => setForm({ ...form, id: e.target.value })} required disabled={!!editing} />
-        <label>Kỳ thi</label><select value={form.exam} onChange={e => setForm({ ...form, exam: e.target.value })}>
+        <div className="form-grid">
+        <div><label>Mã câu (VD: P5-001)</label><input value={form.id} onChange={e => setForm({ ...form, id: e.target.value })} required disabled={!!editing} /></div>
+        <div><label>Kỳ thi</label><select value={form.exam} onChange={e => setForm({ ...form, exam: e.target.value })}>
           <option value="toeic">TOEIC</option>
           <option value="ielts">IELTS Academic</option>
-        </select>
-        <label>Dạng câu hỏi</label><select value={form.questionType} onChange={e => setForm({ ...form, questionType: e.target.value })}>
+        </select></div>
+        </div>
+        <div className="form-grid">
+        <div><label>Dạng câu hỏi</label><select value={form.questionType} onChange={e => setForm({ ...form, questionType: e.target.value })}>
           {Object.entries(QUESTION_TYPE_NAMES).map(([v, n]) => <option key={v} value={v}>{n}</option>)}
-        </select>
-        <label>Part</label><select value={form.part} onChange={e => setForm({ ...form, part: Number(e.target.value) })}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}</select>
+        </select></div>
+        <div><label>Part</label><select value={form.part} onChange={e => setForm({ ...form, part: Number(e.target.value) })}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}</select></div>
+        </div>
         <label>Nội dung câu hỏi (tiếng Anh)</label><textarea rows={3} value={form.content} onChange={e => setForm({ ...form, content: e.target.value })} required />
         {isFillIn(form.questionType) ? (
           <>
-            <label>Đáp án đúng (dạng text, câu điền từ)</label><input value={form.correctText} onChange={e => setForm({ ...form, correctText: e.target.value })} required placeholder="VD: library" />
-            <label>Giới hạn số từ (word_limit — để trống nếu không giới hạn)</label><input type="number" min={1} value={form.wordLimit} onChange={e => setForm({ ...form, wordLimit: e.target.value })} placeholder="VD: 2" />
+            <div className="form-grid">
+            <div><label>Đáp án đúng (dạng text, câu điền từ)</label><input value={form.correctText} onChange={e => setForm({ ...form, correctText: e.target.value })} required placeholder="VD: library" /></div>
+            <div><label>Giới hạn số từ (word_limit — để trống nếu không giới hạn)</label><input type="number" min={1} value={form.wordLimit} onChange={e => setForm({ ...form, wordLimit: e.target.value })} placeholder="VD: 2" /></div>
+            </div>
             <label>Đáp án chấp nhận thêm (mỗi dòng 1 đáp án)</label><textarea rows={2} value={form.acceptedAnswers} onChange={e => setForm({ ...form, acceptedAnswers: e.target.value })} placeholder={'the library\nlibraries'} />
           </>
         ) : (
           <>
-            <label>Phương án A</label><input value={optA} onChange={e => setOptA(e.target.value)} required />
-            <label>Phương án B</label><input value={optB} onChange={e => setOptB(e.target.value)} required />
-            <label>Phương án C</label><input value={optC} onChange={e => setOptC(e.target.value)} required />
-            <label>Phương án D</label><input value={optD} onChange={e => setOptD(e.target.value)} required />
+            <div className="form-grid">
+            <div><label>Phương án A</label><input value={optA} onChange={e => setOptA(e.target.value)} required /></div>
+            <div><label>Phương án B</label><input value={optB} onChange={e => setOptB(e.target.value)} required /></div>
+            </div>
+            <div className="form-grid">
+            <div><label>Phương án C</label><input value={optC} onChange={e => setOptC(e.target.value)} required /></div>
+            <div><label>Phương án D</label><input value={optD} onChange={e => setOptD(e.target.value)} required /></div>
+            </div>
             <label>Đáp án đúng</label><select value={correct} onChange={e => setCorrect(e.target.value)}>{['A', 'B', 'C', 'D'].map(l => <option key={l}>{l}</option>)}</select>
           </>
         )}
         <label>Giải thích (tiếng Việt, ngắn)</label><textarea rows={2} value={form.explanation} onChange={e => setForm({ ...form, explanation: e.target.value })} />
-        <label>Chủ đề</label><input value={form.topic} onChange={e => setForm({ ...form, topic: e.target.value })} />
-        <label>Độ khó</label><select value={form.difficulty} onChange={e => setForm({ ...form, difficulty: e.target.value })}><option value="easy">Dễ</option><option value="medium">Trung bình</option><option value="hard">Khó</option></select>
+        <div className="form-grid">
+        <div><label>Chủ đề</label><input value={form.topic} onChange={e => setForm({ ...form, topic: e.target.value })} /></div>
+        <div><label>Độ khó</label><select value={form.difficulty} onChange={e => setForm({ ...form, difficulty: e.target.value })}><option value="easy">Dễ</option><option value="medium">Trung bình</option><option value="hard">Khó</option></select></div>
+        </div>
         <label>Script / transcript (Part 1–4, để đọc TTS)</label><textarea rows={2} value={form.script} onChange={e => setForm({ ...form, script: e.target.value })} />
         <label>Đoạn văn (Part 3/4/6/7)</label><textarea rows={3} value={form.passageText} onChange={e => setForm({ ...form, passageText: e.target.value })} />
         <div className="btn-row"><button className="btn">{editing ? 'Cập nhật' : 'Thêm câu hỏi'}</button>{editing && <button type="button" className="btn secondary" onClick={() => { setEditing(null); setForm(emptyQ); }}>Hủy sửa</button>}</div>
       </form>
 
+      <div className="split">
       <div className="card">
         <h2>Import câu hỏi (JSON)</h2>
         <p className="muted">Định dạng seed: mảng câu hỏi, mỗi câu có id, part, content, options (4 phương án A–D), correct, explanation. Dòng lỗi sẽ bị bỏ qua, không import nửa vời.</p>
         <label>Chọn file JSON</label><input type="file" accept=".json,application/json" onChange={e => { const f = e.target.files?.[0]; if (f) importFromFile(f, 'q'); }} />
         <label>Hoặc dán JSON vào đây</label><textarea rows={6} value={importText} onChange={e => setImportText(e.target.value)} placeholder='[{"id":"P5-001","part":5,"content":"...","options":[{"label":"A","content":"..."}], "correct":"A","explanation":"..."}]' />
-        <div className="btn-row"><button className="btn" onClick={importQuestions}>Import câu hỏi</button></div>
+        <div className="btn-row"><button className="btn btn-block" onClick={importQuestions}>Import câu hỏi</button></div>
       </div>
 
       <div className="card">
         <h2>Danh sách câu hỏi ({questions.length})</h2>
-        <label>Lọc theo kỳ thi</label>
+        <div className="form-grid">
+        <div><label>Lọc theo kỳ thi</label>
         <select value={examFilter} onChange={e => setExamFilter(e.target.value as 'all' | 'toeic' | 'ielts')}>
           <option value="all">Tất cả</option><option value="toeic">TOEIC</option><option value="ielts">IELTS Academic</option>
-        </select>
-        <label>Lọc theo Part</label>
+        </select></div>
+        <div><label>Lọc theo Part</label>
         <select value={partFilter ?? ''} onChange={e => setPartFilter(e.target.value ? Number(e.target.value) : undefined)}>
           <option value="">Tất cả</option>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{partName(p)}</option>)}
-        </select>
+        </select></div>
+        </div>
         <div className="table-scroll">
         <table><thead><tr><th>Mã</th><th>Part</th><th>Dạng</th><th>Nội dung</th><th>Đáp án</th><th>Giải thích</th><th>Media</th><th></th></tr></thead><tbody>
           {questions.map(q => <tr key={q.id}><td>{q.id}</td><td>{q.part}</td>
@@ -348,23 +370,31 @@ export default function Admin() {
         </div>
         {questions.length === 0 && <p className="muted">Chưa có câu hỏi nào khớp bộ lọc.</p>}
       </div>
+      </div>
 
+      <div className="split">
+      <div>
       <form className="card" onSubmit={saveVocab}>
         <h2>Thêm / sửa từ vựng</h2>
-        <label>Mã từ (VD: V001)</label><input value={vocabForm.id} onChange={e => setVocabForm({ ...vocabForm, id: e.target.value })} required />
-        <label>Từ</label><input value={vocabForm.word} onChange={e => setVocabForm({ ...vocabForm, word: e.target.value })} required />
-        <label>Phiên âm</label><input value={vocabForm.phonetic} onChange={e => setVocabForm({ ...vocabForm, phonetic: e.target.value })} />
+        <div className="form-grid">
+        <div><label>Mã từ (VD: V001)</label><input value={vocabForm.id} onChange={e => setVocabForm({ ...vocabForm, id: e.target.value })} required /></div>
+        <div><label>Từ</label><input value={vocabForm.word} onChange={e => setVocabForm({ ...vocabForm, word: e.target.value })} required /></div>
+        </div>
+        <div className="form-grid">
+        <div><label>Phiên âm</label><input value={vocabForm.phonetic} onChange={e => setVocabForm({ ...vocabForm, phonetic: e.target.value })} /></div>
+        <div><label>Chủ đề</label><input value={vocabForm.topic} onChange={e => setVocabForm({ ...vocabForm, topic: e.target.value })} /></div>
+        </div>
         <label>Nghĩa (tiếng Việt)</label><input value={vocabForm.meaning} onChange={e => setVocabForm({ ...vocabForm, meaning: e.target.value })} required />
         <label>Ví dụ (tiếng Anh)</label><input value={vocabForm.example} onChange={e => setVocabForm({ ...vocabForm, example: e.target.value })} />
-        <label>Chủ đề</label><input value={vocabForm.topic} onChange={e => setVocabForm({ ...vocabForm, topic: e.target.value })} />
-        <div className="btn-row"><button className="btn">Lưu từ vựng</button></div>
+        <div className="btn-row"><button className="btn btn-block">Lưu từ vựng</button></div>
       </form>
 
       <div className="card">
         <h2>Import từ vựng (JSON)</h2>
         <label>Chọn file JSON</label><input type="file" accept=".json,application/json" onChange={e => { const f = e.target.files?.[0]; if (f) importFromFile(f, 'v'); }} />
         <label>Hoặc dán JSON vào đây</label><textarea rows={4} value={vocabImport} onChange={e => setVocabImport(e.target.value)} placeholder='[{"id":"V001","word":"...","meaning":"..."}]' />
-        <div className="btn-row"><button className="btn" onClick={importVocab}>Import từ vựng</button></div>
+        <div className="btn-row"><button className="btn btn-block" onClick={importVocab}>Import từ vựng</button></div>
+      </div>
       </div>
 
       <div className="card">
@@ -376,6 +406,7 @@ export default function Admin() {
         </tbody></table>
         </div>
         {vocabs.length === 0 && <p className="muted">Chưa có từ vựng nào.</p>}
+      </div>
       </div>
     </div>
   );

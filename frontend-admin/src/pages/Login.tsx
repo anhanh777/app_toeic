@@ -37,7 +37,7 @@ export default function Login() {
         <label htmlFor="password">Mật khẩu</label>
         <input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required autoComplete="current-password" />
         <ErrorBox error={error} />
-        <button className="btn" type="submit" disabled={busy}>{busy ? 'Đang đăng nhập…' : 'Đăng nhập'}</button>
+        <button className="btn btn-block" type="submit" disabled={busy}>{busy ? 'Đang đăng nhập…' : 'Đăng nhập'}</button>
       </form>
       <p className="muted" style={{ marginTop: '1rem' }}>Tài khoản demo admin: demo@toeic.app</p>
     </div>
