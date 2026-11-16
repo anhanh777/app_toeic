@@ -61,6 +61,7 @@ export interface User {
   id: number; email: string; name: string; role: 'user' | 'admin';
   targetScore?: number; target_score?: number; hideOnLeaderboard?: boolean;
   hide_on_leaderboard?: number; avatarUrl?: string; avatar_url?: string;
+  googleId?: string | null; createdAt?: string;
 }
 export interface Option { label: string; content: string; is_correct?: number; }
 export interface Question {
@@ -241,7 +242,7 @@ export const api = {
   // bóc .user ra, nếu không user.name/user.role/user.id đều undefined
   // (nút "Đăng xuất ()" trống tên, mất link Quản trị sau khi tải lại).
   me: async () => (await req<{ user: User }>('/api/auth/me')).user,
-  updateMe: async (patch: { name?: string; targetScore?: number; hideOnLeaderboard?: boolean }) =>
+  updateMe: async (patch: { name?: string; targetScore?: number; hideOnLeaderboard?: boolean; avatarUrl?: string | null }) =>
     (await req<{ user: User }>('/api/users/me', { method: 'PATCH', body: JSON.stringify(patch) })).user,
 
   parts: (exam?: string) => req<PartInfo[]>(exam ? `/api/parts?exam=${encodeURIComponent(exam)}` : '/api/parts'),
@@ -407,6 +408,8 @@ export const api = {
 
   // Media cho phần Nghe (ảnh + audio)
   mediaConfig: () => req<MediaConfig>('/api/admin/media/config'),
+  // Cấu hình upload cho tài khoản thường (đổi ảnh đại diện) — không cần quyền admin.
+  mediaConfigPublic: () => req<MediaConfig>('/api/media/config'),
   saveQuestionMedia: (id: string, body: { imageUrl?: string; audioUrl?: string }) =>
     req<Question>(`/api/admin/questions/${encodeURIComponent(id)}/media`, { method: 'POST', body: JSON.stringify(body) }),
   savePassageMedia: (id: string, body: { audioUrl: string }) =>

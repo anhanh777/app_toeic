@@ -164,9 +164,11 @@ function Layout() {
         <Link className="brand" to="/">{brand}</Link>
         {user && exam && (
           <nav>
-            {pinnedItems.map(it => (
-              <NavLink key={it.path} to={it.path} end={it.end}>{it.label}</NavLink>
-            ))}
+            <div className="topbar-nav-inner">
+              {pinnedItems.map(it => (
+                <NavLink key={it.path} to={it.path} end={it.end}>{it.label}</NavLink>
+              ))}
+            </div>
           </nav>
         )}
         {user && exam && (
@@ -208,20 +210,26 @@ function Layout() {
             <div className="nav-menu-wrap">
               <button type="button" className="avatar-btn" aria-label="Tài khoản của tôi" aria-expanded={profileOpen}
                 title={displayName} onClick={() => { setProfileOpen(o => !o); setMenuOpen(false); }}>
-                {displayName[0]?.toUpperCase() ?? '👤'}
+                {user.avatarUrl
+                  ? <img src={user.avatarUrl} alt="" />
+                  : displayName[0]?.toUpperCase() ?? '👤'}
               </button>
               {profileOpen && (
                 <>
                   <div className="nav-menu-backdrop" onClick={() => setProfileOpen(false)} />
                   <div className="profile-menu" role="menu">
                     <div className="profile-menu-head">
-                      <span className="avatar-btn big" aria-hidden>{displayName[0]?.toUpperCase() ?? '👤'}</span>
+                      <span className="avatar-btn big" aria-hidden>
+                        {user.avatarUrl
+                          ? <img src={user.avatarUrl} alt="" />
+                          : displayName[0]?.toUpperCase() ?? '👤'}
+                      </span>
                       <div>
                         <strong>{displayName}</strong>
                         <span className="muted">{user.email}</span>
                       </div>
                     </div>
-                    <Link className="profile-menu-item" to="/settings" onClick={() => setProfileOpen(false)}>👤 Hồ sơ &amp; Cài đặt</Link>
+                    <Link className="profile-menu-item" to="/profile" onClick={() => setProfileOpen(false)}>👤 Hồ sơ &amp; Cài đặt</Link>
                     <button type="button" className="profile-menu-item"
                       onClick={() => { setProfileOpen(false); logout(); nav('/login'); }}>🚪 Đăng xuất</button>
                   </div>
@@ -261,6 +269,7 @@ function Layout() {
             <Route path="/admin" element={<RequireAuth><Admin /></RequireAuth>} />
             <Route path="/admin/test-set/:id" element={<RequireAuth><TestSetAdmin /></RequireAuth>} />
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
+            <Route path="/profile" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
           </Routes>
           </ErrorBoundary>

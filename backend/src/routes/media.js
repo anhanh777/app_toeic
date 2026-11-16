@@ -61,6 +61,14 @@ router.get('/admin/media/config', ...adminOnly, (req, res) => {
   return res.json(cloudinaryConfig());
 });
 
+// Cấu hình upload Cloudinary cho mọi tài khoản đã đăng nhập (đổi ảnh đại
+// diện). Unsigned preset vốn đã công khai theo thiết kế của Cloudinary
+// (trình duyệt upload thẳng, không qua backend), nên endpoint này chỉ
+// cần đăng nhập, không cần quyền admin.
+router.get('/media/config', authMiddleware, (req, res) => {
+  return res.json(cloudinaryConfig());
+});
+
 /* ---------- gan URL media co san (Cloudinary) ---------- */
 
 router.post('/admin/questions/:id/media', ...adminOnly, (req, res) => {

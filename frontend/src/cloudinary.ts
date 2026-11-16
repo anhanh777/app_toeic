@@ -2,7 +2,7 @@
 // Không qua backend: backend chỉ cấp cloudName + uploadPreset qua
 // GET /api/admin/media/config, file đi thẳng tới Cloudinary.
 
-export type CloudinaryFolder = 'toeic/images' | 'toeic/audio';
+export type CloudinaryFolder = 'toeic/images' | 'toeic/audio' | 'toeic/avatars';
 
 export interface CloudinaryConfig {
   cloudName: string;
@@ -21,19 +21,19 @@ function extOf(file: File): string {
 }
 
 function validate(file: File, folder: CloudinaryFolder) {
-  if (folder === 'toeic/images') {
-    if (!IMAGE_EXTS.includes(extOf(file))) {
-      throw new Error('Ảnh minh họa chỉ nhận file .png, .jpg hoặc .jpeg.');
-    }
-    if (file.size > MAX_IMAGE_BYTES) {
-      throw new Error('Ảnh minh họa tối đa 5MB. Hãy nén ảnh nhỏ lại rồi upload lại.');
-    }
-  } else {
+  if (folder === 'toeic/audio') {
     if (!AUDIO_EXTS.includes(extOf(file))) {
       throw new Error('File audio chỉ nhận định dạng .mp3.');
     }
     if (file.size > MAX_AUDIO_BYTES) {
       throw new Error('File audio tối đa 10MB. Hãy nén file nhỏ lại rồi upload lại.');
+    }
+  } else {
+    if (!IMAGE_EXTS.includes(extOf(file))) {
+      throw new Error('Ảnh chỉ nhận file .png, .jpg hoặc .jpeg.');
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      throw new Error('Ảnh tối đa 5MB. Hãy nén ảnh nhỏ lại rồi upload lại.');
     }
   }
 }

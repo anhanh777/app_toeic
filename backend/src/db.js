@@ -514,15 +514,16 @@ function findUserByGoogleId(googleId) {
   return row || null;
 }
 
-function updateUserProfile(id, { name, targetScore, hideOnLeaderboard }) {
+function updateUserProfile(id, { name, targetScore, hideOnLeaderboard, avatarUrl }) {
   const cur = findUserById(id);
   if (!cur) return null;
   db.prepare(
-    'UPDATE users SET name = ?, target_score = ?, hide_on_leaderboard = ? WHERE id = ?'
+    'UPDATE users SET name = ?, target_score = ?, hide_on_leaderboard = ?, avatar_url = ? WHERE id = ?'
   ).run(
     name !== undefined ? name : cur.name,
     targetScore !== undefined ? targetScore : cur.target_score,
     hideOnLeaderboard !== undefined ? (hideOnLeaderboard ? 1 : 0) : cur.hide_on_leaderboard,
+    avatarUrl !== undefined ? avatarUrl : cur.avatar_url,
     id
   );
   return findUserById(id);
