@@ -55,47 +55,47 @@ input,select,textarea,.exam-q-num,.tier,.pill{
 }
 body{
   margin:0; font-family:var(--body); background:var(--bg); color:var(--ink);
-  line-height:1.6;
+  font-size:.9rem; line-height:1.5;
 }
 a{color:var(--accent-dark); text-decoration:none}
 a:hover{text-decoration:underline}
 button{font:inherit; cursor:pointer; color:var(--ink)}
 input,select,textarea{
-  font:inherit; width:100%; padding:.65rem .8rem; color:var(--ink);
-  background:var(--input-bg); border:1px solid var(--border); border-radius:10px;
+  font:inherit; width:100%; padding:.5rem .65rem; color:var(--ink);
+  background:var(--input-bg); border:1px solid var(--border); border-radius:8px;
 }
 input:focus,select:focus,textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(95,168,160,.22)}
-label{display:block; font-weight:600; font-size:.9rem; color:var(--ink-soft); margin:.8rem 0 .3rem}
+label{display:block; font-weight:600; font-size:.85rem; color:var(--ink-soft); margin:.6rem 0 .25rem}
 input[type='checkbox'],input[type='range']{width:auto; accent-color:var(--accent)}
 input[type='range']{border:none; padding:0}
 
 h1,h2,h3{font-family:var(--body); font-weight:700; line-height:1.4; letter-spacing:-.01em; color:var(--ink)}
-h1{font-size:1.4rem; margin:.4rem 0 1rem}
+h1{font-size:1.25rem; margin:.3rem 0 .8rem}
 h1 .glow{color:var(--accent-dark)}
-h2{font-size:1.1rem; margin:0 0 .8rem}
-h3{font-size:1rem; margin:0 0 .6rem}
-hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
+h2{font-size:1rem; margin:0 0 .6rem}
+h3{font-size:.95rem; margin:0 0 .5rem}
+hr{border:none; border-top:1px solid var(--border); margin:.9rem 0}
 
 .app{min-height:100vh; display:flex; flex-direction:row}
 /* Thanh điều hướng bên trái: các chức năng quản trị xếp dọc, bấm để mở. */
 .sidebar{
-  width:15rem; flex:0 0 auto; min-height:100vh;
+  width:13.5rem; flex:0 0 auto; min-height:100vh;
   background:color-mix(in srgb, var(--surface) 92%, transparent);
   border-right:1px solid var(--border);
   box-shadow:2px 0 12px rgba(93,64,28,.05);
-  padding:1rem .8rem; display:flex; flex-direction:column; gap:.4rem;
+  padding:.8rem .65rem; display:flex; flex-direction:column; gap:.4rem;
   position:sticky; top:0; height:100vh;
 }
 .sidebar a{color:var(--ink-soft); font-weight:600}
 .sidebar a:hover{color:var(--accent-dark); text-decoration:none}
 .sidebar .brand{
-  font-weight:800; font-size:1.05rem; color:var(--accent-dark);
+  font-weight:800; font-size:1rem; color:var(--accent-dark);
   letter-spacing:-.01em; white-space:nowrap; padding:.2rem .5rem;
 }
-.sidebar-sub{margin:0 0 .6rem; padding:0 .5rem; font-size:.85rem}
-.sidebar nav{display:flex; flex-direction:column; gap:.35rem}
+.sidebar-sub{margin:0 0 .5rem; padding:0 .5rem; font-size:.8rem}
+.sidebar nav{display:flex; flex-direction:column; gap:.3rem}
 .sidebar nav a{
-  font-size:.95rem; padding:.6rem .7rem; border-radius:10px; white-space:nowrap;
+  font-size:.9rem; padding:.5rem .6rem; border-radius:10px; white-space:nowrap;
   border:1px solid transparent; color:var(--ink-soft);
 }
 .sidebar nav a:hover{border-color:var(--border); color:var(--ink); background:var(--surface-soft)}
@@ -201,10 +201,10 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
   transition:background .2s, border-color .2s, transform .2s;
 }
 .theme-toggle:hover{border-color:var(--accent); transform:translateY(-1px)}
-.container{max-width:960px; width:100%; margin:0 auto; padding:1rem; flex:1; min-width:0}
+.container{max-width:1024px; width:100%; margin:0 auto; padding:.9rem; flex:1; min-width:0}
 .card{
   background:var(--surface);
-  border:1px solid var(--border); border-radius:16px; padding:1.1rem 1.2rem; margin-bottom:1rem;
+  border:1px solid var(--border); border-radius:14px; padding:.85rem 1rem; margin-bottom:.8rem;
   box-shadow:0 2px 12px rgba(93,64,28,.06);
 }
 .card h2{margin-top:0}
@@ -213,13 +213,13 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 /* Box con trong card (xem trước import, form con): nền nhạt, không viền dày, không bóng */
 .panel{
   background:var(--surface-soft); border:1px solid var(--border-soft);
-  border-radius:12px; padding:1rem 1.1rem; margin-top:1rem; box-shadow:none;
+  border-radius:12px; padding:.75rem .9rem; margin-top:.75rem; box-shadow:none;
 }
 .panel h3{margin-top:0}
 /* Lưới phòng hờ: card nào còn lồng trong card cũng không bị 2 lớp viền dày */
 .card .card{box-shadow:none; border-color:var(--border-soft); background:var(--surface-soft)}
 /* Nhịp dọc duy nhất: lưới dùng gap, không cộng thêm margin-bottom của card */
-.grid{display:grid; gap:1rem; grid-template-columns:1fr; margin-bottom:1rem}
+.grid{display:grid; gap:.8rem; grid-template-columns:1fr; margin-bottom:.8rem}
 .grid > .card{
   margin-bottom:0; display:flex; flex-direction:column; gap:.45rem;
 }
@@ -252,9 +252,9 @@ select + .card{margin-top:1rem}
 
 /* Nút phẳng bo tròn — 1 màu nhấn duy nhất, hover nâng nhẹ */
 .btn{
-  display:inline-block; font-weight:600; font-size:.95rem; line-height:1.5;
+  display:inline-block; font-weight:600; font-size:.9rem; line-height:1.4;
   color:#fff; background:var(--accent);
-  border:1px solid transparent; border-radius:12px; padding:.65rem 1.1rem; text-align:center;
+  border:1px solid transparent; border-radius:10px; padding:.5rem .9rem; text-align:center;
   box-shadow:0 2px 8px rgba(95,168,160,.28);
   transition:background .18s, transform .18s, box-shadow .18s;
 }
@@ -271,15 +271,15 @@ select + .card{margin-top:1rem}
 .btn.neon:hover{background:var(--accent-soft-strong)}
 .btn.gold{background:var(--cream); color:var(--gold-ink); box-shadow:0 1px 4px rgba(93,64,28,.06)}
 .btn.gold:hover{background:var(--cream-strong)}
-.btn-sm{padding:.42rem .85rem; font-size:.88rem; border-radius:10px}
-.btn-row{display:flex; gap:.7rem; flex-wrap:wrap; margin-bottom:1rem}
-.card .btn-row{margin-top:.8rem; margin-bottom:0}
+.btn-sm{padding:.32rem .65rem; font-size:.82rem; border-radius:8px}
+.btn-row{display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:.7rem}
+.card .btn-row{margin-top:.6rem; margin-bottom:0}
 
-.error{background:var(--red-bg); color:var(--red-ink); border:1px solid var(--red-border); border-radius:12px; padding:.65rem .9rem; margin:.6rem 0}
-.success{background:var(--green-bg); color:var(--green-ink); border:1px solid var(--green-border); border-radius:12px; padding:.65rem .9rem; margin:.6rem 0}
-.muted{color:var(--muted); font-size:.9rem}
-.big{font-weight:800; font-size:1.5rem; line-height:1.4; color:var(--ink)}
-.stat-num{font-weight:800; font-size:1.2rem; line-height:1.4; color:var(--accent-dark)}
+.error{background:var(--red-bg); color:var(--red-ink); border:1px solid var(--red-border); border-radius:12px; padding:.5rem .75rem; margin:.5rem 0}
+.success{background:var(--green-bg); color:var(--green-ink); border:1px solid var(--green-border); border-radius:12px; padding:.5rem .75rem; margin:.5rem 0}
+.muted{color:var(--muted); font-size:.85rem}
+.big{font-weight:800; font-size:1.3rem; line-height:1.4; color:var(--ink)}
+.stat-num{font-weight:800; font-size:1.05rem; line-height:1.4; color:var(--accent-dark)}
 .pill{
   display:inline-block; font-weight:600; font-size:.78rem; background:var(--accent-soft);
   color:var(--accent-dark); border-radius:999px; padding:.25rem .6rem;
@@ -371,9 +371,28 @@ select + .card{margin-top:1rem}
 table{width:100%; border-collapse:collapse}
 /* Bảng trong card hẹp: cuộn ngang trong card thay vì tràn ra ngoài */
 .card:has(table), .panel:has(table){overflow-x:auto}
-th,td{padding:.6rem .5rem; border-bottom:1px solid var(--border-soft); text-align:left}
-th{font-weight:700; font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.03em}
+th,td{padding:.4rem .5rem; border-bottom:1px solid var(--border-soft); text-align:left; vertical-align:top}
+th{font-weight:700; font-size:.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:.03em}
 tbody tr:hover{background:var(--surface-soft)}
+/* Bảng danh sách dài: khung cuộn riêng, tiêu đề dính trên cùng. */
+.table-scroll{max-height:28rem; overflow:auto; border:1px solid var(--border-soft); border-radius:10px; background:var(--surface)}
+.table-scroll thead th{position:sticky; top:0; background:var(--surface); z-index:2}
+.panel .table-scroll{background:var(--surface-soft)}
+.panel .table-scroll thead th{background:var(--surface-soft)}
+/* Nút tác vụ trong ô bảng: gọn, không cộng margin của .btn-row. */
+.tbl-actions{display:flex; gap:.35rem; flex-wrap:wrap; align-items:center}
+.tbl-actions .btn{white-space:nowrap}
+/* Trạng thái đề: phát hành = xanh lá, nháp = xám nhạt. */
+.pill--live{background:var(--green-bg); color:var(--green-ink)}
+.pill--draft{background:var(--track); color:var(--muted)}
+/* Nút chính trải hết chiều rộng (form đăng nhập). */
+.btn-block{display:block; width:100%}
+/* Form 2 cột cho các trường ngắn (kỳ thi + dạng câu, Part + độ khó…). */
+.form-grid{display:grid; gap:0 .8rem; grid-template-columns:1fr 1fr}
+@media(max-width:560px){.form-grid{grid-template-columns:1fr}}
+/* Ô chữ dài trong bảng: cắt bằng dấu … + tooltip (title) khi rê chuột. */
+.cell-trunc{display:inline-block; max-width:12rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; vertical-align:bottom}
+.cell-trunc--wide{max-width:22rem}
 
 .timer{font-weight:800; font-size:1.15rem; color:var(--ink); font-variant-numeric:tabular-nums}
 .timer.low{color:var(--red-ink)}
@@ -432,10 +451,10 @@ tbody tr:hover{background:var(--surface-soft)}
    tiếp nhau bằng đường kẻ mảnh thay vì hộp .panel lồng nhau. */
 .paper{
   background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  padding:.3rem 1rem .7rem; margin-top:.7rem;
+  padding:.2rem .9rem .5rem; margin-top:.6rem;
 }
 /* 1 câu hỏi trong tờ đề: kẻ mảnh phân cách, nhịp dọc gọn */
-.paper-q{padding:.45rem 0; border-bottom:1px solid var(--border-soft)}
+.paper-q{padding:.35rem 0; border-bottom:1px solid var(--border-soft)}
 .paper-q:last-child{border-bottom:none; padding-bottom:.15rem}
 /* Đề mục / kết quả chấm trong câu: bỏ margin mặc định của <p> (~1em) */
 .paper-q p{margin:.3rem 0}
@@ -589,10 +608,6 @@ tbody tr:hover{background:var(--surface-soft)}
 .blank-chip.wrong{color:var(--red)}
 /* Vạch ngang làm chỗ trống cần điền (mượt hơn dấu gạch dưới liền). */
 .blank-line{display:inline-block; width:3.2rem; height:.55em; border-bottom:2px solid currentColor; margin:0 .15rem}
-.blank-chip:hover{filter:brightness(.96)}
-.blank-chip.answered{background:var(--accent); border-color:var(--accent); color:#fff}
-.blank-chip.correct{background:var(--green); border-color:var(--green); color:#fff}
-.blank-chip.wrong{background:var(--red); border-color:var(--red); color:#fff}
 .exam-q-body .exam-q-num{display:inline; margin:0 .35rem 0 0}
 /* T/F/NG & Y/N/NG: 3 nhãn dài thành hàng nút pill ngang, chữ đầy đủ
    không bị nhét vào ô tròn 1 chữ như phương án A/B/C/D. */
@@ -698,10 +713,10 @@ tbody tr:hover{background:var(--surface-soft)}
 .band-num{font-weight:800; font-size:2rem; line-height:1.2; color:var(--accent-dark)}
 
 @media(max-width:640px){
-  h1{font-size:1.2rem}
+  h1{font-size:1.1rem}
   .hero h1{font-size:1.25rem}
   .big{font-size:1.2rem}
-  .sidebar .brand{font-size:.95rem}
+  .sidebar .brand{font-size:.9rem}
   .container{padding:.8rem}
   .card{padding:.9rem}
   /* Màn hẹp: thanh bên thành thanh ngang trên cùng, mục cuộn ngang */
