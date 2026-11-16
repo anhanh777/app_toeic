@@ -7,6 +7,7 @@ import Admin from './pages/Admin';
 import TestSetAdmin from './pages/TestSetAdmin';
 import IeltsAdmin from './pages/IeltsAdmin';
 import IeltsTestSetAdmin from './pages/IeltsTestSetAdmin';
+import Users from './pages/Users';
 
 /* Nút đổi sáng/tối ở góc phải header. */
 function ThemeToggle() {
@@ -38,17 +39,6 @@ function RequireAdmin({ children }: { children: ReactNode }) {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Trang quản trị chỉ dành cho tài khoản admin. Tài khoản của bạn không có quyền xem trang này.</p></div>;
   }
   return <>{children}</>;
-}
-
-/* Trang chờ cho module chưa chuyển xong. */
-function ComingSoon({ name }: { name: string }) {
-  return (
-    <div className="card">
-      <h1>{name}</h1>
-      <p>Module này đang được chuyển sang web quản trị riêng, sẽ có trong phần tiếp theo.</p>
-      <p><Link to="/">← Về trang chủ quản trị</Link></p>
-    </div>
-  );
 }
 
 function Dashboard() {
@@ -109,7 +99,7 @@ function Layout() {
           <Route path="/toeic/test-set/:id" element={<RequireAdmin><TestSetAdmin /></RequireAdmin>} />
           <Route path="/ielts" element={<RequireAdmin><IeltsAdmin /></RequireAdmin>} />
           <Route path="/ielts/test-set/:id" element={<RequireAdmin><IeltsTestSetAdmin /></RequireAdmin>} />
-          <Route path="/users" element={<RequireAdmin><ComingSoon name="👤 Quản lý tài khoản" /></RequireAdmin>} />
+          <Route path="/users" element={<RequireAdmin><Users /></RequireAdmin>} />
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang quản trị</Link></p>} />
         </Routes>
       </main>

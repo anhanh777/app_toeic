@@ -507,6 +507,17 @@ export const api = {
     if (!res.ok) throw new ApiError(res.status, 'Không tải được bản sao lưu.');
     return res.blob();
   },
+
+  // Quản lý tài khoản (chỉ admin; backend không bao giờ trả password_hash).
+  adminUsers: async () => (await req<{ users: User[] }>('/api/admin/users')).users,
+  adminCreateUser: (body: { email: string; password: string; name?: string; role?: 'user' | 'admin' }) =>
+    req<{ user: User }>('/api/admin/users', { method: 'POST', body: JSON.stringify(body) }),
+  adminUpdateUser: (id: number, body: { name?: string; role?: 'user' | 'admin'; targetScore?: number; hideOnLeaderboard?: boolean }) =>
+    req<{ user: User }>(`/api/admin/users/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  adminDeleteUser: (id: number) =>
+    req<{ ok: boolean }>(`/api/admin/users/${id}`, { method: 'DELETE' }),
+  adminResetUserPassword: (id: number, password: string) =>
+    req<{ ok: boolean }>(`/api/admin/users/${id}/reset-password`, { method: 'POST', body: JSON.stringify({ password }) }),
 };
 
 export function targetScoreOf(u: User | null): number {
