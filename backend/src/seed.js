@@ -898,8 +898,27 @@ function seedPartMedia() {
   return seeded;
 }
 
+function seedUiSettings() {
+  // Cai dat giao dien dong (scope C): chi chen mac dinh khi key chua co
+  // (INSERT OR IGNORE) — khong bao gio ghi de cai dat admin da sua.
+  // Mac dinh nam trong code (backend/src/uiSettings.js) nen Render
+  // free-tier reseed van khoi phuc duoc.
+  const { defaultFlatSettings } = require('./uiSettings');
+  const defaults = defaultFlatSettings();
+  let added = 0;
+  for (const [key, value] of Object.entries(defaults)) {
+    if (db.getSetting(key) === undefined) {
+      db.setSetting(key, value);
+      added += 1;
+    }
+  }
+  if (added > 0) console.log(`[seed] app_settings: them ${added} gia tri mac dinh.`);
+  return added;
+}
+
 function seedAll() {
   db.initDb();
+  seedUiSettings();
   seedQuestions();
   seedIeltsCam21Test1();
   seedIeltsCam21Test2();
@@ -939,4 +958,4 @@ if (require.main === module) {
   seedAll();
 }
 
-module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedIeltsCam21Test1, seedIeltsCam21Test2, seedIeltsCam21Test3, seedIeltsCam21Test4, seedIeltsCam20Test1, seedIeltsCam20Test2, seedIeltsCam20Test3, seedIeltsCam20Test4, seedIeltsCam19Test1, seedIeltsCam19Test2, seedIeltsCam19Test3, seedIeltsCam19Test4, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };
+module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedUiSettings, seedIeltsCam21Test1, seedIeltsCam21Test2, seedIeltsCam21Test3, seedIeltsCam21Test4, seedIeltsCam20Test1, seedIeltsCam20Test2, seedIeltsCam20Test3, seedIeltsCam20Test4, seedIeltsCam19Test1, seedIeltsCam19Test2, seedIeltsCam19Test3, seedIeltsCam19Test4, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };

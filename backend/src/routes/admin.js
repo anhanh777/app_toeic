@@ -356,4 +356,44 @@ router.get('/admin/backup', (req, res) => {
   });
 });
 
+/* ---------- cai dat giao dien dong (scope C) ---------- */
+
+const uiSettings = require('../uiSettings');
+
+/** Doc day du cai dat giao dien (da normalize: thieu/sai -> mac dinh code). */
+function readUiSettingsDoc() {
+  return uiSettings.normalizeSettings(uiSettings.unflattenSettings(db.getAllSettings()));
+}
+
+router.get('/admin/settings', (req, res) => {
+  return res.json(readUiSettingsDoc());
+});
+
+/**
+ * PUT /api/admin/settings — luu cai dat giao dien. Chap nhan 2 dang:
+ * - Tai lieu day du: { ui: { accent, fontScale, loading: {...} } }
+ * - 1 key: { key: 'ui.accent', value: '#4A90D9' }
+ * Chi luu key trong allowlist; gia tri khong hop le -> 400, khong luu gi.
+ * Tra ve tai lieu day du sau khi luu.
+ */
+router.put('/admin/settings', (req, res) => {
+  const body = req.body || {};
+  let flat = {};
+  if (typeof body.key === 'string') {
+    flat = { [body.key]: body.value };
+  } else if (body.ui && typeof body.ui === 'object') {
+    flat = uiSettings.flattenSettings(body);
+  } else {
+    return res.status(400).json({ error: 'gui { ui: {...} } hoac { key, value }' });
+  }
+  const keys = Object.keys(flat);
+  if (keys.length === 0) return res.status(400).json({ error: 'khong co cai dat nao de luu' });
+  for (const key of keys) {
+    const err = uiSettings.validateSetting(key, flat[key]);
+    if (err) return res.status(400).json({ error: err });
+  }
+  for (const key of keys) db.setSetting(key, flat[key]);
+  return res.json(readUiSettingsDoc());
+});
+
 module.exports = router;

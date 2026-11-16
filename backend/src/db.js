@@ -283,6 +283,11 @@ CREATE TABLE IF NOT EXISTS speaking_recordings (
   is_baseline INTEGER DEFAULT 0,
   created_at TEXT
 );
+CREATE TABLE IF NOT EXISTS app_settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TEXT
+);
 CREATE INDEX IF NOT EXISTS idx_error_log_user_due ON error_log(user_id, review_due, resolved);
 CREATE INDEX IF NOT EXISTS idx_sessions_user_date ON sessions(user_id, date);
 CREATE INDEX IF NOT EXISTS idx_mock_tests_user_kind ON mock_tests(user_id, kind);
@@ -2233,6 +2238,41 @@ function countWrongQuestions(userId, exam) {
   ).get(userId, exam).c;
 }
 
+/* ---------- app_settings (cai dat giao dien dong, scope C) ---------- */
+
+/** Doc 1 gia tri cai dat (tra ve undefined neu chua co — caller dung mac dinh code). */
+function getSetting(key) {
+  const row = db.prepare('SELECT value FROM app_settings WHERE key = ?').get(key);
+  if (!row) return undefined;
+  try {
+    return JSON.parse(row.value);
+  } catch {
+    return undefined;
+  }
+}
+
+/** Doc toan bo cai dat dang luu (map phang key -> value da parse). */
+function getAllSettings() {
+  const rows = db.prepare('SELECT key, value FROM app_settings').all();
+  const out = {};
+  for (const r of rows) {
+    try {
+      out[r.key] = JSON.parse(r.value);
+    } catch {
+      /* bo qua dong hong */
+    }
+  }
+  return out;
+}
+
+/** Ghi 1 gia tri cai dat (upsert). Chi luu khi key hop le — caller validate truoc. */
+function setSetting(key, value) {
+  db.prepare(
+    `INSERT INTO app_settings (key, value, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`
+  ).run(key, JSON.stringify(value), nowIso());
+}
+
 module.exports = {
   db,
   initDb,
@@ -2355,4 +2395,8 @@ module.exports = {
   countQuestionsByType,
   getWrongQueue,
   countWrongQuestions,
+  // app_settings (cai dat giao dien dong)
+  getSetting,
+  getAllSettings,
+  setSetting,
 };
