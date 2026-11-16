@@ -214,6 +214,13 @@ export function realQuestionNumber(exam: string | null | undefined, part: number
   return (offsets[part] ?? 1) + indexWithinPart - 1;
 }
 
+// Nội dung câu hỏi đôi khi đã chứa số câu ở đầu ("147. Where is...") do
+// dữ liệu gốc giữ lại số — khi hiển thị số inline thì bỏ số đó đi để khỏi
+// lặp "147. 147. ...". Chỉ bỏ khi số đầu câu đúng bằng số đang hiển thị.
+export function stripLeadingNumber(content: string, n: number): string {
+  return content.replace(new RegExp(`^${n}\\.\\s*`), '');
+}
+
 // ---- Màn hình chọn kỳ thi (hiện sau đăng nhập khi chưa chọn exam) ----
 
 const FALLBACK_EXAMS: ExamInfo[] = [

@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState } from '../components';
-import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, realQuestionNumber, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
+import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, realQuestionNumber, stripLeadingNumber, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
@@ -206,9 +206,10 @@ export default function PracticeSession() {
             />
           )}
           {/* Số câu gắn ngay đầu chữ câu hỏi (căn thẳng hàng với câu hỏi),
-              thay vì nằm riêng ở cột phải như trước. */}
+              thay vì nằm riêng ở cột phải như trước. Nội dung gốc đôi khi
+              đã có số ở đầu ("147. Where...") thì bỏ đi để khỏi lặp. */}
           {showContent ? (
-            <p><span className="exam-q-num">{n}.</span><strong>{q.content}</strong></p>
+            <p><span className="exam-q-num">{n}.</span><strong>{stripLeadingNumber(q.content, n)}</strong></p>
           ) : null}
         </div>
         <div className="exam-q-side">
