@@ -57,20 +57,12 @@
 .login-field input{transition:border-color .2s, box-shadow .2s, transform .2s}
 .login-field input:focus{transform:translateY(-1px)}
 
-/* Nút đăng nhập: spinner xoay + chữ trạng thái khi đang xử lý. */
+/* Nút đăng nhập: hiệu ứng loading (theo cài đặt) + chữ trạng thái khi đang xử lý. */
 .login-btn{display:inline-flex; align-items:center; justify-content:center; gap:.5rem}
 .login-btn:disabled{cursor:wait; opacity:.85}
-.login-spinner{
-  flex:0 0 auto; width:1rem; height:1rem; border-radius:50%;
-  border:2px solid rgba(255,255,255,.4); border-top-color:#fff;
-  animation:login-spin .7s linear infinite;
-}
-@keyframes login-spin{
-  to{transform:rotate(360deg)}
-}
 
 /* Lời nhắn khi máy chủ Render free tier đang "đánh thức" (sau 2.5s):
-   mờ dần hiện ra, 3 chấm nhảy luân phiên nhẹ nhàng. */
+   mờ dần hiện ra, kèm hiệu ứng loading theo cài đặt. */
 .login-slow{
   display:flex; align-items:center; justify-content:center; gap:.45rem;
   margin:.8rem 0 0; font-size:.85rem; color:var(--ink-soft); text-align:center;
@@ -79,18 +71,6 @@
 @keyframes login-fadein{
   from{opacity:0}
   to{opacity:1}
-}
-.login-dots{display:inline-flex; gap:.2rem}
-.login-dots i{
-  width:.32rem; height:.32rem; border-radius:50%;
-  background:var(--accent); display:block;
-  animation:login-dot 1.2s ease-in-out infinite;
-}
-.login-dots i:nth-child(2){animation-delay:.15s}
-.login-dots i:nth-child(3){animation-delay:.3s}
-@keyframes login-dot{
-  0%,100%{transform:translateY(0); opacity:.5}
-  50%{transform:translateY(-3px); opacity:1}
 }
 
 /* Đăng nhập sai: thẻ rung nhẹ một nhịp rồi dừng. */
@@ -109,6 +89,6 @@
 /* Tôn trọng người dùng bật giảm chuyển động: tắt hiệu ứng trang trí,
    giữ lại spinner (báo hiệu đang tải) và trạng thái nút. */
 @media (prefers-reduced-motion: reduce){
-  .login-blob, .login-card, .login-badge, .login-dots i, .login-slow{animation:none}
+  .login-blob, .login-card, .login-badge, .login-slow{animation:none}
   .login-card{opacity:1; transform:none}
 }

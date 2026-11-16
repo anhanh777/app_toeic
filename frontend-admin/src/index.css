@@ -45,7 +45,7 @@
 [data-theme="dark"] .tier-diamond{background:#2E2842; color:#B9A3E8}
 [data-theme="dark"] .rank-other{background:#4A443C}
 *{box-sizing:border-box}
-html{scrollbar-color:var(--accent) var(--bg); scroll-behavior:smooth}
+html{scrollbar-color:var(--accent) var(--bg); scroll-behavior:smooth; font-size:calc(16px * var(--ui-font-scale, 1))}
 /* Chuyển sáng/tối mượt: chỉ các bề mặt chính đổi màu từ từ, không chạm
    vào transition riêng của nút/flashcard để không phá hiệu ứng hover/lật. */
 body,.sidebar,.card,.panel,.paper,.screen,.option,.flashcard-face,.top3-place,
@@ -64,7 +64,7 @@ input,select,textarea{
   font:inherit; width:100%; padding:.5rem .65rem; color:var(--ink);
   background:var(--input-bg); border:1px solid var(--border); border-radius:8px;
 }
-input:focus,select:focus,textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(95,168,160,.22)}
+input:focus,select:focus,textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent)}
 label{display:block; font-weight:600; font-size:.85rem; color:var(--ink-soft); margin:.6rem 0 .25rem}
 input[type='checkbox'],input[type='range']{width:auto; accent-color:var(--accent)}
 input[type='range']{border:none; padding:0}
@@ -267,7 +267,7 @@ select + .card{margin-top:1rem}
   box-shadow:0 2px 8px rgba(95,168,160,.28);
   transition:background .18s, transform .18s, box-shadow .18s;
 }
-.btn:hover{background:var(--accent-dark); transform:translateY(-1px); box-shadow:0 4px 12px rgba(95,168,160,.32); text-decoration:none}
+.btn:hover{background:var(--accent-dark); transform:translateY(-1px); box-shadow:0 4px 12px color-mix(in srgb, var(--accent) 32%, transparent); text-decoration:none}
 .btn:active{transform:translateY(0)}
 .btn:disabled{opacity:.5; cursor:not-allowed; transform:none; box-shadow:none}
 .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 1px 4px rgba(93,64,28,.05)}
@@ -410,6 +410,32 @@ tbody tr:hover{background:var(--surface-soft)}
 /* Bảng danh sách đề: các cột ngắn không vỡ dòng (chỉ cột tên đề được
    phép xuống dòng vì tên dài). */
 .tbl-nowrap th, .tbl-nowrap td:not(:first-child){white-space:nowrap}
+
+/* ---- Hieu ung loading dong (cai dat giao dien, scope C) ----
+   Toc do lay tu --ld-speed (he so nhan thoi gian = 1/toc do cai dat);
+   mau lay tu --accent nen doi mau chu dao la doi theo. */
+.ld-wrap{display:inline-flex; align-items:center; gap:.5rem}
+.ld-spinner{display:inline-block; width:1.1em; height:1.1em; border-radius:50%; border:.16em solid var(--accent-soft-strong); border-top-color:var(--accent); animation:ld-spin calc(.8s * var(--ld-speed, 1)) linear infinite; vertical-align:-.2em}
+@keyframes ld-spin{to{transform:rotate(360deg)}}
+.ld-dual-ring{display:inline-block; position:relative; width:1.2em; height:1.2em; vertical-align:-.25em}
+.ld-dual-ring::before{content:''; position:absolute; inset:0; border-radius:50%; border:.14em solid transparent; border-top-color:var(--accent); border-right-color:var(--accent-soft-strong); animation:ld-spin calc(.9s * var(--ld-speed, 1)) linear infinite}
+.ld-dual-ring::after{content:''; position:absolute; inset:.32em; border-radius:50%; border:.14em solid transparent; border-bottom-color:var(--accent-dark); border-left-color:var(--accent-soft-strong); animation:ld-spin-rev calc(.9s * var(--ld-speed, 1)) linear infinite}
+@keyframes ld-spin-rev{to{transform:rotate(-360deg)}}
+.ld-dots{display:inline-flex; gap:.28em; align-items:center; vertical-align:-.1em}
+.ld-dots i{width:.5em; height:.5em; border-radius:50%; background:var(--accent); animation:ld-bounce calc(1s * var(--ld-speed, 1)) ease-in-out infinite}
+.ld-dots i:nth-child(2){animation-delay:calc(.15s * var(--ld-speed, 1))}
+.ld-dots i:nth-child(3){animation-delay:calc(.3s * var(--ld-speed, 1))}
+@keyframes ld-bounce{0%,100%{transform:translateY(0); opacity:.5}50%{transform:translateY(-.35em); opacity:1}}
+.ld-skeleton{display:flex; flex-direction:column; gap:.5em; width:100%; min-width:12rem}
+.ld-skeleton i{display:block; height:.9em; border-radius:6px; background:linear-gradient(90deg, var(--track) 25%, var(--surface-soft) 50%, var(--track) 75%); background-size:200% 100%; animation:ld-shimmer calc(1.4s * var(--ld-speed, 1)) linear infinite}
+.ld-skeleton i:nth-child(2){width:82%}
+.ld-skeleton i:nth-child(3){width:64%}
+@keyframes ld-shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+.ld-progress{display:block; width:100%; max-width:22rem; height:.55em; border-radius:999px; background:var(--track); overflow:hidden}
+.ld-progress i{display:block; height:100%; width:35%; border-radius:999px; background:var(--accent); animation:ld-progress calc(1.4s * var(--ld-speed, 1)) ease-in-out infinite}
+@keyframes ld-progress{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
+.ld-line{display:flex; align-items:center; gap:.5rem}
+.ld-line .ld-skeleton{flex:1}
 /* Nút chính trải hết chiều rộng (form đăng nhập). */
 .btn-block{display:block; width:100%}
 /* Form 2 cột cho các trường ngắn (kỳ thi + dạng câu, Part + độ khó…). */

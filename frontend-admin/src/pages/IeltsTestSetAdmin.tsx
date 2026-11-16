@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api, type Question, type TestSet, type MediaConfig } from '../api';
 import { useAuth } from '../auth';
 import { ErrorBox, Modal } from '../components';
+import { LoadingLine, useUiSettings } from '../uiSettings';
 import { uploadToCloudinary } from '../cloudinary';
 import { normalizeImportFile, type QuestionError } from '../testSetUtils';
 import { QUESTION_TYPE_NAMES, isFillIn } from '../exam';
@@ -45,6 +46,7 @@ const emptyManual = {
 export default function IeltsTestSetAdmin() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
+  const { settings } = useUiSettings();
   const [ts, setTs] = useState<TestSet | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [msg, setMsg] = useState('');
@@ -80,7 +82,7 @@ export default function IeltsTestSetAdmin() {
   if (user?.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Bạn không có quyền xem trang này.</p></div>;
   }
-  if (loading) return <p>Đang tải đề thi…</p>;
+  if (loading) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải đề thi…" />;
   if (!ts) return <div><ErrorBox error={error} /><p>Không tìm thấy bộ đề. <Link to="/ielts">Quay lại quản lý đề IELTS</Link></p></div>;
 
   const countOf = (p: number) => ts.parts.find(x => x.part === p)?.count || 0;

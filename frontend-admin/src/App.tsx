@@ -2,12 +2,14 @@ import { BrowserRouter, Link, NavLink, Route, Routes, useNavigate } from 'react-
 import { useState, type ReactNode } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import { applyTheme, resolveTheme, type Theme } from './theme';
+import { UiSettingsProvider, LoadingLine, useUiSettings } from './uiSettings';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import TestSetAdmin from './pages/TestSetAdmin';
 import IeltsAdmin from './pages/IeltsAdmin';
 import IeltsTestSetAdmin from './pages/IeltsTestSetAdmin';
 import Users from './pages/Users';
+import UiSettings from './pages/UiSettings';
 
 /* Nút đổi sáng/tối ở cuối thanh bên trái. */
 function ThemeToggle() {
@@ -33,7 +35,8 @@ function ThemeToggle() {
 /* Chỉ tài khoản admin mới được vào web quản trị (mẫu như trang Admin cũ). */
 function RequireAdmin({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="card"><p>⏳ Đang mở app… Máy chủ đang khởi động</p></div>;
+  const { settings } = useUiSettings();
+  if (loading) return <div className="card"><LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text={settings.ui.loading.text} /></div>;
   if (!user) return <div className="card"><h1>Chưa đăng nhập</h1><p><Link to="/login">Đăng nhập</Link> bằng tài khoản admin để tiếp tục.</p></div>;
   if (user.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Trang quản trị chỉ dành cho tài khoản admin. Tài khoản của bạn không có quyền xem trang này.</p></div>;
@@ -82,6 +85,7 @@ function Layout() {
             <NavLink to="/toeic">📚 Đề TOEIC</NavLink>
             <NavLink to="/ielts">🎧 Đề IELTS</NavLink>
             <NavLink to="/users">👤 Tài khoản</NavLink>
+            <NavLink to="/settings">🎨 Cài đặt giao diện</NavLink>
           </nav>
         )}
         <div className="sidebar-footer">
@@ -114,6 +118,7 @@ function Layout() {
           <Route path="/ielts" element={<RequireAdmin><IeltsAdmin /></RequireAdmin>} />
           <Route path="/ielts/test-set/:id" element={<RequireAdmin><IeltsTestSetAdmin /></RequireAdmin>} />
           <Route path="/users" element={<RequireAdmin><Users /></RequireAdmin>} />
+          <Route path="/settings" element={<RequireAdmin><UiSettings /></RequireAdmin>} />
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang quản trị</Link></p>} />
         </Routes>
       </main>
@@ -124,7 +129,7 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider><Layout /></AuthProvider>
+      <UiSettingsProvider><AuthProvider><Layout /></AuthProvider></UiSettingsProvider>
     </BrowserRouter>
   );
 }

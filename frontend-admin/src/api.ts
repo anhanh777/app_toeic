@@ -518,6 +518,12 @@ export const api = {
     req<{ ok: boolean }>(`/api/admin/users/${id}`, { method: 'DELETE' }),
   adminResetUserPassword: (id: number, password: string) =>
     req<{ ok: boolean }>(`/api/admin/users/${id}/reset-password`, { method: 'POST', body: JSON.stringify({ password }) }),
+
+  // Cài đặt giao diện động (scope C): doc công khai, sửa chỉ admin.
+  uiSettings: async () => req<import('./uiSettings').UiSettings>('/api/settings'),
+  adminUiSettings: async () => req<import('./uiSettings').UiSettings>('/api/admin/settings'),
+  adminSaveUiSettings: (doc: import('./uiSettings').UiSettings) =>
+    req<import('./uiSettings').UiSettings>('/api/admin/settings', { method: 'PUT', body: JSON.stringify(doc) }),
 };
 
 export function targetScoreOf(u: User | null): number {

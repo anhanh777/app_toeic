@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { ErrorBox } from '../components';
+import { LoadingEffect, useUiSettings } from '../uiSettings';
 import '../login.css';
 
 /* Đăng nhập quản trị: chỉ email + mật khẩu (không dùng Google login).
@@ -10,6 +11,7 @@ import '../login.css';
    "đánh thức" — sau 2.5s vẫn chưa xong thì hiện lời nhắn chờ thân thiện. */
 export default function Login() {
   const { login } = useAuth();
+  const { settings } = useUiSettings();
   const nav = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -63,15 +65,15 @@ export default function Login() {
           <ErrorBox error={error} />
           <button className="btn btn-block login-btn" type="submit" disabled={busy}>
             {busy ? (
-              <><span className="login-spinner" aria-hidden="true" /> Đang đăng nhập…</>
+              <><LoadingEffect effect={settings.ui.loading.loginButton} speed={settings.ui.loading.speed} size="sm" /> Đang đăng nhập…</>
             ) : (
               'Đăng nhập'
             )}
           </button>
           {busy && slow && (
             <p className="login-slow">
-              <span className="login-dots" aria-hidden="true"><i /><i /><i /></span>
-              Máy chủ đang khởi động, chờ một chút nhé…
+              <LoadingEffect effect={settings.ui.loading.page} speed={settings.ui.loading.speed} size="sm" />
+              {settings.ui.loading.text}
             </p>
           )}
         </form>
