@@ -428,10 +428,6 @@ tbody tr:hover{background:var(--surface-soft)}
 .seg{display:flex; gap:.5rem; flex-wrap:wrap}
 .seg .btn{flex:1 1 auto}
 
-footer{
-  padding:1rem; text-align:center; color:var(--muted); font-size:.82rem;
-  border-top:1px solid var(--border);
-}
 /* ============ Form thêm thủ công theo loạt — bố cục "tờ đề thi" ============
    Toàn bộ 1 Part nằm trong 1 khối giấy (.paper) duy nhất, các câu nối
    tiếp nhau bằng đường kẻ mảnh thay vì hộp .panel lồng nhau. */

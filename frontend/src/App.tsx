@@ -305,7 +305,6 @@ function Layout() {
           </ErrorBoundary>
         )}
       </main>
-      <footer>LUYỆN THI TOEIC • ĐIỂM THI THỬ LÀ ĐIỂM ƯỚC LƯỢNG, KHÔNG PHẢI ĐIỂM CHÍNH THỨC CỦA ETS • ÂM THANH ĐỌC BẰNG GIỌNG MÁY (TTS) • BAND IELTS TRONG APP LÀ BAND ƯỚC LƯỢNG ĐỂ THAM KHẢO</footer>
     </div>
   );
 }
