@@ -2,8 +2,35 @@
 // picker chọn nguyên nhân gốc. Chỉ dùng khi exam==='ielts' — TOEIC
 // không chạm tới file này.
 import { useEffect, useRef, useState } from 'react';
-import { api, type ErrorCode } from './api';
+import { api, type ErrorCode, type WritingTask } from './api';
 import { ErrorBox } from './components';
+
+// Hien so lieu bieu do cua de Task 1 (Writing + Diagnostic dung chung).
+// Hai dang du lieu: string[][] (bang co san) hoac {categories, series}
+// (WT-1 va cac de Task 1 co chart): 1 dong tieu de la categories, moi
+// series 1 dong (nhan = year hoac label).
+export function ChartTable({ data }: { data: NonNullable<WritingTask['chartData']> }) {
+  if (Array.isArray(data)) {
+    return (
+      <table style={{ width: '100%' }}>
+        <tbody>{data.map((row, i) => (
+          <tr key={i}>{row.map((cell, j) => <td key={j}>{cell}</td>)}</tr>
+        ))}</tbody>
+      </table>
+    );
+  }
+  const cats = data.categories ?? [];
+  const series = data.series ?? [];
+  if (!cats.length || !series.length) return null;
+  return (
+    <table style={{ width: '100%' }}>
+      <thead><tr><th></th>{cats.map((c, i) => <th key={i}>{c}</th>)}</tr></thead>
+      <tbody>{series.map((s, i) => (
+        <tr key={i}><th>{s.label ?? s.year ?? ''}</th>{(s.values ?? []).map((v, j) => <td key={j}>{v}</td>)}</tr>
+      ))}</tbody>
+    </table>
+  );
+}
 
 export interface ErrorCodeInfo { code: string; skill: 'listening' | 'reading' | 'writing' | 'speaking'; name: string; }
 

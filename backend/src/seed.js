@@ -350,6 +350,48 @@ function validSeedIeltsQuestion(q) {
   return db.validateImportQuestion({ ...q, exam: 'ielts' }, 0) === null;
 }
 
+/**
+ * De mau bo sung TS-027 — cac dang bai IELTS moi (note/table/flow_chart/
+ * diagram completion, matching_sentence_endings, list_selection,
+ * choosing_title). Mirror seedIeltsSample(): neu file
+ * data/ielts-sample-types.json chua co thi chi warn, khong tao de rong;
+ * chi seed khi TS-027 chua co cau nao.
+ */
+function seedIeltsSampleTypes() {
+  const list = readJsonArray('ielts-sample-types.json').filter(validSeedIeltsQuestion);
+  if (!list.length) {
+    console.log('[seed] khong co cau IELTS sample bo sung hop le — bo qua TS-027.');
+    return 0;
+  }
+  if (!db.getTestSet('TS-027')) {
+    db.createTestSet({
+      id: 'TS-027',
+      title: 'IELTS Academic — Mẫu dạng bài bổ sung (Sample)',
+      description:
+        'Đề mẫu IELTS Academic: các dạng bài bổ sung (note/table/flow-chart/diagram completion, matching sentence endings, list selection, choosing title). Nội dung tự soạn để test tính năng, KHÔNG phải đề thi thật.',
+      isPublished: 1,
+      exam: 'ielts',
+    });
+    console.log('[seed] da tao IELTS Sample Types TS-027.');
+  }
+  const existing = db.listQuestions({ testSetId: 'TS-027', limit: 1, offset: 0 });
+  if (existing.total > 0) {
+    console.log(`[seed] TS-027 da co ${existing.total} cau — bo qua seed IELTS sample bo sung.`);
+    return 0;
+  }
+  let inserted = 0;
+  for (const q of list) {
+    try {
+      db.insertQuestion({ ...q, exam: 'ielts', testSetId: 'TS-027' });
+      inserted += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua cau IELTS ${q.id}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${inserted}/${list.length} cau IELTS sample bo sung (TS-027).`);
+  return inserted;
+}
+
 function seedIeltsVocabulary() {
   const list = readJsonArray('ielts-sample-vocabulary.json').filter(
     (v) => v && typeof v.id === 'string' && typeof v.word === 'string' && typeof v.meaning === 'string'
@@ -477,6 +519,7 @@ function seedAll() {
   db.initDb();
   seedQuestions();
   seedIeltsSample();
+  seedIeltsSampleTypes();
   seedPartMedia();
   seedVocabulary();
   seedIeltsVocabulary();
@@ -484,6 +527,7 @@ function seedAll() {
   seedIeltsSpeakingPrompts();
   seedDemoUsers();
   if (db.getTestSet('TS-024')) db.refreshTestSetTotal('TS-024');
+  if (db.getTestSet('TS-027')) db.refreshTestSetTotal('TS-027');
   console.log(
     `[seed] xong: ${db.countQuestions()} cau hoi, ${db.countVocabulary()} tu vung, ${db.countUsers()} user.`
   );
@@ -493,4 +537,4 @@ if (require.main === module) {
   seedAll();
 }
 
-module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedIeltsSample, seedIeltsVocabulary, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };
+module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedIeltsSample, seedIeltsSampleTypes, seedIeltsVocabulary, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };

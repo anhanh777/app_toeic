@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, partName } from '../components';
-import { isFillIn, partLabel, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
+import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
@@ -153,8 +153,12 @@ export default function PracticeSession() {
     const hideListeningText = exam === 'toeic' && (q.part === 1 || q.part === 2) && !result;
     const letterOnly = listeningOnly || hideListeningText;
     const qType = q.questionType || 'multiple_choice';
-    const isIeltsSpecial = isIelts && qType !== 'multiple_choice';
-    // Câu điền từ: chặn nút Nộp khi vượt giới hạn số từ.
+    // choosing_title dùng lại nút .option như multiple_choice (không đặc
+    // biệt); các dạng IELTS còn lại (kể cả list_selection, 4 dạng điền mới,
+    // matching_sentence_endings) dùng IeltsAnswerControl.
+    const isIeltsSpecial = isIelts && qType !== 'multiple_choice' && qType !== 'choosing_title';
+    // Câu điền từ: chặn nút Nộp khi vượt giới hạn số từ. list_selection
+    // không bị chặn này (chọn thiếu chỉ là sai, backend chấm set equality).
     const overLimit = isFillIn(qType) && q.wordLimit != null && wordCount(selected) > q.wordLimit;
     return (
       <div className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}`} key={q.id}>
@@ -230,7 +234,8 @@ export default function PracticeSession() {
         {result && (
           <div className="exam-q-result">
             <p style={{ color: result.correct ? 'var(--green-ink)' : 'var(--red-ink)', fontWeight: 700 }}>
-              {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${result.correctLabel ?? result.correctText ?? ''}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
+              {/* list_selection: đáp án đúng là tập nhãn, hiển thị "A, C". */}
+              {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${isMultiAnswer(qType) ? (parseSelectedLabels(result.correctLabel).join(', ') || result.correctText || '') : (result.correctLabel ?? result.correctText ?? '')}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
             </p>
             {(() => {
               // IELTS-only: cổng giải thích — câu sai HOẶC đoán mò thì ẨN

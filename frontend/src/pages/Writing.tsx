@@ -6,6 +6,7 @@ import { api, type WritingSubmission, type WritingTask } from '../api';
 import { ErrorBox } from '../components';
 import { wordCount } from '../exam';
 import { fmtClock, useCountdown } from '../ielts-phase1';
+import { ChartTable } from '../ielts-phase1';
 
 export default function Writing() {
   const [tasks, setTasks] = useState<WritingTask[]>([]);
@@ -69,13 +70,7 @@ export default function Writing() {
         <div className="card">
           <h2>{task.title} <span className="pill">{task.type === 'task1' ? 'Task 1' : 'Task 2'}</span></h2>
           <p>{task.prompt}</p>
-          {task.chartData && (
-            <table style={{ width: '100%' }}>
-              <tbody>{task.chartData.map((row, i) => (
-                <tr key={i}>{row.map((cell, j) => <td key={j}>{cell}</td>)}</tr>
-              ))}</tbody>
-            </table>
-          )}
+          {task.chartData && <ChartTable data={task.chartData} />}
           <p>⏱ Còn lại: <strong>{fmtClock(left)}</strong> · {wordCount(content)} từ (tối thiểu {minWords})</p>
           <div className="btn-row">
             <button className="btn btn-sm" disabled={running} onClick={() => setRunning(true)}>Bắt đầu làm bài</button>

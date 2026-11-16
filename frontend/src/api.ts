@@ -141,7 +141,10 @@ export interface DiagnosticMap {
 }
 export interface WritingTask {
   id: string; type: 'task1' | 'task2'; title: string; prompt: string;
-  chartData?: string[][] | null; minutes: number; isSample?: boolean;
+  // So lieu bieu do: dang cu string[][] (bang co san) hoac dang moi
+  // {categories, series} (WT-1 va cac de Task 1 co chart) — Writing.tsx
+  // hien ca 2 dang.
+  chartData?: string[][] | { categories: string[]; series: { values: (string | number)[]; year?: number; label?: string }[] } | null; minutes: number; isSample?: boolean;
 }
 export interface WritingSubmission {
   id: number; taskId: string; content: string; wordCount?: number;

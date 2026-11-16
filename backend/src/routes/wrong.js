@@ -4,7 +4,7 @@ const express = require('express');
 const db = require('../db');
 const { authMiddleware } = require('../auth');
 const { awardXp } = require('../xp');
-const { gradeTypedAnswer, isTypedType } = require('../ieltsGrading');
+const { gradeTypedAnswer, isTypedType, gradeListSelection, isMultiAnswerType, parseSelectedLabels } = require('../ieltsGrading');
 
 const router = express.Router();
 
@@ -37,6 +37,16 @@ router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) =>
     }
     correct = graded.correct;
     correctText = q.correct_text || null;
+  } else if (isMultiAnswerType(q.question_type)) {
+    // list_selection: nhu practice.js — nop sai dinh dang van cham sai, khong 400.
+    const correctLabels = q.options.filter((o) => o.is_correct === 1).map((o) => o.label);
+    if (!correctLabels.length) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });
+    const picked = parseSelectedLabels(selected);
+    const validLabels = new Set(q.options.map((o) => o.label));
+    const validPick =
+      picked.length >= 2 && picked.length <= 3 && picked.every((l) => validLabels.has(l));
+    correct = validPick && gradeListSelection(selected, correctLabels).correct;
+    correctLabel = correctLabels.join(', ');
   } else {
     const correctOpt = q.options.find((o) => o.is_correct === 1);
     if (!correctOpt) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });

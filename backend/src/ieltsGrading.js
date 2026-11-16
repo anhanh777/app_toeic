@@ -23,6 +23,13 @@ const IELTS_QUESTION_TYPES = [
   'sentence_completion',
   'summary_completion',
   'short_answer',
+  'note_completion',
+  'table_completion',
+  'flow_chart_completion',
+  'diagram_completion',
+  'matching_sentence_endings',
+  'list_selection',
+  'choosing_title',
 ];
 
 // Dang dien tu: dap an dung luu o questions.correct_text, options = [].
@@ -31,10 +38,49 @@ const TYPED_TYPES = new Set([
   'sentence_completion',
   'summary_completion',
   'short_answer',
+  'note_completion',
+  'table_completion',
+  'flow_chart_completion',
+  'diagram_completion',
 ]);
 
 function isTypedType(questionType) {
   return TYPED_TYPES.has(questionType);
+}
+
+/** Chi list_selection moi co nhieu dap an dung (chon 2-3 nhan). */
+function isMultiAnswerType(questionType) {
+  return questionType === 'list_selection';
+}
+
+/**
+ * Parse chuoi/mang nhan da chon ve mang nhan da chuan hoa: uppercase, trim,
+ * loai trung, sort. Vd "c, A" -> ["A", "C"]; ["C", "a"] -> ["A", "C"].
+ */
+function parseSelectedLabels(selected) {
+  const raw = Array.isArray(selected)
+    ? selected
+    : typeof selected === 'string'
+      ? selected.split(',')
+      : [];
+  return [...new Set(raw.map((s) => String(s).trim().toUpperCase()).filter(Boolean))].sort();
+}
+
+/**
+ * Cham cau list_selection: all-or-nothing — tap nhan da chon phai bang tap
+ * nhan dung (khong phan biet thu tu / hoa-thuong). selected co the la chuoi
+ * "A,C" (dang luu trong answers.selected) hoac mang nhan.
+ * @returns {{correct:boolean}}
+ */
+function gradeListSelection(selected, correctLabels) {
+  const picked = parseSelectedLabels(selected);
+  const correct = parseSelectedLabels(correctLabels);
+  return {
+    correct:
+      picked.length > 0 &&
+      picked.length === correct.length &&
+      picked.every((label, i) => label === correct[i]),
+  };
 }
 
 /** Chuan hoa 1 dap an dien tu de so sanh. */
@@ -112,6 +158,9 @@ module.exports = {
   IELTS_QUESTION_TYPES,
   TYPED_TYPES,
   isTypedType,
+  isMultiAnswerType,
+  parseSelectedLabels,
+  gradeListSelection,
   normalizeTypedAnswer,
   countWords,
   gradeTypedAnswer,

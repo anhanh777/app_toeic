@@ -187,7 +187,10 @@ export default function MockTest() {
     const hideListeningText = exam === 'toeic' && (q.part === 1 || q.part === 2);
     const letterOnly = listeningOnly || hideListeningText;
     const qType = q.questionType || 'multiple_choice';
-    const isIeltsSpecial = isIelts && qType !== 'multiple_choice';
+    // choosing_title dùng lại nút .option như multiple_choice (không đặc
+    // biệt); các dạng IELTS còn lại (kể cả list_selection, 4 dạng điền mới,
+    // matching_sentence_endings) dùng IeltsAnswerControl.
+    const isIeltsSpecial = isIelts && qType !== 'multiple_choice' && qType !== 'choosing_title';
     return (
       <div className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}`} key={q.id}>
         <div className="exam-q-body">

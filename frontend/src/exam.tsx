@@ -135,6 +135,13 @@ export const QUESTION_TYPE_NAMES: Record<string, string> = {
   sentence_completion: 'Hoàn thành câu (Sentence Completion)',
   summary_completion: 'Hoàn thành tóm tắt (Summary Completion)',
   short_answer: 'Trả lời ngắn (Short Answer)',
+  note_completion: 'Điền ghi chú (Note Completion)',
+  table_completion: 'Điền bảng (Table Completion)',
+  flow_chart_completion: 'Điền sơ đồ quy trình (Flow-chart Completion)',
+  diagram_completion: 'Ghi nhãn sơ đồ (Diagram Completion)',
+  matching_sentence_endings: 'Nối câu (Matching Sentence Endings)',
+  list_selection: 'Chọn từ danh sách (List Selection)',
+  choosing_title: 'Chọn tiêu đề (Choosing a Title)',
 };
 export function questionTypeName(t?: string | null): string {
   return (t && QUESTION_TYPE_NAMES[t]) || 'Trắc nghiệm';
@@ -143,6 +150,7 @@ export function questionTypeName(t?: string | null): string {
 /** Dạng điền từ: form/sentence/summary completion + short_answer. */
 export const FILL_IN_TYPES = new Set([
   'form_completion', 'sentence_completion', 'summary_completion', 'short_answer',
+  'note_completion', 'table_completion', 'flow_chart_completion', 'diagram_completion',
 ]);
 export function isFillIn(t?: string | null): boolean {
   return !!t && FILL_IN_TYPES.has(t);
@@ -150,8 +158,31 @@ export function isFillIn(t?: string | null): boolean {
 export function isMatching(t?: string | null): boolean {
   return !!t && (
     t === 'matching_headings' || t === 'matching_information' ||
-    t === 'matching_features' || t === 'matching' || t === 'labelling'
+    t === 'matching_features' || t === 'matching' || t === 'labelling' ||
+    t === 'matching_sentence_endings'
   );
+}
+
+/** Dạng chọn nhiều đáp án: chỉ list_selection — đáp án là chuỗi các nhãn
+ * đã chọn, sắp xếp rồi nối bằng dấu phẩy, VD "A,C". Chấm all-or-nothing
+ * ở backend (đúng hết mới tính điểm). */
+export function isMultiAnswer(t?: string | null): boolean {
+  return t === 'list_selection';
+}
+
+/** "A,C" / "A, C" → ["A", "C"]; chuỗi rỗng → []. */
+export function parseSelectedLabels(value?: string | null): string[] {
+  if (!value) return [];
+  return [...new Set(value.split(',').map(s => s.trim()).filter(Boolean))].sort();
+}
+
+/** Bật/tắt 1 nhãn trong chuỗi đã chọn: trả về chuỗi đã sắp xếp, không
+ * trùng, nối bằng dấu phẩy, VD toggleSelectedLabel("A,C", "B") → "A,B,C". */
+export function toggleSelectedLabel(value: string, label: string): string {
+  const set = new Set(parseSelectedLabels(value));
+  if (set.has(label)) set.delete(label);
+  else set.add(label);
+  return [...set].sort().join(',');
 }
 
 export function wordCount(text: string): number {

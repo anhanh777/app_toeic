@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api, type Question } from '../api';
 import { ErrorBox, partName } from '../components';
-import { isFillIn, partNameFor, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
+import { isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 
 type Item = Question & { wrongCount?: number };
@@ -26,7 +26,10 @@ export default function WrongQuestions() {
     if (!sel) return;
     try {
       const r = await api.reviewWrong(q.id, sel);
-      const right = r.correctText ?? r.correctLabel;
+      // list_selection: đáp án đúng là tập nhãn, hiển thị "A, C".
+      const right = isMultiAnswer(q.questionType)
+        ? (parseSelectedLabels(r.correctLabel).join(', ') || r.correctText)
+        : (r.correctText ?? r.correctLabel);
       setFeedback(f => ({ ...f, [q.id]: r.correct ? `✅ Đúng! Câu này đã được gỡ khỏi danh sách.${r.xpAwarded ? ` +${r.xpAwarded} XP` : ''}` : `❌ Sai. Đáp án đúng: ${right ?? '—'}. ${r.explanation || ''}` }));
       if (r.correct) setItems(list => list.filter(x => x.id !== q.id));
     } catch (e) { setError(e); }
@@ -55,7 +58,10 @@ export default function WrongQuestions() {
             <p className="tag">{isIelts ? partNameFor(q.part, ex) : partName(q.part)} • Sai {q.wrongCount ?? 1} lần</p>
             {q.passageText && <div className="passage">{q.passageText}</div>}
             <p><strong>{q.content}</strong></p>
-            {isIelts && q.questionType && q.questionType !== 'multiple_choice' ? (
+            {/* choosing_title dùng lại nút .option như multiple_choice;
+                các dạng IELTS còn lại (kể cả list_selection, 4 dạng điền
+                mới, matching_sentence_endings) dùng IeltsAnswerControl. */}
+            {isIelts && q.questionType && q.questionType !== 'multiple_choice' && q.questionType !== 'choosing_title' ? (
               <IeltsAnswerControl
                 q={q}
                 value={sel}

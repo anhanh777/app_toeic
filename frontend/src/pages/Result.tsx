@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, scoreLevel } from '../api';
 import { ErrorBox, partName, TierBadge } from '../components';
-import { bandLevel, isFillIn, partNameFor } from '../exam';
+import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor } from '../exam';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 
 export default function Result() {
@@ -130,8 +130,11 @@ export default function Result() {
                 ) : (
                   <p className="muted" style={{ margin: '.2rem 0' }}>
                     {isFillIn(d.questionType) ? 'Đáp án bạn gõ: ' : 'Đáp án bạn chọn: '}
-                    <strong>{d.selected ?? '—'}</strong>
-                    {' • '}Đáp án đúng: <strong>{d.correctText ?? d.correctLabel ?? '—'}</strong>
+                    {/* list_selection: "A,C" → "A, C" cho dễ đọc. */}
+                    <strong>{isMultiAnswer(d.questionType) ? (parseSelectedLabels(d.selected).join(', ') || '—') : (d.selected ?? '—')}</strong>
+                    {' • '}Đáp án đúng: <strong>{isMultiAnswer(d.questionType)
+                      ? (parseSelectedLabels(d.correctLabel).join(', ') || d.correctText || '—')
+                      : (d.correctText ?? d.correctLabel ?? '—')}</strong>
                   </p>
                 )}
               </div>

@@ -484,6 +484,9 @@ footer{
 .ielts-tfng-row .option{flex:1 1 auto; justify-content:center; text-align:center; padding:.55rem .5rem; white-space:nowrap}
 .ielts-tfng-row .option strong{background:none; color:inherit; font-size:1rem; margin:0; padding:0}
 .ielts-tfng-row .option.selected strong{background:none; color:inherit}
+/* List Selection (IELTS): nhóm checkbox chọn 2–3 đáp án, dùng lại kiểu
+   .option dọc của .exam-opts — ô checkbox hiện rõ trước nhãn chữ cái. */
+.ielts-multi .option input[type="checkbox"]{accent-color:var(--accent); width:1.05rem; height:1.05rem; flex:0 0 auto; margin-top:.15rem; cursor:pointer}
 /* Nút tăng/giảm cỡ chữ (A- / A+) ở đầu màn luyện/thi */
 .text-size{display:inline-flex; align-items:center; gap:.35rem}
 .text-size-label{font-weight:700; font-size:.85rem; color:var(--ink-soft); min-width:3.4rem; text-align:center}

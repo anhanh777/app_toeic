@@ -643,8 +643,13 @@ function insertQuestionTx(q) {
   const optStmt = db.prepare(
     'INSERT INTO options (question_id, label, content, is_correct) VALUES (?, ?, ?, ?)'
   );
+  // correct co the la mang nhan (list_selection: ["A","C"]) — danh dau
+  // is_correct=1 cho moi nhan trong mang; dang chuoi cu giu nguyen.
+  const correctLabels = Array.isArray(q.correct)
+    ? q.correct.map((c) => String(c).toUpperCase())
+    : [q.correct];
   for (const o of (q.options || [])) {
-    optStmt.run(q.id, o.label, o.content, o.label === q.correct ? 1 : 0);
+    optStmt.run(q.id, o.label, o.content, correctLabels.includes(o.label) ? 1 : 0);
   }
 }
 
@@ -693,8 +698,12 @@ function updateQuestion(id, fields) {
       const optStmt = db.prepare(
         'INSERT INTO options (question_id, label, content, is_correct) VALUES (?, ?, ?, ?)'
       );
+      // correct co the la mang nhan (list_selection) — nhu insertQuestionTx.
+      const updCorrectLabels = Array.isArray(fields.correct)
+        ? fields.correct.map((c) => String(c).toUpperCase())
+        : [fields.correct];
       for (const o of fields.options) {
-        optStmt.run(id, o.label, o.content, o.label === fields.correct ? 1 : 0);
+        optStmt.run(id, o.label, o.content, updCorrectLabels.includes(o.label) ? 1 : 0);
       }
     }
     return getQuestionById(id, true);
@@ -975,8 +984,11 @@ const IELTS_TYPES = [
   'matching_headings', 'matching_information', 'matching_features',
   'matching', 'labelling', 'form_completion', 'sentence_completion',
   'summary_completion', 'short_answer',
+  'note_completion', 'table_completion', 'flow_chart_completion',
+  'diagram_completion', 'matching_sentence_endings', 'list_selection',
+  'choosing_title',
 ];
-const IELTS_TYPED_TYPES = ['form_completion', 'sentence_completion', 'summary_completion', 'short_answer'];
+const IELTS_TYPED_TYPES = ['form_completion', 'sentence_completion', 'summary_completion', 'short_answer', 'note_completion', 'table_completion', 'flow_chart_completion', 'diagram_completion'];
 
 function romanNumeral(n) {
   const table = [[10, 'x'], [9, 'ix'], [5, 'v'], [4, 'iv'], [1, 'i']];
@@ -1009,6 +1021,34 @@ function validateIeltsImportQuestion(q) {
     }
     return null;
   }
+  // list_selection: chon 2-3 nhan, dap an dung la MANG cac nhan (vd ["A","C"]).
+  if (type === 'list_selection') {
+    if (!Array.isArray(q.options) || q.options.length < 5 || q.options.length > 7) {
+      return 'Câu list selection phải có từ 5 đến 7 phương án';
+    }
+    const lsLabels = q.options.map((_, i) => String.fromCharCode(65 + i));
+    const lsActual = q.options.map((o) => o && o.label);
+    if (
+      new Set(lsActual).size !== lsLabels.length ||
+      !lsActual.every((l, i) => l === lsLabels[i])
+    ) {
+      return `Các phương án phải có đủ nhãn ${lsLabels.join(', ')} theo đúng thứ tự`;
+    }
+    if (q.options.some((o) => !o || typeof o.content !== 'string' || !o.content.trim())) {
+      return 'Mỗi phương án phải có nội dung';
+    }
+    if (!Array.isArray(q.correct) || q.correct.length < 2 || q.correct.length > 3) {
+      return 'Đáp án đúng của list selection phải là mảng 2–3 nhãn';
+    }
+    const upper = q.correct.map((c) => (typeof c === 'string' ? c.toUpperCase() : c));
+    if (
+      new Set(upper).size !== upper.length ||
+      !upper.every((l) => lsLabels.includes(l))
+    ) {
+      return 'Đáp án đúng của list selection phải là 2–3 nhãn khác nhau thuộc các phương án';
+    }
+    return null;
+  }
   // Dang chon/noi: can options dung nhan.
   if (!Array.isArray(q.options) || q.options.length < 2) {
     return 'Câu IELTS dạng chọn/nối phải có ít nhất 2 phương án';
@@ -1025,6 +1065,15 @@ function validateIeltsImportQuestion(q) {
       return 'Câu multiple choice IELTS phải có 3 hoặc 4 phương án';
     }
     expectedLabels = ['A', 'B', 'C', 'D'].slice(0, q.options.length);
+  } else if (type === 'choosing_title') {
+    // Giong multiple_choice: 3-4 phuong an A-D, 1 dap an dung.
+    if (q.options.length !== 3 && q.options.length !== 4) {
+      return 'Câu choosing title phải có 3 hoặc 4 phương án';
+    }
+    expectedLabels = ['A', 'B', 'C', 'D'].slice(0, q.options.length);
+  } else if (type === 'matching_sentence_endings') {
+    // Giong matching: nhan A.. theo so phuong an, 1 dap an dung.
+    expectedLabels = q.options.map((_, i) => String.fromCharCode(65 + i));
   } else {
     // matching_information (A..G), matching_features (A..C), matching, labelling (A..F)
     expectedLabels = q.options.map((_, i) => String.fromCharCode(65 + i));
@@ -1891,6 +1940,15 @@ function setWeeklyPlan(userId, { weekStart, focusType, focusCode }) {
 
 /* ---------------- writing tasks & submissions ---------------- */
 
+const WRITING_TASK_TYPE_LABELS = {
+  line_graph: 'Line graph', bar_chart: 'Bar chart', pie_chart: 'Pie chart',
+  table: 'Table', process: 'Process diagram', map: 'Map', mixed_charts: 'Mixed charts',
+  opinion: 'Opinion essay', discussion: 'Discussion essay',
+  problem_solution: 'Problem and solution',
+  advantages_disadvantages: 'Advantages and disadvantages',
+  two_part: 'Two-part question',
+};
+
 function mapWritingTask(row) {
   if (!row) return null;
   let chartData = null;
@@ -1899,9 +1957,18 @@ function mapWritingTask(row) {
   } catch (_) {
     chartData = null;
   }
+  // Frontend (Writing.tsx, Diagnostic.tsx) doc t.type / t.title / t.minutes
+  // (theo interface WritingTask) — bang chi co task_type/topic/prompt nen
+  // suy ra o day: type = task_type, minutes 20 (Task 1) / 40 (Task 2),
+  // title = nhan dang bai + chu de.
+  const type = row.task_type;
+  const label = WRITING_TASK_TYPE_LABELS[row.prompt_type] || row.prompt_type || type;
   return {
     id: row.id,
     taskType: row.task_type,
+    type,
+    title: row.topic ? `${label} — ${row.topic}` : label,
+    minutes: type === 'task1' ? 20 : 40,
     promptType: row.prompt_type || null,
     topic: row.topic || null,
     prompt: row.prompt,

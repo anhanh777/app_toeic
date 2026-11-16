@@ -5,6 +5,7 @@
 const express = require('express');
 const db = require('../db');
 const { authMiddleware, requireAdmin } = require('../auth');
+const { isTypedType, isMultiAnswerType } = require('../ieltsGrading');
 
 const router = express.Router();
 router.use(authMiddleware, requireAdmin);
@@ -97,8 +98,19 @@ router.put('/admin/questions/:id', (req, res) => {
     0
   );
   if (coreErr) return res.status(400).json({ error: coreErr });
-  const isTyped = ['form_completion', 'sentence_completion', 'summary_completion', 'short_answer'].includes(merged.questionType);
-  if (!isTyped) {
+  const isTyped = isTypedType(merged.questionType);
+  if (isMultiAnswerType(merged.questionType)) {
+    // list_selection: correct la mang 2-3 nhan thuoc cac phuong an.
+    const correctArr = Array.isArray(merged.correct) ? merged.correct : [];
+    const optLabels = new Set(merged.options.map((o) => o.label));
+    if (
+      correctArr.length < 2 || correctArr.length > 3 ||
+      new Set(correctArr.map((c) => String(c).toUpperCase())).size !== correctArr.length ||
+      !correctArr.every((c) => optLabels.has(String(c).toUpperCase()))
+    ) {
+      return res.status(400).json({ error: 'list selection phai co 2-3 dap an dung khac nhau' });
+    }
+  } else if (!isTyped) {
     const correctCount = merged.options.filter((o) => o.label === merged.correct).length;
     if (correctCount !== 1) return res.status(400).json({ error: 'phai co dung 1 dap an dung' });
   }

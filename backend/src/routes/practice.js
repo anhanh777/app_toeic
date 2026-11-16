@@ -6,7 +6,7 @@ const express = require('express');
 const db = require('../db');
 const { authMiddleware } = require('../auth');
 const { awardXp } = require('../xp');
-const { gradeTypedAnswer, isTypedType } = require('../ieltsGrading');
+const { gradeTypedAnswer, isTypedType, gradeListSelection, isMultiAnswerType, parseSelectedLabels } = require('../ieltsGrading');
 
 const router = express.Router();
 
@@ -33,6 +33,19 @@ router.post('/practice/answer', authMiddleware, (req, res) => {
     correct = graded.correct;
     correctText = q.correct_text || null;
     storedSelected = selected.trim();
+  } else if (isMultiAnswerType(q.question_type)) {
+    // list_selection: chon 2-3 nhan, cham all-or-nothing theo tap nhan.
+    // Nop sai dinh dang (thieu/thua nhan, nhan khong co trong options) van
+    // tinh la 1 attempt sai, khong 400.
+    const correctLabels = q.options.filter((o) => o.is_correct === 1).map((o) => o.label);
+    if (!correctLabels.length) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });
+    const picked = parseSelectedLabels(selected);
+    const validLabels = new Set(q.options.map((o) => o.label));
+    const validPick =
+      picked.length >= 2 && picked.length <= 3 && picked.every((l) => validLabels.has(l));
+    correct = validPick && gradeListSelection(selected, correctLabels).correct;
+    correctLabel = correctLabels.join(', ');
+    storedSelected = picked.join(',');
   } else {
     const selectedUpper = selected.trim().toUpperCase();
     const correctOpt = q.options.find((o) => o.is_correct === 1);

@@ -7,7 +7,7 @@ const db = require('../db');
 const { authMiddleware } = require('../auth');
 const { awardXp } = require('../xp');
 const { scoreFullTest, ieltsBandForSkill, ieltsOverallBand } = require('../scoring');
-const { gradeTypedAnswer, isTypedType } = require('../ieltsGrading');
+const { gradeTypedAnswer, isTypedType, gradeListSelection, isMultiAnswerType } = require('../ieltsGrading');
 
 const router = express.Router();
 
@@ -204,6 +204,15 @@ router.post('/tests/:id/submit', authMiddleware, (req, res) => {
       // Cau dien tu IELTS: qua word_limit = sai (van ghi cau sai).
       const graded = gradeTypedAnswer(ans ? ans.selected : '', q.correct_text, q.acceptedAnswers, q.word_limit);
       isCorrect = !!(ans && ans.selected && graded.correct);
+    } else if (isMultiAnswerType(q.question_type)) {
+      // list_selection: all-or-nothing theo tap nhan; moi cau van tinh 1 diem.
+      const correctLabels = q.options.filter((o) => o.is_correct === 1).map((o) => o.label);
+      isCorrect = !!(
+        ans &&
+        ans.selected &&
+        correctLabels.length &&
+        gradeListSelection(ans.selected, correctLabels).correct
+      );
     } else {
       const correctOpt = q.options.find((o) => o.is_correct === 1);
       isCorrect = !!(
@@ -289,6 +298,12 @@ router.get('/tests/:id/result', authMiddleware, (req, res) => {
     const ans = answers.find((a) => a.questionId === qid);
     if (!q) return { questionId: qid, selected: ans ? ans.selected : null, correct: null };
     const typed = isTypedType(q.questionType);
+    // list_selection: q.correct (mapQuestionAdmin) chi lay nhan dung DAU TIEN
+    // nen phai ghep tat ca nhan is_correct; cac dang khac giu nguyen.
+    const multi = isMultiAnswerType(q.questionType);
+    const correctLabel = multi
+      ? (q.options || []).filter((o) => o.isCorrect).map((o) => o.label).join(', ') || null
+      : q.correct;
     return {
       questionId: qid,
       exam: q.exam || 'toeic',
@@ -303,7 +318,7 @@ router.get('/tests/:id/result', authMiddleware, (req, res) => {
       options: q.options,
       selected: ans ? ans.selected : null,
       correct: ans ? ans.isCorrect : null,
-      correctLabel: q.correct,
+      correctLabel,
       correctText: typed ? q.correctText : null,
       explanation: q.explanation,
       topic: q.topic,

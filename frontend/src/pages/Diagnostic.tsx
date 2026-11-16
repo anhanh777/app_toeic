@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { api, type Attempt, type DiagnosticMap, type SpeakingPrompt, type WritingTask } from '../api';
 import { ErrorBox } from '../components';
 import { bandLevel, questionTypeName, wordCount } from '../exam';
-import { fmtClock, useCountdown } from '../ielts-phase1';
+import { fmtClock, useCountdown, ChartTable } from '../ielts-phase1';
 
 const SAMPLE_NOTE = 'Bài mẫu — nội dung tự soạn, chưa phải đề thi thật.';
 const NO_AI_NOTE = 'Chưa chấm AI — sẽ có ở Giai đoạn 2.';
@@ -162,13 +162,7 @@ function WritingBaseline() {
         <>
           <h3 style={{ marginTop: '1rem' }}>{task.title}</h3>
           <p>{task.prompt}</p>
-          {task.chartData && (
-            <table style={{ width: '100%' }}>
-              <tbody>{task.chartData.map((row, i) => (
-                <tr key={i}>{row.map((cell, j) => <td key={j}>{cell}</td>)}</tr>
-              ))}</tbody>
-            </table>
-          )}
+          {task.chartData && <ChartTable data={task.chartData} />}
           <p>⏱ Còn lại: <strong>{fmtClock(left)}</strong> · {wordCount(content)} từ</p>
           <div className="btn-row">
             <button className="btn btn-sm" disabled={running} onClick={() => setRunning(true)}>Bắt đầu làm bài</button>
