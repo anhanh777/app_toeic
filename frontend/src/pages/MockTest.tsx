@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, type Question, type TestSet } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState } from '../components';
-import { partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, TextSizeControl, useExam, useTextSize } from '../exam';
+import { partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 
@@ -17,7 +17,7 @@ export default function MockTest() {
   const testSetId = params.get('testSetId') || undefined;
   const { exam: ctxExam } = useExam();
   // Cỡ chữ thi thử (A- / A+), lưu localStorage.
-  const { level: textLevel, setLevel: setTextLevel } = useTextSize();
+  const { level: textLevel } = useTextSize();
   const [testSet, setTestSet] = useState<TestSet | null>(null);
   // Kỳ thi: ưu tiên ?exam=, rồi exam của bộ đề, rồi kỳ thi đang chọn.
   const qExam = params.get('exam');
@@ -378,7 +378,6 @@ export default function MockTest() {
           <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
         </div>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
-          <TextSizeControl level={textLevel} setLevel={setTextLevel} />
           <span className="progress-badge">Đã trả lời {answeredCount}/{questions.length}</span>
         </span>
       </div>

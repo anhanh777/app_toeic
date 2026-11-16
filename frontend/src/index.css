@@ -606,6 +606,12 @@ footer{
 .text-size-label{font-weight:700; font-size:.85rem; color:var(--ink-soft); min-width:3.4rem; text-align:center}
 /* Thanh kéo chọn cỡ chữ (cùng 4 mức Nhỏ/Vừa/Lớn/Rất lớn như nút A-/A+). */
 .ts-slider{accent-color:var(--accent); width:110px; cursor:pointer}
+/* Bảng chọn cỡ chữ bật ra từ icon 🔠 trên thanh nav. */
+.text-size-popover{
+  position:absolute; right:0; top:calc(100% + .5rem); z-index:21;
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18); padding:.7rem .8rem; white-space:nowrap;
+}
 /* Cỡ chữ luyện/thi: Nhỏ (0) / Vừa (1, mặc định) / Lớn (2) / Rất lớn (3) —
    chỉ đổi chữ đoạn văn, chữ câu hỏi, phương án và kết quả chấm. */
 .ts-0 .passage, .ts-0 .paper-q p, .ts-0 .exam-opts .option, .ts-0 .ielts-tfng-row .option, .ts-0 .exam-q-result p, .ts-0 .paper-q input, .ts-0 .paper-q select{font-size:.9rem}

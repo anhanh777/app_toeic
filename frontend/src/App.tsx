@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate } from 'react-router-dom';
-import { Component, useState } from 'react';
+import { Component, useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from './auth';
-import { ExamProvider, ExamPicker, useExam, useIeltsSetupRedirect } from './exam';
+import { ExamProvider, ExamPicker, TextSizeControl, TextSizeProvider, useExam, useIeltsSetupRedirect, useTextSize } from './exam';
 import { applyTheme, resolveTheme, type Theme } from './theme';
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -62,6 +62,35 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: unknown 
     }
     return this.props.children;
   }
+}
+
+/* Nút cỡ chữ trên thanh nav: bấm hoặc rê chuột vào thì hiện bảng kéo chọn
+   cỡ chữ (A- / thanh kéo / A+). Bấm ra ngoài hoặc bấm Esc thì đóng. */
+function TextSizeMenu() {
+  const { level, setLevel, label } = useTextSize();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
+  }, [open ]);
+  return (
+    <div className="nav-menu-wrap" ref={ref}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}>
+      <button type="button" className="icon-btn" aria-label="Cỡ chữ" aria-expanded={open}
+        title={`Cỡ chữ: ${label}`} onClick={() => setOpen(true)}>🔠</button>
+      {open && (
+        <div className="text-size-popover" role="menu" aria-label="Chọn cỡ chữ">
+          <TextSizeControl level={level} setLevel={setLevel} />
+        </div>
+      )}
+    </div>
+  );
 }
 
 /* Nút đổi sáng/tối ở góc phải header — hiện cả khi chưa đăng nhập. */
@@ -203,6 +232,7 @@ function Layout() {
         )}
         {user && (
           <div className="topbar-actions">
+            <TextSizeMenu />
             {exam && (
               <button type="button" className="icon-btn" aria-label="Đổi bài thi" title="Đổi bài thi"
                 onClick={() => { clearExam(); nav('/'); }}>⇄</button>
@@ -283,7 +313,7 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider><ExamProvider><Layout /></ExamProvider></AuthProvider>
+      <AuthProvider><ExamProvider><TextSizeProvider><Layout /></TextSizeProvider></ExamProvider></AuthProvider>
     </BrowserRouter>
   );
 }

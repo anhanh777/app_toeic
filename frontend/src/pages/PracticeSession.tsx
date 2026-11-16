@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState } from '../components';
-import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, realQuestionNumber, stripLeadingNumber, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
+import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
@@ -50,7 +50,7 @@ export default function PracticeSession() {
   // "nút từng câu" rồi mới render, tránh nhấp nháy đổi dạng giữa chừng.
   const [partMediaLoaded, setPartMediaLoaded] = useState(false);
   // Cỡ chữ luyện (A- / A+), lưu localStorage.
-  const { level: textLevel, setLevel: setTextLevel } = useTextSize();
+  const { level: textLevel } = useTextSize();
 
   useEffect(() => {
     setLoading(true);
@@ -358,7 +358,6 @@ export default function PracticeSession() {
             : <>Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</>}
         </h2>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
-          <TextSizeControl level={textLevel} setLevel={setTextLevel} />
           <span className="progress-badge">Đã làm {score.done}/{questions.length}</span>
         </span>
       </div>

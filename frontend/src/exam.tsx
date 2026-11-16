@@ -80,7 +80,12 @@ export function useIeltsSetupRedirect() {
 // chữ câu hỏi và phương án ở màn Luyện tập, Thi thử và Ôn câu sai. ----
 const TEXT_SIZE_KEY = 'app_text_size';
 export const TEXT_SIZE_LABELS = ['Nhỏ', 'Vừa', 'Lớn', 'Rất lớn'];
-export function useTextSize() {
+// Cỡ chữ dùng chung cả app (context) để nút 🔠 trên thanh nav và các trang
+// Luyện tập/Thi thử/Câu sai luôn đồng bộ — đổi ở header thì trang đang mở
+// cập nhật ngay, không cần tải lại.
+interface TextSizeCtx { level: number; setLevel: (n: number) => void; label: string }
+const TextSizeContext = createContext<TextSizeCtx | null>(null);
+export function TextSizeProvider({ children }: { children: ReactNode }) {
   const [level, setLevelState] = useState<number>(() => {
     try {
       const v = Number(localStorage.getItem(TEXT_SIZE_KEY));
@@ -94,7 +99,16 @@ export function useTextSize() {
     try { localStorage.setItem(TEXT_SIZE_KEY, String(v)); } catch { /* bỏ qua */ }
     setLevelState(v);
   };
-  return { level, setLevel, label: TEXT_SIZE_LABELS[level] };
+  return (
+    <TextSizeContext.Provider value={{ level, setLevel, label: TEXT_SIZE_LABELS[level] }}>
+      {children}
+    </TextSizeContext.Provider>
+  );
+}
+export function useTextSize(): TextSizeCtx {
+  const c = useContext(TextSizeContext);
+  if (!c) throw new Error('useTextSize phải dùng trong TextSizeProvider');
+  return c;
 }
 
 export function TextSizeControl({ level, setLevel }: { level: number; setLevel: (n: number) => void }) {
