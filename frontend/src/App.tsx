@@ -87,22 +87,22 @@ function ThemeToggle() {
 
 /* ---- Thanh nav kiểu ghim: chỉ tối đa 4 mục ghim hiện trên thanh trên,
    còn lại nằm trong menu ☰ bên phải. Lựa chọn ghim lưu localStorage. ---- */
-type NavItem = { path: string; label: string; end?: boolean; ieltsOnly?: boolean; adminOnly?: boolean };
+type NavItem = { path: string; label: string; icon: string; end?: boolean; ieltsOnly?: boolean; adminOnly?: boolean };
 const NAV_ITEMS: NavItem[] = [
-  { path: '/', label: 'Trang chủ', end: true },
-  { path: '/today', label: 'Hôm nay' },
-  { path: '/practice', label: 'Luyện tập' },
-  { path: '/mock', label: 'Thi thử' },
-  { path: '/wrong', label: 'Câu sai' },
-  { path: '/ielts/diagnostic', label: 'Chẩn đoán', ieltsOnly: true },
-  { path: '/ielts/errors', label: 'Sổ lỗi', ieltsOnly: true },
-  { path: '/ielts/writing', label: 'Viết', ieltsOnly: true },
-  { path: '/ielts/speaking', label: 'Nói', ieltsOnly: true },
-  { path: '/vocabulary', label: 'Từ vựng' },
-  { path: '/stats', label: 'Thống kê' },
-  { path: '/leaderboard', label: 'Xếp hạng' },
-  { path: '/admin', label: 'Quản trị', adminOnly: true },
-  { path: '/settings', label: 'Cài đặt' },
+  { path: '/', label: 'Trang chủ', icon: '🏠', end: true },
+  { path: '/today', label: 'Hôm nay', icon: '📅' },
+  { path: '/practice', label: 'Luyện tập', icon: '✏️' },
+  { path: '/mock', label: 'Thi thử', icon: '⏱️' },
+  { path: '/wrong', label: 'Câu sai', icon: '❌' },
+  { path: '/ielts/diagnostic', label: 'Chẩn đoán', icon: '🧭', ieltsOnly: true },
+  { path: '/ielts/errors', label: 'Sổ lỗi', icon: '📕', ieltsOnly: true },
+  { path: '/ielts/writing', label: 'Viết', icon: '✍️', ieltsOnly: true },
+  { path: '/ielts/speaking', label: 'Nói', icon: '🎤', ieltsOnly: true },
+  { path: '/vocabulary', label: 'Từ vựng', icon: '📖' },
+  { path: '/stats', label: 'Thống kê', icon: '📊' },
+  { path: '/leaderboard', label: 'Xếp hạng', icon: '🏆' },
+  { path: '/admin', label: 'Quản trị', icon: '🛠️', adminOnly: true },
+  { path: '/settings', label: 'Cài đặt', icon: '⚙️' },
 ];
 const NAV_PINS_KEY = 'app_nav_pins';
 const MAX_PINS = 4;
@@ -179,6 +179,7 @@ function Layout() {
                     const pinned = pins.includes(it.path);
                     return (
                       <div key={it.path} className="nav-menu-row">
+                        <span className="nav-menu-ico" aria-hidden>{it.icon}</span>
                         <NavLink to={it.path} end={it.end} onClick={() => setMenuOpen(false)}>{it.label}</NavLink>
                         <button type="button" className={`pin-btn${pinned ? ' pinned' : ''}`}
                           aria-label={pinned ? `Bỏ ghim ${it.label}` : `Ghim ${it.label} lên thanh trên`}

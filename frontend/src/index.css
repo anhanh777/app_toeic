@@ -112,14 +112,17 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 .nav-menu-backdrop{position:fixed; inset:0; z-index:20}
 .nav-menu{
   position:absolute; right:0; top:calc(100% + .5rem); z-index:21;
-  min-width:17rem; max-height:70vh; overflow-y:auto;
+  width:min(28rem, calc(100vw - 1rem)); max-height:70vh; overflow-y:auto;
   background:var(--surface); border:1px solid var(--border); border-radius:14px;
-  box-shadow:0 10px 30px rgba(0,0,0,.18); padding:.5rem;
+  box-shadow:0 10px 30px rgba(0,0,0,.18); padding:.6rem;
+  /* Bảng 2 cột như mẫu: mỗi ô = icon + tên mục + nút ghim ở mép phải. */
+  display:grid; grid-template-columns:1fr 1fr; gap:.25rem;
 }
-.nav-menu-title{font-size:.82rem; color:var(--ink-soft); margin:.3rem .5rem .5rem}
-.nav-menu-row{display:flex; align-items:center; gap:.4rem; border-radius:10px}
+.nav-menu-title{grid-column:1 / -1; font-size:.82rem; color:var(--ink-soft); margin:.3rem .5rem .5rem}
+.nav-menu-ico{flex:0 0 auto; font-size:1.05rem; line-height:1}
+.nav-menu-row{display:flex; align-items:center; gap:.45rem; border-radius:10px; padding:.15rem .35rem}
 .nav-menu-row:hover{background:var(--surface-soft)}
-.nav-menu-row a{flex:1 1 auto; padding:.5rem .6rem; color:var(--ink); font-weight:600}
+.nav-menu-row a{flex:1 1 auto; min-width:0; padding:.5rem .25rem; color:var(--ink); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .nav-menu-row a:hover{text-decoration:none}
 .nav-menu-row a.active{color:var(--accent-dark)}
 .pin-btn{
@@ -128,7 +131,12 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 }
 .pin-btn:hover{opacity:1; background:var(--surface-soft)}
 .pin-btn.pinned{opacity:1; background:var(--green-bg); border-color:var(--green-border)}
-.pin-limit-msg{font-size:.85rem; color:var(--amber); margin:.4rem .5rem .3rem}
+.pin-limit-msg{grid-column:1 / -1; font-size:.85rem; color:var(--amber); margin:.4rem .5rem .3rem}
+
+/* Màn hẹp: bảng ghim về 1 cột cho khỏi tràn. */
+@media(max-width:560px){
+  .nav-menu{grid-template-columns:1fr}
+}
 .topbar nav a:hover{border-color:var(--border); color:var(--ink); background:var(--surface-soft)}
 .topbar nav a.active{border-color:transparent; color:#fff; background:var(--accent)}
 /* Nút đổi sáng/tối — luôn hiện ở góc phải header, kể cả trang đăng nhập */
