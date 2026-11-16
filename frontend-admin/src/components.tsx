@@ -8,6 +8,46 @@ export function ErrorBox({ error }: { error: unknown }) {
   const msg = error instanceof ApiError ? error.message : error instanceof Error ? error.message : String(error);
   return <div className="error">{msg}</div>;
 }
+
+/** Popup (modal) dùng chung cho các thao tác Sửa / Xem: thay cho các
+ *  panel hiện inline bên dưới danh sách. Lớp phủ tối, hộp thoại ở giữa,
+ *  bấm ra ngoài hoặc phím Escape để đóng, nội dung dài thì cuộn trong hộp. */
+export function Modal({ title, onClose, wide, children }: {
+  title: string;
+  onClose: () => void;
+  wide?: boolean;
+  children: React.ReactNode;
+}) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeRef.current(); };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    boxRef.current?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, []);
+  return (
+    <div className="modal-overlay" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
+      <div
+        className={wide ? 'modal modal--wide' : 'modal'}
+        role="dialog" aria-modal="true" aria-label={title}
+        tabIndex={-1} ref={boxRef}
+      >
+        <div className="modal-head">
+          <h2 className="modal-title">{title}</h2>
+          <button type="button" className="modal-close" aria-label="Đóng" onClick={onClose}>✕</button>
+        </div>
+        <div className="modal-body">{children}</div>
+      </div>
+    </div>
+  );
+}
 export function useAsync<T>(fn: () => Promise<T>) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);

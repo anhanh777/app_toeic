@@ -754,3 +754,30 @@ tbody tr:hover{background:var(--surface-soft)}
 .hp-bar i{display:block; height:100%; background:var(--red); border-radius:999px}
 .monster-killed .hp-bar i{background:var(--green)}
 .today-bad-day{border:1px dashed var(--amber); background:var(--amber-bg)}
+
+/* ============ Popup (modal) — Sửa / Xem ============ */
+/* Lớp phủ tối toàn màn hình; hộp thoại ở giữa, gọn (không full-screen). */
+.modal-overlay{
+  position:fixed; inset:0; z-index:50;
+  background:rgba(43,32,19,.55);
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:2rem 1rem; overflow-y:auto;
+}
+.modal{
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--border); border-radius:16px;
+  box-shadow:0 12px 40px rgba(43,32,19,.25);
+  width:min(38rem, 100%); max-height:calc(100vh - 4rem);
+  display:flex; flex-direction:column; outline:none;
+}
+.modal--wide{width:min(58rem, 100%)}
+.modal-head{display:flex; align-items:center; gap:.5rem; padding:.8rem 1rem .6rem; border-bottom:1px solid var(--border)}
+.modal-title{margin:0; font-size:1.05rem; flex:1; min-width:0}
+.modal-close{
+  flex:0 0 auto; width:2rem; height:2rem; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  background:var(--surface-soft); color:var(--ink); border:1px solid var(--border);
+  font-size:.9rem; line-height:1; padding:0; cursor:pointer;
+}
+.modal-close:hover{background:var(--red-bg); border-color:var(--red-border)}
+.modal-body{padding:.9rem 1rem 1rem; overflow-y:auto}
