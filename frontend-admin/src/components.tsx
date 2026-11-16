@@ -48,6 +48,24 @@ export function Modal({ title, onClose, wide, children }: {
     </div>
   );
 }
+
+/** Công tắc gạt bật/tắt dùng chung — thay cho chữ trạng thái + nút
+ *  "Phát hành/Về Nháp" trong bảng đề: gạt là đổi trạng thái ngay. */
+export function Toggle({ checked, onChange, label, disabled }: {
+  checked: boolean;
+  onChange: () => void;
+  label: string;
+  disabled?: boolean;
+}) {
+  return (
+    <button type="button" role="switch" aria-checked={checked} aria-label={label}
+      title={label} className={checked ? 'toggle toggle--on' : 'toggle'}
+      disabled={disabled} onClick={onChange}>
+      <span className="toggle-knob" />
+    </button>
+  );
+}
+
 export function useAsync<T>(fn: () => Promise<T>) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>(null);

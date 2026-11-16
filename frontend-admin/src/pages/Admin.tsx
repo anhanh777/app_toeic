@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api, type ImportQuestion, type Question, type TestSet, type Vocab } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox, Modal, partName } from '../components';
+import { ErrorBox, Modal, Toggle, partName } from '../components';
 import { countByPart, normalizeImportFile, splitValid, type QuestionError } from '../testSetUtils';
 import { isFillIn, QUESTION_TYPE_NAMES, questionTypeName } from '../exam';
 
@@ -23,6 +23,7 @@ export default function Admin() {
   const [partFilter, setPartFilter] = useState<number | undefined>(undefined);
   const [examFilter, setExamFilter] = useState<'all' | 'toeic' | 'ielts'>('all');
   const [testSets, setTestSets] = useState<TestSet[]>([]);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
   const [tsForm, setTsForm] = useState({ title: '', description: '', isPublished: false, exam: 'toeic' });
   const [editingSet, setEditingSet] = useState<string | null>(null);
   const [uploadPreview, setUploadPreview] = useState<UploadPreview | null>(null);
@@ -155,11 +156,12 @@ export default function Admin() {
 
   const togglePublishSet = async (ts: TestSet) => {
     setError(null);
+    setTogglingId(ts.id);
     try {
       await api.adminUpdateTestSet(ts.id, { isPublished: !ts.isPublished });
       setMsg(ts.isPublished ? `Đã chuyển "${ts.title}" về Nháp.` : `Đã phát hành "${ts.title}".`);
       loadTestSets();
-    } catch (err) { setError(err); }
+    } catch (err) { setError(err); } finally { setTogglingId(null); }
   };
 
   const onUploadTestSetFile = async (file: File) => {
@@ -318,7 +320,7 @@ export default function Admin() {
       <div className="card">
         <h2>Danh sách đề ({testSets.length})</h2>
         <div className="table-scroll">
-        <table><thead><tr><th>Tên đề</th><th>Số câu</th><th>Part</th><th>Thiếu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
+        <table className="tbl-nowrap"><thead><tr><th>Tên đề</th><th>Số câu</th><th>Part</th><th>Thiếu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
           {testSets.map(ts => {
             const missingTotal = (ts.missing || []).reduce((n, m) => n + m.missing, 0);
             return (
@@ -327,12 +329,16 @@ export default function Admin() {
               <td>{ts.totalQuestions}</td>
               <td>{ts.parts?.length ?? 0} Part</td>
               <td>{missingTotal === 0 ? 'Đủ' : `Thiếu ${missingTotal}`}</td>
-              <td>{ts.isPublished ? <span className="pill pill--live">ĐÃ PHÁT HÀNH</span> : <span className="pill pill--draft">NHÁP</span>}</td>
+              <td><span className="toggle-cell">
+                <Toggle checked={ts.isPublished} disabled={togglingId === ts.id}
+                  label={ts.isPublished ? `Đã phát hành — bấm để chuyển "${ts.title}" về Nháp` : `Nháp — bấm để phát hành "${ts.title}"`}
+                  onChange={() => void togglePublishSet(ts)} />
+                <span className={ts.isPublished ? 'toggle-label' : 'toggle-label toggle-label--off'}>{ts.isPublished ? 'Phát hành' : 'Nháp'}</span>
+              </span></td>
               <td>{ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : '—'}</td>
               <td>
                 <div className="tbl-actions">
                   <button className="btn ghost" onClick={() => editTestSet(ts)}>Sửa</button>
-                  <button className="btn secondary" onClick={() => void togglePublishSet(ts)}>{ts.isPublished ? 'Bỏ phát hành' : 'Phát hành'}</button>
                   <button className="btn danger" onClick={() => void deleteTestSet(ts)}>Xóa</button>
                 </div>
               </td>

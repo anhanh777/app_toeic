@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { api, type TestSet } from '../api';
 import { useAuth } from '../auth';
-import { ErrorBox, Modal } from '../components';
+import { ErrorBox, Modal, Toggle } from '../components';
 import { normalizeImportFile, type QuestionError } from '../testSetUtils';
 import { splitValidIelts } from '../ieltsAdminUtils';
 
@@ -14,6 +14,7 @@ export default function IeltsAdmin() {
   const { user } = useAuth();
   const nav = useNavigate();
   const [testSets, setTestSets] = useState<TestSet[]>([]);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [msg, setMsg] = useState('');
   const [tsForm, setTsForm] = useState({ title: '', description: '', isPublished: false });
@@ -59,11 +60,12 @@ export default function IeltsAdmin() {
 
   const togglePublishSet = async (ts: TestSet) => {
     setError(null);
+    setTogglingId(ts.id);
     try {
       await api.adminUpdateTestSet(ts.id, { isPublished: !ts.isPublished });
       setMsg(ts.isPublished ? `Đã chuyển "${ts.title}" về Nháp.` : `Đã phát hành "${ts.title}".`);
       loadTestSets();
-    } catch (err) { setError(err); }
+    } catch (err) { setError(err); } finally { setTogglingId(null); }
   };
 
   // Upload cả 1 đề IELTS từ file JSON (câu hỏi phải có exam='ielts'
@@ -160,7 +162,7 @@ export default function IeltsAdmin() {
       <div className="card">
         <h2>Danh sách đề IELTS ({testSets.length})</h2>
         <div className="table-scroll">
-        <table><thead><tr><th>Tên đề</th><th>Số câu</th><th>Part</th><th>Thiếu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
+        <table className="tbl-nowrap"><thead><tr><th>Tên đề</th><th>Số câu</th><th>Part</th><th>Thiếu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
           {testSets.map(ts => {
             const missingTotal = (ts.missing || []).reduce((n, m) => n + m.missing, 0);
             return (
@@ -169,11 +171,15 @@ export default function IeltsAdmin() {
               <td>{ts.totalQuestions ?? 0}</td>
               <td>{ts.parts?.length ?? 0} Part</td>
               <td>{missingTotal === 0 ? 'Đủ' : `Thiếu ${missingTotal}`}</td>
-              <td>{ts.isPublished ? <span className="pill pill--live">ĐÃ PHÁT HÀNH</span> : <span className="pill pill--draft">NHÁP</span>}</td>
+              <td><span className="toggle-cell">
+                <Toggle checked={ts.isPublished} disabled={togglingId === ts.id}
+                  label={ts.isPublished ? `Đã phát hành — bấm để chuyển "${ts.title}" về Nháp` : `Nháp — bấm để phát hành "${ts.title}"`}
+                  onChange={() => togglePublishSet(ts)} />
+                <span className={ts.isPublished ? 'toggle-label' : 'toggle-label toggle-label--off'}>{ts.isPublished ? 'Phát hành' : 'Nháp'}</span>
+              </span></td>
               <td>{ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : ''}</td>
               <td>
                 <div className="tbl-actions">
-                  <button className="btn secondary" onClick={() => togglePublishSet(ts)}>{ts.isPublished ? 'Về Nháp' : 'Phát hành'}</button>
                   <button className="btn secondary" onClick={() => editTestSet(ts)}>Sửa</button>
                   <button className="btn danger" onClick={() => void deleteTestSet(ts)}>Xóa</button>
                 </div>
