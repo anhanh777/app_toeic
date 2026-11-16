@@ -128,14 +128,33 @@ export default function Result() {
                     />
                   </>
                 ) : (
-                  <p className="muted" style={{ margin: '.2rem 0' }}>
-                    {isFillIn(d.questionType) ? 'Đáp án bạn gõ: ' : 'Đáp án bạn chọn: '}
-                    {/* list_selection: "A,C" → "A, C" cho dễ đọc. */}
-                    <strong>{isMultiAnswer(d.questionType) ? (parseSelectedLabels(d.selected).join(', ') || '—') : (d.selected ?? '—')}</strong>
-                    {' • '}Đáp án đúng: <strong>{isMultiAnswer(d.questionType)
-                      ? (parseSelectedLabels(d.correctLabel).join(', ') || d.correctText || '—')
-                      : (d.correctText ?? d.correctLabel ?? '—')}</strong>
-                  </p>
+                  <>
+                    <p className="muted" style={{ margin: '.2rem 0' }}>
+                      {isFillIn(d.questionType) ? 'Đáp án bạn gõ: ' : 'Đáp án bạn chọn: '}
+                      {/* list_selection: "A,C" → "A, C" cho dễ đọc. */}
+                      <strong>{isMultiAnswer(d.questionType) ? (parseSelectedLabels(d.selected).join(', ') || '—') : (d.selected ?? '—')}</strong>
+                      {' • '}Đáp án đúng: <strong>{isMultiAnswer(d.questionType)
+                        ? (parseSelectedLabels(d.correctLabel).join(', ') || d.correctText || '—')
+                        : (d.correctText ?? d.correctLabel ?? '—')}</strong>
+                    </p>
+                    {d.explanation ? (
+                      <p style={{ margin: '.2rem 0' }}><strong>Giải thích:</strong> {d.explanation}</p>
+                    ) : (
+                      <p className="muted" style={{ margin: '.2rem 0' }}>Chưa có giải thích chi tiết trong file đáp án.</p>
+                    )}
+                    {d.script ? (
+                      <details style={{ margin: '.2rem 0' }}>
+                        <summary>Xem transcript</summary>
+                        <p>{d.script}</p>
+                      </details>
+                    ) : null}
+                    {d.passageText ? (
+                      <details style={{ margin: '.2rem 0' }}>
+                        <summary>Xem đoạn văn</summary>
+                        <p>{d.passageText}</p>
+                      </details>
+                    ) : null}
+                  </>
                 )}
               </div>
             );

@@ -175,6 +175,17 @@ router.post('/tests/:id/answers', authMiddleware, (req, res) => {
   return res.json({ ok: true });
 });
 
+/** Hủy bài thi chưa nộp (nút Thoát ở MockTest): chỉ chủ bài thi mới hủy
+    được; bài đã nộp rồi thì không hủy (đã có kết quả + XP). */
+router.delete('/tests/:id', authMiddleware, (req, res) => {
+  const attempt = db.getAttempt(parseInt(req.params.id, 10));
+  if (!attempt) return res.status(404).json({ error: 'khong tim thay bai thi' });
+  if (attempt.userId !== req.user.id) return res.status(403).json({ error: 'forbidden' });
+  if (attempt.finishedAt) return res.status(400).json({ error: 'bai thi da nop, khong huy duoc' });
+  db.deleteAttempt(attempt.id);
+  return res.json({ ok: true });
+});
+
 router.post('/tests/:id/submit', authMiddleware, (req, res) => {
   const attempt = db.getAttempt(parseInt(req.params.id, 10));
   if (!attempt) return res.status(404).json({ error: 'khong tim thay bai thi' });

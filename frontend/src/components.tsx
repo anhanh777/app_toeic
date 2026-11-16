@@ -25,6 +25,49 @@ export const PART_NAMES: Record<number, string> = {
 export function partName(p: number) { return PART_NAMES[p] || `Part ${p}`; }
 export function sectionOf(part: number) { return part <= 4 ? 'Listening' : 'Reading'; }
 
+/** 1 chỗ trống trong đoạn văn (Part 6 TOEIC): số câu + trạng thái trả lời. */
+export interface BlankState { selected?: string; graded?: boolean | null; }
+/**
+ * Đoạn văn có chỗ trống: mỗi `131. ________` được thay bằng chip số có màu
+ * (bấm vào thì cuộn tới câu đó; đã trả lời thì chip hiện chữ cái đã chọn
+ * và đổi màu). Chỗ trống `________` không có số thì hiện chip trống.
+ */
+export function PassageWithBlanks({ text, blanks, onBlankClick }: {
+  text: string;
+  blanks?: Record<number, BlankState>;
+  onBlankClick?: (num: number) => void;
+}) {
+  // Tách văn bản thành: đoạn thường | chip chỗ trống có số | chip trống.
+  const parts: React.ReactNode[] = [];
+  const re = /(\d+)\s*\.\s*_{2,}|_{2,}/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let k = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    const numMatch = /^(\d+)\s*\./.exec(m[0]);
+    const num = numMatch ? Number(numMatch[1]) : null;
+    const st = num != null ? blanks?.[num] : undefined;
+    const cls = ['blank-chip'];
+    if (st?.selected) cls.push(st.graded === true ? 'correct' : st.graded === false ? 'wrong' : 'answered');
+    parts.push(
+      <button
+        key={`blank-${k++}`}
+        type="button"
+        className={cls.join(' ')}
+        onClick={() => { if (num != null) onBlankClick?.(num); }}
+        title={num != null ? `Chỗ trống câu ${num} — bấm để tới câu hỏi` : 'Chỗ trống'}
+      >
+        {num != null ? num : '…'}
+        {st?.selected ? ` · ${st.selected}` : ''}
+      </button>
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return <>{parts}</>;
+}
+
 /** Rank tier from a TOEIC total score (same bands as scoreLevel in api.ts). */
 export function tierOf(total?: number | null): { name: string; icon: string; cls: string } {
   if (total == null) return { name: 'Chưa xếp hạng', icon: '✦', cls: 'tier-bronze' };

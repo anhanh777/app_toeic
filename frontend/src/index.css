@@ -440,7 +440,7 @@ footer{
   padding:.3rem 1rem .7rem; margin-top:.7rem;
 }
 /* 1 câu hỏi trong tờ đề: kẻ mảnh phân cách, nhịp dọc gọn */
-.paper-q{padding:.6rem 0; border-bottom:1px solid var(--border-soft)}
+.paper-q{padding:.45rem 0; border-bottom:1px solid var(--border-soft)}
 .paper-q:last-child{border-bottom:none; padding-bottom:.15rem}
 /* Đề mục / kết quả chấm trong câu: bỏ margin mặc định của <p> (~1em) */
 .paper-q p{margin:.3rem 0}
@@ -573,6 +573,26 @@ footer{
 @media(min-width:760px){
   .exam-q--ielts{grid-template-columns:minmax(0,1fr)}
 }
+/* Câu Reading dạng trắc nghiệm (TOEIC P5–P7, IELTS R): xếp chồng 1 cột
+   như dạng IELTS — chữ câu hỏi trải hết chiều rộng, phương án lưới 2 cột
+   bên dưới, nên 1 màn hình xem được ~2 câu thay vì 1 câu. */
+@media(min-width:760px){
+  .exam-q--stacked{grid-template-columns:minmax(0,1fr)}
+}
+@media(min-width:640px){
+  .exam-opts--grid2{display:grid; grid-template-columns:1fr 1fr; gap:.4rem .5rem}
+}
+/* Chip chỗ trống trong đoạn văn Part 6: số câu nổi bật, bấm để tới câu hỏi. */
+.blank-chip{
+  display:inline-flex; align-items:center; gap:.15rem;
+  font-weight:800; font-size:.9em; line-height:1; color:var(--accent-dark);
+  background:var(--accent-soft); border:1.5px solid var(--accent); border-radius:999px;
+  padding:.3rem .6rem; margin:0 .1rem; cursor:pointer;
+}
+.blank-chip:hover{filter:brightness(.96)}
+.blank-chip.answered{background:var(--accent); border-color:var(--accent); color:#fff}
+.blank-chip.correct{background:var(--green); border-color:var(--green); color:#fff}
+.blank-chip.wrong{background:var(--red); border-color:var(--red); color:#fff}
 .exam-q-body .exam-q-num{display:inline; margin:0 .35rem 0 0}
 /* T/F/NG & Y/N/NG: 3 nhãn dài thành hàng nút pill ngang, chữ đầy đủ
    không bị nhét vào ô tròn 1 chữ như phương án A/B/C/D. */

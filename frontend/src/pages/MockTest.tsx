@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, type Question, type TestSet } from '../api';
-import { ErrorBox, ListeningAudio, partName } from '../components';
-import { partLabel, partNameFor, TextSizeControl, useExam, useTextSize } from '../exam';
+import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState } from '../components';
+import { partLabel, partNameFor, realQuestionNumber, TextSizeControl, useExam, useTextSize } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 
@@ -28,6 +28,8 @@ export default function MockTest() {
   const [mode, setMode] = useState<'mini' | 'full'>('mini');
   const [part, setPart] = useState(5);
   const [attemptId, setAttemptId] = useState<number | null>(null);
+  // Nút Thoát: bấm lần 1 để xác nhận, lần 2 mới thoát thật.
+  const [confirmExit, setConfirmExit] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
   // Đáp án lưu theo id câu (làm theo thứ tự bất kỳ, đổi thoải mái trước
   // khi nộp — thi thử KHÔNG chấm ngay từng câu).
@@ -161,16 +163,21 @@ export default function MockTest() {
 
   // Nhóm các câu liên tiếp cùng 1 đoạn văn (Part 3/4/6/7) để đoạn chỉ hiện
   // 1 lần, các câu hỏi của đoạn nối tiếp ngay bên dưới — như tờ đề thi thật.
-  // Số thứ tự n đếm liên tiếp theo thứ tự câu trong bài thi. Mỗi khối cũng
-  // ghi lại Part để hiện tiêu đề Part khi chuyển sang Part mới (thi full).
+  // Số thứ tự n là SỐ THẬT trong đề (mốc đầu Part + vị trí trong Part).
+  // Mỗi khối cũng ghi lại Part để hiện tiêu đề Part khi chuyển sang Part
+  // mới (thi full).
   type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number }[] };
   const blocks: Block[] = [];
-  questions.forEach((q, i) => {
+  const partCount: Record<number, number> = {};
+  questions.forEach((q) => {
+    const idx = (partCount[q.part] ?? 0) + 1;
+    partCount[q.part] = idx;
+    const n = realQuestionNumber(exam, q.part, idx);
     const last = blocks[blocks.length - 1];
     const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
     const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
-    if ((sameId || sameText) && last) last.questions.push({ q, n: i + 1 });
-    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n: i + 1 }] });
+    if ((sameId || sameText) && last) last.questions.push({ q, n });
+    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n }] });
   });
 
   // 1 nút nghe DUY NHẤT cho cả Part: chỉ khi thi trong 1 bộ đề (có
@@ -191,8 +198,14 @@ export default function MockTest() {
     // biệt); các dạng IELTS còn lại (kể cả list_selection, 4 dạng điền mới,
     // matching_sentence_endings) dùng IeltsAnswerControl.
     const isIeltsSpecial = isIelts && qType !== 'multiple_choice' && qType !== 'choosing_title';
+    // Part 6 (TOEIC): câu hỏi chỉ còn số + phương án — câu chứa chỗ trống
+    // đã nằm trong đoạn văn phía trên (chip số), không hiện lại gây lặp.
+    const isP6 = exam === 'toeic' && q.part === 6;
+    // Reading trắc nghiệm (TOEIC P5–P7, IELTS R): xếp chồng 1 cột,
+    // phương án lưới 2 cột — 1 màn hình được ~2 câu thay vì 1 câu.
+    const isReadingMC = q.part >= 5 && !letterOnly && (qType === 'multiple_choice' || qType === 'choosing_title');
     return (
-      <div className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}`} key={q.id}>
+      <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isReadingMC ? ' exam-q--stacked' : ''}`} key={q.id}>
         <div className="exam-q-body">
           {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
               audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
@@ -223,12 +236,17 @@ export default function MockTest() {
               onFirstPlay={() => markPlayed(q.part)}
             />
           )}
-          {!hideListeningText && q.content ? (
-            <p>{isIeltsSpecial ? <span className="exam-q-num">{n}.</span> : null}<strong>{q.content}</strong></p>
+          {/* Số câu gắn ngay đầu chữ câu hỏi (căn thẳng hàng với câu hỏi),
+              thay vì nằm riêng ở cột phải như trước. Part 6 không hiện
+              chữ câu hỏi (câu chứa chỗ trống đã nằm trong đoạn văn trên). */}
+          {!hideListeningText && !isP6 && q.content ? (
+            <p><span className="exam-q-num">{n}.</span><strong>{q.content}</strong></p>
           ) : null}
         </div>
         <div className="exam-q-side">
-          {!isIeltsSpecial && <div className="exam-q-num">{n}.</div>}
+          {/* Chỉ-nghe (P1/P2) và Part 6 không có chữ câu hỏi: số câu nằm
+              trên phương án như phiếu trả lời. */}
+          {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{n}.</div>}
           {isIeltsSpecial ? (
             <IeltsAnswerControl
               q={q}
@@ -237,7 +255,7 @@ export default function MockTest() {
               onCommit={v => void saveAnswer(q, v)}
             />
           ) : (
-            <div className="exam-opts">
+            <div className={`exam-opts${isReadingMC ? ' exam-opts--grid2' : ''}`}>
               {q.options.map(o => (
                 <button
                   key={o.label}
@@ -252,6 +270,37 @@ export default function MockTest() {
         </div>
       </div>
     );
+  };
+
+  // Đoạn văn Part 6: chỗ trống thành chip số (bấm để tới câu hỏi).
+  const renderPassage = (block: Block) => {
+    const isP6Block = exam === 'toeic' && block.questions[0]?.q.part === 6;
+    if (!isP6Block || !block.passageText) return <div className="passage">{block.passageText}</div>;
+    const blanks: Record<number, BlankState> = {};
+    const idByNum: Record<number, string> = {};
+    for (const { q, n } of block.questions) {
+      idByNum[n] = q.id;
+      const sel = answers[q.id] ?? '';
+      if (sel) blanks[n] = { selected: sel };
+    }
+    return (
+      <div className="passage">
+        <PassageWithBlanks
+          text={block.passageText}
+          blanks={blanks}
+          onBlankClick={num => document.getElementById(`q-${idByNum[num]}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+        />
+      </div>
+    );
+  };
+
+  // Thoát khỏi bài thi khi không làm nữa: dừng audio, hủy attempt chưa nộp
+  // (không tính kết quả, không lọt vào lịch sử), rồi về trang chủ.
+  const exitTest = async () => {
+    if (!confirmExit) { setConfirmExit(true); return; }
+    stopSpeak();
+    if (attemptId) { try { await api.abandonTest(attemptId); } catch { /* vẫn thoát */ } }
+    nav('/');
   };
 
   return (
@@ -289,7 +338,7 @@ export default function MockTest() {
               )}
               {block.passageText ? (
                 <div className="paper-cluster">
-                  <div className="passage">{block.passageText}</div>
+                  {renderPassage(block)}
                   {block.questions.map(item => renderQuestion(item))}
                 </div>
               ) : (
@@ -301,6 +350,8 @@ export default function MockTest() {
       </div>
       <div className="practice-bar">
         <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
+        <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
+          onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '🚪 Thoát'}</button>
         <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
       </div>
       <p className="muted" style={{ margin: '.45rem 0 0' }}>Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>

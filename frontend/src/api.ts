@@ -87,6 +87,7 @@ export interface TestResultDetail {
   questionId: string; questionType?: string; wordLimit?: number;
   correctText?: string | null; correctLabel?: string | null;
   selected?: string; correct?: boolean; content?: string;
+  explanation?: string | null; script?: string | null; passageText?: string | null;
 }
 export interface PartInfo { part: number; count: number; section?: string; listening?: boolean; reading?: boolean; }
 export interface Vocab { id: string; word: string; phonetic?: string; meaning: string; example?: string; topic?: string; }
@@ -294,6 +295,9 @@ export const api = {
   submitTest: (attemptId: number) =>
     req<{ listeningCorrect: number; readingCorrect: number; listeningScore?: number; readingScore?: number; totalScore?: number; byPart?: { part: number; correct: number; total: number }[]; wrongQuestionIds?: string[]; xpAwarded?: number; leaderboardEligible?: number; listeningBand?: number; readingBand?: number; overallBand?: number }>(
       `/api/tests/${attemptId}/submit`, { method: 'POST' }),
+  // Hủy bài thi chưa nộp (nút Thoát ở MockTest): xóa attempt + đáp án đã lưu.
+  abandonTest: (attemptId: number) =>
+    req<{ ok: boolean }>(`/api/tests/${attemptId}`, { method: 'DELETE' }),
   testResult: (attemptId: number) => req<Attempt & { byPart?: { part: number; correct: number; total: number }[]; wrongQuestionIds?: string[]; detail?: TestResultDetail[] }>(`/api/tests/${attemptId}/result`),
   testHistory: (exam?: string) => req<Attempt[]>(exam ? `/api/tests/history?exam=${encodeURIComponent(exam)}` : '/api/tests/history'),
 

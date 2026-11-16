@@ -200,6 +200,20 @@ export function bandLevel(band?: number | null): string {
   return 'Xuất sắc';
 }
 
+// Số câu THẬT trong đề. Luyện riêng 1 Part/Section thì danh sách chỉ chứa
+// câu của Part đó nên số thứ tự trong danh sách (1–39) không phải số thật
+// (32–70) — cộng thêm mốc đầu Part: TOEIC P1=1, P2=7, P3=32, P4=71,
+// P5=101, P6=131, P7=147; IELTS Listening S1=1, S2=11, S3=21, S4=31,
+// Reading P1=41, P2=54, P3=67 (part 5/6/7).
+export const QUESTION_NUMBER_OFFSETS: Record<string, Record<number, number>> = {
+  toeic: { 1: 1, 2: 7, 3: 32, 4: 71, 5: 101, 6: 131, 7: 147 },
+  ielts: { 1: 1, 2: 11, 3: 21, 4: 31, 5: 41, 6: 54, 7: 67 },
+};
+export function realQuestionNumber(exam: string | null | undefined, part: number, indexWithinPart: number): number {
+  const offsets = QUESTION_NUMBER_OFFSETS[exam || 'toeic'] || QUESTION_NUMBER_OFFSETS.toeic;
+  return (offsets[part] ?? 1) + indexWithinPart - 1;
+}
+
 // ---- Màn hình chọn kỳ thi (hiện sau đăng nhập khi chưa chọn exam) ----
 
 const FALLBACK_EXAMS: ExamInfo[] = [

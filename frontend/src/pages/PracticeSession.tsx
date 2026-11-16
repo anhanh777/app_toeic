@@ -9,10 +9,10 @@
 // IELTS: Section N (Listening, part 1–4) / Passage N (Reading, part 5–7),
 // đủ dạng câu hỏi (T/F/NG, Y/N/NG, matching, điền từ có giới hạn số từ).
 import { useEffect, useState } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { api, type Question } from '../api';
-import { ErrorBox, ListeningAudio, partName } from '../components';
-import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
+import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState } from '../components';
+import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, realQuestionNumber, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
@@ -21,6 +21,7 @@ type AnswerResult = { correct: boolean; correctLabel: string; correctText?: stri
 
 export default function PracticeSession() {
   const [params] = useSearchParams();
+  const nav = useNavigate();
   const part = Number(params.get('part') || 5);
   const { exam: ctxExam } = useExam();
   const qExam = params.get('exam');
@@ -133,15 +134,21 @@ export default function PracticeSession() {
 
   // Nhóm các câu liên tiếp cùng 1 đoạn văn (Part 3/4/6/7) để đoạn chỉ hiện
   // 1 lần, các câu hỏi của đoạn nối tiếp ngay bên dưới — như tờ đề thi thật.
-  // Số thứ tự n đếm liên tiếp theo thứ tự câu trong đợt luyện.
+  // Số thứ tự n là SỐ THẬT trong đề (mốc đầu Part + vị trí trong Part),
+  // không phải vị trí trong danh sách (luyện riêng Part 3 thì 1–39 sai,
+  // số thật là 32–70).
   type Block = { key: string; passageText?: string; questions: { q: Question; n: number }[] };
   const blocks: Block[] = [];
-  questions.forEach((q, i) => {
+  const partCount: Record<number, number> = {};
+  questions.forEach((q) => {
+    const idx = (partCount[q.part] ?? 0) + 1;
+    partCount[q.part] = idx;
+    const n = realQuestionNumber(exam, q.part, idx);
     const last = blocks[blocks.length - 1];
     const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
     const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
-    if ((sameId || sameText) && last) last.questions.push({ q, n: i + 1 });
-    else blocks.push({ key: q.id, passageText: q.passageText, questions: [{ q, n: i + 1 }] });
+    if ((sameId || sameText) && last) last.questions.push({ q, n });
+    else blocks.push({ key: q.id, passageText: q.passageText, questions: [{ q, n }] });
   });
 
   const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
@@ -158,11 +165,18 @@ export default function PracticeSession() {
     // biệt); các dạng IELTS còn lại (kể cả list_selection, 4 dạng điền mới,
     // matching_sentence_endings) dùng IeltsAnswerControl.
     const isIeltsSpecial = isIelts && qType !== 'multiple_choice' && qType !== 'choosing_title';
+    // Part 6 (TOEIC): câu hỏi chỉ còn số + phương án — câu chứa chỗ trống
+    // đã nằm trong đoạn văn phía trên (chip số), không hiện lại gây lặp.
+    const isP6 = exam === 'toeic' && q.part === 6;
+    // Reading trắc nghiệm (TOEIC P5–P7, IELTS R): xếp chồng 1 cột,
+    // phương án lưới 2 cột — 1 màn hình được ~2 câu thay vì 1 câu.
+    const isReadingMC = q.part >= 5 && !letterOnly && (qType === 'multiple_choice' || qType === 'choosing_title');
+    const showContent = !!q.content && !hideListeningText && !isP6;
     // Câu điền từ: chặn nút Nộp khi vượt giới hạn số từ. list_selection
     // không bị chặn này (chọn thiếu chỉ là sai, backend chấm set equality).
     const overLimit = isFillIn(qType) && q.wordLimit != null && wordCount(selected) > q.wordLimit;
     return (
-      <div className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}`} key={q.id}>
+      <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isReadingMC ? ' exam-q--stacked' : ''}`} key={q.id}>
         <div className="exam-q-body">
           {/* Thứ tự trong cột trái: dòng hướng dẫn (Part 2) → ảnh → trình phát
               audio nổi bật ở đầu khối → rồi mới tới chữ câu hỏi. Bài nghe thì
@@ -190,12 +204,16 @@ export default function PracticeSession() {
               onError={setError}
             />
           )}
-          {!hideListeningText && q.content ? (
-            <p>{isIeltsSpecial ? <span className="exam-q-num">{n}.</span> : null}<strong>{q.content}</strong></p>
+          {/* Số câu gắn ngay đầu chữ câu hỏi (căn thẳng hàng với câu hỏi),
+              thay vì nằm riêng ở cột phải như trước. */}
+          {showContent ? (
+            <p><span className="exam-q-num">{n}.</span><strong>{q.content}</strong></p>
           ) : null}
         </div>
         <div className="exam-q-side">
-          {!isIeltsSpecial && <div className="exam-q-num">{n}.</div>}
+          {/* Chỉ-nghe (P1/P2) và Part 6 không có chữ câu hỏi: số câu nằm
+              trên phương án như phiếu trả lời. */}
+          {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{n}.</div>}
           {isIeltsSpecial ? (
             <IeltsAnswerControl
               q={q}
@@ -205,7 +223,7 @@ export default function PracticeSession() {
               duplicateHeading={qType === 'matching_headings' && !!selected && (headingCounts[selected] ?? 0) > 1}
             />
           ) : (
-            <div className="exam-opts">
+            <div className={`exam-opts${isReadingMC ? ' exam-opts--grid2' : ''}`}>
               {q.options.map(o => {
                 let cls = 'option';
                 if (selected === o.label) cls += ' selected';
@@ -269,6 +287,29 @@ export default function PracticeSession() {
     );
   };
 
+  // Đoạn văn Part 6: chỗ trống thành chip số (bấm để tới câu hỏi).
+  const renderPassage = (block: Block) => {
+    const isP6Block = exam === 'toeic' && block.questions[0]?.q.part === 6;
+    if (!isP6Block || !block.passageText) return <div className="passage">{block.passageText}</div>;
+    const blanks: Record<number, BlankState> = {};
+    const idByNum: Record<number, string> = {};
+    for (const { q, n } of block.questions) {
+      idByNum[n] = q.id;
+      const sel = selectedById[q.id] ?? '';
+      const res = resultById[q.id];
+      if (sel || res) blanks[n] = { selected: sel || undefined, graded: res ? res.correct : null };
+    }
+    return (
+      <div className="passage">
+        <PassageWithBlanks
+          text={block.passageText}
+          blanks={blanks}
+          onBlankClick={num => document.getElementById(`q-${idByNum[num]}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+        />
+      </div>
+    );
+  };
+
   return (
     <div className={`ts-${textLevel}`}>
       {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
@@ -296,7 +337,7 @@ export default function PracticeSession() {
       <div className="paper">
         {blocks.map(block => block.passageText ? (
           <div className="paper-cluster" key={block.key}>
-            <div className="passage">{block.passageText}</div>
+            {renderPassage(block)}
             {block.questions.map(item => renderQuestion(item))}
           </div>
         ) : (
@@ -305,6 +346,7 @@ export default function PracticeSession() {
       </div>
       <div className="practice-bar">
         <span className="progress">Đã làm {score.done}/{questions.length} • Đúng {score.correct}</span>
+        <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>🚪 Thoát</button>
         <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
       </div>
     </div>

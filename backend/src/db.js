@@ -1259,6 +1259,18 @@ function finishAttempt(id, fields) {
   return getAttempt(id);
 }
 
+/** Hủy bài thi chưa nộp (nút Thoát ở MockTest): xóa đáp án đã lưu + attempt.
+    Bài đã nộp rồi thì không hủy được (đã có kết quả + XP). */
+function deleteAttempt(id) {
+  const cur = getAttempt(id);
+  if (!cur) return false;
+  return transaction(() => {
+    db.prepare('DELETE FROM answers WHERE attempt_id = ?').run(id);
+    db.prepare('DELETE FROM attempts WHERE id = ?').run(id);
+    return true;
+  })();
+}
+
 function countAttempts() {
   return db.prepare('SELECT COUNT(*) AS c FROM attempts').get().c;
 }
@@ -2217,6 +2229,7 @@ module.exports = {
   getAttempt,
   listAttemptsByUser,
   finishAttempt,
+  deleteAttempt,
   countAttempts,
   upsertAnswer,
   getAnswersByAttempt,
