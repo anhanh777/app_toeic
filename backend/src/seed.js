@@ -253,6 +253,15 @@ function seedQuestions() {
     });
     console.log('[seed] da tao ETS 2026 Test 10 TS-023.');
   }
+  if (!db.getTestSet('TS-025')) {
+    db.createTestSet({
+      id: 'TS-025',
+      title: 'ETS 2025 - Test 01',
+      description: 'ETS 2025 (YBM TOEIC 1000 Vol.1) Test 01 - LC + RC (200 câu, chua co audio nghe that)',
+      isPublished: 1,
+    });
+    console.log('[seed] da tao ETS 2025 Test 01 TS-025.');
+  }
   let inserted = 0;
   for (const q of list) {
     try {
@@ -283,6 +292,7 @@ function seedQuestions() {
   if (db.getTestSet('TS-021')) db.refreshTestSetTotal('TS-021');
   if (db.getTestSet('TS-022')) db.refreshTestSetTotal('TS-022');
   if (db.getTestSet('TS-023')) db.refreshTestSetTotal('TS-023');
+  if (db.getTestSet('TS-025')) db.refreshTestSetTotal('TS-025');
   return inserted;
 }
 
