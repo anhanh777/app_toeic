@@ -179,8 +179,10 @@ function Layout() {
                     const pinned = pins.includes(it.path);
                     return (
                       <div key={it.path} className="nav-menu-row">
-                        <span className="nav-menu-ico" aria-hidden>{it.icon}</span>
-                        <NavLink to={it.path} end={it.end} onClick={() => setMenuOpen(false)}>{it.label}</NavLink>
+                        <span className="nav-menu-mid">
+                          <span className="nav-menu-ico" aria-hidden>{it.icon}</span>
+                          <NavLink to={it.path} end={it.end} onClick={() => setMenuOpen(false)}>{it.label}</NavLink>
+                        </span>
                         <button type="button" className={`pin-btn${pinned ? ' pinned' : ''}`}
                           aria-label={pinned ? `Bỏ ghim ${it.label}` : `Ghim ${it.label} lên thanh trên`}
                           title={pinned ? 'Bỏ ghim khỏi thanh trên' : 'Ghim lên thanh trên'}
