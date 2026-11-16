@@ -239,6 +239,9 @@ export default function TestSetAdmin() {
             { label: 'C', content: manual.optC }, { label: 'D', content: manual.optD },
           ];
       const body: Record<string, unknown> = {
+        // Backend bắt buộc mỗi câu phải có id duy nhất — form cũ không gửi
+        // id nên luôn lỗi 'Thiếu ID câu hỏi'. Sinh id theo thời gian.
+        id: `${ts.id}-P${manualPart}-${Date.now().toString(36)}`,
         part: manualPart, content: listeningOnly ? '' : manual.content, explanation: manual.explanation,
         topic: manual.topic, difficulty: manual.difficulty, script: manual.script,
         passageId: manual.passageId, passageTitle: manual.passageTitle, passageText: manual.passageText,

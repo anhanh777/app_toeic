@@ -138,7 +138,13 @@ export default function BatchManualForm({
   const buildQuestions = (): { questions: unknown[]; numbers: number[] } => {
     const questions: unknown[] = [];
     const numbers: number[] = [];
-    const push = (q: Record<string, unknown>, num: number) => { questions.push(q); numbers.push(num); };
+    // Backend bắt buộc mỗi câu phải có id duy nhất — form cũ không gửi id
+    // nên bulk luôn lỗi 'Thiếu ID câu hỏi' ở từng câu. Sinh id theo số
+    // câu chuẩn + thời gian để không trùng khi nhập lại.
+    const push = (q: Record<string, unknown>, num: number) => {
+      q.id = `${testSetId}-P${q.part}-${String(num).padStart(3, '0')}-${Date.now().toString(36)}`;
+      questions.push(q); numbers.push(num);
+    };
 
     if (part === 1) {
       // Câu chỉ-nghe: không có chữ in — gửi content '' và 4 phương án chỉ

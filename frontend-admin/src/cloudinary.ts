@@ -2,7 +2,7 @@
 // Không qua backend: backend chỉ cấp cloudName + uploadPreset qua
 // GET /api/admin/media/config, file đi thẳng tới Cloudinary.
 
-export type CloudinaryFolder = 'toeic/images' | 'toeic/audio' | 'toeic/avatars';
+export type CloudinaryFolder = 'toeic/images' | 'toeic/audio' | 'toeic/avatars' | 'ielts/images' | 'ielts/audio';
 
 export interface CloudinaryConfig {
   cloudName: string;
@@ -21,7 +21,7 @@ function extOf(file: File): string {
 }
 
 function validate(file: File, folder: CloudinaryFolder) {
-  if (folder === 'toeic/audio') {
+  if (folder === 'toeic/audio' || folder === 'ielts/audio') {
     if (!AUDIO_EXTS.includes(extOf(file))) {
       throw new Error('File audio chỉ nhận định dạng .mp3.');
     }

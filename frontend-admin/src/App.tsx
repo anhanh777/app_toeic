@@ -5,6 +5,8 @@ import { applyTheme, resolveTheme, type Theme } from './theme';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import TestSetAdmin from './pages/TestSetAdmin';
+import IeltsAdmin from './pages/IeltsAdmin';
+import IeltsTestSetAdmin from './pages/IeltsTestSetAdmin';
 
 /* Nút đổi sáng/tối ở góc phải header. */
 function ThemeToggle() {
@@ -105,7 +107,8 @@ function Layout() {
           <Route path="/" element={<RequireAdmin><Dashboard /></RequireAdmin>} />
           <Route path="/toeic" element={<RequireAdmin><Admin /></RequireAdmin>} />
           <Route path="/toeic/test-set/:id" element={<RequireAdmin><TestSetAdmin /></RequireAdmin>} />
-          <Route path="/ielts" element={<RequireAdmin><ComingSoon name="🎧 Quản lý đề IELTS" /></RequireAdmin>} />
+          <Route path="/ielts" element={<RequireAdmin><IeltsAdmin /></RequireAdmin>} />
+          <Route path="/ielts/test-set/:id" element={<RequireAdmin><IeltsTestSetAdmin /></RequireAdmin>} />
           <Route path="/users" element={<RequireAdmin><ComingSoon name="👤 Quản lý tài khoản" /></RequireAdmin>} />
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang quản trị</Link></p>} />
         </Routes>
