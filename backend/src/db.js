@@ -875,9 +875,35 @@ function updateTestSet(id, fields) {
 }
 
 function deleteTestSet(id) {
+  // Xoa THAT bo de cung toan bo du lieu thuoc ve no (khop voi hop thoai
+  // xac nhan o Admin "Xoa bo de cung toan bo cau hoi trong de?"):
+  // options + cau hoi cua de, cac passage cua de (ke ca passage chi con
+  // duoc cau hoi cua de nay tro toi), part_media, roi moi xoa dong test_sets.
+  // Khong cham toi du lieu cua de khac. Tat ca trong 1 transaction.
   return transaction(() => {
-    db.prepare('UPDATE questions SET test_set_id = NULL WHERE test_set_id = ?').run(id);
-    db.prepare('UPDATE passages SET test_set_id = NULL WHERE test_set_id = ?').run(id);
+    const qids = db
+      .prepare('SELECT id, passage_id FROM questions WHERE test_set_id = ?')
+      .all(id);
+    const passageIds = [...new Set(qids.map((q) => q.passage_id).filter(Boolean))];
+    if (qids.length) {
+      const placeholders = qids.map(() => '?').join(',');
+      const ids = qids.map((q) => q.id);
+      db.prepare(`DELETE FROM options WHERE question_id IN (${placeholders})`).run(...ids);
+      db.prepare(`DELETE FROM answers WHERE question_id IN (${placeholders})`).run(...ids);
+      db.prepare(`DELETE FROM wrong_questions WHERE question_id IN (${placeholders})`).run(...ids);
+    }
+    db.prepare('DELETE FROM questions WHERE test_set_id = ?').run(id);
+    // Passage cua de: xoa theo test_set_id, va ca passage ma cau hoi cua de
+    // tro toi nhung khong con cau hoi nao khac tro toi nua.
+    db.prepare('DELETE FROM passages WHERE test_set_id = ?').run(id);
+    if (passageIds.length) {
+      const placeholders = passageIds.map(() => '?').join(',');
+      db.prepare(
+        `DELETE FROM passages WHERE id IN (${placeholders})
+         AND id NOT IN (SELECT passage_id FROM questions WHERE passage_id IS NOT NULL)`
+      ).run(...passageIds);
+    }
+    db.prepare('DELETE FROM part_media WHERE test_set_id = ?').run(id);
     const info = db.prepare('DELETE FROM test_sets WHERE id = ?').run(id);
     return info.changes > 0;
   });
