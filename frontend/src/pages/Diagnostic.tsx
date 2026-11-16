@@ -1,5 +1,5 @@
 // Chẩn đoán IELTS (Giai đoạn 1, v3) — IELTS-only.
-// (a) Listening+Reading: làm mock full TS-024 (90 phút, nghe 1 lần) rồi
+// (a) Listening+Reading: làm mock full TS-028 (90 phút, nghe 1 lần) rồi
 // lưu 1 attempt làm chẩn đoán; (b) bản đồ năng lực từ GET diagnostic/latest;
 // (c) baseline Writing; (d) baseline Speaking. Tất cả baseline đều ghi rõ
 // "Bài mẫu — nội dung tự soạn, chưa phải đề thi thật" và "Chưa chấm AI —
@@ -42,9 +42,9 @@ export default function Diagnostic() {
 
       <div className="card">
         <h2>(a) Listening + Reading — thi thử full 90 phút</h2>
-        <p>Làm bài thi thử đầy đủ (TS-024, 80 câu, 90 phút, nghe 1 lần) rồi quay lại đây lưu làm chẩn đoán.</p>
+        <p>Làm bài thi thử đầy đủ (TS-028, 80 câu, 90 phút, nghe 1 lần) rồi quay lại đây lưu làm chẩn đoán.</p>
         <div className="btn-row">
-          <Link className="btn" to="/mock?testSetId=TS-024&exam=ielts">▶ Làm bài chẩn đoán (TS-024)</Link>
+          <Link className="btn" to="/mock?testSetId=TS-028&exam=ielts">▶ Làm bài chẩn đoán (TS-028)</Link>
         </div>
         {attempts.length > 0 && (
           <>

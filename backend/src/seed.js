@@ -392,6 +392,47 @@ function seedIeltsSampleTypes() {
   return inserted;
 }
 
+/**
+ * Cambridge IELTS 21 Test 01 (TS-028) — de thi that, tro thanh de chan doan
+ * (thay TS-024). Mirror seedIeltsSample(): neu file
+ * data/ielts-cam21-test1.json chua co thi chi warn, khong tao de rong;
+ * chi seed khi TS-028 chua co cau nao.
+ */
+function seedIeltsCam21Test1() {
+  const list = readJsonArray('ielts-cam21-test1.json').filter(validSeedIeltsQuestion);
+  if (!list.length) {
+    console.log('[seed] khong co cau IELTS Cam 21 Test 1 hop le — bo qua TS-028.');
+    return 0;
+  }
+  if (!db.getTestSet('TS-028')) {
+    db.createTestSet({
+      id: 'TS-028',
+      title: 'Cambridge IELTS 21 — Test 01',
+      description:
+        'Cambridge IELTS 21 Academic, Test 01: Listening 4 Section + Reading 3 Passage (80 câu). Đề thi thật, dùng làm đề chẩn đoán.',
+      isPublished: 1,
+      exam: 'ielts',
+    });
+    console.log('[seed] da tao Cambridge IELTS 21 Test 01 TS-028.');
+  }
+  const existing = db.listQuestions({ testSetId: 'TS-028', limit: 1, offset: 0 });
+  if (existing.total > 0) {
+    console.log(`[seed] TS-028 da co ${existing.total} cau — bo qua seed Cam 21 Test 1.`);
+    return 0;
+  }
+  let inserted = 0;
+  for (const q of list) {
+    try {
+      db.insertQuestion({ ...q, exam: 'ielts', testSetId: 'TS-028' });
+      inserted += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua cau Cam 21 Test 1 ${q.id}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${inserted}/${list.length} cau Cam 21 Test 1 (TS-028).`);
+  return inserted;
+}
+
 function seedIeltsVocabulary() {
   const list = readJsonArray('ielts-sample-vocabulary.json').filter(
     (v) => v && typeof v.id === 'string' && typeof v.word === 'string' && typeof v.meaning === 'string'
@@ -520,6 +561,7 @@ function seedAll() {
   seedQuestions();
   seedIeltsSample();
   seedIeltsSampleTypes();
+  seedIeltsCam21Test1();
   seedPartMedia();
   seedVocabulary();
   seedIeltsVocabulary();
@@ -528,6 +570,7 @@ function seedAll() {
   seedDemoUsers();
   if (db.getTestSet('TS-024')) db.refreshTestSetTotal('TS-024');
   if (db.getTestSet('TS-027')) db.refreshTestSetTotal('TS-027');
+  if (db.getTestSet('TS-028')) db.refreshTestSetTotal('TS-028');
   console.log(
     `[seed] xong: ${db.countQuestions()} cau hoi, ${db.countVocabulary()} tu vung, ${db.countUsers()} user.`
   );
@@ -537,4 +580,4 @@ if (require.main === module) {
   seedAll();
 }
 
-module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedIeltsSample, seedIeltsSampleTypes, seedIeltsVocabulary, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };
+module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedIeltsSample, seedIeltsSampleTypes, seedIeltsCam21Test1, seedIeltsVocabulary, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };

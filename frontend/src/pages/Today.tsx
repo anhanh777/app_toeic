@@ -282,7 +282,7 @@ function IeltsDrillBlock({ diagnosticDone, weakestType, questionCount, onDone }:
   const start = async () => {
     setStarted(true); setError(null);
     try {
-      const all = await api.questionsAll(undefined, 'TS-024', 'ielts');
+      const all = await api.questionsAll(undefined, undefined, 'ielts');
       const filtered = weakestType ? all.filter(q => q.questionType === weakestType) : all;
       setQs(filtered.slice(0, 10));
     } catch (e) { setError(e); }
@@ -343,15 +343,15 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    // Đoạn Reading đầu tiên của TS-024 (part 5–7) + 1 đoạn script
+    // Đoạn Reading đầu tiên của TS-028 (part 5–7) + 1 đoạn script
     // Listening (part 1–4) để đọc chính tả.
-    api.questions(5, 50, 0, '', 'TS-024', 'ielts')
+    api.questions(5, 50, 0, '', 'TS-028', 'ielts')
       .then(items => {
         const withText = items.find(q => q.passageText);
         if (withText?.passageText) setPassage(withText.passageText);
       })
       .catch(setError);
-    api.questions(1, 50, 0, '', 'TS-024', 'ielts')
+    api.questions(1, 50, 0, '', 'TS-028', 'ielts')
       .then(items => {
         const withScript = items.find(q => q.script);
         if (withScript?.script) setScript(withScript.script);
@@ -378,7 +378,7 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
       {mode === 'skim' ? (
         <>
           <p>Đọc lướt đoạn văn dưới đây trong <strong>90 giây</strong>, rồi tóm tắt mỗi đoạn bằng <strong>5–8 từ</strong>.</p>
-          <div className="passage" style={{ maxHeight: '220px', overflow: 'auto' }}>{passage || 'Đang tải đoạn văn mẫu (TS-024)…'}</div>
+          <div className="passage" style={{ maxHeight: '220px', overflow: 'auto' }}>{passage || 'Đang tải đoạn văn mẫu (TS-028)…'}</div>
           <p>⏱ Còn lại: <strong>{fmtClock(left)}</strong></p>
           <div className="btn-row">
             <button className="btn btn-sm" disabled={started} onClick={startSkim}>Bắt đầu 90 giây</button>

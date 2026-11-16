@@ -71,9 +71,10 @@ export default function PracticeSession() {
   // testSetId) VÀ đề đó có file audio cấp Part. Đề chưa có audio Part
   // (hoặc luyện theo Part không kèm đề) thì giữ nút nghe từng câu như cũ.
   const usePartAudio = isListening && !!testSetId && !!partMedia[part];
-  // IELTS: đề mẫu (VD TS-024) chưa có audio — không render nút nghe hỏng,
-  // chỉ hiện ghi chú và cho làm bài bình thường. Cũng không dùng TTS đọc
-  // transcript cho IELTS (đọc trước thì lộ nội dung bài nghe).
+  // IELTS: đề chưa có audio (VD đề mẫu TS-024) — không render nút nghe hỏng,
+  // chỉ hiện ghi chú và cho làm bài bình thường. Đề chẩn đoán TS-028 đã có
+  // audio cấp Part. Cũng không dùng TTS đọc transcript cho IELTS (đọc trước
+  // thì lộ nội dung bài nghe).
   const ieltsNoAudio = isIelts && isListening && partMediaLoaded
     && !partMedia[part] && !questions.some(q => q.audioUrl);
 

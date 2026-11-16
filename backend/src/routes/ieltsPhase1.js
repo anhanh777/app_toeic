@@ -279,12 +279,12 @@ router.post('/ielts/today/complete', authMiddleware, todayCompleteHandler('ielts
 function badDayTaskIelts() {
   const dow = new Date().getUTCDay(); // 0 = CN ... 6 = T7
   if (dow === 1 || dow === 3 || dow === 5) {
-    // T2/T4/T6: dictation — trich doan script Section 1 cua de mau TS-024.
+    // T2/T4/T6: dictation — trich doan script Section 1 cua Cam 21 Test 1 (TS-028).
     let excerpt = null;
-    const passage = db.getPassage('IELTS-L-S1');
+    const passage = db.getPassage('C21-L-T1-S1');
     if (passage && passage.script) excerpt = passage.script.slice(0, 600);
     if (!excerpt) {
-      excerpt = 'Good morning, Central Library. How can I help you? Hello, I would like to book a place on the guided tour next Saturday, please. Of course. The tour starts at 9.30 in the morning and lasts about two hours.';
+      excerpt = 'WOMAN: Hello, Oyster Bay Sailing Club. How can I help you? MAN: Oh hi. I\'d like to find out about sailing courses for beginners. WOMAN: No problem. Is it for yourself? MAN: Yes. I had a look online but I\'m not sure which course would be best.';
     }
     return {
       kind: 'dictation',
@@ -335,7 +335,7 @@ function badDayHandler(defaultExam) {
 router.post('/today/bad-day', authMiddleware, badDayHandler('toeic'));
 router.post('/ielts/today/bad-day', authMiddleware, badDayHandler('ielts'));
 
-/* ---------------- diagnostic (dung lai flow mock TS-024) ---------------- */
+/* ---------------- diagnostic (dung lai flow mock TS-028) ---------------- */
 
 router.post('/ielts/diagnostic/complete', authMiddleware, (req, res) => {
   const attemptId = parseInt((req.body || {}).attemptId, 10);
