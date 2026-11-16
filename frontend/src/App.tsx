@@ -1,10 +1,16 @@
 import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AuthProvider, useAuth } from './auth';
-import { ExamProvider, ExamPicker, useExam } from './exam';
+import { ExamProvider, ExamPicker, useExam, useIeltsSetupRedirect } from './exam';
 import { applyTheme, resolveTheme, type Theme } from './theme';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Today from './pages/Today';
+import IeltsSetup from './pages/IeltsSetup';
+import Diagnostic from './pages/Diagnostic';
+import ErrorLog from './pages/ErrorLog';
+import Writing from './pages/Writing';
+import Speaking from './pages/Speaking';
 import Practice from './pages/Practice';
 import PracticeSession from './pages/PracticeSession';
 import TestSetDetail from './pages/TestSetDetail';
@@ -51,6 +57,9 @@ function Layout() {
   const { user, logout } = useAuth();
   const { exam, clearExam } = useExam();
   const nav = useNavigate();
+  // IELTS-only: chưa setup lần đầu thì chuyển sang /ielts/setup
+  // (TOEIC không bao giờ bị chuyển). Xem exam.tsx.
+  useIeltsSetupRedirect();
   const brand = exam === 'ielts'
     ? '🎓 Luyện thi IELTS'
     : exam === 'toeic'
@@ -65,9 +74,19 @@ function Layout() {
             {exam && (
               <>
                 <NavLink to="/" end>Trang chủ</NavLink>
+                {/* "Hôm nay" dùng chung cho CẢ 2 kỳ thi (streak + bad-day dùng chung). */}
+                <NavLink to="/today">Hôm nay</NavLink>
                 <NavLink to="/practice">Luyện tập</NavLink>
                 <NavLink to="/mock">Thi thử</NavLink>
                 <NavLink to="/wrong">Câu sai</NavLink>
+                {exam === 'ielts' && (
+                  <>
+                    <NavLink to="/ielts/diagnostic">Chẩn đoán</NavLink>
+                    <NavLink to="/ielts/errors">Sổ lỗi</NavLink>
+                    <NavLink to="/ielts/writing">Viết</NavLink>
+                    <NavLink to="/ielts/speaking">Nói</NavLink>
+                  </>
+                )}
                 <NavLink to="/vocabulary">Từ vựng</NavLink>
                 <NavLink to="/stats">Thống kê</NavLink>
                 <NavLink to="/leaderboard">Xếp hạng</NavLink>
@@ -90,6 +109,13 @@ function Layout() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
+            {/* "Hôm nay" dùng chung cho cả 2 kỳ thi. Các route IELTS còn lại chỉ hiện khi exam==='ielts'. */}
+            <Route path="/today" element={<RequireAuth><Today /></RequireAuth>} />
+            <Route path="/ielts/setup" element={<RequireAuth><IeltsSetup /></RequireAuth>} />
+            <Route path="/ielts/diagnostic" element={<RequireAuth><Diagnostic /></RequireAuth>} />
+            <Route path="/ielts/errors" element={<RequireAuth><ErrorLog /></RequireAuth>} />
+            <Route path="/ielts/writing" element={<RequireAuth><Writing /></RequireAuth>} />
+            <Route path="/ielts/speaking" element={<RequireAuth><Speaking /></RequireAuth>} />
             <Route path="/practice" element={<RequireAuth><Practice /></RequireAuth>} />
             <Route path="/practice/test-set/:id" element={<RequireAuth><TestSetDetail /></RequireAuth>} />
             <Route path="/practice/session" element={<RequireAuth><PracticeSession /></RequireAuth>} />

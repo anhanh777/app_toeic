@@ -3,11 +3,17 @@ import { Link, useParams } from 'react-router-dom';
 import { api, scoreLevel } from '../api';
 import { ErrorBox, partName, TierBadge } from '../components';
 import { bandLevel, isFillIn, partNameFor } from '../exam';
+import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 
 export default function Result() {
   const { id } = useParams();
   const [data, setData] = useState<Awaited<ReturnType<typeof api.testResult>> | null>(null);
   const [error, setError] = useState<unknown>(null);
+  // IELTS-only: mã nguyên nhân đã ghi + đánh dấu đoán mò, theo id câu.
+  const [causeById, setCauseById] = useState<Record<string, string>>({});
+  const [guessedById, setGuessedById] = useState<Record<string, boolean>>({});
+  // Part của từng câu sai (để chọn đúng nhóm mã L/R) — detail không có part.
+  const [partById, setPartById] = useState<Record<string, number>>({});
 
   useEffect(() => {
     if (id) api.testResult(Number(id)).then(setData).catch(setError);
@@ -22,6 +28,21 @@ export default function Result() {
   // Chi tiết câu sai (backend trả kèm detail): ưu tiên detail có flag
   // correct=false; không có thì fallback về danh sách id như cũ.
   const detailWrong = data.detail?.filter(d => d.correct === false) ?? [];
+
+  // IELTS-only: lấy part của từng câu sai để picker hiện đúng nhóm mã L/R.
+  useEffect(() => {
+    if (!isIelts || !detailWrong.length) return;
+    let cancelled = false;
+    Promise.all(detailWrong.map(d => api.question(d.questionId).catch(() => null)))
+      .then(qs => {
+        if (cancelled) return;
+        const m: Record<string, number> = {};
+        qs.forEach((q, i) => { if (q) m[detailWrong[i].questionId] = q.part; });
+        setPartById(m);
+      });
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isIelts, data]);
 
   return (
     <div>
@@ -81,16 +102,41 @@ export default function Result() {
       )}
       {detailWrong.length ? (
         <div className="card"><h2>Câu làm sai ({detailWrong.length})</h2>
-          {detailWrong.map(d => (
-            <div key={d.questionId} style={{ borderBottom: '1px solid var(--border-soft)', padding: '.5rem 0' }}>
-              {d.content && <p style={{ margin: '.2rem 0' }}><strong>{d.content}</strong></p>}
-              <p className="muted" style={{ margin: '.2rem 0' }}>
-                {isFillIn(d.questionType) ? 'Đáp án bạn gõ: ' : 'Đáp án bạn chọn: '}
-                <strong>{d.selected ?? '—'}</strong>
-                {' • '}Đáp án đúng: <strong>{d.correctText ?? d.correctLabel ?? '—'}</strong>
-              </p>
-            </div>
-          ))}
+          {detailWrong.map(d => {
+            // IELTS-only: cổng đáp án đúng — phải chọn nguyên nhân gốc
+            // (POST /api/ielts/error-log) thì mới hiện đáp án đúng của
+            // câu đó. TOEIC: hiện đáp án đúng như cũ, không có picker.
+            const causeLogged = !!causeById[d.questionId];
+            const part = partById[d.questionId];
+            return (
+              <div key={d.questionId} style={{ borderBottom: '1px solid var(--border-soft)', padding: '.5rem 0' }}>
+                {d.content && <p style={{ margin: '.2rem 0' }}><strong>{d.content}</strong></p>}
+                {isIelts && !causeLogged ? (
+                  <>
+                    <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.3rem', fontWeight: 500 }}>
+                      <input type="checkbox" checked={!!guessedById[d.questionId]}
+                        onChange={e => setGuessedById(m => ({ ...m, [d.questionId]: e.target.checked }))} />
+                      Câu này mình đoán mò 🤔
+                    </label>
+                    <RootCausePicker
+                      skill={part ? skillOfPart(part) : ''}
+                      questionId={d.questionId}
+                      attemptId={id ? Number(id) : undefined}
+                      questionType={d.questionType}
+                      guessed={!!guessedById[d.questionId]}
+                      onLogged={code => setCauseById(m => ({ ...m, [d.questionId]: code }))}
+                    />
+                  </>
+                ) : (
+                  <p className="muted" style={{ margin: '.2rem 0' }}>
+                    {isFillIn(d.questionType) ? 'Đáp án bạn gõ: ' : 'Đáp án bạn chọn: '}
+                    <strong>{d.selected ?? '—'}</strong>
+                    {' • '}Đáp án đúng: <strong>{d.correctText ?? d.correctLabel ?? '—'}</strong>
+                  </p>
+                )}
+              </div>
+            );
+          })}
           <div className="btn-row"><Link className="btn" to="/wrong">Ôn lại câu sai</Link></div>
         </div>
       ) : data.wrongQuestionIds?.length ? (

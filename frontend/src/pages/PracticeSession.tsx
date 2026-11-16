@@ -14,6 +14,7 @@ import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, partName } from '../components';
 import { isFillIn, partLabel, TextSizeControl, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
+import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
 
 type AnswerResult = { correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number };
@@ -33,6 +34,10 @@ export default function PracticeSession() {
   // Chọn đáp án + kết quả chấm lưu theo id câu (mỗi câu chấm độc lập).
   const [selectedById, setSelectedById] = useState<Record<string, string>>({});
   const [resultById, setResultById] = useState<Record<string, AnswerResult>>({});
+  // IELTS-only: đánh dấu đoán mò + mã nguyên nhân gốc đã ghi (theo id câu).
+  // Giải thích bị ẨN ở UI cho tới khi ghi xong nguyên nhân (xem renderQuestion).
+  const [guessedById, setGuessedById] = useState<Record<string, boolean>>({});
+  const [causeById, setCauseById] = useState<Record<string, string>>({});
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [score, setScore] = useState({ correct: 0, done: 0 });
@@ -208,7 +213,18 @@ export default function PracticeSession() {
             </div>
           )}
           {!result && (
-            <div className="btn-row"><button className="btn btn-sm" disabled={!selected || overLimit} onClick={() => void submit(q)}>Nộp đáp án</button></div>
+            <div className="btn-row">
+              <button className="btn btn-sm" disabled={!selected || overLimit} onClick={() => void submit(q)}>Nộp đáp án</button>
+              {/* IELTS-only: đánh dấu đoán mò — kể cả làm đúng mà đoán mò
+                  thì vẫn phải ghi nguyên nhân trước khi xem giải thích. */}
+              {isIelts && (
+                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.3rem', fontWeight: 500, margin: 0 }}>
+                  <input type="checkbox" checked={!!guessedById[q.id]}
+                    onChange={e => setGuessedById(m => ({ ...m, [q.id]: e.target.checked }))} />
+                  Đoán mò 🤔
+                </label>
+              )}
+            </div>
           )}
         </div>
         {result && (
@@ -216,8 +232,31 @@ export default function PracticeSession() {
             <p style={{ color: result.correct ? 'var(--green-ink)' : 'var(--red-ink)', fontWeight: 700 }}>
               {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${result.correctLabel ?? result.correctText ?? ''}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
             </p>
-            {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}
-            {result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
+            {(() => {
+              // IELTS-only: cổng giải thích — câu sai HOẶC đoán mò thì ẨN
+              // giải thích cho tới khi người học chọn + ghi nguyên nhân
+              // gốc (POST /api/ielts/error-log). Giải thích đã có sẵn
+              // trong API response, chỉ ẩn ở UI. TOEIC: hiện như cũ.
+              const needsCause = isIelts && (!result.correct || !!guessedById[q.id]);
+              const causeLogged = !!causeById[q.id];
+              if (needsCause && !causeLogged) {
+                return (
+                  <RootCausePicker
+                    skill={skillOfPart(q.part)}
+                    questionId={q.id}
+                    questionType={q.questionType}
+                    guessed={!!guessedById[q.id]}
+                    onLogged={code => setCauseById(m => ({ ...m, [q.id]: code }))}
+                  />
+                );
+              }
+              return (
+                <>
+                  {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}
+                  {result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
+                </>
+              );
+            })()}
           </div>
         )}
       </div>

@@ -107,6 +107,68 @@ export interface Attempt {
   /** IELTS (giai đoạn 2): kỳ thi + band (chỉ bài full IELTS mới có). */
   exam?: string; listeningBand?: number; readingBand?: number; overallBand?: number;
 }
+
+// ---- IELTS Giai đoạn 1 (v3): hồ sơ, Hôm nay, chẩn đoán, Viết/Nói,
+// sổ lỗi + quái (error codes = monsters). Backend đang xây song song
+// theo đúng contract này; các endpoint Today dùng chung có bản alias
+// /api/ielts/today* mặc định exam=ielts. ----
+export type QuitReason = 'chan' | 'met' | 'khong_thay_tien_bo';
+export interface IeltsProfile {
+  examDate?: string | null; targetListening?: number | null; targetReading?: number | null;
+  targetWriting?: number | null; targetSpeaking?: number | null;
+  quitReason?: QuitReason | null; setupDone?: boolean; skipped?: boolean;
+}
+export interface TodayBlock {
+  id: 'review' | 'drill' | 'active' | string;
+  dueCount?: number; dueIds?: string[];
+  weakestType?: string | null; weakestPart?: number | null; questionCount?: number;
+  kind?: string;
+}
+export interface TodayData {
+  date: string; diagnosticDone: boolean; profile: IeltsProfile | null;
+  blocks: TodayBlock[];
+  streak: { current: number; freeRestLeft: number; freeRestUsed: number };
+  badDayAvailable: boolean; carriedOver: string[];
+}
+export interface BadDayTask { kind: 'dictation' | 'writing' | 'speaking' | string; title: string; detail: string; }
+export interface DiagnosticMap {
+  bySection?: Record<string, { correct: number; total: number }>;
+  byPassage?: Record<string, { correct: number; total: number }>;
+  byType?: Record<string, { correct: number; total: number }>;
+  weakestTypes?: string[]; topErrorGroups?: { code: string; count: number }[];
+  bands?: { listening?: number | null; reading?: number | null; overall?: number | null };
+  totalCorrect?: number; attemptId?: number; createdAt?: string;
+}
+export interface WritingTask {
+  id: string; type: 'task1' | 'task2'; title: string; prompt: string;
+  chartData?: string[][] | null; minutes: number; isSample?: boolean;
+}
+export interface WritingSubmission {
+  id: number; taskId: string; content: string; wordCount?: number;
+  durationSec?: number | null; selfScores?: Record<string, number> | null;
+  isBaseline?: boolean; createdAt?: string;
+}
+export interface SpeakingPrompt {
+  id: string; part: 1 | 2 | 3; topic: string; questions?: string[];
+  cueCard?: string; bullets?: string[];
+}
+export interface SpeakingRecording {
+  id: number; promptId: string; part: number; audioData?: string;
+  mimeType?: string; durationSec?: number | null; isBaseline?: boolean; createdAt?: string;
+}
+export interface ErrorLogEntry {
+  id: number; questionId?: string | null; attemptId?: number | null;
+  skill: 'listening' | 'reading' | 'writing' | 'speaking' | string;
+  questionType?: string | null; errorCode: string; evidence?: string | null;
+  missedKeyword?: string | null; timeSpentSec?: number | null; guessed?: boolean;
+  dueAt?: string | null; reviewCount?: number; createdAt?: string;
+}
+export interface Monster {
+  code: string; skill: string; name: string;
+  total: number; resolved: number; hits: number; killed: boolean; hp: number;
+}
+export interface ErrorCode { code: string; skill: string; name: string; }
+export interface WeeklyError { week: string; code: string; count: number; }
 export interface TestSetPartCount { part: number; count: number; }
 export interface TestSetMissing { part: number; missing: number; }
 export interface TestSetProgress {
@@ -360,6 +422,43 @@ export const api = {
   adminBulkAddTestSetQuestions: (id: string, questions: unknown[]) =>
     req<{ imported: number; errors: { index: number; reason: string }[] }>(
       `/api/admin/test-sets/${encodeURIComponent(id)}/questions/bulk`, { method: 'POST', body: JSON.stringify({ questions }) }),
+
+  // ---- IELTS Giai đoạn 1 (v3) ----
+  ieltsProfile: () => req<IeltsProfile>('/api/ielts/profile'),
+  saveIeltsProfile: (body: Partial<IeltsProfile>) =>
+    req<IeltsProfile>('/api/ielts/profile', { method: 'POST', body: JSON.stringify(body) }),
+
+  // "Hôm nay" dùng chung cho cả 2 kỳ thi (alias IELTS mặc định exam=ielts).
+  today: (exam?: string) => req<TodayData>(exam ? `/api/today?exam=${encodeURIComponent(exam)}` : '/api/today'),
+  ieltsToday: () => req<TodayData>('/api/ielts/today'),
+  completeTodayBlock: (blockId: string, minutes: number, exam?: string) =>
+    req<{ ok: boolean }>(exam ? `/api/today/complete?exam=${encodeURIComponent(exam)}` : '/api/today/complete', { method: 'POST', body: JSON.stringify({ blockId, minutes }) }),
+  todayBadDay: (exam?: string) =>
+    req<BadDayTask>(exam ? `/api/today/bad-day?exam=${encodeURIComponent(exam)}` : '/api/today/bad-day', { method: 'POST' }),
+
+  completeDiagnostic: (attemptId: number) =>
+    req<DiagnosticMap>('/api/ielts/diagnostic/complete', { method: 'POST', body: JSON.stringify({ attemptId }) }),
+  latestDiagnostic: () => req<DiagnosticMap | null>('/api/ielts/diagnostic/latest'),
+
+  writingTasks: () => req<WritingTask[]>('/api/ielts/writing/tasks'),
+  writingSubmissions: () => req<WritingSubmission[]>('/api/ielts/writing/submissions'),
+  submitWriting: (body: { taskId: string; content: string; durationSec?: number; selfScores?: Record<string, number>; isBaseline?: boolean }) =>
+    req<WritingSubmission>('/api/ielts/writing/submissions', { method: 'POST', body: JSON.stringify(body) }),
+
+  speakingPrompts: () => req<SpeakingPrompt[]>('/api/ielts/speaking/prompts'),
+  speakingRecordings: () => req<SpeakingRecording[]>('/api/ielts/speaking/recordings'),
+  saveSpeakingRecording: (body: { promptId: string; part: number; audioBase64: string; mimeType?: string; durationSec?: number; isBaseline?: boolean }) =>
+    req<SpeakingRecording>('/api/ielts/speaking/recordings', { method: 'POST', body: JSON.stringify(body) }),
+
+  logError: (body: { questionId?: string; attemptId?: number; skill: string; questionType?: string; errorCode: string; evidence?: string; missedKeyword?: string; timeSpentSec?: number; guessed?: boolean }) =>
+    req<ErrorLogEntry>('/api/ielts/error-log', { method: 'POST', body: JSON.stringify(body) }),
+  errorLog: () => req<ErrorLogEntry[]>('/api/ielts/error-log'),
+  errorLogDue: () => req<ErrorLogEntry[]>('/api/ielts/error-log/due'),
+  reviewError: (id: number, correct: boolean) =>
+    req<{ ok: boolean; xpAwarded?: number }>(`/api/ielts/error-log/${id}/review`, { method: 'POST', body: JSON.stringify({ correct }) }),
+  errorLogWeekly: () => req<WeeklyError[]>('/api/ielts/error-log/weekly'),
+  monsters: () => req<Monster[]>('/api/ielts/monsters'),
+  errorCodes: () => req<ErrorCode[]>('/api/ielts/error-codes'),
 
   // Admin
   adminQuestions: async (part?: number, limit = 50, offset = 0, exam?: string) => {

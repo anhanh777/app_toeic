@@ -169,6 +169,125 @@ CREATE TABLE IF NOT EXISTS xp_events (
   reason TEXT,
   created_at TEXT
 );
+/* ---------------- IELTS Phase 1 (them moi, khong sua bang cu) ---------------- */
+CREATE TABLE IF NOT EXISTS ielts_profiles (
+  user_id INTEGER PRIMARY KEY,
+  exam_date TEXT,
+  target_listening REAL,
+  target_reading REAL,
+  target_writing REAL,
+  target_speaking REAL,
+  quit_reason TEXT,
+  setup_done INTEGER DEFAULT 0,
+  skipped INTEGER DEFAULT 0,
+  updated_at TEXT
+);
+CREATE TABLE IF NOT EXISTS error_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  question_id TEXT,
+  attempt_id INTEGER,
+  skill TEXT,
+  question_type TEXT,
+  error_code TEXT NOT NULL,
+  evidence TEXT,
+  missed_keyword TEXT,
+  time_spent_sec INTEGER,
+  guessed INTEGER DEFAULT 0,
+  review_due TEXT,
+  review_stage INTEGER DEFAULT 0,
+  resolved INTEGER DEFAULT 0,
+  last_review_correct INTEGER,
+  created_at TEXT
+);
+CREATE TABLE IF NOT EXISTS monster_state (
+  user_id INTEGER,
+  error_code TEXT,
+  hits INTEGER DEFAULT 0,
+  killed INTEGER DEFAULT 0,
+  killed_at TEXT,
+  updated_at TEXT,
+  PRIMARY KEY (user_id, error_code)
+);
+CREATE TABLE IF NOT EXISTS sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  date TEXT,
+  minutes INTEGER,
+  module TEXT,
+  goal_completed INTEGER DEFAULT 0,
+  exam TEXT,
+  created_at TEXT
+);
+CREATE TABLE IF NOT EXISTS mock_tests (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  kind TEXT,
+  exam TEXT DEFAULT 'ielts',
+  test_set_id TEXT,
+  attempt_id INTEGER,
+  listening_correct INTEGER,
+  reading_correct INTEGER,
+  listening_band REAL,
+  reading_band REAL,
+  overall_band REAL,
+  duration_sec INTEGER,
+  valid INTEGER DEFAULT 1,
+  ability_map TEXT,
+  created_at TEXT
+);
+CREATE TABLE IF NOT EXISTS plan (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  week_start TEXT,
+  focus_type TEXT,
+  focus_code TEXT,
+  created_at TEXT
+);
+CREATE TABLE IF NOT EXISTS writing_tasks (
+  id TEXT PRIMARY KEY,
+  task_type TEXT,
+  prompt_type TEXT,
+  topic TEXT,
+  prompt TEXT,
+  chart_data TEXT,
+  is_sample INTEGER DEFAULT 1
+);
+CREATE TABLE IF NOT EXISTS writing_submissions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  task_id TEXT,
+  content TEXT,
+  word_count INTEGER,
+  duration_sec INTEGER,
+  self_scores TEXT,
+  is_baseline INTEGER DEFAULT 0,
+  created_at TEXT
+);
+CREATE TABLE IF NOT EXISTS speaking_prompts (
+  id TEXT PRIMARY KEY,
+  part INTEGER,
+  topic TEXT,
+  prompt TEXT,
+  cue_card TEXT,
+  is_sample INTEGER DEFAULT 1
+);
+CREATE TABLE IF NOT EXISTS speaking_recordings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  prompt_id TEXT,
+  part INTEGER,
+  audio_data TEXT,
+  mime_type TEXT,
+  duration_sec INTEGER,
+  is_baseline INTEGER DEFAULT 0,
+  created_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_error_log_user_due ON error_log(user_id, review_due, resolved);
+CREATE INDEX IF NOT EXISTS idx_sessions_user_date ON sessions(user_id, date);
+CREATE INDEX IF NOT EXISTS idx_mock_tests_user_kind ON mock_tests(user_id, kind);
+CREATE INDEX IF NOT EXISTS idx_writing_sub_user ON writing_submissions(user_id, id);
+CREATE INDEX IF NOT EXISTS idx_speaking_rec_user ON speaking_recordings(user_id, id);
 CREATE INDEX IF NOT EXISTS idx_questions_part ON questions(part);
 CREATE INDEX IF NOT EXISTS idx_attempts_user ON attempts(user_id);
 CREATE INDEX IF NOT EXISTS idx_answers_question ON answers(question_id);
@@ -1423,6 +1542,535 @@ function listAllUsersPublic() {
     .map(mapUser);
 }
 
+/* ---------------- IELTS Phase 1: profile, error log, monster, sessions,
+   mock_tests, plan, writing, speaking ----------------
+ * Ngay thang: chuoi ISO YYYY-MM-DD (UTC, cung quy uoc voi xp.js).
+ * Lich on tap loi (spaced repetition): cac moc ngay [1, 3, 7, 14, 30].
+ *   - Moi loi tao o stage 0, han on = ngay mai.
+ *   - On dung: stage + 1, han on = hom nay + days[stage moi]; stage 5
+ *     (on dung sau moc 30 ngay) -> resolved = 1.
+ *   - On sai: stage ve 0, han on = ngay mai.
+ * Quai (monster): moi lan on dung 1 loi tinh 1 hit cho error_code do;
+ *   hits toi da 3 -> killed = 1, ghi killed_at. */
+
+function todayStr() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function addDaysStr(dateStr, days) {
+  const d = new Date(`${dateStr}T00:00:00.000Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+const REVIEW_DAYS = [1, 3, 7, 14, 30];
+
+function mapIeltsProfile(row) {
+  if (!row) return null;
+  return {
+    userId: row.user_id,
+    examDate: row.exam_date || null,
+    targetListening: row.target_listening != null ? row.target_listening : null,
+    targetReading: row.target_reading != null ? row.target_reading : null,
+    targetWriting: row.target_writing != null ? row.target_writing : null,
+    targetSpeaking: row.target_speaking != null ? row.target_speaking : null,
+    quitReason: row.quit_reason || null,
+    setupDone: row.setup_done === 1,
+    skipped: row.skipped === 1,
+    updatedAt: row.updated_at,
+  };
+}
+
+function getIeltsProfile(userId) {
+  const row = db.prepare('SELECT * FROM ielts_profiles WHERE user_id = ?').get(userId);
+  return mapIeltsProfile(row);
+}
+
+function setIeltsProfile(userId, fields) {
+  const cur = getIeltsProfile(userId);
+  const next = {
+    exam_date: fields.examDate !== undefined ? fields.examDate : (cur ? cur.examDate : null),
+    target_listening: fields.targetListening !== undefined ? fields.targetListening : (cur ? cur.targetListening : null),
+    target_reading: fields.targetReading !== undefined ? fields.targetReading : (cur ? cur.targetReading : null),
+    target_writing: fields.targetWriting !== undefined ? fields.targetWriting : (cur ? cur.targetWriting : null),
+    target_speaking: fields.targetSpeaking !== undefined ? fields.targetSpeaking : (cur ? cur.targetSpeaking : null),
+    quit_reason: fields.quitReason !== undefined ? fields.quitReason : (cur ? cur.quitReason : null),
+    setup_done: fields.setupDone !== undefined ? (fields.setupDone ? 1 : 0) : (cur ? (cur.setupDone ? 1 : 0) : 0),
+    skipped: fields.skipped !== undefined ? (fields.skipped ? 1 : 0) : (cur ? (cur.skipped ? 1 : 0) : 0),
+  };
+  db.prepare(
+    `INSERT INTO ielts_profiles (user_id, exam_date, target_listening, target_reading, target_writing, target_speaking, quit_reason, setup_done, skipped, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+     ON CONFLICT(user_id) DO UPDATE SET exam_date = excluded.exam_date,
+       target_listening = excluded.target_listening, target_reading = excluded.target_reading,
+       target_writing = excluded.target_writing, target_speaking = excluded.target_speaking,
+       quit_reason = excluded.quit_reason, setup_done = excluded.setup_done,
+       skipped = excluded.skipped, updated_at = excluded.updated_at`
+  ).run(userId, next.exam_date, next.target_listening, next.target_reading, next.target_writing, next.target_speaking, next.quit_reason, next.setup_done, next.skipped, nowIso());
+  return getIeltsProfile(userId);
+}
+
+/* ---------------- error log ---------------- */
+
+function mapErrorLog(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    userId: row.user_id,
+    questionId: row.question_id || null,
+    attemptId: row.attempt_id != null ? row.attempt_id : null,
+    skill: row.skill,
+    questionType: row.question_type || null,
+    errorCode: row.error_code,
+    evidence: row.evidence || null,
+    missedKeyword: row.missed_keyword || null,
+    timeSpentSec: row.time_spent_sec != null ? row.time_spent_sec : null,
+    guessed: row.guessed === 1,
+    reviewDue: row.review_due || null,
+    reviewStage: row.review_stage != null ? row.review_stage : 0,
+    resolved: row.resolved === 1,
+    lastReviewCorrect: row.last_review_correct == null ? null : row.last_review_correct === 1,
+    createdAt: row.created_at,
+  };
+}
+
+function createErrorLog({ userId, questionId, attemptId, skill, questionType, errorCode, evidence, missedKeyword, timeSpentSec, guessed }) {
+  const info = db.prepare(
+    `INSERT INTO error_log (user_id, question_id, attempt_id, skill, question_type, error_code, evidence, missed_keyword, time_spent_sec, guessed, review_due, review_stage, resolved, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 0, ?)`
+  ).run(
+    userId,
+    questionId || null,
+    attemptId != null ? attemptId : null,
+    skill,
+    questionType || null,
+    errorCode,
+    evidence || null,
+    missedKeyword || null,
+    timeSpentSec != null ? timeSpentSec : null,
+    guessed ? 1 : 0,
+    addDaysStr(todayStr(), 1),
+    nowIso()
+  );
+  return getErrorLogById(Number(info.lastInsertRowid));
+}
+
+function getErrorLogById(id) {
+  const row = db.prepare('SELECT * FROM error_log WHERE id = ?').get(id);
+  return mapErrorLog(row);
+}
+
+function listErrorLog(userId, { skill, code, resolved } = {}) {
+  const where = ['user_id = ?'];
+  const params = [userId];
+  if (skill) { where.push('skill = ?'); params.push(skill); }
+  if (code) { where.push('error_code = ?'); params.push(code); }
+  if (resolved !== undefined) { where.push('resolved = ?'); params.push(resolved ? 1 : 0); }
+  return db.prepare(`SELECT * FROM error_log WHERE ${where.join(' AND ')} ORDER BY id DESC`).all(...params).map(mapErrorLog);
+}
+
+/** Cac loi den han on (review_due <= hom nay, chua xong). */
+function listDueErrorLog(userId) {
+  return db.prepare(
+    'SELECT * FROM error_log WHERE user_id = ? AND resolved = 0 AND review_due <= ? ORDER BY review_due ASC, id ASC'
+  ).all(userId, todayStr()).map(mapErrorLog);
+}
+
+/**
+ * Tien 1 buoc on tap cho 1 loi. Tra ve row da cap nhat (null neu khong co).
+ * Dung: stage + 1, han = hom nay + days[stage moi]; dung o stage 4 -> stage 5,
+ * resolved = 1. Sai: stage ve 0, han = ngay mai.
+ */
+function reviewErrorLog(id, correct) {
+  const cur = getErrorLogById(id);
+  if (!cur) return null;
+  let stage = cur.reviewStage;
+  let resolved = 0;
+  let due;
+  if (correct) {
+    stage += 1;
+    if (stage >= REVIEW_DAYS.length) {
+      stage = REVIEW_DAYS.length;
+      resolved = 1;
+      due = cur.reviewDue;
+    } else {
+      due = addDaysStr(todayStr(), REVIEW_DAYS[stage]);
+    }
+  } else {
+    stage = 0;
+    due = addDaysStr(todayStr(), 1);
+  }
+  db.prepare(
+    'UPDATE error_log SET review_stage = ?, review_due = ?, resolved = ?, last_review_correct = ? WHERE id = ?'
+  ).run(stage, due, resolved, correct ? 1 : 0, id);
+  return getErrorLogById(id);
+}
+
+/** Dem loi theo ma (tong + so da xong) cho man quai. */
+function getErrorLogCountsByCode(userId) {
+  return db.prepare(
+    `SELECT error_code AS code, COUNT(*) AS total,
+            COALESCE(SUM(resolved), 0) AS resolved
+     FROM error_log WHERE user_id = ? GROUP BY error_code`
+  ).all(userId).map((r) => ({ code: r.code, total: r.total, resolved: r.resolved }));
+}
+
+/* ---------------- monster state ---------------- */
+
+function mapMonsterState(row) {
+  if (!row) return null;
+  return {
+    userId: row.user_id,
+    errorCode: row.error_code,
+    hits: row.hits != null ? row.hits : 0,
+    killed: row.killed === 1,
+    killedAt: row.killed_at || null,
+    updatedAt: row.updated_at,
+  };
+}
+
+function getMonsterState(userId, errorCode) {
+  const row = db.prepare('SELECT * FROM monster_state WHERE user_id = ? AND error_code = ?').get(userId, errorCode);
+  return mapMonsterState(row);
+}
+
+/** Cong 1 hit cho 1 ma loi; du 3 hit thi quai chet (killed = 1). */
+function bumpMonsterHit(userId, errorCode) {
+  const cur = getMonsterState(userId, errorCode);
+  const hits = Math.min(3, (cur ? cur.hits : 0) + 1);
+  const killed = hits >= 3 ? 1 : 0;
+  db.prepare(
+    `INSERT INTO monster_state (user_id, error_code, hits, killed, killed_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?)
+     ON CONFLICT(user_id, error_code) DO UPDATE SET hits = excluded.hits,
+       killed = excluded.killed, killed_at = excluded.killed_at,
+       updated_at = excluded.updated_at`
+  ).run(userId, errorCode, hits, killed, killed ? nowIso() : (cur ? cur.killedAt : null), nowIso());
+  return getMonsterState(userId, errorCode);
+}
+
+function listMonsterStates(userId) {
+  return db.prepare('SELECT * FROM monster_state WHERE user_id = ?').all(userId).map(mapMonsterState);
+}
+
+/* ---------------- sessions (hoat dong ngay / "Hom nay") ---------------- */
+
+function mapSession(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    userId: row.user_id,
+    date: row.date,
+    minutes: row.minutes != null ? row.minutes : null,
+    module: row.module,
+    goalCompleted: row.goal_completed === 1,
+    exam: row.exam || null,
+    createdAt: row.created_at,
+  };
+}
+
+function createSession(userId, { date, minutes, module, goalCompleted, exam }) {
+  const info = db.prepare(
+    'INSERT INTO sessions (user_id, date, minutes, module, goal_completed, exam, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).run(userId, date || todayStr(), minutes != null ? minutes : null, module, goalCompleted ? 1 : 0, exam || null, nowIso());
+  const row = db.prepare('SELECT * FROM sessions WHERE id = ?').get(Number(info.lastInsertRowid));
+  return mapSession(row);
+}
+
+/** Sessions cua user trong khoang ngay [from, to] (YYYY-MM-DD, bao ca 2 dau). */
+function listSessionsByDateRange(userId, from, to) {
+  return db.prepare(
+    'SELECT * FROM sessions WHERE user_id = ? AND date >= ? AND date <= ? ORDER BY date ASC, id ASC'
+  ).all(userId, from, to).map(mapSession);
+}
+
+/* ---------------- mock_tests (diagnostic + mock IELTS) ---------------- */
+
+function mapMockTest(row) {
+  if (!row) return null;
+  let abilityMap = null;
+  try {
+    abilityMap = row.ability_map ? JSON.parse(row.ability_map) : null;
+  } catch (_) {
+    abilityMap = null;
+  }
+  return {
+    id: row.id,
+    userId: row.user_id,
+    kind: row.kind,
+    exam: row.exam || 'ielts',
+    testSetId: row.test_set_id || null,
+    attemptId: row.attempt_id != null ? row.attempt_id : null,
+    listeningCorrect: row.listening_correct != null ? row.listening_correct : null,
+    readingCorrect: row.reading_correct != null ? row.reading_correct : null,
+    listeningBand: row.listening_band != null ? row.listening_band : null,
+    readingBand: row.reading_band != null ? row.reading_band : null,
+    overallBand: row.overall_band != null ? row.overall_band : null,
+    durationSec: row.duration_sec != null ? row.duration_sec : null,
+    valid: row.valid === 1,
+    abilityMap,
+    createdAt: row.created_at,
+  };
+}
+
+/** Danh dau cac mock cu cung kind la khong hop le (chi ban moi nhat tinh). */
+function invalidateMockTests(userId, kind) {
+  db.prepare('UPDATE mock_tests SET valid = 0 WHERE user_id = ? AND kind = ?').run(userId, kind);
+}
+
+function createMockTest({ userId, kind, exam, testSetId, attemptId, listeningCorrect, readingCorrect, listeningBand, readingBand, overallBand, durationSec, abilityMap }) {
+  return transaction(() => {
+    invalidateMockTests(userId, kind);
+    const info = db.prepare(
+      `INSERT INTO mock_tests (user_id, kind, exam, test_set_id, attempt_id, listening_correct, reading_correct, listening_band, reading_band, overall_band, duration_sec, valid, ability_map, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`
+    ).run(
+      userId, kind, exam || 'ielts', testSetId || null, attemptId != null ? attemptId : null,
+      listeningCorrect != null ? listeningCorrect : null,
+      readingCorrect != null ? readingCorrect : null,
+      listeningBand != null ? listeningBand : null,
+      readingBand != null ? readingBand : null,
+      overallBand != null ? overallBand : null,
+      durationSec != null ? durationSec : null,
+      abilityMap ? JSON.stringify(abilityMap) : null,
+      nowIso()
+    );
+    const row = db.prepare('SELECT * FROM mock_tests WHERE id = ?').get(Number(info.lastInsertRowid));
+    return mapMockTest(row);
+  });
+}
+
+/** Mock moi nhat cua 1 kind (ke ca ban valid = 0 neu khong con ban nao hop le). */
+function getLatestMockTest(userId, kind) {
+  const row = db.prepare(
+    'SELECT * FROM mock_tests WHERE user_id = ? AND kind = ? ORDER BY id DESC LIMIT 1'
+  ).get(userId, kind);
+  return mapMockTest(row);
+}
+
+function getMockTestById(id) {
+  const row = db.prepare('SELECT * FROM mock_tests WHERE id = ?').get(id);
+  return mapMockTest(row);
+}
+
+/* ---------------- plan (trong tam tuan) ---------------- */
+
+function mapPlan(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    userId: row.user_id,
+    weekStart: row.week_start,
+    focusType: row.focus_type || null,
+    focusCode: row.focus_code || null,
+    createdAt: row.created_at,
+  };
+}
+
+function getWeeklyPlan(userId, weekStart) {
+  const row = db.prepare('SELECT * FROM plan WHERE user_id = ? AND week_start = ? ORDER BY id DESC LIMIT 1').get(userId, weekStart);
+  return mapPlan(row);
+}
+
+function setWeeklyPlan(userId, { weekStart, focusType, focusCode }) {
+  const cur = getWeeklyPlan(userId, weekStart);
+  if (cur) {
+    db.prepare('UPDATE plan SET focus_type = ?, focus_code = ? WHERE id = ?').run(
+      focusType !== undefined ? focusType : cur.focusType,
+      focusCode !== undefined ? focusCode : cur.focusCode,
+      cur.id
+    );
+    return getWeeklyPlan(userId, weekStart);
+  }
+  const info = db.prepare(
+    'INSERT INTO plan (user_id, week_start, focus_type, focus_code, created_at) VALUES (?, ?, ?, ?, ?)'
+  ).run(userId, weekStart, focusType || null, focusCode || null, nowIso());
+  const row = db.prepare('SELECT * FROM plan WHERE id = ?').get(Number(info.lastInsertRowid));
+  return mapPlan(row);
+}
+
+/* ---------------- writing tasks & submissions ---------------- */
+
+function mapWritingTask(row) {
+  if (!row) return null;
+  let chartData = null;
+  try {
+    chartData = row.chart_data ? JSON.parse(row.chart_data) : null;
+  } catch (_) {
+    chartData = null;
+  }
+  return {
+    id: row.id,
+    taskType: row.task_type,
+    promptType: row.prompt_type || null,
+    topic: row.topic || null,
+    prompt: row.prompt,
+    chartData,
+    isSample: row.is_sample === 1,
+  };
+}
+
+function listWritingTasks() {
+  return db.prepare('SELECT * FROM writing_tasks ORDER BY id').all().map(mapWritingTask);
+}
+
+function getWritingTask(id) {
+  const row = db.prepare('SELECT * FROM writing_tasks WHERE id = ?').get(id);
+  return mapWritingTask(row);
+}
+
+function insertWritingTask({ id, taskType, promptType, topic, prompt, chartData, isSample }) {
+  db.prepare(
+    'INSERT INTO writing_tasks (id, task_type, prompt_type, topic, prompt, chart_data, is_sample) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).run(
+    id, taskType, promptType || null, topic || null, prompt,
+    chartData ? JSON.stringify(chartData) : null,
+    isSample === undefined ? 1 : (isSample ? 1 : 0)
+  );
+  return getWritingTask(id);
+}
+
+function mapWritingSubmission(row) {
+  if (!row) return null;
+  let selfScores = null;
+  try {
+    selfScores = row.self_scores ? JSON.parse(row.self_scores) : null;
+  } catch (_) {
+    selfScores = null;
+  }
+  return {
+    id: row.id,
+    userId: row.user_id,
+    taskId: row.task_id,
+    content: row.content,
+    wordCount: row.word_count != null ? row.word_count : 0,
+    durationSec: row.duration_sec != null ? row.duration_sec : null,
+    selfScores,
+    isBaseline: row.is_baseline === 1,
+    createdAt: row.created_at,
+  };
+}
+
+function createWritingSubmission({ userId, taskId, content, wordCount, durationSec, selfScores, isBaseline }) {
+  const info = db.prepare(
+    `INSERT INTO writing_submissions (user_id, task_id, content, word_count, duration_sec, self_scores, is_baseline, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    userId, taskId, content, wordCount,
+    durationSec != null ? durationSec : null,
+    selfScores ? JSON.stringify(selfScores) : null,
+    isBaseline ? 1 : 0, nowIso()
+  );
+  const row = db.prepare('SELECT * FROM writing_submissions WHERE id = ?').get(Number(info.lastInsertRowid));
+  return mapWritingSubmission(row);
+}
+
+function listWritingSubmissions(userId) {
+  return db.prepare('SELECT * FROM writing_submissions WHERE user_id = ? ORDER BY id DESC').all(userId).map(mapWritingSubmission);
+}
+
+/* ---------------- speaking prompts & recordings ---------------- */
+
+function mapSpeakingPrompt(row) {
+  if (!row) return null;
+  let cueCard = null;
+  try {
+    cueCard = row.cue_card ? JSON.parse(row.cue_card) : null;
+  } catch (_) {
+    cueCard = row.cue_card;
+  }
+  return {
+    id: row.id,
+    part: row.part,
+    topic: row.topic || null,
+    prompt: row.prompt,
+    cueCard,
+    isSample: row.is_sample === 1,
+  };
+}
+
+function listSpeakingPrompts() {
+  return db.prepare('SELECT * FROM speaking_prompts ORDER BY part, id').all().map(mapSpeakingPrompt);
+}
+
+function getSpeakingPrompt(id) {
+  const row = db.prepare('SELECT * FROM speaking_prompts WHERE id = ?').get(id);
+  return mapSpeakingPrompt(row);
+}
+
+function insertSpeakingPrompt({ id, part, topic, prompt, cueCard, isSample }) {
+  db.prepare(
+    'INSERT INTO speaking_prompts (id, part, topic, prompt, cue_card, is_sample) VALUES (?, ?, ?, ?, ?, ?)'
+  ).run(
+    id, part, topic || null, prompt,
+    cueCard !== undefined && cueCard !== null ? (typeof cueCard === 'string' ? cueCard : JSON.stringify(cueCard)) : null,
+    isSample === undefined ? 1 : (isSample ? 1 : 0)
+  );
+  return getSpeakingPrompt(id);
+}
+
+function mapSpeakingRecording(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    userId: row.user_id,
+    promptId: row.prompt_id,
+    part: row.part,
+    audioData: row.audio_data || null,
+    mimeType: row.mime_type || null,
+    durationSec: row.duration_sec != null ? row.duration_sec : null,
+    isBaseline: row.is_baseline === 1,
+    createdAt: row.created_at,
+  };
+}
+
+function createSpeakingRecording({ userId, promptId, part, audioData, mimeType, durationSec, isBaseline }) {
+  const info = db.prepare(
+    `INSERT INTO speaking_recordings (user_id, prompt_id, part, audio_data, mime_type, duration_sec, is_baseline, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    userId, promptId, part, audioData, mimeType || null,
+    durationSec != null ? durationSec : null, isBaseline ? 1 : 0, nowIso()
+  );
+  const row = db.prepare('SELECT * FROM speaking_recordings WHERE id = ?').get(Number(info.lastInsertRowid));
+  return mapSpeakingRecording(row);
+}
+
+function listSpeakingRecordings(userId) {
+  return db.prepare('SELECT * FROM speaking_recordings WHERE user_id = ? ORDER BY id DESC').all(userId).map(mapSpeakingRecording);
+}
+
+/* ---------------- ho tro "Hom nay" (chi doc bang cu) ---------------- */
+
+/** Dem cau hoi theo dang (phuc vu khoi drill IELTS). */
+function countQuestionsByType(exam, questionType) {
+  return db.prepare(
+    'SELECT COUNT(*) AS c FROM questions WHERE exam = ? AND COALESCE(question_type, \'multiple_choice\') = ?'
+  ).get(exam, questionType).c;
+}
+
+/**
+ * Hang doi on cau sai TOEIC: tu bang wrong_questions (chi doc).
+ * Sap xep: sai nhieu nhat truoc, roi den cau sai lau nhat.
+ */
+function getWrongQueue(userId, exam, limit) {
+  const rows = db.prepare(
+    `SELECT w.question_id AS questionId, w.wrong_count AS wrongCount,
+            w.last_wrong_at AS lastWrongAt
+     FROM wrong_questions w JOIN questions q ON q.id = w.question_id
+     WHERE w.user_id = ? AND q.exam = ?
+     ORDER BY w.wrong_count DESC, w.last_wrong_at ASC LIMIT ?`
+  ).all(userId, exam, limit || 10);
+  return rows.map((r) => ({ questionId: r.questionId, wrongCount: r.wrongCount, lastWrongAt: r.lastWrongAt }));
+}
+
+function countWrongQuestions(userId, exam) {
+  return db.prepare(
+    `SELECT COUNT(*) AS c FROM wrong_questions w JOIN questions q ON q.id = w.question_id
+     WHERE w.user_id = ? AND q.exam = ?`
+  ).get(userId, exam).c;
+}
+
 module.exports = {
   db,
   initDb,
@@ -1505,4 +2153,40 @@ module.exports = {
   getBestFullScores,
   getBestFullBands,
   getXpTotals,
+  // IELTS Phase 1 (moi)
+  todayStr,
+  addDaysStr,
+  REVIEW_DAYS,
+  getIeltsProfile,
+  setIeltsProfile,
+  createErrorLog,
+  getErrorLogById,
+  listErrorLog,
+  listDueErrorLog,
+  reviewErrorLog,
+  getErrorLogCountsByCode,
+  getMonsterState,
+  bumpMonsterHit,
+  listMonsterStates,
+  createSession,
+  listSessionsByDateRange,
+  invalidateMockTests,
+  createMockTest,
+  getLatestMockTest,
+  getMockTestById,
+  getWeeklyPlan,
+  setWeeklyPlan,
+  listWritingTasks,
+  getWritingTask,
+  insertWritingTask,
+  createWritingSubmission,
+  listWritingSubmissions,
+  listSpeakingPrompts,
+  getSpeakingPrompt,
+  insertSpeakingPrompt,
+  createSpeakingRecording,
+  listSpeakingRecordings,
+  countQuestionsByType,
+  getWrongQueue,
+  countWrongQuestions,
 };

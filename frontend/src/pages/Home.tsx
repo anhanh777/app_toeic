@@ -4,6 +4,7 @@ import { api, targetScoreOf, type StatsOverview } from '../api';
 import { useAuth } from '../auth';
 import { bandLevel, partNameFor, questionTypeName, useExam } from '../exam';
 import { ErrorBox, TierBadge, XpBar } from '../components';
+import Today from './Today';
 
 export default function Home() {
   const { user } = useAuth();
@@ -24,6 +25,11 @@ export default function Home() {
   const latestBand = stats?.bandHistory?.length ? stats.bandHistory[stats.bandHistory.length - 1] : null;
 
   const hearts = '❤'.repeat(Math.min(7, Math.max(0, stats?.streakDays ?? 0))) || '♡';
+  // IELTS: trang chủ chính là màn hình "Hôm nay" (Giai đoạn 1, v3).
+  // TOEIC: giữ nguyên trang chủ cũ — người dùng TOEIC vào "Hôm nay"
+  // bằng link nav (scope update 2026-11-16). Đặt sau mọi hook để
+  // không phá thứ tự hook khi đổi exam.
+  if (isIelts) return <Today />;
   return (
     <div>
       <div className="hero">

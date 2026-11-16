@@ -583,3 +583,12 @@ footer{
   .topbar nav::-webkit-scrollbar{display:none}
   .topbar nav a{white-space:nowrap}
 }
+
+/* ============ IELTS Giai đoạn 1 (v3): Hôm nay, quái, HP ============ */
+/* Dùng đúng biến Pastel sẵn có — không đổi giá trị theme cũ. */
+.monster-card{border:1px solid var(--border)}
+.monster-killed{border-color:var(--green-border); background:var(--green-bg)}
+.hp-bar{height:.6rem; background:var(--track); border-radius:999px; overflow:hidden}
+.hp-bar i{display:block; height:100%; background:var(--red); border-radius:999px}
+.monster-killed .hp-bar i{background:var(--green)}
+.today-bad-day{border:1px dashed var(--amber); background:var(--amber-bg)}

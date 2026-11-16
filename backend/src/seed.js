@@ -389,6 +389,44 @@ function seedVocabulary() {
   return inserted;
 }
 
+function seedIeltsWritingTasks() {
+  // De mau Writing IELTS (tu soan, chi 2 de). Idempotent: bo qua id da co.
+  const list = readJsonArray('ielts-writing-tasks.json').filter(
+    (t) => t && typeof t.id === 'string' && typeof t.prompt === 'string'
+  );
+  let inserted = 0;
+  for (const t of list) {
+    if (db.getWritingTask(t.id)) continue;
+    try {
+      db.insertWritingTask(t);
+      inserted += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua writing task ${t.id}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${inserted}/${list.length} writing tasks IELTS sample.`);
+  return inserted;
+}
+
+function seedIeltsSpeakingPrompts() {
+  // Prompt mau Speaking IELTS (tu soan). Idempotent: bo qua id da co.
+  const list = readJsonArray('ielts-speaking-prompts.json').filter(
+    (p) => p && typeof p.id === 'string' && Number.isInteger(p.part) && typeof p.prompt === 'string'
+  );
+  let inserted = 0;
+  for (const p of list) {
+    if (db.getSpeakingPrompt(p.id)) continue;
+    try {
+      db.insertSpeakingPrompt(p);
+      inserted += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua speaking prompt ${p.id}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${inserted}/${list.length} speaking prompts IELTS sample.`);
+  return inserted;
+}
+
 function seedDemoUsers() {
   const demos = [
     { email: 'demo@toeic.app', password: 'admin123', name: 'Demo Admin', role: 'admin' },
@@ -442,6 +480,8 @@ function seedAll() {
   seedPartMedia();
   seedVocabulary();
   seedIeltsVocabulary();
+  seedIeltsWritingTasks();
+  seedIeltsSpeakingPrompts();
   seedDemoUsers();
   if (db.getTestSet('TS-024')) db.refreshTestSetTotal('TS-024');
   console.log(
@@ -453,4 +493,4 @@ if (require.main === module) {
   seedAll();
 }
 
-module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedIeltsSample, seedIeltsVocabulary, validSeedIeltsQuestion };
+module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedIeltsSample, seedIeltsVocabulary, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };

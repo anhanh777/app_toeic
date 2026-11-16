@@ -3,7 +3,7 @@
 // Quy ước chung: IELTS Listening Section N → part N (1–4); Reading
 // Passage N → part 4+N (5, 6, 7).
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { api, type ExamInfo } from './api';
 import { ErrorBox } from './components';
 
@@ -45,6 +45,35 @@ export function useExam(): ExamCtx {
   const c = useContext(Ctx);
   if (!c) throw new Error('useExam phải dùng trong ExamProvider');
   return c;
+}
+
+/**
+ * IELTS-only: sau khi chọn exam=ielts, nếu chưa làm thiết lập lần đầu
+ * (và chưa bấm "Bỏ qua") thì chuyển sang /ielts/setup 1 lần.
+ * Kiểm tra localStorage trước (nhanh, không chặn), rồi xác nhận bằng
+ * GET /api/ielts/profile; backend lỗi thì tin bản local. TOEIC không
+ * bao giờ bị chuyển. Không chặn người dùng: lỗi nào cũng cho đi tiếp.
+ */
+export function useIeltsSetupRedirect() {
+  const { exam } = useExam();
+  const nav = useNavigate();
+  const loc = useLocation();
+  useEffect(() => {
+    if (exam !== 'ielts') return;
+    if (loc.pathname === '/ielts/setup') return;
+    let done = false;
+    try { done = localStorage.getItem('ielts_setup_done') === '1'; } catch { /* bỏ qua */ }
+    if (done) return;
+    let cancelled = false;
+    api.ieltsProfile()
+      .then(p => {
+        if (cancelled) return;
+        if (p.setupDone || p.skipped) return;
+        nav('/ielts/setup');
+      })
+      .catch(() => { /* backend chưa sẵn sàng: tin bản local, không chặn */ });
+    return () => { cancelled = true; };
+  }, [exam, loc.pathname, nav]);
 }
 
 // ---- Cỡ chữ luyện/thi (A- / A+) — lưu localStorage, áp cho đoạn văn,
