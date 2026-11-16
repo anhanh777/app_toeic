@@ -1,0 +1,114 @@
+/* Trang đăng nhập web admin: Pastel, nhẹ nhàng, hiệu ứng mượt mà.
+   Chỉ dùng cho Login.tsx — không chạm index.css chung (đang có agent
+   khác sửa file đó). Mọi màu lấy từ biến CSS sẵn có để hợp dark mode. */
+
+/* Nền: khung bo tròn ôm trọn khu vực chính, gradient kem nhạt + 3 vệt
+   màu Pastel trôi chậm, mờ nhẹ, không lấn át form. */
+.login-page{
+  position:relative; overflow:hidden;
+  min-height:calc(100vh - 2rem);
+  display:flex; align-items:center; justify-content:center;
+  padding:2rem 1rem; border-radius:20px;
+  background:linear-gradient(160deg, var(--bg), var(--accent-soft) 55%, var(--bg));
+}
+.login-blob{
+  position:absolute; border-radius:50%; filter:blur(56px);
+  pointer-events:none; opacity:.55;
+}
+.login-blob--sage{width:22rem; height:22rem; background:var(--accent-soft-strong); top:-6rem; left:-4rem; animation:login-drift 22s ease-in-out infinite alternate}
+.login-blob--cream{width:18rem; height:18rem; background:var(--cream); bottom:-7rem; right:-3rem; animation:login-drift 26s ease-in-out infinite alternate-reverse}
+.login-blob--sky{width:14rem; height:14rem; background:var(--sky); top:38%; right:12%; animation:login-drift 20s ease-in-out infinite alternate}
+@keyframes login-drift{
+  from{transform:translate(0, 0) scale(1)}
+  to{transform:translate(2.5rem, -1.5rem) scale(1.08)}
+}
+
+/* Thẻ đăng nhập: hiện lên bằng hiệu ứng mờ + nâng nhẹ. */
+.login-card{
+  position:relative; z-index:1;
+  width:100%; max-width:26rem; margin:0;
+  padding:1.4rem 1.5rem;
+  animation:login-rise .45s ease both;
+}
+@keyframes login-rise{
+  from{opacity:0; transform:translateY(14px)}
+  to{opacity:1; transform:translateY(0)}
+}
+
+/* Huy hiệu công cụ: vòng tròn sage nhạt, nhún nhẹ rất chậm. */
+.login-badge{
+  width:3rem; height:3rem; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.4rem; line-height:1;
+  background:var(--accent-soft); border:1px solid var(--border);
+  margin-bottom:.7rem;
+  animation:login-bob 3.2s ease-in-out infinite;
+}
+@keyframes login-bob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-3px)}
+}
+.login-title{margin:0 0 .3rem}
+.login-sub{margin:0 0 .4rem}
+
+/* Ô nhập: nhãn đổi sang màu sage khi đang nhập trong ô đó. */
+.login-field{margin-bottom:.2rem}
+.login-field:focus-within label{color:var(--accent-dark)}
+.login-field input{transition:border-color .2s, box-shadow .2s, transform .2s}
+.login-field input:focus{transform:translateY(-1px)}
+
+/* Nút đăng nhập: spinner xoay + chữ trạng thái khi đang xử lý. */
+.login-btn{display:inline-flex; align-items:center; justify-content:center; gap:.5rem}
+.login-btn:disabled{cursor:wait; opacity:.85}
+.login-spinner{
+  flex:0 0 auto; width:1rem; height:1rem; border-radius:50%;
+  border:2px solid rgba(255,255,255,.4); border-top-color:#fff;
+  animation:login-spin .7s linear infinite;
+}
+@keyframes login-spin{
+  to{transform:rotate(360deg)}
+}
+
+/* Lời nhắn khi máy chủ Render free tier đang "đánh thức" (sau 2.5s):
+   mờ dần hiện ra, 3 chấm nhảy luân phiên nhẹ nhàng. */
+.login-slow{
+  display:flex; align-items:center; justify-content:center; gap:.45rem;
+  margin:.8rem 0 0; font-size:.85rem; color:var(--ink-soft); text-align:center;
+  animation:login-fadein .4s ease both;
+}
+@keyframes login-fadein{
+  from{opacity:0}
+  to{opacity:1}
+}
+.login-dots{display:inline-flex; gap:.2rem}
+.login-dots i{
+  width:.32rem; height:.32rem; border-radius:50%;
+  background:var(--accent); display:block;
+  animation:login-dot 1.2s ease-in-out infinite;
+}
+.login-dots i:nth-child(2){animation-delay:.15s}
+.login-dots i:nth-child(3){animation-delay:.3s}
+@keyframes login-dot{
+  0%,100%{transform:translateY(0); opacity:.5}
+  50%{transform:translateY(-3px); opacity:1}
+}
+
+/* Đăng nhập sai: thẻ rung nhẹ một nhịp rồi dừng. */
+.login-shake{animation:login-shake .4s ease}
+@keyframes login-shake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-6px)}
+  40%{transform:translateX(6px)}
+  60%{transform:translateX(-4px)}
+  80%{transform:translateX(4px)}
+}
+
+.login-demo{margin:1rem 0 0; text-align:center; font-size:.85rem}
+.login-demo b{color:var(--ink-soft); font-weight:600}
+
+/* Tôn trọng người dùng bật giảm chuyển động: tắt hiệu ứng trang trí,
+   giữ lại spinner (báo hiệu đang tải) và trạng thái nút. */
+@media (prefers-reduced-motion: reduce){
+  .login-blob, .login-card, .login-badge, .login-dots i, .login-slow{animation:none}
+  .login-card{opacity:1; transform:none}
+}
