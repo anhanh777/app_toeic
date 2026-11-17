@@ -84,7 +84,7 @@ export interface IeltsBandTable {
   listening: [number, number][]; reading: [number, number][]; note?: string;
 }
 export interface TestResultDetail {
-  questionId: string; questionType?: string; wordLimit?: number;
+  questionId: string; questionType?: string; wordLimit?: number; part?: number;
   correctText?: string | null; correctLabel?: string | null;
   selected?: string; correct?: boolean; content?: string;
   explanation?: string | null; script?: string | null; passageText?: string | null;

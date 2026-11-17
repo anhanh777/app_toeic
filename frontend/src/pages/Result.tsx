@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, scoreLevel } from '../api';
 import { ErrorBox, partName, TierBadge } from '../components';
-import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor } from '../exam';
+import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, realQuestionNumber, stripLeadingNumber } from '../exam';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 
@@ -14,8 +14,8 @@ export default function Result() {
   // IELTS-only: mã nguyên nhân đã ghi + đánh dấu đoán mò, theo id câu.
   const [causeById, setCauseById] = useState<Record<string, string>>({});
   const [guessedById, setGuessedById] = useState<Record<string, boolean>>({});
-  // Part của từng câu sai (để chọn đúng nhóm mã L/R) — detail không có part.
-  const [partById, setPartById] = useState<Record<string, number>>({});
+  // Bộ lọc danh sách câu ở trang kết quả: tất cả / đúng / sai.
+  const [detailFilter, setDetailFilter] = useState<'all' | 'correct' | 'wrong'>('all');
 
   useEffect(() => {
     if (id) api.testResult(Number(id)).then(setData).catch(setError);
@@ -27,24 +27,19 @@ export default function Result() {
   const isFull = data.mode === 'full';
   const isIelts = data.exam === 'ielts' || data.overallBand != null;
   const totalCorrect = (data.listening_correct ?? 0) + (data.reading_correct ?? 0);
-  // Chi tiết câu sai (backend trả kèm detail): ưu tiên detail có flag
-  // correct=false; không có thì fallback về danh sách id như cũ.
-  const detailWrong = data.detail?.filter(d => d.correct === false) ?? [];
-
-  // IELTS-only: lấy part của từng câu sai để picker hiện đúng nhóm mã L/R.
-  useEffect(() => {
-    if (!isIelts || !detailWrong.length) return;
-    let cancelled = false;
-    Promise.all(detailWrong.map(d => api.question(d.questionId).catch(() => null)))
-      .then(qs => {
-        if (cancelled) return;
-        const m: Record<string, number> = {};
-        qs.forEach((q, i) => { if (q) m[detailWrong[i].questionId] = q.part; });
-        setPartById(m);
-      });
-    return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isIelts, data]);
+  // Chi tiết TẤT CẢ câu trong bài (backend trả kèm detail, có flag
+  // correct từng câu); bài cũ không có detail thì fallback về danh
+  // sách id câu sai như cũ.
+  const detailAll = data.detail ?? [];
+  const correctCount = detailAll.filter(d => d.correct === true).length;
+  const wrongCount = detailAll.length - correctCount;
+  // Số câu thật trên đề, tính theo thứ tự trong bài (chung hàm với phòng thi).
+  const withinSeen: Record<number, number> = {};
+  const detailNumbers = detailAll.map(d => {
+    const p = d.part ?? 0;
+    withinSeen[p] = (withinSeen[p] ?? 0) + 1;
+    return realQuestionNumber(isIelts ? 'ielts' : 'toeic', p, withinSeen[p]);
+  });
 
   return (
     <div>
@@ -102,18 +97,28 @@ export default function Result() {
           ))}
         </div>
       )}
-      {detailWrong.length ? (
-        <div className="card"><h2>Câu làm sai ({detailWrong.length})</h2>
-          {detailWrong.map(d => {
+      {detailAll.length ? (
+        <div className="card">
+          <h2>Chi tiết từng câu ({correctCount}/{detailAll.length} đúng)</h2>
+          {wrongCount === 0 && <p>🎉 Không có câu sai!</p>}
+          <div className="btn-row" role="group" aria-label="Lọc câu">
+            <button type="button" className={detailFilter === 'all' ? 'btn' : 'btn secondary'} onClick={() => setDetailFilter('all')}>Tất cả ({detailAll.length})</button>
+            <button type="button" className={detailFilter === 'correct' ? 'btn' : 'btn secondary'} onClick={() => setDetailFilter('correct')}>✓ Đúng ({correctCount})</button>
+            <button type="button" className={detailFilter === 'wrong' ? 'btn' : 'btn secondary'} onClick={() => setDetailFilter('wrong')}>✗ Sai ({wrongCount})</button>
+          </div>
+          {detailAll.map((d, i) => {
+            if (detailFilter === 'correct' && d.correct !== true) return null;
+            if (detailFilter === 'wrong' && d.correct === true) return null;
             // IELTS-only: cổng đáp án đúng — phải chọn nguyên nhân gốc
             // (POST /api/ielts/error-log) thì mới hiện đáp án đúng của
-            // câu đó. TOEIC: hiện đáp án đúng như cũ, không có picker.
+            // câu đó. TOEIC và câu làm đúng: hiện đáp án đúng như cũ.
             const causeLogged = !!causeById[d.questionId];
-            const part = partById[d.questionId];
+            const n = detailNumbers[i];
+            const status = d.correct === true ? '✓ Đúng' : d.correct === false ? '✗ Sai' : '— Chưa trả lời';
             return (
               <div key={d.questionId} style={{ borderBottom: '1px solid var(--border-soft)', padding: '.5rem 0' }}>
-                {d.content && <p style={{ margin: '.2rem 0' }}><strong>{d.content}</strong></p>}
-                {isIelts && !causeLogged ? (
+                <p style={{ margin: '.2rem 0' }}><strong>Câu {n} · {status}</strong>{d.content ? <> — {stripLeadingNumber(d.content, n)}</> : null}</p>
+                {isIelts && d.correct !== true && !causeLogged ? (
                   <>
                     <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.3rem', fontWeight: 500 }}>
                       <input type="checkbox" checked={!!guessedById[d.questionId]}
@@ -121,7 +126,7 @@ export default function Result() {
                       Câu này mình đoán mò 🤔
                     </label>
                     <RootCausePicker
-                      skill={part ? skillOfPart(part) : ''}
+                      skill={d.part ? skillOfPart(d.part) : ''}
                       questionId={d.questionId}
                       attemptId={id ? Number(id) : undefined}
                       questionType={d.questionType}
