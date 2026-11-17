@@ -42,6 +42,12 @@ app.use(
     },
   })
 );
+// POST /api/admin/restore nhan file backup JSON dang day du (~10 MB,
+// gom ca questions) — can gioi han cao hon gioi han chung 5mb. Parser
+// nay chay truoc parser chung; body-parser se bo qua body da duoc parse
+// nen cac route khac khong bi anh huong. Gioi han 20mb = gioi han
+// multipart cua route restore.
+app.use('/api/admin/restore', express.json({ limit: '20mb' }));
 app.use(express.json({ limit: '5mb' }));
 
 app.get('/health', (req, res) => {

@@ -3,6 +3,7 @@
 // Admin: CRUD cau hoi + tu vung (kem dap an dung / giai thich), import JSON, backup.
 
 const express = require('express');
+const multer = require('multer');
 const db = require('../db');
 const { authMiddleware, requireAdmin, hashPassword, toPublicUser } = require('../auth');
 const { isTypedType, isMultiAnswerType } = require('../ieltsGrading');
@@ -357,18 +358,83 @@ router.post('/admin/users/:id/reset-password', (req, res) => {
   return res.json({ ok: true });
 });
 
-/* ---------- backup ---------- */
+/* ---------- backup / restore (du lieu nguoi dung) ---------- */
 
+const restoreUpload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 20 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const name = (file.originalname || '').toLowerCase();
+    if (name.endsWith('.json')) return cb(null, true);
+    return cb(new Error('Chi nhan file backup .json'));
+  },
+});
+
+/**
+ * GET /api/admin/backup — xuat toan bo du lieu de sao luu.
+ *
+ * - questions / vocabulary / userWords: giu nguyen de tuong thich voi
+ *   chuc nang "Sao luu du lieu" tren web Admin (tai file ve).
+ * - userData: toan bo cac bang du lieu nguoi dung (gom ca password_hash
+ *   o bang users — can de dang nhap lai sau khi khoi phuc).
+ * - counts: so dong tung bang du lieu nguoi dung (de script restore-watch
+ *   nhan biet DB vua bi xoa ma khong can tai toan bo file).
+ *
+ * File backup chi de trong Drive RIENG TU, khong chia se cong khai.
+ */
 router.get('/admin/backup', (req, res) => {
-  // KHONG bao gom password hash (chi dem so user).
   return res.json({
+    version: 1,
     exportedAt: new Date().toISOString(),
     questions: db.getAllQuestionsForBackup(),
     vocabulary: db.getAllVocabularyForBackup(),
     userWords: db.getAllUserWordsForBackup(),
     usersCount: db.countUsers(),
     attemptsCount: db.countAttempts(),
+    userData: db.getUserDataBackup(),
+    counts: db.countUserData(),
   });
+});
+
+/**
+ * POST /api/admin/restore — khoi phuc du lieu nguoi dung tu file backup.
+ * Chap nhan 2 dang:
+ * - multipart/form-data, field "file" = file backup .json (tu GET /admin/backup);
+ * - JSON body = tai lieu backup (hoac rieng phan { userData: {...} }).
+ * Chi khoi phuc cac bang du lieu nguoi dung, trong 1 transaction;
+ * file sai dinh dang -> 400, khong thay doi gi. Idempotent.
+ */
+router.post('/admin/restore', (req, res, next) => {
+  restoreUpload.single('file')(req, res, (err) => {
+    if (err) return res.status(400).json({ error: err.message || 'file khong hop le' });
+    next();
+  });
+}, (req, res) => {
+  let doc = null;
+  if (req.file) {
+    try {
+      doc = JSON.parse(req.file.buffer.toString('utf8'));
+    } catch (e) {
+      return res.status(400).json({ error: 'file backup khong phai JSON hop le' });
+    }
+  } else if (req.body && typeof req.body === 'object' && Object.keys(req.body).length > 0) {
+    doc = req.body;
+  }
+  if (!doc || typeof doc !== 'object') {
+    return res.status(400).json({ error: 'gui file backup .json (field "file") hoac JSON body' });
+  }
+  const userData = doc.userData;
+  if (!userData || typeof userData !== 'object') {
+    return res.status(400).json({ error: 'file backup thieu phan userData' });
+  }
+  const err = db.validateUserDataBackup(userData);
+  if (err) return res.status(400).json({ error: err });
+  try {
+    const restored = db.restoreUserData(userData);
+    return res.json({ ok: true, restored, counts: db.countUserData() });
+  } catch (e) {
+    return res.status(500).json({ error: `khoi phuc that bai: ${e.message}` });
+  }
 });
 
 /* ---------- cai dat giao dien dong (scope C) ---------- */

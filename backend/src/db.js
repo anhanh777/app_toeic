@@ -327,6 +327,14 @@ CREATE INDEX IF NOT EXISTS idx_xp_user_created ON xp_events(user_id, created_at)
 `;
 
 function initDb() {
+  // Bat journal_mode=WAL ngay truoc moi ghi (CREATE TABLE ben duoi):
+  // WAL cho phep doc nhat quan trong luc co ghi (backup doc DB dang chay
+  // khong bi khoa) va khoi phuc an toan hon. Neu khong bat duoc thi chi
+  // canh bao — app van chay binh thuong.
+  const jm = db.prepare('PRAGMA journal_mode = WAL').get();
+  if (!jm || jm.journal_mode !== 'wal') {
+    console.warn(`[db] khong bat duoc WAL (journal_mode=${jm && jm.journal_mode}).`);
+  }
   db.exec(SCHEMA);
   // DB cu da ton tai truoc khi co cot test_set_id: them cot neu chua co.
   ensureColumn('questions', 'test_set_id', 'TEXT');
@@ -2438,6 +2446,175 @@ function setSetting(key, value) {
   ).run(key, JSON.stringify(value), nowIso());
 }
 
+/* ---------------- backup / restore (du lieu nguoi dung) ----------------
+ * Render free tier xoa file .db moi lan redeploy / ngu day: de thi thi seed
+ * lai duoc tu git, nhung du lieu nguoi dung thi mat. Giai phap: backup dinh
+ * ky ra file JSON len Google Drive, khoi phuc lai sau khi DB bi xoa.
+ *
+ * PHAM VI: CHI cac bang du lieu nguoi dung duoi day. Bang noi dung
+ * (test_sets, questions, options, passages, part_media, vocabulary,
+ * writing_tasks, speaking_prompts) KHONG bao gio duoc backup/khoi phuc —
+ * chung duoc seed lai tu git moi lan boot.
+ *
+ * LUU Y BAO MAT: file backup chua password_hash cua toan bo tai khoan
+ * (can de dang nhap lai sau khi khoi phuc). Chi de file trong thu muc
+ * Drive RIENG TU, KHONG chia se cong khai, KHONG commit vao git. */
+const USER_DATA_TABLES = [
+  'users',
+  'user_words',
+  'user_vocabulary',
+  'attempts',
+  'answers',
+  'wrong_questions',
+  'xp_events',
+  'ielts_profiles',
+  'error_log',
+  'monster_state',
+  'sessions',
+  'mock_tests',
+  'plan',
+  'writing_submissions',
+  'speaking_recordings',
+  'dictionary_cache',
+  'app_settings',
+];
+
+/** Cac bang co cot id AUTOINCREMENT — sau restore phai sua lai
+ *  sqlite_sequence de id moi khong dung voi id da khoi phuc. */
+const AUTOINCREMENT_TABLES = [
+  'users',
+  'user_words',
+  'attempts',
+  'error_log',
+  'xp_events',
+  'sessions',
+  'mock_tests',
+  'plan',
+  'writing_submissions',
+  'speaking_recordings',
+];
+
+/** Cot bat buoc phai co trong moi dong khi khoi phuc (validate truoc khi
+ *  xoa/chen bat cu dong nao — file sai thi bao loi, khong lam gi ca). */
+const USER_DATA_REQUIRED_COLUMNS = {
+  users: ['id', 'email'],
+  user_words: ['id', 'user_id', 'word', 'meaning'],
+  user_vocabulary: ['user_id', 'vocab_id'],
+  attempts: ['id', 'user_id'],
+  answers: ['attempt_id', 'question_id'],
+  wrong_questions: ['user_id', 'question_id'],
+  xp_events: ['id', 'user_id'],
+  ielts_profiles: ['user_id'],
+  error_log: ['id', 'user_id', 'error_code'],
+  monster_state: ['user_id', 'error_code'],
+  sessions: ['id', 'user_id'],
+  mock_tests: ['id', 'user_id'],
+  plan: ['id', 'user_id'],
+  writing_submissions: ['id', 'user_id'],
+  speaking_recordings: ['id', 'user_id'],
+  dictionary_cache: ['word'],
+  app_settings: ['key', 'value'],
+};
+
+/** Doc toan bo du lieu nguoi dung: { ten_bang: [row, ...] } (row dang tho,
+ *  gom ca password_hash o bang users). */
+function getUserDataBackup() {
+  const out = {};
+  for (const table of USER_DATA_TABLES) {
+    out[table] = db.prepare(`SELECT * FROM ${table}`).all();
+  }
+  return out;
+}
+
+/** Dem so dong tung bang du lieu nguoi dung (de script restore-watch
+ *  nhan biet DB vua bi xoa ma khong can tai toan bo backup). */
+function countUserData() {
+  const counts = {};
+  for (const table of USER_DATA_TABLES) {
+    counts[table] = db.prepare(`SELECT COUNT(*) AS c FROM ${table}`).get().c;
+  }
+  return counts;
+}
+
+/** Kiem tra dinh dang file backup. Tra ve null neu hop le, neu khong tra
+ *  ve ly do (khong sua DB trong truong hop nay). */
+function validateUserDataBackup(userData) {
+  if (!userData || typeof userData !== 'object' || Array.isArray(userData)) {
+    return 'userData phai la object { ten_bang: [row, ...] }';
+  }
+  for (const [table, rows] of Object.entries(userData)) {
+    if (!USER_DATA_TABLES.includes(table)) {
+      return `bang khong duoc phep khoi phuc: ${table}`;
+    }
+    if (!Array.isArray(rows)) return `bang ${table} phai la array`;
+    const required = USER_DATA_REQUIRED_COLUMNS[table];
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      if (!row || typeof row !== 'object' || Array.isArray(row)) {
+        return `bang ${table}[${i}] khong hop le`;
+      }
+      for (const col of required) {
+        if (row[col] === undefined || row[col] === null) {
+          return `bang ${table}[${i}] thieu ${col}`;
+        }
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Khoi phuc du lieu nguoi dung tu file backup, trong 1 transaction:
+ * xoa sach cac bang du lieu nguoi dung roi chen lai dung cac dong trong
+ * file (chi chen cac cot hien co trong schema — chong lech schema).
+ * Idempotent: khoi phuc 2 lan lien tiep cho cung ket qua.
+ * TUYET DOI khong dong vao bang noi dung.
+ */
+function restoreUserData(userData) {
+  const err = validateUserDataBackup(userData);
+  if (err) throw new Error(err);
+  return transaction(() => {
+    const restored = {};
+    // Xoa truoc: bang con truoc, bang cha sau.
+    for (const table of [...USER_DATA_TABLES].reverse()) {
+      db.prepare(`DELETE FROM ${table}`).run();
+    }
+    // Chen: bang cha truoc, bang con sau.
+    for (const table of USER_DATA_TABLES) {
+      const rows = userData[table] || [];
+      if (!rows.length) {
+        restored[table] = 0;
+        continue;
+      }
+      const cols = db
+        .prepare(`PRAGMA table_info(${table})`)
+        .all()
+        .map((c) => c.name);
+      const insert = (row) => {
+        const useCols = cols.filter((c) => row[c] !== undefined);
+        if (!useCols.length) return;
+        const placeholders = useCols.map(() => '?').join(',');
+        const quoted = useCols.map((c) => `"${c}"`).join(',');
+        db.prepare(`INSERT INTO ${table} (${quoted}) VALUES (${placeholders})`).run(
+          ...useCols.map((c) => row[c])
+        );
+      };
+      for (const row of rows) insert(row);
+      restored[table] = rows.length;
+    }
+    // Sua lai AUTOINCREMENT sequence: id tiep theo phai lon hon max(id)
+    // da khoi phuc, neu khong user/attempt moi se dung id cu.
+    for (const table of AUTOINCREMENT_TABLES) {
+      const maxRow = db.prepare(`SELECT MAX(id) AS m FROM ${table}`).get();
+      db.prepare('DELETE FROM sqlite_sequence WHERE name = ?').run(table);
+      if (maxRow && maxRow.m !== null && maxRow.m !== undefined) {
+        db.prepare('INSERT INTO sqlite_sequence (name, seq) VALUES (?, ?)').run(table, maxRow.m);
+      }
+    }
+    return restored;
+  });
+}
+
 module.exports = {
   db,
   initDb,
@@ -2577,4 +2754,10 @@ module.exports = {
   getSetting,
   getAllSettings,
   setSetting,
+  // backup / restore (du lieu nguoi dung)
+  USER_DATA_TABLES,
+  getUserDataBackup,
+  countUserData,
+  validateUserDataBackup,
+  restoreUserData,
 };

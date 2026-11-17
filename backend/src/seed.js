@@ -5,8 +5,16 @@
  * (file seed do data agent quan ly) va tao 2 tai khoan demo.
  *
  * - Chiu duoc file seed CHUA TON TAI (in canh bao, bo qua, van tao demo user).
- * - Chay lai duoc (idempotent): chi seed cau hoi/tu vung khi bang dang rong,
- *   chi tao demo user khi email chua ton tai.
+ * - Chay lai duoc (idempotent): chi seed cau hoi/tu vung CHUA CO theo id
+ *   (bo qua id da ton tai), chi tao demo user khi email chua ton tai.
+ *   Ly do: tu khi co backup/khoi phuc, DB ton tai qua cac lan deploy nen
+ *   seed dang "bo qua ca bang khi count > 0" se khien bo de MOI day len
+ *   sau do khong bao gio duoc seed. Bo de IELTS theo tung Test da lam
+ *   dung kieu nay tu truoc (tao test set neu thieu, chi seed khi de chua
+ *   co cau nao).
+ * - Seed KHONG cap nhat cau hoi/tu vung da co: sua noi dung cau cu trong
+ *   file seed van can PUT qua API nhu hien nay (de khong ghi de sua doi
+ *   cua admin tren web).
  * - Duoc goi tu src/index.js moi lan khoi dong, va chay doc lap bang
  *   `npm run seed`.
  */
@@ -65,10 +73,9 @@ function validSeedQuestion(q) {
 }
 
 function seedQuestions() {
-  if (db.countQuestions() > 0) {
-    console.log(`[seed] questions da co ${db.countQuestions()} cau — bo qua seed cau hoi.`);
-    return 0;
-  }
+  // Seed tang dan theo id: chi chen cau CHUA CO (id chua ton tai).
+  // DB co the da co cau hoi tu lan boot truoc (sau khi khoi phuc tu backup)
+  // nhung bo de MOI van phai duoc seed — khong duoc bo qua ca bang.
   const list = readJsonArray('questions.json').filter(validSeedQuestion);
   // ETS 2024 - Test 01 (= De so 01, Bo de 2024): 200 cau trong
   // data/questions.json (testSetId TS-003). Tao truoc khi seed cau hoi de
@@ -272,7 +279,12 @@ function seedQuestions() {
     console.log('[seed] da tao ETS 2025 Test 02 TS-026.');
   }
   let inserted = 0;
+  let skipped = 0;
   for (const q of list) {
+    if (db.getQuestionRowById(q.id)) {
+      skipped += 1;
+      continue;
+    }
     try {
       db.insertQuestion({ ...q, testSetId: q.testSetId });
       inserted += 1;
@@ -280,7 +292,7 @@ function seedQuestions() {
       console.warn(`[seed] bo qua cau ${q.id}: ${err.message}`);
     }
   }
-  console.log(`[seed] da seed ${inserted}/${list.length} cau hoi.`);
+  console.log(`[seed] da seed ${inserted}/${list.length} cau hoi moi (${skipped} cau da co — bo qua).`);
   if (db.getTestSet('TS-003')) db.refreshTestSetTotal('TS-003');
   if (db.getTestSet('TS-004')) db.refreshTestSetTotal('TS-004');
   if (db.getTestSet('TS-005')) db.refreshTestSetTotal('TS-005');
@@ -794,15 +806,17 @@ function seedIeltsCam19Test4() {
 }
 
 function seedVocabulary() {
-  if (db.countVocabulary() > 0) {
-    console.log(`[seed] vocabulary da co ${db.countVocabulary()} tu — bo qua seed tu vung.`);
-    return 0;
-  }
+  // Seed tang dan theo id (nhu seedQuestions): chi chen tu CHUA CO.
   const list = readJsonArray('vocabulary.json').filter(
     (v) => v && typeof v.id === 'string' && typeof v.word === 'string' && typeof v.meaning === 'string'
   );
   let inserted = 0;
+  let skipped = 0;
   for (const v of list) {
+    if (db.getVocabularyById(v.id)) {
+      skipped += 1;
+      continue;
+    }
     try {
       db.insertVocabulary(v);
       inserted += 1;
@@ -810,7 +824,7 @@ function seedVocabulary() {
       console.warn(`[seed] bo qua tu ${v.id}: ${err.message}`);
     }
   }
-  console.log(`[seed] da seed ${inserted}/${list.length} tu vung.`);
+  console.log(`[seed] da seed ${inserted}/${list.length} tu vung moi (${skipped} tu da co — bo qua).`);
   return inserted;
 }
 
