@@ -365,6 +365,7 @@ router.get('/admin/backup', (req, res) => {
     exportedAt: new Date().toISOString(),
     questions: db.getAllQuestionsForBackup(),
     vocabulary: db.getAllVocabularyForBackup(),
+    userWords: db.getAllUserWordsForBackup(),
     usersCount: db.countUsers(),
     attemptsCount: db.countAttempts(),
   });

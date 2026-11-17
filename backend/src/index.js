@@ -59,6 +59,8 @@ app.use('/api', require('./routes/practice'));
 app.use('/api', require('./routes/tests'));
 app.use('/api', require('./routes/wrong'));
 app.use('/api', require('./routes/vocab'));
+app.use('/api', require('./routes/dictionary'));
+app.use('/api', require('./routes/userWords'));
 app.use('/api', require('./routes/stats'));
 app.use('/api', require('./routes/ielts'));
 app.use('/api', require('./routes/ieltsPhase1'));

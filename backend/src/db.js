@@ -163,6 +163,32 @@ CREATE TABLE IF NOT EXISTS user_vocabulary (
   last_reviewed_at TEXT,
   PRIMARY KEY (user_id, vocab_id)
 );
+/* Tu vung ca nhan (lay tu qua trinh luyen tap): moi user co kho rieng.
+   word luu dang chu thuong; UNIQUE(user_id, word) chong luu trung. */
+CREATE TABLE IF NOT EXISTS user_words (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  word TEXT NOT NULL,
+  phonetic TEXT,
+  pos TEXT,
+  meaning TEXT NOT NULL,
+  example TEXT,
+  context TEXT,
+  topic TEXT,
+  status TEXT DEFAULT 'learning',
+  created_at TEXT,
+  updated_at TEXT,
+  UNIQUE(user_id, word)
+);
+/* Cache ket qua tra tu dien (Gemini): moi tu chi tra 1 lan. */
+CREATE TABLE IF NOT EXISTS dictionary_cache (
+  word TEXT PRIMARY KEY COLLATE NOCASE,
+  phonetic TEXT,
+  pos TEXT,
+  meaning TEXT,
+  example TEXT,
+  updated_at TEXT
+);
 CREATE TABLE IF NOT EXISTS xp_events (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER,
@@ -1585,7 +1611,12 @@ function updateVocabulary(id, fields) {
 }
 
 function deleteVocabulary(id) {
-  return db.prepare('DELETE FROM vocabulary WHERE id = ?').run(id).changes > 0;
+  // Xoa ca trang thai hoc cua user doi voi tu nay (user_vocabulary),
+  // keo de lai trang thai mo coi.
+  return transaction(() => {
+    db.prepare('DELETE FROM user_vocabulary WHERE vocab_id = ?').run(id);
+    return db.prepare('DELETE FROM vocabulary WHERE id = ?').run(id).changes > 0;
+  });
 }
 
 function getAllVocabularyForBackup() {
@@ -1607,6 +1638,131 @@ function getUserVocabMap(userId) {
   const map = {};
   for (const r of rows) map[r.vocab_id] = r.status;
   return map;
+}
+
+/* ---------------- tu dien (cache) ---------------- */
+
+function mapDictionaryEntry(row) {
+  if (!row) return null;
+  return { word: row.word, phonetic: row.phonetic, pos: row.pos, meaning: row.meaning, example: row.example };
+}
+
+function getDictionaryEntry(word) {
+  const row = db.prepare('SELECT * FROM dictionary_cache WHERE word = ?').get(String(word).toLowerCase());
+  return mapDictionaryEntry(row);
+}
+
+function setDictionaryEntry(entry) {
+  const now = nowIso();
+  db.prepare(
+    `INSERT INTO dictionary_cache (word, phonetic, pos, meaning, example, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?)
+     ON CONFLICT(word) DO UPDATE SET phonetic = excluded.phonetic, pos = excluded.pos,
+       meaning = excluded.meaning, example = excluded.example, updated_at = excluded.updated_at`
+  ).run(String(entry.word).toLowerCase(), entry.phonetic || null, entry.pos || null, entry.meaning, entry.example || null, now);
+  return getDictionaryEntry(entry.word);
+}
+
+/* ---------------- tu vung ca nhan (user_words) ---------------- */
+
+function mapUserWord(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    word: row.word,
+    phonetic: row.phonetic,
+    pos: row.pos,
+    meaning: row.meaning,
+    example: row.example,
+    context: row.context,
+    topic: row.topic,
+    status: row.status,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
+}
+
+function listUserWords(userId, { status, limit = 100, offset = 0 } = {}) {
+  const where = ['user_id = ?'];
+  const params = [userId];
+  if (status) {
+    where.push('status = ?');
+    params.push(status);
+  }
+  const whereSql = `WHERE ${where.join(' AND ')}`;
+  const total = db.prepare(`SELECT COUNT(*) AS c FROM user_words ${whereSql}`).get(...params).c;
+  const rows = db
+    .prepare(`SELECT * FROM user_words ${whereSql} ORDER BY created_at DESC, id DESC LIMIT ? OFFSET ?`)
+    .all(...params, limit, offset);
+  return { total, items: rows.map(mapUserWord) };
+}
+
+function getUserWordById(id) {
+  return mapUserWord(db.prepare('SELECT * FROM user_words WHERE id = ?').get(id));
+}
+
+/** Lay tu ca nhan chi khi thuoc ve user nay (404 neu khac chu). */
+function getUserWordByIdAndUser(id, userId) {
+  return mapUserWord(db.prepare('SELECT * FROM user_words WHERE id = ? AND user_id = ?').get(id, userId));
+}
+
+function getUserWordByWord(userId, word) {
+  return mapUserWord(
+    db.prepare('SELECT * FROM user_words WHERE user_id = ? AND word = ?').get(userId, String(word).toLowerCase())
+  );
+}
+
+function insertUserWord(userId, data) {
+  const now = nowIso();
+  const info = db.prepare(
+    `INSERT INTO user_words (user_id, word, phonetic, pos, meaning, example, context, topic, status, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).run(
+    userId,
+    String(data.word).toLowerCase(),
+    data.phonetic || null,
+    data.pos || null,
+    data.meaning,
+    data.example || null,
+    data.context || null,
+    data.topic || null,
+    data.status || 'learning',
+    now,
+    now
+  );
+  return getUserWordById(Number(info.lastInsertRowid));
+}
+
+function updateUserWord(id, fields) {
+  const cur = db.prepare('SELECT * FROM user_words WHERE id = ?').get(id);
+  if (!cur) return null;
+  db.prepare(
+    `UPDATE user_words SET phonetic = ?, pos = ?, meaning = ?, example = ?,
+       context = ?, topic = ?, updated_at = ? WHERE id = ?`
+  ).run(
+    fields.phonetic !== undefined ? fields.phonetic : cur.phonetic,
+    fields.pos !== undefined ? fields.pos : cur.pos,
+    fields.meaning !== undefined ? fields.meaning : cur.meaning,
+    fields.example !== undefined ? fields.example : cur.example,
+    fields.context !== undefined ? fields.context : cur.context,
+    fields.topic !== undefined ? fields.topic : cur.topic,
+    nowIso(),
+    id
+  );
+  return getUserWordById(id);
+}
+
+function deleteUserWord(id) {
+  return db.prepare('DELETE FROM user_words WHERE id = ?').run(id).changes > 0;
+}
+
+function markUserWord(id, status) {
+  db.prepare('UPDATE user_words SET status = ?, updated_at = ? WHERE id = ?').run(status, nowIso(), id);
+  return getUserWordById(id);
+}
+
+function getAllUserWordsForBackup() {
+  return db.prepare('SELECT * FROM user_words ORDER BY user_id, word').all();
 }
 
 /* ---------------- XP & leaderboard ---------------- */
@@ -2362,6 +2518,18 @@ module.exports = {
   getAllVocabularyForBackup,
   markUserVocabulary,
   getUserVocabMap,
+  // tu dien (cache) + tu vung ca nhan
+  getDictionaryEntry,
+  setDictionaryEntry,
+  listUserWords,
+  getUserWordById,
+  getUserWordByIdAndUser,
+  getUserWordByWord,
+  insertUserWord,
+  updateUserWord,
+  deleteUserWord,
+  markUserWord,
+  getAllUserWordsForBackup,
   // xp & leaderboard
   addXpEvent,
   sumXp,
