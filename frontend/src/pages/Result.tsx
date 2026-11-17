@@ -5,6 +5,7 @@ import { ErrorBox, partName, TierBadge } from '../components';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, realQuestionNumber, stripLeadingNumber } from '../exam';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { LoadingLine, useUiSettings } from '../uiSettings';
+import { WordText } from '../wordLookup';
 
 export default function Result() {
   const { id } = useParams();
@@ -115,6 +116,8 @@ export default function Result() {
             const causeLogged = !!causeById[d.questionId];
             const n = detailNumbers[i];
             const status = d.correct === true ? '✓ Đúng' : d.correct === false ? '✗ Sai' : '— Chưa trả lời';
+            // Chi doan van DOC (TOEIC P6/P7, IELTS Reading) moi cho tra tu.
+            const isReadingPassage = isIelts ? (d.part ?? 0) >= 5 : (d.part ?? 0) >= 6;
             return (
               <div key={d.questionId} style={{ borderBottom: '1px solid var(--border-soft)', padding: '.5rem 0' }}>
                 <p style={{ margin: '.2rem 0' }}><strong>Câu {n} · {status}</strong>{d.content ? <> — {stripLeadingNumber(d.content, n)}</> : null}</p>
@@ -158,7 +161,7 @@ export default function Result() {
                     {d.passageText ? (
                       <details style={{ margin: '.2rem 0' }}>
                         <summary>Xem đoạn văn</summary>
-                        <p>{d.passageText}</p>
+                        <p>{isReadingPassage ? <WordText text={d.passageText} /> : d.passageText}</p>
                       </details>
                     ) : null}
                   </>

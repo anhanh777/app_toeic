@@ -91,6 +91,10 @@ export interface TestResultDetail {
 }
 export interface PartInfo { part: number; count: number; section?: string; listening?: boolean; reading?: boolean; }
 export interface Vocab { id: string; word: string; phonetic?: string; meaning: string; example?: string; topic?: string; }
+/** Ket qua tra tu dien: nghia tieng Viet + loai tu + phien am + vi du. */
+export interface DictionaryEntry { word: string; phonetic?: string | null; pos?: string | null; meaning_vi: string; example?: string | null; cached?: boolean; }
+/** 1 tu trong kho ca nhan "Tu cua toi" (luu theo user). */
+export interface UserWord { id: number; word: string; phonetic?: string | null; pos?: string | null; meaning: string; example?: string | null; context?: string | null; topic?: string | null; status: 'learning' | 'learned' | 'wrong'; createdAt?: string; updatedAt?: string; }
 export interface StatsOverview {
   totalAnswered: number; totalCorrect: number; accuracy: number;
   byPart: { part: number; answered: number; correct: number; accuracy: number }[];
@@ -306,6 +310,23 @@ export const api = {
   },
   markVocab: (id: string, status: 'learning' | 'learned' | 'wrong') =>
     req(`/api/vocabulary/${encodeURIComponent(id)}/mark`, { method: 'POST', body: JSON.stringify({ status }) }),
+
+  // ---- Tu dien + tu vung ca nhan ("Tu cua toi") ----
+  dictionaryLookup: (word: string, context?: string) =>
+    req<DictionaryEntry>('/api/dictionary/lookup', { method: 'POST', body: JSON.stringify({ word, context }) }),
+  userWords: async (status = '', limit = 500, offset = 0) => {
+    const q = new URLSearchParams({ limit: String(limit), offset: String(offset) });
+    if (status) q.set('status', status);
+    return req<{ total: number; items: UserWord[] }>(`/api/user-words?${q}`);
+  },
+  createUserWord: (body: { word: string; phonetic?: string; pos?: string; meaning: string; example?: string; context?: string; topic?: string }) =>
+    req<UserWord & { existed?: boolean }>('/api/user-words', { method: 'POST', body: JSON.stringify(body) }),
+  updateUserWord: (id: number, body: Partial<{ phonetic: string | null; pos: string | null; meaning: string; example: string | null; context: string | null; topic: string | null }>) =>
+    req<UserWord>(`/api/user-words/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  deleteUserWord: (id: number) =>
+    req<{ ok: boolean }>(`/api/user-words/${id}`, { method: 'DELETE' }),
+  markUserWord: (id: number, status: 'learning' | 'learned' | 'wrong') =>
+    req<UserWord>(`/api/user-words/${id}/mark`, { method: 'POST', body: JSON.stringify({ status }) }),
 
   statsOverview: (exam?: string) => req<StatsOverview>(exam ? `/api/stats/overview?exam=${encodeURIComponent(exam)}` : '/api/stats/overview'),
   statsHistory: (exam?: string) => req<Attempt[]>(exam ? `/api/stats/history?exam=${encodeURIComponent(exam)}` : '/api/stats/history'),

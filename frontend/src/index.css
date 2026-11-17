@@ -746,3 +746,11 @@ tbody tr:hover{background:var(--surface-soft)}
 @keyframes ld-progress{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
 .ld-line{display:flex; align-items:center; gap:.5rem}
 .ld-line .ld-skeleton{flex:1}
+
+/* ---- Tra tu nhanh trong doan van (wordLookup) ---- */
+.wl-word{cursor:pointer; border-radius:3px; padding:0 1px}
+.wl-word:hover{background:var(--accent-soft)}
+.wl-word.saved{border-bottom:2px dotted var(--accent)}
+.wl-popover{position:fixed; z-index:60; width:min(320px, calc(100vw - 16px)); background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:.8rem; box-shadow:0 8px 28px rgba(0,0,0,.18); max-height:300px; overflow:auto}
+.wl-pop-head{display:flex; align-items:baseline; gap:.4rem}
+.wl-close{margin-left:auto}

@@ -13,6 +13,7 @@ import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState } from '../components';
+import { WordText } from '../wordLookup';
 import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
@@ -296,9 +297,12 @@ export default function PracticeSession() {
   };
 
   // Đoạn văn Part 6: chỗ trống thành chip số (bấm để tới câu hỏi).
+  // Đoạn văn ĐỌC (TOEIC P6/P7, IELTS Reading): từ bấm được để tra từ.
   const renderPassage = (block: Block) => {
-    const isP6Block = exam === 'toeic' && block.questions[0]?.q.part === 6;
-    if (!isP6Block || !block.passageText) return <div className="passage">{block.passageText}</div>;
+    const part = block.questions[0]?.q.part ?? 0;
+    const isReading = exam === 'toeic' ? part >= 6 : part >= 5;
+    const isP6Block = exam === 'toeic' && part === 6;
+    if (!isP6Block || !block.passageText) return <div className="passage">{block.passageText && isReading ? <WordText text={block.passageText} /> : block.passageText}</div>;
     const blanks: Record<number, BlankState> = {};
     const idByNum: Record<number, string> = {};
     for (const { q, n } of block.questions) {
@@ -313,6 +317,7 @@ export default function PracticeSession() {
           text={block.passageText}
           blanks={blanks}
           onBlankClick={num => document.getElementById(`q-${idByNum[num]}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
+          renderText={(t) => <WordText text={t} />}
         />
       </div>
     );

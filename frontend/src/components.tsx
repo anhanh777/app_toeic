@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState, Fragment } from 'react';
 import { ApiError } from './api';
 import { speak, stopSpeak, pauseSpeak, resumeSpeak, ttsSupported } from './tts';
 
@@ -32,10 +32,12 @@ export interface BlankState { selected?: string; graded?: boolean | null; }
  * (bấm vào thì cuộn tới câu đó; đã trả lời thì chip hiện chữ cái đã chọn
  * và đổi màu). Chỗ trống `________` không có số thì hiện chip trống.
  */
-export function PassageWithBlanks({ text, blanks, onBlankClick }: {
+export function PassageWithBlanks({ text, blanks, onBlankClick, renderText }: {
   text: string;
   blanks?: Record<number, BlankState>;
   onBlankClick?: (num: number) => void;
+  /** Ve doan van thuong (giua cac chip): neu co thi dung ham nay de ve (vd: tu bam duoc de tra tu). */
+  renderText?: (text: string) => React.ReactNode;
 }) {
   // Tách văn bản thành: đoạn thường | chip chỗ trống có số | chip trống.
   const parts: React.ReactNode[] = [];
@@ -44,7 +46,7 @@ export function PassageWithBlanks({ text, blanks, onBlankClick }: {
   let m: RegExpExecArray | null;
   let k = 0;
   while ((m = re.exec(text)) !== null) {
-    if (m.index > last) parts.push(text.slice(last, m.index));
+    if (m.index > last) parts.push(<Fragment key={`seg-${last}`}>{renderText ? renderText(text.slice(last, m.index)) : text.slice(last, m.index)}</Fragment>);
     const numMatch = /^(\d+)\s*\./.exec(m[0]);
     const num = numMatch ? Number(numMatch[1]) : null;
     const st = num != null ? blanks?.[num] : undefined;
@@ -65,7 +67,7 @@ export function PassageWithBlanks({ text, blanks, onBlankClick }: {
     );
     last = m.index + m[0].length;
   }
-  if (last < text.length) parts.push(text.slice(last));
+  if (last < text.length) parts.push(<Fragment key={`seg-${last}`}>{renderText ? renderText(text.slice(last)) : text.slice(last)}</Fragment>);
   return <>{parts}</>;
 }
 
