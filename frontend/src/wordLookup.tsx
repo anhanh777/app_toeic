@@ -7,7 +7,8 @@ import { api, type DictionaryEntry, type UserWord } from './api';
  *
  * - WordText tach van ban thanh cac tu co the bam duoc. Bam/cham (tren
  *   may tinh: them hover ~400ms) mo popup tra tu: phien am, loai tu,
- *   nghia tieng Viet, vi du. Tra bang Gemini qua backend (co cache nen
+ *   nghia tieng Viet — KHONG hien cau vi du (theo yeu cau cua YingYing
+ *   2026-11-17). Tra bang Gemini qua backend (co cache nen
  *   moi tu chi tra 1 lan); tra loi thi hien "Khong tra duoc" — KHONG
  *   bao gio hien nghia tu bia.
  * - Popup co nut "＋ Luu vao tu vung": bam moi luu (khong tu luu); da
@@ -257,7 +258,6 @@ export function WordText({ text }: { text: string }) {
             <>
               {pop.entry.pos && <p style={{ margin: '.2rem 0' }}><span className="muted">Loại từ:</span> {pop.entry.pos}</p>}
               <p style={{ margin: '.2rem 0' }}><strong>{pop.entry.meaning_vi}</strong></p>
-              {pop.entry.example && <p className="muted" style={{ margin: '.2rem 0' }}>VD: {pop.entry.example}</p>}
               {savedRow ? (
                 <button type="button" className="btn secondary btn-sm" disabled={saving} onClick={() => void onUnsave()}>
                   Đã lưu ✓ — bấm để bỏ lưu
