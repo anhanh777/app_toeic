@@ -191,13 +191,17 @@ export function useWordPopover(text: string) {
 
 /** Tách văn bản thành chuỗi + các từ bấm được (giữ nguyên khoảng trắng,
  * dấu câu, số; chỉ từ chữ cái mới bấm được). Dùng chung cho WordText và
- * PassageView (đoạn Part 6 có chip chỗ trống xen kẽ). */
+ * PassageView (đoạn Part 6 có chip chỗ trống xen kẽ). `keyPrefix` để
+ * các lần gọi khác nhau trong cùng 1 mảng cha không trùng key (mỗi lần
+ * gọi đếm k lại từ 0 — nối nhiều lần gọi mà không có prefix sẽ sinh
+ * lỗi "two children with the same key"). */
 export function renderWordNodes(
   text: string,
   saved: Map<string, UserWord>,
   onWordPress: (word: string, index: number) => void,
   textColor: string,
   fontSize: number,
+  keyPrefix = '',
 ): ReactNode[] {
   const wordRe = /([A-Za-z]+(?:['’\-][A-Za-z]+)*)/g;
   const nodes: ReactNode[] = [];
@@ -211,7 +215,7 @@ export function renderWordNodes(
     const isSaved = saved.has(w.toLowerCase());
     nodes.push(
       <Text
-        key={k++}
+        key={`${keyPrefix}${k++}`}
         onPress={() => onWordPress(w, idx)}
         style={{
           color: textColor,

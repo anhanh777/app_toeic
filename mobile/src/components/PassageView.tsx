@@ -46,13 +46,14 @@ export default function PassageView({ text, isP6, blanks, onBlankClick, wordLook
     const re = /(\d+)\s*\.\s*_{2,}|_{2,}/g;
     let last = 0;
     let k = 0;
+    let segIdx = 0;
     let m: RegExpExecArray | null;
     while ((m = re.exec(text)) !== null) {
       if (m.index > last) {
         const seg = text.slice(last, m.index);
         parts.push(
           ...(wordLookup
-            ? renderWordNodes(seg, saved, openWord, colors.text, fontSize)
+            ? renderWordNodes(seg, saved, openWord, colors.text, fontSize, `s${segIdx++}-`)
             : [seg]),
         );
       }
@@ -90,7 +91,7 @@ export default function PassageView({ text, isP6, blanks, onBlankClick, wordLook
       const seg = text.slice(last);
       parts.push(
         ...(wordLookup
-          ? renderWordNodes(seg, saved, openWord, colors.text, fontSize)
+          ? renderWordNodes(seg, saved, openWord, colors.text, fontSize, `s${segIdx++}-`)
           : [seg]),
       );
     }
