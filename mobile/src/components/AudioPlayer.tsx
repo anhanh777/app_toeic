@@ -49,6 +49,10 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
   // hook trả về là bất biến nên không được gán thuộc tính trực tiếp
   // (player.playbackRate = ...); mọi thao tác lệnh (play/pause/seek)
   // vẫn gọi trực tiếp, chỉ riêng việc gán thuộc tính đi qua ref.
+  // LƯU Ý: trên native, `playbackRate` của expo-audio CHỈ có getter
+  // (gán trực tiếp sẽ throw "Cannot assign to property 'playbackRate'
+  // which has only a getter") — đổi tốc độ phải gọi phương thức
+  // setPlaybackRate(rate); tương tự, không gán shouldCorrectPitch.
   const playerRef = useRef(player);
   useEffect(() => {
     playerRef.current = player;
@@ -83,9 +87,14 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
   }
 
   // Tốc độ phát phải gán lại mỗi khi player mới được tạo (đổi source).
+  // Bọc try/catch: setPlaybackRate có thể throw nếu player chưa nạp
+  // xong source (lỗi trong effect sẽ crash màn hình).
   useEffect(() => {
-    playerRef.current.playbackRate = rateRef.current;
-    playerRef.current.shouldCorrectPitch = true;
+    try {
+      playerRef.current.setPlaybackRate(rateRef.current);
+    } catch {
+      /* thử lại khi bấm phát */
+    }
   }, [player]);
 
   // Nạp xong → idle; phát xong → ended.
@@ -110,14 +119,14 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
     if (prevStopKeyRef.current !== stopKey) {
       prevStopKeyRef.current = stopKey;
       player.pause();
-      player.seekTo(0);
+      player.seekTo(0).catch(() => {});
       setUiStatus((cur) => (cur === 'loading' ? cur : 'idle'));
     }
   }, [stopKey, player]);
 
   const stopSelf = useCallback(() => {
     player.pause();
-    player.seekTo(0);
+    player.seekTo(0).catch(() => {});
     setUiStatus((cur) => (cur === 'loading' ? cur : 'idle'));
   }, [player]);
   const stopSelfRef = useRef(stopSelf);
@@ -159,7 +168,14 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
       markPlayed();
       if (activeStop && activeStop !== stopSelfRef.current) activeStop();
       activeStop = stopSelfRef.current;
-      if (uiStatusRef.current === 'ended') player.seekTo(0);
+      if (uiStatusRef.current === 'ended') player.seekTo(0).catch(() => {});
+      // Áp lại tốc độ lúc bắt đầu phát (phòng khi effect gán tốc độ
+      // lúc player chưa nạp xong đã throw và bỏ qua).
+      try {
+        player.setPlaybackRate(rateRef.current);
+      } catch {
+        /* phát ở tốc độ mặc định */
+      }
       player.play();
       setUiStatus('playing');
     } catch (e) {
@@ -172,8 +188,11 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
     const next = RATES[(idx + 1) % RATES.length];
     rateRef.current = next;
     setRate(next);
-    playerRef.current.playbackRate = next;
-    playerRef.current.shouldCorrectPitch = true;
+    try {
+      playerRef.current.setPlaybackRate(next);
+    } catch {
+      /* tốc độ sẽ áp lại khi đổi source / bấm phát */
+    }
   }, []);
 
   const seek = useCallback(
@@ -181,7 +200,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
       if (!durationMs || !barWidth) return;
       const frac = Math.min(1, Math.max(0, x / barWidth));
       try {
-        player.seekTo((frac * durationMs) / 1000);
+        player.seekTo((frac * durationMs) / 1000).catch(() => {});
         if (uiStatusRef.current === 'ended') setUiStatus('paused');
       } catch {
         /* bỏ qua */
