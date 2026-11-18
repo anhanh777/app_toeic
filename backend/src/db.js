@@ -315,6 +315,11 @@ CREATE TABLE IF NOT EXISTS app_settings (
   value TEXT NOT NULL,
   updated_at TEXT
 );
+CREATE TABLE IF NOT EXISTS brand_settings (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TEXT
+);
 CREATE INDEX IF NOT EXISTS idx_error_log_user_due ON error_log(user_id, review_due, resolved);
 CREATE INDEX IF NOT EXISTS idx_sessions_user_date ON sessions(user_id, date);
 CREATE INDEX IF NOT EXISTS idx_mock_tests_user_kind ON mock_tests(user_id, kind);
@@ -2446,6 +2451,41 @@ function setSetting(key, value) {
   ).run(key, JSON.stringify(value), nowIso());
 }
 
+/* ---------- brand_settings (cai dat thuong hieu) ---------- */
+
+/** Doc 1 gia tri thuong hieu (tra ve undefined neu chua co — caller dung mac dinh code). */
+function getBrandSetting(key) {
+  const row = db.prepare('SELECT value FROM brand_settings WHERE key = ?').get(key);
+  if (!row) return undefined;
+  try {
+    return JSON.parse(row.value);
+  } catch {
+    return undefined;
+  }
+}
+
+/** Doc toan bo cai dat thuong hieu dang luu (map phang key -> value da parse). */
+function getAllBrandSettings() {
+  const rows = db.prepare('SELECT key, value FROM brand_settings').all();
+  const out = {};
+  for (const r of rows) {
+    try {
+      out[r.key] = JSON.parse(r.value);
+    } catch {
+      /* bo qua dong hong */
+    }
+  }
+  return out;
+}
+
+/** Ghi 1 gia tri thuong hieu (upsert). Chi luu khi key hop le — caller validate truoc. */
+function setBrandSetting(key, value) {
+  db.prepare(
+    `INSERT INTO brand_settings (key, value, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`
+  ).run(key, JSON.stringify(value), nowIso());
+}
+
 /* ---------------- backup / restore (du lieu nguoi dung) ----------------
  * Render free tier xoa file .db moi lan redeploy / ngu day: de thi thi seed
  * lai duoc tu git, nhung du lieu nguoi dung thi mat. Giai phap: backup dinh
@@ -2477,6 +2517,7 @@ const USER_DATA_TABLES = [
   'speaking_recordings',
   'dictionary_cache',
   'app_settings',
+  'brand_settings',
 ];
 
 /** Cac bang co cot id AUTOINCREMENT — sau restore phai sua lai
@@ -2514,6 +2555,7 @@ const USER_DATA_REQUIRED_COLUMNS = {
   speaking_recordings: ['id', 'user_id'],
   dictionary_cache: ['word'],
   app_settings: ['key', 'value'],
+  brand_settings: ['key', 'value'],
 };
 
 /** Doc toan bo du lieu nguoi dung: { ten_bang: [row, ...] } (row dang tho,
@@ -2754,6 +2796,10 @@ module.exports = {
   getSetting,
   getAllSettings,
   setSetting,
+  // brand_settings (cai dat thuong hieu)
+  getBrandSetting,
+  getAllBrandSettings,
+  setBrandSetting,
   // backup / restore (du lieu nguoi dung)
   USER_DATA_TABLES,
   getUserDataBackup,

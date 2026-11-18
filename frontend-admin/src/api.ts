@@ -524,6 +524,11 @@ export const api = {
   adminUiSettings: async () => req<import('./uiSettings').UiSettings>('/api/admin/settings'),
   adminSaveUiSettings: (doc: import('./uiSettings').UiSettings) =>
     req<import('./uiSettings').UiSettings>('/api/admin/settings', { method: 'PUT', body: JSON.stringify(doc) }),
+
+  // Tên & logo thương hiệu (brand): doc công khai, sửa chỉ admin.
+  adminBrand: () => req<import('./brand').BrandSettings>('/api/admin/brand'),
+  adminSaveBrand: (doc: import('./brand').BrandSettings) =>
+    req<import('./brand').BrandSettings>('/api/admin/brand', { method: 'PUT', body: JSON.stringify(doc) }),
 };
 
 export function targetScoreOf(u: User | null): number {

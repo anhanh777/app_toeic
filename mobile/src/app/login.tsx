@@ -14,9 +14,11 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
+import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError } from '../api';
 import { useAuth } from '../auth';
+import { useBrand } from '../brand';
 import { GoogleSignInButton } from '../components/GoogleSignInButton';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
@@ -25,6 +27,7 @@ export default function LoginScreen() {
   const { login } = useAuth();
   const { colors } = useTheme();
   const { scaled } = useTextSize();
+  const { brand } = useBrand();
   const { width } = useWindowDimensions();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -66,12 +69,22 @@ export default function LoginScreen() {
         >
           <View style={styles.hero}>
             <View style={[styles.logo, { backgroundColor: colors.accent }]}>
-              <Text style={{ fontSize: scaled(36) }}>🌸</Text>
+              {brand.logoType === 'image' && brand.logoUrl ? (
+                <Image
+                  source={{ uri: brand.logoUrl }}
+                  style={{ width: 56, height: 56, borderRadius: 28 }}
+                  contentFit="contain"
+                />
+              ) : (
+                <Text style={{ fontSize: scaled(36) }}>{brand.logoEmoji}</Text>
+              )}
             </View>
-            <Text style={[styles.brand, { color: colors.text, fontSize: scaled(26) }]}>ANHANH</Text>
-            <Text style={[styles.tagline, { color: colors.muted, fontSize: scaled(15) }]}>
-              Luyện TOEIC • IELTS mỗi ngày
-            </Text>
+            <Text style={[styles.brand, { color: colors.text, fontSize: scaled(26) }]}>{brand.name}</Text>
+            {brand.tagline ? (
+              <Text style={[styles.tagline, { color: colors.muted, fontSize: scaled(15) }]}>
+                {brand.tagline}
+              </Text>
+            ) : null}
           </View>
 
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>

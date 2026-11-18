@@ -19,6 +19,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, hideOnLbOf, targetScoreOf, type IeltsProfile, type QuitReason } from '../api';
 import { useAuth } from '../auth';
+import { useBrand } from '../brand';
 import { useExam } from '../exam';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import {
@@ -90,6 +91,7 @@ export default function SettingsScreen() {
   const { exam } = useExam();
   const { colors, theme, toggleTheme } = useTheme();
   const { scaled, label: textSizeLabel, level: textSizeLevel, setLevel: setTextSizeLevel } = useTextSize();
+  const { brand } = useBrand();
   const { width } = useWindowDimensions();
 
   const displayName = (user?.name || '').trim() || (user?.email || '').split('@')[0] || 'Tài khoản';
@@ -563,7 +565,7 @@ export default function SettingsScreen() {
           <Text style={[styles.buttonText, { color: colors.danger, fontSize: scaled(16) }]}>Đăng xuất</Text>
         </Pressable>
         <Text style={[styles.version, { color: colors.muted, fontSize: scaled(13) }]}>
-          ANHANH — Luyện TOEIC IELTS (mobile)
+          {brand.name} — Luyện TOEIC IELTS (mobile)
         </Text>
       </ScrollView>
       <BottomNav />

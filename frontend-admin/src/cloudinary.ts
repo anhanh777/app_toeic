@@ -2,7 +2,7 @@
 // Không qua backend: backend chỉ cấp cloudName + uploadPreset qua
 // GET /api/admin/media/config, file đi thẳng tới Cloudinary.
 
-export type CloudinaryFolder = 'toeic/images' | 'toeic/audio' | 'toeic/avatars' | 'ielts/images' | 'ielts/audio';
+export type CloudinaryFolder = 'toeic/images' | 'toeic/audio' | 'toeic/avatars' | 'toeic/brand' | 'ielts/images' | 'ielts/audio';
 
 export interface CloudinaryConfig {
   cloudName: string;

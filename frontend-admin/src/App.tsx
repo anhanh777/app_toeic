@@ -3,6 +3,8 @@ import { useState, type ReactNode } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import { applyTheme, resolveTheme, type Theme } from './theme';
 import { UiSettingsProvider, LoadingLine, useUiSettings } from './uiSettings';
+import { BrandProvider, useBrand } from './brand';
+import Brand from './pages/Brand';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import TestSetAdmin from './pages/TestSetAdmin';
@@ -72,13 +74,21 @@ function Dashboard() {
 
 function Layout() {
   const { user, logout } = useAuth();
+  const { brand } = useBrand();
   const nav = useNavigate();
   const displayName = (user?.name || '').trim() || (user?.email || '').split('@')[0] || 'Tài khoản';
   return (
     <div className="app">
       <aside className="sidebar">
-        <Link className="brand" to="/">🛠️ Quản trị</Link>
-        <p className="sidebar-sub muted">Luyện thi TOEIC · IELTS</p>
+        <Link className="brand" to="/">
+          {brand.logoType === 'image' && brand.logoUrl ? (
+            <img src={brand.logoUrl} alt="" style={{ width: 20, height: 20, objectFit: 'cover', borderRadius: 5, verticalAlign: '-4px', marginRight: '.3rem' }} />
+          ) : (
+            <span aria-hidden="true">{brand.logoEmoji} </span>
+          )}
+          {brand.name}
+        </Link>
+        <p className="sidebar-sub muted">{brand.tagline || 'Luyện thi TOEIC · IELTS'}</p>
         {user && user.role === 'admin' && (
           <nav>
             <NavLink to="/" end>🏠 Trang chủ</NavLink>
@@ -86,6 +96,7 @@ function Layout() {
             <NavLink to="/ielts">🎧 Đề IELTS</NavLink>
             <NavLink to="/users">👤 Tài khoản</NavLink>
             <NavLink to="/settings">🎨 Cài đặt giao diện</NavLink>
+            <NavLink to="/brand">🏷️ Tên &amp; Logo</NavLink>
           </nav>
         )}
         <div className="sidebar-footer">
@@ -119,6 +130,7 @@ function Layout() {
           <Route path="/ielts/test-set/:id" element={<RequireAdmin><IeltsTestSetAdmin /></RequireAdmin>} />
           <Route path="/users" element={<RequireAdmin><Users /></RequireAdmin>} />
           <Route path="/settings" element={<RequireAdmin><UiSettings /></RequireAdmin>} />
+          <Route path="/brand" element={<RequireAdmin><Brand /></RequireAdmin>} />
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang quản trị</Link></p>} />
         </Routes>
       </main>
@@ -129,7 +141,7 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <UiSettingsProvider><AuthProvider><Layout /></AuthProvider></UiSettingsProvider>
+      <BrandProvider><UiSettingsProvider><AuthProvider><Layout /></AuthProvider></UiSettingsProvider></BrandProvider>
     </BrowserRouter>
   );
 }

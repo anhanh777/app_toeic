@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './auth';
 import { ExamProvider, ExamPicker, TextSizeControl, TextSizeProvider, useExam, useIeltsSetupRedirect, useTextSize } from './exam';
 import { applyTheme, resolveTheme, type Theme } from './theme';
 import { LoadingEffect, UiSettingsProvider, useUiSettings } from './uiSettings';
+import { BrandProvider, useBrand } from './brand';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Today from './pages/Today';
@@ -163,11 +164,12 @@ function Layout() {
   // IELTS-only: chưa setup lần đầu thì chuyển sang /ielts/setup
   // (TOEIC không bao giờ bị chuyển). Xem exam.tsx.
   useIeltsSetupRedirect();
-  const brand = exam === 'ielts'
-    ? '🎓 Luyện thi IELTS'
+  const { brand } = useBrand();
+  const examLabel = exam === 'ielts'
+    ? 'Luyện thi IELTS'
     : exam === 'toeic'
-      ? '🌸 Luyện thi TOEIC'
-      : '📚 Luyện thi TOEIC · IELTS';
+      ? 'Luyện thi TOEIC'
+      : 'Luyện thi TOEIC · IELTS';
   const { pins, save: savePins } = useNavPins();
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
@@ -191,7 +193,14 @@ function Layout() {
   return (
     <div className="app">
       <header className="topbar">
-        <Link className="brand" to="/">{brand}</Link>
+        <Link className="brand" to="/">
+          {brand.logoType === 'image' && brand.logoUrl ? (
+            <img src={brand.logoUrl} alt="" style={{ width: 22, height: 22, borderRadius: 6, verticalAlign: '-4px', marginRight: 6 }} />
+          ) : (
+            brand.logoEmoji
+          )}{' '}
+          {brand.name} — {examLabel}
+        </Link>
         {user && exam && (
           <nav>
             <div className="topbar-nav-inner">
@@ -312,7 +321,7 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <UiSettingsProvider><AuthProvider><ExamProvider><TextSizeProvider><Layout /></TextSizeProvider></ExamProvider></AuthProvider></UiSettingsProvider>
+      <BrandProvider><UiSettingsProvider><AuthProvider><ExamProvider><TextSizeProvider><Layout /></TextSizeProvider></ExamProvider></AuthProvider></UiSettingsProvider></BrandProvider>
     </BrowserRouter>
   );
 }

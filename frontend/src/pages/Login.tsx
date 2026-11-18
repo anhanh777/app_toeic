@@ -4,12 +4,14 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../auth';
 import { ErrorBox } from '../components';
 import { LoadingEffect, useUiSettings } from '../uiSettings';
+import { useBrand } from '../brand';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
 
 export default function Login() {
   const { login, register, googleLogin } = useAuth();
   const { settings } = useUiSettings();
+  const { brand } = useBrand();
   const nav = useNavigate();
   const [mode, setMode] = useState<'login' | 'register'>('login');
   const [name, setName] = useState('');
@@ -28,6 +30,23 @@ export default function Login() {
   };
 
   return (
+    <>
+    {/* Hero thuong hieu — giong ban mobile: logo + ten + tagline, tren the dang nhap. */}
+    <div style={{ textAlign: 'center', margin: '2rem auto 0', maxWidth: 480 }}>
+      {brand.logoType === 'image' && brand.logoUrl ? (
+        <img src={brand.logoUrl} alt="" style={{ width: 56, height: 56, borderRadius: 14 }} />
+      ) : (
+        <div style={{
+          width: 64, height: 64, borderRadius: '50%', margin: '0 auto',
+          backgroundColor: 'var(--accent)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center', fontSize: 36,
+        }}>
+          {brand.logoEmoji}
+        </div>
+      )}
+      <p style={{ fontWeight: 800, fontSize: 22, margin: '.6rem 0 .2rem' }}>{brand.name}</p>
+      {brand.tagline ? <p className="muted" style={{ margin: 0 }}>{brand.tagline}</p> : null}
+    </div>
     <div className="card" style={{ maxWidth: 480, margin: '2rem auto' }}>
       <h1 style={{ textAlign: 'center' }}>{mode === 'login' ? 'Đăng nhập' : 'Đăng ký'}</h1>
       <p className="muted">Luyện thi TOEIC — Listening &amp; Reading. Tài khoản demo: user@toeic.app / user123 (admin: demo@toeic.app / admin123).</p>
@@ -62,5 +81,6 @@ export default function Login() {
       )}
       <p className="muted"><Link to="/">← Về trang chủ</Link>{' • '}<Link to="/privacy">Chính sách bảo mật</Link></p>
     </div>
+    </>
   );
 }

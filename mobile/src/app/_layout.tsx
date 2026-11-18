@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../auth';
+import { BrandProvider } from '../brand';
 import { ExamProvider } from '../exam';
 import { TextSizeProvider, ThemeProvider, useTheme } from '../theme';
 
@@ -70,7 +71,9 @@ export default function RootLayout() {
         <TextSizeProvider>
           <AuthProvider>
             <ExamProvider>
-              <RootLayoutNav />
+              <BrandProvider>
+                <RootLayoutNav />
+              </BrandProvider>
             </ExamProvider>
           </AuthProvider>
         </TextSizeProvider>

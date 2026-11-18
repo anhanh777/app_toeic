@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { ErrorBox } from '../components';
 import { LoadingEffect, useUiSettings } from '../uiSettings';
+import { useBrand } from '../brand';
 import '../login.css';
 
 /* Đăng nhập quản trị: chỉ email + mật khẩu (không dùng Google login).
@@ -12,6 +13,7 @@ import '../login.css';
 export default function Login() {
   const { login } = useAuth();
   const { settings } = useUiSettings();
+  const { brand } = useBrand();
   const nav = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -50,8 +52,15 @@ export default function Login() {
         className={`card login-card${shake ? ' login-shake' : ''}`}
         onAnimationEnd={e => { if (e.animationName === 'login-shake') setShake(false); }}
       >
-        <div className="login-badge" aria-hidden="true">🛠️</div>
-        <h1 className="login-title">Quản trị</h1>
+        <div className="login-badge" aria-hidden="true">
+          {brand.logoType === 'image' && brand.logoUrl ? (
+            <img src={brand.logoUrl} alt="" style={{ width: '2rem', height: '2rem', objectFit: 'cover', borderRadius: 8 }} />
+          ) : (
+            brand.logoEmoji
+          )}
+        </div>
+        <h1 className="login-title">{brand.name}</h1>
+        <p className="muted login-sub">{brand.tagline || 'Luyện thi TOEIC · IELTS'}</p>
         <p className="muted login-sub">Đăng nhập bằng tài khoản admin để quản lý đề thi, câu hỏi, từ vựng và tài khoản.</p>
         <form onSubmit={submit}>
           <div className="login-field">
