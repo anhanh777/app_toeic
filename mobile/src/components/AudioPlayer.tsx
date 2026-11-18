@@ -1,14 +1,17 @@
 // Trình phát audio cho phần Nghe — port của ListeningAudio (web) sang
-// expo-av, KHÔNG có fallback TTS ở v1: chưa có file audio thì hiện khối
-// "chưa có audio" như web.
+// expo-audio (expo-av đã bị loại khỏi Expo Go từ SDK 55, import nó là
+// crash "Cannot find native module 'ExponentAV'"), KHÔNG có fallback
+// TTS ở v1: chưa có file audio thì hiện khối "chưa có audio" như web.
 // - Chỉ 1 nút Phát/Tạm dừng/Tiếp tục/Nghe lại duy nhất cho mỗi khối.
-// - 1 Sound instance cho mỗi audio source; khi 1 hộp bắt đầu phát, hộp
-//   đang phát trước đó tự dừng (module-level activeStop, như web).
+// - 1 AudioPlayer cho mỗi audio source (useAudioPlayer tự tạo mới khi
+//   source đổi); khi 1 hộp bắt đầu phát, hộp đang phát trước đó tự dừng
+//   (module-level activeStop, như web).
 // - Thanh tiến trình bấm để tua (tap-to-seek, không thêm dep slider),
 //   tốc độ phát 0.5–1.5x (bước 0.25x).
 // - playOnce (thi thử IELTS): mỗi Section chỉ phát 1 lần — phát xong
 //   nút bị khóa hẳn, chỉ tạm dừng/tiếp tục được trong lần phát đó.
-import { Audio, type AVPlaybackStatus } from 'expo-av';
+// - Thời gian của expo-audio tính bằng GIÂY (expo-av dùng mili-giây).
+import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { RADIUS, SPACING } from '../layout';
@@ -38,112 +41,93 @@ interface Props {
 export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, onError }: Props) {
   const { colors } = useTheme();
   const { scaled } = useTextSize();
-  const soundRef = useRef<Audio.Sound | null>(null);
-  const [status, setStatus] = useState<'idle' | 'playing' | 'paused' | 'ended' | 'loading'>('idle');
+  // useAudioPlayer tự tạo player mới khi source đổi (và tự release khi
+  // unmount); updateInterval 200ms cho thanh tiến trình mượt.
+  const player = useAudioPlayer(audioUrl ?? undefined, { updateInterval: 200 });
+  const status = useAudioPlayerStatus(player);
+  // player là SharedObject do hook trả về — React Compiler coi giá trị
+  // hook trả về là bất biến nên không được gán thuộc tính trực tiếp
+  // (player.playbackRate = ...); mọi thao tác lệnh (play/pause/seek)
+  // vẫn gọi trực tiếp, chỉ riêng việc gán thuộc tính đi qua ref.
+  const playerRef = useRef(player);
+  useEffect(() => {
+    playerRef.current = player;
+  });
+  const [uiStatus, setUiStatus] = useState<'idle' | 'playing' | 'paused' | 'ended' | 'loading'>('idle');
   const [playedOnce, setPlayedOnce] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [position, setPosition] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [rate, setRate] = useState(1);
   const [barWidth, setBarWidth] = useState(0);
+  const [rate, setRate] = useState(1);
   const rateRef = useRef(1);
-  const statusRef = useRef(status);
+  const uiStatusRef = useRef(uiStatus);
   const playedOnceRef = useRef(false);
+  const positionMs = Math.round(status.currentTime * 1000);
+  const durationMs = Math.round(status.duration * 1000);
+  const progress = durationMs ? positionMs / durationMs : 0;
   // Đồng bộ ref sau render — không ghi ref trong lúc render (React
   // Compiler yêu cầu render thuần).
   useEffect(() => {
-    statusRef.current = status;
+    uiStatusRef.current = uiStatus;
   });
   useEffect(() => {
     playedOnceRef.current = playedOnce;
   });
 
-  // Khi đổi audioUrl/stopKey: reset trạng thái hiển thị ngay trong lúc
-  // render (pattern "adjusting state when props change" của React docs);
-  // việc nạp file nằm trong effect bên dưới.
+  // Đổi audioUrl/stopKey: reset trạng thái hiển thị ngay trong lúc
+  // render (pattern "adjusting state when props change" của React docs).
   const audioKey = `${audioUrl ?? ''}|${String(stopKey ?? '')}`;
   const [prevAudioKey, setPrevAudioKey] = useState(audioKey);
   if (prevAudioKey !== audioKey) {
     setPrevAudioKey(audioKey);
-    setStatus(audioUrl ? 'loading' : 'idle');
+    setUiStatus(audioUrl ? 'loading' : 'idle');
     setPlayedOnce(false);
-    setProgress(0);
-    setPosition(0);
-    setDuration(0);
   }
 
-  const stopSelf = useCallback(async () => {
-    const s = soundRef.current;
-    if (s) {
-      try {
-        const st = await s.getStatusAsync();
-        if (st.isLoaded && st.isPlaying) await s.pauseAsync();
-        if (st.isLoaded) await s.setPositionAsync(0);
-      } catch {
-        /* bỏ qua */
-      }
+  // Tốc độ phát phải gán lại mỗi khi player mới được tạo (đổi source).
+  useEffect(() => {
+    playerRef.current.playbackRate = rateRef.current;
+    playerRef.current.shouldCorrectPitch = true;
+  }, [player]);
+
+  // Nạp xong → idle; phát xong → ended.
+  useEffect(() => {
+    if (status.isLoaded && uiStatusRef.current === 'loading') setUiStatus('idle');
+  }, [status.isLoaded]);
+  useEffect(() => {
+    if (status.didJustFinish && uiStatusRef.current === 'playing') setUiStatus('ended');
+  }, [status.didJustFinish]);
+
+  // Chế độ audio (nghe được cả khi điện thoại ở chế độ im lặng).
+  useEffect(() => {
+    if (!audioModeSet) {
+      audioModeSet = true;
+      setAudioModeAsync({ playsInSilentMode: true }).catch(() => {});
     }
-    setStatus((cur) => (cur === 'loading' ? cur : 'idle'));
-    setProgress(0);
-    setPosition(0);
   }, []);
+
+  // Đổi stopKey (vd. chuyển câu) mà url không đổi: dừng + tua về đầu.
+  const prevStopKeyRef = useRef(stopKey);
+  useEffect(() => {
+    if (prevStopKeyRef.current !== stopKey) {
+      prevStopKeyRef.current = stopKey;
+      player.pause();
+      player.seekTo(0);
+      setUiStatus((cur) => (cur === 'loading' ? cur : 'idle'));
+    }
+  }, [stopKey, player]);
+
+  const stopSelf = useCallback(() => {
+    player.pause();
+    player.seekTo(0);
+    setUiStatus((cur) => (cur === 'loading' ? cur : 'idle'));
+  }, [player]);
   const stopSelfRef = useRef(stopSelf);
   useEffect(() => {
     stopSelfRef.current = stopSelf;
   });
 
-  // Nạp file khi có audioUrl; đổi url/stopKey thì dừng + nạp lại.
-  useEffect(() => {
-    let cancelled = false;
-    if (!audioModeSet) {
-      audioModeSet = true;
-      Audio.setAudioModeAsync({ playsInSilentModeIOS: true, staysActiveInBackground: false }).catch(() => {});
-    }
-    if (!audioUrl) {
-      return undefined;
-    }
-    Audio.Sound.createAsync(
-      { uri: audioUrl },
-      { shouldPlay: false, rate: rateRef.current, shouldCorrectPitch: true },
-      (st: AVPlaybackStatus) => {
-        if (cancelled || !st.isLoaded) return;
-        setPosition(st.positionMillis ?? 0);
-        setDuration(st.durationMillis ?? 0);
-        if (st.durationMillis) setProgress((st.positionMillis ?? 0) / st.durationMillis);
-        if (st.didJustFinish) setStatus('ended');
-        else if (st.isPlaying) setStatus('playing');
-        else setStatus((cur) => (cur === 'playing' ? 'paused' : cur));
-      },
-    )
-      .then(({ sound }) => {
-        if (cancelled) {
-          sound.unloadAsync().catch(() => {});
-          return;
-        }
-        soundRef.current = sound;
-        setStatus('idle');
-      })
-      .catch((e) => {
-        if (!cancelled) {
-          setStatus('idle');
-          onError?.(e);
-        }
-      });
-    return () => {
-      cancelled = true;
-      const s = soundRef.current;
-      soundRef.current = null;
-      if (s) s.unloadAsync().catch(() => {});
-      if (activeStop === stopSelfRef.current) activeStop = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioUrl, stopKey]);
-
-  // Unmount: dừng hẳn.
+  // Unmount: dừng hẳn + gỡ khỏi activeStop.
   useEffect(
     () => () => {
-      const s = soundRef.current;
-      if (s) s.unloadAsync().catch(() => {});
       if (activeStop === stopSelfRef.current) activeStop = null;
     },
     [],
@@ -156,75 +140,63 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
     }
   }, [playOnce, onFirstPlay]);
 
-  const toggle = useCallback(async () => {
-    const s = soundRef.current;
-    if (!s) return;
-    if (playOnce && playedOnceRef.current && statusRef.current !== 'playing' && statusRef.current !== 'paused') return;
+  const toggle = useCallback(() => {
+    if (playOnce && playedOnceRef.current && uiStatusRef.current !== 'playing' && uiStatusRef.current !== 'paused') return;
     try {
-      if (statusRef.current === 'playing') {
-        await s.pauseAsync();
-        setStatus('paused');
+      if (uiStatusRef.current === 'playing') {
+        player.pause();
+        setUiStatus('paused');
         return;
       }
-      if (statusRef.current === 'paused') {
-        if (activeStop && activeStop !== stopSelfRef.current) await activeStop();
+      if (uiStatusRef.current === 'paused') {
+        if (activeStop && activeStop !== stopSelfRef.current) activeStop();
         activeStop = stopSelfRef.current;
-        await s.playAsync();
-        setStatus('playing');
+        player.play();
+        setUiStatus('playing');
         return;
       }
-      // idle / ended / loading: phát từ đầu (ended → replay).
+      // idle / ended / loading: phát từ đầu (ended → tua về 0 rồi phát).
       markPlayed();
-      if (activeStop && activeStop !== stopSelfRef.current) await activeStop();
+      if (activeStop && activeStop !== stopSelfRef.current) activeStop();
       activeStop = stopSelfRef.current;
-      if (statusRef.current === 'ended') await s.replayAsync({ rate: rateRef.current, shouldCorrectPitch: true });
-      else await s.playAsync();
-      setStatus('playing');
+      if (uiStatusRef.current === 'ended') player.seekTo(0);
+      player.play();
+      setUiStatus('playing');
     } catch (e) {
       onError?.(e);
     }
-  }, [markPlayed, onError, playOnce]);
+  }, [markPlayed, onError, playOnce, player]);
 
-  const cycleRate = useCallback(async () => {
+  const cycleRate = useCallback(() => {
     const idx = RATES.indexOf(rateRef.current);
     const next = RATES[(idx + 1) % RATES.length];
     rateRef.current = next;
     setRate(next);
-    const s = soundRef.current;
-    if (s) {
-      try {
-        const st = await s.getStatusAsync();
-        if (st.isLoaded) await s.setRateAsync(next, true);
-      } catch {
-        /* bỏ qua */
-      }
-    }
+    playerRef.current.playbackRate = next;
+    playerRef.current.shouldCorrectPitch = true;
   }, []);
 
   const seek = useCallback(
-    async (x: number) => {
-      const s = soundRef.current;
-      if (!s || !duration || !barWidth) return;
+    (x: number) => {
+      if (!durationMs || !barWidth) return;
       const frac = Math.min(1, Math.max(0, x / barWidth));
       try {
-        await s.setPositionAsync(frac * duration);
-        setProgress(frac);
-        setPosition(frac * duration);
-        if (statusRef.current === 'ended') setStatus('paused');
+        player.seekTo((frac * durationMs) / 1000);
+        if (uiStatusRef.current === 'ended') setUiStatus('paused');
       } catch {
         /* bỏ qua */
       }
     },
-    [duration, barWidth],
+    [durationMs, barWidth, player],
   );
 
-  const playDisabled = !!playOnce && playedOnce && (status === 'ended' || status === 'idle');
+  const playDisabled = !!playOnce && playedOnce && (uiStatus === 'ended' || uiStatus === 'idle');
   const label =
     playDisabled ? '🔊 Đã nghe 1 lần'
-    : status === 'playing' ? '⏸ Tạm dừng'
-    : status === 'paused' ? '▶ Tiếp tục'
-    : status === 'ended' ? '↻ Nghe lại'
-    : status === 'loading' ? 'Đang tải audio…'
+    : uiStatus === 'playing' ? '⏸ Tạm dừng'
+    : uiStatus === 'paused' ? '▶ Tiếp tục'
+    : uiStatus === 'ended' ? '↻ Nghe lại'
+    : uiStatus === 'loading' ? 'Đang tải audio…'
     : '🔊 Nghe';
 
   if (!audioUrl) {
@@ -245,10 +217,10 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
       <View style={styles.row}>
         <Pressable
           style={[styles.button, { backgroundColor: colors.accent }, playDisabled && styles.buttonDisabled]}
-          disabled={playDisabled || status === 'loading'}
-          onPress={() => void toggle()}
+          disabled={playDisabled || uiStatus === 'loading'}
+          onPress={() => toggle()}
         >
-          {status === 'loading' ? (
+          {uiStatus === 'loading' ? (
             <ActivityIndicator color={colors.onAccent} />
           ) : (
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>{label}</Text>
@@ -256,7 +228,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
         </Pressable>
         <Pressable
           style={[styles.rateButton, { borderColor: colors.border }]}
-          onPress={() => void cycleRate()}
+          onPress={() => cycleRate()}
           accessibilityLabel="Đổi tốc độ phát"
         >
           <Text style={{ color: colors.text, fontSize: scaled(14) }}>Tốc độ: {rate.toFixed(2)}x</Text>
@@ -266,13 +238,13 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
         <Pressable
           style={[styles.bar, { backgroundColor: colors.surfaceMuted }]}
           onLayout={(e) => setBarWidth(e.nativeEvent.layout.width)}
-          onPress={(e) => void seek(e.nativeEvent.locationX)}
+          onPress={(e) => seek(e.nativeEvent.locationX)}
           accessibilityLabel="Tua tới đoạn cần nghe"
         >
           <View style={[styles.fill, { width: `${Math.round(progress * 100)}%`, backgroundColor: colors.accent }]} />
         </Pressable>
         <Text style={[styles.time, { color: colors.muted, fontSize: scaled(13) }]}>
-          {fmtTime(position)} / {fmtTime(duration)}
+          {fmtTime(positionMs)} / {fmtTime(durationMs)}
         </Text>
       </View>
     </View>

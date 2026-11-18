@@ -6,7 +6,7 @@
 // (c) baseline Writing; (d) baseline Speaking (link sang 2 màn riêng).
 // Tất cả baseline đều ghi rõ "Bài mẫu — nội dung tự soạn, chưa phải đề
 // thi thật" và "Chưa chấm AI — sẽ có ở Giai đoạn 2".
-import { Audio } from 'expo-av';
+import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { router } from 'expo-router';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
@@ -201,7 +201,9 @@ export default function DiagnosticScreen() {
   const [paperLeft, setPaperLeft] = useState(DIAGNOSTIC_MINUTES * 60);
   const [submitting, setSubmitting] = useState(false);
   const [playingQid, setPlayingQid] = useState<string | null>(null);
-  const soundRef = useRef<Audio.Sound | null>(null);
+  // expo-audio: 1 player cho audio từng câu (tự release khi unmount).
+  const diagPlayer = useAudioPlayer();
+  const diagStatus = useAudioPlayerStatus(diagPlayer);
   const autoSubmittedRef = useRef(false);
 
   const load = useCallback(() => {
@@ -220,10 +222,20 @@ export default function DiagnosticScreen() {
   }, [load]);
   useEffect(
     () => () => {
-      soundRef.current?.unloadAsync().catch(() => undefined);
+      diagPlayer.pause();
     },
-    [],
+    [diagPlayer],
   );
+
+  // Nghe xong 1 câu → tắt trạng thái đang phát câu đó. Dùng pattern
+  // "điều chỉnh state trong lúc render" (như prevAudioKey ở
+  // AudioPlayer) thay vì setState trong effect, vì rule react-hooks
+  // cấm setState trực tiếp trong effect.
+  const [prevDidJustFinish, setPrevDidJustFinish] = useState(false);
+  if (diagStatus.didJustFinish !== prevDidJustFinish) {
+    setPrevDidJustFinish(diagStatus.didJustFinish);
+    if (diagStatus.didJustFinish) setPlayingQid(null);
+  }
 
   // Đếm ngược 90 phút khi đang làm bài; hết giờ thì tự nộp (1 lần).
   useEffect(() => {
@@ -307,36 +319,29 @@ export default function DiagnosticScreen() {
         style: 'destructive',
         onPress: () => {
           if (attemptId) void api.abandonTest(attemptId).catch(() => undefined);
-          soundRef.current?.unloadAsync().catch(() => undefined);
+          diagPlayer.pause();
           setPlayingQid(null);
           setPaperActive(false);
           setAttemptId(null);
         },
       },
     ]);
-  }, [attemptId]);
+  }, [attemptId, diagPlayer]);
 
-  const playAudio = useCallback(async (qid: string, url: string) => {
+  const playAudio = useCallback((qid: string, url: string) => {
     try {
-      if (soundRef.current) {
-        await soundRef.current.unloadAsync();
-        soundRef.current = null;
-      }
       if (playingQid === qid) {
+        diagPlayer.pause();
         setPlayingQid(null);
         return;
       }
-      const { sound } = await Audio.Sound.createAsync({ uri: url });
-      soundRef.current = sound;
+      diagPlayer.replace(url);
+      diagPlayer.play();
       setPlayingQid(qid);
-      await sound.playAsync();
-      sound.setOnPlaybackStatusUpdate((st) => {
-        if (st.isLoaded && st.didJustFinish) setPlayingQid(null);
-      });
     } catch {
       setPlayingQid(null);
     }
-  }, [playingQid]);
+  }, [playingQid, diagPlayer]);
 
   const setAnswer = useCallback((id: string, v: string) => {
     setPaperAnswers((m) => ({ ...m, [id]: v }));

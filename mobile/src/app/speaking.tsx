@@ -1,9 +1,16 @@
 // Luyện Speaking IELTS — port từ frontend/src/pages/Speaking.tsx.
 // Đề theo Part (Part 1 chủ đề, Part 2 cue card + chuẩn bị 1 phút,
-// Part 3 theo bộ). Ghi âm bằng expo-av (Audio.Recording), nghe lại,
+// Part 3 theo bộ). Ghi âm bằng expo-audio (useAudioRecorder), nghe lại,
 // lưu lên server (base64). Micro bị từ chối thì báo rõ + nút thử lại,
 // KHÔNG giả lập bản ghi.
-import { Audio } from 'expo-av';
+import {
+  RecordingPresets,
+  requestRecordingPermissionsAsync,
+  setAudioModeAsync,
+  useAudioPlayer,
+  useAudioPlayerStatus,
+  useAudioRecorder,
+} from 'expo-audio';
 import * as FileSystem from 'expo-file-system';
 import { router } from 'expo-router';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
@@ -129,8 +136,10 @@ export default function SpeakingScreen() {
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [playingUri, setPlayingUri] = useState<string | null>(null);
-  const recordingRef = useRef<Audio.Recording | null>(null);
-  const soundRef = useRef<Audio.Sound | null>(null);
+  // expo-audio: recorder + player nghe lại (tự release khi unmount).
+  const recorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
+  const playPlayer = useAudioPlayer();
+  const playStatus = useAudioPlayerStatus(playPlayer);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const prepRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -147,10 +156,20 @@ export default function SpeakingScreen() {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
       if (prepRef.current) clearInterval(prepRef.current);
-      recordingRef.current?.stopAndUnloadAsync().catch(() => undefined);
-      soundRef.current?.unloadAsync().catch(() => undefined);
+      recorder.stop().catch(() => undefined);
+      playPlayer.pause();
     };
-  }, [loadRecs]);
+  }, [loadRecs, recorder, playPlayer]);
+
+  // Nghe lại xong → tắt trạng thái đang phát. Dùng pattern "điều
+  // chỉnh state trong lúc render" (như prevAudioKey ở AudioPlayer)
+  // thay vì setState trong effect, vì rule react-hooks cấm setState
+  // trực tiếp trong effect.
+  const [prevDidJustFinish, setPrevDidJustFinish] = useState(false);
+  if (playStatus.didJustFinish !== prevDidJustFinish) {
+    setPrevDidJustFinish(playStatus.didJustFinish);
+    if (playStatus.didJustFinish) setPlayingUri(null);
+  }
 
   const startPrep = useCallback((p: SpeakingPrompt) => {
     setActive(p);
@@ -169,16 +188,14 @@ export default function SpeakingScreen() {
     setMicError('');
     setSaved(false);
     try {
-      const perm = await Audio.requestPermissionsAsync();
-      if (perm.status !== 'granted') {
+      const perm = await requestRecordingPermissionsAsync();
+      if (!perm.granted) {
         setMicError('Không có quyền micro. Hãy cho phép quyền micro trong cài đặt rồi bấm "thử lại".');
         return;
       }
-      await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
-      const { recording: rec } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY,
-      );
-      recordingRef.current = rec;
+      await setAudioModeAsync({ allowsRecording: true, playsInSilentMode: true });
+      await recorder.prepareToRecordAsync();
+      recorder.record();
       setRecording(true);
       setElapsed(0);
       setAudioUri(null);
@@ -187,44 +204,34 @@ export default function SpeakingScreen() {
     } catch {
       setMicError('Không truy cập được micro. Hãy cho phép quyền micro rồi bấm "thử lại".');
     }
-  }, [active, recording]);
+  }, [active, recording, recorder]);
 
   const stopRec = useCallback(async () => {
     if (timerRef.current) clearInterval(timerRef.current);
-    const rec = recordingRef.current;
-    recordingRef.current = null;
     setRecording(false);
-    if (!rec) return;
     try {
-      await rec.stopAndUnloadAsync();
-      await Audio.setAudioModeAsync({ allowsRecordingIOS: false });
-      setAudioUri(rec.getURI());
+      await recorder.stop();
+      await setAudioModeAsync({ allowsRecording: false });
+      setAudioUri(recorder.uri);
     } catch {
       /* đã dừng rồi */
     }
-  }, []);
+  }, [recorder]);
 
-  const playUri = useCallback(async (uri: string) => {
+  const playUri = useCallback((uri: string) => {
     try {
-      if (soundRef.current) {
-        await soundRef.current.unloadAsync();
-        soundRef.current = null;
-      }
       if (playingUri === uri) {
+        playPlayer.pause();
         setPlayingUri(null);
         return;
       }
-      const { sound } = await Audio.Sound.createAsync({ uri });
-      soundRef.current = sound;
+      playPlayer.replace(uri);
+      playPlayer.play();
       setPlayingUri(uri);
-      await sound.playAsync();
-      sound.setOnPlaybackStatusUpdate((st) => {
-        if (st.isLoaded && st.didJustFinish) setPlayingUri(null);
-      });
     } catch {
       setPlayingUri(null);
     }
-  }, [playingUri]);
+  }, [playingUri, playPlayer]);
 
   const saveRec = useCallback(async () => {
     if (!audioUri || !active || saving) return;
