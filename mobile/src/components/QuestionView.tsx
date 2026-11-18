@@ -80,6 +80,10 @@ interface Props {
   /** Practice: kết quả chấm của câu này (null = chưa chấm). */
   result?: AnswerResult | null;
   onSubmit?: (questionId: string) => void;
+  /** Nộp tất cả: ẩn nút "Nộp đáp án" từng câu (chấm 1 lần ở cuối). */
+  hideSubmitButton?: boolean;
+  /** Đã nộp tất cả: khóa mọi ô đáp án, kể cả câu chưa làm. */
+  submittedAll?: boolean;
   /** IELTS: đánh dấu đoán mò. */
   guessed?: boolean;
   onGuessedChange?: (questionId: string, guessed: boolean) => void;
@@ -106,6 +110,7 @@ interface Props {
 
 function QuestionViewInner({
   q, n, exam, selected, onSelect, onCommit, mode, result, onSubmit,
+  hideSubmitButton, submittedAll,
   guessed, onGuessedChange, causeLogged, onCauseLogged,
   hideText, isListening, usePartAudio, audioUrl, playOnce, onFirstPlay,
   onAudioError, duplicateHeading,
@@ -173,6 +178,7 @@ function QuestionViewInner({
           onChange={(v) => onSelect(q.id, v)}
           onCommit={onCommit ? (v) => onCommit(q.id, v) : undefined}
           graded={result ?? null}
+          disabled={!!submittedAll}
           duplicateHeading={duplicateHeading}
         />
       ) : (
@@ -191,7 +197,7 @@ function QuestionViewInner({
                   isCorrect && { borderColor: colors.success, backgroundColor: colors.surfaceMuted },
                   isWrong && { borderColor: colors.danger, backgroundColor: colors.surfaceMuted },
                 ]}
-                disabled={mode === 'practice' && !!result}
+                disabled={mode === 'practice' && (!!result || !!submittedAll)}
                 onPress={() => {
                   onSelect(q.id, o.label);
                   onCommit?.(q.id, o.label);
@@ -223,15 +229,17 @@ function QuestionViewInner({
           })}
         </View>
       )}
-      {mode === 'practice' && !result ? (
+      {mode === 'practice' && !result && (!hideSubmitButton || isIelts) ? (
         <View style={styles.submitRow}>
-          <Pressable
-            style={[styles.submitButton, { backgroundColor: colors.accent }, (!selected || overLimit) && styles.disabled]}
-            disabled={!selected || overLimit}
-            onPress={() => onSubmit?.(q.id)}
-          >
-            <Text style={[styles.submitText, { color: colors.onAccent, fontSize: scaled(15) }]}>Nộp đáp án</Text>
-          </Pressable>
+          {!hideSubmitButton ? (
+            <Pressable
+              style={[styles.submitButton, { backgroundColor: colors.accent }, (!selected || overLimit) && styles.disabled]}
+              disabled={!selected || overLimit}
+              onPress={() => onSubmit?.(q.id)}
+            >
+              <Text style={[styles.submitText, { color: colors.onAccent, fontSize: scaled(15) }]}>Nộp đáp án</Text>
+            </Pressable>
+          ) : null}
           {isIelts ? (
             <Pressable
               style={styles.guessRow}
@@ -242,6 +250,11 @@ function QuestionViewInner({
             </Pressable>
           ) : null}
         </View>
+      ) : null}
+      {mode === 'practice' && !result && submittedAll ? (
+        <Text style={{ color: colors.danger, fontSize: scaled(15), fontWeight: '700', flexWrap: 'wrap' }}>
+          ❌ Chưa làm — tính là sai
+        </Text>
       ) : null}
       {mode === 'practice' && result ? (
         <View style={[styles.result, { borderTopColor: colors.border }]}>

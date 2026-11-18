@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
+  Alert,
   FlatList,
   Pressable,
   StyleSheet,
@@ -135,6 +136,11 @@ export default function PracticeSessionScreen() {
   const [loading, setLoading] = useState(true);
   const [score, setScore] = useState({ correct: 0, done: 0 });
   const [finished, setFinished] = useState(false);
+  // Chế độ chấm: 'instant' = chấm từng câu ngay khi nộp (mặc định, như
+  // cũ); 'submit-all' = làm hết rồi nộp 1 lần. Khóa khi đã chọn đáp án
+  // câu đầu tiên — không đổi chế độ giữa buổi luyện.
+  const [gradingMode, setGradingMode] = useState<'instant' | 'submit-all'>('instant');
+  const [submittedAll, setSubmittedAll] = useState(false);
   const [partMedia, setPartMedia] = useState<Record<number, string>>({});
   const [partMediaLoaded, setPartMediaLoaded] = useState(false);
   const listRef = useRef<FlatList<Row> | null>(null);
@@ -156,6 +162,8 @@ export default function PracticeSessionScreen() {
     setCauseById({});
     setScore({ correct: 0, done: 0 });
     setFinished(false);
+    setGradingMode('instant');
+    setSubmittedAll(false);
     setError(null);
     setTestSetTitle('');
   }
@@ -205,11 +213,28 @@ export default function PracticeSessionScreen() {
     return map;
   }, [blocks]);
 
+  // Số thật theo id câu (để báo lỗi giới hạn từ đúng số câu).
+  const nById = useMemo(() => {
+    const map: Record<string, number> = {};
+    blocks.forEach((b) => b.questions.forEach(({ q, n }) => {
+      map[q.id] = n;
+    }));
+    return map;
+  }, [blocks]);
+
+  // Số câu đã chọn đáp án (cho nút "Nộp tất cả").
+  const answeredCount = useMemo(
+    () => questions.filter((q) => selectedById[q.id]).length,
+    [questions, selectedById],
+  );
+  // Khóa chọn chế độ chấm khi đã chọn đáp án câu đầu tiên.
+  const modeLocked = Object.keys(selectedById).length > 0;
+
   // Callback ổn định (dùng ref đọc state mới nhất) để QuestionView memo
   // không bị phá mỗi lần parent re-render.
-  const stateRef = useRef({ selectedById, resultById, questions });
+  const stateRef = useRef({ selectedById, resultById, questions, gradingMode, nById });
   useEffect(() => {
-    stateRef.current = { selectedById, resultById, questions };
+    stateRef.current = { selectedById, resultById, questions, gradingMode, nById };
   });
 
   const handleSelect = useCallback((id: string, v: string) => {
@@ -227,7 +252,9 @@ export default function PracticeSessionScreen() {
 
   const handleSubmit = useCallback(
     async (id: string) => {
-      const { selectedById: sel, resultById: res, questions: qs } = stateRef.current;
+      const { selectedById: sel, resultById: res, questions: qs, gradingMode: mode } = stateRef.current;
+      // Chế độ nộp tất cả: không có chấm từng câu (nút nộp từng câu đã ẩn).
+      if (mode === 'submit-all') return;
       const q = qs.find((x) => x.id === id);
       const selected = sel[id];
       if (!q || !selected || res[id]) return;
@@ -245,6 +272,69 @@ export default function PracticeSessionScreen() {
     },
     [],
   );
+
+  // Nộp tất cả (chế độ 'submit-all'): kiểm tra giới hạn từ TRƯỚC cho
+  // mọi câu điền từ đã làm, rồi chấm tuần tự từng câu đã làm theo thứ
+  // tự trong đề. Câu chưa làm KHÔNG gọi API (backend 400 với đáp án
+  // rỗng) — tính là sai. Lỗi giữa chừng thì dừng; câu đã chấm giữ
+  // nguyên kết quả.
+  const handleSubmitAll = useCallback(() => {
+    const doSubmit = async () => {
+      const { selectedById: sel, resultById: res, questions: qs, nById: nums } = stateRef.current;
+      // (a) Kiểm tra giới hạn từ cho MỌI câu điền từ đã làm — lỗi thì
+      // dừng, chưa nộp gì cả.
+      for (const q of qs) {
+        const v = sel[q.id];
+        if (!v || res[q.id]) continue;
+        if (isFillIn(q.questionType) && q.wordLimit != null && wordCount(v) > q.wordLimit) {
+          setError(
+            `Câu ${nums[q.id] ?? '?'}: quá giới hạn số từ (tối đa ${q.wordLimit} từ). Hãy rút gọn đáp án rồi nộp lại.`,
+          );
+          return;
+        }
+      }
+      // (b) Chấm tuần tự các câu đã làm, chưa chấm.
+      let correct = 0;
+      let done = 0;
+      for (const q of qs) {
+        const r = res[q.id];
+        if (r) {
+          done += 1;
+          if (r.correct) correct += 1;
+        }
+      }
+      for (const q of qs) {
+        const v = sel[q.id];
+        if (!v || res[q.id]) continue;
+        try {
+          const r = await api.practiceAnswer(q.id, v);
+          setResultById((m) => ({ ...m, [q.id]: r }));
+          correct += r.correct ? 1 : 0;
+          done += 1;
+          setScore({ correct, done });
+        } catch (e) {
+          setError(e instanceof Error ? e.message : String(e));
+          setScore({ correct, done });
+          return;
+        }
+      }
+      // (c) Xong: câu chưa làm tính là sai trong tổng số.
+      setSubmittedAll(true);
+      setScore({ correct, done: qs.length });
+    };
+    const { selectedById: sel, questions: qs } = stateRef.current;
+    const answered = qs.filter((q) => sel[q.id]).length;
+    if (!answered) return;
+    const unanswered = qs.length - answered;
+    if (unanswered > 0) {
+      Alert.alert(`Còn ${unanswered} câu chưa làm, vẫn nộp?`, undefined, [
+        { text: 'Để sau', style: 'cancel' },
+        { text: 'Nộp', onPress: () => void doSubmit() },
+      ]);
+    } else {
+      void doSubmit();
+    }
+  }, []);
 
   const scrollToQuestion = useCallback(
     (num: number) => {
@@ -286,6 +376,10 @@ export default function PracticeSessionScreen() {
           mode="practice"
           result={result}
           onSubmit={handleSubmit}
+          // Nộp tất cả: ẩn nút nộp từng câu; sau khi nộp, khóa cả câu
+          // chưa làm (không gọi API cho đáp án rỗng).
+          hideSubmitButton={gradingMode === 'submit-all'}
+          submittedAll={submittedAll}
           guessed={!!guessedById[q.id]}
           onGuessedChange={handleGuessedChange}
           causeLogged={!!causeById[q.id]}
@@ -305,6 +399,7 @@ export default function PracticeSessionScreen() {
       exam, selectedById, resultById, guessedById, causeById, headingCounts,
       handleSelect, handleSubmit, handleGuessedChange, handleCauseLogged,
       handleAudioError, isListening, usePartAudio, partMedia,
+      gradingMode, submittedAll,
     ],
   );
 
@@ -458,6 +553,53 @@ export default function PracticeSessionScreen() {
           </Text>
         </View>
         {error ? <Text style={{ color: colors.danger, fontSize: scaled(14) }}>{error}</Text> : null}
+        <View style={[styles.modeRow, { borderColor: colors.border }, modeLocked && styles.disabled]}>
+          <Pressable
+            style={[
+              styles.modeOption,
+              gradingMode === 'instant' && { backgroundColor: colors.accent },
+            ]}
+            disabled={modeLocked}
+            onPress={() => setGradingMode('instant')}
+            accessibilityLabel="Chấm từng câu"
+          >
+            <Text
+              style={{
+                color: gradingMode === 'instant' ? colors.onAccent : colors.text,
+                fontSize: scaled(14),
+                fontWeight: '700',
+                textAlign: 'center',
+              }}
+            >
+              Chấm từng câu
+            </Text>
+          </Pressable>
+          <Pressable
+            style={[
+              styles.modeOption,
+              gradingMode === 'submit-all' && { backgroundColor: colors.accent },
+            ]}
+            disabled={modeLocked}
+            onPress={() => setGradingMode('submit-all')}
+            accessibilityLabel="Làm xong mới chấm"
+          >
+            <Text
+              style={{
+                color: gradingMode === 'submit-all' ? colors.onAccent : colors.text,
+                fontSize: scaled(14),
+                fontWeight: '700',
+                textAlign: 'center',
+              }}
+            >
+              Làm xong mới chấm
+            </Text>
+          </Pressable>
+        </View>
+        {modeLocked && !submittedAll ? (
+          <Text style={{ color: colors.muted, fontSize: scaled(13) }}>
+            Đã chọn đáp án nên không đổi được chế độ chấm trong buổi này.
+          </Text>
+        ) : null}
         <FlatList
           ref={listRef}
           data={rows}
@@ -496,9 +638,21 @@ export default function PracticeSessionScreen() {
           <Pressable style={[styles.barButton, { borderColor: colors.border }]} onPress={exit}>
             <Text style={{ color: colors.text, fontSize: scaled(15) }}>🚪 Thoát</Text>
           </Pressable>
-          <Pressable style={[styles.barButton, { backgroundColor: colors.accent }]} onPress={() => setFinished(true)}>
-            <Text style={{ color: colors.onAccent, fontSize: scaled(15), fontWeight: '700' }}>Xem kết quả</Text>
-          </Pressable>
+          {gradingMode === 'submit-all' && !submittedAll ? (
+            <Pressable
+              style={[styles.barButton, { backgroundColor: colors.accent }, answeredCount === 0 && styles.disabled]}
+              disabled={answeredCount === 0}
+              onPress={handleSubmitAll}
+            >
+              <Text style={{ color: colors.onAccent, fontSize: scaled(15), fontWeight: '700' }}>
+                Nộp tất cả · {answeredCount}/{questions.length} câu
+              </Text>
+            </Pressable>
+          ) : (
+            <Pressable style={[styles.barButton, { backgroundColor: colors.accent }]} onPress={() => setFinished(true)}>
+              <Text style={{ color: colors.onAccent, fontSize: scaled(15), fontWeight: '700' }}>Xem kết quả</Text>
+            </Pressable>
+          )}
         </View>
       </View>
     </SafeAreaView>
@@ -537,4 +691,13 @@ const styles = StyleSheet.create({
   },
   progress: { flexGrow: 1, flexShrink: 1, flexWrap: 'wrap' },
   barButton: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, minHeight: 44, justifyContent: 'center' },
+  modeRow: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: RADIUS.button,
+    overflow: 'hidden',
+    marginBottom: SPACING.sm,
+  },
+  modeOption: { flex: 1, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, alignItems: 'center', justifyContent: 'center' },
+  disabled: { opacity: 0.6 },
 });
