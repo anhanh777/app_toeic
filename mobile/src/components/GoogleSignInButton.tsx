@@ -22,14 +22,17 @@
 // package Android trong app.json (com.anhanh.toeicielts). KHÔNG dùng
 // proxy https://auth.expo.io/... nữa: SDK 58 đã bỏ AuthSession proxy
 // (không còn tùy chọn useProxy), nên URL proxy cũ không dùng được.
-// Lưu ý: nút này CHỈ chạy trên development build / bản production
-// (EAS build) — Expo Go không hỗ trợ OAuth redirect về app, và Google
-// có thể từ chối redirect URI không phải https nếu Console siết chặt:
-// khi đó cần tạo thêm 1 OAuth client Android trong cùng project Google
-// (package com.anhanh.toeicielts + SHA-1) rồi truyền vào prop
-// androidClientId — việc đó thuộc Giai đoạn 3, không làm ở đây.
+//
+// EXPO GO: nút này TỰ ẨN trên điện thoại (trả null) vì chưa có
+// androidClientId/iosClientId — gọi useAuthRequest mà thiếu client ID
+// của nền tảng sẽ throw ngay lúc render ("Client Id property
+// `androidClientId` must be defined") và crash cả màn hình đăng nhập.
+// Theo tài liệu Expo hiện tại, đăng nhập Google cần development build,
+// Expo Go không hỗ trợ. Trong Expo Go dùng đăng nhập email/mật khẩu.
+// Khi đã tạo OAuth client Android/iOS (Giai đoạn 3) và điền 2 hằng số
+// bên dưới, nút sẽ tự hiện lại trên bản build thật.
 import { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, Platform, Pressable, StyleSheet, Text } from 'react-native';
 import * as Google from 'expo-auth-session/providers/google';
 import { ResponseType } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
@@ -42,10 +45,41 @@ WebBrowser.maybeCompleteAuthSession();
 export const GOOGLE_WEB_CLIENT_ID =
   '1044241378768-g5jk4ffmkcneacjh3kgl6h413mc0tg00.apps.googleusercontent.com';
 
+/** OAuth client Android — CHƯA có (cần tạo trong Google Cloud Console,
+ *  Giai đoạn 3: package com.anhanh.toeicielts + SHA-1 của keystore bản
+ *  build). Điền client ID vào đây thì nút Google tự hiện trên bản
+ *  build thật Android. */
+export const GOOGLE_ANDROID_CLIENT_ID: string | undefined = undefined;
+
+/** OAuth client iOS — CHƯA có (như trên). */
+export const GOOGLE_IOS_CLIENT_ID: string | undefined = undefined;
+
 /** Redirect URI mà component này gửi cho Google (xem ghi chú đầu file). */
 export const GOOGLE_REDIRECT_URI = 'com.anhanh.toeicielts:/oauthredirect';
 
+/**
+ * Nút Google: chỉ hiện khi nền tảng hiện tại có client ID tương ứng
+ * (web → webClientId, Android → androidClientId, iOS → iosClientId).
+ * Chưa có client ID thì trả null — không gọi hook auth, không crash
+ * màn hình đăng nhập. Trong Expo Go (chưa có client Android) người
+ * dùng đăng nhập bằng email/mật khẩu.
+ */
 export function GoogleSignInButton({
+  onError,
+}: {
+  onError?: (message: string) => void;
+} = {}) {
+  const platformClientId =
+    Platform.OS === 'android'
+      ? GOOGLE_ANDROID_CLIENT_ID
+      : Platform.OS === 'ios'
+        ? GOOGLE_IOS_CLIENT_ID
+        : GOOGLE_WEB_CLIENT_ID;
+  if (!platformClientId) return null;
+  return <GoogleSignInButtonInner onError={onError} />;
+}
+
+function GoogleSignInButtonInner({
   onError,
 }: {
   onError?: (message: string) => void;
@@ -58,6 +92,8 @@ export function GoogleSignInButton({
 
   const [request, , promptAsync] = Google.useAuthRequest({
     webClientId: GOOGLE_WEB_CLIENT_ID,
+    androidClientId: GOOGLE_ANDROID_CLIENT_ID,
+    iosClientId: GOOGLE_IOS_CLIENT_ID,
     // Lấy id_token trực tiếp (implicit flow): backend chỉ cần idToken,
     // không cần đổi code và không cần client secret.
     responseType: ResponseType.IdToken,
