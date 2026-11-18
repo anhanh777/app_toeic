@@ -14,6 +14,7 @@ import ErrorLog from './pages/ErrorLog';
 import Writing from './pages/Writing';
 import Speaking from './pages/Speaking';
 import Practice from './pages/Practice';
+import PracticePartSets from './pages/PracticePartSets';
 import PracticeSession from './pages/PracticeSession';
 import TestSetDetail from './pages/TestSetDetail';
 import MockTest from './pages/MockTest';
@@ -299,6 +300,7 @@ function Layout() {
             <Route path="/ielts/writing" element={<RequireAuth><Writing /></RequireAuth>} />
             <Route path="/ielts/speaking" element={<RequireAuth><Speaking /></RequireAuth>} />
             <Route path="/practice" element={<RequireAuth><Practice /></RequireAuth>} />
+            <Route path="/practice/part/:part" element={<RequireAuth><PracticePartSets /></RequireAuth>} />
             <Route path="/practice/test-set/:id" element={<RequireAuth><TestSetDetail /></RequireAuth>} />
             <Route path="/practice/session" element={<RequireAuth><PracticeSession /></RequireAuth>} />
             <Route path="/mock" element={<RequireAuth><MockTest /></RequireAuth>} />
