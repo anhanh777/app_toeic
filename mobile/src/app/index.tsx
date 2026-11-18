@@ -12,6 +12,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
 import { api, type ExamInfo } from '../api';
 import { useAuth } from '../auth';
 import { useExam, type ExamId } from '../exam';
@@ -33,6 +34,25 @@ const EXAM_META: Record<ExamId, { emoji: string; detail: string }> = {
   toeic: { emoji: '🌸', detail: 'Listening + Reading, 7 Part' },
   ielts: { emoji: '🎓', detail: 'Listening 4 Section + Reading 3 Passage' },
 };
+
+// Menu trang chính — mục IELTS chỉ hiện khi đang chọn kỳ thi IELTS
+// (giống bản web: mục riêng của IELTS bị ẩn ở chế độ TOEIC).
+const MENU_COMMON: { emoji: string; label: string; href: string }[] = [
+  { emoji: '📅', label: 'Hôm nay', href: '/today' },
+  { emoji: '✏️', label: 'Luyện tập', href: '/practice' },
+  { emoji: '⏱️', label: 'Thi thử', href: '/mock' },
+  { emoji: '❌', label: 'Ôn câu sai', href: '/wrong' },
+  { emoji: '📖', label: 'Từ vựng', href: '/vocabulary' },
+  { emoji: '🏆', label: 'Xếp hạng', href: '/leaderboard' },
+  { emoji: '⚙️', label: 'Hồ sơ & Cài đặt', href: '/settings' },
+];
+const MENU_IELTS: { emoji: string; label: string; href: string }[] = [
+  { emoji: '🧭', label: 'Chẩn đoán IELTS', href: '/diagnostic' },
+  { emoji: '🐉', label: 'Sổ lỗi & Quái vật', href: '/errors' },
+  { emoji: '✍️', label: 'Viết (Writing)', href: '/writing' },
+  { emoji: '🎤', label: 'Nói (Speaking)', href: '/speaking' },
+  { emoji: '📝', label: 'Thiết lập IELTS', href: '/ielts-setup' },
+];
 
 export default function HomeScreen() {
   const { user, logout } = useAuth();
@@ -144,9 +164,25 @@ export default function HomeScreen() {
               <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(15) }]}>
                 {chosen?.testSetCount ?? '—'} đề • {chosen?.questionCount ?? '—'} câu
               </Text>
-              <Text style={[styles.note, { color: colors.muted, fontSize: scaled(14) }]}>
-                Màn hình Luyện tập, Thi thử và Hôm nay sẽ có ở Giai đoạn 1–2.
-              </Text>
+            </View>
+
+            <View style={[styles.menu, wide && styles.menuRow]}>
+              {[...MENU_COMMON, ...(exam === 'ielts' ? MENU_IELTS : [])].map((m) => (
+                <Pressable
+                  key={m.href}
+                  style={[
+                    styles.menuItem,
+                    wide && styles.menuItemHalf,
+                    { backgroundColor: colors.surface, borderColor: colors.border },
+                  ]}
+                  onPress={() => router.push(m.href as never)}
+                >
+                  <Text style={[styles.menuEmoji, { fontSize: scaled(22) }]}>{m.emoji}</Text>
+                  <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
+                    {m.label}
+                  </Text>
+                </Pressable>
+              ))}
             </View>
 
             <View style={styles.row}>
@@ -234,6 +270,22 @@ const styles = StyleSheet.create({
   },
   pickButtonText: { fontWeight: '700' },
   homeWrap: { gap: SPACING.md, width: '100%' },
+  menu: { gap: SPACING.sm, width: '100%' },
+  menuRow: { flexDirection: 'row', flexWrap: 'wrap' },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.sm,
+    borderRadius: RADIUS.card,
+    borderWidth: 1,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.md,
+    width: '100%',
+    minHeight: 52,
+  },
+  menuItemHalf: { width: '48%', flexGrow: 1 },
+  menuEmoji: { textAlign: 'center' },
+  menuLabel: { fontWeight: '600', flexShrink: 1, flexWrap: 'wrap' },
   note: { textAlign: 'center', flexWrap: 'wrap', marginTop: SPACING.sm },
   row: { flexDirection: 'row', gap: SPACING.md, width: '100%' },
   button: {

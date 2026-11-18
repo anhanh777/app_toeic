@@ -1,6 +1,4 @@
-// Đăng nhập email/mật khẩu. Nút Google chỉ là placeholder bị vô hiệu hóa —
-// luồng Google thật (expo-auth-session + OAuth client Android) làm ở
-// Giai đoạn 2, chưa nối dây ở đây.
+// Đăng nhập email/mật khẩu + Google (expo-auth-session, đã nối dây).
 import { useState } from 'react';
 import {
   ActivityIndicator,
@@ -17,6 +15,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError } from '../api';
 import { useAuth } from '../auth';
+import { GoogleSignInButton } from '../components/GoogleSignInButton';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
 
@@ -110,16 +109,9 @@ export default function LoginScreen() {
               )}
             </Pressable>
 
-            <Pressable
-              style={[styles.button, styles.googleButton, { borderColor: colors.border, opacity: 0.6 }]}
-              disabled
-            >
-              <Text style={[styles.buttonText, { color: colors.muted, fontSize: scaled(16) }]}>
-                Đăng nhập bằng Google
-              </Text>
-            </Pressable>
+            <GoogleSignInButton onError={setError} />
             <Text style={[styles.note, { color: colors.muted, fontSize: scaled(13) }]}>
-              Đăng nhập Google sẽ có ở Giai đoạn 2.
+              Đăng nhập Google chỉ chạy trên bản build thật (dev/production), không chạy trong Expo Go.
             </Text>
           </View>
         </ScrollView>
@@ -164,7 +156,6 @@ const styles = StyleSheet.create({
     marginTop: SPACING.md,
     minHeight: 48,
   },
-  googleButton: { borderWidth: 1, backgroundColor: 'transparent' },
   buttonText: { fontWeight: '700', textAlign: 'center' },
   note: { textAlign: 'center', marginTop: SPACING.sm },
 });

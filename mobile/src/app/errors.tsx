@@ -19,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type ErrorCode, type ErrorLogEntry, type Monster, type WeeklyError } from '../api';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { questionTypeName } from '../lib';
+import { maybeScheduleDueReminder } from '../notifications';
 import { useTextSize, useTheme } from '../theme';
 
 // 33 mã lỗi (IELTS v3) — giống frontend/src/ielts-phase1.tsx; dùng làm
@@ -184,7 +185,11 @@ export default function ErrorLogScreen() {
 
   const load = useCallback(() => {
     Promise.allSettled([
-      api.errorLogDue().then(setDue),
+      api.errorLogDue().then((d) => {
+        setDue(d);
+        // Nhắc 1 lần lúc 8:00 sáng mai nếu có câu đến hạn (tối đa 1 lần/ngày).
+        void maybeScheduleDueReminder(d.length);
+      }),
       api.errorLog().then(setAll),
       api.errorLogWeekly().then(setWeekly),
       api.monsters().then(setMonsters),

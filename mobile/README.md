@@ -1,56 +1,100 @@
-# Welcome to your Expo app 👋
+# App mobile — Luyện TOEIC & IELTS (React Native + Expo)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Bản mobile của app web luyện thi (cùng backend, cùng tài khoản, cùng nội
+dung: 37 bộ đề / 5.960 câu — 25 TOEIC + 12 IELTS). Android trước, iOS sau.
 
-## Get started
+## Chạy thử trên điện thoại (Expo Go)
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Yêu cầu: Node 20+ (máy này đang dùng Node 24), điện thoại Android đã cài
+app **Expo Go** (CH Play, miễn phí).
 
 ```bash
-npm run reset-project
+cd mobile
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Quét mã QR bằng app Expo Go → app mở trên điện thoại. Đăng nhập bằng tài
+khoản đã có trên web (VD tài khoản của bạn) hoặc tài khoản demo learner
+`user@toeic.app` / `user123`. Máy tính và điện thoại phải chung mạng Wi-Fi
+(nếu Expo Go không kết nối được, thử `npx expo start --tunnel`).
 
-### Other setup steps
+Lưu ý: tất cả dữ liệu (đề thi, câu hỏi, audio, ảnh) đều tải từ máy chủ qua
+mạng — **cài xong cần có mạng mới dùng được**, app chưa có chế độ offline
+(tải đề về máy để làm không cần mạng là tính năng làm sau).
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+## Cấu trúc
 
-## Learn more
+- `src/app/` — các màn hình (Expo Router, mỗi file là 1 route):
+  `index` (chọn kỳ thi + trang chính), `login`, `practice`, `test-set/[id]`,
+  `session`, `mock`, `result/[id]`, `today`, `diagnostic`, `errors`,
+  `writing`, `speaking`, `vocabulary`, `wrong`, `leaderboard`, `settings`,
+  `ielts-setup`.
+- `src/api.ts` — API client (port từ `frontend/src/api.ts`), token lưu bằng
+  `expo-secure-store`. API base URL: biến `EXPO_PUBLIC_API_URL`, mặc định
+  `https://app-toeic-backend.onrender.com`.
+- `src/components/` — `AudioPlayer` (expo-av), `QuestionView`,
+  `IeltsAnswerControl`, `RootCausePicker`, `PassageView`, `WordLookup`,
+  `GoogleSignInButton`.
+- `src/theme.tsx` (Pastel + dark mode + cỡ chữ), `src/exam.tsx`,
+  `src/auth.tsx`, `src/lib.ts` (số câu thật, bỏ số đầu câu...),
+  `src/layout.ts` (breakpoint, `columnsForWidth()`, `LIST_DEFAULTS` cho
+  FlatList), `src/notifications.ts` (nhắc ôn tập).
+- `app.json` — tên app, scheme `app-toeic-ielts`, package Android
+  `com.anhanh.toeicielts`. `eas.json` — profile build EAS.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Build file APK / đăng Play Store (cần tài khoản Expo)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npx eas-cli@latest login          # tài khoản Expo của bạn
+npx eas-cli@latest build --profile preview --platform android   # file APK thử
+npx eas-cli@latest build --profile production --platform android # file AAB đăng Store
+```
 
-## Join the community
+Google Play: phí đăng ký nhà phát triển $25 một lần. iOS làm sau (Apple
+Developer $99/năm; build bằng EAS cloud, không cần máy Mac).
 
-Join our community of developers creating universal apps.
+## Đăng nhập Google trên mobile
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Nút Google trên màn hình đăng nhập dùng `expo-auth-session` với Web OAuth
+client đã có sẵn (cùng client với bản web). Cần 2 việc:
+
+1. Thêm redirect URI này vào Google Cloud Console → OAuth client
+   `1044241378768-…` → Authorized redirect URIs:
+   `com.anhanh.toeicielts:/oauthredirect`
+2. Nút Google **chỉ chạy trên bản build thật** (development/production
+   build qua EAS), **không chạy trong Expo Go** (Expo Go không redirect
+   OAuth về app được).
+
+Nếu Console từ chối redirect URI không phải https, phương án dự phòng là
+tạo thêm 1 OAuth client **Android** trong cùng project Google (package
+`com.anhanh.toeicielts` + SHA-1 lấy từ keystore của bản EAS build) rồi
+truyền vào prop `androidClientId` của `GoogleSignInButton`.
+
+## Thông báo nhắc ôn tập (local, Giai đoạn 3)
+
+- Bật/tắt nhắc hằng ngày lúc 20:00 trong Hồ sơ → Nhắc nhở.
+- Có câu đến hạn trong Sổ lỗi → app nhắc 1 lần lúc 8:00 sáng hôm sau (mở
+  màn Sổ lỗi mới lên lịch, tối đa 1 lần/ngày).
+- Chỉ là local notification (lên lịch trên máy). Remote push qua
+  Firebase/APNs chưa làm — cần dev build + Firebase, để sau khi phát hành.
+
+## Kiểm tra chất lượng
+
+```bash
+npx tsc --noEmit        # typecheck (bắt buộc sạch)
+npx expo lint           # lint (npx expo lint bị lỗi wrapper — dùng npx eslint src/ nếu cần)
+npx expo export --platform android   # kiểm tra bundle Android
+```
+
+## Hạn chế đã biết (giống bản web, sửa chung sau)
+
+- Cặp "Choose TWO letters" chấm theo thứ tự (đổi thứ tự là sai) — chưa có
+  pair-grading.
+- Giải thích IELTS bằng tiếng Anh.
+- Không có TTS đọc transcript khi thiếu file audio (hiện ghi chú như bản web).
+- Màn Chẩn đoán dùng tờ đề viết riêng trong file, chưa dùng chung màn Thi thử.
+- Không có màn quản trị trên mobile — admin vẫn dùng web.
+- Chưa test trên máy thật ở 2 cỡ màn hình (~360×640 và ~390×844) và độ mượt
+  cuộn khi làm đề dài — cần test bằng Expo Go trên điện thoại Android trước
+  khi phát hành.

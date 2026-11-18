@@ -5,7 +5,8 @@
 import * as ImagePicker from 'expo-image-picker';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Pressable,
   ScrollView,
@@ -20,6 +21,10 @@ import { ApiError, api, hideOnLbOf, targetScoreOf, type IeltsProfile, type QuitR
 import { useAuth } from '../auth';
 import { useExam } from '../exam';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import {
+  cancelDailyReminder,
+  scheduleDailyReminder,
+} from '../notifications';
 import { TEXT_SIZE_LABELS, useTextSize, useTheme } from '../theme';
 
 const QUIT_REASON_OPTIONS: { value: '' | QuitReason; label: string }[] = [
@@ -112,6 +117,32 @@ export default function SettingsScreen() {
   const [savingIelts, setSavingIelts] = useState(false);
 
   const [changingPw, setChangingPw] = useState(false);
+
+  // Nhắc ôn tập hằng ngày (Giai đoạn 3): local notification lúc 20:00,
+  // bật/tắt ở đây, trạng thái lưu AsyncStorage.
+  const [reminderOn, setReminderOn] = useState(false);
+  const [reminderMsg, setReminderMsg] = useState('');
+  useEffect(() => {
+    AsyncStorage.getItem('reminder_daily_on').then((v) => setReminderOn(v === '1')).catch(() => undefined);
+  }, []);
+  const toggleReminder = useCallback(async () => {
+    setReminderMsg('');
+    if (reminderOn) {
+      await cancelDailyReminder();
+      await AsyncStorage.setItem('reminder_daily_on', '0');
+      setReminderOn(false);
+      setReminderMsg('Đã tắt nhắc ôn tập hằng ngày.');
+      return;
+    }
+    const ok = await scheduleDailyReminder(20);
+    if (!ok) {
+      setReminderMsg('Chưa cấp quyền thông báo — bật quyền trong cài đặt máy rồi thử lại.');
+      return;
+    }
+    await AsyncStorage.setItem('reminder_daily_on', '1');
+    setReminderOn(true);
+    setReminderMsg('Đã bật nhắc ôn tập lúc 20:00 hằng ngày.');
+  }, [reminderOn]);
 
   useEffect(() => {
     let alive = true;
@@ -505,6 +536,24 @@ export default function SettingsScreen() {
           </Text>
         </View>
 
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>Nhắc nhở</Text>
+          <Pressable
+            style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
+            onPress={() => void toggleReminder()}
+          >
+            <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(15) }]}>
+              {reminderOn ? '🔔 Đang nhắc ôn tập lúc 20:00 — bấm để tắt' : '🔕 Nhắc ôn tập hằng ngày (20:00)'}
+            </Text>
+          </Pressable>
+          {reminderMsg ? (
+            <Text style={[styles.hint, { color: colors.muted, fontSize: scaled(13) }]}>{reminderMsg}</Text>
+          ) : null}
+          <Text style={[styles.hint, { color: colors.muted, fontSize: scaled(13) }]}>
+            Câu đến hạn ôn trong Sổ lỗi sẽ được nhắc 1 lần lúc 8:00 sáng hôm sau.
+          </Text>
+        </View>
+
         <Pressable
           style={[styles.button, styles.outlineButton, { borderColor: colors.danger }]}
           onPress={logout}
@@ -512,7 +561,7 @@ export default function SettingsScreen() {
           <Text style={[styles.buttonText, { color: colors.danger, fontSize: scaled(16) }]}>Đăng xuất</Text>
         </Pressable>
         <Text style={[styles.version, { color: colors.muted, fontSize: scaled(13) }]}>
-          ANHANH — Luyện TOEIC IELTS (mobile, Giai đoạn 2)
+          ANHANH — Luyện TOEIC IELTS (mobile)
         </Text>
       </ScrollView>
     </SafeAreaView>
