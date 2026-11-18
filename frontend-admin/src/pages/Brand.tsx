@@ -1,7 +1,8 @@
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { api, type MediaConfig } from '../api';
-import { ErrorBox } from '../components';
+import { ErrorBox, Modal } from '../components';
 import { uploadToCloudinary } from '../cloudinary';
+import { ImageCropper } from '../ImageCropper';
 import { BRAND_DEFAULTS, normalizeBrand, useBrand, type BrandSettings } from '../brand';
 
 /* Tên & Logo thương hiệu — chỉ admin: tên app, câu tagline, logo emoji
@@ -9,9 +10,10 @@ import { BRAND_DEFAULTS, normalizeBrand, useBrand, type BrandSettings } from '..
    PUT /api/admin/brand chỉ admin), cả 2 app đọc động lúc mở — đổi là
    có hiệu lực ngay, không cần deploy lại code.
    Ảnh logo tối đa 2MB (giới hạn chặt hơn uploader chung 5MB), lưu vào
-   Cloudinary thư mục toeic/brand. */
+   Cloudinary thư mục toeic/brand. Ảnh gốc chọn lên tối đa 5MB — sau khi
+   cắt vuông 512×512 thì file luôn nhỏ hơn 2MB. */
 const EMOJI_OPTIONS = ['🌸', '🎓', '📚', '✏️', '🎯', '🚀', '⭐', '💡', '📖', '🏆', '🌟', '🎨'];
-const MAX_LOGO_BYTES = 2 * 1024 * 1024; // 2MB
+const MAX_LOGO_BYTES = 5 * 1024 * 1024; // 5MB (ảnh gốc, trước khi cắt)
 
 export default function Brand() {
   const { applyBrand, refresh } = useBrand();
@@ -19,6 +21,7 @@ export default function Brand() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [cropSrc, setCropSrc] = useState<string | null>(null); // ảnh gốc đang cắt
   const [mediaCfg, setMediaCfg] = useState<MediaConfig | null>(null);
   const [msg, setMsg] = useState('');
   const [error, setError] = useState<unknown>(null);
@@ -66,13 +69,30 @@ export default function Brand() {
     if (!file) return;
     setError(null); setMsg('');
     if (file.size > MAX_LOGO_BYTES) {
-      setError(new Error('Ảnh logo tối đa 2MB. Hãy nén ảnh nhỏ lại rồi upload lại.'));
+      setError(new Error('Ảnh gốc tối đa 5MB. Hãy nén ảnh nhỏ lại rồi chọn lại.'));
       return;
     }
     if (!mediaCfg) {
       setError(new Error('Chưa tải được cấu hình Cloudinary. Tải lại trang rồi thử lại.'));
       return;
     }
+    // Mở khung cắt trước — tải lên chỉ sau khi đã cắt xong.
+    setCropSrc(URL.createObjectURL(file));
+  };
+
+  const cancelCrop = () => {
+    if (cropSrc) URL.revokeObjectURL(cropSrc);
+    setCropSrc(null);
+  };
+
+  const onCropDone = async (file: File) => {
+    if (cropSrc) URL.revokeObjectURL(cropSrc);
+    setCropSrc(null);
+    if (!mediaCfg) {
+      setError(new Error('Chưa tải được cấu hình Cloudinary. Tải lại trang rồi thử lại.'));
+      return;
+    }
+    setError(null); setMsg('');
     setUploading(true);
     try {
       const url = await uploadToCloudinary(file, 'toeic/brand', mediaCfg);
@@ -163,14 +183,25 @@ export default function Brand() {
                   </button>
                 </div>
               )}
-              <label>Chọn ảnh logo <span className="muted">(PNG/JPG, tối đa 2MB)</span></label>
+              <label>Chọn ảnh logo <span className="muted">(PNG/JPG, tối đa 5MB)</span></label>
               <input
                 type="file" accept=".png,.jpg,.jpeg" onChange={e => void onFile(e)} disabled={uploading}
               />
               {uploading && <p className="muted">Đang tải ảnh lên…</p>}
               <p className="muted" style={{ fontSize: '.85rem' }}>
-                Ảnh được lưu vào Cloudinary (thư mục toeic/brand) và dùng làm logo + favicon.
+                Chọn ảnh xong sẽ hiện khung cắt: kéo để lấy phần chính, phóng to/thu nhỏ
+                rồi bấm “Cắt &amp; tải lên”. Ảnh được lưu vào Cloudinary (thư mục toeic/brand)
+                và dùng làm logo + favicon.
               </p>
+              {cropSrc && (
+                <Modal title="✂️ Cắt ảnh logo" onClose={cancelCrop} wide>
+                  <ImageCropper
+                    imageUrl={cropSrc}
+                    onCrop={f => void onCropDone(f)}
+                    onCancel={cancelCrop}
+                  />
+                </Modal>
+              )}
             </div>
           )}
 
