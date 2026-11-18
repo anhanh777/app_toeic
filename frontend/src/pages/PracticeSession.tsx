@@ -1,9 +1,11 @@
 // Luyện tập theo Part — dạng danh sách liền mạch như tờ đề thi:
 // LUYỆN HẾT câu của Part (không giới hạn số lượng): toàn bộ câu của Part
 // đó — trong 1 đề hoặc toàn ngân hàng — nằm trong 1 tờ giấy (.paper),
-// các câu nối tiếp nhau bằng đường kẻ mảnh; chấm điểm theo từng câu ngay
-// sau khi bấm "Nộp đáp án" của câu đó (giữ nguyên API practiceAnswer, XP,
-// ghi câu sai). Người học được làm các câu theo thứ tự bất kỳ. Part 1/2
+// các câu nối tiếp nhau bằng đường kẻ mảnh; mặc định chấm điểm theo
+// từng câu ngay sau khi bấm "Nộp đáp án" của câu đó (giữ nguyên API
+// practiceAnswer, XP, ghi câu sai), hoặc chọn "Làm xong mới chấm" ở đầu
+// trang để làm hết rồi bấm "Nộp tất cả" chấm 1 lượt (câu chưa làm tính
+// sai, không gọi API). Người học được làm các câu theo thứ tự bất kỳ. Part 1/2
 // (TOEIC) vẫn ẨN chữ trước khi trả lời từng câu (đúng đề thi thật), chỉ
 // hiện lại sau khi đã nộp đáp án.
 // IELTS: Section N (Listening, part 1–4) / Passage N (Reading, part 5–7),
@@ -46,6 +48,12 @@ export default function PracticeSession() {
   const [loading, setLoading] = useState(true);
   const [score, setScore] = useState({ correct: 0, done: 0 });
   const [finished, setFinished] = useState(false);
+  // Chế độ chấm: 'instant' (chấm từng câu ngay sau khi nộp, như trước)
+  // hoặc 'submit-all' (làm hết rồi bấm "Nộp tất cả" mới chấm 1 lượt).
+  // Mặc định instant; khóa chọn chế độ ngay khi đã chọn đáp án đầu tiên.
+  const [gradingMode, setGradingMode] = useState<'instant' | 'submit-all'>('instant');
+  // submit-all: true sau khi đã nộp cả bài (kể cả câu chưa làm — tính sai).
+  const [submittedAll, setSubmittedAll] = useState(false);
   // Audio cấp Part (Part 1–4): fallback khi câu/đoạn chưa có audio riêng.
   // Tải thất bại (backend chưa có endpoint) thì bỏ qua, fallback về {}.
   const [partMedia, setPartMedia] = useState<Record<number, string>>({});
@@ -58,6 +66,9 @@ export default function PracticeSession() {
   useEffect(() => {
     setLoading(true);
     setPartMediaLoaded(false);
+    // Đổi buổi luyện (part / đề / exam) thì reset chế độ chấm về mặc định.
+    setGradingMode('instant');
+    setSubmittedAll(false);
     if (testSetId) api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => undefined);
     if (part <= 4) {
       (testSetId ? api.partMedia(testSetId) : Promise.resolve<Record<number, string>>({}))
@@ -115,6 +126,64 @@ export default function PracticeSession() {
       setResultById(m => ({ ...m, [q.id]: r }));
       setScore(s => ({ correct: s.correct + (r.correct ? 1 : 0), done: s.done + 1 }));
     } catch (e) { setError(e); }
+  };
+
+  // Số thật trong đề của 1 câu (để báo lỗi giới hạn từ đúng câu).
+  const questionNumber = (target: Question) => {
+    let idx = 0;
+    for (const qq of questions) {
+      if (qq.part === target.part) {
+        idx += 1;
+        if (qq.id === target.id) break;
+      }
+    }
+    return realQuestionNumber(exam, target.part, idx);
+  };
+
+  // Nộp tất cả (chế độ 'submit-all'): chấm lần lượt từng câu đã làm theo
+  // thứ tự trong đề; câu chưa làm KHÔNG gọi API (backend trả 400 với đáp
+  // án MC rỗng) mà tính là sai. Lỗi giữa chừng thì dừng lại, các câu đã
+  // chấm vẫn giữ kết quả, bấm lại để chấm nốt phần còn lại.
+  const submitAll = async () => {
+    if (submittedAll) return;
+    const answered = questions.filter(q => selectedById[q.id]);
+    if (!answered.length) return;
+    const unanswered = questions.length - answered.length;
+    if (unanswered > 0 && !window.confirm(`Còn ${unanswered} câu chưa làm, vẫn nộp?`)) return;
+    // (a) Kiểm tra giới hạn số từ cho TẤT CẢ câu điền từ đã làm TRƯỚC
+    // khi nộp câu nào — vượt thì báo lỗi (ghi rõ số câu) và dừng hẳn.
+    for (const q of answered) {
+      if (isFillIn(q.questionType) && q.wordLimit != null && wordCount(selectedById[q.id]) > q.wordLimit) {
+        setError(new Error(`Câu ${questionNumber(q)} quá giới hạn số từ (tối đa ${q.wordLimit} từ). Hãy rút gọn đáp án rồi nộp lại.`));
+        return;
+      }
+    }
+    // (b) Chấm tuần tự theo thứ tự trong đề.
+    const nextResults: Record<string, AnswerResult> = {};
+    let correct = 0;
+    for (const q of answered) {
+      const already = resultById[q.id];
+      if (already) {
+        nextResults[q.id] = already;
+        if (already.correct) correct += 1;
+        continue;
+      }
+      try {
+        const r = await api.practiceAnswer(q.id, selectedById[q.id]);
+        nextResults[q.id] = r;
+        if (r.correct) correct += 1;
+      } catch (e) {
+        const merged = { ...resultById, ...nextResults };
+        setResultById(merged);
+        setScore({ correct: Object.values(merged).filter(r => r.correct).length, done: Object.keys(merged).length });
+        setError(e);
+        return;
+      }
+    }
+    // (c) Xong: câu chưa làm tính là sai (done = tổng số câu).
+    setResultById(m => ({ ...m, ...nextResults }));
+    setScore({ correct, done: questions.length });
+    setSubmittedAll(true);
   };
 
   if (loading || (isListening && !!testSetId && !partMediaLoaded)) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải câu hỏi…" />;
@@ -228,6 +297,7 @@ export default function PracticeSession() {
               q={q}
               value={selected}
               onChange={v => setSelectedById(m => ({ ...m, [q.id]: v }))}
+              disabled={submittedAll}
               graded={result}
               duplicateHeading={qType === 'matching_headings' && !!selected && (headingCounts[selected] ?? 0) > 1}
             />
@@ -240,23 +310,34 @@ export default function PracticeSession() {
                   if (o.label === result.correctLabel) cls += ' correct';
                   else if (selected === o.label && !result.correct) cls += ' wrong';
                 }
-                return <button key={o.label} className={cls} disabled={!!result} onClick={() => setSelectedById(m => ({ ...m, [q.id]: o.label }))}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}</strong> {o.content}</>}</button>;
+                return <button key={o.label} className={cls} disabled={!!result || submittedAll} onClick={() => setSelectedById(m => ({ ...m, [q.id]: o.label }))}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}</strong> {o.content}</>}</button>;
               })}
             </div>
           )}
-          {!result && (
+          {/* Chế độ instant: nút "Nộp đáp án" từng câu như trước. Chế độ
+              submit-all: ẨN nút này (chấm chung ở thanh dưới), nhưng vẫn
+              giữ checkbox "Đoán mò" của IELTS để ghi nhận trước khi nộp. */}
+          {!result && (gradingMode === 'instant' || isIelts) && (
             <div className="btn-row">
-              <button className="btn btn-sm" disabled={!selected || overLimit} onClick={() => void submit(q)}>Nộp đáp án</button>
+              {gradingMode === 'instant' && (
+                <button className="btn btn-sm" disabled={!selected || overLimit} onClick={() => void submit(q)}>Nộp đáp án</button>
+              )}
               {/* IELTS-only: đánh dấu đoán mò — kể cả làm đúng mà đoán mò
                   thì vẫn phải ghi nguyên nhân trước khi xem giải thích. */}
               {isIelts && (
                 <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.3rem', fontWeight: 500, margin: 0 }}>
-                  <input type="checkbox" checked={!!guessedById[q.id]}
+                  <input type="checkbox" checked={!!guessedById[q.id]} disabled={submittedAll}
                     onChange={e => setGuessedById(m => ({ ...m, [q.id]: e.target.checked }))} />
                   Đoán mò 🤔
                 </label>
               )}
             </div>
+          )}
+          {/* Submit-all: câu chưa làm thì không gọi API chấm (backend trả
+              400 với đáp án MC rỗng) nên không có kết quả — chỉ báo là
+              chưa làm và tính sai, KHÔNG lộ đáp án đúng của câu đó. */}
+          {submittedAll && !result && (
+            <p style={{ color: 'var(--red-ink)', fontWeight: 700, margin: '.5rem 0 0' }}>❌ Chưa làm — tính là sai</p>
           )}
         </div>
         {result && (
@@ -358,6 +439,12 @@ export default function PracticeSession() {
     return out;
   };
 
+  // Khóa chọn chế độ chấm khi đã chọn đáp án cho câu nào trong đề hiện
+  // tại (chỉ tính câu của đề này — selectedById cũ của buổi trước không
+  // khóa nhầm). Chọn xong thì không đổi chế độ giữa buổi.
+  const modeLocked = questions.some(q => selectedById[q.id]);
+  const answeredCount = questions.filter(q => selectedById[q.id]).length;
+
   return (
     <div className={`ts-${textLevel}`}>
       {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
@@ -368,6 +455,19 @@ export default function PracticeSession() {
             : <>Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</>}
         </h2>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
+          {/* Chọn chế độ chấm — chỉ đổi được trước khi chọn đáp án đầu tiên. */}
+          <span role="group" aria-label="Chế độ chấm điểm" title={modeLocked ? 'Đã chọn đáp án nên không đổi được chế độ chấm trong buổi này' : undefined}
+            style={{ display: 'inline-flex', border: '1px solid var(--accent)', borderRadius: 8, overflow: 'hidden', opacity: modeLocked ? .55 : 1 }}>
+            {(['instant', 'submit-all'] as const).map(m => (
+              <button key={m} type="button" className="btn btn-sm" disabled={modeLocked} aria-pressed={gradingMode === m}
+                onClick={() => setGradingMode(m)}
+                style={gradingMode === m
+                  ? { borderRadius: 0, boxShadow: 'none' }
+                  : { borderRadius: 0, boxShadow: 'none', background: 'transparent', color: 'var(--accent-dark)' }}>
+                {m === 'instant' ? 'Chấm từng câu' : 'Làm xong mới chấm'}
+              </button>
+            ))}
+          </span>
           <span className="progress-badge">Đã làm {score.done}/{questions.length}</span>
         </span>
       </div>
@@ -387,7 +487,11 @@ export default function PracticeSession() {
       <div className="practice-bar">
         <span className="progress">Đã làm {score.done}/{questions.length} • Đúng {score.correct}</span>
         <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>🚪 Thoát</button>
-        <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
+        {gradingMode === 'submit-all' && !submittedAll ? (
+          <button className="btn btn-sm" disabled={answeredCount === 0} onClick={() => void submitAll()}>Nộp tất cả · {answeredCount}/{questions.length} câu</button>
+        ) : (
+          <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
+        )}
       </div>
     </div>
   );
