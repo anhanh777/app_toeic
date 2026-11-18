@@ -30,6 +30,8 @@ import {
 } from '../layout';
 import { partLabel, partNameFor, realQuestionNumber } from '../lib';
 import { useTextSize, useTheme } from '../theme';
+import { BottomNav } from '../components/BottomNav';
+import { BackButton } from '../components/BackButton';
 import AudioPlayer from '../components/AudioPlayer';
 import PassageView, { type BlankState } from '../components/PassageView';
 import QuestionView, { isListeningOnly, partName } from '../components/QuestionView';
@@ -148,6 +150,14 @@ export default function MockTestScreen() {
 
   const [testSets, setTestSets] = useState<TestSet[]>([]);
   const [selectedTestSetId, setSelectedTestSetId] = useState('');
+
+  // Chưa chọn kỳ thi thì không vào được — về màn chọn, nhớ đích đến.
+  // (Không áp khi đang thi, hoặc khi link mang sẵn ?exam=.)
+  useEffect(() => {
+    if (!attemptId && !ctxExam && !qExam) {
+      router.replace({ pathname: '/', params: { next: '/mock' } });
+    }
+  }, [attemptId, ctxExam, qExam]);
 
   useEffect(() => {
     if (paramTestSetId) api.testSet(paramTestSetId).then(setTestSet).catch((e) => setError(e instanceof Error ? e.message : String(e)));
@@ -411,9 +421,7 @@ export default function MockTestScreen() {
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
         <View style={[styles.container, { paddingHorizontal: pad }]}>
           <View style={styles.header}>
-            <Pressable onPress={() => router.back()} style={[styles.backChip, { borderColor: colors.border }]}>
-              <Text style={{ color: colors.text, fontSize: scaled(14) }}>← Trang chủ</Text>
-            </Pressable>
+            <BackButton />
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Thi thử</Text>
           </View>
           {error ? <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text> : null}
@@ -558,6 +566,7 @@ export default function MockTestScreen() {
             </View>
           )}
         </View>
+        <BottomNav />
       </SafeAreaView>
     );
   }
@@ -625,7 +634,6 @@ const styles = StyleSheet.create({
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md, paddingHorizontal: SPACING.lg },
   header: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, flexWrap: 'wrap', marginBottom: SPACING.sm },
   headerTitle: { flexShrink: 1, flexWrap: 'wrap' },
-  backChip: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   timer: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, fontWeight: '700', fontVariant: ['tabular-nums'] },
   badge: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },

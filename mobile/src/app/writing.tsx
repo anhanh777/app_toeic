@@ -3,7 +3,6 @@
 // chí 0–9, tùy chọn), nộp bài, xem lại bài đã nộp. Chưa chấm AI — sẽ
 // có ở Giai đoạn 2.
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { router } from 'expo-router';
 import {
   ActivityIndicator,
   FlatList,
@@ -20,6 +19,7 @@ import { ApiError, api, type WritingSubmission, type WritingTask } from '../api'
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { wordCount } from '../lib';
 import { useTextSize, useTheme } from '../theme';
+import { BackButton } from '../components/BackButton';
 
 export function fmtClock(sec: number): string {
   const s = Math.max(0, sec);
@@ -185,9 +185,7 @@ export default function WritingScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>✍️ Luyện Writing IELTS</Text>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Task 1 (20 phút, tối thiểu 150 từ) · Task 2 (40 phút, tối thiểu 250 từ). Đề mẫu — nội dung tự
@@ -334,7 +332,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.md,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

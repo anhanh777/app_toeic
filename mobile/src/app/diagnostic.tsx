@@ -26,6 +26,7 @@ import { ApiError, api, type Attempt, type DiagnosticMap, type Question } from '
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
 import { useTextSize, useTheme } from '../theme';
+import { BackButton } from '../components/BackButton';
 import { fmtClock } from './writing';
 
 const SAMPLE_NOTE = 'Bài mẫu — nội dung tự soạn, chưa phải đề thi thật.';
@@ -445,9 +446,7 @@ export default function DiagnosticScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>🧭 Chẩn đoán IELTS</Text>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Biết mình đang ở đâu trước khi luyện — gồm Listening + Reading và bài mẫu Writing/Speaking.
@@ -594,7 +593,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.sm,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

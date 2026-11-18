@@ -10,6 +10,7 @@ import { useExam } from '../../exam';
 import { partLabel, partNameFor } from '../../lib';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
 import { useTextSize, useTheme } from '../../theme';
+import { BackButton } from '../../components/BackButton';
 import { partName, sectionOf } from '../../components/QuestionView';
 
 export default function TestSetDetailScreen() {
@@ -96,9 +97,7 @@ export default function TestSetDetailScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()} style={[styles.backChip, { borderColor: colors.border }]}>
-          <Text style={{ color: colors.text, fontSize: scaled(14) }}>← Quay lại danh sách đề</Text>
-        </Pressable>
+        <BackButton />
         {loading ? (
           <View style={styles.center}>
             <ActivityIndicator color={colors.accent} />
@@ -173,13 +172,6 @@ export default function TestSetDetailScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1 },
   scroll: { flexGrow: 1, paddingVertical: SPACING.md, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center' },
-  backChip: {
-    borderWidth: 1,
-    borderRadius: RADIUS.pill,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
-    alignSelf: 'flex-start',
-  },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md, paddingVertical: SPACING.xl },
   wrap: { gap: SPACING.md, paddingTop: SPACING.md },
   title: { fontWeight: '700', flexWrap: 'wrap' },

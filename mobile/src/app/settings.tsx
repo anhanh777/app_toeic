@@ -26,6 +26,8 @@ import {
   scheduleDailyReminder,
 } from '../notifications';
 import { TEXT_SIZE_LABELS, useTextSize, useTheme } from '../theme';
+import { BottomNav } from '../components/BottomNav';
+import { BackButton } from '../components/BackButton';
 
 const QUIT_REASON_OPTIONS: { value: '' | QuitReason; label: string }[] = [
   { value: '', label: '— Chưa chọn —' },
@@ -297,10 +299,8 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>Hồ sơ cá nhân</Text>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Xem và cập nhật thông tin tài khoản của bạn.
@@ -564,6 +564,7 @@ export default function SettingsScreen() {
           ANHANH — Luyện TOEIC IELTS (mobile)
         </Text>
       </ScrollView>
+      <BottomNav />
     </SafeAreaView>
   );
 }
@@ -578,7 +579,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.md,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

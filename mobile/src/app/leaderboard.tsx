@@ -2,7 +2,6 @@
 // Bảng XP chung cho cả 2 kỳ thi (không lọc exam); bảng điểm/band lọc
 // theo exam. Bảng điểm/band chỉ tính bài thi full đủ điều kiện.
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -18,6 +17,7 @@ import { ApiError, api, type LeaderboardEntry } from '../api';
 import { useExam } from '../exam';
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
+import { BackButton } from '../components/BackButton';
 
 type Metric = 'score' | 'xp' | 'band';
 type Tab = 'week' | 'month' | 'all';
@@ -125,9 +125,7 @@ export default function LeaderboardScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>🏆 Bảng xếp hạng</Text>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Xem mình đang đứng ở đâu và cố gắng thêm một chút mỗi ngày nhé.
@@ -234,7 +232,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.sm,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },

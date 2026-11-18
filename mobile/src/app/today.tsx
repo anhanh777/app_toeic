@@ -23,6 +23,8 @@ import { useExam } from '../exam';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
 import { useTextSize, useTheme } from '../theme';
+import { BottomNav } from '../components/BottomNav';
+import { BackButton } from '../components/BackButton';
 import { errorCodeName } from './errors';
 import { fmtClock } from './writing';
 
@@ -165,6 +167,11 @@ export default function TodayScreen() {
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
   const [data, setData] = useState<TodayData | null>(null);
+
+  // Chưa chọn kỳ thi thì không vào được — về màn chọn, nhớ đích đến.
+  useEffect(() => {
+    if (!exam) router.replace({ pathname: '/', params: { next: '/today' } });
+  }, [exam]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [done, setDone] = useState<string[]>([]);
@@ -253,10 +260,8 @@ export default function TodayScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>☀️ Hôm nay</Text>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           {todayStr} — làm 3 khối nhỏ là đủ, đừng cố làm hết một lúc.
@@ -464,6 +469,7 @@ export default function TodayScreen() {
           </>
         )}
       </ScrollView>
+      <BottomNav />
     </SafeAreaView>
   );
 }
@@ -888,7 +894,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.md,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

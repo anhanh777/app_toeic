@@ -4,13 +4,13 @@
 // - "Từ chung": kho từ chung do admin quản (hiện đã làm trống theo
 //   hướng mới — từ vựng lấy từ quá trình luyện tập); người học chỉ
 //   đánh dấu đã thuộc/chưa thuộc.
-import { router } from 'expo-router';
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
   FlatList,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -22,6 +22,7 @@ import { ApiError, api, type UserWord, type Vocab } from '../api';
 import { useExam } from '../exam';
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
+import { BackButton } from '../components/BackButton';
 
 type WordStatus = 'learning' | 'learned' | 'wrong';
 const STATUS_LABEL: Record<WordStatus, string> = {
@@ -107,13 +108,12 @@ export default function VocabularyScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>Từ vựng</Text>
-        <View style={styles.chipRow}>
+        {/* 2 tab dạng segmented control — 2 nửa bằng nhau, không còn 2 pill lệch. */}
+        <View style={[styles.segmented, { borderColor: colors.border, backgroundColor: colors.surface }]}>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: tab === 'mine' ? colors.accent : colors.surface }]}
+            style={[styles.segment, tab === 'mine' && { backgroundColor: colors.accent }]}
             onPress={() => setTab('mine')}
           >
             <Text style={{ color: tab === 'mine' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
@@ -121,7 +121,7 @@ export default function VocabularyScreen() {
             </Text>
           </Pressable>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: tab === 'shared' ? colors.accent : colors.surface }]}
+            style={[styles.segment, tab === 'shared' && { backgroundColor: colors.accent }]}
             onPress={() => setTab('shared')}
           >
             <Text style={{ color: tab === 'shared' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
@@ -304,7 +304,8 @@ function MyWords() {
       {msg ? (
         <Text style={[styles.note, { color: colors.success, fontSize: scaled(14) }]}>{msg}</Text>
       ) : null}
-      <View style={styles.chipRow}>
+      {/* Lọc trạng thái: 1 hàng trượt ngang, không còn vỡ thành 2-3 hàng lệch. */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
         {STATUS_FILTERS.map((f) => (
           <Pressable
             key={f.id}
@@ -320,13 +321,14 @@ function MyWords() {
             </Text>
           </Pressable>
         ))}
-        <Pressable
-          style={[styles.chip, { borderColor: colors.accent, backgroundColor: colors.surface }]}
-          onPress={() => setShowAdd((v) => !v)}
-        >
-          <Text style={{ color: colors.accent, fontSize: scaled(14), fontWeight: '700' }}>＋ Thêm từ mới</Text>
-        </Pressable>
-      </View>
+      </ScrollView>
+      {/* Thêm từ mới: nút to cả hàng, không còn là pill chìm trong đống lọc. */}
+      <Pressable
+        style={[styles.addButton, { backgroundColor: colors.accent }]}
+        onPress={() => setShowAdd((v) => !v)}
+      >
+        <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>＋ Thêm từ mới</Text>
+      </Pressable>
 
       {showAdd && (
         <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -457,8 +459,9 @@ function MyWords() {
         </Pressable>
       ) : (
         !loading && (
-          <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>
+          <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Text style={styles.emptyIcon}>📖</Text>
+            <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15), textAlign: 'center' }]}>
               Chưa có từ nào ở đây. Khi luyện tập, bấm vào từ trong đoạn văn rồi chọn ＋ Lưu vào từ vựng —
               từ sẽ hiện ở đây. Bạn cũng có thể bấm “＋ Thêm từ mới” để tự thêm.
             </Text>
@@ -599,8 +602,9 @@ function SharedWords({ exam }: { exam: string }) {
         <Text style={[styles.note, { color: colors.success, fontSize: scaled(14) }]}>{msg}</Text>
       ) : null}
       {words.length === 0 ? (
-        <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>
+        <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Text style={styles.emptyIcon}>📖</Text>
+          <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15), textAlign: 'center' }]}>
             Chưa có từ chung — từ vựng giờ lấy từ quá trình luyện tập của bạn: khi luyện tập, bấm vào từ
             trong đoạn văn rồi chọn ＋ Lưu vào từ vựng, từ sẽ nằm ở tab “Từ của tôi”.
           </Text>
@@ -630,7 +634,6 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   flex: { flex: 1, gap: SPACING.sm, width: '100%' },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },
   note: { flexWrap: 'wrap' },
@@ -638,6 +641,33 @@ const styles = StyleSheet.create({
   hint: { flexWrap: 'wrap' },
   section: { fontWeight: '700', flexWrap: 'wrap', marginTop: SPACING.sm },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
+  // Segmented control cho 2 tab: 1 khung, 2 nửa bằng nhau.
+  segmented: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    padding: 4,
+    width: '100%',
+  },
+  segment: {
+    flex: 1,
+    borderRadius: RADIUS.button,
+    paddingVertical: SPACING.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  // Hàng lọc trạng thái: trượt ngang 1 hàng.
+  filterScroll: { gap: SPACING.sm, paddingRight: SPACING.sm },
+  addButton: {
+    borderRadius: RADIUS.button,
+    paddingVertical: SPACING.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 48,
+    width: '100%',
+  },
+  emptyCard: { alignItems: 'center', paddingVertical: SPACING.xl },
+  emptyIcon: { fontSize: 36, textAlign: 'center' },
   chip: {
     borderWidth: 1,
     borderRadius: RADIUS.pill,

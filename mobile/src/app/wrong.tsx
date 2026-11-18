@@ -1,7 +1,6 @@
 // Câu đã làm sai — port từ frontend/src/pages/WrongQuestions.tsx.
 // Làm đúng 1 câu ở đây sẽ gỡ nó khỏi danh sách (+XP).
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -25,6 +24,7 @@ import {
 } from '../layout';
 import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
 import { useTextSize, useTheme } from '../theme';
+import { BackButton } from '../components/BackButton';
 
 type Item = Question & { wrongCount?: number };
 
@@ -277,9 +277,7 @@ export default function WrongQuestionsScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>Câu đã làm sai</Text>
         <View style={styles.chipRow}>
           <Pressable
@@ -336,7 +334,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.sm,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
   chip: {

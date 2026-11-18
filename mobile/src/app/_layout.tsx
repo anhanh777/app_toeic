@@ -42,6 +42,14 @@ function RootLayoutNav() {
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: colors.background },
+        // Chuyển màn trượt mượt: slide từ phải, ~280ms (mặc định ~200ms hơi gắt).
+        animation: 'slide_from_right',
+        animationDuration: 280,
+        gestureEnabled: true,
+        // Mặc định của expo-router là 'push': màn mới trượt vào trên nền
+        // trắng (màn cũ bị gỡ) nên chuyển tab bị chớp trắng + cứng.
+        // 'pop': màn cũ trượt ra, màn mới đã nằm sẵn bên dưới — mượt, không chớp.
+        animationTypeForReplace: 'pop',
       }}
     >
       <Stack.Screen name="index" />

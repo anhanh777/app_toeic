@@ -19,6 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type QuitReason } from '../api';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
+import { BackButton } from '../components/BackButton';
 
 const REASONS: { id: QuitReason; label: string; note: string }[] = [
   { id: 'chan', label: 'Chán', note: 'App sẽ ưu tiên đổi chủ đề thường xuyên và thêm thử thách ngắn.' },
@@ -117,9 +118,7 @@ export default function IeltsSetupScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>🎓 Thiết lập IELTS của bạn</Text>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Mất chưa tới 1 phút — app sẽ cá nhân hoá lộ trình theo mục tiêu và lý do bạn hay bỏ cuộc.
@@ -219,7 +218,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.md,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   card: {

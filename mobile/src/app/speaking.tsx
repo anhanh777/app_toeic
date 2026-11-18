@@ -12,7 +12,6 @@ import {
   useAudioRecorder,
 } from 'expo-audio';
 import * as FileSystem from 'expo-file-system';
-import { router } from 'expo-router';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
@@ -27,6 +26,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type SpeakingPrompt, type SpeakingRecording } from '../api';
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
+import { BackButton } from '../components/BackButton';
 import { fmtClock } from './writing';
 
 function arrayBufferToBase64(buf: ArrayBuffer): string {
@@ -296,9 +296,7 @@ export default function SpeakingScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>🎤 Luyện Speaking IELTS</Text>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Part 1 hỏi đáp · Part 2 nói 1:30–2:00 · Part 3 thảo luận. Đề mẫu — nội dung tự soạn, chưa phải đề
@@ -435,7 +433,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.sm,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

@@ -12,7 +12,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { api, type ExamInfo } from '../api';
 import { useAuth } from '../auth';
 import { useExam, type ExamId } from '../exam';
@@ -24,6 +24,7 @@ import {
   SPACING,
 } from '../layout';
 import { useTextSize, useTheme } from '../theme';
+import { BottomNav } from '../components/BottomNav';
 
 const FALLBACK_EXAMS: ExamInfo[] = [
   { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990', testSetCount: 25, questionCount: 5000 },
@@ -58,10 +59,17 @@ export default function HomeScreen() {
   const { user, logout } = useAuth();
   const { exam, setExam, clearExam } = useExam();
   const { colors, theme, toggleTheme } = useTheme();
-  const { scaled, label: textSizeLabel, level: textSizeLevel, setLevel: setTextSizeLevel } = useTextSize();
+  const { scaled } = useTextSize();
   const { width } = useWindowDimensions();
   const [exams, setExams] = useState<ExamInfo[] | null>(null);
   const [loadingExams, setLoadingExams] = useState(true);
+
+  // Đích đến đang chờ: bấm tab cần kỳ thi khi chưa chọn → về đây chọn,
+  // chọn xong tự mở đúng tab đó. Chỉ nhận 3 tab cần kỳ thi.
+  const { next } = useLocalSearchParams<{ next?: string }>();
+  const nextRoute =
+    next === '/today' || next === '/practice' || next === '/mock' ? next : undefined;
+  const nextLabel = nextRoute === '/today' ? 'Hôm nay' : nextRoute === '/practice' ? 'Luyện tập' : 'Thi thử';
 
   useEffect(() => {
     if (exam) return;
@@ -78,8 +86,9 @@ export default function HomeScreen() {
     (id: string) => {
       if (id !== 'toeic' && id !== 'ielts') return;
       setExam(id);
+      if (nextRoute) router.replace(nextRoute as never);
     },
-    [setExam],
+    [setExam, nextRoute],
   );
 
   const pad = horizontalPadding(width);
@@ -89,7 +98,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.header}>
           <Text style={[styles.hello, { color: colors.text, fontSize: scaled(20) }]}>
             Xin chào, {user?.name || user?.email || 'bạn'} 👋
@@ -110,6 +119,11 @@ export default function HomeScreen() {
               Chọn kỳ thi bạn muốn luyện — lần sau mở app sẽ vào thẳng kỳ thi này.
               Đổi được bất cứ lúc nào bằng nút “Đổi bài thi”.
             </Text>
+            {nextRoute ? (
+              <Text style={[styles.hint, { color: colors.accent, fontSize: scaled(15) }]}>
+                Chọn kỳ thi trước để vào {nextLabel} nhé.
+              </Text>
+            ) : null}
             {loadingExams ? <ActivityIndicator color={colors.accent} /> : null}
             <View style={[styles.cards, wide && styles.cardsRow]}>
               {list.map((e) => (
@@ -166,18 +180,17 @@ export default function HomeScreen() {
               </Text>
             </View>
 
-            <View style={[styles.menu, wide && styles.menuRow]}>
+            <View style={styles.menu}>
               {[...MENU_COMMON, ...(exam === 'ielts' ? MENU_IELTS : [])].map((m) => (
                 <Pressable
                   key={m.href}
                   style={[
                     styles.menuItem,
-                    wide && styles.menuItemHalf,
                     { backgroundColor: colors.surface, borderColor: colors.border },
                   ]}
                   onPress={() => router.push(m.href as never)}
                 >
-                  <Text style={[styles.menuEmoji, { fontSize: scaled(22) }]}>{m.emoji}</Text>
+                  <Text style={[styles.menuEmoji, { fontSize: scaled(28) }]}>{m.emoji}</Text>
                   <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                     {m.label}
                   </Text>
@@ -185,36 +198,30 @@ export default function HomeScreen() {
               ))}
             </View>
 
-            <View style={styles.row}>
+            <View style={styles.menu}>
               <Pressable
-                style={[styles.button, { backgroundColor: colors.accent, flex: 1 }]}
+                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
                 onPress={clearExam}
               >
-                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
-                  ⇄ Đổi bài thi
+                <Text style={[styles.menuEmoji, { fontSize: scaled(28) }]}>⇄</Text>
+                <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
+                  Đổi bài thi
                 </Text>
               </Pressable>
               <Pressable
-                style={[styles.button, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
+                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
                 onPress={logout}
               >
-                <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>
+                <Text style={[styles.menuEmoji, { fontSize: scaled(28) }]}>🚪</Text>
+                <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                   Đăng xuất
                 </Text>
               </Pressable>
             </View>
-
-            <Pressable
-              style={[styles.chip, styles.textSizeChip, { borderColor: colors.border }]}
-              onPress={() => setTextSizeLevel(textSizeLevel >= 3 ? 0 : textSizeLevel + 1)}
-            >
-              <Text style={{ color: colors.text, fontSize: scaled(14) }}>
-                🔠 Cỡ chữ: {textSizeLabel}
-              </Text>
-            </Pressable>
           </View>
         )}
       </ScrollView>
+      <BottomNav />
     </SafeAreaView>
   );
 }
@@ -246,6 +253,7 @@ const styles = StyleSheet.create({
   pickerWrap: { gap: SPACING.md, width: '100%' },
   title: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   sub: { textAlign: 'center', flexWrap: 'wrap' },
+  hint: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   cards: { gap: SPACING.md, width: '100%' },
   cardsRow: { flexDirection: 'row', alignItems: 'stretch' },
   card: {
@@ -270,32 +278,23 @@ const styles = StyleSheet.create({
   },
   pickButtonText: { fontWeight: '700' },
   homeWrap: { gap: SPACING.md, width: '100%' },
-  menu: { gap: SPACING.sm, width: '100%' },
-  menuRow: { flexDirection: 'row', flexWrap: 'wrap' },
+  // Menu chính: lưới 2 cột ô vuông (icon trên, nhãn dưới) — luôn 2 cột
+  // kể cả màn hẹp, không còn danh sách dọc 1 cột.
+  menu: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
   menuItem: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: SPACING.sm,
     borderRadius: RADIUS.card,
     borderWidth: 1,
-    paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.md,
-    width: '100%',
-    minHeight: 52,
+    paddingVertical: SPACING.lg,
+    paddingHorizontal: SPACING.sm,
+    width: '48%',
+    flexGrow: 1,
+    minHeight: 92,
   },
-  menuItemHalf: { width: '48%', flexGrow: 1 },
   menuEmoji: { textAlign: 'center' },
-  menuLabel: { fontWeight: '600', flexShrink: 1, flexWrap: 'wrap' },
+  menuLabel: { fontWeight: '600', textAlign: 'center', flexWrap: 'wrap' },
   note: { textAlign: 'center', flexWrap: 'wrap', marginTop: SPACING.sm },
-  row: { flexDirection: 'row', gap: SPACING.md, width: '100%' },
-  button: {
-    borderRadius: RADIUS.button,
-    paddingVertical: SPACING.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 48,
-  },
-  outlineButton: { borderWidth: 1, backgroundColor: 'transparent' },
-  buttonText: { fontWeight: '700', textAlign: 'center' },
-  textSizeChip: { alignSelf: 'center' },
 });

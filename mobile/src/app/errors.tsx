@@ -4,7 +4,6 @@
 // (e) thêm lỗi thủ công (dùng cho Writing/Speaking — ghi tay).
 // Luật quái (v3): HP 3 mỗi mã lỗi, ôn đúng liên tiếp 3 lần là diệt.
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { router } from 'expo-router';
 import {
   ActivityIndicator,
   Pressable,
@@ -21,6 +20,7 @@ import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout
 import { questionTypeName } from '../lib';
 import { maybeScheduleDueReminder } from '../notifications';
 import { useTextSize, useTheme } from '../theme';
+import { BackButton } from '../components/BackButton';
 
 // 33 mã lỗi (IELTS v3) — giống frontend/src/ielts-phase1.tsx; dùng làm
 // fallback khi GET /api/ielts/error-codes lỗi, và để lấy tên mã.
@@ -269,9 +269,7 @@ export default function ErrorLogScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <Pressable onPress={() => router.back()}>
-          <Text style={[styles.back, { color: colors.accent, fontSize: scaled(15) }]}>‹ Quay lại</Text>
-        </Pressable>
+        <BackButton />
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>📓 Sổ lỗi IELTS</Text>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Mỗi lỗi là 1 con quái — ôn đúng thì quái mất máu, ôn đủ 3 lần thì quái bị diệt.
@@ -305,7 +303,7 @@ export default function ErrorLogScreen() {
                 (b) Tất cả lỗi ({filtered.length}/{all.length})
               </Text>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Kỹ năng</Text>
-              <View style={styles.chipRow}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
                 <Pressable
                   style={[styles.chip, { borderColor: colors.border, backgroundColor: !filterSkill ? colors.accent : colors.surface }]}
                   onPress={() => { setFilterSkill(''); setFilterCode(''); }}
@@ -323,11 +321,11 @@ export default function ErrorLogScreen() {
                     </Text>
                   </Pressable>
                 ))}
-              </View>
+              </ScrollView>
               {filterSkill ? (
                 <>
                   <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Mã lỗi</Text>
-                  <View style={styles.chipRow}>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
                     <Pressable
                       style={[styles.chip, { borderColor: colors.border, backgroundColor: !filterCode ? colors.accent : colors.surface }]}
                       onPress={() => setFilterCode('')}
@@ -345,7 +343,7 @@ export default function ErrorLogScreen() {
                         </Text>
                       </Pressable>
                     ))}
-                  </View>
+                  </ScrollView>
                 </>
               ) : null}
               {filtered.slice(0, 50).map((it) => (
@@ -401,7 +399,7 @@ export default function ErrorLogScreen() {
                 Dùng khi tự phát hiện lỗi ở Writing/Speaking (hoặc lỗi ngoài bài luyện) — ghi tay vào sổ.
               </Text>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Kỹ năng</Text>
-              <View style={styles.chipRow}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
                 {Object.entries(SKILL_LABEL).map(([k, v]) => (
                   <Pressable
                     key={k}
@@ -417,9 +415,9 @@ export default function ErrorLogScreen() {
                     </Text>
                   </Pressable>
                 ))}
-              </View>
+              </ScrollView>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Mã lỗi</Text>
-              <View style={styles.chipRow}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
                 {meCodes.map((c) => (
                   <Pressable
                     key={c.code}
@@ -431,7 +429,7 @@ export default function ErrorLogScreen() {
                     </Text>
                   </Pressable>
                 ))}
-              </View>
+              </ScrollView>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Bằng chứng (câu/ví dụ cụ thể)</Text>
               <TextInput
                 style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
@@ -479,7 +477,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.md,
   },
-  back: { fontWeight: '600' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },
@@ -494,7 +491,8 @@ const styles = StyleSheet.create({
   },
   cardTitle: { fontWeight: '700', flexWrap: 'wrap' },
   label: { fontWeight: '600', marginTop: SPACING.sm },
-  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
+  // Hàng lọc: trượt ngang 1 hàng, không vỡ thành nhiều hàng lệch.
+  filterScroll: { gap: SPACING.sm, paddingRight: SPACING.sm },
   chip: {
     borderWidth: 1,
     borderRadius: RADIUS.pill,

@@ -16,6 +16,8 @@ import { api, type PartInfo, type StatsOverview, type TestSet } from '../api';
 import { useExam } from '../exam';
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
+import { BottomNav } from '../components/BottomNav';
+import { BackButton } from '../components/BackButton';
 import { partLabel, partNameFor } from '../lib';
 import { partName, sectionOf } from '../components/QuestionView';
 
@@ -27,6 +29,11 @@ export default function PracticeScreen() {
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
   const [tab, setTab] = useState<'sets' | 'parts'>('sets');
+
+  // Chưa chọn kỳ thi thì không vào được — về màn chọn, nhớ đích đến.
+  useEffect(() => {
+    if (!exam) router.replace({ pathname: '/', params: { next: '/practice' } });
+  }, [exam]);
   const [testSets, setTestSets] = useState<TestSet[]>([]);
   const [setsError, setSetsError] = useState<string | null>(null);
   const [setsLoading, setSetsLoading] = useState(true);
@@ -166,9 +173,7 @@ export default function PracticeScreen() {
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.container, { paddingHorizontal: pad }]}>
         <View style={styles.header}>
-          <Pressable onPress={() => router.back()} style={[styles.backChip, { borderColor: colors.border }]}>
-            <Text style={{ color: colors.text, fontSize: scaled(14) }}>← Trang chủ</Text>
-          </Pressable>
+          <BackButton />
           <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Luyện tập</Text>
         </View>
         <View style={styles.tabs}>
@@ -250,6 +255,7 @@ export default function PracticeScreen() {
           />
         )}
       </View>
+      <BottomNav />
     </SafeAreaView>
   );
 }
@@ -258,7 +264,6 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, gap: SPACING.md },
   header: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md, flexWrap: 'wrap' },
-  backChip: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   title: { fontWeight: '700' },
   tabs: { flexDirection: 'row', gap: SPACING.sm, flexWrap: 'wrap' },
   tab: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.md, flexGrow: 1, alignItems: 'center' },

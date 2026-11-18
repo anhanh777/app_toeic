@@ -1,4 +1,6 @@
 // Đăng nhập email/mật khẩu + Google (expo-auth-session, đã nối dây).
+// Bàn phím: KeyboardAvoidingView behavior "height" trên Android để form
+// tự đẩy lên mượt khi gõ (trước đây behavior undefined nên form đứng yên).
 import { useState } from 'react';
 import {
   ActivityIndicator,
@@ -49,17 +51,32 @@ export default function LoginScreen() {
   const pad = horizontalPadding(width);
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+      {/* Vòng tròn trang trí mờ phía sau — chỉ để đẹp, không bấm được. */}
+      <View pointerEvents="none" style={StyleSheet.absoluteFill}>
+        <View style={[styles.deco, styles.decoTop, { backgroundColor: colors.accent }]} />
+        <View style={[styles.deco, styles.decoBottom, { backgroundColor: colors.accent }]} />
+      </View>
       <KeyboardAvoidingView
         style={styles.flex}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView
           contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}
           keyboardShouldPersistTaps="handled"
         >
+          <View style={styles.hero}>
+            <View style={[styles.logo, { backgroundColor: colors.accent }]}>
+              <Text style={{ fontSize: scaled(36) }}>🌸</Text>
+            </View>
+            <Text style={[styles.brand, { color: colors.text, fontSize: scaled(26) }]}>ANHANH</Text>
+            <Text style={[styles.tagline, { color: colors.muted, fontSize: scaled(15) }]}>
+              Luyện TOEIC • IELTS mỗi ngày
+            </Text>
+          </View>
+
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-            <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>
-              ANHANH — Luyện TOEIC IELTS
+            <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>
+              Đăng nhập
             </Text>
             <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
               Đăng nhập bằng tài khoản của bạn để đồng bộ tiến độ với bản web.
@@ -67,7 +84,10 @@ export default function LoginScreen() {
 
             <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Email</Text>
             <TextInput
-              style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+              style={[
+                styles.input,
+                { borderColor: colors.border, backgroundColor: colors.surfaceMuted, color: colors.text, fontSize: scaled(16) },
+              ]}
               value={email}
               onChangeText={setEmail}
               placeholder="email@example.com"
@@ -80,7 +100,10 @@ export default function LoginScreen() {
 
             <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Mật khẩu</Text>
             <TextInput
-              style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+              style={[
+                styles.input,
+                { borderColor: colors.border, backgroundColor: colors.surfaceMuted, color: colors.text, fontSize: scaled(16) },
+              ]}
               value={password}
               onChangeText={setPassword}
               placeholder="Mật khẩu"
@@ -109,6 +132,12 @@ export default function LoginScreen() {
               )}
             </Pressable>
 
+            <View style={styles.divider}>
+              <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
+              <Text style={[styles.dividerText, { color: colors.muted, fontSize: scaled(13) }]}>hoặc</Text>
+              <View style={[styles.dividerLine, { backgroundColor: colors.border }]} />
+            </View>
+
             <GoogleSignInButton onError={setError} />
             <Text style={[styles.note, { color: colors.muted, fontSize: scaled(13) }]}>
               Đăng nhập Google chỉ chạy trên bản build thật (dev/production), không chạy trong Expo Go.
@@ -127,7 +156,26 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     paddingVertical: SPACING.xl,
+    gap: SPACING.lg,
   },
+  deco: { position: 'absolute', borderRadius: 999 },
+  decoTop: { width: 240, height: 240, top: -70, right: -90, opacity: 0.13 },
+  decoBottom: { width: 180, height: 180, bottom: 30, left: -70, opacity: 0.09 },
+  hero: { alignItems: 'center', gap: SPACING.sm },
+  logo: {
+    width: 76,
+    height: 76,
+    borderRadius: 38,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+  },
+  brand: { fontWeight: '800', letterSpacing: 2, textAlign: 'center' },
+  tagline: { textAlign: 'center', flexWrap: 'wrap' },
   card: {
     width: '100%',
     maxWidth: MAX_CONTENT_WIDTH,
@@ -136,6 +184,11 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: SPACING.lg,
     gap: SPACING.sm,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
   },
   title: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   sub: { textAlign: 'center', flexWrap: 'wrap', marginBottom: SPACING.sm },
@@ -155,7 +208,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: SPACING.md,
     minHeight: 48,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.15,
+    shadowRadius: 3,
   },
   buttonText: { fontWeight: '700', textAlign: 'center' },
+  divider: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, marginTop: SPACING.sm },
+  dividerLine: { flex: 1, height: 1 },
+  dividerText: { textAlign: 'center' },
   note: { textAlign: 'center', marginTop: SPACING.sm },
 });
