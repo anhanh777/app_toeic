@@ -100,16 +100,16 @@ export default function ErrorLog() {
       <div className="card">
         <h2>(d) Quái — đã diệt {killed.length}/{monsters.length} 👹</h2>
         {!monsters.length && <p className="muted">Chưa có quái nào — làm sai 1 câu và ghi nguyên nhân là quái xuất hiện.</p>}
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))' }}>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(180px,1fr))' }}>
           {monsters.map(m => (
             <div key={m.code} className={`card monster-card${m.killed ? ' monster-killed' : ''}`} style={{ marginBottom: 0 }}>
-              <div style={{ fontSize: '1.6rem' }}>{SKILL_EMOJI[m.skill] ?? '👹'}</div>
+              <div className="monster-ico">{SKILL_EMOJI[m.skill] ?? '👹'}</div>
               <strong>{m.code} — {m.name}</strong>
-              <p className="muted" style={{ margin: '.2rem 0' }}>{SKILL_LABEL[m.skill] ?? m.skill} · {m.hits} lần mắc · {m.resolved}/{m.total} lần sửa đúng</p>
+              <p className="muted" style={{ margin: 0 }}>{SKILL_LABEL[m.skill] ?? m.skill} · {m.hits} lần mắc · {m.resolved}/{m.total} lần sửa đúng</p>
               <div className="hp-bar" role="img" aria-label={`Máu quái ${m.hp}/3`}>
                 <i style={{ width: `${Math.max(0, Math.min(3, m.hp)) / 3 * 100}%` }} />
               </div>
-              <p style={{ margin: '.3rem 0 0' }}>{m.killed ? '✅ Đã diệt ✓' : `HP: ${m.hp}/3`}</p>
+              <p style={{ margin: 0 }}>{m.killed ? '✅ Đã diệt ✓' : `HP: ${m.hp}/3`}</p>
             </div>
           ))}
         </div>

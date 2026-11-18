@@ -70,9 +70,9 @@ input[type='checkbox'],input[type='range']{width:auto; accent-color:var(--accent
 input[type='range']{border:none; padding:0}
 
 h1,h2,h3{font-family:var(--body); font-weight:700; line-height:1.4; letter-spacing:-.01em; color:var(--ink)}
-h1{font-size:1.4rem; margin:.4rem 0 1rem}
+h1{font-size:1.4rem; margin:.3rem 0 .8rem}
 h1 .glow{color:var(--accent-dark)}
-h2{font-size:1.1rem; margin:0 0 .8rem}
+h2{font-size:1.1rem; margin:0 0 .6rem}
 h3{font-size:1rem; margin:0 0 .6rem}
 hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 
@@ -205,7 +205,7 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 .container{max-width:960px; width:100%; margin:0 auto; padding:1rem; flex:1}
 .card{
   background:var(--surface);
-  border:1px solid var(--border); border-radius:16px; padding:1.1rem 1.2rem; margin-bottom:1rem;
+  border:1px solid var(--border); border-radius:16px; padding:.85rem 1rem; margin-bottom:1rem;
   box-shadow:0 2px 12px rgba(93,64,28,.06);
 }
 .card h2{margin-top:0}
@@ -214,22 +214,24 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 /* Box con trong card (xem trước import, form con): nền nhạt, không viền dày, không bóng */
 .panel{
   background:var(--surface-soft); border:1px solid var(--border-soft);
-  border-radius:12px; padding:1rem 1.1rem; margin-top:1rem; box-shadow:none;
+  border-radius:12px; padding:.7rem .85rem; margin-top:.75rem; box-shadow:none;
 }
 .panel h3{margin-top:0}
 /* Lưới phòng hờ: card nào còn lồng trong card cũng không bị 2 lớp viền dày */
 .card .card{box-shadow:none; border-color:var(--border-soft); background:var(--surface-soft)}
 /* Nhịp dọc duy nhất: lưới dùng gap, không cộng thêm margin-bottom của card */
-.grid{display:grid; gap:1rem; grid-template-columns:1fr; margin-bottom:1rem}
+.grid{display:grid; gap:.75rem; grid-template-columns:1fr; margin-bottom:1rem}
 .grid > .card{
-  margin-bottom:0; display:flex; flex-direction:column; gap:.45rem;
+  margin-bottom:0; display:flex; flex-direction:column; gap:.3rem;
 }
 .grid > .card > *{margin-top:0; margin-bottom:0}
 .grid > .card p{margin:.25rem 0}
+/* Dòng liệt kê Part 1–7 trong thẻ bộ đề: nhỏ hơn một nấc cho gọn 1 dòng */
+.parts-line{font-size:.85rem; line-height:1.45}
 /* Nút và chân card trong lưới luôn thẳng hàng ở đáy, dù nội dung dài ngắn khác nhau */
-.grid > .card .btn-row:last-child{margin-top:auto; padding-top:.5rem}
+.grid > .card .btn-row:last-child{margin-top:auto; padding-top:.35rem}
 .card-foot{
-  margin-top:auto; padding-top:.5rem;
+  margin-top:auto; padding-top:.3rem;
   display:flex; flex-direction:column; gap:.35rem;
 }
 .card-foot > *{margin:0}
@@ -255,7 +257,7 @@ select + .card{margin-top:1rem}
 .btn{
   display:inline-block; font-weight:600; font-size:.95rem; line-height:1.5;
   color:#fff; background:var(--accent);
-  border:1px solid transparent; border-radius:12px; padding:.65rem 1.1rem; text-align:center;
+  border:1px solid transparent; border-radius:12px; padding:.55rem 1rem; text-align:center;
   box-shadow:0 2px 8px rgba(95,168,160,.28);
   transition:background .18s, transform .18s, box-shadow .18s;
 }
@@ -272,9 +274,9 @@ select + .card{margin-top:1rem}
 .btn.neon:hover{background:var(--accent-soft-strong)}
 .btn.gold{background:var(--cream); color:var(--gold-ink); box-shadow:0 1px 4px rgba(93,64,28,.06)}
 .btn.gold:hover{background:var(--cream-strong)}
-.btn-sm{padding:.42rem .85rem; font-size:.88rem; border-radius:10px}
+.btn-sm{padding:.35rem .7rem; font-size:.88rem; border-radius:10px}
 .btn-row{display:flex; gap:.7rem; flex-wrap:wrap; margin-bottom:1rem}
-.card .btn-row{margin-top:.8rem; margin-bottom:0}
+.card .btn-row{margin-top:.5rem; margin-bottom:0}
 
 .error{background:var(--red-bg); color:var(--red-ink); border:1px solid var(--red-border); border-radius:12px; padding:.65rem .9rem; margin:.6rem 0}
 .success{background:var(--green-bg); color:var(--green-ink); border:1px solid var(--green-border); border-radius:12px; padding:.65rem .9rem; margin:.6rem 0}
@@ -288,11 +290,11 @@ select + .card{margin-top:1rem}
 .tag{font-weight:600; font-size:.85rem; color:var(--accent-dark)}
 
 /* Thanh XP / tiến trình — bo tròn mềm, màu pastel */
-.xpbar{height:12px; background:var(--track); border-radius:999px; overflow:hidden}
+.xpbar{height:9px; background:var(--track); border-radius:999px; overflow:hidden}
 .xpbar>i{display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .3s ease}
 .xpbar.gold>i{background:var(--gold)}
 .xp-label{font-weight:600; font-size:.85rem; color:var(--ink-soft); display:flex; justify-content:space-between; gap:.5rem; flex-wrap:wrap}
-.bar{height:10px; background:var(--track); border-radius:999px; overflow:hidden}
+.bar{height:7px; background:var(--track); border-radius:999px; overflow:hidden}
 .bar>i{display:block; height:100%; background:var(--accent); border-radius:999px; transition:width .3s ease}
 .bar.green>i{background:var(--green)}
 
@@ -314,16 +316,16 @@ select + .card{margin-top:1rem}
   border:1px solid var(--border); border-radius:16px;
   background:linear-gradient(135deg, var(--mint), var(--sky) 55%, var(--pink));
   box-shadow:0 2px 12px rgba(93,64,28,.06);
-  padding:1.3rem 1.2rem; margin-bottom:1rem; text-align:center;
+  padding:1rem 1.1rem; margin-bottom:1rem; text-align:center;
 }
-.hero h1{font-size:1.5rem; margin:.2rem 0 .5rem}
+.hero h1{font-size:1.5rem; margin:.1rem 0 .3rem}
 .hero .sub{color:var(--ink-soft); font-weight:500}
 .stat-card{position:relative; overflow:hidden}
 .stat-card::before{
   content:''; position:absolute; top:0; left:0; right:0; height:5px;
   background:linear-gradient(90deg,var(--mint),var(--sky),var(--pink));
 }
-.stat-card .ico{font-size:1.5rem}
+.stat-card .ico{font-size:1.25rem}
 
 /* Thẻ chọn Part — hover nâng nhẹ, chọn thì viền nhấn */
 .part-card{cursor:pointer; transition:transform .18s, box-shadow .18s, border-color .18s}
@@ -372,7 +374,7 @@ select + .card{margin-top:1rem}
 table{width:100%; border-collapse:collapse}
 /* Bảng trong card hẹp: cuộn ngang trong card thay vì tràn ra ngoài */
 .card:has(table), .panel:has(table){overflow-x:auto}
-th,td{padding:.6rem .5rem; border-bottom:1px solid var(--border-soft); text-align:left}
+th,td{padding:.45rem .5rem; border-bottom:1px solid var(--border-soft); text-align:left}
 th{font-weight:700; font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.03em}
 tbody tr:hover{background:var(--surface-soft)}
 
@@ -380,8 +382,8 @@ tbody tr:hover{background:var(--surface-soft)}
 .timer.low{color:var(--red-ink)}
 
 /* Flashcards — mặt trước trắng, mặt sau lavender nhạt, lật mượt */
-.flashcard{perspective:800px; cursor:pointer; min-height:190px}
-.flashcard-inner{position:relative; width:100%; min-height:190px; transition:transform .45s ease; transform-style:preserve-3d}
+.flashcard{perspective:800px; cursor:pointer; min-height:150px}
+.flashcard-inner{position:relative; width:100%; min-height:150px; transition:transform .45s ease; transform-style:preserve-3d}
 .flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
 .flashcard-face{
   position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -396,13 +398,13 @@ tbody tr:hover{background:var(--surface-soft)}
 .top3-list{display:grid; gap:.6rem; margin:0 0 1rem}
 @media(min-width:640px){.top3-list{grid-template-columns:repeat(3,1fr)}}
 .top3-place{
-  display:flex; flex-direction:column; align-items:center; gap:.3rem; text-align:center;
-  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:1rem .6rem;
+  display:flex; flex-direction:column; align-items:center; gap:.2rem; text-align:center;
+  background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:.7rem .5rem;
   box-shadow:0 2px 10px rgba(93,64,28,.05);
 }
 .top3-place .medal{
-  width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center;
-  font-size:1.5rem; font-weight:800; color:#fff;
+  width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:1.3rem; font-weight:800; color:#fff;
 }
 .top3-place .medal-1{background:var(--gold)}
 .top3-place .medal-2{background:var(--silver)}
@@ -689,9 +691,9 @@ tbody tr:hover{background:var(--surface-soft)}
 ::selection{background:var(--accent-soft); color:var(--ink)}
 
 /* ============ IELTS giai đoạn 2 — màn chọn kỳ thi, đáp án điền từ, band ============ */
-.exam-pick{display:grid; gap:1rem}
+.exam-pick{display:grid; gap:.75rem}
 @media(min-width:640px){.exam-pick{grid-template-columns:1fr 1fr}}
-.exam-pick .card{cursor:pointer; text-align:center; padding:1.6rem 1.2rem}
+.exam-pick .card{cursor:pointer; text-align:center; padding:1.1rem 1rem}
 .exam-pick .card:hover{border-color:var(--accent); transform:translateY(-2px)}
 .exam-pick .card h2{margin:.4rem 0 .2rem}
 .word-count{font-size:.85rem; color:var(--muted); margin:.25rem 0 0}
@@ -704,7 +706,7 @@ tbody tr:hover{background:var(--surface-soft)}
   .big{font-size:1.2rem}
   .topbar .brand{font-size:.95rem}
   .container{padding:.8rem}
-  .card{padding:.9rem}
+  .card{padding:.75rem .85rem}
   /* Header 1 hàng trên điện thoại: menu trượt ngang thay vì xếp chồng nhiều dòng */
   .topbar{flex-wrap:nowrap; gap:.6rem}
   .topbar nav{flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; flex:1 1 auto; min-width:0}
@@ -715,8 +717,12 @@ tbody tr:hover{background:var(--surface-soft)}
 /* ============ IELTS Giai đoạn 1 (v3): Hôm nay, quái, HP ============ */
 /* Dùng đúng biến Pastel sẵn có — không đổi giá trị theme cũ. */
 .monster-card{border:1px solid var(--border)}
+/* Thẻ quái trong lưới: gọn hơn thẻ .card thường (padding + khoảng cách
+   giữa các dòng nhỏ lại), vẫn giữ đủ mã, tên, số lần mắc, HP. */
+.grid .monster-card{padding:.7rem .85rem; gap:.25rem}
+.monster-card .monster-ico{font-size:1.25rem; line-height:1}
 .monster-killed{border-color:var(--green-border); background:var(--green-bg)}
-.hp-bar{height:.6rem; background:var(--track); border-radius:999px; overflow:hidden}
+.hp-bar{height:.45rem; background:var(--track); border-radius:999px; overflow:hidden}
 .hp-bar i{display:block; height:100%; background:var(--red); border-radius:999px}
 .monster-killed .hp-bar i{background:var(--green)}
 .today-bad-day{border:1px dashed var(--amber); background:var(--amber-bg)}

@@ -68,13 +68,13 @@ export default function IeltsSetup() {
           ))}
         </div>
         <h2 style={{ marginTop: '1rem' }}>Vì sao bạn hay bỏ cuộc khi luyện thi?</h2>
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))' }}>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))' }}>
           {REASONS.map(r => (
             <div key={r.id} className={`card part-card${quitReason === r.id ? ' selected' : ''}`} role="button" tabIndex={0}
               onClick={() => setQuitReason(r.id)}
               onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') setQuitReason(r.id); }}>
               <strong>{r.label}</strong>
-              <p className="muted" style={{ margin: '.3rem 0 0' }}>{r.note}</p>
+              <p className="muted" style={{ margin: '.2rem 0 0' }}>{r.note}</p>
             </div>
           ))}
         </div>

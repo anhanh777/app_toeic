@@ -79,20 +79,15 @@ export default function PracticePartSets() {
               style={disabled ? { opacity: 0.6 } : undefined}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '.5rem', flexWrap: 'wrap' }}>
-                <strong>{ts.title}</strong>
+                <strong>{ts.title} <span className="muted" style={{ fontWeight: 500 }}>· {partCount} câu {shortLabel}</span></strong>
                 {!ts.isPublished && <span className="pill">NHÁP</span>}
               </div>
-              {ts.description && <p className="muted">{ts.description}</p>}
-              <p>
-                <span className="stat-num">{partCount}</span> câu {shortLabel}
-                {' · '}
-                <span className="stat-num">{total}</span> câu cả đề
-              </p>
+              <p className="muted" style={{ margin: 0 }}>{total} câu cả đề</p>
               {disabled ? (
-                <p className="muted">Chưa có câu</p>
+                <p className="muted" style={{ margin: 0 }}>Chưa có câu</p>
               ) : (
                 <div className="btn-row">
-                  <button className="btn" onClick={e => { e.stopPropagation(); go(); }}>
+                  <button className="btn btn-sm" onClick={e => { e.stopPropagation(); go(); }}>
                     ▶ Luyện {shortLabel}
                   </button>
                 </div>

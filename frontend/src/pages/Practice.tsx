@@ -36,12 +36,14 @@ export default function Practice() {
     return (
       <div key={p.part} className={`card part-card${part === p.part ? ' selected' : ''}`} onClick={() => setPart(p.part)}>
         <div className="part-ico">{p.part <= 4 ? '🎧' : '📖'} {partLabel(p.part, ex)}</div>
-        <strong>{isIelts ? partNameFor(p.part, ex) : partName(p.part)}</strong> <span className="pill">{sectionOf(p.part)}</span>
-        <p className="muted">{p.count ? `${p.count} câu trong ngân hàng` : 'Chưa rõ số câu'}</p>
-        {a && <p>Tỉ lệ đúng: {pct}% ({a.correct}/{a.answered} câu)</p>}
+        <p style={{ margin: 0 }}>
+          <strong>{isIelts ? partNameFor(p.part, ex) : partName(p.part)}</strong> <span className="pill">{sectionOf(p.part)}</span>{' '}
+          <span className="muted">{p.count ? `${p.count} câu` : 'Chưa rõ số câu'}</span>
+        </p>
+        {a && <p className="muted" style={{ margin: 0 }}>Tỉ lệ đúng: {pct}% ({a.correct}/{a.answered} câu)</p>}
         {a && <div className="bar"><i style={{ width: `${Math.min(100, Math.max(0, pct))}%` }} /></div>}
         <div className="btn-row">
-          <button className="btn" onClick={e => { e.stopPropagation(); nav(`/practice/part/${p.part}?exam=${ex}`); }}>
+          <button className="btn btn-sm" onClick={e => { e.stopPropagation(); nav(`/practice/part/${p.part}?exam=${ex}`); }}>
             ▶ Luyện
           </button>
         </div>
@@ -72,12 +74,10 @@ export default function Practice() {
               return (
                 <div key={ts.id} className="card part-card" onClick={() => nav(`/practice/test-set/${ts.id}`)}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '.5rem', flexWrap: 'wrap' }}>
-                    <strong>{ts.title}</strong>
+                    <strong>{ts.title} <span className="muted" style={{ fontWeight: 500 }}>· {total} câu</span></strong>
                     {!ts.isPublished && <span className="pill">NHÁP</span>}
                   </div>
-                  {ts.description && <p className="muted">{ts.description}</p>}
-                  <p><span className="stat-num">{total}</span> câu</p>
-                  <p className="muted">
+                  <p className="muted parts-line">
                     {ts.parts.map(p => `${partLabel(p.part, ex)} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
                   </p>
                   {ts.missing.length > 0 && (
@@ -85,14 +85,14 @@ export default function Practice() {
                   )}
                   {ts.progress ? (
                     <div>
-                      <p>Đã làm {answered}/{total} câu ({pct}%)</p>
+                      <p className="muted">Đã làm {answered}/{total} câu ({pct}%)</p>
                       <div className="bar green"><i style={{ width: `${pct}%` }} /></div>
                     </div>
                   ) : (
                     <p className="muted">Chưa làm câu nào trong đề này</p>
                   )}
                   <div className="btn-row">
-                    <button className="btn" onClick={e => { e.stopPropagation(); nav(`/practice/test-set/${ts.id}`); }}>
+                    <button className="btn btn-sm" onClick={e => { e.stopPropagation(); nav(`/practice/test-set/${ts.id}`); }}>
                       {answered > 0 ? '▶ Làm tiếp' : '👁 Xem đề'}
                     </button>
                   </div>

@@ -38,15 +38,17 @@ export default function TestSetDetail() {
     return (
       <div key={p} className="card part-card">
         <div className="part-ico">{p <= 4 ? '🎧' : '📖'} {partLabel(p, ex)}</div>
-        <strong>{isIelts ? partNameFor(p, ex) : partName(p)}</strong> <span className="pill">{sectionOf(p)}</span>
-        <p className="muted">{n} câu trong đề này</p>
+        <p style={{ margin: 0 }}>
+          <strong>{isIelts ? partNameFor(p, ex) : partName(p)}</strong> <span className="pill">{sectionOf(p)}</span>{' '}
+          <span className="muted">{n} câu trong đề này</span>
+        </p>
         {prog
-          ? <p>Đã làm {prog.answered}/{n} câu · đúng {prog.correct}</p>
-          : <p className="muted">Chưa làm câu nào ở {partLabel(p, ex)} này</p>}
+          ? <p className="muted" style={{ margin: 0 }}>Đã làm {prog.answered}/{n} câu · đúng {prog.correct}</p>
+          : <p className="muted" style={{ margin: 0 }}>Chưa làm câu nào ở {partLabel(p, ex)} này</p>}
         {prog && n > 0 && <div className="bar"><i style={{ width: `${Math.round((prog.answered / n) * 100)}%` }} /></div>}
         <div className="btn-row">
           <button
-            className="btn"
+            className="btn btn-sm"
             disabled={!n}
             onClick={() => nav(`/practice/session?testSetId=${ts.id}&part=${p}&exam=${ex}`)}
           >

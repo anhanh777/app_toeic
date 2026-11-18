@@ -52,14 +52,14 @@ export default function Writing() {
 
       <div className="card">
         <h2>Chọn đề</h2>
-        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))' }}>
+        <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fill,minmax(200px,1fr))' }}>
           {tasks.map(t => (
             <div key={t.id} className={`card part-card${task?.id === t.id ? ' selected' : ''}`} role="button" tabIndex={0}
               onClick={() => pick(t)} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') pick(t); }}>
               <span className="pill">{t.type === 'task1' ? 'Task 1' : 'Task 2'}</span>
               {t.isSample && <span className="pill" style={{ marginLeft: '.3rem' }}>Đề mẫu</span>}
-              <p style={{ margin: '.4rem 0 0' }}><strong>{t.title}</strong></p>
-              <p className="muted" style={{ margin: '.2rem 0 0' }}>{t.minutes} phút</p>
+              <p style={{ margin: '.25rem 0 0' }}><strong>{t.title}</strong></p>
+              <p className="muted" style={{ margin: 0 }}>{t.minutes} phút</p>
             </div>
           ))}
         </div>

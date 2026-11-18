@@ -276,8 +276,8 @@ export function ExamPicker() {
         {list.map(e => (
           <div key={e.id} className="card" role="button" tabIndex={0} onClick={() => pick(e.id)}
             onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') pick(e.id); }}>
-            <div style={{ fontSize: '2rem' }}>{e.id === 'ielts' ? '🎓' : '🌸'}</div>
-            <h2 style={{ fontSize: '1.3rem' }}>{e.title}</h2>
+            <div style={{ fontSize: '1.6rem' }}>{e.id === 'ielts' ? '🎓' : '🌸'}</div>
+            <h2 style={{ fontSize: '1.15rem', marginBottom: '.3rem' }}>{e.title}</h2>
             <p className="muted">{e.subtitle}</p>
             <p>
               {e.id === 'ielts'
