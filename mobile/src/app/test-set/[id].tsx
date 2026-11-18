@@ -97,7 +97,12 @@ export default function TestSetDetailScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <BackButton />
+        <View style={styles.headerRow}>
+          <BackButton />
+          {ts ? (
+            <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(22) }]}>{ts.title}</Text>
+          ) : null}
+        </View>
         {loading ? (
           <View style={styles.center}>
             <ActivityIndicator color={colors.accent} />
@@ -110,7 +115,6 @@ export default function TestSetDetailScreen() {
           </View>
         ) : (
           <View style={styles.wrap}>
-            <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>{ts.title}</Text>
             {ts.description ? (
               <Text style={[styles.line, { color: colors.muted, fontSize: scaled(15) }]}>{ts.description}</Text>
             ) : null}
@@ -170,6 +174,8 @@ export default function TestSetDetailScreen() {
 }
 
 const styles = StyleSheet.create({
+  // Hàng tiêu đề: nút quay lại + tiêu đề cùng 1 hàng (không để nút lẻ 1 hàng gây thừa khoảng trắng).
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   safe: { flex: 1 },
   scroll: { flexGrow: 1, paddingVertical: SPACING.md, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md, paddingVertical: SPACING.xl },

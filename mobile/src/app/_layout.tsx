@@ -42,18 +42,23 @@ function RootLayoutNav() {
       screenOptions={{
         headerShown: false,
         contentStyle: { backgroundColor: colors.background },
-        // Chuyển màn trượt mượt: slide từ phải, ~280ms (mặc định ~200ms hơi gắt).
+        // Màn thường: trượt từ phải, ~280ms (mặc định ~200ms hơi gắt).
         animation: 'slide_from_right',
         animationDuration: 280,
         gestureEnabled: true,
-        // Mặc định của expo-router là 'push': màn mới trượt vào trên nền
-        // trắng (màn cũ bị gỡ) nên chuyển tab bị chớp trắng + cứng.
-        // 'pop': màn cũ trượt ra, màn mới đã nằm sẵn bên dưới — mượt, không chớp.
+        // Replace (chuyển tab): màn cũ trượt ra, màn mới đã nằm sẵn bên dưới.
         animationTypeForReplace: 'pop',
       }}
     >
-      <Stack.Screen name="index" />
+      {/* 5 màn chính (tab) chuyển bằng fade nhanh thay vì trượt: trượt khi
+          replace vẫn lộ nền trắng vì màn mới chưa kịp vẽ xong; fade chồng
+          2 màn lên nhau nên không bao giờ thấy nền trắng. */}
+      <Stack.Screen name="index" options={{ animation: 'fade', animationDuration: 200 }} />
       <Stack.Screen name="login" />
+      <Stack.Screen name="today" options={{ animation: 'fade', animationDuration: 200 }} />
+      <Stack.Screen name="practice" options={{ animation: 'fade', animationDuration: 200 }} />
+      <Stack.Screen name="mock" options={{ animation: 'fade', animationDuration: 200 }} />
+      <Stack.Screen name="settings" options={{ animation: 'fade', animationDuration: 200 }} />
     </Stack>
   );
 }

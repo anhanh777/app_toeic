@@ -108,8 +108,10 @@ export default function VocabularyScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
-        <BackButton />
-        <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>Từ vựng</Text>
+        <View style={styles.headerRow}>
+          <BackButton />
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>Từ vựng</Text>
+        </View>
         {/* 2 tab dạng segmented control — 2 nửa bằng nhau, không còn 2 pill lệch. */}
         <View style={[styles.segmented, { borderColor: colors.border, backgroundColor: colors.surface }]}>
           <Pressable
@@ -624,6 +626,8 @@ function SharedWords({ exam }: { exam: string }) {
 }
 
 const styles = StyleSheet.create({
+  // Hàng tiêu đề: nút quay lại + tiêu đề cùng 1 hàng (không để nút lẻ 1 hàng gây thừa khoảng trắng).
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   safe: { flex: 1 },
   wrap: {
     flex: 1,
@@ -631,7 +635,7 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: MAX_CONTENT_WIDTH,
     alignSelf: 'center',
-    gap: SPACING.sm,
+    gap: SPACING.md,
   },
   flex: { flex: 1, gap: SPACING.sm, width: '100%' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
@@ -639,7 +643,7 @@ const styles = StyleSheet.create({
   note: { flexWrap: 'wrap' },
   muted: { flexWrap: 'wrap' },
   hint: { flexWrap: 'wrap' },
-  section: { fontWeight: '700', flexWrap: 'wrap', marginTop: SPACING.sm },
+  section: { fontWeight: '700', flexWrap: 'wrap', marginTop: SPACING.md },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
   // Segmented control cho 2 tab: 1 khung, 2 nửa bằng nhau.
   segmented: {
@@ -713,7 +717,7 @@ const styles = StyleSheet.create({
   flashWord: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   flashMeaning: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   flashMeta: { textAlign: 'center', flexWrap: 'wrap' },
-  list: { gap: SPACING.sm, paddingBottom: SPACING.md },
+  list: { gap: SPACING.md, paddingBottom: SPACING.md },
   loader: { marginTop: SPACING.lg },
   wordCard: {
     borderWidth: 1,

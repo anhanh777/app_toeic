@@ -261,8 +261,10 @@ export default function TodayScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <BackButton />
-        <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>☀️ Hôm nay</Text>
+        <View style={styles.headerRow}>
+          <BackButton />
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>☀️ Hôm nay</Text>
+        </View>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           {todayStr} — làm 3 khối nhỏ là đủ, đừng cố làm hết một lúc.
         </Text>
@@ -885,6 +887,8 @@ function BandCompassBlock() {
 }
 
 const styles = StyleSheet.create({
+  // Hàng tiêu đề: nút quay lại + tiêu đề cùng 1 hàng (không để nút lẻ 1 hàng gây thừa khoảng trắng).
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   safe: { flex: 1 },
   scroll: {
     flexGrow: 1,

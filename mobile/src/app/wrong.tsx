@@ -277,8 +277,10 @@ export default function WrongQuestionsScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
-        <BackButton />
-        <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>Câu đã làm sai</Text>
+        <View style={styles.headerRow}>
+          <BackButton />
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>Câu đã làm sai</Text>
+        </View>
         <View style={styles.chipRow}>
           <Pressable
             style={[styles.chip, { borderColor: colors.border, backgroundColor: part === undefined ? colors.accent : colors.surface }]}
@@ -325,6 +327,8 @@ export default function WrongQuestionsScreen() {
 }
 
 const styles = StyleSheet.create({
+  // Hàng tiêu đề: nút quay lại + tiêu đề cùng 1 hàng (không để nút lẻ 1 hàng gây thừa khoảng trắng).
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   safe: { flex: 1 },
   wrap: {
     flex: 1,

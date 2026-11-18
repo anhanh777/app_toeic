@@ -10,9 +10,19 @@ import { useTheme } from '../theme';
 
 export function BackButton({ onPress }: { onPress?: () => void } = {}) {
   const { colors } = useTheme();
+  const goBack = () => {
+    if (onPress) {
+      onPress();
+      return;
+    }
+    // Màn gốc (tab): stack chỉ còn 1 màn nên router.back() sẽ báo lỗi
+    // "GO_BACK was not handled" — về Trang chủ thay vì báo lỗi.
+    if (router.canGoBack()) router.back();
+    else router.replace('/');
+  };
   return (
     <Pressable
-      onPress={onPress ?? (() => router.back())}
+      onPress={goBack}
       accessibilityLabel="Quay lại"
       accessibilityRole="button"
       hitSlop={8}

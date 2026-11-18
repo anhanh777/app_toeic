@@ -185,8 +185,10 @@ export default function WritingScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
-        <BackButton />
-        <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>✍️ Luyện Writing IELTS</Text>
+        <View style={styles.headerRow}>
+          <BackButton />
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>✍️ Luyện Writing IELTS</Text>
+        </View>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Task 1 (20 phút, tối thiểu 150 từ) · Task 2 (40 phút, tối thiểu 250 từ). Đề mẫu — nội dung tự
           soạn, chưa phải đề thi thật.
@@ -323,6 +325,8 @@ export default function WritingScreen() {
 }
 
 const styles = StyleSheet.create({
+  // Hàng tiêu đề: nút quay lại + tiêu đề cùng 1 hàng (không để nút lẻ 1 hàng gây thừa khoảng trắng).
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   safe: { flex: 1 },
   scroll: {
     flexGrow: 1,
