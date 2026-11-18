@@ -261,9 +261,13 @@ export default function PracticeSessionScreen() {
     [idByNum, rowByQuestionId],
   );
 
+  // Thoát = quay lại màn trước (pop), KHÔNG push thêm 1 màn mới:
+  // push sẽ xếp chồng cùng 1 trang luyện đề nhiều lần lên stack, khiến
+  // nút Back của điện thoại cứ quay lại trang cũ thay vì về danh sách.
   const exit = useCallback(() => {
-    if (testSetId) router.push({ pathname: '/test-set/[id]', params: { id: testSetId } });
-    else router.push('/practice');
+    if (router.canGoBack()) router.back();
+    else if (testSetId) router.replace({ pathname: '/test-set/[id]', params: { id: testSetId } });
+    else router.replace('/practice');
   }, [testSetId]);
 
   const renderQuestion = useCallback(
