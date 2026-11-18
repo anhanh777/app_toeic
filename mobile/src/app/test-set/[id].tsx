@@ -58,13 +58,12 @@ export default function TestSetDetailScreen() {
       return (
         <View key={p} style={[styles.card, styles.partCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
-            {p <= 4 ? '🎧' : '📖'} {partLabel(p, ex)}
+            {p <= 4 ? '🎧' : '📖'} {partLabel(p, ex)} · {n} câu
           </Text>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(16), fontWeight: '700' }]}>
             {isIelts ? partNameFor(p, ex) : partName(p)}
           </Text>
           <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }]}>{sectionOf(p)}</Text>
-          <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>{n} câu trong đề này</Text>
           {prog ? (
             <>
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
@@ -179,16 +178,16 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   scroll: { flexGrow: 1, paddingVertical: SPACING.md, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center' },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md, paddingVertical: SPACING.xl },
-  wrap: { gap: SPACING.md, paddingTop: SPACING.md },
+  wrap: { gap: SPACING.sm, paddingTop: SPACING.sm },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   line: { flexWrap: 'wrap' },
-  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.md, gap: SPACING.sm, width: '100%' },
+  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, width: '100%' },
   partCard: { flexGrow: 1, flexBasis: '45%' },
-  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.md },
+  grid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
   pill: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.sm, paddingVertical: 2, overflow: 'hidden', alignSelf: 'flex-start' },
   bar: { height: 8, borderRadius: 4, overflow: 'hidden', width: '100%' },
   barFill: { height: '100%', borderRadius: 4 },
-  button: { borderRadius: RADIUS.button, paddingVertical: SPACING.md, alignItems: 'center', minHeight: 48, justifyContent: 'center' },
+  button: { borderRadius: RADIUS.button, paddingVertical: SPACING.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },
   buttonText: { fontWeight: '700', textAlign: 'center' },
   disabled: { opacity: 0.6 },
   sectionTitle: { fontWeight: '700', flexWrap: 'wrap' },

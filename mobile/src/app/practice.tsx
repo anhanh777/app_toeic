@@ -93,9 +93,14 @@ export default function PracticeScreen() {
           ) : null}
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
             <Text style={{ fontWeight: '700' }}>{total}</Text> câu
-          </Text>
-          <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-            {ts.parts.map((p) => `${partLabel(p.part, ex)} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
+            {ts.parts.length ? (
+              <Text style={{ color: colors.muted, fontSize: scaled(14) }}>
+                {' • '}
+                {ts.parts.map((p) => `${partLabel(p.part, ex)} ${p.count}`).join(' · ')}
+              </Text>
+            ) : (
+              <Text style={{ color: colors.muted, fontSize: scaled(14) }}> • Chưa có câu hỏi</Text>
+            )}
           </Text>
           {ts.missing.length > 0 ? (
             <Text style={[styles.line, { color: colors.danger, fontSize: scaled(14) }]}>
@@ -146,14 +151,12 @@ export default function PracticeScreen() {
           <Pressable onPress={() => setPart(p.part)} accessibilityRole="button">
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
               {p.part <= 4 ? '🎧' : '📖'} {partLabel(p.part, ex)}
+              {p.count ? ` · ${p.count} câu` : ' · Chưa rõ số câu'}
             </Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(16), fontWeight: '700' }]}>
               {isIelts ? partNameFor(p.part, ex) : partName(p.part)}
             </Text>
             <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }]}>{sectionOf(p.part)}</Text>
-            <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-              {p.count ? `${p.count} câu trong ngân hàng` : 'Chưa rõ số câu'}
-            </Text>
             {a ? (
               <>
                 <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
@@ -260,14 +263,14 @@ export default function PracticeScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1 },
-  container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, gap: SPACING.md },
+  container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, gap: SPACING.sm },
   header: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md, flexWrap: 'wrap' },
   title: { fontWeight: '700' },
   tabs: { flexDirection: 'row', gap: SPACING.sm, flexWrap: 'wrap' },
-  tab: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.md, flexGrow: 1, alignItems: 'center' },
-  list: { gap: SPACING.md, paddingBottom: SPACING.xl },
+  tab: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, flexGrow: 1, alignItems: 'center' },
+  list: { gap: SPACING.sm, paddingBottom: SPACING.xl },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md },
-  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.md, gap: SPACING.sm, width: '100%' },
+  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, width: '100%' },
   partCard: { flexGrow: 1, flexBasis: '45%' },
   cardHead: { flexDirection: 'row', justifyContent: 'space-between', gap: SPACING.sm, alignItems: 'flex-start' },
   cardTitle: { fontWeight: '700', flexShrink: 1, flexWrap: 'wrap' },
@@ -276,9 +279,9 @@ const styles = StyleSheet.create({
   progressWrap: { gap: 4 },
   bar: { height: 8, borderRadius: 4, overflow: 'hidden', width: '100%' },
   barFill: { height: '100%', borderRadius: 4 },
-  button: { borderRadius: RADIUS.button, paddingVertical: SPACING.md, alignItems: 'center', minHeight: 48, justifyContent: 'center' },
+  button: { borderRadius: RADIUS.button, paddingVertical: SPACING.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },
   buttonText: { fontWeight: '700', textAlign: 'center' },
-  partsWrap: { gap: SPACING.md },
-  partsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.md },
+  partsWrap: { gap: SPACING.sm },
+  partsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
   sectionTitle: { fontWeight: '700', flexWrap: 'wrap' },
 });

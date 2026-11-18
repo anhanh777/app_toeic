@@ -54,16 +54,12 @@ const WordRow = memo(function WordRow({
     <View style={[styles.wordCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
       <Text style={[styles.word, { color: colors.text, fontSize: scaled(16) }]}>{w.word}</Text>
       <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(14) }]}>
-        {[w.phonetic, w.pos].filter(Boolean).join(' · ')}
+        {[w.phonetic, w.pos, STATUS_LABEL[w.status], w.topic].filter(Boolean).join(' · ')}
       </Text>
       <Text style={[styles.wordMeaning, { color: colors.text, fontSize: scaled(15) }]}>{w.meaning}</Text>
       {w.example ? (
         <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(14) }]}>{w.example}</Text>
       ) : null}
-      <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(13) }]}>
-        {STATUS_LABEL[w.status]}
-        {w.topic ? ` · ${w.topic}` : ''}
-      </Text>
       <View style={styles.chipRow}>
         {(Object.keys(STATUS_LABEL) as WordStatus[]).map((s) => (
           <Pressable
@@ -565,15 +561,14 @@ function SharedWords({ exam }: { exam: string }) {
     ({ item: v }: { item: Vocab }) => (
       <View style={[styles.wordCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
         <Text style={[styles.word, { color: colors.text, fontSize: scaled(16) }]}>{v.word}</Text>
-        {v.phonetic ? (
-          <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(14) }]}>{v.phonetic}</Text>
+        {[v.phonetic, v.topic].filter(Boolean).length ? (
+          <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(14) }]}>
+            {[v.phonetic, v.topic].filter(Boolean).join(' · ')}
+          </Text>
         ) : null}
         <Text style={[styles.wordMeaning, { color: colors.text, fontSize: scaled(15) }]}>{v.meaning}</Text>
         {v.example ? (
           <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(14) }]}>{v.example}</Text>
-        ) : null}
-        {v.topic ? (
-          <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(13) }]}>{v.topic}</Text>
         ) : null}
         <View style={styles.chipRow}>
           <Pressable
@@ -631,11 +626,11 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   wrap: {
     flex: 1,
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     width: '100%',
     maxWidth: MAX_CONTENT_WIDTH,
     alignSelf: 'center',
-    gap: SPACING.md,
+    gap: SPACING.sm,
   },
   flex: { flex: 1, gap: SPACING.sm, width: '100%' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
@@ -643,7 +638,7 @@ const styles = StyleSheet.create({
   note: { flexWrap: 'wrap' },
   muted: { flexWrap: 'wrap' },
   hint: { flexWrap: 'wrap' },
-  section: { fontWeight: '700', flexWrap: 'wrap', marginTop: SPACING.md },
+  section: { fontWeight: '700', flexWrap: 'wrap', marginTop: SPACING.sm },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
   // Segmented control cho 2 tab: 1 khung, 2 nửa bằng nhau.
   segmented: {
@@ -664,10 +659,10 @@ const styles = StyleSheet.create({
   filterScroll: { gap: SPACING.sm, paddingRight: SPACING.sm },
   addButton: {
     borderRadius: RADIUS.button,
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 48,
+    minHeight: 44,
     width: '100%',
   },
   emptyCard: { alignItems: 'center', paddingVertical: SPACING.xl },
@@ -683,7 +678,7 @@ const styles = StyleSheet.create({
   formCard: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.lg,
+    padding: SPACING.md,
     gap: SPACING.sm,
     width: '100%',
   },
@@ -709,7 +704,7 @@ const styles = StyleSheet.create({
   flashcard: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.lg,
+    padding: SPACING.md,
     gap: SPACING.sm,
     alignItems: 'center',
     width: '100%',
@@ -717,12 +712,12 @@ const styles = StyleSheet.create({
   flashWord: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   flashMeaning: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   flashMeta: { textAlign: 'center', flexWrap: 'wrap' },
-  list: { gap: SPACING.md, paddingBottom: SPACING.md },
+  list: { gap: SPACING.sm, paddingBottom: SPACING.md },
   loader: { marginTop: SPACING.lg },
   wordCard: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.md,
+    padding: SPACING.sm,
     gap: SPACING.xs,
     width: '100%',
   },

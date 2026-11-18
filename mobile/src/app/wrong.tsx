@@ -332,7 +332,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   wrap: {
     flex: 1,
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     width: '100%',
     maxWidth: MAX_CONTENT_WIDTH,
     alignSelf: 'center',
@@ -348,13 +348,13 @@ const styles = StyleSheet.create({
   },
   error: { flexWrap: 'wrap' },
   loader: { marginTop: SPACING.lg },
-  list: { gap: SPACING.md, paddingBottom: SPACING.md },
+  list: { gap: SPACING.sm, paddingBottom: SPACING.md },
   empty: { textAlign: 'center', marginTop: SPACING.lg, flexWrap: 'wrap' },
   card: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.lg,
-    gap: SPACING.sm,
+    padding: SPACING.md,
+    gap: SPACING.xs,
     width: '100%',
   },
   tag: { flexWrap: 'wrap' },
@@ -391,10 +391,10 @@ const styles = StyleSheet.create({
   feedback: { flexWrap: 'wrap' },
   button: {
     borderRadius: RADIUS.button,
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 48,
+    minHeight: 44,
   },
   buttonText: { fontWeight: '700', textAlign: 'center' },
 });

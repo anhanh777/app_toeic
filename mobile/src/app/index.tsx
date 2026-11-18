@@ -140,23 +140,17 @@ export default function HomeScreen() {
                   ]}
                   onPress={() => pick(e.id)}
                 >
-                  <Text style={[styles.emoji, { fontSize: scaled(32) }]}>
+                  <Text style={[styles.emoji, { fontSize: scaled(28) }]}>
                     {EXAM_META[e.id as ExamId]?.emoji ?? '📚'}
                   </Text>
                   <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(20) }]}>
                     {e.title}
                   </Text>
                   <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(14) }]}>
-                    {e.subtitle}
-                  </Text>
-                  <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(14) }]}>
-                    {EXAM_META[e.id as ExamId]?.detail ?? ''}
+                    {EXAM_META[e.id as ExamId]?.detail ?? e.subtitle}
                   </Text>
                   <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>
-                    {e.testSetCount} đề • {e.questionCount} câu
-                  </Text>
-                  <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(14) }]}>
-                    Thang điểm: {e.scale}
+                    {e.testSetCount} đề • {e.questionCount} câu • Thang điểm: {e.scale}
                   </Text>
                   <View style={[styles.pickButton, { backgroundColor: colors.accent }]}>
                     <Text style={[styles.pickButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
@@ -170,17 +164,14 @@ export default function HomeScreen() {
         ) : (
           <View style={styles.homeWrap}>
             <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-              <Text style={[styles.emoji, { fontSize: scaled(32) }]}>
+              <Text style={[styles.emoji, { fontSize: scaled(28) }]}>
                 {EXAM_META[exam]?.emoji ?? '📚'}
               </Text>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(20) }]}>
                 {chosen?.title ?? exam.toUpperCase()}
               </Text>
               <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(15) }]}>
-                {chosen?.subtitle ?? ''} • Thang điểm: {chosen?.scale ?? ''}
-              </Text>
-              <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(15) }]}>
-                {chosen?.testSetCount ?? '—'} đề • {chosen?.questionCount ?? '—'} câu
+                {chosen?.subtitle ?? ''} • {chosen?.testSetCount ?? '—'} đề • {chosen?.questionCount ?? '—'} câu • Thang điểm: {chosen?.scale ?? ''}
               </Text>
             </View>
 
@@ -194,7 +185,7 @@ export default function HomeScreen() {
                   ]}
                   onPress={() => router.push(m.href as never)}
                 >
-                  <Text style={[styles.menuEmoji, { fontSize: scaled(28) }]}>{icons[m.icon]}</Text>
+                  <Text style={[styles.menuEmoji, { fontSize: scaled(24) }]}>{icons[m.icon]}</Text>
                   <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                     {m.label}
                   </Text>
@@ -207,7 +198,7 @@ export default function HomeScreen() {
                 style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
                 onPress={clearExam}
               >
-                <Text style={[styles.menuEmoji, { fontSize: scaled(28) }]}>⇄</Text>
+                <Text style={[styles.menuEmoji, { fontSize: scaled(24) }]}>⇄</Text>
                 <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                   Đổi bài thi
                 </Text>
@@ -216,7 +207,7 @@ export default function HomeScreen() {
                 style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
                 onPress={logout}
               >
-                <Text style={[styles.menuEmoji, { fontSize: scaled(28) }]}>🚪</Text>
+                <Text style={[styles.menuEmoji, { fontSize: scaled(24) }]}>🚪</Text>
                 <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                   Đăng xuất
                 </Text>
@@ -234,7 +225,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   scroll: {
     flexGrow: 1,
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     width: '100%',
     maxWidth: MAX_CONTENT_WIDTH,
     alignSelf: 'center',
@@ -244,7 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: SPACING.sm,
-    marginBottom: SPACING.lg,
+    marginBottom: SPACING.md,
     flexWrap: 'wrap',
   },
   hello: { fontWeight: '700', flexShrink: 1, flexWrap: 'wrap' },
@@ -263,8 +254,8 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: RADIUS.card,
     borderWidth: 1,
-    padding: SPACING.lg,
-    gap: SPACING.sm,
+    padding: SPACING.md,
+    gap: SPACING.xs,
     alignItems: 'center',
     width: '100%',
   },
@@ -274,14 +265,14 @@ const styles = StyleSheet.create({
   cardText: { textAlign: 'center', flexWrap: 'wrap' },
   pickButton: {
     borderRadius: RADIUS.button,
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.lg,
     marginTop: SPACING.sm,
     alignSelf: 'stretch',
     alignItems: 'center',
   },
   pickButtonText: { fontWeight: '700' },
-  homeWrap: { gap: SPACING.md, width: '100%' },
+  homeWrap: { gap: SPACING.sm, width: '100%' },
   // Menu chính: lưới 2 cột ô vuông (icon trên, nhãn dưới) — luôn 2 cột
   // kể cả màn hẹp, không còn danh sách dọc 1 cột.
   menu: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
@@ -289,14 +280,14 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: SPACING.sm,
+    gap: SPACING.xs,
     borderRadius: RADIUS.card,
     borderWidth: 1,
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.sm,
     width: '48%',
     flexGrow: 1,
-    minHeight: 92,
+    minHeight: 72,
   },
   menuEmoji: { textAlign: 'center' },
   menuLabel: { fontWeight: '600', textAlign: 'center', flexWrap: 'wrap' },

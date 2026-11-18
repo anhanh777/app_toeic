@@ -285,7 +285,7 @@ export default function TodayScreen() {
               <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                 <Text style={[styles.statEmoji, { fontSize: scaled(20) }]}>🔥</Text>
                 <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Streak</Text>
-                <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(18) }]}>{streak?.current ?? 0} ngày</Text>
+                <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(16) }]}>{streak?.current ?? 0} ngày</Text>
                 <Text style={[styles.statNote, { color: colors.muted, fontSize: scaled(12) }]}>
                   {(streak?.freeRestLeft ?? 1) > 0 ? 'Còn 1 ngày nghỉ miễn phí tuần này' : 'Đã dùng ngày nghỉ tuần này'}
                 </Text>
@@ -293,7 +293,7 @@ export default function TodayScreen() {
               <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                 <Text style={[styles.statEmoji, { fontSize: scaled(20) }]}>📅</Text>
                 <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Đã xong hôm nay</Text>
-                <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(18) }]}>{done.length}/3 khối</Text>
+                <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(16) }]}>{done.length}/3 khối</Text>
                 <Text style={[styles.statNote, { color: colors.muted, fontSize: scaled(12) }]}>
                   {done.length >= 3 ? '🎉 Xong hết rồi — nghỉ thôi!' : 'Cứ từ từ, từng khối một.'}
                 </Text>
@@ -892,11 +892,11 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   scroll: {
     flexGrow: 1,
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     width: '100%',
     maxWidth: MAX_CONTENT_WIDTH,
     alignSelf: 'center',
-    gap: SPACING.md,
+    gap: SPACING.sm,
   },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
@@ -905,8 +905,8 @@ const styles = StyleSheet.create({
   card: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.lg,
-    gap: SPACING.sm,
+    padding: SPACING.md,
+    gap: SPACING.xs,
     width: '100%',
   },
   cardTitle: { fontWeight: '700', flexWrap: 'wrap' },
@@ -936,7 +936,7 @@ const styles = StyleSheet.create({
   panel: {
     borderWidth: 1,
     borderRadius: RADIUS.button,
-    padding: SPACING.md,
+    padding: SPACING.sm,
     gap: SPACING.xs,
     width: '100%',
   },
@@ -953,10 +953,10 @@ const styles = StyleSheet.create({
   smallButtonText: { fontWeight: '700', textAlign: 'center' },
   button: {
     borderRadius: RADIUS.button,
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 48,
+    minHeight: 44,
   },
   buttonText: { fontWeight: '700', textAlign: 'center' },
   pillRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },

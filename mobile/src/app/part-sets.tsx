@@ -155,16 +155,16 @@ export default function PartSetsScreen() {
 
 const styles = StyleSheet.create({
   safe: { flex: 1 },
-  container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, gap: SPACING.md },
+  container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, gap: SPACING.sm },
   header: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md, flexWrap: 'wrap' },
   title: { fontWeight: '700', flexShrink: 1, flexWrap: 'wrap' },
-  list: { gap: SPACING.md, paddingBottom: SPACING.xl },
+  list: { gap: SPACING.sm, paddingBottom: SPACING.xl },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md },
-  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.md, gap: SPACING.sm, width: '100%' },
+  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, width: '100%' },
   cardHead: { flexDirection: 'row', justifyContent: 'space-between', gap: SPACING.sm, alignItems: 'flex-start' },
   cardTitle: { fontWeight: '700', flexShrink: 1, flexWrap: 'wrap' },
   pill: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.sm, paddingVertical: 2, overflow: 'hidden', alignSelf: 'flex-start' },
   line: { flexWrap: 'wrap' },
-  button: { borderRadius: RADIUS.button, paddingVertical: SPACING.md, alignItems: 'center', minHeight: 48, justifyContent: 'center' },
+  button: { borderRadius: RADIUS.button, paddingVertical: SPACING.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },
   buttonText: { fontWeight: '700', textAlign: 'center' },
 });

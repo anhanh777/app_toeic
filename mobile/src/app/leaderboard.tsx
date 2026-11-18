@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   safe: { flex: 1 },
   wrap: {
     flex: 1,
-    paddingVertical: SPACING.lg,
+    paddingVertical: SPACING.md,
     width: '100%',
     maxWidth: MAX_CONTENT_WIDTH,
     alignSelf: 'center',
@@ -280,7 +280,7 @@ const styles = StyleSheet.create({
   meCard: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.md,
+    padding: SPACING.sm,
     width: '100%',
   },
   meText: { fontWeight: '600', flexWrap: 'wrap' },
