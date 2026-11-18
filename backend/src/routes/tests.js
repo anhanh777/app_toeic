@@ -22,6 +22,32 @@ function shuffle(arr) {
   return a;
 }
 
+/**
+ * Mini test: chọn NGUYÊN NHÓM đoạn văn, không xáo từng câu riêng lẻ.
+ * Các câu liên tiếp cùng passageId/passageText là 1 nhóm — lấy cả nhóm
+ * (1 đoạn văn + toàn bộ câu của nó, như khi luyện tập), xáo thứ tự các
+ * nhóm rồi lấy đủ ~n câu. Câu không có đoạn văn = nhóm 1 câu, giữ nguyên
+ * hành vi cũ. Nhóm cuối có thể vượt nhẹ quá n (không cắt ngang đoạn).
+ */
+function pickMiniQuestions(bank, n) {
+  const groups = [];
+  for (const q of bank) {
+    const last = groups[groups.length - 1];
+    const sameId =
+      q.passageId && last && last[0].passageId && last[0].passageId === q.passageId;
+    const sameText =
+      q.passageText && last && last[0].passageText && last[0].passageText === q.passageText;
+    if (last && (sameId || sameText)) last.push(q);
+    else groups.push([q]);
+  }
+  const picked = [];
+  for (const g of shuffle(groups)) {
+    if (picked.length >= n) break;
+    for (const q of g) picked.push(q.id);
+  }
+  return picked;
+}
+
 function isListeningPart(part) {
   return part >= 1 && part <= 4;
 }
@@ -114,7 +140,9 @@ router.post('/tests', authMiddleware, (req, res) => {
     if (!Number.isInteger(n) || n < 1) {
       return res.status(400).json({ error: 'count phai la so nguyen >= 1' });
     }
-    questionIds = shuffle(bank.map((q) => q.id)).slice(0, Math.min(n, bank.length));
+    // Mini: lấy nguyên nhóm đoạn văn (1 đoạn + toàn bộ câu của nó),
+    // không xáo lẻ từng câu làm vỡ đoạn (xem pickMiniQuestions).
+    questionIds = pickMiniQuestions(bank, n);
     durationSec = durationMinutes ? Math.round(durationMinutes * 60) : 30 * 60;
     attemptPart = p;
   } else {
