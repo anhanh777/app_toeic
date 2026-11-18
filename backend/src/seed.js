@@ -278,6 +278,15 @@ function seedQuestions() {
     });
     console.log('[seed] da tao ETS 2025 Test 02 TS-026.');
   }
+  if (!db.getTestSet('TS-045')) {
+    db.createTestSet({
+      id: 'TS-045',
+      title: 'ETS 2025 - Test 06',
+      description: 'ETS 2025 (YBM TOEIC 1000 Vol.1) Test 06 - LC + RC (200 câu, chua co audio nghe that)',
+      isPublished: 1,
+    });
+    console.log('[seed] da tao ETS 2025 Test 06 TS-045.');
+  }
   if (!db.getTestSet('TS-044')) {
     db.createTestSet({
       id: 'TS-044',
@@ -360,6 +369,7 @@ function seedQuestions() {
   if (db.getTestSet('TS-023')) db.refreshTestSetTotal('TS-023');
   if (db.getTestSet('TS-025')) db.refreshTestSetTotal('TS-025');
   if (db.getTestSet('TS-026')) db.refreshTestSetTotal('TS-026');
+  if (db.getTestSet('TS-045')) db.refreshTestSetTotal('TS-045');
   if (db.getTestSet('TS-044')) db.refreshTestSetTotal('TS-044');
   if (db.getTestSet('TS-043')) db.refreshTestSetTotal('TS-043');
   if (db.getTestSet('TS-042')) db.refreshTestSetTotal('TS-042');
@@ -980,9 +990,28 @@ function seedUiSettings() {
   return added;
 }
 
+function seedBrandSettings() {
+  // Cai dat thuong hieu: chi chen mac dinh khi key chua co
+  // (khong bao gio ghi de cai dat admin da sua). Mac dinh nam trong
+  // code (backend/src/brandSettings.js) nen Render free-tier reseed
+  // van khoi phuc duoc.
+  const { defaultFlatBrand } = require('./brandSettings');
+  const defaults = defaultFlatBrand();
+  let added = 0;
+  for (const [key, value] of Object.entries(defaults)) {
+    if (db.getBrandSetting(key) === undefined) {
+      db.setBrandSetting(key, value);
+      added += 1;
+    }
+  }
+  if (added > 0) console.log(`[seed] brand_settings: them ${added} gia tri mac dinh.`);
+  return added;
+}
+
 function seedAll() {
   db.initDb();
   seedUiSettings();
+  seedBrandSettings();
   seedQuestions();
   seedIeltsCam21Test1();
   seedIeltsCam21Test2();
@@ -1022,4 +1051,4 @@ if (require.main === module) {
   seedAll();
 }
 
-module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedUiSettings, seedIeltsCam21Test1, seedIeltsCam21Test2, seedIeltsCam21Test3, seedIeltsCam21Test4, seedIeltsCam20Test1, seedIeltsCam20Test2, seedIeltsCam20Test3, seedIeltsCam20Test4, seedIeltsCam19Test1, seedIeltsCam19Test2, seedIeltsCam19Test3, seedIeltsCam19Test4, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };
+module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedUiSettings, seedBrandSettings, seedIeltsCam21Test1, seedIeltsCam21Test2, seedIeltsCam21Test3, seedIeltsCam21Test4, seedIeltsCam20Test1, seedIeltsCam20Test2, seedIeltsCam20Test3, seedIeltsCam20Test4, seedIeltsCam19Test1, seedIeltsCam19Test2, seedIeltsCam19Test3, seedIeltsCam19Test4, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };
