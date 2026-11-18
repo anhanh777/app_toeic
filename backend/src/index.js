@@ -73,6 +73,7 @@ app.use('/api', require('./routes/ieltsPhase1'));
 app.use('/api', require('./routes/leaderboard'));
 app.use('/api', require('./routes/settings'));
 app.use('/api', require('./routes/brand'));
+app.use('/api', require('./routes/menuIcons'));
 app.use('/api', require('./routes/admin'));
 
 app.use((req, res) => res.status(404).json({ error: 'not_found' }));

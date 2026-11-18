@@ -9,6 +9,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../auth';
 import { BrandProvider } from '../brand';
 import { ExamProvider } from '../exam';
+import { MenuIconsProvider } from '../menuIcons';
 import { TextSizeProvider, ThemeProvider, useTheme } from '../theme';
 
 SplashScreen.preventAutoHideAsync();
@@ -72,7 +73,9 @@ export default function RootLayout() {
           <AuthProvider>
             <ExamProvider>
               <BrandProvider>
-                <RootLayoutNav />
+                <MenuIconsProvider>
+                  <RootLayoutNav />
+                </MenuIconsProvider>
               </BrandProvider>
             </ExamProvider>
           </AuthProvider>

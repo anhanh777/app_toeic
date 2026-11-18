@@ -5,6 +5,7 @@ import { ExamProvider, ExamPicker, TextSizeControl, TextSizeProvider, useExam, u
 import { applyTheme, resolveTheme, type Theme } from './theme';
 import { LoadingEffect, UiSettingsProvider, useUiSettings } from './uiSettings';
 import { BrandProvider, useBrand } from './brand';
+import { MenuIconsProvider, useMenuIcons, type MenuIconKey } from './menuIcons';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Today from './pages/Today';
@@ -120,21 +121,21 @@ function ThemeToggle() {
 
 /* ---- Thanh nav kiểu ghim: chỉ tối đa 4 mục ghim hiện trên thanh trên,
    còn lại nằm trong menu ☰ bên phải. Lựa chọn ghim lưu localStorage. ---- */
-type NavItem = { path: string; label: string; icon: string; end?: boolean; ieltsOnly?: boolean };
+type NavItem = { path: string; label: string; icon: string; end?: boolean; ieltsOnly?: boolean; menuKey?: MenuIconKey };
 const NAV_ITEMS: NavItem[] = [
   { path: '/', label: 'Trang chủ', icon: '🏠', end: true },
-  { path: '/today', label: 'Hôm nay', icon: '📅' },
-  { path: '/practice', label: 'Luyện tập', icon: '✏️' },
-  { path: '/mock', label: 'Thi thử', icon: '⏱️' },
-  { path: '/wrong', label: 'Câu sai', icon: '❌' },
-  { path: '/ielts/diagnostic', label: 'Chẩn đoán', icon: '🧭', ieltsOnly: true },
-  { path: '/ielts/errors', label: 'Sổ lỗi', icon: '📕', ieltsOnly: true },
-  { path: '/ielts/writing', label: 'Viết', icon: '✍️', ieltsOnly: true },
-  { path: '/ielts/speaking', label: 'Nói', icon: '🎤', ieltsOnly: true },
-  { path: '/vocabulary', label: 'Từ vựng', icon: '📖' },
+  { path: '/today', label: 'Hôm nay', icon: '📅', menuKey: 'today' },
+  { path: '/practice', label: 'Luyện tập', icon: '✏️', menuKey: 'practice' },
+  { path: '/mock', label: 'Thi thử', icon: '⏱️', menuKey: 'mock' },
+  { path: '/wrong', label: 'Câu sai', icon: '❌', menuKey: 'wrong' },
+  { path: '/ielts/diagnostic', label: 'Chẩn đoán', icon: '🧭', ieltsOnly: true, menuKey: 'diagnostic' },
+  { path: '/ielts/errors', label: 'Sổ lỗi', icon: '🐉', ieltsOnly: true, menuKey: 'errors' },
+  { path: '/ielts/writing', label: 'Viết', icon: '✍️', ieltsOnly: true, menuKey: 'writing' },
+  { path: '/ielts/speaking', label: 'Nói', icon: '🎤', ieltsOnly: true, menuKey: 'speaking' },
+  { path: '/vocabulary', label: 'Từ vựng', icon: '📖', menuKey: 'vocabulary' },
   { path: '/stats', label: 'Thống kê', icon: '📊' },
-  { path: '/leaderboard', label: 'Xếp hạng', icon: '🏆' },
-  { path: '/settings', label: 'Cài đặt', icon: '⚙️' },
+  { path: '/leaderboard', label: 'Xếp hạng', icon: '🏆', menuKey: 'leaderboard' },
+  { path: '/settings', label: 'Cài đặt', icon: '⚙️', menuKey: 'settings' },
 ];
 const NAV_PINS_KEY = 'app_nav_pins';
 const MAX_PINS = 4;
@@ -166,6 +167,7 @@ function Layout() {
   // (TOEIC không bao giờ bị chuyển). Xem exam.tsx.
   useIeltsSetupRedirect();
   const { brand } = useBrand();
+  const { icons } = useMenuIcons();
   const examLabel = exam === 'ielts'
     ? 'Luyện thi IELTS'
     : exam === 'toeic'
@@ -225,7 +227,9 @@ function Layout() {
                     return (
                       <div key={it.path} className="nav-menu-row">
                         <span className="nav-menu-mid">
-                          <span className="nav-menu-ico" aria-hidden>{it.icon}</span>
+                          {/* Icon lấy từ MenuIconsProvider (admin sửa được);
+                              mục không có key thì giữ icon cứng. */}
+                          <span className="nav-menu-ico" aria-hidden>{it.menuKey ? icons[it.menuKey] : it.icon}</span>
                           <NavLink to={it.path} end={it.end} onClick={() => setMenuOpen(false)}>{it.label}</NavLink>
                         </span>
                         <button type="button" className={`pin-btn${pinned ? ' pinned' : ''}`}
@@ -323,7 +327,7 @@ function Layout() {
 export default function App() {
   return (
     <BrowserRouter>
-      <BrandProvider><UiSettingsProvider><AuthProvider><ExamProvider><TextSizeProvider><Layout /></TextSizeProvider></ExamProvider></AuthProvider></UiSettingsProvider></BrandProvider>
+      <BrandProvider><MenuIconsProvider><UiSettingsProvider><AuthProvider><ExamProvider><TextSizeProvider><Layout /></TextSizeProvider></ExamProvider></AuthProvider></UiSettingsProvider></MenuIconsProvider></BrandProvider>
     </BrowserRouter>
   );
 }

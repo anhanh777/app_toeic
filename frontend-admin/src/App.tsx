@@ -5,6 +5,7 @@ import { applyTheme, resolveTheme, type Theme } from './theme';
 import { UiSettingsProvider, LoadingLine, useUiSettings } from './uiSettings';
 import { BrandProvider, useBrand } from './brand';
 import Brand from './pages/Brand';
+import MenuIcons from './pages/MenuIcons';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
 import TestSetAdmin from './pages/TestSetAdmin';
@@ -97,6 +98,7 @@ function Layout() {
             <NavLink to="/users">👤 Tài khoản</NavLink>
             <NavLink to="/settings">🎨 Cài đặt giao diện</NavLink>
             <NavLink to="/brand">🏷️ Tên &amp; Logo</NavLink>
+            <NavLink to="/menu-icons">🎨 Biểu tượng menu</NavLink>
           </nav>
         )}
         <div className="sidebar-footer">
@@ -131,6 +133,7 @@ function Layout() {
           <Route path="/users" element={<RequireAdmin><Users /></RequireAdmin>} />
           <Route path="/settings" element={<RequireAdmin><UiSettings /></RequireAdmin>} />
           <Route path="/brand" element={<RequireAdmin><Brand /></RequireAdmin>} />
+          <Route path="/menu-icons" element={<RequireAdmin><MenuIcons /></RequireAdmin>} />
           <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang quản trị</Link></p>} />
         </Routes>
       </main>

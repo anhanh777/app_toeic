@@ -24,6 +24,7 @@ import {
   SPACING,
 } from '../layout';
 import { useTextSize, useTheme } from '../theme';
+import { useMenuIcons, type MenuIconKey } from '../menuIcons';
 import { BottomNav } from '../components/BottomNav';
 
 const FALLBACK_EXAMS: ExamInfo[] = [
@@ -38,21 +39,23 @@ const EXAM_META: Record<ExamId, { emoji: string; detail: string }> = {
 
 // Menu trang chính — mục IELTS chỉ hiện khi đang chọn kỳ thi IELTS
 // (giống bản web: mục riêng của IELTS bị ẩn ở chế độ TOEIC).
-const MENU_COMMON: { emoji: string; label: string; href: string }[] = [
-  { emoji: '📅', label: 'Hôm nay', href: '/today' },
-  { emoji: '✏️', label: 'Luyện tập', href: '/practice' },
-  { emoji: '⏱️', label: 'Thi thử', href: '/mock' },
-  { emoji: '❌', label: 'Ôn câu sai', href: '/wrong' },
-  { emoji: '📖', label: 'Từ vựng', href: '/vocabulary' },
-  { emoji: '🏆', label: 'Xếp hạng', href: '/leaderboard' },
-  { emoji: '⚙️', label: 'Hồ sơ & Cài đặt', href: '/settings' },
+// Icon lấy từ MenuIconsProvider (admin chỉnh được, GET /api/menu-icons);
+// key -> emoji trong MENU_ICON_DEFAULTS khi fetch chưa về / lỗi.
+const MENU_COMMON: { icon: MenuIconKey; label: string; href: string }[] = [
+  { icon: 'today', label: 'Hôm nay', href: '/today' },
+  { icon: 'practice', label: 'Luyện tập', href: '/practice' },
+  { icon: 'mock', label: 'Thi thử', href: '/mock' },
+  { icon: 'wrong', label: 'Ôn câu sai', href: '/wrong' },
+  { icon: 'vocabulary', label: 'Từ vựng', href: '/vocabulary' },
+  { icon: 'leaderboard', label: 'Xếp hạng', href: '/leaderboard' },
+  { icon: 'settings', label: 'Hồ sơ & Cài đặt', href: '/settings' },
 ];
-const MENU_IELTS: { emoji: string; label: string; href: string }[] = [
-  { emoji: '🧭', label: 'Chẩn đoán IELTS', href: '/diagnostic' },
-  { emoji: '🐉', label: 'Sổ lỗi & Quái vật', href: '/errors' },
-  { emoji: '✍️', label: 'Viết (Writing)', href: '/writing' },
-  { emoji: '🎤', label: 'Nói (Speaking)', href: '/speaking' },
-  { emoji: '📝', label: 'Thiết lập IELTS', href: '/ielts-setup' },
+const MENU_IELTS: { icon: MenuIconKey; label: string; href: string }[] = [
+  { icon: 'diagnostic', label: 'Chẩn đoán IELTS', href: '/diagnostic' },
+  { icon: 'errors', label: 'Sổ lỗi & Quái vật', href: '/errors' },
+  { icon: 'writing', label: 'Viết (Writing)', href: '/writing' },
+  { icon: 'speaking', label: 'Nói (Speaking)', href: '/speaking' },
+  { icon: 'ielts-setup', label: 'Thiết lập IELTS', href: '/ielts-setup' },
 ];
 
 export default function HomeScreen() {
@@ -60,6 +63,7 @@ export default function HomeScreen() {
   const { exam, setExam, clearExam } = useExam();
   const { colors, theme, toggleTheme } = useTheme();
   const { scaled } = useTextSize();
+  const { icons } = useMenuIcons();
   const { width } = useWindowDimensions();
   const [exams, setExams] = useState<ExamInfo[] | null>(null);
   const [loadingExams, setLoadingExams] = useState(true);
@@ -190,7 +194,7 @@ export default function HomeScreen() {
                   ]}
                   onPress={() => router.push(m.href as never)}
                 >
-                  <Text style={[styles.menuEmoji, { fontSize: scaled(28) }]}>{m.emoji}</Text>
+                  <Text style={[styles.menuEmoji, { fontSize: scaled(28) }]}>{icons[m.icon]}</Text>
                   <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                     {m.label}
                   </Text>

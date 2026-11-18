@@ -320,6 +320,11 @@ CREATE TABLE IF NOT EXISTS brand_settings (
   value TEXT NOT NULL,
   updated_at TEXT
 );
+CREATE TABLE IF NOT EXISTS menu_icons (
+  key TEXT PRIMARY KEY,
+  value TEXT NOT NULL,
+  updated_at TEXT
+);
 CREATE INDEX IF NOT EXISTS idx_error_log_user_due ON error_log(user_id, review_due, resolved);
 CREATE INDEX IF NOT EXISTS idx_sessions_user_date ON sessions(user_id, date);
 CREATE INDEX IF NOT EXISTS idx_mock_tests_user_kind ON mock_tests(user_id, kind);
@@ -2486,6 +2491,41 @@ function setBrandSetting(key, value) {
   ).run(key, JSON.stringify(value), nowIso());
 }
 
+/* ---------- menu_icons (bieu tuong menu) ---------- */
+
+/** Doc 1 icon menu (tra ve undefined neu chua co — caller dung mac dinh code). */
+function getMenuIcon(key) {
+  const row = db.prepare('SELECT value FROM menu_icons WHERE key = ?').get(key);
+  if (!row) return undefined;
+  try {
+    return JSON.parse(row.value);
+  } catch {
+    return undefined;
+  }
+}
+
+/** Doc toan bo icon menu dang luu (map phang key -> value da parse). */
+function getAllMenuIcons() {
+  const rows = db.prepare('SELECT key, value FROM menu_icons').all();
+  const out = {};
+  for (const r of rows) {
+    try {
+      out[r.key] = JSON.parse(r.value);
+    } catch {
+      /* bo qua dong hong */
+    }
+  }
+  return out;
+}
+
+/** Ghi 1 icon menu (upsert). Chi luu khi key hop le — caller validate truoc. */
+function setMenuIcon(key, value) {
+  db.prepare(
+    `INSERT INTO menu_icons (key, value, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`
+  ).run(key, JSON.stringify(value), nowIso());
+}
+
 /* ---------------- backup / restore (du lieu nguoi dung) ----------------
  * Render free tier xoa file .db moi lan redeploy / ngu day: de thi thi seed
  * lai duoc tu git, nhung du lieu nguoi dung thi mat. Giai phap: backup dinh
@@ -2518,6 +2558,7 @@ const USER_DATA_TABLES = [
   'dictionary_cache',
   'app_settings',
   'brand_settings',
+  'menu_icons',
 ];
 
 /** Cac bang co cot id AUTOINCREMENT — sau restore phai sua lai
@@ -2556,6 +2597,7 @@ const USER_DATA_REQUIRED_COLUMNS = {
   dictionary_cache: ['word'],
   app_settings: ['key', 'value'],
   brand_settings: ['key', 'value'],
+  menu_icons: ['key', 'value'],
 };
 
 /** Doc toan bo du lieu nguoi dung: { ten_bang: [row, ...] } (row dang tho,
@@ -2800,6 +2842,10 @@ module.exports = {
   getBrandSetting,
   getAllBrandSettings,
   setBrandSetting,
+  // menu_icons (bieu tuong menu)
+  getMenuIcon,
+  getAllMenuIcons,
+  setMenuIcon,
   // backup / restore (du lieu nguoi dung)
   USER_DATA_TABLES,
   getUserDataBackup,

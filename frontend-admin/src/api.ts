@@ -529,6 +529,11 @@ export const api = {
   adminBrand: () => req<import('./brand').BrandSettings>('/api/admin/brand'),
   adminSaveBrand: (doc: import('./brand').BrandSettings) =>
     req<import('./brand').BrandSettings>('/api/admin/brand', { method: 'PUT', body: JSON.stringify(doc) }),
+
+  // Biểu tượng menu trang chủ: doc công khai, sửa chỉ admin.
+  adminMenuIcons: () => req<import('./menuIcons').MenuIconsDoc>('/api/admin/menu-icons'),
+  adminSaveMenuIcons: (doc: import('./menuIcons').MenuIconsDoc) =>
+    req<import('./menuIcons').MenuIconsDoc>('/api/admin/menu-icons', { method: 'PUT', body: JSON.stringify(doc) }),
 };
 
 export function targetScoreOf(u: User | null): number {

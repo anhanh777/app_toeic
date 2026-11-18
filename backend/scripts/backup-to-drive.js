@@ -67,10 +67,10 @@ function looksWiped(userData, counts) {
     }
   }
   for (const [table, c] of Object.entries(counts || {})) {
-    // app_settings + brand_settings: seed luon chen gia tri mac dinh khi
-    // boot nen co dong ngay ca tren DB vua seed. users: vua kiem tra o
-    // tren (chi 2 demo) nen khong tinh o day.
-    if (table === 'app_settings' || table === 'brand_settings' || table === 'users') continue;
+    // app_settings + brand_settings + menu_icons: seed luon chen gia tri
+    // mac dinh khi boot nen co dong ngay ca tren DB vua seed. users: vua
+    // kiem tra o tren (chi 2 demo) nen khong tinh o day.
+    if (table === 'app_settings' || table === 'brand_settings' || table === 'menu_icons' || table === 'users') continue;
     if (c > 0) {
       return { wiped: false, reason: `bang ${table} con ${c} dong — live co du lieu` };
     }
