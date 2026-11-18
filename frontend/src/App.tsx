@@ -22,6 +22,7 @@ import Vocabulary from './pages/Vocabulary';
 import Stats from './pages/Stats';
 import Leaderboard from './pages/Leaderboard';
 import Settings from './pages/Settings';
+import Privacy from './pages/Privacy';
 import type { ReactNode } from 'react';
 
 function RequireAuth({ children }: { children: ReactNode }) {
@@ -279,6 +280,7 @@ function Layout() {
           <ErrorBoundary>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/privacy" element={<Privacy />} />
             <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
             {/* "Hôm nay" dùng chung cho cả 2 kỳ thi. Các route IELTS còn lại chỉ hiện khi exam==='ielts'. */}
             <Route path="/today" element={<RequireAuth><Today /></RequireAuth>} />
