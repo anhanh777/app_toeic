@@ -13,6 +13,14 @@
  *
  * Luong chay:
  *  1. Cho backend day (Render cold-start) roi GET /api/admin/backup.
+ *  1b. NEU live vua bi Render xoa (chi con 2 demo moi tao, cac bang
+ *      nguoi dung khac rong — cung tieu chi nhu restore-watch.js) thi
+ *      BO QUA lan backup nay, KHONG upload: tranh ghi de
+ *      backup-latest.json tot bang anh chup cua DB vua bi xoa (da xay
+ *      ra that luc 16:07 ngay 17/11: backup chay cung gio voi
+ *      restore-watch, chup dung luc DB trong). Restore-watch se khoi
+ *      phuc xong trong vong 30 phut, lan backup sau se chup lai du
+ *      lieu da khoi phuc.
  *  2. Cat bo phan noi dung (questions/vocabulary/userWords) — chung duoc
  *     seed lai tu git; chi giu version/exportedAt/userData/counts de file
  *     nho (vai chuc KB thay vi ~10 MB).
@@ -33,6 +41,42 @@ const lib = require('./backup-lib');
 
 const RETENTION_DAYS = parseInt(process.env.RETENTION_DAYS || '7', 10) || 7;
 const WORK_DIR = process.env.BACKUP_WORK_DIR || path.join(os.tmpdir(), 'app-toeic-backup');
+
+// Cung tieu chi "DB vua bi xoa" nhu restore-watch.js — giu 2 file dong bo.
+const FRESH_WINDOW_MS = 12 * 60 * 60 * 1000;
+const DEMO_EMAILS = ['demo@toeic.app', 'user@toeic.app'];
+
+/** Live co phai vua bi Render xoa khong? Tra ve { wiped, reason }. */
+function looksWiped(userData, counts) {
+  const users = (userData && userData.users) || [];
+  if (users.length !== 2) {
+    return { wiped: false, reason: `users = ${users.length} (can dung 2 demo)` };
+  }
+  const emails = users.map((u) => u.email).sort();
+  if (emails.join(',') !== [...DEMO_EMAILS].sort().join(',')) {
+    return { wiped: false, reason: 'co tai khoan khong phai demo' };
+  }
+  const now = Date.now();
+  for (const u of users) {
+    const created = Date.parse(u.created_at || '');
+    if (!created || now - created > FRESH_WINDOW_MS) {
+      return {
+        wiped: false,
+        reason: `demo ${u.email} tao da lau (${u.created_at}) — khong phai DB vua seed`,
+      };
+    }
+  }
+  for (const [table, c] of Object.entries(counts || {})) {
+    // app_settings: seed luon chen gia tri mac dinh khi boot nen co dong
+    // ngay ca tren DB vua seed. users: vua kiem tra o tren (chi 2 demo)
+    // nen khong tinh o day.
+    if (table === 'app_settings' || table === 'users') continue;
+    if (c > 0) {
+      return { wiped: false, reason: `bang ${table} con ${c} dong — live co du lieu` };
+    }
+  }
+  return { wiped: true, reason: 'live chi co 2 demo moi tao, cac bang nguoi dung khac deu rong' };
+}
 
 function saigonStamp(date = new Date()) {
   // YYYYMMDD-HHmmss theo gio Asia/Saigon (de ten file sap xep dung thu tu).
@@ -65,6 +109,18 @@ async function main() {
   if (!backup.userData || typeof backup.userData !== 'object') {
     throw new Error('GET /api/admin/backup khong tra ve userData');
   }
+  // Bao ve backup-latest: neu live vua bi xoa thi KHONG upload gi ca.
+  // Ghi de ban tot bang anh chup DB trong se lam mat du lieu that ngay
+  // khi restore-watch can no nhat (xay ra luc 16:07 ngay 17/11).
+  const check = looksWiped(backup.userData, backup.counts);
+  if (check.wiped) {
+    lib.log(
+      `live vua bi xoa (${check.reason}) — BO QUA lan backup nay, ` +
+        `khong ghi de backup-latest.json. Restore-watch se khoi phuc truoc.`
+    );
+    return;
+  }
+  lib.log(`live co du lieu nguoi dung (${check.reason}) — tien hanh backup.`);
   // Chi giu du lieu nguoi dung — noi dung seed lai tu git.
   const slim = {
     version: backup.version || 1,
