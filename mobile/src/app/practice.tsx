@@ -68,9 +68,9 @@ export default function PracticeScreen() {
   const openSet = useCallback((id: string) => {
     router.push({ pathname: '/test-set/[id]', params: { id } });
   }, []);
-  const startPart = useCallback(() => {
-    router.push({ pathname: '/session', params: { part: String(part), exam: ex } });
-  }, [part, ex]);
+  const openSetPicker = useCallback((p: number) => {
+    router.push({ pathname: '/part-sets', params: { part: String(p), exam: ex } });
+  }, [ex]);
 
   const renderSet = useCallback(
     ({ item: ts }: { item: TestSet }) => {
@@ -129,45 +129,55 @@ export default function PracticeScreen() {
     (p: PartInfo) => {
       const a = acc(p.part);
       const selected = part === p.part;
+      // Backend đã trả accuracy theo % (1/7 = 14.3) nên KHÔNG nhân 100
+      // nữa — tính lại từ correct/answered, làm tròn 1 lần, kẹp 0–100.
+      const pct = a && a.answered > 0 ? Math.max(0, Math.min(100, Math.round((a.correct / a.answered) * 100))) : 0;
+      // Thẻ là View (không phải Pressable) để nút "Luyện" nằm NGOÀI
+      // vùng bấm chọn thẻ — bấm nút không kích hoạt onPress của thẻ.
       return (
-        <Pressable
+        <View
           key={p.part}
           style={[
             styles.card,
             styles.partCard,
             { backgroundColor: colors.surface, borderColor: selected ? colors.accent : colors.border },
           ]}
-          onPress={() => setPart(p.part)}
         >
-          <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
-            {p.part <= 4 ? '🎧' : '📖'} {partLabel(p.part, ex)}
-          </Text>
-          <Text style={[styles.line, { color: colors.text, fontSize: scaled(16), fontWeight: '700' }]}>
-            {isIelts ? partNameFor(p.part, ex) : partName(p.part)}
-          </Text>
-          <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }]}>{sectionOf(p.part)}</Text>
-          <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-            {p.count ? `${p.count} câu trong ngân hàng` : 'Chưa rõ số câu'}
-          </Text>
-          {a ? (
-            <>
-              <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
-                Tỉ lệ đúng: {Math.round(a.accuracy * 100)}% ({a.correct}/{a.answered} câu)
-              </Text>
-              <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }]}>
-                <View style={[styles.barFill, { width: `${a.accuracy * 100}%`, backgroundColor: colors.accent }]} />
-              </View>
-            </>
-          ) : null}
-        </Pressable>
+          <Pressable onPress={() => setPart(p.part)} accessibilityRole="button">
+            <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
+              {p.part <= 4 ? '🎧' : '📖'} {partLabel(p.part, ex)}
+            </Text>
+            <Text style={[styles.line, { color: colors.text, fontSize: scaled(16), fontWeight: '700' }]}>
+              {isIelts ? partNameFor(p.part, ex) : partName(p.part)}
+            </Text>
+            <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }]}>{sectionOf(p.part)}</Text>
+            <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
+              {p.count ? `${p.count} câu trong ngân hàng` : 'Chưa rõ số câu'}
+            </Text>
+            {a ? (
+              <>
+                <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
+                  Tỉ lệ đúng: {pct}% ({a.correct}/{a.answered} câu)
+                </Text>
+                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }]}>
+                  <View style={[styles.barFill, { width: `${pct}%`, backgroundColor: colors.accent }]} />
+                </View>
+              </>
+            ) : null}
+          </Pressable>
+          <Pressable
+            style={[styles.button, { backgroundColor: colors.accent }]}
+            onPress={() => openSetPicker(p.part)}
+            accessibilityRole="button"
+            accessibilityLabel={`Luyện ${isIelts ? partNameFor(p.part, ex) : partName(p.part)}`}
+          >
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>▶ Luyện</Text>
+          </Pressable>
+        </View>
       );
     },
-    [acc, colors, ex, isIelts, part, scaled],
+    [acc, colors, ex, isIelts, openSetPicker, part, scaled],
   );
-
-  const selectedPartInfo = partList.find((p) => p.part === part);
-  const selectedCount = selectedPartInfo?.count || 0;
-  const selectedLabel = isIelts ? partNameFor(part, ex) : partName(part);
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
@@ -226,7 +236,7 @@ export default function PracticeScreen() {
                   <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{partsError}</Text>
                 ) : null}
                 <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-                  Luyện 1 {isIelts ? 'Section/Passage' : 'Part'} gom câu từ ngân hàng chung, không gắn đề cụ thể.
+                  Chọn {isIelts ? 'Section/Passage' : 'Part'} rồi chọn đề để luyện — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.
                 </Text>
                 <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
                   🎧 Listening — {isIelts ? 'Section 1–4' : 'Part 1–4'}
@@ -236,18 +246,6 @@ export default function PracticeScreen() {
                   📖 Reading — {isIelts ? 'Passage 1–3' : 'Part 5–7'}
                 </Text>
                 <View style={styles.partsGrid}>{partList.filter((p) => p.part > 4).map(renderPartCard)}</View>
-                <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                  <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
-                    {selectedCount > 0
-                      ? `Luyện hết ${selectedCount} câu của ${selectedLabel} — không giới hạn số lượng.`
-                      : `Luyện hết tất cả các câu của ${selectedLabel} — không giới hạn số lượng.`}
-                  </Text>
-                  <Pressable style={[styles.button, { backgroundColor: colors.accent }]} onPress={startPart}>
-                    <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
-                      Bắt đầu luyện {selectedLabel}
-                    </Text>
-                  </Pressable>
-                </View>
               </View>
             )}
             contentContainerStyle={styles.list}
