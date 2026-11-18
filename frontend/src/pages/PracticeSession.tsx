@@ -286,7 +286,10 @@ export default function PracticeSession() {
               return (
                 <>
                   {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}
-                  {result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
+                  {/* Transcript chỉ ở Part nghe (P1–4): ở Part đọc (P6/P7 TOEIC, Reading IELTS)
+                     "transcript" API trả về thực chất là đoạn văn dùng chung, đã hiện 1 lần
+                     phía trên rồi — sau khi nộp chỉ hiện giải thích, không in lại cả đoạn. */}
+                  {isListening && result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
                 </>
               );
             })()}
