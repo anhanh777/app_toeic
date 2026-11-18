@@ -4,9 +4,11 @@
  * dictionary.js — tra tu dien Anh-Viet cho popup tra tu trong doan van.
  * POST /api/dictionary/lookup (can dang nhap).
  *
- * - Tra cache (dictionary_cache) truoc; trung thi khong goi Gemini.
- * - Cache miss: goi Gemini gemini-2.5-flash (chung key voi ai-parse,
- *   doc tu env GEMINI_API_KEY) voi prompt JSON nghiem ngat.
+ * - Thu tu tra: (1) tu da luu cua chinh user (user_words) -> tra thang nghia
+ *   user da ghi, KHONG goi Gemini; (2) cache chung (dictionary_cache) ->
+ *   trung thi khong goi Gemini; (3) Gemini gemini-2.5-flash (chung key voi
+ *   ai-parse, doc tu env GEMINI_API_KEY) voi prompt JSON nghiem ngat.
+ *   Nghia cua user KHONG ghi vao cache chung (rieng tu, khong chia se).
  * - TUYET DOI khong bia nghia: Gemini tra loi khong hop le / khong
  *   xac dinh duoc nghia -> 503, frontend hien "Khong tra duoc".
  */
@@ -104,6 +106,16 @@ router.post('/dictionary/lookup', authMiddleware, async (req, res) => {
   const word = normalizeWordInput(req.body && req.body.word);
   if (!isValidWordInput(word)) {
     return res.status(400).json({ error: 'tu_khong_hop_le', message: 'Chỉ tra được từ/cụm từ tiếng Anh (tối đa 3 từ).' });
+  }
+  // 1. Tu da luu cua chinh user nay: uu tien nhat. Khong goi Gemini,
+  //    khong ghi vao cache chung (nghia rieng cua user, khong chia se).
+  const mine = db.getUserWordByWord(req.user.id, word);
+  if (mine) {
+    return res.json({
+      word: mine.word, phonetic: mine.phonetic, pos: mine.pos,
+      meaning_vi: mine.meaning, example: mine.example,
+      cached: false, saved: true, id: mine.id, status: mine.status,
+    });
   }
   const cached = db.getDictionaryEntry(word);
   if (cached) return res.json({ ...toApiEntry(cached), cached: true });

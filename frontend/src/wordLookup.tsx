@@ -176,7 +176,19 @@ export function WordText({ text }: { text: string }) {
     }
     setPop({ word, context, left, top, entry: null, loading: true, error: null });
     api.dictionaryLookup(word, context)
-      .then((entry) => setPop((p) => (p && p.word.toLowerCase() === lower ? { ...p, entry, loading: false } : p)))
+      .then((entry) => {
+        // API tra thay tu da luu (map saved cua trang nay dang cu, vd luu tu
+        // trang khac / thiet bi khac) — dong bo lai de nut hien "Da luu ✓".
+        if (entry.saved && entry.id) {
+          savedMap.set(lower, {
+            id: entry.id, word: entry.word, phonetic: entry.phonetic ?? null,
+            pos: entry.pos ?? null, meaning: entry.meaning_vi, example: entry.example ?? null,
+            status: entry.status ?? 'learning',
+          });
+          notifySaved();
+        }
+        setPop((p) => (p && p.word.toLowerCase() === lower ? { ...p, entry, loading: false } : p));
+      })
       .catch(() => setPop((p) => (p && p.word.toLowerCase() === lower ? { ...p, loading: false, error: 'Không tra được, thử lại sau.' } : p)));
   };
 

@@ -92,7 +92,7 @@ export interface TestResultDetail {
 export interface PartInfo { part: number; count: number; section?: string; listening?: boolean; reading?: boolean; }
 export interface Vocab { id: string; word: string; phonetic?: string; meaning: string; example?: string; topic?: string; }
 /** Ket qua tra tu dien: nghia tieng Viet + loai tu + phien am + vi du. */
-export interface DictionaryEntry { word: string; phonetic?: string | null; pos?: string | null; meaning_vi: string; example?: string | null; cached?: boolean; }
+export interface DictionaryEntry { word: string; phonetic?: string | null; pos?: string | null; meaning_vi: string; example?: string | null; cached?: boolean; saved?: boolean; id?: number; status?: 'learning' | 'learned' | 'wrong'; }
 /** 1 tu trong kho ca nhan "Tu cua toi" (luu theo user). */
 export interface UserWord { id: number; word: string; phonetic?: string | null; pos?: string | null; meaning: string; example?: string | null; context?: string | null; topic?: string | null; status: 'learning' | 'learned' | 'wrong'; createdAt?: string; updatedAt?: string; }
 export interface StatsOverview {
