@@ -134,10 +134,13 @@ function QuestionViewInner({
     setPrevImgUrl(q.imageUrl);
     setImgAspect(null);
   }
-  // Audio từng câu: khi không có player cấp Part. TOEIC luôn vẽ (chưa có
-  // file thì AudioPlayer hiện khối "chưa có audio"); IELTS chỉ vẽ khi có
-  // file audio thật (không dùng TTS — đọc trước thì lộ nội dung bài nghe).
-  const showAudio = isListening && !usePartAudio && (exam === 'toeic' || !!audioUrl);
+  // Audio từng câu: chỉ khi KHÔNG có player cấp Part VÀ câu này có file
+  // audio thật. Trước đây TOEIC luôn vẽ (chưa có file thì AudioPlayer
+  // hiện hộp "Chưa có file audio cho Part này" chết trong từng câu —
+  // 0 câu trong seed có audioUrl, các đề ETS 2025 TS-026/040–045 không
+  // có audio Part nào). Part thiếu audio chỉ hiện 1 thông báo ở đầu
+  // Part (màn Practice/Mock tự vẽ), không vẽ hộp từng câu nữa.
+  const showAudio = isListening && !usePartAudio && !!audioUrl;
 
   const correctAnswerText = isMultiAnswer(qType)
     ? parseSelectedLabels(result?.correctLabel).join(', ') || result?.correctText || ''

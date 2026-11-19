@@ -22,8 +22,14 @@ export function resumeSpeak() {
 export function ttsSupported(): boolean {
   return 'speechSynthesis' in window;
 }
-/** Text to read for a question: passage script for Part 3/4, script for Part 1/2, else content. */
+/** Text để đọc TTS cho 1 câu: CHỈ transcript thật (script).
+ * - KHÔNG đọc câu hỏi (content): TTS đọc "What is the woman...?" thì
+ *   vừa lộ câu hỏi vừa không phải nội dung bài nghe.
+ * - KHÔNG đọc passageText: ở TOEIC Part 3/4 đó là bảng/hình minh họa kèm
+ *   theo (danh sách người nói, lịch trình...), không phải lời thoại;
+ *   ở IELTS passageText chỉ có ở Reading.
+ * Trả '' khi không có transcript thật — nơi gọi sẽ hiện trạng thái thiếu
+ * audio thay vì đọc câu hỏi. */
 export function ttsTextFor(q: { part: number; script?: string; passageText?: string; content: string }): string {
-  if (q.part === 3 || q.part === 4) return q.passageText || q.script || q.content;
-  return q.script || q.content;
+  return (q.script || '').trim();
 }

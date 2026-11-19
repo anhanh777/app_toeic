@@ -142,6 +142,11 @@ export default function MockTestScreen() {
   const [loadingQuestions, setLoadingQuestions] = useState(false);
   const [partMedia, setPartMedia] = useState<Record<number, string>>({});
   const [playedSections, setPlayedSections] = useState<Record<number, boolean>>({});
+  // Đề thật đang thi — mini không kèm đề thì backend chọn ngẫu nhiên 1
+  // đề và trả testSetId của đề đó (xem start()); full thì là đề đã chọn
+  // (param/selected). Dùng để biết Part nào có audio cấp Part: chỉ
+  // render 1 AudioPlayer cấp Part, không vẽ player riêng từng câu.
+  const [resolvedTestSetId, setResolvedTestSetId] = useState<string | undefined>(undefined);
   const submittedRef = useRef(false);
 
   // IELTS full: 80 câu, 90 phút. Mini IELTS: 1 Section Listening 30 phút,
@@ -192,6 +197,12 @@ export default function MockTestScreen() {
       if (t.testSetId && t.testSetId !== tsId) {
         try { setPartMedia(await api.partMedia(t.testSetId)); } catch { /* giữ {} */ }
       }
+      // Lưu đề thật đang thi (fallback về đề đã chọn): mini không kèm đề
+      // thì đây là đề backend chọn ngẫu nhiên; partAudioAvailable dùng
+      // nó để bật AudioPlayer cấp Part thay vì player riêng từng câu.
+      // Full "Toàn bộ ngân hàng": backend trả testSetId = null nên giữ
+      // undefined — giới hạn thiết kế, không có audio cấp Part.
+      setResolvedTestSetId(t.testSetId || tsId);
       setAttemptId(t.attemptId);
       setSecondsLeft(t.durationSec || minutes * 60);
       setLoadingQuestions(true);
@@ -279,7 +290,7 @@ export default function MockTestScreen() {
   const blocks = useMemo(() => groupBlocks(questions, exam), [questions, exam]);
   const rows = useMemo(() => buildRows(blocks, columns, exam), [blocks, columns, exam]);
   const answeredCount = Object.keys(answers).length;
-  const partAudioAvailable = useCallback((p: number) => p <= 4 && !!(paramTestSetId || selectedTestSetId) && !!partMedia[p], [paramTestSetId, selectedTestSetId, partMedia]);
+  const partAudioAvailable = useCallback((p: number) => p <= 4 && !!resolvedTestSetId && !!partMedia[p], [resolvedTestSetId, partMedia]);
 
   const renderQuestion = useCallback(
     (q: Question, n: number) => {
@@ -311,8 +322,15 @@ export default function MockTestScreen() {
   const renderPartHeader = useCallback(
     (p: number) => {
       const partAudio = partAudioAvailable(p);
+      // Part nghe không có audio: chỉ 1 thông báo ở đầu Part, không vẽ
+      // hộp "chưa có audio" trong từng câu (QuestionView chỉ vẽ player
+      // khi có file thật). IELTS giữ thông báo cũ cả khi thi full ngân
+      // hàng; TOEIC chỉ báo khi đã biết rõ đề (resolvedTestSetId) — thi
+      // full "Toàn bộ ngân hàng" không biết audio của từng đề nên không
+      // kết luận.
       const noAudio =
-        isIelts && p <= 4 && !partMedia[p] && !questions.some((q) => q.part === p && q.audioUrl);
+        p <= 4 && !partMedia[p] && !questions.some((q) => q.part === p && q.audioUrl) &&
+        (isIelts || !!resolvedTestSetId);
       return (
         <View style={styles.partHeader}>
           <Text style={[styles.partTitle, { color: colors.text, fontSize: scaled(18) }]}>
@@ -340,13 +358,15 @@ export default function MockTestScreen() {
           ) : null}
           {noAudio ? (
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-              📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.
+              {isIelts
+                ? '📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.'
+                : '📌 Part này chưa có file audio — bạn vẫn làm bài bình thường.'}
             </Text>
           ) : null}
         </View>
       );
     },
-    [colors, exam, handleAudioError, isIelts, markPlayed, partMedia, playedSections, questions, scaled, partAudioAvailable],
+    [colors, exam, handleAudioError, isIelts, markPlayed, partMedia, playedSections, questions, scaled, partAudioAvailable, resolvedTestSetId],
   );
 
   const renderRow = useCallback(

@@ -304,6 +304,18 @@ export default function MockTest() {
   // toàn ngân hàng, không có part-media) thì vẫn giữ nút nghe từng câu.
   const usePartAudioFor = (p: number) => p <= 4 && !!partMedia[p];
 
+  // Audio thật để nghe cho 1 câu: file audio của câu, file audio cấp Part,
+  // hoặc (TOEIC) transcript thật để đọc TTS. IELTS không dùng TTS (đọc
+  // transcript thì lộ nội dung bài nghe) nên chỉ tính file audio thật.
+  // Câu không có audio thật thì KHÔNG vẽ player từng câu nữa (trước đây
+  // mỗi câu vẽ 1 hộp audio-missing chết) — xem thông báo thiếu audio ở
+  // đầu Part trong renderPaper.
+  const hasPlayableAudio = (q: Question) =>
+    !!q.audioUrl || !!partMedia[q.part] || (exam === 'toeic' && !!ttsTextFor(q));
+  // Part có audio thật để nghe không (để quyết định hiện thông báo thiếu audio).
+  const partHasAudio = (p: number) =>
+    !!partMedia[p] || questions.some(q => q.part === p && hasPlayableAudio(q));
+
   // IELTS-only: thanh số câu (kiểu YouPass) — bấm số để nhảy tới câu đó.
   // Thi thử chưa chấm nên chỉ phân biệt đã trả lời / chưa trả lời.
   // Nhóm theo Section/Passage + dấu câu đã đánh dấu + câu đang làm.
@@ -384,10 +396,13 @@ export default function MockTest() {
           {listeningOnly && q.part === 1 && !q.imageUrl && (
             <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
           )}
-          {q.part <= 4 && !usePartAudioFor(q.part) && (exam === 'toeic' || q.audioUrl || partMedia[q.part]) && (
+          {q.part <= 4 && !usePartAudioFor(q.part) && hasPlayableAudio(q) && (
             <ListeningAudio
               // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
-              // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
+              // q.audioUrl → audio cấp Part. Chỉ vẽ hộp này khi có audio
+              // thật để nghe (file audio hoặc transcript thật để TTS);
+              // câu không có audio thật thì không vẽ gì — thông báo thiếu
+              // audio chỉ hiện 1 lần ở đầu Part (xem renderPaper).
               // Khi đề có file audio cấp Part thì KHÔNG render hộp này nữa —
               // cả Part chỉ còn 1 nút nghe duy nhất ở đầu Part (ngay dưới
               // tiêu đề Part trong tờ đề). IELTS: chỉ render khi có file
@@ -516,9 +531,8 @@ export default function MockTest() {
               {isIelts && playedSections[block.part] && <p className="muted">✓ Đã phát Section này (thi thử chỉ phát 1 lần).</p>}
             </div>
           )}
-          {showPart && isIelts && block.part <= 4 && !partMedia[block.part]
-            && !questions.some(q => q.part === block.part && q.audioUrl) && (
-            <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
+          {showPart && block.part <= 4 && !usePartAudioFor(block.part) && !partHasAudio(block.part) && (
+            <p className="muted">📌 {isIelts ? 'Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.' : `Part ${block.part} chưa có file audio — bạn vẫn làm bài bình thường.`}</p>
           )}
           {block.passageText ? (
             <div className={`paper-cluster${split ? ' paper-cluster--split' : ''}`}>

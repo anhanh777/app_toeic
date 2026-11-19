@@ -25,8 +25,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type Attempt, type DiagnosticMap, type Question } from '../api';
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
+import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, partNameFor, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
 import { useTextSize, useTheme } from '../theme';
+import AudioPlayer from '../components/AudioPlayer';
 import { BackButton } from '../components/BackButton';
 import { fmtClock } from './writing';
 
@@ -208,6 +209,12 @@ export default function DiagnosticScreen() {
   // phát đó; phát xong thì nút bị vô hiệu, không nghe lại được.
   const [playedQids, setPlayedQids] = useState<Record<string, boolean>>({});
   const [pausedQid, setPausedQid] = useState<string | null>(null);
+  // Audio cấp Section cho phần Listening (TS-028 có đủ Part 1–4 trong
+  // data/part-media.json): 1 AudioPlayer mỗi Section ở đầu Section,
+  // playOnce như màn Thi thử (mock.tsx). 0 câu trong seed có audioUrl
+  // nên trước đây Listening chẩn đoán không nghe được gì.
+  const [partMedia, setPartMedia] = useState<Record<number, string>>({});
+  const [playedSections, setPlayedSections] = useState<Record<number, boolean>>({});
   // expo-audio: 1 player cho audio từng câu (tự release khi unmount).
   const diagPlayer = useAudioPlayer();
   const diagStatus = useAudioPlayerStatus(diagPlayer);
@@ -271,6 +278,14 @@ export default function DiagnosticScreen() {
     setError('');
     try {
       const created = await api.createTest('full', undefined, DIAGNOSTIC_MINUTES, DIAGNOSTIC_SET, 'ielts');
+      // Audio cấp Section (TS-028, Cam 21 Test 1): tải 1 lần khi bắt đầu,
+      // lỗi thì coi như không có audio (vẫn làm bài được).
+      try {
+        setPartMedia(await api.partMedia(DIAGNOSTIC_SET));
+      } catch {
+        setPartMedia({});
+      }
+      setPlayedSections({});
       const all = await api.questionsAll(undefined, DIAGNOSTIC_SET, 'ielts');
       // Giữ đúng thứ tự questionIds mà backend đã tạo attempt.
       const byId = new Map(all.map((q) => [q.id, q]));
@@ -342,6 +357,14 @@ export default function DiagnosticScreen() {
     ]);
   }, [attemptId, diagPlayer]);
 
+  const markPlayed = useCallback((p: number) => {
+    setPlayedSections((m) => ({ ...m, [p]: true }));
+  }, []);
+
+  const handleAudioError = useCallback((e: unknown) => {
+    setError(e instanceof Error ? e.message : String(e));
+  }, []);
+
   const playAudio = useCallback((qid: string, url: string) => {
     try {
       // Đang phát câu này → tạm dừng (vẫn tiếp tục được trong lần phát đó).
@@ -380,8 +403,48 @@ export default function DiagnosticScreen() {
       const prev = index > 0 ? paperQuestions[index - 1] : null;
       const showPassage = !!q.passageText && q.passageId !== prev?.passageId;
       const value = paperAnswers[q.id] ?? '';
+      // Đầu mỗi Section Listening: 1 AudioPlayer cấp Section (mẫu
+      // mock.tsx) — câu đầu tiên của Section mới là mốc. Không lộ
+      // transcript (script không render ở đây, như trước).
+      const isFirstOfSection = q.part <= 4 && (index === 0 || prev?.part !== q.part);
+      const sectionAudio = q.part <= 4 ? partMedia[q.part] : undefined;
+      const sectionNoAudio =
+        q.part <= 4 && !sectionAudio && !paperQuestions.some((x) => x.part === q.part && x.audioUrl);
       return (
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <>
+          {isFirstOfSection ? (
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(16) }]}>
+                {partNameFor(q.part, 'ielts')} — Listening
+              </Text>
+              {sectionAudio ? (
+                <>
+                  <AudioPlayer
+                    audioUrl={sectionAudio}
+                    stopKey={`section-${q.part}`}
+                    playOnce
+                    onFirstPlay={() => markPlayed(q.part)}
+                    onError={handleAudioError}
+                  />
+                  <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
+                    🎧 Nghe cả Section {q.part} — thi thử: audio mỗi Section chỉ phát 1 lần, bấm 1 lần rồi làm hết
+                    các câu của Section trong lúc nghe.
+                  </Text>
+                  {playedSections[q.part] ? (
+                    <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
+                      ✓ Đã phát Section này (thi thử chỉ phát 1 lần).
+                    </Text>
+                  ) : null}
+                </>
+              ) : null}
+              {sectionNoAudio ? (
+                <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
+                  📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.
+                </Text>
+              ) : null}
+            </View>
+          ) : null}
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
           <Text style={[styles.tag, { color: colors.muted, fontSize: scaled(13) }]}>
             Câu {index + 1}/80 · {partLabel(q.part, 'ielts')}
             {q.questionType ? ` · ${questionTypeName(q.questionType)}` : ''}
@@ -392,7 +455,12 @@ export default function DiagnosticScreen() {
           {/* Transcript (script) KHÔNG hiện trong lúc làm bài — nếu đề có
               script thì bài nghe thành bài đọc. Chỉ xem ở màn kết quả
               sau khi chấm (như web: transcript ở trang Result). */}
-          {q.audioUrl ? (
+          {/* Nút nghe từng câu chỉ khi KHÔNG có audio cấp Section: 2
+              nguồn phát cùng 1 Section sẽ chồng tiếng (AudioPlayer chỉ
+              tự dừng các AudioPlayer khác qua activeStop, còn nút này
+              dùng diagPlayer riêng). Trong seed 0 câu có audioUrl nên
+              nhánh này thực tế không hiện với TS-028. */}
+          {q.audioUrl && !partMedia[q.part] ? (
             <Pressable
               style={[
                 styles.smallButton,
@@ -415,10 +483,11 @@ export default function DiagnosticScreen() {
           ) : null}
           <Text style={[styles.content, { color: colors.text, fontSize: scaled(16) }]}>{q.content}</Text>
           <PaperAnswerControl q={q} value={value} onChange={(v) => setAnswer(q.id, v)} />
-        </View>
+          </View>
+        </>
       );
     },
-    [paperQuestions, paperAnswers, colors, scaled, playingQid, pausedQid, playedQids, playAudio, setAnswer],
+    [paperQuestions, paperAnswers, colors, scaled, playingQid, pausedQid, playedQids, playAudio, setAnswer, partMedia, playedSections, markPlayed, handleAudioError],
   );
 
   const pad = horizontalPadding(width);
@@ -433,7 +502,7 @@ export default function DiagnosticScreen() {
               Chẩn đoán TS-028 · ⏱ {fmtClock(paperLeft)}
             </Text>
             <Text style={[styles.paperSub, { color: colors.muted, fontSize: scaled(14) }]}>
-              Đã trả lời {answeredCount}/{paperQuestions.length} · Nghe 1 lần (audio từng câu)
+              Đã trả lời {answeredCount}/{paperQuestions.length} · Nghe 1 lần (audio từng Section)
             </Text>
           </View>
           {error ? (

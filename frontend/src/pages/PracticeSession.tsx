@@ -212,6 +212,17 @@ export default function PracticeSession() {
   // Luyện cả đề: mỗi Listening Part có 1 nút riêng (xem renderPaper).
   const usePartAudioFor = (p: number) => p <= 4 && !!partMedia[p];
   const usePartAudio = isListening && usePartAudioFor(part);
+  // Audio thật để nghe cho 1 câu: file audio của câu, file audio cấp Part,
+  // hoặc (TOEIC) transcript thật để đọc TTS. IELTS không dùng TTS (đọc
+  // transcript thì lộ nội dung bài nghe) nên chỉ tính file audio thật.
+  // Câu không có audio thật thì KHÔNG vẽ player từng câu nữa (trước đây
+  // mỗi câu vẽ 1 hộp audio-missing chết) — xem thông báo thiếu audio ở
+  // đầu Part (dưới đây + trong renderPaper khi luyện cả đề).
+  const hasPlayableAudio = (q: Question) =>
+    !!q.audioUrl || !!partMedia[q.part] || (exam === 'toeic' && !!ttsTextFor(q));
+  // Part có audio thật để nghe không (để quyết định hiện thông báo thiếu audio).
+  const partHasAudio = (p: number) =>
+    !!partMedia[p] || questions.some(q => q.part === p && hasPlayableAudio(q));
   // IELTS: đề chưa có audio (VD đề mẫu TS-024) — không render nút nghe hỏng,
   // chỉ hiện ghi chú và cho làm bài bình thường. Đề chẩn đoán TS-028 đã có
   // audio cấp Part. Cũng không dùng TTS đọc transcript cho IELTS (đọc trước
@@ -518,10 +529,13 @@ export default function PracticeSession() {
           {listeningOnly && q.part === 1 && !q.imageUrl && (
             <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
           )}
-          {q.part <= 4 && !usePartAudioFor(q.part) && (exam === 'toeic' || q.audioUrl) && (
+          {q.part <= 4 && !usePartAudioFor(q.part) && hasPlayableAudio(q) && (
             <ListeningAudio
               // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
-              // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
+              // q.audioUrl → audio cấp Part. Chỉ vẽ hộp này khi có audio
+              // thật để nghe (file audio hoặc transcript thật để TTS);
+              // câu không có audio thật thì không vẽ gì — thông báo thiếu
+              // audio chỉ hiện 1 lần ở đầu Part.
               // Khi đề có file audio cấp Part thì KHÔNG render hộp này nữa —
               // cả Part chỉ còn 1 nút nghe duy nhất ở đầu Part (ngay dưới
               // tiêu đề PART X). IELTS: chỉ render khi có file audio thật,
@@ -637,6 +651,14 @@ export default function PracticeSession() {
               <ListeningAudio audioUrl={partMedia[block.part]} ttsText="" stopKey={`part-${block.part}`} onError={setError} />
               <p className="muted">🎧 Nghe cả {isIelts ? `Section ${block.part}` : `Part ${block.part}`} — bấm 1 lần rồi làm hết các câu của {isIelts ? 'Section' : 'Part'} trong lúc nghe.</p>
             </div>
+          );
+        }
+        // TOEIC luyện cả đề: Part không có audio thật thì chỉ hiện 1 thông
+        // báo ở đầu Part, không vẽ hộp audio-missing từng câu. IELTS giữ
+        // nguyên thông báo chung ở đầu trang (ieltsNoAudio).
+        if (!isIelts && block.part <= 4 && !usePartAudioFor(block.part) && !partHasAudio(block.part)) {
+          out.push(
+            <p className="muted" key={`noaudio-${block.part}`}>📌 Part {block.part} chưa có file audio — bạn vẫn làm bài bình thường.</p>
           );
         }
       }
@@ -761,6 +783,13 @@ export default function PracticeSession() {
         )}
         {ieltsNoAudio && (
           <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
+        )}
+        {/* TOEIC luyện 1 Part: Part không có audio thật (không file audio cấp
+            Part, không câu nào có audio riêng/transcript thật) thì chỉ hiện
+            1 thông báo ở đầu Part, không vẽ hộp audio-missing từng câu.
+            Luyện cả đề: thông báo theo từng Part nằm trong renderPaper. */}
+        {!isIelts && !isFullPractice && partMediaLoaded && isListening && !partHasAudio(part) && (
+          <p className="muted">📌 Part {part} chưa có file audio — bạn vẫn làm bài bình thường.</p>
         )}
         <ErrorBox error={error} />
         {isIelts && (

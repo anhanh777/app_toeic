@@ -187,6 +187,13 @@ export default function PracticeSessionScreen() {
   const usePartAudio = isListening && !!testSetId && !!partMedia[part];
   const ieltsNoAudio =
     isIelts && isListening && partMediaLoaded && !partMedia[part] && !questions.some((q) => q.audioUrl);
+  // TOEIC: Part thiếu audio cũng chỉ báo 1 lần ở đầu Part (như IELTS),
+  // không vẽ hộp "chưa có audio" trong từng câu nữa (QuestionView chỉ
+  // vẽ player khi có file thật). Chỉ báo khi đã biết rõ đề (testSetId):
+  // luyện toàn ngân hàng thì không biết audio của từng đề.
+  const toeicNoAudio =
+    !isIelts && isListening && !!testSetId && partMediaLoaded && !partMedia[part] && !questions.some((q) => q.audioUrl);
+  const noAudio = ieltsNoAudio || toeicNoAudio;
 
   const blocks = useMemo(() => groupBlocks(questions, exam), [questions, exam]);
   const { rows, rowByQuestionId } = useMemo(() => buildRows(blocks, columns, exam), [blocks, columns, exam]);
@@ -623,7 +630,7 @@ export default function PracticeSessionScreen() {
             /* hàng chưa render — bỏ qua, người dùng tự cuộn */
           }}
           ListHeaderComponent={
-            usePartAudio || ieltsNoAudio ? (
+            usePartAudio || noAudio ? (
               <View style={styles.listHead}>
                 {usePartAudio ? (
                   <>
@@ -637,6 +644,11 @@ export default function PracticeSessionScreen() {
                 {ieltsNoAudio ? (
                   <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
                     📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.
+                  </Text>
+                ) : null}
+                {toeicNoAudio ? (
+                  <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
+                    📌 Part này chưa có file audio — bạn vẫn làm bài bình thường.
                   </Text>
                 ) : null}
               </View>
