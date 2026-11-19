@@ -153,41 +153,98 @@ export default function MockTest() {
   if (!attemptId) {
     if (testSetId) {
       return (
-        <div className="card card--narrow">
+        <div className="card card--mid">
           <h1>Thi thử cả đề</h1>
           <ErrorBox error={error} />
           {testSet ? (
             <div>
-              <p><strong>{testSet.title}</strong></p>
+              <h2 style={{ margin: '.2rem 0 .3rem' }}>{testSet.title}</h2>
               {testSet.description && <p className="muted">{testSet.description}</p>}
-              <p><span className="stat-num">{testSet.totalQuestions}</span> câu • {fullMinutes} phút</p>
-              <p className="muted">{testSet.parts.map(p => `${partLabel(p.part, exam)} ${p.count}`).join(' · ')}</p>
+              <div className="stat-grid">
+                <div className="stat-box"><b>{testSet.totalQuestions}</b><span>câu hỏi</span></div>
+                <div className="stat-box"><b>{fullMinutes}</b><span>phút làm bài</span></div>
+                <div className="stat-box"><b>{testSet.parts.length}</b><span>{isIelts ? 'Section/Passage' : 'Part'}</span></div>
+              </div>
+              <span className="mock-label">Cấu trúc đề</span>
+              <div className="pick-grid pick-grid--parts">
+                {testSet.parts.map(p => (
+                  <div key={p.part} className="pick-box pick-box--static">
+                    <b>{partLabel(p.part, exam)}</b>
+                    <span>{p.count} câu</span>
+                  </div>
+                ))}
+              </div>
               {testSet.missing.length > 0 && (
-                <p style={{ color: 'var(--amber)' }}>⚠️ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `${partLabel(m.part, exam)} thiếu ${m.missing} câu`).join(', ')}.</p>
+                <div className="mock-warn">⚠️ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `${partLabel(m.part, exam)} thiếu ${m.missing} câu`).join(', ')}.</div>
               )}
             </div>
           ) : <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải thông tin đề thi…" />}
-          <p className="muted">Làm đủ {testSet?.totalQuestions || ''} câu, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9).</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990).</>}</p>
-          {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
+          <div className="mock-note">
+            <p className="muted">Làm đủ {testSet?.totalQuestions || ''} câu, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9).</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990).</>}</p>
+            {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
+          </div>
           <div className="btn-row">
+            <button className="btn ghost" onClick={() => nav(`/mock?exam=${exam}`)}>← Đổi đề thi</button>
             <button className="btn gold" disabled={busy || !testSet || !testSet.totalQuestions} onClick={start}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</button>
           </div>
         </div>
       );
     }
     return (
-      <div className="card card--narrow">
+      <div className="card card--mid">
         <h1>Thi thử</h1>
         <ErrorBox error={error} />
-        <label>Loại bài thi</label>
-        <select value={mode} onChange={e => setMode(e.target.value as 'mini' | 'full')}>
-          <option value="mini">{isIelts ? 'Thi mini — 1 Section/Passage' : 'Thi mini — 1 Part'}</option>
-          <option value="full">{isIelts ? 'Thi full — Listening + Reading (80 câu, 90 phút)' : 'Thi full — toàn bộ ngân hàng, 120 phút'}</option>
-        </select>
-        {mode === 'mini' && (<><label>{isIelts ? 'Chọn Section/Passage' : 'Chọn Part'}</label><select value={part} onChange={e => setPart(Number(e.target.value))}>{[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{isIelts ? `${partNameFor(p, exam)} — ${p <= 4 ? 'Listening' : 'Reading'}` : partName(p)}</option>)}</select></>)}
-        {mode === 'full' && (<><label>Chọn đề thi</label><select value="" onChange={e => { const id = e.target.value; if (id) nav(`/mock?testSetId=${id}&exam=${exam}`); }}><option value="">Toàn bộ ngân hàng</option>{testSets.map(s => <option key={s.id} value={s.id}>{s.title} ({s.totalQuestions} câu)</option>)}</select><p className="muted">Chọn một đề để thi thử cả đề đó; để nguyên "Toàn bộ ngân hàng" để thi từ tất cả các đề.</p></>)}
-        <p className="muted">Thi full: làm đủ {fullMinutes} phút, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9). Bài mini chỉ báo số câu đúng/tổng, không có band.</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990). Bài mini chỉ báo số câu đúng/tổng, không có điểm 10–990.</>}</p>
-        {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
+        <span className="mock-label">Loại bài thi</span>
+        <span role="group" aria-label="Loại bài thi"
+          style={{ display: 'inline-flex', border: '1px solid var(--accent)', borderRadius: 12, overflow: 'hidden' }}>
+          {(['mini', 'full'] as const).map(m => (
+            <button key={m} type="button" className="btn" aria-pressed={mode === m} onClick={() => setMode(m)}
+              style={mode === m
+                ? { borderRadius: 0, boxShadow: 'none' }
+                : { borderRadius: 0, boxShadow: 'none', background: 'transparent', color: 'var(--accent-dark)' }}>
+              {m === 'mini'
+                ? (isIelts ? 'Thi mini — 1 Section/Passage' : 'Thi mini — 1 Part')
+                : (isIelts ? 'Thi full — 80 câu, 90 phút' : 'Thi full — 200 câu, 120 phút')}
+            </button>
+          ))}
+        </span>
+        {mode === 'mini' && (
+          <>
+            <span className="mock-label">{isIelts ? 'Chọn Section/Passage' : 'Chọn Part'}</span>
+            <div className="pick-grid pick-grid--parts" role="group" aria-label="Chọn phần thi">
+              {[1, 2, 3, 4, 5, 6, 7].map(p => (
+                <button key={p} type="button" className={`pick-box${part === p ? ' pick-box--selected' : ''}`} aria-pressed={part === p} onClick={() => setPart(p)}>
+                  <b>{isIelts ? partNameFor(p, exam) : partName(p)}</b>
+                  <span>{isIelts ? (p <= 4 ? 'Listening • 30 phút' : 'Reading • 20 phút') : (p <= 4 ? 'Listening' : 'Reading')}</span>
+                </button>
+              ))}
+            </div>
+            <p className="muted">Thi mini lấy đúng đủ số câu của phần đó ở một đề ngẫu nhiên.</p>
+          </>
+        )}
+        {mode === 'full' && (
+          <>
+            <span className="mock-label">Chọn đề thi</span>
+            <div className="pick-grid" role="group" aria-label="Chọn đề thi">
+              <div className="pick-box pick-box--selected" aria-current="true">
+                <b>Toàn bộ ngân hàng</b>
+                <span>Trộn câu từ tất cả các đề</span>
+              </div>
+              {[...testSets].sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true })).map(s => (
+                <button key={s.id} type="button" className="pick-box" onClick={() => nav(`/mock?testSetId=${s.id}&exam=${exam}`)}>
+                  <b>{s.title}</b>
+                  <span>{s.totalQuestions} câu • {fullMinutes} phút</span>
+                </button>
+              ))}
+            </div>
+            {testSets.length === 0 && <p className="muted">Đang tải danh sách đề…</p>}
+            <p className="muted">Bấm vào một đề để xem chi tiết rồi thi cả đề đó; bấm “Bắt đầu thi” để thi từ toàn bộ ngân hàng.</p>
+          </>
+        )}
+        <div className="mock-note">
+          <p className="muted">Thi full: làm đủ {fullMinutes} phút, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9). Bài mini chỉ báo số câu đúng/tổng, không có band.</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990). Bài mini chỉ báo số câu đúng/tổng, không có điểm 10–990.</>}</p>
+          {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
+        </div>
         <div className="btn-row"><button className="btn" disabled={busy} onClick={start}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</button></div>
       </div>
     );

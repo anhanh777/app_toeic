@@ -210,6 +210,27 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 /* The hep giua trang: dung cho man hinh mo dau thi thu va man hinh hoan
    thanh luyen tap, de chung khong bi keo dan het chieu rong 1400px. */
 .card--narrow{max-width:720px; margin-left:auto; margin-right:auto}
+.card--mid{max-width:980px; margin-left:auto; margin-right:auto}
+
+/* ============ Man hinh thi thu: chon de bang box xep hang ngang ========== */
+.mock-label{display:block; font-weight:700; margin:1rem 0 .5rem}
+.pick-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:.7rem; margin:.2rem 0 .6rem}
+.pick-grid--parts{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+.pick-box{display:flex; flex-direction:column; gap:.15rem; text-align:left; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:.75rem .9rem; cursor:pointer; transition:border-color .15s, background .15s; color:var(--ink); font:inherit}
+.pick-box:hover{border-color:var(--accent)}
+.pick-box--selected{border-color:var(--accent); background:var(--accent-soft)}
+.pick-box--static{cursor:default}
+.pick-box--static:hover{border-color:var(--border)}
+.pick-box b{font-size:.95rem}
+.pick-box span{font-size:.82rem; color:var(--muted)}
+.pick-box--selected span{color:var(--ink-soft)}
+.stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin:.9rem 0}
+.stat-box{background:var(--surface-soft); border:1px solid var(--border); border-radius:16px; padding:.7rem .9rem}
+.stat-box b{display:block; font-size:1.35rem; line-height:1.2; color:var(--accent-dark)}
+.stat-box span{font-size:.82rem; color:var(--muted)}
+.mock-warn{background:var(--warn-bg); border:1px solid var(--warn-border); border-radius:12px; padding:.6rem .8rem; margin:.6rem 0; color:var(--amber)}
+.mock-note{background:var(--surface-soft); border:1px solid var(--border); border-radius:12px; padding:.6rem .8rem; margin:.8rem 0}
+.mock-note p{margin:.25rem 0}
 .card{
   background:var(--surface);
   border:1px solid var(--border); border-radius:20px; padding:.85rem 1rem; margin-bottom:1rem;
