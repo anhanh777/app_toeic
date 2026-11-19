@@ -813,6 +813,35 @@ export default function PracticeSession() {
             <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
           </div>
         )}
+        <div className="room-side-block room-side-controls">
+          {/* Ban sao cua hang dieu khien o dau trang (loc Dang + che do cham):
+              man hinh rong thi hien o cot phai, man hinh hep thi an cung cot
+              phai va hang dieu khien o dau trang hien lai. Ca hai ban cung
+              tro vao mot state nen luon dong bo. */}
+          {isIelts && (
+            <label className="room-side-filter">
+              Dạng:
+              <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} aria-label="Lọc theo dạng câu hỏi">
+                <option value="">Tất cả các dạng</option>
+                {availableTypes.map(t => (
+                  <option key={t} value={t}>{questionTypeName(t)}</option>
+                ))}
+              </select>
+            </label>
+          )}
+          <span className="room-side-toggle" role="group" aria-label="Chế độ chấm điểm" title={modeLocked ? 'Đã chọn đáp án nên không đổi được chế độ chấm trong buổi này' : undefined}
+            style={{ display: 'flex', width: '100%', border: '1px solid var(--accent)', borderRadius: 12, overflow: 'hidden', opacity: modeLocked ? .55 : 1 }}>
+            {(['instant', 'submit-all'] as const).map(m => (
+              <button key={m} type="button" className="btn btn-sm" disabled={modeLocked} aria-pressed={gradingMode === m}
+                onClick={() => setGradingMode(m)}
+                style={gradingMode === m
+                  ? { borderRadius: 0, boxShadow: 'none' }
+                  : { borderRadius: 0, boxShadow: 'none', background: 'transparent', color: 'var(--accent-dark)' }}>
+                {m === 'instant' ? 'Chấm từng câu' : 'Làm xong mới chấm'}
+              </button>
+            ))}
+          </span>
+        </div>
         <div className="room-side-block room-side-actions">
           {isIelts && partOrder.length > 1 && (
             <span className="btn-row" style={{ margin: 0 }}>
