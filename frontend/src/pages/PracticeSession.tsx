@@ -152,14 +152,14 @@ export default function PracticeSession() {
     return () => clearInterval(t);
   }, [loading, finished, questions.length]);
 
-  // IELTS-only: thanh số câu theo dõi câu đang nhìn thấy (scroll-spy) —
-  // lúc mở bài và khi cuộn, số của câu trong vùng nhìn sẽ sáng lên.
-  // Trước đây currentId chỉ đổi khi bấm/chọn đáp án nên lúc mới mở không
-  // có số nào sáng. Mỗi đơn vị câu đều mang id `q-<id>` (câu lẻ, dòng
-  // ghi chú, hàng matching) nên quan sát chung 1 selector được.
+  // Thanh số câu theo dõi câu đang nhìn thấy (scroll-spy) — lúc mở bài
+  // và khi cuộn, số của câu trong vùng nhìn sẽ sáng lên. Trước đây
+  // currentId chỉ đổi khi bấm/chọn đáp án nên lúc mới mở không có số nào
+  // sáng. Mỗi đơn vị câu đều mang id `q-<id>` (câu lẻ, dòng ghi chú,
+  // hàng matching) nên quan sát chung 1 selector được.
   // (Đặt trước các early return để không vi phạm thứ tự hook.)
   useEffect(() => {
-    if (!isIelts || loading) return;
+    if (loading) return;
     const els = Array.from(document.querySelectorAll<HTMLElement>('[id^="q-"]'));
     if (els.length === 0) return;
     const obs = new IntersectionObserver(entries => {
@@ -170,7 +170,7 @@ export default function PracticeSession() {
     }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
     els.forEach(el => obs.observe(el));
     return () => obs.disconnect();
-  }, [isIelts, loading, questions, typeFilter]);
+  }, [loading, questions, typeFilter]);
 
   // Chọn đáp án cho 1 câu (mọi dạng điều khiển đều qua đây) + ghi nhận
   // câu đang làm để highlight trên thanh số câu.
@@ -774,7 +774,7 @@ export default function PracticeSession() {
           {renderPaper()}
         </div>
         <div className="practice-bar">
-          {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />}
+          <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
           {isIelts && partOrder.length > 1 && (
             <span className="btn-row" style={{ margin: 0 }}>
               <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
@@ -807,12 +807,10 @@ export default function PracticeSession() {
           + tien do + nut bam nam o day, thanh duoi an di; man hinh hep
           thi cot nay an, thanh duoi hien nhu cu. */}
       <aside className="room-side">
-        {isIelts && (
-          <div className="room-side-block">
-            <h3 className="room-side-title">Câu hỏi</h3>
-            <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
-          </div>
-        )}
+        <div className="room-side-block">
+          <h3 className="room-side-title">Câu hỏi</h3>
+          <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
+        </div>
         <div className="room-side-block room-side-controls">
           {/* Ban sao cua hang dieu khien o dau trang (loc Dang + che do cham):
               man hinh rong thi hien o cot phai, man hinh hep thi an cung cot

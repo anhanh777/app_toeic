@@ -114,14 +114,14 @@ export default function MockTest() {
 
   useEffect(() => () => stopSpeak(), []);
 
-  // IELTS-only: thanh số câu theo dõi câu đang nhìn thấy (scroll-spy) —
-  // lúc mở bài và khi cuộn, số của câu trong vùng nhìn sẽ sáng lên.
-  // Trước đây currentId chỉ đổi khi bấm/chọn đáp án nên lúc mới mở không
-  // có số nào sáng. Mỗi đơn vị câu đều mang id `q-<id>` (câu lẻ, dòng
-  // ghi chú, hàng matching) nên quan sát chung 1 selector được.
+  // Thanh số câu theo dõi câu đang nhìn thấy (scroll-spy) — lúc mở bài
+  // và khi cuộn, số của câu trong vùng nhìn sẽ sáng lên. Trước đây
+  // currentId chỉ đổi khi bấm/chọn đáp án nên lúc mới mở không có số nào
+  // sáng. Mỗi đơn vị câu đều mang id `q-<id>` (câu lẻ, dòng ghi chú,
+  // hàng matching) nên quan sát chung 1 selector được.
   // (Đặt trước các early return để không vi phạm thứ tự hook.)
   useEffect(() => {
-    if (!isIelts || questions.length === 0) return;
+    if (questions.length === 0) return;
     const els = Array.from(document.querySelectorAll<HTMLElement>('[id^="q-"]'));
     if (els.length === 0) return;
     const obs = new IntersectionObserver(entries => {
@@ -132,7 +132,7 @@ export default function MockTest() {
     }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
     els.forEach(el => obs.observe(el));
     return () => obs.disconnect();
-  }, [isIelts, questions]);
+  }, [questions]);
 
   // Ghi lần chọn cuối (đổi đáp án thoải mái trước khi nộp) + ghi nhận
   // câu đang làm để highlight trên thanh số câu.
@@ -486,7 +486,7 @@ export default function MockTest() {
           {renderPaper()}
         </div>
         <div className="practice-bar">
-          {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />}
+          <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
           {isIelts && partOrder.length > 1 && (
             <span className="btn-row" style={{ margin: 0 }}>
               <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
@@ -508,12 +508,10 @@ export default function MockTest() {
           + tien do + nut bam nam o day, thanh duoi an di; man hinh hep
           thi cot nay an, thanh duoi hien nhu cu. */}
       <aside className="room-side">
-        {isIelts && (
-          <div className="room-side-block">
-            <h3 className="room-side-title">Câu hỏi</h3>
-            <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
-          </div>
-        )}
+        <div className="room-side-block">
+          <h3 className="room-side-title">Câu hỏi</h3>
+          <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
+        </div>
         <div className="room-side-block room-side-actions">
           {isIelts && partOrder.length > 1 && (
             <span className="btn-row" style={{ margin: 0 }}>

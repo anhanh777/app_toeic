@@ -724,6 +724,7 @@ tbody tr:hover{background:var(--surface-soft)}
 /* Bang cau hoi dang luoi doc trong cot phai: cac nut xep thanh nhieu hang,
    moi nhom Section/Passage bat dau mot dong moi. */
 .q-palette--side{flex-wrap:wrap; overflow-x:visible; padding:0}
+.q-palette--side .q-palette-btn{min-width:1.9rem; height:1.9rem; font-size:.8rem}
 .q-palette--side .q-palette-group{flex-basis:100%; flex-wrap:wrap}
 .q-palette--side .q-palette-group-label{flex-basis:100%; margin:.45rem 0 .25rem}
 .q-palette--side .q-palette-group:first-child .q-palette-group-label{margin-top:0}
