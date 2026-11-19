@@ -723,8 +723,12 @@ tbody tr:hover{background:var(--surface-soft)}
 .room-side-toggle .btn{flex:1 1 0; padding:.45rem .25rem; font-size:.85rem; line-height:1.3}
 /* Bang cau hoi dang luoi doc trong cot phai: cac nut la o vuong nho co
    dinh (so 3 chu so vua khit, khong bi keo thanh oval nhu nut tron);
-   moi nhom Part/Section/Passage thu gon duoc — chi nhom dang lam mo. */
-.q-palette--side{flex-wrap:wrap; overflow-x:visible; padding:0; row-gap:.5rem}
+   moi nhom Part/Section/Passage thu gon duoc — chi nhom dang lam mo.
+   (Selector .q-palette.q-palette--side co do dac hieu cao hon de thang
+   quy tac .q-palette dung sau trong file — neu khong flex-wrap:nowrap
+   cua ban 'bar' se ap dung ca cho cot phai va cac nhom 2+ bi day
+   tran sang phai, khong thay duoc.) */
+.q-palette.q-palette--side{flex-wrap:wrap; overflow-x:visible; padding:0; row-gap:.5rem}
 .q-palette--side .q-palette-btn{
   min-width:1.9rem; width:1.9rem; height:1.9rem; padding:0;
   border-radius:8px; font-size:.8rem;
