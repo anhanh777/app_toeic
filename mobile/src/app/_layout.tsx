@@ -5,6 +5,7 @@ import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../auth';
 import { BrandProvider } from '../brand';
@@ -52,36 +53,44 @@ function RootLayoutNav() {
         animationTypeForReplace: 'pop',
       }}
     >
-      {/* 5 màn chính (tab) chuyển bằng fade nhanh thay vì trượt: trượt khi
-          replace vẫn lộ nền trắng vì màn mới chưa kịp vẽ xong; fade chồng
-          2 màn lên nhau nên không bao giờ thấy nền trắng. */}
-      <Stack.Screen name="index" options={{ animation: 'fade', animationDuration: 200 }} />
+      {/* 5 màn chính (tab): KHÔNG dùng animation native nữa — hiệu ứng
+          vào màn (trượt theo hướng tab / zoom từ nút giữa) do TabScreen
+          chạy bằng reanimated lúc màn mount. Native 'fade' 200ms cũ bị
+          chê "phèn"; còn trượt native thì lộ nền trắng khi replace nên
+          không dùng. 'none' + TabScreen = trượt có hướng, nền vẫn là
+          màu theme nên không nháy trắng. */}
+      <Stack.Screen name="index" options={{ animation: 'none' }} />
       <Stack.Screen name="login" />
-      <Stack.Screen name="today" options={{ animation: 'fade', animationDuration: 200 }} />
-      <Stack.Screen name="practice" options={{ animation: 'fade', animationDuration: 200 }} />
-      <Stack.Screen name="mock" options={{ animation: 'fade', animationDuration: 200 }} />
-      <Stack.Screen name="settings" options={{ animation: 'fade', animationDuration: 200 }} />
+      <Stack.Screen name="today" options={{ animation: 'none' }} />
+      <Stack.Screen name="practice" options={{ animation: 'none' }} />
+      <Stack.Screen name="mock" options={{ animation: 'none' }} />
+      <Stack.Screen name="settings" options={{ animation: 'none' }} />
+      {/* Chi tiết bộ đề: fade nhẹ để hiệu ứng "thẻ bay" (HeroFlight) làm
+          nhân vật chính, không bị trượt native giành spotlight. */}
+      <Stack.Screen name="test-set/[id]" options={{ animation: 'fade', animationDuration: 220 }} />
     </Stack>
   );
 }
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <TextSizeProvider>
-          <AuthProvider>
-            <ExamProvider>
-              <BrandProvider>
-                <MenuIconsProvider>
-                  <RootLayoutNav />
-                </MenuIconsProvider>
-              </BrandProvider>
-            </ExamProvider>
-          </AuthProvider>
-        </TextSizeProvider>
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <TextSizeProvider>
+            <AuthProvider>
+              <ExamProvider>
+                <BrandProvider>
+                  <MenuIconsProvider>
+                    <RootLayoutNav />
+                  </MenuIconsProvider>
+                </BrandProvider>
+              </ExamProvider>
+            </AuthProvider>
+          </TextSizeProvider>
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 

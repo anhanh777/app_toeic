@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
+import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 import { api, type ExamInfo } from '../api';
 import { useAuth } from '../auth';
 import { useExam, type ExamId } from '../exam';
@@ -26,6 +27,7 @@ import {
 import { useTextSize, useTheme } from '../theme';
 import { useMenuIcons, type MenuIconKey } from '../menuIcons';
 import { BottomNav } from '../components/BottomNav';
+import { TabScreen } from '../components/TabScreen';
 
 const FALLBACK_EXAMS: ExamInfo[] = [
   { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990', testSetCount: 25, questionCount: 5000 },
@@ -102,6 +104,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+      <TabScreen href="/">
       <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.header}>
           <Text style={[styles.hello, { color: colors.text, fontSize: scaled(20) }]}>
@@ -162,8 +165,11 @@ export default function HomeScreen() {
             </View>
           </View>
         ) : (
-          <View style={styles.homeWrap}>
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <Animated.View entering={FadeIn.duration(280)} style={styles.homeWrap}>
+            <Animated.View
+              entering={ZoomIn.duration(320)}
+              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
+            >
               <Text style={[styles.emoji, { fontSize: scaled(28) }]}>
                 {exam === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}
               </Text>
@@ -173,7 +179,7 @@ export default function HomeScreen() {
               <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(15) }]}>
                 {chosen?.subtitle ?? ''} • {chosen?.testSetCount ?? '—'} đề • {chosen?.questionCount ?? '—'} câu • Thang điểm: {chosen?.scale ?? ''}
               </Text>
-            </View>
+            </Animated.View>
 
             <View style={styles.menu}>
               {[...MENU_COMMON, ...(exam === 'ielts' ? MENU_IELTS : [])].map((m) => (
@@ -213,9 +219,10 @@ export default function HomeScreen() {
                 </Text>
               </Pressable>
             </View>
-          </View>
+          </Animated.View>
         )}
       </ScrollView>
+      </TabScreen>
       <BottomNav />
     </SafeAreaView>
   );

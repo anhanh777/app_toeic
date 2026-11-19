@@ -1,9 +1,10 @@
 // Chi tiết bộ đề — port của frontend/src/pages/TestSetDetail.tsx.
 // Các Part với số câu + tiến độ; bấm 1 Part → màn luyện của Part đó;
 // nút "Thi thử cả đề" → màn thi thử của đề đó.
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ElementRef } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type TestSet } from '../../api';
 import { useExam } from '../../exam';
@@ -11,10 +12,35 @@ import { partLabel, partNameFor } from '../../lib';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
 import { useTextSize, useTheme } from '../../theme';
 import { BackButton } from '../../components/BackButton';
+import { HeroFlight, type HeroRect } from '../../components/HeroFlight';
 import { partName, sectionOf } from '../../components/QuestionView';
 
 export default function TestSetDetailScreen() {
-  const { id } = useLocalSearchParams<{ id?: string }>();
+  const { id, hero } = useLocalSearchParams<{ id?: string; hero?: string }>();
+  // Vị trí thẻ đã bấm ở màn Luyện tập (truyền qua params). Hero param
+  // chỉ sinh ra khi bấm thẻ trong app nên luôn tươi; param lỗi thì mở
+  // thường. (Không kiểm tra tuổi bằng Date.now() ở đây — impure lúc
+  // render; thẻ giả có timeout 1.2s tự biến nếu đo đích thất bại.)
+  const heroRect = useMemo(() => {
+    try {
+      const r = hero ? JSON.parse(hero) : null;
+      if (!r || typeof r.x !== 'number' || typeof r.w !== 'number' || r.w <= 0 || r.h <= 0) return null;
+      return { x: r.x, y: r.y, w: r.w, h: r.h, title: typeof r.title === 'string' ? r.title : '' };
+    } catch {
+      return null;
+    }
+  }, [hero]);
+  const [flightDone, setFlightDone] = useState(!heroRect);
+  // Thẻ thật mờ đi trong lúc thẻ giả bay tới; bay xong thì hiện dần
+  // (mờ được mở trong onDone của HeroFlight — event handler, không
+  // gán shared value trong effect).
+  const [targetRect, setTargetRect] = useState<HeroRect | null>(null);
+  const summaryRef = useRef<ElementRef<typeof View>>(null);
+  const targetRef = useRef<HeroRect | null>(null);
+  // Thẻ thật mờ đi trong lúc thẻ giả bay tới; bay xong thì hiện dần
+  // trong onDone của HeroFlight.
+  const cardOpacity = useSharedValue(heroRect ? 0 : 1);
+  const cardOpacityStyle = useAnimatedStyle(() => ({ opacity: cardOpacity.value }));
   const { exam: ctxExam } = useExam();
   const { colors } = useTheme();
   const { scaled } = useTextSize();
@@ -94,8 +120,9 @@ export default function TestSetDetailScreen() {
   );
 
   return (
-    <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-      <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
+    <View style={styles.root}>
+      <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+        <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
           {ts ? (
@@ -123,7 +150,23 @@ export default function TestSetDetailScreen() {
               </Text>
             ) : null}
             {error ? <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text> : null}
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Animated.View
+              ref={summaryRef}
+              onLayout={() => {
+                // Đo vị trí thẻ thật để HeroFlight biết bay về đâu.
+                summaryRef.current?.measure((x, y, w, h, pageX, pageY) => {
+                  if (w > 0 && h > 0) {
+                    const next = { x: pageX, y: pageY, w, h };
+                    const prev = targetRef.current;
+                    if (!prev || prev.x !== next.x || prev.y !== next.y || prev.w !== next.w || prev.h !== next.h) {
+                      targetRef.current = next;
+                      setTargetRect(next);
+                    }
+                  }
+                });
+              }}
+              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, cardOpacityStyle]}
+            >
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
                 <Text style={{ fontWeight: '700', fontSize: scaled(18) }}>{ts.totalQuestions || 0}</Text> câu • Đã làm{' '}
                 {ts.progress?.answeredTotal || 0}/{ts.totalQuestions || 0} câu (
@@ -156,7 +199,7 @@ export default function TestSetDetailScreen() {
                   🏆 Thi thử cả đề ({ts.totalQuestions} câu · {fullMinutes} phút)
                 </Text>
               </Pressable>
-            </View>
+            </Animated.View>
             <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
               🎧 Listening — {isIelts ? 'Section 1–4' : 'Part 1–4'}
             </Text>
@@ -168,11 +211,33 @@ export default function TestSetDetailScreen() {
           </View>
         )}
       </ScrollView>
-    </SafeAreaView>
+      </SafeAreaView>
+      {heroRect && !flightDone ? (
+        <HeroFlight
+          from={{ x: heroRect.x, y: heroRect.y, w: heroRect.w, h: heroRect.h }}
+          to={targetRect}
+          title={heroRect.title || ts?.title || ''}
+          surface={colors.surface}
+          border={colors.border}
+          text={colors.text}
+          onDone={() => {
+            setFlightDone(true);
+            // Reanimated shared value vốn mutable theo thiết kế (.value
+            // là API chuẩn để chạy animation); rule react-hooks/immutability
+            // không mô hình hoá được shared value có giá trị khởi tạo phụ
+            // thuộc route param nên báo false positive ở đây — các file
+            // TabScreen/BottomNav cũng gán .value theo cùng pattern.
+            // eslint-disable-next-line react-hooks/immutability
+            cardOpacity.value = withTiming(1, { duration: 180 });
+          }}
+        />
+      ) : null}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: { flex: 1 },
   // Hàng tiêu đề: nút quay lại + tiêu đề cùng 1 hàng (không để nút lẻ 1 hàng gây thừa khoảng trắng).
   headerRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   safe: { flex: 1 },

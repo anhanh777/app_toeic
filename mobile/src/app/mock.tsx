@@ -31,6 +31,7 @@ import {
 import { partLabel, partNameFor, realQuestionNumber } from '../lib';
 import { useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
+import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
 import AudioPlayer from '../components/AudioPlayer';
 import PassageView, { type BlankState } from '../components/PassageView';
@@ -425,6 +426,7 @@ export default function MockTestScreen() {
   if (!attemptId) {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+        <TabScreen href="/mock">
         <View style={[styles.container, { paddingHorizontal: pad }]}>
           <View style={styles.header}>
             <BackButton />
@@ -572,6 +574,7 @@ export default function MockTestScreen() {
             </View>
           )}
         </View>
+        </TabScreen>
         <BottomNav />
       </SafeAreaView>
     );

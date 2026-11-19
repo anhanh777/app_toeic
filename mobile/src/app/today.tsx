@@ -24,6 +24,7 @@ import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
 import { useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
+import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
 import { errorCodeName } from './errors';
 import { fmtClock } from './writing';
@@ -260,6 +261,7 @@ export default function TodayScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+      <TabScreen href="/today">
       <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
@@ -471,6 +473,7 @@ export default function TodayScreen() {
           </>
         )}
       </ScrollView>
+      </TabScreen>
       <BottomNav />
     </SafeAreaView>
   );

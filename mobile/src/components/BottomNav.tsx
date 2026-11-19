@@ -2,15 +2,32 @@
 // Chỉ gắn ở 5 màn chính (Trang chủ, Hôm nay, Luyện tập, Thi thử, Cá nhân);
 // các màn con (buổi luyện, bài thi, chi tiết...) không có thanh này.
 // Chuyển tab bằng router.replace để không xếp chồng route lên stack.
+//
+// Hiệu ứng (Phương án B):
+//  - Chỉ báo "giọt nước": viên pill nằm sau tab đang chọn, bay sang tab
+//    mới bằng lò xo reanimated và giãn ngang (scaleX) giữa đường bay rồi
+//    co lại — như giọt nước kéo giãn. Khi tab giữa đang chọn thì ẩn
+//    (nút tròn accent đã đủ nổi).
+//  - Icon tab đang chọn nảy nhẹ (scale lò xo); nút tròn giữa lún xuống
+//    khi bấm và nảy lại khi thả, đồng thời đặt cờ zoom để màn Luyện tập
+//    phóng to từ chính nút đó ra (xem TabScreen).
+//  - Icon lấy từ useMenuIcons (đừng phá hệ icon) — riêng icon tab vẫn
+//    dùng Ionicons như cũ; hướng chuyển tab + exam guard nằm ở tabNav.goToTab.
+import { useEffect, useRef, useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { router, usePathname } from 'expo-router';
+import { usePathname } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSequence,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useExam } from '../exam';
 import { useTheme } from '../theme';
-
-// Các tab cần chọn kỳ thi trước mới vào được (theo yêu cầu của YingYing).
-const NEEDS_EXAM = new Set(['/today', '/practice', '/mock']);
+import { goToTab, tabIndex, type TabHref } from '../tabNav';
 
 type IconName = keyof typeof Ionicons.glyphMap;
 
@@ -28,10 +45,27 @@ const TABS: {
   { label: 'Cá nhân', href: '/settings', icon: 'person-outline', iconActive: 'person' },
 ];
 
+const BLOB_W = 60;
+const BLOB_H = 56;
+
 function isActive(pathname: string, href: string): boolean {
   if (href === '/') return pathname === '/';
   if (href === '/settings') return pathname === '/settings' || pathname === '/profile';
   return pathname === href || pathname.startsWith(href + '/');
+}
+
+/** Icon 1 tab — nảy nhẹ khi vừa được chọn. */
+function TabIcon({ name, color, size, active }: { name: IconName; color: string; size: number; active: boolean }) {
+  const s = useSharedValue(1);
+  useEffect(() => {
+    s.value = withSpring(active ? 1.18 : 1, { stiffness: 320, damping: 13 });
+  }, [active, s]);
+  const style = useAnimatedStyle(() => ({ transform: [{ scale: s.value }] }));
+  return (
+    <Animated.View style={style}>
+      <Ionicons name={name} size={size} color={color} />
+    </Animated.View>
+  );
 }
 
 export function BottomNav() {
@@ -39,16 +73,46 @@ export function BottomNav() {
   const { colors } = useTheme();
   const { exam } = useExam();
   const insets = useSafeAreaInsets();
+  const [barWidth, setBarWidth] = useState(0);
+  const activeIndex = Math.max(0, tabIndex(pathname));
 
-  const go = (t: (typeof TABS)[number]) => {
-    if (isActive(pathname, t.href)) return;
-    // Chưa chọn kỳ thi mà bấm vào tab cần kỳ thi → về màn chọn kỳ thi,
-    // nhớ sẵn đích đến để chọn xong tự mở đúng tab đó.
-    if (NEEDS_EXAM.has(t.href) && !exam) {
-      router.replace({ pathname: '/', params: { next: t.href } });
+  // Chỉ báo giọt nước: bay bằng lò xo + giãn ngang giữa đường bay.
+  const blobX = useSharedValue(0);
+  const blobScaleX = useSharedValue(1);
+  const blobOpacity = useSharedValue(0.14);
+  const measuredRef = useRef(false);
+  const centerScale = useSharedValue(1);
+
+  useEffect(() => {
+    if (barWidth <= 0) return;
+    const cellW = barWidth / TABS.length;
+    const target = (activeIndex + 0.5) * cellW - BLOB_W / 2;
+    if (!measuredRef.current) {
+      // Lần đo đầu: đặt ngay, không bay.
+      measuredRef.current = true;
+      blobX.value = target;
       return;
     }
-    router.replace(t.href as never);
+    blobX.value = withSpring(target, { stiffness: 260, damping: 21 });
+    blobScaleX.value = withSequence(
+      withTiming(1.45, { duration: 130 }),
+      withSpring(1, { stiffness: 220, damping: 13 }),
+    );
+    // Tab giữa đã có nút tròn accent nên ẩn viên pill.
+    blobOpacity.value = withTiming(TABS[activeIndex]?.center ? 0 : 0.14, { duration: 160 });
+  }, [activeIndex, barWidth, blobOpacity, blobScaleX, blobX]);
+
+  const blobStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: blobX.value }, { scaleX: blobScaleX.value }],
+    opacity: blobOpacity.value,
+  }));
+  const centerStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: centerScale.value }],
+  }));
+
+  const go = (t: (typeof TABS)[number]) => {
+    // Bấm nút giữa -> màn Luyện tập zoom từ nút đó ra (TabScreen đọc cờ).
+    goToTab(t.href as TabHref, pathname, !!exam, t.center === true);
   };
 
   return (
@@ -61,7 +125,9 @@ export function BottomNav() {
           paddingBottom: Math.max(insets.bottom, 6),
         },
       ]}
+      onLayout={(e) => setBarWidth(e.nativeEvent.layout.width)}
     >
+      <Animated.View style={[styles.blob, { backgroundColor: colors.accent }, blobStyle]} />
       {TABS.map((t) => {
         const active = isActive(pathname, t.href);
         if (t.center) {
@@ -69,21 +135,28 @@ export function BottomNav() {
             <Pressable
               key={t.href}
               onPress={() => go(t)}
+              onPressIn={() => {
+                centerScale.value = withSpring(0.86, { stiffness: 400, damping: 15 });
+              }}
+              onPressOut={() => {
+                centerScale.value = withSpring(1, { stiffness: 300, damping: 11 });
+              }}
               accessibilityLabel={t.label}
               accessibilityRole="button"
               style={styles.centerCell}
             >
-              <View
+              <Animated.View
                 style={[
                   styles.centerCircle,
                   {
                     backgroundColor: colors.accent,
                     shadowColor: colors.accent,
                   },
+                  centerStyle,
                 ]}
               >
                 <Ionicons name={t.icon} size={26} color={colors.onAccent} />
-              </View>
+              </Animated.View>
               <Text
                 style={[
                   styles.label,
@@ -104,10 +177,11 @@ export function BottomNav() {
             accessibilityRole="button"
             style={styles.cell}
           >
-            <Ionicons
+            <TabIcon
               name={active ? t.iconActive : t.icon}
               size={24}
               color={active ? colors.accent : colors.muted}
+              active={active}
             />
             <Text
               style={[
@@ -131,6 +205,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     borderTopWidth: 1,
     paddingTop: 6,
+  },
+  blob: {
+    position: 'absolute',
+    left: 0,
+    top: 4,
+    width: BLOB_W,
+    height: BLOB_H,
+    borderRadius: BLOB_H / 2,
   },
   cell: {
     flex: 1,

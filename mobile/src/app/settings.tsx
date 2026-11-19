@@ -28,6 +28,7 @@ import {
 } from '../notifications';
 import { TEXT_SIZE_LABELS, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
+import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
 
 const QUIT_REASON_OPTIONS: { value: '' | QuitReason; label: string }[] = [
@@ -301,6 +302,7 @@ export default function SettingsScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+      <TabScreen href="/settings">
       <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
@@ -568,6 +570,7 @@ export default function SettingsScreen() {
           {brand.name} — Luyện TOEIC IELTS (mobile)
         </Text>
       </ScrollView>
+      </TabScreen>
       <BottomNav />
     </SafeAreaView>
   );

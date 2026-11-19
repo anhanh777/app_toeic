@@ -1,6 +1,6 @@
 // Luyện tập — port của frontend/src/pages/Practice.tsx.
 // 2 tab: luyện theo Bộ đề / luyện theo Part (Section/Passage với IELTS).
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type ElementRef } from 'react';
 import { router } from 'expo-router';
 import {
   ActivityIndicator,
@@ -17,6 +17,7 @@ import { useExam } from '../exam';
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
+import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
 import { partLabel, partNameFor } from '../lib';
 import { partName, sectionOf } from '../components/QuestionView';
@@ -65,8 +66,27 @@ export default function PracticeScreen() {
   const partList: PartInfo[] = parts.length ? parts : [1, 2, 3, 4, 5, 6, 7].map((p) => ({ part: p, count: 0 }));
   const pad = horizontalPadding(width);
 
-  const openSet = useCallback((id: string) => {
-    router.push({ pathname: '/test-set/[id]', params: { id } });
+  // Ref tới thẻ đề trong FlatList — để đo vị trí cho HeroFlight.
+  const cardRefs = useRef(new Map<string, ElementRef<typeof View>>());
+
+  const openSet = useCallback((id: string, title?: string) => {
+    // Đo vị trí thẻ đã bấm để màn chi tiết "bay" thẻ từ đúng chỗ đó
+    // (HeroFlight) — đo lỗi thì mở thường, không chặn.
+    const node = cardRefs.current.get(id);
+    if (node) {
+      node.measure((x, y, w, h, pageX, pageY) => {
+        if (w > 0 && h > 0) {
+          router.push({
+            pathname: '/test-set/[id]',
+            params: { id, hero: JSON.stringify({ x: pageX, y: pageY, w, h, t: Date.now(), title: title ?? '' }) },
+          });
+        } else {
+          router.push({ pathname: '/test-set/[id]', params: { id } });
+        }
+      });
+    } else {
+      router.push({ pathname: '/test-set/[id]', params: { id } });
+    }
   }, []);
   const openSetPicker = useCallback((p: number) => {
     router.push({ pathname: '/part-sets', params: { part: String(p), exam: ex } });
@@ -79,8 +99,12 @@ export default function PracticeScreen() {
       const pct = total ? Math.round((answered / total) * 100) : 0;
       return (
         <Pressable
+          ref={(v) => {
+            if (v) cardRefs.current.set(ts.id, v);
+            else cardRefs.current.delete(ts.id);
+          }}
           style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
-          onPress={() => openSet(ts.id)}
+          onPress={() => openSet(ts.id, ts.title)}
         >
           <View style={styles.cardHead}>
             <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(16) }]}>{ts.title}</Text>
@@ -184,6 +208,7 @@ export default function PracticeScreen() {
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+      <TabScreen href="/practice">
       <View style={[styles.container, { paddingHorizontal: pad }]}>
         <View style={styles.header}>
           <BackButton />
@@ -256,6 +281,7 @@ export default function PracticeScreen() {
           />
         )}
       </View>
+      </TabScreen>
       <BottomNav />
     </SafeAreaView>
   );
