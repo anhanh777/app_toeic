@@ -71,7 +71,7 @@ export default function Writing() {
           <h2>{task.title} <span className="pill">{task.type === 'task1' ? 'Task 1' : 'Task 2'}</span></h2>
           <p>{task.prompt}</p>
           {task.chartData && <ChartTable data={task.chartData} />}
-          <p>⏱ Còn lại: <strong>{fmtClock(left)}</strong> · {wordCount(content)} từ (tối thiểu {minWords})</p>
+          <p>⏱️ Còn lại: <strong>{fmtClock(left)}</strong> · {wordCount(content)} từ (tối thiểu {minWords})</p>
           <div className="btn-row">
             <button className="btn btn-sm" disabled={running} onClick={() => setRunning(true)}>Bắt đầu làm bài</button>
           </div>

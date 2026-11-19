@@ -106,11 +106,11 @@ export default function TestSetDetail() {
           <p className="muted">🏆 Đã thi thử {att.count} lần{att.bestBand != null ? <> · Band cao nhất {att.bestBand}</> : ''}{att.lastBand != null ? <> · Gần nhất Band {att.lastBand}</> : ''}</p>
         )}
         {isIelts && (
-          <p className="muted">⏱ Thi thử {fullMinutes} phút · Luyện tập không bấm giờ</p>
+          <p className="muted">⏱️ Thi thử {fullMinutes} phút · Luyện tập không bấm giờ</p>
         )}
         {ts.missing.length > 0 && (
           <p style={{ color: 'var(--amber)', marginTop: '.6rem' }}>
-            ⚠ Đề chưa đủ câu chuẩn: {ts.missing.map(m => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}. Bạn vẫn có thể luyện các câu hiện có.
+            ⚠️ Đề chưa đủ câu chuẩn: {ts.missing.map(m => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}. Bạn vẫn có thể luyện các câu hiện có.
           </p>
         )}
         <div className="btn-row">

@@ -53,7 +53,7 @@ export default function Practice() {
           {ts.parts.map(p => `${partLabel(p.part, ex)} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
         </p>
         {isIelts && lr && (
-          <p className="muted" style={{ margin: 0 }}>🎧 {lr.listening.answered}/{lr.listening.total} · 📖 {lr.reading.answered}/{lr.reading.total} · ⏱ 90 phút thi thử</p>
+          <p className="muted" style={{ margin: 0 }}>🎧 {lr.listening.answered}/{lr.listening.total} · 📖 {lr.reading.answered}/{lr.reading.total} · ⏱️ 90 phút thi thử</p>
         )}
         {isIelts && ts.byType && ts.byType.length > 0 && (
           <p className="muted" style={{ margin: 0 }}>
@@ -65,7 +65,7 @@ export default function Practice() {
           <p className="muted" style={{ margin: 0 }}>🏆 Thi thử {att.count} lần{att.bestBand != null ? <> · Band cao nhất {att.bestBand}</> : ''}{att.lastBand != null ? <> · Gần nhất Band {att.lastBand}</> : ''}</p>
         )}
         {ts.missing.length > 0 && (
-          <p style={{ color: 'var(--amber)' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}</p>
+          <p style={{ color: 'var(--amber)' }}>⚠️ Chưa đủ câu: {ts.missing.map(m => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}</p>
         )}
         {ts.progress ? (
           <div>

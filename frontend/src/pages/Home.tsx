@@ -26,7 +26,7 @@ export default function Home() {
   const bestBand = stats?.bandHistory?.length ? Math.max(...stats.bandHistory.map(b => b.overallBand)) : null;
   const latestBand = stats?.bandHistory?.length ? stats.bandHistory[stats.bandHistory.length - 1] : null;
 
-  const hearts = '❤'.repeat(Math.min(7, Math.max(0, stats?.streakDays ?? 0))) || '♡';
+  const hearts = '❤️'.repeat(Math.min(7, Math.max(0, stats?.streakDays ?? 0))) || '♡';
   // IELTS: trang chủ chính là màn hình "Hôm nay" (Giai đoạn 1, v3).
   // TOEIC: giữ nguyên trang chủ cũ — người dùng TOEIC vào "Hôm nay"
   // bằng link nav (scope update 2026-11-16). Đặt sau mọi hook để

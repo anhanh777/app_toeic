@@ -304,7 +304,7 @@ export default function IeltsTestSetAdmin() {
               ⬆ Upload {IELTS_PART_LABELS[p]}
               <input type="file" accept=".json,application/json" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) void onPartFile(f, p); e.target.value = ''; }} />
             </label>
-            <button className="btn" onClick={() => { setManualPart(p); setManual(emptyManual); setPreview(null); }}>✏ Thêm câu thủ công</button>
+            <button className="btn" onClick={() => { setManualPart(p); setManual(emptyManual); setPreview(null); }}>✏️ Thêm câu thủ công</button>
             <button className="btn ghost" onClick={() => void toggleList(p)}>{listPart === p ? 'Ẩn danh sách' : 'Xem danh sách câu'}</button>
           </div>
           <p className="muted">Nút này chỉ nhận file JSON câu hỏi IELTS (part {p}, đúng 19 dạng). Nhận diện bằng AI hiện chưa hỗ trợ đề IELTS.</p>

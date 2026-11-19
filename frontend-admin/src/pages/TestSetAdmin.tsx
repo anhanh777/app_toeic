@@ -363,7 +363,7 @@ export default function TestSetAdmin() {
           {' '}• Tạo ngày {ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : '—'}
         </p>
         {ts.missing.length > 0 && (
-          <p style={{ color: 'var(--amber)' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
+          <p style={{ color: 'var(--amber)' }}>⚠️ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
         )}
         <div className="btn-row">
           <button className="btn gold" onClick={togglePublish}>{ts.isPublished ? '⏸ Bỏ phát hành' : '🚀 Phát hành đề'}</button>
@@ -430,7 +430,7 @@ export default function TestSetAdmin() {
           <Modal title={`Xem trước AI — ${aiPreview.fileName}`} wide onClose={() => { setAiPreview(null); setAkFile(null); setAkResult(null); setAkApplied(null); }}>
             <p>{aiPreview.questions.length} câu parse được • {aiLiveErrorCount} câu còn lỗi</p>
             {aiPreview.warnings.length > 0 && (
-              <p style={{ color: 'var(--amber)' }}>⚠ {aiPreview.warnings.join(' ')}</p>
+              <p style={{ color: 'var(--amber)' }}>⚠️ {aiPreview.warnings.join(' ')}</p>
             )}
             {aiPreview.structure?.mode === 'split' && (
               <>
@@ -442,7 +442,7 @@ export default function TestSetAdmin() {
                   {' · '}{aiPreview.structure.answerKeyFound ? 'Đã thấy bảng đáp án' : 'Chưa thấy bảng đáp án'}
                 </p>
                 {(aiPreview.structure.warnings ?? []).length > 0 && (
-                  <p style={{ color: 'var(--amber)' }}>⚠ {(aiPreview.structure.warnings ?? []).join(' ')}</p>
+                  <p style={{ color: 'var(--amber)' }}>⚠️ {(aiPreview.structure.warnings ?? []).join(' ')}</p>
                 )}
               </>
             )}
@@ -476,7 +476,7 @@ export default function TestSetAdmin() {
                       </td>
                       <td>
                         {q.confidence === 'low' && (
-                          <span style={{ color: 'var(--amber)', fontSize: '0.85rem' }}>⚠ Kiểm tra lại</span>
+                          <span style={{ color: 'var(--amber)', fontSize: '0.85rem' }}>⚠️ Kiểm tra lại</span>
                         )}
                       </td>
                       <td>{reason}</td>
@@ -512,7 +512,7 @@ export default function TestSetAdmin() {
               <>
                 <p>Đã đọc được {akResult.found} đáp án (nguồn: {akResult.source === 'ai' ? 'AI' : 'tự động'})</p>
                 {akResult.warnings.length > 0 && (
-                  <p style={{ color: 'var(--amber)' }}>⚠ {akResult.warnings.join(' ')}</p>
+                  <p style={{ color: 'var(--amber)' }}>⚠️ {akResult.warnings.join(' ')}</p>
                 )}
                 {akPreviewText && <p className="muted">{akPreviewText}</p>}
                 <div className="btn-row">
@@ -546,7 +546,7 @@ export default function TestSetAdmin() {
               ⬆ Upload Part này
               <input type="file" accept=".json,application/json" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) void onPartFile(f, p); e.target.value = ''; }} />
             </label>
-            <button className="btn" onClick={() => { setManualPart(p); setManual(emptyManual); setPreview(null); }}>✏ Thêm câu thủ công</button>
+            <button className="btn" onClick={() => { setManualPart(p); setManual(emptyManual); setPreview(null); }}>✏️ Thêm câu thủ công</button>
             <button className="btn ghost" onClick={() => void toggleList(p)}>{listPart === p ? 'Ẩn danh sách' : 'Xem danh sách câu'}</button>
           </div>
           <p className="muted">Nút này chỉ nhận file JSON. File Word/PDF/ảnh thì dùng mục 🤖 Nhận diện bằng AI ở phía trên trang này.</p>

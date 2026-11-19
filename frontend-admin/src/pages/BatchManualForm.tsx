@@ -381,13 +381,13 @@ export default function BatchManualForm({
       {msg && <div className="success">{msg}</div>}
       {localErrors.length > 0 && (
         <div className="panel">
-          <h4>⚠ Câu chưa hợp lệ (kiểm tra trước khi lưu — vẫn gửi tất cả, máy chủ sẽ báo lại)</h4>
+          <h4>⚠️ Câu chưa hợp lệ (kiểm tra trước khi lưu — vẫn gửi tất cả, máy chủ sẽ báo lại)</h4>
           <ul>{localErrors.map((e, i) => <li key={i}>{e}</li>)}</ul>
         </div>
       )}
       {serverErrors.length > 0 && (
         <div className="panel">
-          <h4>⚠ Lỗi máy chủ trả về</h4>
+          <h4>⚠️ Lỗi máy chủ trả về</h4>
           <ul>{serverErrors.map((e, i) => <li key={i}>Câu {e.index + 1} trong đợt gửi: {e.reason}</li>)}</ul>
         </div>
       )}

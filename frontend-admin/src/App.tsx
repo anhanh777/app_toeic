@@ -113,7 +113,7 @@ function Layout() {
               </div>
               <div className="sidebar-account-actions">
                 <button type="button" className="btn secondary btn-sm"
-                  onClick={() => { logout(); nav('/login'); }}>🚪 Đăng xuất</button>
+                  onClick={() => { logout(); nav('/login'); }}>↪ Đăng xuất</button>
                 <ThemeToggle />
               </div>
             </>

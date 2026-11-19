@@ -163,7 +163,7 @@ function WritingBaseline() {
           <h3 style={{ marginTop: '1rem' }}>{task.title}</h3>
           <p>{task.prompt}</p>
           {task.chartData && <ChartTable data={task.chartData} />}
-          <p>⏱ Còn lại: <strong>{fmtClock(left)}</strong> · {wordCount(content)} từ</p>
+          <p>⏱️ Còn lại: <strong>{fmtClock(left)}</strong> · {wordCount(content)} từ</p>
           <div className="btn-row">
             <button className="btn btn-sm" disabled={running} onClick={() => setRunning(true)}>Bắt đầu làm bài</button>
           </div>
@@ -305,9 +305,9 @@ function SpeakingBaseline() {
       {activePrompt && (
         <div className="panel">
           <p><strong>Đang nói:</strong> {activePrompt.topic} (Part {activePrompt.part})</p>
-          {activePrompt.part === 2 && prepLeft > 0 && <p>⏱ Chuẩn bị: còn <strong>{fmtClock(prepLeft)}</strong></p>}
+          {activePrompt.part === 2 && prepLeft > 0 && <p>⏱️ Chuẩn bị: còn <strong>{fmtClock(prepLeft)}</strong></p>}
           {activePrompt.part === 2 && <p className="muted">Nói 1:30–2:00. Nếu dừng quá 5 giây, hít một hơi rồi nói tiếp — đừng bỏ dở.</p>}
-          <p>⏱ Đã nói: <strong>{fmtClock(elapsed)}</strong></p>
+          <p>⏱️ Đã nói: <strong>{fmtClock(elapsed)}</strong></p>
           <div className="btn-row">
             {!recording
               ? <button className="btn btn-sm" onClick={() => void startRec()}>● Bắt đầu ghi âm</button>

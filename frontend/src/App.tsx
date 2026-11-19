@@ -276,7 +276,7 @@ function Layout() {
                     </div>
                     <Link className="profile-menu-item" to="/profile" onClick={() => setProfileOpen(false)}>👤 Hồ sơ &amp; Cài đặt</Link>
                     <button type="button" className="profile-menu-item"
-                      onClick={() => { setProfileOpen(false); logout(); nav('/login'); }}>🚪 Đăng xuất</button>
+                      onClick={() => { setProfileOpen(false); logout(); nav('/login'); }}>↪ Đăng xuất</button>
                   </div>
                 </>
               )}

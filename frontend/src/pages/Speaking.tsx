@@ -139,9 +139,9 @@ export default function Speaking() {
       {active && (
         <div className="card">
           <h2>🎙️ Đang luyện: {active.topic} (Part {active.part})</h2>
-          {active.part === 2 && prepLeft > 0 && <p>⏱ Chuẩn bị: còn <strong>{fmtClock(prepLeft)}</strong></p>}
+          {active.part === 2 && prepLeft > 0 && <p>⏱️ Chuẩn bị: còn <strong>{fmtClock(prepLeft)}</strong></p>}
           {active.part === 2 && <p className="muted">Nói 1:30–2:00. Nếu dừng quá 5 giây, hít một hơi rồi nói tiếp — đừng bỏ dở.</p>}
-          <p>⏱ Đã nói: <strong>{fmtClock(elapsed)}</strong></p>
+          <p>⏱️ Đã nói: <strong>{fmtClock(elapsed)}</strong></p>
           <div className="btn-row">
             {!recording
               ? <button className="btn" onClick={() => void startRec()}>● Bắt đầu ghi âm</button>

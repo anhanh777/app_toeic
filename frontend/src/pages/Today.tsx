@@ -419,7 +419,7 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
         <>
           <p>Đọc lướt đoạn văn dưới đây trong <strong>90 giây</strong>, rồi tóm tắt mỗi đoạn bằng <strong>5–8 từ</strong>.</p>
           <div className="passage" style={{ maxHeight: '220px', overflow: 'auto' }}>{passage || 'Đang tải đoạn văn mẫu (TS-028)…'}</div>
-          <p>⏱ Còn lại: <strong>{fmtClock(left)}</strong></p>
+          <p>⏱️ Còn lại: <strong>{fmtClock(left)}</strong></p>
           <div className="btn-row">
             <button className="btn btn-sm" disabled={started} onClick={startSkim}>Bắt đầu 90 giây</button>
           </div>
