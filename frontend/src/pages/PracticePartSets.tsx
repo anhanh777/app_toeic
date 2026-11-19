@@ -36,10 +36,9 @@ export default function PracticePartSets() {
     api.testSets(exam).then(setTestSets).catch(setError).finally(() => setLoading(false));
   }, [exam, partValid]);
 
-  // Mới nhất trước: createdAt giảm dần, không có createdAt thì id giảm dần.
-  const sorted = [...testSets].sort((a, b) =>
-    (Date.parse(b.createdAt || '') || 0) - (Date.parse(a.createdAt || '') || 0)
-    || (b.id < a.id ? -1 : b.id > a.id ? 1 : 0));
+  // Xếp theo tên (số tự nhiên: Test 04 trước Test 05) — giống lưới chọn đề
+  // thi thử, để dễ quét mắt thay vì thứ tự ngày tạo lộn xộn.
+  const sorted = [...testSets].sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true }));
 
   const title = isIelts
     ? `${partLabel(part, exam)} — ${sectionOf(part)}`
@@ -50,35 +49,19 @@ export default function PracticePartSets() {
 
   const renderSetCard = (ts: TestSet) => {
     const partCount = ts.parts.find(p => p.part === part)?.count ?? 0;
-    const total = ts.totalQuestions || 0;
     const disabled = partCount === 0;
     const go = () => { if (!disabled) nav(`/practice/session?part=${part}&testSetId=${ts.id}&exam=${exam}${questionType ? `&questionType=${questionType}` : ''}`); };
     return (
-      <div
+      <button
         key={ts.id}
-        className="card part-card"
-        role={disabled ? undefined : 'button'}
-        tabIndex={disabled ? undefined : 0}
-        aria-disabled={disabled}
+        type="button"
+        className="pick-box"
+        disabled={disabled}
         onClick={go}
-        onKeyDown={e => { if (!disabled && (e.key === 'Enter' || e.key === ' ')) go(); }}
-        style={disabled ? { opacity: 0.6 } : undefined}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '.5rem', flexWrap: 'wrap' }}>
-          <strong>{ts.title} <span className="muted" style={{ fontWeight: 500 }}>· {partCount} câu {shortLabel}</span></strong>
-          {!ts.isPublished && <span className="pill">NHÁP</span>}
-        </div>
-        <p className="muted" style={{ margin: 0 }}>{total} câu cả đề</p>
-        {disabled ? (
-          <p className="muted" style={{ margin: 0 }}>Chưa có câu</p>
-        ) : (
-          <div className="btn-row">
-            <button className="btn btn-sm" onClick={e => { e.stopPropagation(); go(); }}>
-              ▶ Luyện {shortLabel}
-            </button>
-          </div>
-        )}
-      </div>
+        <b>{ts.title}{!ts.isPublished && <> <span className="pill">NHÁP</span></>}</b>
+        <span>{disabled ? 'Chưa có câu' : `${partCount} câu ${shortLabel}`}</span>
+      </button>
     );
   };
 
@@ -105,13 +88,13 @@ export default function PracticePartSets() {
         bookGroups.map(g => (
           <details className="book-group" key={g.label} open>
             <summary>{g.label} <span className="muted">({g.sets.length} đề)</span></summary>
-            <div className="grid" style={{ marginTop: '.5rem' }}>
+            <div className="pick-grid" style={{ marginTop: '.5rem' }}>
               {g.sets.map(renderSetCard)}
             </div>
           </details>
         ))
       ) : (
-        <div className="grid">
+        <div className="pick-grid">
           {sorted.map(renderSetCard)}
         </div>
       )}
