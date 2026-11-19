@@ -717,7 +717,7 @@ tbody tr:hover{background:var(--surface-soft)}
    gio bi day xuong duoi. Luoi ngan thi cot tu co lai, khong thua cho.
    (overflow-y:auto tren .room-side chi la luoi an toan cho man hinh
    qua thap — binh thuong chi thanh cuon cua palette hien ra.) */
-.room-side-palette{flex:1 1 auto; min-height:0; overflow-y:auto; scrollbar-width:thin}
+.room-side-palette{flex:1 1 auto; min-height:0; overflow-y:auto; scrollbar-width:thin; padding:.35rem}
 .room-side-controls, .room-side-actions{flex-shrink:0; margin-top:.9rem; padding-top:.9rem; border-top:1px solid var(--border)}
 .room-side-actions{display:flex; flex-direction:column; gap:.6rem; align-items:stretch}
 .room-side-actions .progress{align-self:flex-start}
@@ -757,7 +757,7 @@ tbody tr:hover{background:var(--surface-soft)}
 .q-palette-sidegroup .q-palette-group{margin-top:.35rem}
 /* Thanh so cau (kieu YouPass): bam so de nhay toi cau do. Nam trong
    practice-bar (sticky duoi), 1 hang rieng, cuon ngang khi nhieu cau. */
-.q-palette{display:flex; gap:.3rem; flex-wrap:nowrap; overflow-x:auto; padding:.3rem 0; flex-basis:100%; scrollbar-width:thin; align-items:center}
+.q-palette{display:flex; gap:.3rem; flex-wrap:nowrap; overflow-x:auto; padding:.3rem .35rem; flex-basis:100%; scrollbar-width:thin; align-items:center}
 .q-palette-btn{
   min-width:2.2rem; height:2.2rem; padding:0 .4rem; border-radius:999px; flex:0 0 auto;
   border:1px solid var(--border); background:var(--surface); color:var(--ink);
