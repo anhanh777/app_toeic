@@ -89,7 +89,7 @@ export function IeltsToolsBar({ onHighlight, onNotes, onClearHighlights, hlSuppo
 }) {
   return (
     <div className="ielts-tools" role="toolbar" aria-label="Công cụ luyện tập">
-      <span className="ielts-tools-label">🛠 Công cụ:</span>
+      <span className="ielts-tools-label">🛠️ Công cụ:</span>
       <button type="button" className="btn btn-sm secondary" onClick={onHighlight}
         disabled={!hlSupported}
         title={hlSupported ? 'Bôi đen đoạn chữ rồi bấm để tô vàng (phím H)' : 'Trình duyệt này chưa hỗ trợ tô màu chữ'}>

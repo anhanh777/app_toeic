@@ -138,7 +138,7 @@ export default function MockTest() {
               <p><span className="stat-num">{testSet.totalQuestions}</span> câu • {fullMinutes} phút</p>
               <p className="muted">{testSet.parts.map(p => `${partLabel(p.part, exam)} ${p.count}`).join(' · ')}</p>
               {testSet.missing.length > 0 && (
-                <p style={{ color: 'var(--amber)' }}>⚠ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `${partLabel(m.part, exam)} thiếu ${m.missing} câu`).join(', ')}.</p>
+                <p style={{ color: 'var(--amber)' }}>⚠️ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `${partLabel(m.part, exam)} thiếu ${m.missing} câu`).join(', ')}.</p>
               )}
             </div>
           ) : <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải thông tin đề thi…" />}
@@ -454,7 +454,7 @@ export default function MockTest() {
       {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
           đếm ngược tách thành chip cố định góc phải, luôn thấy được khi
           cuộn (hết giờ là tự nộp bài nên không được để mất đồng hồ). */}
-      <span className={`timer-chip${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱ {fmt(secondsLeft)}</span>
+      <span className={`timer-chip${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱️ {fmt(secondsLeft)}</span>
       <ErrorBox error={error} />
       <div className="paper">
         {renderPaper()}
@@ -470,9 +470,11 @@ export default function MockTest() {
           </span>
         )}
         <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
-        <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
-          onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '🚪 Thoát'}</button>
-        <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
+        <span className="btn-row" style={{ margin: 0 }}>
+          <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
+            onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '← Thoát'}</button>
+          <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
+        </span>
       </div>
       <p className="muted" style={{ margin: '.45rem 0 0' }}>Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>
     </div>

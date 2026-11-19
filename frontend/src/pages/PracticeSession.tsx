@@ -728,7 +728,7 @@ export default function PracticeSession() {
       </div>
       {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
           tách thành chip cố định góc phải, luôn thấy được khi cuộn. */}
-      {isIelts && <span className="timer-chip" title="Thời gian đã luyện trong buổi này">⏱ {fmtClock(elapsed)}</span>}
+      {isIelts && <span className="timer-chip" title="Thời gian đã luyện trong buổi này">⏱️ {fmtClock(elapsed)}</span>}
       {usePartAudio && (
         <div className="part-audio">
           <ListeningAudio audioUrl={partMedia[part]} ttsText="" stopKey={`part-${part}`} onError={setError} />
@@ -763,12 +763,14 @@ export default function PracticeSession() {
           </span>
         )}
         <span className="progress">Đã làm {doneCount}/{visibleQuestions.length} • Đúng {correctCount}</span>
-        <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>🚪 Thoát</button>
-        {gradingMode === 'submit-all' && !submittedAll ? (
-          <button className="btn btn-sm" disabled={answeredCount === 0} onClick={() => void submitAll()}>Nộp tất cả · {answeredCount}/{visibleQuestions.length} câu</button>
-        ) : (
-          <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
-        )}
+        <span className="btn-row" style={{ margin: 0 }}>
+          <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>← Thoát</button>
+          {gradingMode === 'submit-all' && !submittedAll ? (
+            <button className="btn btn-sm" disabled={answeredCount === 0} onClick={() => void submitAll()}>Nộp tất cả · {answeredCount}/{visibleQuestions.length} câu</button>
+          ) : (
+            <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
+          )}
+        </span>
       </div>
       {isIelts && notePanelOpen && (
         <IeltsNotePanel

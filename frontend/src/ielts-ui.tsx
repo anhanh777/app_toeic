@@ -140,7 +140,7 @@ export function IeltsAnswerControl({ q, value, onChange, onCommit, disabled, gra
         </select>
         {type === 'matching_headings' && duplicateHeading && (
           <p style={{ color: 'var(--amber)', margin: '.4rem 0 0' }}>
-            ⚠ Thi thật được dùng lại 1 tiêu đề, nhưng 2 đoạn cùng 1 tiêu đề thường là 1 câu sai — kiểm tra lại nhé.
+            ⚠️ Thi thật được dùng lại 1 tiêu đề, nhưng 2 đoạn cùng 1 tiêu đề thường là 1 câu sai — kiểm tra lại nhé.
           </p>
         )}
         {graded && graded.correctLabel && (

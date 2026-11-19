@@ -677,7 +677,12 @@ tbody tr:hover{background:var(--surface-soft)}
   border-top:1px solid var(--border); padding:.5rem 0 .3rem; margin-top:.8rem;
   display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap;
 }
-.practice-bar .progress{font-weight:700; color:var(--ink)}
+.practice-bar .progress{
+  font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums;
+  display:inline-flex; align-items:center; gap:.35rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:999px;
+  padding:.35rem .8rem;
+}
 /* Thanh so cau (kieu YouPass): bam so de nhay toi cau do. Nam trong
    practice-bar (sticky duoi), 1 hang rieng, cuon ngang khi nhieu cau. */
 .q-palette{display:flex; gap:.3rem; flex-wrap:nowrap; overflow-x:auto; padding:.2rem 0; flex-basis:100%; scrollbar-width:thin}
@@ -808,11 +813,11 @@ tbody tr:hover{background:var(--surface-soft)}
    ở đầu khối nội dung bên trái (sau ảnh, trước chữ câu hỏi). */
 .paper .audio-box{
   display:flex; flex-direction:column; align-items:stretch; gap:.4rem;
-  padding:.5rem .6rem; margin:.4rem 0; border-radius:10px; box-shadow:none;
+  padding:.5rem .6rem; margin:.4rem 0; border-radius:16px; box-shadow:none;
 }
 .paper .audio-box audio{display:none}
 .paper .audio-box .listen-btn{
-  padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:10px;
+  padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:12px;
   box-shadow:none; text-align:left;
 }
 .listen-progress{height:8px; border-radius:4px; background:var(--track); overflow:hidden; cursor:pointer; touch-action:none}
@@ -830,11 +835,11 @@ tbody tr:hover{background:var(--surface-soft)}
 .part-audio{margin:.1rem 0 .6rem}
 .part-audio .audio-box{
   display:flex; flex-direction:column; align-items:stretch; gap:.4rem;
-  padding:.5rem .6rem; border-radius:10px; box-shadow:none;
+  padding:.5rem .6rem; border-radius:16px; box-shadow:none;
 }
 .part-audio .audio-box audio{display:none}
 .part-audio .audio-box .listen-btn{
-  padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:10px;
+  padding:.6rem 1rem; font-size:1rem; font-weight:700; border-radius:12px;
   box-shadow:none; text-align:left;
 }
 .part-audio > p{margin:.3rem 0 0}
