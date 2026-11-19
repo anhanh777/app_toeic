@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { api, type Question, type TestSet } from '../api';
+import { api, type Attempt, type Question, type TestSet } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
-import { partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
+import { attemptStatsFor, partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
 import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitGroupSegments } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 import { LoadingLine, useUiSettings } from '../uiSettings';
@@ -97,8 +97,13 @@ export default function MockTest() {
   // Danh sách đề để chọn ở màn hình Thi thử (khi mở /mock trực tiếp,
   // chưa có testSetId trên URL).
   const [testSets, setTestSets] = useState<TestSet[]>([]);
+  // Lich su thi thu (de dem so lan da lam moi de o luoi chon de).
+  const [history, setHistory] = useState<Attempt[]>([]);
   useEffect(() => {
-    if (!testSetId) api.testSets(exam).then(setTestSets).catch(() => undefined);
+    if (!testSetId) {
+      api.testSets(exam).then(setTestSets).catch(() => undefined);
+      api.statsHistory(exam).then(setHistory).catch(() => undefined);
+    }
   }, [exam, testSetId]);
 
   useEffect(() => {
@@ -230,12 +235,16 @@ export default function MockTest() {
                 <b>Toàn bộ ngân hàng</b>
                 <span>Trộn câu từ tất cả các đề</span>
               </div>
-              {[...testSets].sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true })).map(s => (
-                <button key={s.id} type="button" className="pick-box" onClick={() => nav(`/mock?testSetId=${s.id}&exam=${exam}`)}>
-                  <b>{s.title}</b>
-                  <span>{s.totalQuestions} câu • {fullMinutes} phút</span>
-                </button>
-              ))}
+              {[...testSets].sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true })).map(s => {
+                const doneCount = attemptStatsFor(history, s.id).count;
+                return (
+                  <button key={s.id} type="button" className="pick-box" onClick={() => nav(`/mock?testSetId=${s.id}&exam=${exam}`)}>
+                    <b>{s.title}</b>
+                    <span>{s.totalQuestions} câu • {fullMinutes} phút</span>
+                    <span className={doneCount > 0 ? 'pick-box-attempts' : undefined}>{doneCount > 0 ? `Đã làm ${doneCount} lần` : 'Chưa làm'}</span>
+                  </button>
+                );
+              })}
             </div>
             {testSets.length === 0 && <p className="muted">Đang tải danh sách đề…</p>}
             <p className="muted">Bấm vào một đề để xem chi tiết rồi thi cả đề đó; bấm “Bắt đầu thi” để thi từ toàn bộ ngân hàng.</p>

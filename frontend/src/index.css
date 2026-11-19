@@ -223,6 +223,7 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 .pick-box--static:hover{border-color:var(--border)}
 .pick-box b{font-size:.95rem}
 .pick-box span{font-size:.82rem; color:var(--muted)}
+.pick-box span.pick-box-attempts{color:var(--accent-dark); font-weight:700}
 .pick-box--selected span{color:var(--ink-soft)}
 .stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin:.9rem 0}
 .stat-box{background:var(--surface-soft); border:1px solid var(--border); border-radius:16px; padding:.7rem .9rem}
