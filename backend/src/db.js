@@ -2336,20 +2336,37 @@ function listWritingSubmissions(userId) {
 
 function mapSpeakingPrompt(row) {
   if (!row) return null;
-  let cueCard = null;
+  let parsed = null;
   try {
-    cueCard = row.cue_card ? JSON.parse(row.cue_card) : null;
+    parsed = row.cue_card ? JSON.parse(row.cue_card) : null;
   } catch (_) {
-    cueCard = row.cue_card;
+    parsed = row.cue_card;
   }
-  return {
+  // Chuẩn hóa về đúng dạng client (web + mobile) đang render:
+  // SpeakingPrompt { id, part, topic, prompt, cueCard?: string,
+  //   bullets?: string[], questions?: string[] }.
+  // Dữ liệu gốc lưu cue_card theo 3 dạng: Part 1 = mảng câu hỏi,
+  // Part 2 = { topic, bullets }, Part 3 = { theme, questions }.
+  // Trả nguyên dạng thô khiến client render sai (object không render
+  // được thành <p>, bullets/questions không bao giờ hiện).
+  const out = {
     id: row.id,
     part: row.part,
     topic: row.topic || null,
     prompt: row.prompt,
-    cueCard,
     isSample: row.is_sample === 1,
   };
+  const strList = (v) => (Array.isArray(v) ? v.filter((x) => typeof x === 'string') : []);
+  if (Array.isArray(parsed)) {
+    out.questions = strList(parsed);
+  } else if (parsed && typeof parsed === 'object') {
+    if (typeof parsed.topic === 'string') out.cueCard = parsed.topic;
+    if (Array.isArray(parsed.bullets)) out.bullets = strList(parsed.bullets);
+    if (Array.isArray(parsed.questions)) out.questions = strList(parsed.questions);
+  } else if (typeof parsed === 'string' && parsed) {
+    out.cueCard = parsed;
+  }
+  return out;
 }
 
 function listSpeakingPrompts() {
@@ -2374,13 +2391,17 @@ function insertSpeakingPrompt({ id, part, topic, prompt, cueCard, isSample }) {
 
 function mapSpeakingRecording(row) {
   if (!row) return null;
+  const mimeType = row.mime_type || 'audio/webm';
   return {
     id: row.id,
     userId: row.user_id,
     promptId: row.prompt_id,
     part: row.part,
-    audioData: row.audio_data || null,
-    mimeType: row.mime_type || null,
+    // Trả data-URI để client phát trực tiếp (<audio src> trên web,
+    // expo-audio replace(uri) trên mobile). Trả base64 thô thì không
+    // phát được ở đâu cả.
+    audioData: row.audio_data ? `data:${mimeType};base64,${row.audio_data}` : null,
+    mimeType,
     durationSec: row.duration_sec != null ? row.duration_sec : null,
     isBaseline: row.is_baseline === 1,
     createdAt: row.created_at,

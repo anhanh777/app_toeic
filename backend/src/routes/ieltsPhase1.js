@@ -311,7 +311,7 @@ function badDayTaskIelts() {
     kind: 'speaking',
     title: 'Nói Part 1 — 5 phút',
     detail: prompt
-      ? `${prompt.prompt} ${Array.isArray(prompt.cueCard) ? prompt.cueCard.join(' ') : ''}`
+      ? `${prompt.prompt} ${Array.isArray(prompt.questions) ? prompt.questions.join(' ') : ''}`
       : 'Trả lời to thành tiếng 2–3 câu: What do you like to do in your free time?',
   };
 }
@@ -604,12 +604,10 @@ router.get('/ielts/writing/submissions', authMiddleware, (req, res) => {
 /* ---------------- Speaking ---------------- */
 
 router.get('/ielts/speaking/prompts', authMiddleware, (req, res) => {
-  const all = db.listSpeakingPrompts();
-  return res.json({
-    part1: all.filter((p) => p.part === 1),
-    part2: all.filter((p) => p.part === 2),
-    part3: all.filter((p) => p.part === 3),
-  });
+  // Trả mảng phẳng — cả 3 client (web Speaking, web Diagnostic baseline,
+  // mobile Speaking) đều gọi .filter() trên kết quả. Trả object
+  // { part1, part2, part3 } như trước làm cả 3 nơi crash.
+  return res.json(db.listSpeakingPrompts());
 });
 
 router.post('/ielts/speaking/recordings', authMiddleware, (req, res) => {
