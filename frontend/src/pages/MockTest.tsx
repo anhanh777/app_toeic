@@ -241,7 +241,7 @@ export default function MockTest() {
                   <button key={s.id} type="button" className="pick-box" onClick={() => nav(`/mock?testSetId=${s.id}&exam=${exam}`)}>
                     <b>{s.title}</b>
                     <span>{s.totalQuestions} câu • {fullMinutes} phút</span>
-                    <span className={doneCount > 0 ? 'pick-box-attempts' : undefined}>{doneCount > 0 ? `Đã làm ${doneCount} lần` : 'Chưa làm'}</span>
+                    {doneCount > 0 && <span className="pick-box-attempts">Đã làm {doneCount} lần</span>}
                   </button>
                 );
               })}
