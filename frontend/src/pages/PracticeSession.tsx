@@ -13,15 +13,16 @@
 // hiện lại sau khi đã nộp đáp án.
 // IELTS: Section N (Listening, part 1–4) / Passage N (Reading, part 5–7),
 // đủ dạng câu hỏi (T/F/NG, Y/N/NG, matching, điền từ có giới hạn số từ).
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
 import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
-import { IeltsAnswerControl } from '../ielts-ui';
-import { RootCausePicker, skillOfPart } from '../ielts-phase1';
+import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitListeningSegments } from '../ielts-ui';
+import { clearHighlights, highlightSelection, highlightSupported, IeltsNotePanel, IeltsToolsBar, useIeltsNotes } from '../ielts-tools';
+import { RootCausePicker, fmtClock, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
 
 type AnswerResult = { correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number };
@@ -52,6 +53,17 @@ export default function PracticeSession() {
   // Giải thích bị ẨN ở UI cho tới khi ghi xong nguyên nhân (xem renderQuestion).
   const [guessedById, setGuessedById] = useState<Record<string, boolean>>({});
   const [causeById, setCauseById] = useState<Record<string, string>>({});
+  // Phòng nghe kiểu YouPass: câu được đánh dấu (theo id câu) + câu đang làm
+  // (để highlight trên thanh số câu) — chỉ lưu trong phiên luyện.
+  const [flaggedById, setFlaggedById] = useState<Record<string, boolean>>({});
+  const [currentId, setCurrentId] = useState<string | null>(null);
+  // Đồng hồ đếm lên lúc luyện tập (IELTS-only, kiểu YouPass).
+  const [elapsed, setElapsed] = useState(0);
+  // Công cụ luyện tập (IELTS-only): ghi chú theo câu (lưu localStorage)
+  // + panel ghi chú + vùng tờ đề (để highlight chỉ tô chữ trong đề).
+  const { notesById, setNote } = useIeltsNotes();
+  const [notePanelOpen, setNotePanelOpen] = useState(false);
+  const paperRef = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [finished, setFinished] = useState(false);
@@ -76,6 +88,8 @@ export default function PracticeSession() {
     // Đổi buổi luyện (part / đề / exam) thì reset chế độ chấm về mặc định.
     setGradingMode('instant');
     setSubmittedAll(false);
+    setElapsed(0);
+    setCurrentId(null);
     if (testSetId) api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => undefined);
     // Luyện cả đề (part = 0) vẫn có Listening nên vẫn tải audio cấp Part.
     if (part <= 4) {
@@ -96,6 +110,46 @@ export default function PracticeSession() {
   const typeParam = params.get('questionType') || '';
   const [typeFilter, setTypeFilter] = useState(typeParam);
   useEffect(() => { setTypeFilter(typeParam); }, [typeParam]);
+
+  // Phím tắt công cụ (IELTS-only, chỉ ở phòng Luyện tập): H = tô vàng đoạn
+  // chữ đang bôi đen, N = mở ghi chú câu đang làm. Không bắt phím khi đang
+  // gõ trong ô nhập/textarea/select. Rời trang thì xóa highlight.
+  useEffect(() => {
+    if (!isIelts) return;
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      const tag = t?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (e.key === 'h' || e.key === 'H') {
+        if (highlightSelection(paperRef.current)) e.preventDefault();
+      } else if (e.key === 'n' || e.key === 'N') {
+        setNotePanelOpen(true);
+        e.preventDefault();
+      } else if (e.key === 'Escape') {
+        setNotePanelOpen(false);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      clearHighlights();
+    };
+  }, [isIelts]);
+
+  // Đồng hồ đếm lên: chạy khi đã tải xong câu hỏi và chưa kết thúc buổi.
+  useEffect(() => {
+    if (loading || finished || !questions.length) return;
+    const t = setInterval(() => setElapsed(s => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [loading, finished, questions.length]);
+
+  // Chọn đáp án cho 1 câu (mọi dạng điều khiển đều qua đây) + ghi nhận
+  // câu đang làm để highlight trên thanh số câu.
+  const selectAnswer = (q: Question, v: string) => {
+    setSelectedById(m => ({ ...m, [q.id]: v }));
+    setCurrentId(q.id);
+  };
+  const toggleFlag = (q: Question) => setFlaggedById(m => ({ ...m, [q.id]: !m[q.id] }));
   const availableTypes = [...new Set(questions.map(q => q.questionType || 'multiple_choice'))];
   const visibleQuestions = isIelts && typeFilter
     ? questions.filter(q => (q.questionType || 'multiple_choice') === typeFilter)
@@ -268,6 +322,134 @@ export default function PracticeSession() {
     else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n }] });
   });
 
+  // Hàng nộp đáp án + checkbox đoán mò của 1 câu — dùng chung cho câu
+  // render thường (renderQuestion) và câu trong khối ghi chú / bảng
+  // matching (renderGradingStrip). Logic y hệt như trước khi tách.
+  const renderSubmitRow = (q: Question) => {
+    const result = resultById[q.id];
+    const selected = selectedById[q.id] ?? '';
+    const qType = q.questionType || 'multiple_choice';
+    const overLimit = isFillIn(qType) && q.wordLimit != null && wordCount(selected) > q.wordLimit;
+    return (
+      <>
+        {/* Chế độ instant: nút "Nộp đáp án" từng câu như trước. Chế độ
+            submit-all: ẨN nút này (chấm chung ở thanh dưới), nhưng vẫn
+            giữ checkbox "Đoán mò" của IELTS để ghi nhận trước khi nộp. */}
+        {!result && (gradingMode === 'instant' || isIelts) && (
+          <div className="btn-row">
+            {gradingMode === 'instant' && (
+              <button className="btn btn-sm" disabled={!selected || overLimit} onClick={() => void submit(q)}>Nộp đáp án</button>
+            )}
+            {/* IELTS-only: đánh dấu đoán mò — kể cả làm đúng mà đoán mò
+                thì vẫn phải ghi nguyên nhân trước khi xem giải thích. */}
+            {isIelts && (
+              <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.3rem', fontWeight: 500, margin: 0 }}>
+                <input type="checkbox" checked={!!guessedById[q.id]} disabled={submittedAll}
+                  onChange={e => setGuessedById(m => ({ ...m, [q.id]: e.target.checked }))} />
+                Đoán mò 🤔
+              </label>
+            )}
+          </div>
+        )}
+        {/* Submit-all: câu chưa làm thì không gọi API chấm (backend trả
+            400 với đáp án MC rỗng) nên không có kết quả — chỉ báo là
+            chưa làm và tính sai, KHÔNG lộ đáp án đúng của câu đó. */}
+        {submittedAll && !result && (
+          <p style={{ color: 'var(--red-ink)', fontWeight: 700, margin: '.5rem 0 0' }}>❌ Chưa làm — tính là sai</p>
+        )}
+      </>
+    );
+  };
+
+  // Khối kết quả của 1 câu (đúng/sai + cổng nguyên nhân gốc + giải thích
+  // + transcript) — dùng chung cho câu render thường và khối nhóm.
+  const renderQuestionResult = (q: Question) => {
+    const result = resultById[q.id];
+    if (!result) return null;
+    const qType = q.questionType || 'multiple_choice';
+    return (
+      <div className="exam-q-result">
+        <p style={{ color: result.correct ? 'var(--green-ink)' : 'var(--red-ink)', fontWeight: 700 }}>
+          {/* list_selection: đáp án đúng là tập nhãn, hiển thị "A, C". */}
+          {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${isMultiAnswer(qType) ? (parseSelectedLabels(result.correctLabel).join(', ') || result.correctText || '') : (result.correctLabel ?? result.correctText ?? '')}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
+        </p>
+        {(() => {
+          // IELTS-only: cổng giải thích — câu sai HOẶC đoán mò thì ẨN
+          // giải thích cho tới khi người học chọn + ghi nguyên nhân
+          // gốc (POST /api/ielts/error-log). Giải thích đã có sẵn
+          // trong API response, chỉ ẩn ở UI. TOEIC: hiện như cũ.
+          const needsCause = isIelts && (!result.correct || !!guessedById[q.id]);
+          const causeLogged = !!causeById[q.id];
+          if (needsCause && !causeLogged) {
+            return (
+              <RootCausePicker
+                skill={skillOfPart(q.part)}
+                questionId={q.id}
+                questionType={q.questionType}
+                guessed={!!guessedById[q.id]}
+                onLogged={code => setCauseById(m => ({ ...m, [q.id]: code }))}
+              />
+            );
+          }
+          return (
+            <>
+              {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}
+              {/* Transcript chỉ ở câu nghe (part 1–4): ở câu đọc
+                 "transcript" API trả về thực chất là đoạn văn dùng chung,
+                 đã hiện 1 lần phía trên rồi — sau khi nộp chỉ hiện giải
+                 thích, không in lại cả đoạn. Luyện cả đề: tính theo Part
+                 của từng câu. */}
+              {q.part <= 4 && result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
+            </>
+          );
+        })()}
+      </div>
+    );
+  };
+
+  // Dải chấm cho 1 khối nhóm (ghi chú inline / bảng matching): mỗi câu
+  // 1 dòng gọn — số câu + hàng nộp đáp án + kết quả (nếu đã chấm). Ô
+  // nhập đáp án nằm trong khối nhóm phía trên.
+  const renderGradingStrip = (items: { q: Question; n: number }[]) => (
+    <div className="ielts-strip">
+      {items.map(({ q, n }) => (
+        <div key={q.id} className="ielts-strip-row">
+          <span className="exam-q-num">{n}.</span>
+          <div className="ielts-strip-main">
+            {renderSubmitRow(q)}
+            {renderQuestionResult(q)}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+
+  // Render các câu trong 1 khối: khối Listening IELTS thì chia thành các
+  // đoạn (khối ghi chú inline / bảng matching / câu lẻ); còn lại render
+  // từng câu như cũ.
+  const renderBlockQuestions = (block: Block) => {
+    if (!isIelts || block.part > 4) return block.questions.map(item => renderQuestion(item));
+    return splitListeningSegments(block.questions).map((seg, si) => {
+      if (seg.kind === 'single') return renderQuestion(seg.item);
+      const groupProps = {
+        items: seg.items,
+        valueOf: (q: Question) => selectedById[q.id] ?? '',
+        onChange: (q: Question, v: string) => selectAnswer(q, v),
+        disabled: submittedAll,
+        gradedById: resultById,
+        flaggedById,
+        onToggleFlag: toggleFlag,
+        onFocusQuestion: (q: Question) => setCurrentId(q.id),
+      };
+      return (
+        <div key={`${block.key}-seg-${si}`}>
+          {seg.kind === 'notes' ? <IeltsNotesBlock {...groupProps} /> : <IeltsMatchingBoard {...groupProps} />}
+          {renderGradingStrip(seg.items)}
+        </div>
+      );
+    });
+  };
+
   const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
     const result = resultById[q.id];
     const selected = selectedById[q.id] ?? '';
@@ -288,9 +470,6 @@ export default function PracticeSession() {
     // Reading trắc nghiệm: 2 câu 1 hàng, đáp án 1 dọc.
     const isDuo = isDuoQuestion(q);
     const showContent = !!q.content && !hideListeningText && !isP6;
-    // Câu điền từ: chặn nút Nộp khi vượt giới hạn số từ. list_selection
-    // không bị chặn này (chọn thiếu chỉ là sai, backend chấm set equality).
-    const overLimit = isFillIn(qType) && q.wordLimit != null && wordCount(selected) > q.wordLimit;
     return (
       <div id={`q-${q.id}`} className={`paper-q exam-q${isIeltsSpecial ? ' exam-q--ielts' : ''}${isDuo ? ' exam-q--duo' : ''}`} key={q.id}>
         <div className="exam-q-body">
@@ -330,6 +509,8 @@ export default function PracticeSession() {
           ) : null}
         </div>
         <div className="exam-q-side">
+          {/* IELTS-only: đánh dấu câu để xem lại sau (hiện trên thanh số câu). */}
+          {isIelts && <FlagButton flagged={!!flaggedById[q.id]} onToggle={() => toggleFlag(q)} label={`Đánh dấu câu ${n}`} />}
           {/* Chỉ-nghe (P1/P2) và Part 6 không có chữ câu hỏi: số câu nằm
               trên phương án như phiếu trả lời. */}
           {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{n}.</div>}
@@ -337,7 +518,7 @@ export default function PracticeSession() {
             <IeltsAnswerControl
               q={q}
               value={selected}
-              onChange={v => setSelectedById(m => ({ ...m, [q.id]: v }))}
+              onChange={v => selectAnswer(q, v)}
               disabled={submittedAll}
               graded={result}
               duplicateHeading={qType === 'matching_headings' && !!selected && (headingCounts[selected] ?? 0) > 1}
@@ -351,74 +532,13 @@ export default function PracticeSession() {
                   if (o.label === result.correctLabel) cls += ' correct';
                   else if (selected === o.label && !result.correct) cls += ' wrong';
                 }
-                return <button key={o.label} className={cls} disabled={!!result || submittedAll} onClick={() => setSelectedById(m => ({ ...m, [q.id]: o.label }))}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}</strong> {o.content}</>}</button>;
+                return <button key={o.label} className={cls} disabled={!!result || submittedAll} onClick={() => selectAnswer(q, o.label)}>{letterOnly ? <strong>{o.label}</strong> : <><strong>{o.label}</strong> {o.content}</>}</button>;
               })}
             </div>
           )}
-          {/* Chế độ instant: nút "Nộp đáp án" từng câu như trước. Chế độ
-              submit-all: ẨN nút này (chấm chung ở thanh dưới), nhưng vẫn
-              giữ checkbox "Đoán mò" của IELTS để ghi nhận trước khi nộp. */}
-          {!result && (gradingMode === 'instant' || isIelts) && (
-            <div className="btn-row">
-              {gradingMode === 'instant' && (
-                <button className="btn btn-sm" disabled={!selected || overLimit} onClick={() => void submit(q)}>Nộp đáp án</button>
-              )}
-              {/* IELTS-only: đánh dấu đoán mò — kể cả làm đúng mà đoán mò
-                  thì vẫn phải ghi nguyên nhân trước khi xem giải thích. */}
-              {isIelts && (
-                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.3rem', fontWeight: 500, margin: 0 }}>
-                  <input type="checkbox" checked={!!guessedById[q.id]} disabled={submittedAll}
-                    onChange={e => setGuessedById(m => ({ ...m, [q.id]: e.target.checked }))} />
-                  Đoán mò 🤔
-                </label>
-              )}
-            </div>
-          )}
-          {/* Submit-all: câu chưa làm thì không gọi API chấm (backend trả
-              400 với đáp án MC rỗng) nên không có kết quả — chỉ báo là
-              chưa làm và tính sai, KHÔNG lộ đáp án đúng của câu đó. */}
-          {submittedAll && !result && (
-            <p style={{ color: 'var(--red-ink)', fontWeight: 700, margin: '.5rem 0 0' }}>❌ Chưa làm — tính là sai</p>
-          )}
+          {renderSubmitRow(q)}
         </div>
-        {result && (
-          <div className="exam-q-result">
-            <p style={{ color: result.correct ? 'var(--green-ink)' : 'var(--red-ink)', fontWeight: 700 }}>
-              {/* list_selection: đáp án đúng là tập nhãn, hiển thị "A, C". */}
-              {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${isMultiAnswer(qType) ? (parseSelectedLabels(result.correctLabel).join(', ') || result.correctText || '') : (result.correctLabel ?? result.correctText ?? '')}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
-            </p>
-            {(() => {
-              // IELTS-only: cổng giải thích — câu sai HOẶC đoán mò thì ẨN
-              // giải thích cho tới khi người học chọn + ghi nguyên nhân
-              // gốc (POST /api/ielts/error-log). Giải thích đã có sẵn
-              // trong API response, chỉ ẩn ở UI. TOEIC: hiện như cũ.
-              const needsCause = isIelts && (!result.correct || !!guessedById[q.id]);
-              const causeLogged = !!causeById[q.id];
-              if (needsCause && !causeLogged) {
-                return (
-                  <RootCausePicker
-                    skill={skillOfPart(q.part)}
-                    questionId={q.id}
-                    questionType={q.questionType}
-                    guessed={!!guessedById[q.id]}
-                    onLogged={code => setCauseById(m => ({ ...m, [q.id]: code }))}
-                  />
-                );
-              }
-              return (
-                <>
-                  {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}
-                  {/* Transcript chỉ ở câu nghe (part 1–4): ở câu đọc
-                     "transcript" API trả về thực chất là đoạn văn dùng chung,
-                     đã hiện 1 lần phía trên rồi — sau khi nộp chỉ hiện giải
-                     thích, không in lại cả đoạn. Luyện cả đề: tính theo Part
-                     của từng câu. */}
-                  {q.part <= 4 && result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
-                </>
-              );
-            })()}
-          </div>
-        )}
+        {renderQuestionResult(q)}
       </div>
     );
   };
@@ -501,7 +621,7 @@ export default function PracticeSession() {
           )}
         </div>
       ) : (
-        <div key={block.key}>{block.questions.map(item => renderQuestion(item))}</div>
+        <div key={block.key}>{renderBlockQuestions(block)}</div>
       ));
     }
     flushDuo('duo-last');
@@ -514,15 +634,38 @@ export default function PracticeSession() {
   const modeLocked = visibleQuestions.some(q => selectedById[q.id]);
   const answeredCount = visibleQuestions.filter(q => selectedById[q.id]).length;
 
+  // Ghi chú của buổi hiện tại (theo số câu thật) + ghi chú của câu đang làm.
+  const sessionNotes = questions
+    .filter(q => notesById[q.id])
+    .map(q => ({ id: q.id, n: trueNumberById[q.id] ?? 0, text: notesById[q.id] }))
+    .sort((a, b) => a.n - b.n);
+  const currentNote = currentId
+    ? { id: currentId, n: trueNumberById[currentId] ?? 0, text: notesById[currentId] ?? '' }
+    : null;
+
   // IELTS-only: thanh số câu (kiểu YouPass) — bấm số để nhảy tới câu đó.
   // Trạng thái: đã chấm thì xanh/đỏ theo đúng/sai, chưa chấm mà đã chọn
   // đáp án thì "done", nộp tất cả rồi mà câu chưa làm thì tính là sai.
+  // Nhóm theo Section/Passage + dấu câu đã đánh dấu + câu đang làm.
   const paletteItems = blocks.flatMap(b => b.questions.map(({ q, n }) => {
     const r = resultById[q.id];
     const state: PaletteItemState = r ? (r.correct ? 'correct' : 'wrong') : submittedAll ? 'wrong' : selectedById[q.id] ? 'done' : 'todo';
-    return { n, id: q.id, state };
+    return { n, id: q.id, state, group: partLabel(q.part, exam), flagged: !!flaggedById[q.id], noted: !!notesById[q.id] };
   }));
-  const jumpToQuestion = (id: string) => document.getElementById(`q-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const jumpToQuestion = (id: string) => {
+    setCurrentId(id);
+    document.getElementById(`q-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  // IELTS-only: chuyển Section/Passage trước/sau (kiểu YouPass) — chỉ
+  // hiện khi buổi có nhiều hơn 1 Section/Passage (luyện cả đề).
+  const partOrder = [...new Set(blocks.map(b => b.part))];
+  const currentPart = currentId ? (questions.find(q => q.id === currentId)?.part ?? partOrder[0]) : partOrder[0];
+  const currentPartIdx = partOrder.indexOf(currentPart);
+  const jumpToPart = (p: number) => {
+    const first = blocks.find(b => b.part === p)?.questions[0];
+    if (first) jumpToQuestion(first.q.id);
+  };
 
   return (
     <div className={`ts-${textLevel}`}>
@@ -562,6 +705,7 @@ export default function PracticeSession() {
             ))}
           </span>
           <span className="progress-badge">Đã làm {doneCount}/{visibleQuestions.length}</span>
+          {isIelts && <span className="progress-badge" title="Thời gian đã luyện trong buổi này">⏱ {fmtClock(elapsed)}</span>}
         </span>
       </div>
       {usePartAudio && (
@@ -574,11 +718,28 @@ export default function PracticeSession() {
         <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
       )}
       <ErrorBox error={error} />
-      <div className="paper">
+      {isIelts && (
+        <IeltsToolsBar
+          onHighlight={() => highlightSelection(paperRef.current)}
+          onNotes={() => setNotePanelOpen(true)}
+          onClearHighlights={clearHighlights}
+          hlSupported={highlightSupported()}
+          notesCount={sessionNotes.length}
+        />
+      )}
+      <div className="paper" ref={paperRef}>
         {renderPaper()}
       </div>
       <div className="practice-bar">
-        {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} />}
+        {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />}
+        {isIelts && partOrder.length > 1 && (
+          <span className="btn-row" style={{ margin: 0 }}>
+            <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
+              onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
+            <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
+              onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
+          </span>
+        )}
         <span className="progress">Đã làm {doneCount}/{visibleQuestions.length} • Đúng {correctCount}</span>
         <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>🚪 Thoát</button>
         {gradingMode === 'submit-all' && !submittedAll ? (
@@ -587,6 +748,15 @@ export default function PracticeSession() {
           <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
         )}
       </div>
+      {isIelts && notePanelOpen && (
+        <IeltsNotePanel
+          current={currentNote}
+          sessionNotes={sessionNotes}
+          onSave={setNote}
+          onJump={id => { jumpToQuestion(id); setNotePanelOpen(false); }}
+          onClose={() => setNotePanelOpen(false)}
+        />
+      )}
     </div>
   );
 }

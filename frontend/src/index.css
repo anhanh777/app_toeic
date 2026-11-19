@@ -655,11 +655,112 @@ tbody tr:hover{background:var(--surface-soft)}
 .q-palette-btn{
   min-width:2rem; height:2rem; padding:0 .35rem; border-radius:999px; flex:0 0 auto;
   border:1px solid var(--border); background:var(--surface); color:var(--ink);
-  font-weight:700; font-size:.85rem; font-variant-numeric:tabular-nums;
+  font-weight:700; font-size:.85rem; font-variant-numeric:tabular-nums; position:relative;
 }
 .q-palette-btn--done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
 .q-palette-btn--correct{background:var(--green-bg); border-color:var(--green); color:var(--green-ink)}
 .q-palette-btn--wrong{background:var(--red-bg); border-color:var(--red); color:var(--red-ink)}
+/* Nhóm theo Section/Passage trên thanh số câu: nhãn nhóm + các số của nhóm. */
+.q-palette-group{display:inline-flex; align-items:center; gap:.3rem; flex:0 0 auto}
+.q-palette-group + .q-palette-group{border-left:1px solid var(--border); padding-left:.5rem; margin-left:.2rem}
+.q-palette-group-label{font-size:.75rem; font-weight:700; color:var(--muted); white-space:nowrap}
+/* Câu đang làm: viền đậm nổi bật. Câu đã đánh dấu: chấm cam góc phải. */
+.q-palette-btn--current{outline:2px solid var(--accent); outline-offset:1px}
+.q-palette-btn--flagged::after{
+  content:''; position:absolute; top:-2px; right:-2px; width:.55rem; height:.55rem;
+  border-radius:50%; background:var(--amber); border:1px solid var(--surface);
+}
+
+/* Nút đánh dấu câu (🚩/🏳) — nhỏ, không viền nền, chỉ đổi màu khi bật. */
+.flag-btn{
+  background:none; border:none; padding:.15rem .3rem; font-size:1rem; line-height:1;
+  cursor:pointer; opacity:.55; border-radius:6px; flex:0 0 auto;
+}
+.flag-btn:hover{opacity:1; background:var(--accent-soft)}
+.flag-btn--on{opacity:1}
+
+/* Khối ghi chú inline kiểu YouPass (phòng nghe IELTS): các dòng câu của
+   1 nhóm điền từ, ô nhập nằm ngay trong dòng chữ. */
+.ielts-notes{margin:.5rem 0 1rem; padding:.8rem 1rem; border:1px solid var(--border); border-radius:12px; background:var(--surface)}
+.ielts-notes-head{margin:0 0 .3rem}
+.ielts-notes-inst{margin:0 0 .2rem; color:var(--muted); font-style:italic}
+.ielts-notes-body{margin-top:.6rem}
+.ielts-notes-line{margin:.45rem 0; line-height:2.1}
+.notes-blank{display:inline-flex; align-items:center; gap:.25rem; vertical-align:baseline}
+.notes-blank-num{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-width:1.4rem; height:1.4rem; padding:0 .25rem; border-radius:999px;
+  background:var(--accent-soft); color:var(--accent-dark);
+  font-size:.75rem; font-weight:700; font-variant-numeric:tabular-nums;
+}
+.notes-blank input{
+  width:11rem; max-width:45vw; padding:.25rem .5rem; font-size:.95rem;
+  border:1px solid var(--accent); border-radius:6px; background:var(--surface); color:var(--ink);
+}
+.notes-blank input:focus{outline:2px solid var(--accent); outline-offset:1px}
+.notes-blank--correct input{border-color:var(--green); background:var(--green-bg)}
+.notes-blank--wrong input{border-color:var(--red); background:var(--red-bg)}
+.notes-blank--over input{border-color:var(--red); outline:1px solid var(--red)}
+
+/* Bảng matching kiểu YouPass: mục cần nối + ô trống (trái), danh sách đáp
+   án kéo-thả/bấm-đặt (phải). */
+.ielts-match{margin:.5rem 0 1rem; padding:.8rem 1rem; border:1px solid var(--border); border-radius:12px; background:var(--surface)}
+.ielts-match-grid{display:grid; grid-template-columns:1fr; gap:1rem; margin-top:.6rem}
+@media (min-width: 760px){ .ielts-match-grid{grid-template-columns:1.4fr 1fr} }
+.ielts-match-row{display:flex; align-items:flex-start; gap:.5rem; margin:.5rem 0}
+.ielts-match-item{flex:1 1 auto; min-width:0}
+.ielts-match-gap{
+  flex:0 0 auto; min-width:7rem; max-width:16rem; min-height:2rem; padding:.25rem .6rem;
+  border:1.5px dashed var(--accent); border-radius:8px; background:var(--accent-soft);
+  color:var(--ink); font-size:.9rem; text-align:left; cursor:pointer;
+}
+.ielts-match-gap--filled{border-style:solid; background:var(--surface)}
+.ielts-match-gap--correct{border-color:var(--green); background:var(--green-bg)}
+.ielts-match-gap--wrong{border-color:var(--red); background:var(--red-bg)}
+.ielts-match-gap:disabled{cursor:default; opacity:.85}
+.ielts-match-options{border-left:1px solid var(--border); padding-left:1rem}
+@media (max-width: 759px){ .ielts-match-options{border-left:none; padding-left:0; border-top:1px solid var(--border); padding-top:.6rem} }
+.ielts-match-chips{display:flex; flex-direction:column; gap:.4rem}
+.ielts-match-chip{
+  padding:.4rem .6rem; border:1px solid var(--border); border-radius:8px;
+  background:var(--surface); color:var(--ink); font-size:.9rem; text-align:left; cursor:grab;
+}
+.ielts-match-chip--picked{border-color:var(--accent); background:var(--accent-soft); outline:2px solid var(--accent)}
+.ielts-match-chip--used{opacity:.4; cursor:default; text-decoration:line-through}
+
+/* Dải chấm cho khối nhóm (luyện tập): mỗi câu 1 dòng gọn — số câu +
+   hàng nộp đáp án + kết quả. Ô nhập nằm trong khối nhóm phía trên. */
+.ielts-strip{margin:-.4rem 0 1rem; padding:0 .2rem}
+.ielts-strip-row{display:flex; gap:.5rem; align-items:flex-start; padding:.35rem 0; border-top:1px dashed var(--border)}
+.ielts-strip-row:first-child{border-top:none}
+.ielts-strip-main{flex:1 1 auto; min-width:0}
+.ielts-strip-main .btn-row{margin:0}
+.ielts-strip-main .exam-q-result{margin-top:.4rem}
+
+/* Thanh công cụ luyện tập (IELTS-only): Highlight + Ghi chú. */
+.ielts-tools{display:flex; align-items:center; gap:.5rem; flex-wrap:wrap; margin:.6rem 0}
+.ielts-tools-label{font-weight:700; color:var(--muted)}
+.ielts-tools kbd{
+  font-family:inherit; font-size:.75rem; padding:.05rem .3rem; border-radius:4px;
+  border:1px solid var(--border); background:var(--surface-muted); color:var(--muted);
+}
+/* Đoạn chữ được tô vàng bằng Highlight (CSS Custom Highlight API). */
+::highlight(ielts-hl){background:var(--hl, #ffec8b); color:inherit}
+/* Panel ghi chú: cố định góc phải dưới, trên thanh dưới cùng. */
+.ielts-note-panel{
+  position:fixed; right:1rem; bottom:4.5rem; width:22rem; max-width:calc(100vw - 2rem);
+  max-height:60vh; overflow-y:auto; z-index:50; box-shadow:0 8px 24px var(--shadow, rgba(0,0,0,.2));
+}
+/* Nút trông như link (dùng trong danh sách ghi chú). */
+.linklike{background:none; border:none; padding:0; color:var(--accent-dark); font-weight:700; cursor:pointer; text-decoration:underline}
+/* Câu có ghi chú: chấm xanh dương góc trái (phân biệt với chấm cam đánh dấu). */
+.q-palette-btn--noted::before{
+  content:''; position:absolute; top:-2px; left:-2px; width:.55rem; height:.55rem;
+  border-radius:50%; background:var(--accent); border:1px solid var(--surface);
+}
+.listen-controls-row{display:flex; align-items:center; gap:.5rem; margin-top:.5rem; flex-wrap:wrap}
+.listen-volume{display:inline-flex; align-items:center; gap:.3rem; margin:0 0 0 auto; font-weight:500}
+.listen-volume input[type=range]{width:6rem}
 
 /* Nút "Nộp đáp án" từng câu (Practice): hàng inline gọn, không cộng
    margin 1rem của .btn-row mặc định */

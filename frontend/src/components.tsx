@@ -157,6 +157,8 @@ export function ListeningAudio({
   const [rate, setRate] = useState(1);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
+  // Âm lượng (0–1) — chỉ áp dụng cho file audio.
+  const [volume, setVolume] = useState(1);
   const barRef = useRef<HTMLDivElement | null>(null);
   const seekingRef = useRef(false);
   const rateId = useId();
@@ -190,6 +192,20 @@ export function ListeningAudio({
   useEffect(() => {
     if (audioRef.current) audioRef.current.playbackRate = rate;
   }, [rate, audioUrl]);
+
+  // Áp âm lượng cho file audio.
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.volume = volume;
+  }, [volume, audioUrl]);
+
+  // Tua lùi/tới 5 giây (kiểu YouPass) — vẫn trong cùng 1 lượt phát nên
+  // không vi phạm chế độ phát 1 lần của thi thử.
+  const seekBy = (sec: number) => {
+    const el = audioRef.current;
+    if (!el || !el.duration) return;
+    el.currentTime = Math.min(Math.max(0, el.currentTime + sec), el.duration);
+    if (status === 'ended') setStatus('paused');
+  };
 
   const fmt = (s: number) => {
     if (!isFinite(s) || s < 0) s = 0;
@@ -294,6 +310,17 @@ export function ListeningAudio({
           ><i style={{ width: `${Math.round(progress * 100)}%` }} /></div>
           <span className="listen-time">{fmt(currentTime)} / {fmt(duration)}</span>
         </div>
+        <div className="listen-controls-row">
+          <button type="button" className="btn btn-sm secondary" onClick={() => seekBy(-5)} title="Tua lùi 5 giây" aria-label="Tua lùi 5 giây">⏪ 5s</button>
+          <button type="button" className="btn btn-sm secondary" onClick={() => seekBy(5)} title="Tua tới 5 giây" aria-label="Tua tới 5 giây">5s ⏩</button>
+          <label className="listen-volume" htmlFor={`${rateId}-vol`}>🔊
+            <input
+              id={`${rateId}-vol`} type="range" min={0} max={1} step={0.1} value={volume}
+              onChange={e => setVolume(Number(e.target.value))}
+              aria-label="Âm lượng"
+            />
+          </label>
+        </div>
         <div className="listen-rate">
           <label htmlFor={rateId}>Tốc độ phát: {rate.toFixed(2)}x</label>
           <input
@@ -337,23 +364,40 @@ export function ListeningAudio({
 
 /** Thanh số câu (kiểu YouPass) cho phòng thi IELTS: bấm số để nhảy tới câu
  * đó. state: todo = chưa làm, done = đã trả lời (thi thử) hoặc đã chọn đáp
- * án nhưng chưa chấm (luyện tập), correct/wrong = đã chấm (luyện tập). */
+ * án nhưng chưa chấm (luyện tập), correct/wrong = đã chấm (luyện tập).
+ * group: nhãn nhóm (Section/Passage) — các câu liên tiếp cùng nhóm hiện
+ * chung 1 nhãn. currentId: câu đang làm (viền nổi). flagged: câu được
+ * đánh dấu (chấm cam). */
 export type PaletteItemState = 'todo' | 'done' | 'correct' | 'wrong';
-export function QuestionPalette({ items, onJump }: {
-  items: { n: number; id: string; state: PaletteItemState }[];
+export interface PaletteItem { n: number; id: string; state: PaletteItemState; group?: string; flagged?: boolean; noted?: boolean }
+export function QuestionPalette({ items, onJump, currentId }: {
+  items: PaletteItem[];
   onJump: (id: string) => void;
+  currentId?: string | null;
 }) {
   if (!items.length) return null;
+  // Gom các câu liên tiếp cùng nhóm (theo group) để hiện nhãn 1 lần.
+  const groups: { label?: string; items: PaletteItem[] }[] = [];
+  for (const it of items) {
+    const last = groups[groups.length - 1];
+    if (last && last.label === it.group) last.items.push(it);
+    else groups.push({ label: it.group, items: [it] });
+  }
   return (
     <div className="q-palette" role="navigation" aria-label="Điều hướng câu hỏi">
-      {items.map(it => (
-        <button
-          key={it.id} type="button"
-          className={`q-palette-btn q-palette-btn--${it.state}`}
-          onClick={() => onJump(it.id)}
-          aria-label={`Câu ${it.n}`}
-          title={`Câu ${it.n}`}
-        >{it.n}</button>
+      {groups.map((g, gi) => (
+        <span key={gi} className="q-palette-group">
+          {g.label && <span className="q-palette-group-label">{g.label}</span>}
+          {g.items.map(it => (
+            <button
+              key={it.id} type="button"
+              className={`q-palette-btn q-palette-btn--${it.state}${it.id === currentId ? ' q-palette-btn--current' : ''}${it.flagged ? ' q-palette-btn--flagged' : ''}${it.noted ? ' q-palette-btn--noted' : ''}`}
+              onClick={() => onJump(it.id)}
+              aria-label={`Câu ${it.n}${it.flagged ? ' (đã đánh dấu)' : ''}${it.noted ? ' (có ghi chú)' : ''}`}
+              title={`Câu ${it.n}${it.flagged ? ' — đã đánh dấu' : ''}${it.noted ? ' — có ghi chú' : ''}`}
+            >{it.n}</button>
+          ))}
+        </span>
       ))}
     </div>
   );

@@ -4,7 +4,7 @@ import { api, type Question, type TestSet } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
 import { partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
-import { IeltsAnswerControl } from '../ielts-ui';
+import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitListeningSegments } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 
@@ -46,6 +46,11 @@ export default function MockTest() {
   // IELTS thi thử: các Section đã phát audio (mỗi Section chỉ phát 1 lần).
   const [playedSections, setPlayedSections] = useState<Record<number, boolean>>({});
   const markPlayed = (p: number) => setPlayedSections(m => ({ ...m, [p]: true }));
+  // Phòng nghe kiểu YouPass: câu được đánh dấu + câu đang làm (chỉ lưu
+  // trong phiên thi, để highlight trên thanh số câu).
+  const [flaggedById, setFlaggedById] = useState<Record<string, boolean>>({});
+  const [currentId, setCurrentId] = useState<string | null>(null);
+  const toggleFlag = (q: Question) => setFlaggedById(m => ({ ...m, [q.id]: !m[q.id] }));
 
   // IELTS full: 80 câu, 90 phút. Mini IELTS: 1 Section Listening 30 phút,
   // 1 Passage Reading 20 phút (contract chỉ quy định full = 90 phút).
@@ -104,10 +109,12 @@ export default function MockTest() {
 
   useEffect(() => () => stopSpeak(), []);
 
-  // Ghi lần chọn cuối (đổi đáp án thoải mái trước khi nộp).
+  // Ghi lần chọn cuối (đổi đáp án thoải mái trước khi nộp) + ghi nhận
+  // câu đang làm để highlight trên thanh số câu.
   const setAnswer = (q: Question, value: string) => {
     if (!q || !attemptId) return;
     setAnswers(a => ({ ...a, [q.id]: value }));
+    setCurrentId(q.id);
   };
   const saveAnswer = async (q: Question, value: string) => {
     if (!q || !attemptId) return;
@@ -204,11 +211,49 @@ export default function MockTest() {
 
   // IELTS-only: thanh số câu (kiểu YouPass) — bấm số để nhảy tới câu đó.
   // Thi thử chưa chấm nên chỉ phân biệt đã trả lời / chưa trả lời.
+  // Nhóm theo Section/Passage + dấu câu đã đánh dấu + câu đang làm.
   const paletteItems = blocks.flatMap(b => b.questions.map(({ q, n }) => {
     const state: PaletteItemState = answers[q.id] ? 'done' : 'todo';
-    return { n, id: q.id, state };
+    return { n, id: q.id, state, group: partLabel(q.part, exam), flagged: !!flaggedById[q.id] };
   }));
-  const jumpToQuestion = (id: string) => document.getElementById(`q-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const jumpToQuestion = (id: string) => {
+    setCurrentId(id);
+    document.getElementById(`q-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  // IELTS-only: chuyển Section/Passage trước/sau (kiểu YouPass) — chỉ
+  // hiện khi bài thi có nhiều hơn 1 Section/Passage (thi full).
+  const partOrder = [...new Set(blocks.map(b => b.part))];
+  const currentPart = currentId ? (questions.find(q => q.id === currentId)?.part ?? partOrder[0]) : partOrder[0];
+  const currentPartIdx = partOrder.indexOf(currentPart);
+  const jumpToPart = (p: number) => {
+    const first = blocks.find(b => b.part === p)?.questions[0];
+    if (first) jumpToQuestion(first.q.id);
+  };
+
+  // Render các câu trong 1 khối: khối Listening IELTS thì chia thành các
+  // đoạn (khối ghi chú inline / bảng matching / câu lẻ); còn lại render
+  // từng câu như cũ. Thi thử không có dải chấm (không chấm từng câu).
+  const renderBlockQuestions = (block: Block) => {
+    if (!isIelts || block.part > 4) return block.questions.map(item => renderQuestion(item));
+    return splitListeningSegments(block.questions).map((seg, si) => {
+      if (seg.kind === 'single') return renderQuestion(seg.item);
+      const groupProps = {
+        items: seg.items,
+        valueOf: (q: Question) => answers[q.id] ?? '',
+        onChange: (q: Question, v: string) => setAnswer(q, v),
+        onCommit: (q: Question, v: string) => void saveAnswer(q, v),
+        flaggedById,
+        onToggleFlag: toggleFlag,
+        onFocusQuestion: (q: Question) => setCurrentId(q.id),
+      };
+      return (
+        <div key={`${block.key}-seg-${si}`}>
+          {seg.kind === 'notes' ? <IeltsNotesBlock {...groupProps} /> : <IeltsMatchingBoard {...groupProps} />}
+        </div>
+      );
+    });
+  };
 
   const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
     const listeningOnly = isListeningOnly(q);
@@ -270,6 +315,8 @@ export default function MockTest() {
           ) : null}
         </div>
         <div className="exam-q-side">
+          {/* IELTS-only: đánh dấu câu để xem lại sau (hiện trên thanh số câu). */}
+          {isIelts && <FlagButton flagged={!!flaggedById[q.id]} onToggle={() => toggleFlag(q)} label={`Đánh dấu câu ${n}`} />}
           {/* Chỉ-nghe (P1/P2) và Part 6 không có chữ câu hỏi: số câu nằm
               trên phương án như phiếu trả lời. */}
           {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{n}.</div>}
@@ -388,7 +435,7 @@ export default function MockTest() {
               )}
             </div>
           ) : (
-            block.questions.map(item => renderQuestion(item))
+            renderBlockQuestions(block)
           )}
         </div>
       );
@@ -413,7 +460,15 @@ export default function MockTest() {
         {renderPaper()}
       </div>
       <div className="practice-bar">
-        {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} />}
+        {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />}
+        {isIelts && partOrder.length > 1 && (
+          <span className="btn-row" style={{ margin: 0 }}>
+            <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
+              onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
+            <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
+              onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
+          </span>
+        )}
         <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
         <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
           onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '🚪 Thoát'}</button>
