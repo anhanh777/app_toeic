@@ -2,14 +2,16 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { API_URL } from './api';
 
 /**
- * menuIcons.tsx — biểu tượng emoji của 12 mục menu trang chủ, sửa được
- * từ web quản trị (bản sao tương tự có ở app admin — giữ 2 bản đồng bộ
- * khi sửa). Mirror brand.tsx: fetch 1 lần lúc mở app, lỗi thì dùng mặc
- * định, thử lại 1 lần sau 6s.
+ * menuIcons.tsx — biểu tượng emoji của 17 mục (12 mục menu trang chủ +
+ * Trang chủ, Thống kê, nút Đổi bài thi, thẻ TOEIC/IELTS — bổ sung
+ * 2026-11-19), sửa được từ web quản trị (bản sao tương tự có ở app admin
+ * — giữ 2 bản đồng bộ khi sửa). Mirror brand.tsx: fetch 1 lần lúc mở app,
+ * lỗi thì dùng mặc định, thử lại 1 lần sau 6s.
  *
  * - Tài liệu phẳng: { today, practice, mock, wrong, vocabulary,
  *   leaderboard, settings, diagnostic, errors, writing, speaking,
- *   ielts-setup } — mỗi key là 1 emoji.
+ *   ielts-setup, home, stats, switch-exam, exam-toeic, exam-ielts } —
+ *   mỗi key là 1 emoji.
  *   Backend trả về ở GET /api/menu-icons (công khai); admin sửa qua
  *   PUT /api/admin/menu-icons.
  * - Giá trị thiếu/sai -> mặc định trong code (normalizeMenuIcons),
@@ -28,7 +30,12 @@ export type MenuIconKey =
   | 'errors'
   | 'writing'
   | 'speaking'
-  | 'ielts-setup';
+  | 'ielts-setup'
+  | 'home'
+  | 'stats'
+  | 'switch-exam'
+  | 'exam-toeic'
+  | 'exam-ielts';
 
 export type MenuIconsDoc = Record<MenuIconKey, string>;
 
@@ -45,6 +52,11 @@ export const MENU_ICON_KEYS: MenuIconKey[] = [
   'writing',
   'speaking',
   'ielts-setup',
+  'home',
+  'stats',
+  'switch-exam',
+  'exam-toeic',
+  'exam-ielts',
 ];
 
 export const MENU_ICON_DEFAULTS: MenuIconsDoc = {
@@ -60,6 +72,11 @@ export const MENU_ICON_DEFAULTS: MenuIconsDoc = {
   writing: '✍️',
   speaking: '🎤',
   'ielts-setup': '📝',
+  home: '🏠',
+  stats: '📊',
+  'switch-exam': '⇄',
+  'exam-toeic': '🌸',
+  'exam-ielts': '🎓',
 };
 
 const MAX_EMOJI = 10;

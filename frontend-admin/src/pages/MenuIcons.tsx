@@ -10,15 +10,16 @@ import {
   type MenuIconsDoc,
 } from '../menuIcons';
 
-/* Biểu tượng menu trang chủ — chỉ admin: chọn emoji cho 12 mục menu
-   (Hôm nay, Luyện tập, Thi thử, …). Lưu vào backend
-   (GET /api/menu-icons công khai, PUT /api/admin/menu-icons chỉ admin),
-   cả 2 app đọc động lúc mở — đổi là có hiệu lực ngay, không cần
+/* Biểu tượng menu trang chủ — chỉ admin: chọn emoji cho 17 mục
+   (12 mục menu + Trang chủ, Thống kê, nút Đổi bài thi, thẻ TOEIC/IELTS).
+   Lưu vào backend (GET /api/menu-icons công khai, PUT /api/admin/menu-icons
+   chỉ admin), cả 2 app đọc động lúc mở — đổi là có hiệu lực ngay, không cần
    deploy lại code. Mỗi mục là 1 box chữ nhật: trên là biểu tượng hiện
    tại (to), dưới là bảng chọn (nhỏ hơn) + ô dán emoji khác ngoài bảng. */
 const EMOJI_OPTIONS = [
   '📅', '✏️', '⏱️', '❌', '📖', '🏆', '⚙️', '🧭', '🐉', '✍️', '🎤', '📝',
   '🎯', '⭐', '💡', '🚀', '🎓', '📚', '🌸', '🔥', '🎨', '✅',
+  '🏠', '📊', '🔄',
 ];
 
 export default function MenuIcons() {

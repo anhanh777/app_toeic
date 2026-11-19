@@ -6,6 +6,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from '
 import { useLocation, useNavigate } from 'react-router-dom';
 import { api, type ExamInfo } from './api';
 import { ErrorBox } from './components';
+import { useMenuIcons } from './menuIcons';
 
 export type ExamId = 'toeic' | 'ielts';
 
@@ -250,6 +251,7 @@ const FALLBACK_EXAMS: ExamInfo[] = [
 
 export function ExamPicker() {
   const { setExam } = useExam();
+  const { icons } = useMenuIcons();
   const nav = useNavigate();
   const [exams, setExams] = useState<ExamInfo[] | null>(null);
   const [error, setError] = useState<unknown>(null);
@@ -276,7 +278,7 @@ export function ExamPicker() {
         {list.map(e => (
           <div key={e.id} className="card" role="button" tabIndex={0} onClick={() => pick(e.id)}
             onKeyDown={ev => { if (ev.key === 'Enter' || ev.key === ' ') pick(e.id); }}>
-            <div style={{ fontSize: '1.6rem' }}>{e.id === 'ielts' ? '🎓' : '🌸'}</div>
+            <div style={{ fontSize: '1.6rem' }}>{e.id === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}</div>
             <h2 style={{ fontSize: '1.15rem', marginBottom: '.3rem' }}>{e.title}</h2>
             <p className="muted">{e.subtitle}</p>
             <p>

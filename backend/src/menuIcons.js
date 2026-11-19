@@ -24,6 +24,12 @@ const DEFAULTS = Object.freeze({
   writing: '✍️',
   speaking: '🎤',
   'ielts-setup': '📝',
+  // Bo sung 2026-11-19 (ra soat: cac muc con thieu trong he thong icon):
+  home: '🏠',
+  stats: '📊',
+  'switch-exam': '⇄',
+  'exam-toeic': '🌸',
+  'exam-ielts': '🎓',
 });
 
 const MENU_KEYS = Object.freeze([
@@ -39,6 +45,11 @@ const MENU_KEYS = Object.freeze([
   'writing',
   'speaking',
   'ielts-setup',
+  'home',
+  'stats',
+  'switch-exam',
+  'exam-toeic',
+  'exam-ielts',
 ]);
 
 /** Nhan hien thi tieng Viet cua tung muc menu (dung o web admin). */
@@ -55,6 +66,11 @@ const LABELS = Object.freeze({
   writing: 'Viết',
   speaking: 'Nói',
   'ielts-setup': 'Thiết lập IELTS',
+  home: 'Trang chủ',
+  stats: 'Thống kê',
+  'switch-exam': 'Đổi bài thi',
+  'exam-toeic': 'Thẻ TOEIC',
+  'exam-ielts': 'Thẻ IELTS',
 });
 
 function getDefault(key) {

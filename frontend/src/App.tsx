@@ -123,7 +123,7 @@ function ThemeToggle() {
    còn lại nằm trong menu ☰ bên phải. Lựa chọn ghim lưu localStorage. ---- */
 type NavItem = { path: string; label: string; icon: string; end?: boolean; ieltsOnly?: boolean; menuKey?: MenuIconKey };
 const NAV_ITEMS: NavItem[] = [
-  { path: '/', label: 'Trang chủ', icon: '🏠', end: true },
+  { path: '/', label: 'Trang chủ', icon: '🏠', end: true, menuKey: 'home' },
   { path: '/today', label: 'Hôm nay', icon: '📅', menuKey: 'today' },
   { path: '/practice', label: 'Luyện tập', icon: '✏️', menuKey: 'practice' },
   { path: '/mock', label: 'Thi thử', icon: '⏱️', menuKey: 'mock' },
@@ -133,7 +133,7 @@ const NAV_ITEMS: NavItem[] = [
   { path: '/ielts/writing', label: 'Viết', icon: '✍️', ieltsOnly: true, menuKey: 'writing' },
   { path: '/ielts/speaking', label: 'Nói', icon: '🎤', ieltsOnly: true, menuKey: 'speaking' },
   { path: '/vocabulary', label: 'Từ vựng', icon: '📖', menuKey: 'vocabulary' },
-  { path: '/stats', label: 'Thống kê', icon: '📊' },
+  { path: '/stats', label: 'Thống kê', icon: '📊', menuKey: 'stats' },
   { path: '/leaderboard', label: 'Xếp hạng', icon: '🏆', menuKey: 'leaderboard' },
   { path: '/settings', label: 'Cài đặt', icon: '⚙️', menuKey: 'settings' },
 ];
@@ -250,7 +250,7 @@ function Layout() {
             <TextSizeMenu />
             {exam && (
               <button type="button" className="icon-btn" aria-label="Đổi bài thi" title="Đổi bài thi"
-                onClick={() => { clearExam(); nav('/'); }}>⇄</button>
+                onClick={() => { clearExam(); nav('/'); }}>{icons['switch-exam']}</button>
             )}
             <div className="nav-menu-wrap">
               <button type="button" className="avatar-btn" aria-label="Tài khoản của tôi" aria-expanded={profileOpen}

@@ -1,6 +1,8 @@
 'use strict';
 
-// Bieu tuong menu (menu icons) — 12 muc menu chinh cua app.
+// Bieu tuong menu (menu icons) — 17 muc cua app (12 muc menu chinh +
+// Trang chu, Thong ke, nut Doi bai thi, the TOEIC/IELTS — bo sung
+// 2026-11-19 sau khi ra soat).
 // GET /api/menu-icons doc cong khai (khong can dang nhap) de app hoc vien
 // tai ve luc mo app. GET/PUT /api/admin/menu-icons chi admin (auth +
 // requireAdmin theo tung route, vi router nay khong dung auth toan cuc).
@@ -13,7 +15,7 @@ const menuIcons = require('../menuIcons');
 
 const router = express.Router();
 
-/** Tai lieu day du 12 icon (da normalize: thieu/sai -> mac dinh code). */
+/** Tai lieu day du 17 icon (da normalize: thieu/sai -> mac dinh code). */
 function readMenuIconsDoc() {
   return menuIcons.normalizeMenuIcons(db.getAllMenuIcons());
 }
@@ -32,7 +34,8 @@ router.get('/admin/menu-icons', authMiddleware, requireAdmin, (req, res) => {
 /**
  * PUT /api/admin/menu-icons — luu bieu tuong menu. Nhan tai lieu phang:
  * { today, practice, mock, wrong, vocabulary, leaderboard, settings,
- *   diagnostic, errors, writing, speaking, 'ielts-setup' }.
+ *   diagnostic, errors, writing, speaking, 'ielts-setup',
+ *   home, stats, 'switch-exam', 'exam-toeic', 'exam-ielts' }.
  * Key khong co trong body giu nguyen gia tri dang luu (PUT tung phan
  * duoc); key la -> 400, khong luu gi. Validate tat ca truoc khi luu.
  * Tra ve tai lieu day du sau khi luu.

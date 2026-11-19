@@ -1,11 +1,13 @@
 /**
- * menuIcons.ts — biểu tượng emoji của 12 mục menu trang chủ, sửa được
- * từ web quản trị (bản sao tương tự sẽ có ở app học viên — giữ 2 bản
- * đồng bộ khi sửa).
+ * menuIcons.ts — biểu tượng emoji của 17 mục (12 mục menu trang chủ +
+ * Trang chủ, Thống kê, nút Đổi bài thi, thẻ TOEIC/IELTS — bổ sung
+ * 2026-11-19), sửa được từ web quản trị (bản sao tương tự sẽ có ở app
+ * học viên — giữ 2 bản đồng bộ khi sửa).
  *
  * - Tài liệu phẳng: { today, practice, mock, wrong, vocabulary,
  *   leaderboard, settings, diagnostic, errors, writing, speaking,
- *   ielts-setup } — mỗi key là 1 emoji.
+ *   ielts-setup, home, stats, switch-exam, exam-toeic, exam-ielts } —
+ *   mỗi key là 1 emoji.
  *   Backend trả về ở GET /api/menu-icons (công khai); admin sửa qua
  *   PUT /api/admin/menu-icons (PUT từng phần giữ nguyên các icon khác,
  *   key lạ → 400, icon phải 1–10 code point).
@@ -25,7 +27,12 @@ export type MenuIconKey =
   | 'errors'
   | 'writing'
   | 'speaking'
-  | 'ielts-setup';
+  | 'ielts-setup'
+  | 'home'
+  | 'stats'
+  | 'switch-exam'
+  | 'exam-toeic'
+  | 'exam-ielts';
 
 export type MenuIconsDoc = Record<MenuIconKey, string>;
 
@@ -42,6 +49,11 @@ export const MENU_ICON_KEYS: MenuIconKey[] = [
   'writing',
   'speaking',
   'ielts-setup',
+  'home',
+  'stats',
+  'switch-exam',
+  'exam-toeic',
+  'exam-ielts',
 ];
 
 /** Nhãn hiển thị trong trang quản trị (khớp menu trang chủ app học viên). */
@@ -58,6 +70,11 @@ export const MENU_ICON_LABELS: Record<MenuIconKey, string> = {
   writing: 'Viết (Writing)',
   speaking: 'Nói (Speaking)',
   'ielts-setup': 'Thiết lập IELTS',
+  home: 'Trang chủ',
+  stats: 'Thống kê',
+  'switch-exam': 'Đổi bài thi',
+  'exam-toeic': 'Thẻ TOEIC',
+  'exam-ielts': 'Thẻ IELTS',
 };
 
 export const MENU_ICON_DEFAULTS: MenuIconsDoc = {
@@ -73,6 +90,11 @@ export const MENU_ICON_DEFAULTS: MenuIconsDoc = {
   writing: '✍️',
   speaking: '🎤',
   'ielts-setup': '📝',
+  home: '🏠',
+  stats: '📊',
+  'switch-exam': '⇄',
+  'exam-toeic': '🌸',
+  'exam-ielts': '🎓',
 };
 
 const MAX_EMOJI = 10;

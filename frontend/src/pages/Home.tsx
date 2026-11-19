@@ -4,11 +4,13 @@ import { api, targetScoreOf, type StatsOverview } from '../api';
 import { useAuth } from '../auth';
 import { bandLevel, partNameFor, questionTypeName, useExam } from '../exam';
 import { ErrorBox, TierBadge, XpBar } from '../components';
+import { useMenuIcons } from '../menuIcons';
 import Today from './Today';
 
 export default function Home() {
   const { user } = useAuth();
   const { exam } = useExam();
+  const { icons } = useMenuIcons();
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
   const [stats, setStats] = useState<StatsOverview | null>(null);
@@ -33,7 +35,7 @@ export default function Home() {
   return (
     <div>
       <div className="hero">
-        <h1>{isIelts ? '🎓 Luyện thi IELTS' : '🌸 Luyện thi TOEIC'}</h1>
+        <h1>{isIelts ? `${icons['exam-ielts']} Luyện thi IELTS` : `${icons['exam-toeic']} Luyện thi TOEIC`}</h1>
         <p className="sub">Chào {user?.name || 'bạn'} — hôm nay mình luyện tiếp nhé.</p>
       </div>
       <ErrorBox error={error} />
