@@ -392,38 +392,63 @@ export function QuestionPalette({ items, onJump, currentId, variant = 'bar' }: {
   variant?: 'bar' | 'side';
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  // Khi cau dang lam doi (scroll-spy), cuon bang cau hoi de nut cau do
-  // luon nam trong vung nhin — quan trong o bai full 80 cau (hang ngang
-  // o thanh duoi, cot doc o cot phai), neu khong nut duoc highlight se
-  // nam ngoai man hinh. 'nearest' chi cuon khi nut dang nam ngoai vung
-  // nhin, khong tranh cuon voi tay.
-  useEffect(() => {
-    if (!currentId) return;
-    wrapRef.current?.querySelector('.q-palette-btn--current')
-      ?.scrollIntoView({ behavior: 'auto', inline: 'nearest', block: 'nearest' });
-  }, [currentId]);
-  if (!items.length) return null;
   // Gom các câu liên tiếp cùng nhóm (theo group) để hiện nhãn 1 lần.
+  // (Tính trước early return vì các hook bên dưới cần dùng groups.)
   const groups: { label?: string; items: PaletteItem[] }[] = [];
   for (const it of items) {
     const last = groups[groups.length - 1];
     if (last && last.label === it.group) last.items.push(it);
     else groups.push({ label: it.group, items: [it] });
   }
+  // Cột phải: các nhóm thu gọn được (accordion) — chỉ mở nhóm đang làm.
+  // Mặc định mở nhóm đầu tiên; khi câu đang làm đổi sang nhóm khác thì
+  // tự mở nhóm đó. Bản 'bar' không dùng state này.
+  const [expandedIdx, setExpandedIdx] = useState<number | null>(0);
+  const currentGroupIdx = currentId
+    ? groups.findIndex(g => g.items.some(it => it.id === currentId))
+    : -1;
+  useEffect(() => {
+    if (variant === 'side' && currentGroupIdx >= 0) setExpandedIdx(currentGroupIdx);
+  }, [variant, currentGroupIdx]);
+  // Khi cau dang lam doi (scroll-spy), cuon bang cau hoi de nut cau do
+  // luon nam trong vung nhin — quan trong o bai full 80 cau (hang ngang
+  // o thanh duoi, cot doc o cot phai), neu khong nut duoc highlight se
+  // nam ngoai man hinh. 'nearest' chi cuon khi nut dang nam ngoai vung
+  // nhin, khong tranh cuon voi tay. Phu thuoc ca expandedIdx de cuon
+  // lai sau khi nhom vua tu mo ra.
+  useEffect(() => {
+    if (!currentId) return;
+    wrapRef.current?.querySelector('.q-palette-btn--current')
+      ?.scrollIntoView({ behavior: 'auto', inline: 'nearest', block: 'nearest' });
+  }, [currentId, expandedIdx]);
+  if (!items.length) return null;
+  const renderBtn = (it: PaletteItem) => (
+    <button
+      key={it.id} type="button"
+      className={`q-palette-btn q-palette-btn--${it.state}${it.id === currentId ? ' q-palette-btn--current' : ''}${it.flagged ? ' q-palette-btn--flagged' : ''}${it.noted ? ' q-palette-btn--noted' : ''}`}
+      onClick={() => onJump(it.id)}
+      aria-label={`Câu ${it.n}${it.flagged ? ' (đã đánh dấu)' : ''}${it.noted ? ' (có ghi chú)' : ''}`}
+      title={`Câu ${it.n}${it.flagged ? ' — đã đánh dấu' : ''}${it.noted ? ' — có ghi chú' : ''}`}
+    >{it.n}</button>
+  );
   return (
     <div ref={wrapRef} className={`q-palette${variant === 'side' ? ' q-palette--side' : ''}`} role="navigation" aria-label="Điều hướng câu hỏi">
-      {groups.map((g, gi) => (
+      {groups.map((g, gi) => variant === 'side' ? (
+        <div key={gi} className="q-palette-sidegroup">
+          <button type="button" className="q-palette-sidegroup-head" aria-expanded={expandedIdx === gi}
+            onClick={() => setExpandedIdx(expandedIdx === gi ? null : gi)}>
+            {g.label && <span className="q-palette-group-label">{g.label}</span>}
+            <span className="q-palette-sidegroup-count">{g.items.filter(it => it.state !== 'todo').length}/{g.items.length}</span>
+            <span className={`q-palette-sidegroup-chev${expandedIdx === gi ? ' q-palette-sidegroup-chev--open' : ''}`}>▾</span>
+          </button>
+          {expandedIdx === gi && (
+            <span className="q-palette-group">{g.items.map(renderBtn)}</span>
+          )}
+        </div>
+      ) : (
         <span key={gi} className="q-palette-group">
           {g.label && <span className="q-palette-group-label">{g.label}</span>}
-          {g.items.map(it => (
-            <button
-              key={it.id} type="button"
-              className={`q-palette-btn q-palette-btn--${it.state}${it.id === currentId ? ' q-palette-btn--current' : ''}${it.flagged ? ' q-palette-btn--flagged' : ''}${it.noted ? ' q-palette-btn--noted' : ''}`}
-              onClick={() => onJump(it.id)}
-              aria-label={`Câu ${it.n}${it.flagged ? ' (đã đánh dấu)' : ''}${it.noted ? ' (có ghi chú)' : ''}`}
-              title={`Câu ${it.n}${it.flagged ? ' — đã đánh dấu' : ''}${it.noted ? ' — có ghi chú' : ''}`}
-            >{it.n}</button>
-          ))}
+          {g.items.map(renderBtn)}
         </span>
       ))}
     </div>

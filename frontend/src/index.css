@@ -721,13 +721,30 @@ tbody tr:hover{background:var(--surface-soft)}
 .room-side-filter{display:flex; flex-direction:column; gap:.3rem; font-weight:700; font-size:.9rem}
 .room-side-filter select{width:100%}
 .room-side-toggle .btn{flex:1 1 0; padding:.45rem .25rem; font-size:.85rem; line-height:1.3}
-/* Bang cau hoi dang luoi doc trong cot phai: cac nut xep thanh nhieu hang,
-   moi nhom Section/Passage bat dau mot dong moi. */
-.q-palette--side{flex-wrap:wrap; overflow-x:visible; padding:0}
-.q-palette--side .q-palette-btn{min-width:1.9rem; height:1.9rem; font-size:.8rem}
-.q-palette--side .q-palette-group{flex-basis:100%; flex-wrap:wrap}
-.q-palette--side .q-palette-group-label{flex-basis:100%; margin:.45rem 0 .25rem}
-.q-palette--side .q-palette-group:first-child .q-palette-group-label{margin-top:0}
+/* Bang cau hoi dang luoi doc trong cot phai: cac nut la o vuong nho co
+   dinh (so 3 chu so vua khit, khong bi keo thanh oval nhu nut tron);
+   moi nhom Part/Section/Passage thu gon duoc — chi nhom dang lam mo. */
+.q-palette--side{flex-wrap:wrap; overflow-x:visible; padding:0; row-gap:.5rem}
+.q-palette--side .q-palette-btn{
+  min-width:1.9rem; width:1.9rem; height:1.9rem; padding:0;
+  border-radius:8px; font-size:.8rem;
+}
+.q-palette--side .q-palette-group{flex-wrap:wrap}
+.q-palette-sidegroup{flex-basis:100%}
+.q-palette-sidegroup-head{
+  display:flex; align-items:center; gap:.5rem; width:100%;
+  background:none; border:none; padding:.3rem .2rem; cursor:pointer;
+  text-align:left; border-radius:8px;
+}
+.q-palette-sidegroup-head:hover{background:var(--surface-soft)}
+.q-palette-sidegroup-head .q-palette-group-label{flex:0 0 auto}
+.q-palette-sidegroup-count{
+  margin-left:auto; font-size:.8rem; font-weight:700; color:var(--muted);
+  font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.q-palette-sidegroup-chev{color:var(--muted); transition:transform .15s; font-size:.75rem}
+.q-palette-sidegroup-chev--open{transform:rotate(180deg)}
+.q-palette-sidegroup .q-palette-group{margin-top:.35rem}
 /* Thanh so cau (kieu YouPass): bam so de nhay toi cau do. Nam trong
    practice-bar (sticky duoi), 1 hang rieng, cuon ngang khi nhieu cau. */
 .q-palette{display:flex; gap:.3rem; flex-wrap:nowrap; overflow-x:auto; padding:.3rem 0; flex-basis:100%; scrollbar-width:thin; align-items:center}
