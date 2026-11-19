@@ -203,11 +203,14 @@ export default function PracticeSession() {
   // Luyện 1 Part: isListening theo Part đó. Luyện cả đề: nghe/đọc tính theo
   // từng câu (q.part) — xem usePartAudioFor + renderQuestion.
   const isListening = !isFullPractice && part <= 4;
-  // 1 nút nghe DUY NHẤT cho cả Part: chỉ khi luyện trong 1 bộ đề (có
-  // testSetId) VÀ đề đó có file audio cấp Part. Đề chưa có audio Part
-  // (hoặc luyện theo Part không kèm đề) thì giữ nút nghe từng câu như cũ.
+  // 1 nút nghe DUY NHẤT cho cả Part: khi có file audio cấp Part cho Part
+  // đó. (Ở phòng luyện, part-media chỉ tải khi có testSetId nên điều
+  // kiện này hiện tương đương với cũ — giữ cùng ngữ nghĩa với phòng
+  // thi thử, nơi thi mini không kèm đề vẫn có part-media của đề ngẫu
+  // nhiên backend đã chọn.) Đề chưa có audio Part (hoặc luyện theo
+  // Part không kèm đề) thì giữ nút nghe từng câu như cũ.
   // Luyện cả đề: mỗi Listening Part có 1 nút riêng (xem renderPaper).
-  const usePartAudioFor = (p: number) => p <= 4 && !!testSetId && !!partMedia[p];
+  const usePartAudioFor = (p: number) => p <= 4 && !!partMedia[p];
   const usePartAudio = isListening && usePartAudioFor(part);
   // IELTS: đề chưa có audio (VD đề mẫu TS-024) — không render nút nghe hỏng,
   // chỉ hiện ghi chú và cho làm bài bình thường. Đề chẩn đoán TS-028 đã có

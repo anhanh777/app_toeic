@@ -295,10 +295,14 @@ export default function MockTest() {
     else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n }] });
   });
 
-  // 1 nút nghe DUY NHẤT cho cả Part: chỉ khi thi trong 1 bộ đề (có
-  // testSetId) VÀ đề đó có file audio cấp Part. Đề chưa có audio Part
-  // (hoặc thi mini/full không kèm đề) thì giữ nút nghe từng câu như cũ.
-  const usePartAudioFor = (p: number) => p <= 4 && !!testSetId && !!partMedia[p];
+  // 1 nút nghe DUY NHẤT cho cả Part: khi có file audio cấp Part cho Part
+  // đó — kể cả thi mini không kèm đề (backend chọn ngẫu nhiên 1 đề và
+  // start() đã tải part-media của đề đó). Trước đây điều kiện còn đòi
+  // testSetId trên URL nên thi mini rơi vào nhánh "nút nghe từng câu",
+  // mà câu hỏi không có audio riêng (chỉ có file cấp Part) nên cùng 1
+  // file audio lặp lại ở mọi câu. Đề chưa có audio Part (hoặc thi full
+  // toàn ngân hàng, không có part-media) thì vẫn giữ nút nghe từng câu.
+  const usePartAudioFor = (p: number) => p <= 4 && !!partMedia[p];
 
   // IELTS-only: thanh số câu (kiểu YouPass) — bấm số để nhảy tới câu đó.
   // Thi thử chưa chấm nên chỉ phân biệt đã trả lời / chưa trả lời.
