@@ -66,6 +66,11 @@ export default function MockTest() {
       const t = testSetId
         ? await api.createTest('full', undefined, fullMinutes, testSetId, exam)
         : await api.createTest(mode, mode === 'mini' ? part : undefined, mode === 'mini' ? miniMinutes : fullMinutes, undefined, exam);
+      // Mini khong kem de: backend chon ngau nhien 1 de va tra ve testSetId
+      // cua de do — tai audio theo de duoc chon de nghe dung file audio.
+      if (t.testSetId && t.testSetId !== testSetId) {
+        try { setPartMedia(await api.partMedia(t.testSetId)); } catch { /* giu {} */ }
+      }
       setAttemptId(t.attemptId);
       setSecondsLeft(t.durationSec || fullMinutes * 60);
       const qs: Question[] = [];

@@ -13,41 +13,6 @@ const router = express.Router();
 
 const SECTION_OF_PART = { 1: 'listening', 2: 'listening', 3: 'listening', 4: 'listening', 5: 'reading', 6: 'reading', 7: 'reading' };
 
-function shuffle(arr) {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-/**
- * Mini test: chọn NGUYÊN NHÓM đoạn văn, không xáo từng câu riêng lẻ.
- * Các câu liên tiếp cùng passageId/passageText là 1 nhóm — lấy cả nhóm
- * (1 đoạn văn + toàn bộ câu của nó, như khi luyện tập), xáo thứ tự các
- * nhóm rồi lấy đủ ~n câu. Câu không có đoạn văn = nhóm 1 câu, giữ nguyên
- * hành vi cũ. Nhóm cuối có thể vượt nhẹ quá n (không cắt ngang đoạn).
- */
-function pickMiniQuestions(bank, n) {
-  const groups = [];
-  for (const q of bank) {
-    const last = groups[groups.length - 1];
-    const sameId =
-      q.passageId && last && last[0].passageId && last[0].passageId === q.passageId;
-    const sameText =
-      q.passageText && last && last[0].passageText && last[0].passageText === q.passageText;
-    if (last && (sameId || sameText)) last.push(q);
-    else groups.push([q]);
-  }
-  const picked = [];
-  for (const g of shuffle(groups)) {
-    if (picked.length >= n) break;
-    for (const q of g) picked.push(q.id);
-  }
-  return picked;
-}
-
 function isListeningPart(part) {
   return part >= 1 && part <= 4;
 }
@@ -132,17 +97,31 @@ router.post('/tests', authMiddleware, (req, res) => {
     if (!Number.isInteger(p) || p < 1 || p > 7) {
       return res.status(400).json({ error: 'mini test can part tu 1 den 7' });
     }
-    const bank = testSetId
-      ? db.listQuestions({ testSetId, part: p, limit: 200, offset: 0 }).items
-      : db.getQuestionsByPart(p, exam);
-    if (!bank.length) return res.status(400).json({ error: 'Part nay chua co cau hoi' });
-    const n = count === undefined ? 10 : parseInt(count, 10);
-    if (!Number.isInteger(n) || n < 1) {
-      return res.status(400).json({ error: 'count phai la so nguyen >= 1' });
+    // Mini: lay TRON 1 Part (Section/Passage) cua 1 de duy nhat, dung du
+    // so cau cua Part do trong de — khong tron cau tu nhieu de, khong cat
+    // bot. Co testSetId thi dung de do; khong co thi chon ngau nhien 1 de
+    // co cau hoi o Part nay. Ap dung cho ca IELTS va TOEIC.
+    let bank;
+    if (testSetId) {
+      bank = db.listQuestions({ testSetId, part: p, limit: 200, offset: 0 }).items;
+    } else {
+      const all = db.getQuestionsByPart(p, exam);
+      const bySet = new Map();
+      for (const q of all) {
+        if (!q.testSetId) continue;
+        if (!bySet.has(q.testSetId)) bySet.set(q.testSetId, []);
+        bySet.get(q.testSetId).push(q);
+      }
+      const setIds = [...bySet.keys()];
+      if (!setIds.length) return res.status(400).json({ error: 'Part nay chua co cau hoi' });
+      const chosen = setIds[Math.floor(Math.random() * setIds.length)];
+      bank = bySet.get(chosen);
+      // Ghi nhan de duoc chon vao attempt de hien thi dung de + lay audio
+      // dung de (frontend tai part-media theo testSetId tra ve).
+      testSet = db.getTestSet(chosen);
     }
-    // Mini: lấy nguyên nhóm đoạn văn (1 đoạn + toàn bộ câu của nó),
-    // không xáo lẻ từng câu làm vỡ đoạn (xem pickMiniQuestions).
-    questionIds = pickMiniQuestions(bank, n);
+    if (!bank.length) return res.status(400).json({ error: 'Part nay chua co cau hoi' });
+    questionIds = bank.map((q) => q.id);
     durationSec = durationMinutes ? Math.round(durationMinutes * 60) : 30 * 60;
     attemptPart = p;
   } else {
