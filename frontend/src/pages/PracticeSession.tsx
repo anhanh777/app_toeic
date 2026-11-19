@@ -807,8 +807,8 @@ export default function PracticeSession() {
           + tien do + nut bam nam o day, thanh duoi an di; man hinh hep
           thi cot nay an, thanh duoi hien nhu cu. */}
       <aside className="room-side">
-        <div className="room-side-block">
-          <h3 className="room-side-title">Câu hỏi</h3>
+        <h3 className="room-side-title">Câu hỏi</h3>
+        <div className="room-side-palette">
           <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
         </div>
         <div className="room-side-block room-side-controls">

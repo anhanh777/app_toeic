@@ -706,13 +706,19 @@ tbody tr:hover{background:var(--surface-soft)}
      nam trong cot phai. */
   .exam-room--sidelayout .exam-head-controls{display:none}
   .room-side{
-    display:block; position:sticky; top:120px; max-height:calc(100vh - 140px);
+    display:flex; flex-direction:column; position:sticky; top:120px; max-height:calc(100vh - 140px);
     overflow-y:auto; background:var(--surface); border:1px solid var(--border);
     border-radius:20px; padding:.8rem; box-shadow:0 2px 12px rgba(93,64,28,.06);
   }
 }
-.room-side-title{margin:.1rem 0 .5rem; font-size:.8rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
-.room-side-block + .room-side-block{margin-top:.9rem; padding-top:.9rem; border-top:1px solid var(--border)}
+.room-side-title{margin:.1rem 0 .5rem; font-size:.8rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); flex-shrink:0}
+/* Chi luoi dap an cuon: khoi palette chiem phan con lai cua cot va cuon
+   rieng ben trong; tieu de + dieu khien + nut bam co dinh, khong bao
+   gio bi day xuong duoi. Luoi ngan thi cot tu co lai, khong thua cho.
+   (overflow-y:auto tren .room-side chi la luoi an toan cho man hinh
+   qua thap — binh thuong chi thanh cuon cua palette hien ra.) */
+.room-side-palette{flex:1 1 auto; min-height:0; overflow-y:auto; scrollbar-width:thin}
+.room-side-controls, .room-side-actions{flex-shrink:0; margin-top:.9rem; padding-top:.9rem; border-top:1px solid var(--border)}
 .room-side-actions{display:flex; flex-direction:column; gap:.6rem; align-items:stretch}
 .room-side-actions .progress{align-self:flex-start}
 .room-side-actions .btn-row{flex-direction:column; align-items:stretch}
