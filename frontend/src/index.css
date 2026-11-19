@@ -685,11 +685,12 @@ tbody tr:hover{background:var(--surface-soft)}
 }
 /* Thanh so cau (kieu YouPass): bam so de nhay toi cau do. Nam trong
    practice-bar (sticky duoi), 1 hang rieng, cuon ngang khi nhieu cau. */
-.q-palette{display:flex; gap:.3rem; flex-wrap:nowrap; overflow-x:auto; padding:.2rem 0; flex-basis:100%; scrollbar-width:thin}
+.q-palette{display:flex; gap:.3rem; flex-wrap:nowrap; overflow-x:auto; padding:.3rem 0; flex-basis:100%; scrollbar-width:thin; align-items:center}
 .q-palette-btn{
-  min-width:2rem; height:2rem; padding:0 .35rem; border-radius:999px; flex:0 0 auto;
+  min-width:2.2rem; height:2.2rem; padding:0 .4rem; border-radius:999px; flex:0 0 auto;
   border:1px solid var(--border); background:var(--surface); color:var(--ink);
-  font-weight:700; font-size:.85rem; font-variant-numeric:tabular-nums; position:relative;
+  font-weight:700; font-size:.9rem; font-variant-numeric:tabular-nums; position:relative;
+  transition:background .15s, border-color .15s, box-shadow .15s;
 }
 .q-palette-btn--done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
 .q-palette-btn--correct{background:var(--green-bg); border-color:var(--green); color:var(--green-ink)}
@@ -697,9 +698,15 @@ tbody tr:hover{background:var(--surface-soft)}
 /* Nhóm theo Section/Passage trên thanh số câu: nhãn nhóm + các số của nhóm. */
 .q-palette-group{display:inline-flex; align-items:center; gap:.3rem; flex:0 0 auto}
 .q-palette-group + .q-palette-group{border-left:1px solid var(--border); padding-left:.5rem; margin-left:.2rem}
-.q-palette-group-label{font-size:.75rem; font-weight:700; color:var(--muted); white-space:nowrap}
-/* Câu đang làm: viền đậm nổi bật. Câu đã đánh dấu: chấm cam góc phải. */
-.q-palette-btn--current{outline:2px solid var(--accent); outline-offset:1px}
+.q-palette-group-label{
+  font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em;
+  background:var(--accent-soft); color:var(--accent-dark);
+  padding:.2rem .55rem; border-radius:999px; white-space:nowrap;
+}
+/* Câu đang làm: vòng đôi (nền + viền nhấn) để nổi rõ cả 2 chế độ sáng/tối
+   mà không lấn màu trạng thái đúng/sai của nút. Câu đã đánh dấu: chấm cam
+   góc phải. */
+.q-palette-btn--current{box-shadow:0 0 0 2px var(--surface), 0 0 0 4px var(--accent); font-weight:800}
 .q-palette-btn--flagged::after{
   content:''; position:absolute; top:-2px; right:-2px; width:.55rem; height:.55rem;
   border-radius:50%; background:var(--amber); border:1px solid var(--surface);

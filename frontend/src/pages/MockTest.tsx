@@ -109,6 +109,26 @@ export default function MockTest() {
 
   useEffect(() => () => stopSpeak(), []);
 
+  // IELTS-only: thanh số câu theo dõi câu đang nhìn thấy (scroll-spy) —
+  // lúc mở bài và khi cuộn, số của câu trong vùng nhìn sẽ sáng lên.
+  // Trước đây currentId chỉ đổi khi bấm/chọn đáp án nên lúc mới mở không
+  // có số nào sáng. Mỗi đơn vị câu đều mang id `q-<id>` (câu lẻ, dòng
+  // ghi chú, hàng matching) nên quan sát chung 1 selector được.
+  // (Đặt trước các early return để không vi phạm thứ tự hook.)
+  useEffect(() => {
+    if (!isIelts || questions.length === 0) return;
+    const els = Array.from(document.querySelectorAll<HTMLElement>('[id^="q-"]'));
+    if (els.length === 0) return;
+    const obs = new IntersectionObserver(entries => {
+      const visible = entries.filter(e => e.isIntersecting);
+      if (visible.length === 0) return;
+      visible.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+      setCurrentId(visible[0].target.id.slice(2));
+    }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, [isIelts, questions]);
+
   // Ghi lần chọn cuối (đổi đáp án thoải mái trước khi nộp) + ghi nhận
   // câu đang làm để highlight trên thanh số câu.
   const setAnswer = (q: Question, value: string) => {
