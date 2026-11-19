@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, scoreLevel } from '../api';
 import { ErrorBox, partName, TierBadge } from '../components';
-import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, realQuestionNumber, stripLeadingNumber } from '../exam';
+import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, questionTypeName, realQuestionNumber, stripLeadingNumber } from '../exam';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 import { WordText } from '../wordLookup';
@@ -34,6 +34,23 @@ export default function Result() {
   const detailAll = data.detail ?? [];
   const correctCount = detailAll.filter(d => d.correct === true).length;
   const wrongCount = detailAll.length - correctCount;
+  // Ý 4 (IELTS-only): điểm theo dạng câu hỏi — nhóm từ detail (đã có
+  // questionType từng câu), xếp dạng yếu nhất lên trước để ôn cho trúng.
+  // firstPart: Part đầu tiên có dạng này (để link luyện khi bài thi không
+  // gắn với bộ đề cụ thể).
+  const byType = isIelts && detailAll.length ? (() => {
+    const map = new Map<string, { correct: number; total: number; firstPart: number }>();
+    for (const d of detailAll) {
+      const t = d.questionType || 'multiple_choice';
+      const cur = map.get(t) ?? { correct: 0, total: 0, firstPart: d.part ?? 1 };
+      cur.total += 1;
+      if (d.correct === true) cur.correct += 1;
+      map.set(t, cur);
+    }
+    return [...map.entries()]
+      .map(([questionType, v]) => ({ questionType, ...v, accuracy: v.total ? v.correct / v.total : 0 }))
+      .sort((a, b) => a.accuracy - b.accuracy || b.total - a.total);
+  })() : [];
   // Số câu thật trên đề, tính theo thứ tự trong bài (chung hàm với phòng thi).
   const withinSeen: Record<number, number> = {};
   const detailNumbers = detailAll.map(d => {
@@ -94,6 +111,22 @@ export default function Result() {
             <div key={b.part} style={{ marginBottom: '.5rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>{isIelts ? partNameFor(b.part, 'ielts') : partName(b.part)}</span><span>{b.correct}/{b.total}</span></div>
               <div className="bar"><i style={{ width: `${b.total ? (b.correct / b.total) * 100 : 0}%` }} /></div>
+            </div>
+          ))}
+        </div>
+      )}
+      {byType.length > 0 && (
+        <div className="card"><h2>Điểm theo dạng câu hỏi</h2>
+          <p className="muted" style={{ marginTop: 0 }}>Dạng yếu nhất xếp lên trước — bấm tên dạng để luyện riêng dạng đó.</p>
+          {byType.map(b => (
+            <div key={b.questionType} style={{ marginBottom: '.6rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Link to={data.testSetId
+                  ? `/practice/session?part=all&testSetId=${data.testSetId}&exam=ielts&questionType=${b.questionType}`
+                  : `/practice/part/${b.firstPart}?exam=ielts&questionType=${b.questionType}`}>{questionTypeName(b.questionType)}</Link>
+                <span>{b.correct}/{b.total} ({Math.round(b.accuracy * 100)}%)</span>
+              </div>
+              <div className="bar"><i style={{ width: `${b.accuracy * 100}%` }} /></div>
             </div>
           ))}
         </div>
@@ -169,11 +202,17 @@ export default function Result() {
               </div>
             );
           })}
-          <div className="btn-row"><Link className="btn" to="/wrong">Ôn lại câu sai</Link></div>
+          <div className="btn-row">
+            <Link className="btn" to="/wrong">Ôn lại câu sai</Link>
+            {isIelts && data.testSetId && <Link className="btn secondary" to={`/wrong?testSetId=${data.testSetId}`}>Ôn lại câu sai của bài thi này</Link>}
+          </div>
         </div>
       ) : data.wrongQuestionIds?.length ? (
         <div className="card"><h2>Câu làm sai ({data.wrongQuestionIds.length})</h2><p>{data.wrongQuestionIds.join(', ')}</p>
-          <div className="btn-row"><Link className="btn" to="/wrong">Ôn lại câu sai</Link></div></div>
+          <div className="btn-row">
+            <Link className="btn" to="/wrong">Ôn lại câu sai</Link>
+            {isIelts && data.testSetId && <Link className="btn secondary" to={`/wrong?testSetId=${data.testSetId}`}>Ôn lại câu sai của bài thi này</Link>}
+          </div></div>
       ) : <div className="card"><p>🎉 Không có câu sai!</p></div>}
       <div className="btn-row"><Link className="btn secondary" to="/mock">Thi thử lại</Link><Link className="btn secondary" to="/">Về trang chủ</Link></div>
     </div>

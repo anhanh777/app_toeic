@@ -297,10 +297,12 @@ export const api = {
   testResult: (attemptId: number) => req<Attempt & { byPart?: { part: number; correct: number; total: number }[]; wrongQuestionIds?: string[]; detail?: TestResultDetail[] }>(`/api/tests/${attemptId}/result`),
   testHistory: (exam?: string) => req<Attempt[]>(exam ? `/api/tests/history?exam=${encodeURIComponent(exam)}` : '/api/tests/history'),
 
-  wrongQuestions: (part?: number, exam?: string) => {
+  wrongQuestions: (part?: number, exam?: string, questionType?: string, testSetId?: string) => {
     const q = new URLSearchParams();
     if (part) q.set('part', String(part));
     if (exam) q.set('exam', exam);
+    if (questionType) q.set('questionType', questionType);
+    if (testSetId) q.set('testSetId', testSetId);
     const s = q.toString();
     return req<(Question & { wrongCount?: number })[]>(`/api/wrong-questions${s ? `?${s}` : ''}`);
   },

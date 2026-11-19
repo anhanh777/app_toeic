@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api, type Question } from '../api';
 import { ErrorBox, partName } from '../components';
-import { isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, useExam, useTextSize, wordCount } from '../exam';
+import { QUESTION_TYPE_NAMES, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, questionTypeName, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 
 type Item = Question & { wrongCount?: number };
@@ -12,14 +13,33 @@ export default function WrongQuestions() {
   const { level: textLevel } = useTextSize();
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
+  const [searchParams, setSearchParams] = useSearchParams();
   const [items, setItems] = useState<Item[]>([]);
   const [part, setPart] = useState<number | undefined>(undefined);
+  // Ý 4: lọc theo dạng câu hỏi (IELTS-only) + theo đề vừa thi (từ nút
+  // "Ôn lại câu sai của bài thi này" ở trang kết quả, ?testSetId=...).
+  const [typeFilter, setTypeFilter] = useState(searchParams.get('questionType') || '');
+  const [testSetId, setTestSetId] = useState(searchParams.get('testSetId') || '');
+  const [testSetTitle, setTestSetTitle] = useState('');
   const [error, setError] = useState<unknown>(null);
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [feedback, setFeedback] = useState<Record<string, string>>({});
 
-  const load = (p?: number) => api.wrongQuestions(p, ex).then(setItems).catch(setError);
-  useEffect(() => { load(part); }, [part, ex]);
+  const load = () => api.wrongQuestions(part, ex, isIelts && typeFilter ? typeFilter : undefined, testSetId || undefined).then(setItems).catch(setError);
+  useEffect(() => { load(); }, [part, ex, typeFilter, testSetId]);
+  useEffect(() => {
+    if (!testSetId) { setTestSetTitle(''); return; }
+    api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => setTestSetTitle(testSetId));
+  }, [testSetId]);
+
+  const clearTestSet = () => {
+    setTestSetId('');
+    setSearchParams(prev => {
+      const next = new URLSearchParams(prev);
+      next.delete('testSetId');
+      return next;
+    }, { replace: true });
+  };
 
   const review = async (q: Item) => {
     const sel = selected[q.id];
@@ -39,12 +59,24 @@ export default function WrongQuestions() {
     <div className={`ts-${textLevel}`}>
       <h1>Câu đã làm sai</h1>
       <ErrorBox error={error} />
+      {testSetId && (
+        <p className="muted">Đang xem câu sai của đề: <strong>{testSetTitle || testSetId}</strong> <button className="btn btn-sm secondary" onClick={clearTestSet}>Xem tất cả các đề</button></p>
+      )}
       <label htmlFor="filter">{isIelts ? 'Lọc theo Section/Passage' : 'Lọc theo Part'}</label>
       <select id="filter" value={part ?? ''} onChange={e => setPart(e.target.value ? Number(e.target.value) : undefined)}>
         <option value="">{isIelts ? 'Tất cả các Section/Passage' : 'Tất cả các Part'}</option>
         {[1, 2, 3, 4, 5, 6, 7].map(p => <option key={p} value={p}>{isIelts ? partNameFor(p, ex) : partName(p)}</option>)}
       </select>
-      {items.length === 0 && <p className="muted">Chưa có câu sai nào. Làm đúng 1 câu ở đây sẽ gỡ nó khỏi danh sách.</p>}
+      {isIelts && (
+        <>
+          <label htmlFor="type-filter" style={{ marginLeft: '.8rem' }}>Lọc theo dạng câu hỏi</label>
+          <select id="type-filter" value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
+            <option value="">Tất cả các dạng</option>
+            {Object.keys(QUESTION_TYPE_NAMES).map(t => <option key={t} value={t}>{questionTypeName(t)}</option>)}
+          </select>
+        </>
+      )}
+      {items.length === 0 && <p className="muted">Chưa có câu sai nào{typeFilter || testSetId ? ' khớp bộ lọc' : ''}. Làm đúng 1 câu ở đây sẽ gỡ nó khỏi danh sách.</p>}
       {items.map(q => {
         const fillIn = isFillIn(q.questionType);
         const sel = selected[q.id] ?? '';

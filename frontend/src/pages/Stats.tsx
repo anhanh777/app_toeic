@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, targetScoreOf, type Attempt, type StatsOverview } from '../api';
+import { api, targetScoreOf, type Attempt, type StatsOverview, type TestSet } from '../api';
 import { useAuth } from '../auth';
 import { bandLevel, partLabel, partNameFor, questionTypeName, useExam } from '../exam';
 import { ErrorBox, partName, TierBadge, XpBar } from '../components';
@@ -12,16 +12,20 @@ export default function Stats() {
   const isIelts = ex === 'ielts';
   const [stats, setStats] = useState<StatsOverview | null>(null);
   const [history, setHistory] = useState<Attempt[]>([]);
+  const [testSets, setTestSets] = useState<TestSet[]>([]);
   const [error, setError] = useState<unknown>(null);
 
   useEffect(() => {
     api.statsOverview(ex).then(setStats).catch(setError);
     api.statsHistory(ex).then(setHistory).catch(() => undefined);
+    api.testSets(ex).then(setTestSets).catch(() => undefined);
   }, [ex]);
 
   const target = targetScoreOf(user);
   const best = stats?.recentScores?.length ? Math.max(...stats.recentScores.map(s => s.totalScore)) : 0;
   const bestBand = stats?.bandHistory?.length ? Math.max(...stats.bandHistory.map(b => b.overallBand)) : 0;
+  // Tên đề theo testSetId — để lịch sử hiện tên đề thay vì chỉ mã đề.
+  const testSetTitleById = new Map(testSets.map(t => [t.id, t.title]));
 
   return (
     <div>
@@ -41,6 +45,30 @@ export default function Stats() {
             )}
             <div className="card"><div className="muted">{isIelts ? 'Section/Passage yếu nhất' : 'Part yếu nhất'}</div><div className="stat-num">{stats.weakestPart ? (isIelts ? partNameFor(stats.weakestPart, ex) : partName(stats.weakestPart)) : '—'}</div>{isIelts && stats.weakestType && <p className="muted" style={{ marginTop: '.3rem' }}>Dạng yếu nhất: {questionTypeName(stats.weakestType)}</p>}</div>
           </div>
+          {/* Ý 5 (IELTS-only): gợi ý luyện tiếp — dạng yếu nhất + Section/
+              Passage yếu nhất, vào thẳng buổi luyện đã lọc sẵn dạng đó. */}
+          {isIelts && stats.weakestType && (
+            <div className="card">
+              <h2>💡 Gợi ý luyện tiếp</h2>
+              <p>
+                Dạng yếu nhất của bạn là <strong>{questionTypeName(stats.weakestType)}</strong>
+                {stats.weakestPart ? <> ở <strong>{partNameFor(stats.weakestPart, ex)}</strong></> : ''}.
+                Luyện riêng dạng này để cải thiện nhanh nhất.
+              </p>
+              <div className="btn-row">
+                {stats.weakestPart ? (
+                  <Link className="btn" to={`/practice/part/${stats.weakestPart}?exam=ielts&questionType=${stats.weakestType}`}>
+                    ▶ Luyện {questionTypeName(stats.weakestType)}
+                  </Link>
+                ) : (
+                  <Link className="btn" to="/practice">▶ Vào trang Luyện tập</Link>
+                )}
+                <Link className="btn secondary" to={`/wrong?questionType=${stats.weakestType}`}>
+                  Ôn câu sai dạng này
+                </Link>
+              </div>
+            </div>
+          )}
           <div className="card"><h2>{isIelts ? 'Tỉ lệ đúng theo Section/Passage' : 'Tỉ lệ đúng theo Part'}</h2>
             {stats.byPart.map(b => (
               <div key={b.part} style={{ marginBottom: '.6rem' }}>
@@ -89,9 +117,9 @@ export default function Stats() {
       )}
       <div className="card"><h2>Lịch sử làm bài</h2>
         {history.length === 0 ? <p className="muted">Chưa có lịch sử.</p> : (
-          <table><thead><tr><th>Ngày</th><th>Chế độ</th><th>{isIelts ? 'Band' : 'Điểm'}</th><th></th></tr></thead><tbody>
+          <table><thead><tr><th>Ngày</th><th>Đề</th><th>Chế độ</th><th>{isIelts ? 'Band' : 'Điểm'}</th><th></th></tr></thead><tbody>
             {history.map(a => (
-              <tr key={a.id}><td>{(a.finished_at || a.started_at || '').slice(0, 10)}</td><td>{a.mode}{a.part ? ` — ${isIelts ? partLabel(a.part, ex) : `Part ${a.part}`}` : ''}</td><td>{isIelts ? (a.overallBand != null ? `Band ${a.overallBand}` : '—') : (a.total_score ?? '—')}</td>
+              <tr key={a.id}><td>{(a.finished_at || a.started_at || '').slice(0, 10)}</td><td>{a.testSetId ? (testSetTitleById.get(a.testSetId) ?? a.testSetId) : '—'}</td><td>{a.mode}{a.part ? ` — ${isIelts ? partLabel(a.part, ex) : `Part ${a.part}`}` : ''}</td><td>{isIelts ? (a.overallBand != null ? `Band ${a.overallBand}` : '—') : (a.total_score ?? '—')}</td>
                 <td>{a.mode !== 'practice' ? <Link to={`/result/${a.id}`}>Xem lại</Link> : ''}</td></tr>
             ))}
           </tbody></table>

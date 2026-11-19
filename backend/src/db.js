@@ -1537,7 +1537,7 @@ function upsertWrongQuestion(userId, questionId) {
   ).run(userId, questionId, ts);
 }
 
-function listWrongQuestions(userId, part, exam) {
+function listWrongQuestions(userId, part, exam, questionType, testSetId) {
   let sql = `SELECT w.question_id AS qid, w.wrong_count AS wrongCount,
                     w.last_wrong_at AS lastWrongAt, q.*
              FROM wrong_questions w JOIN questions q ON q.id = w.question_id
@@ -1550,6 +1550,15 @@ function listWrongQuestions(userId, part, exam) {
   if (exam) {
     sql += ' AND q.exam = ?';
     params.push(exam);
+  }
+  // Đợt 3 (Ý 4): lọc ôn câu sai theo dạng câu hỏi / theo đề vừa thi.
+  if (questionType) {
+    sql += ' AND q.question_type = ?';
+    params.push(questionType);
+  }
+  if (testSetId) {
+    sql += ' AND q.test_set_id = ?';
+    params.push(testSetId);
   }
   sql += ' ORDER BY w.last_wrong_at DESC';
   const rows = db.prepare(sql).all(...params);

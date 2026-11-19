@@ -14,8 +14,11 @@ router.get('/wrong-questions', authMiddleware, (req, res) => {
     return res.status(400).json({ error: 'part phai tu 1 den 7' });
   }
   const exam = req.query.exam === 'ielts' ? 'ielts' : req.query.exam === 'toeic' ? 'toeic' : undefined;
+  // Đợt 3 (Ý 4): lọc thêm theo dạng câu hỏi / đề vừa thi (optional).
+  const questionType = typeof req.query.questionType === 'string' && req.query.questionType ? req.query.questionType : undefined;
+  const testSetId = typeof req.query.testSetId === 'string' && req.query.testSetId ? req.query.testSetId : undefined;
   // Cau hoi tra ve da redact (khong co dap an dung / giai thich).
-  return res.json(db.listWrongQuestions(req.user.id, part, exam));
+  return res.json(db.listWrongQuestions(req.user.id, part, exam, questionType, testSetId));
 });
 
 router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) => {

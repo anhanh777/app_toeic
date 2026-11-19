@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { api, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
-import { groupTestSetsByBook, partLabel, partNameFor, useExam } from '../exam';
+import { groupTestSetsByBook, partLabel, partNameFor, questionTypeName, useExam } from '../exam';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 
 export default function PracticePartSets() {
@@ -20,6 +20,10 @@ export default function PracticePartSets() {
   const qExam = searchParams.get('exam');
   const exam = qExam === 'ielts' || qExam === 'toeic' ? qExam : ctxExam ?? 'toeic';
   const isIelts = exam === 'ielts';
+  // Ý 4/Ý 5: luyện theo dạng — ?questionType=... được mang theo từ trang
+  // kết quả / thống kê, gắn tiếp vào URL buổi luyện khi chọn đề (để buổi
+  // luyện vẫn có testSetId → có audio cấp Part cho dạng nghe).
+  const questionType = isIelts ? (searchParams.get('questionType') || '') : '';
   const partValid = Number.isInteger(part) && part >= 1 && part <= 7;
   const [testSets, setTestSets] = useState<TestSet[]>([]);
   const [error, setError] = useState<unknown>(null);
@@ -48,7 +52,7 @@ export default function PracticePartSets() {
     const partCount = ts.parts.find(p => p.part === part)?.count ?? 0;
     const total = ts.totalQuestions || 0;
     const disabled = partCount === 0;
-    const go = () => { if (!disabled) nav(`/practice/session?part=${part}&testSetId=${ts.id}&exam=${exam}`); };
+    const go = () => { if (!disabled) nav(`/practice/session?part=${part}&testSetId=${ts.id}&exam=${exam}${questionType ? `&questionType=${questionType}` : ''}`); };
     return (
       <div
         key={ts.id}
@@ -91,7 +95,7 @@ export default function PracticePartSets() {
     <div>
       <p><Link to="/practice">← Quay lại chọn Part</Link></p>
       <h1>{title}</h1>
-      <p className="muted">Chọn 1 đề để luyện {shortLabel} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.</p>
+      <p className="muted">Chọn 1 đề để luyện {shortLabel} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.{questionType ? <> Đang luyện riêng dạng: <strong>{questionTypeName(questionType)}</strong>.</> : ''}</p>
       <ErrorBox error={error} />
       {loading && <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải danh sách bộ đề…" />}
       {!loading && !testSets.length && !error && (
