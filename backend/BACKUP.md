@@ -62,6 +62,21 @@ Biến môi trường (không bắt buộc): `API_BASE` (mặc định backend R
 `ADMIN_TOKEN_FILE` (mặc định `~/workspace/drive-ets/token-admin.txt`),
 `DRIVE_FOLDER_NAME` (mặc định `app-toeic-backups`), `RETENTION_DAYS`
 (mặc định 7), `BACKUP_WORK_DIR` (mặc định thư mục tạm của hệ thống).
+`BACKUP_ADMIN_EMAIL` / `BACKUP_ADMIN_PASSWORD` (mặc định tài khoản demo
+admin `demo@toeic.app` / `admin123` — chỉ dùng để tự cấp lại token).
+
+### Token admin tự làm mới (thêm 2026-11-19)
+
+Token admin là JWT 7 ngày, lưu ở `~/workspace/drive-ets/token-admin.txt`.
+Hết hạn thì API trả 401 — trước đây cron backup + restore-watch lỗi
+401 cho tới khi có người đăng nhập tay để cấp lại (đã xảy ra 2026-11-19
+lúc 12:48). Từ nay `backup-lib.js` tự xử lý: các hàm `apiGetBackupAuto`
+/ `apiPostRestoreAuto` gặp 401 thì tự đăng nhập lại bằng tài khoản demo
+admin (`POST /api/auth/login`), ghi token mới vào file (quyền 0600) rồi
+thử lại **đúng 1 lần**. Đăng nhập thất bại thì báo lỗi (exit 1) để cron
+báo cáo, file token cũ được giữ nguyên. Đã kiểm chứng bằng token hỏng
+cố ý: script tự cấp token mới và backup thành công (197 dòng). Không
+cần nhắc cấp lại tay vào ngày hết hạn nữa.
 
 ## Cron cần tạo (sau khi deploy)
 

@@ -103,9 +103,8 @@ function countUserRows(userData) {
 
 async function main() {
   fs.mkdirSync(WORK_DIR, { recursive: true });
-  const token = lib.readAdminToken();
   await lib.waitForBackend();
-  const backup = await lib.apiGetBackup(token);
+  const backup = await lib.apiGetBackupAuto();
   if (!backup.userData || typeof backup.userData !== 'object') {
     throw new Error('GET /api/admin/backup khong tra ve userData');
   }

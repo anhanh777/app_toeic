@@ -7,6 +7,12 @@
  *
  * KHONG commit token: token chi doc tu file o runtime (env ADMIN_TOKEN_FILE).
  * KHONG chay truc tiep — duoc require() tu backup-to-drive.js / restore-watch.js.
+ *
+ * TU LAM MOI TOKEN (2026-11-19): token admin la JWT 7 ngay; het han thi
+ * API tra 401. Cac ham *Auto (apiGetBackupAuto / apiPostRestoreAuto) gap
+ * 401 thi tu dang nhap lai bang tai khoan demo admin, ghi token moi vao
+ * file roi thu lai 1 lan — cron khong can ai cap tay nua. Chi thu lai
+ * dung 1 lan de tranh lap vo han khi sai mat khau.
  */
 
 const fs = require('node:fs');
@@ -20,6 +26,11 @@ const API_BASE = (process.env.API_BASE || 'https://app-toeic-backend.onrender.co
 const TOKEN_FILE =
   process.env.ADMIN_TOKEN_FILE ||
   path.join(os.homedir(), 'workspace', 'drive-ets', 'token-admin.txt');
+
+// Tai khoan dung de tu cap lai token khi het han (tai khoan demo admin
+// co san trong seed; chi dung cho 2 script cron nay).
+const ADMIN_LOGIN_EMAIL = process.env.BACKUP_ADMIN_EMAIL || 'demo@toeic.app';
+const ADMIN_LOGIN_PASSWORD = process.env.BACKUP_ADMIN_PASSWORD || 'admin123';
 
 const DEMO_EMAILS = ['demo@toeic.app', 'user@toeic.app'];
 
@@ -138,6 +149,71 @@ async function apiPostRestore(token, backupDoc) {
   return body;
 }
 
+/** Loi 401 (token het han / khong hop le) co nhan ra tu message khong? */
+function isAuthError(err) {
+  return err && typeof err.message === 'string' && err.message.includes('HTTP 401');
+}
+
+/**
+ * Dang nhap lai bang tai khoan demo admin, ghi token moi vao file.
+ * Chi ghi file SAU KHI dang nhap thanh cong va co token — dang nhap
+ * that bai thi file token cu duoc giu nguyen de nguoi kiem tra sau.
+ */
+async function loginAdmin() {
+  log('token het han — dang nhap lai bang tai khoan demo admin de cap token moi...');
+  const res = await fetch(`${API_BASE}/api/auth/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: ADMIN_LOGIN_EMAIL, password: ADMIN_LOGIN_PASSWORD }),
+    signal: AbortSignal.timeout(60000),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok || !body.token) {
+    throw new Error(
+      `dang nhap lai admin that bai (HTTP ${res.status}): ${body.error || 'khong co token'}`
+    );
+  }
+  fs.writeFileSync(TOKEN_FILE, `${body.token}\n`, { mode: 0o600 });
+  log('da cap token admin moi va ghi vao file.');
+  return body.token;
+}
+
+/** Doc token hien co; neu file thieu/rong thi tra null de cap moi. */
+function getTokenOrNull() {
+  try {
+    return readAdminToken();
+  } catch (err) {
+    log(`khong doc duoc token cu (${err.message}) — cap moi.`);
+    return null;
+  }
+}
+
+/** GET /api/admin/backup, tu cap lai token khi gap 401 roi thu lai 1 lan. */
+async function apiGetBackupAuto() {
+  let token = getTokenOrNull();
+  if (!token) token = await loginAdmin();
+  try {
+    return await apiGetBackup(token);
+  } catch (err) {
+    if (!isAuthError(err)) throw err;
+    log('GET /api/admin/backup -> 401, thu lai voi token moi...');
+    return apiGetBackup(await loginAdmin());
+  }
+}
+
+/** POST /api/admin/restore, tu cap lai token khi gap 401 roi thu lai 1 lan. */
+async function apiPostRestoreAuto(backupDoc) {
+  let token = getTokenOrNull();
+  if (!token) token = await loginAdmin();
+  try {
+    return await apiPostRestore(token, backupDoc);
+  } catch (err) {
+    if (!isAuthError(err)) throw err;
+    log('POST /api/admin/restore -> 401, thu lai voi token moi...');
+    return apiPostRestore(await loginAdmin(), backupDoc);
+  }
+}
+
 /* ---------------- Google Drive (qua hatch_gws_cli) ---------------- */
 
 function drive(args) {
@@ -250,6 +326,9 @@ module.exports = {
   waitForBackend,
   apiGetBackup,
   apiPostRestore,
+  loginAdmin,
+  apiGetBackupAuto,
+  apiPostRestoreAuto,
   countUserRows,
   findMissingAccounts,
   isPartialWipe,

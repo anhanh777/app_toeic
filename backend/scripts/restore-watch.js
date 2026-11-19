@@ -92,13 +92,12 @@ function pickLatestBackup(files) {
 
 async function main() {
   fs.mkdirSync(WORK_DIR, { recursive: true });
-  const token = lib.readAdminToken();
   await lib.waitForBackend();
-  const live = await lib.apiGetBackup(token);
+  const live = await lib.apiGetBackupAuto();
   const check = looksWiped(live.userData, live.counts);
   lib.log(`kiem tra live: ${check.reason}.`);
   if (check.wiped) {
-    await restoreFromLatest(token, 'live vua bi xoa');
+    await restoreFromLatest('live vua bi xoa');
     return;
   }
 
@@ -116,7 +115,7 @@ async function main() {
   const partial = lib.isPartialWipe(live.userData, backup.doc.userData);
   lib.log(`doi chieu voi ${backup.fileName}: ${partial.reason}.`);
   if (partial.partial) {
-    await doRestore(token, backup.doc, backup.fileName, 'live thieu tai khoan that');
+    await doRestore(backup.doc, backup.fileName, 'live thieu tai khoan that');
     return;
   }
   lib.log('live co du lieu nguoi dung — KHONG khoi phuc (tranh ghi de du lieu moi).');
@@ -141,16 +140,16 @@ function downloadLatestBackup() {
   return { doc, fileName: latestFile.name };
 }
 
-async function restoreFromLatest(token, why) {
+async function restoreFromLatest(why) {
   const backup = await downloadLatestBackup();
   if (!backup) {
     lib.log('khong khoi phuc duoc: chua co backup nao.');
     return;
   }
-  await doRestore(token, backup.doc, backup.fileName, why);
+  await doRestore(backup.doc, backup.fileName, why);
 }
 
-async function doRestore(token, backupDoc, fileName, why) {
+async function doRestore(backupDoc, fileName, why) {
   if (!backupDoc.userData || countUserRows(backupDoc.userData) <= 2) {
     lib.log(`ban backup ${fileName} khong co du lieu nguoi dung that — khong khoi phuc.`);
     return;
@@ -159,10 +158,10 @@ async function doRestore(token, backupDoc, fileName, why) {
     `${why} — khoi phuc tu ${fileName} ` +
       `(${countUserRows(backupDoc.userData)} dong)...`
   );
-  const result = await lib.apiPostRestore(token, backupDoc);
+  const result = await lib.apiPostRestoreAuto(backupDoc);
 
   // Doi chieu lai so dong tung bang voi ban backup.
-  const after = await lib.apiGetBackup(token);
+  const after = await lib.apiGetBackupAuto();
   const mismatches = [];
   for (const [table, want] of Object.entries(backupDoc.counts || {})) {
     const got = (after.counts || {})[table];
