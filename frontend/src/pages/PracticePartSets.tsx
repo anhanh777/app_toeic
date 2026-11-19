@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { api, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
-import { partLabel, partNameFor, useExam } from '../exam';
+import { groupTestSetsByBook, partLabel, partNameFor, useExam } from '../exam';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 
 export default function PracticePartSets() {
@@ -41,6 +41,42 @@ export default function PracticePartSets() {
     ? `${partLabel(part, exam)} — ${sectionOf(part)}`
     : partName(part);
   const shortLabel = isIelts ? partNameFor(part, exam) : partName(part);
+  // Ý 2 (IELTS-only): gom nhóm đề theo sách Cambridge (như tab Bộ đề).
+  const bookGroups = isIelts ? groupTestSetsByBook(sorted) : [];
+
+  const renderSetCard = (ts: TestSet) => {
+    const partCount = ts.parts.find(p => p.part === part)?.count ?? 0;
+    const total = ts.totalQuestions || 0;
+    const disabled = partCount === 0;
+    const go = () => { if (!disabled) nav(`/practice/session?part=${part}&testSetId=${ts.id}&exam=${exam}`); };
+    return (
+      <div
+        key={ts.id}
+        className="card part-card"
+        role={disabled ? undefined : 'button'}
+        tabIndex={disabled ? undefined : 0}
+        aria-disabled={disabled}
+        onClick={go}
+        onKeyDown={e => { if (!disabled && (e.key === 'Enter' || e.key === ' ')) go(); }}
+        style={disabled ? { opacity: 0.6 } : undefined}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '.5rem', flexWrap: 'wrap' }}>
+          <strong>{ts.title} <span className="muted" style={{ fontWeight: 500 }}>· {partCount} câu {shortLabel}</span></strong>
+          {!ts.isPublished && <span className="pill">NHÁP</span>}
+        </div>
+        <p className="muted" style={{ margin: 0 }}>{total} câu cả đề</p>
+        {disabled ? (
+          <p className="muted" style={{ margin: 0 }}>Chưa có câu</p>
+        ) : (
+          <div className="btn-row">
+            <button className="btn btn-sm" onClick={e => { e.stopPropagation(); go(); }}>
+              ▶ Luyện {shortLabel}
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   if (!partValid) {
     return (
@@ -61,41 +97,20 @@ export default function PracticePartSets() {
       {!loading && !testSets.length && !error && (
         <div className="card"><p>Chưa có bộ đề nào.</p></div>
       )}
-      <div className="grid">
-        {sorted.map(ts => {
-          const partCount = ts.parts.find(p => p.part === part)?.count ?? 0;
-          const total = ts.totalQuestions || 0;
-          const disabled = partCount === 0;
-          const go = () => { if (!disabled) nav(`/practice/session?part=${part}&testSetId=${ts.id}&exam=${exam}`); };
-          return (
-            <div
-              key={ts.id}
-              className="card part-card"
-              role={disabled ? undefined : 'button'}
-              tabIndex={disabled ? undefined : 0}
-              aria-disabled={disabled}
-              onClick={go}
-              onKeyDown={e => { if (!disabled && (e.key === 'Enter' || e.key === ' ')) go(); }}
-              style={disabled ? { opacity: 0.6 } : undefined}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '.5rem', flexWrap: 'wrap' }}>
-                <strong>{ts.title} <span className="muted" style={{ fontWeight: 500 }}>· {partCount} câu {shortLabel}</span></strong>
-                {!ts.isPublished && <span className="pill">NHÁP</span>}
-              </div>
-              <p className="muted" style={{ margin: 0 }}>{total} câu cả đề</p>
-              {disabled ? (
-                <p className="muted" style={{ margin: 0 }}>Chưa có câu</p>
-              ) : (
-                <div className="btn-row">
-                  <button className="btn btn-sm" onClick={e => { e.stopPropagation(); go(); }}>
-                    ▶ Luyện {shortLabel}
-                  </button>
-                </div>
-              )}
+      {isIelts ? (
+        bookGroups.map(g => (
+          <details className="book-group" key={g.label} open>
+            <summary>{g.label} <span className="muted">({g.sets.length} đề)</span></summary>
+            <div className="grid" style={{ marginTop: '.5rem' }}>
+              {g.sets.map(renderSetCard)}
             </div>
-          );
-        })}
-      </div>
+          </details>
+        ))
+      ) : (
+        <div className="grid">
+          {sorted.map(renderSetCard)}
+        </div>
+      )}
     </div>
   );
 }

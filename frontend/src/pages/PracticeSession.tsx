@@ -19,7 +19,7 @@ import { LoadingLine, useUiSettings } from '../uiSettings';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
-import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
+import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
@@ -54,7 +54,6 @@ export default function PracticeSession() {
   const [causeById, setCauseById] = useState<Record<string, string>>({});
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
-  const [score, setScore] = useState({ correct: 0, done: 0 });
   const [finished, setFinished] = useState(false);
   // Chế độ chấm: 'instant' (chấm từng câu ngay sau khi nộp, như trước)
   // hoặc 'submit-all' (làm hết rồi bấm "Nộp tất cả" mới chấm 1 lượt).
@@ -90,6 +89,34 @@ export default function PracticeSession() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [part, testSetId, exam]);
 
+  // Ý 2 (IELTS-only): luyện theo dạng câu hỏi — ?questionType=... trên URL
+  // (nối từ gợi ý luyện tiếp ở trang Thống kê, đợt 3) hoặc chọn trong
+  // dropdown ở đầu trang. Lọc client-side trên câu hỏi đã tải (cùng mẫu
+  // Today.tsx); đáp án/kết quả đã làm giữ nguyên theo id câu khi đổi lọc.
+  const typeParam = params.get('questionType') || '';
+  const [typeFilter, setTypeFilter] = useState(typeParam);
+  useEffect(() => { setTypeFilter(typeParam); }, [typeParam]);
+  const availableTypes = [...new Set(questions.map(q => q.questionType || 'multiple_choice'))];
+  const visibleQuestions = isIelts && typeFilter
+    ? questions.filter(q => (q.questionType || 'multiple_choice') === typeFilter)
+    : questions;
+  // Điểm tính trực tiếp từ kết quả của các câu ĐANG HIỆN (đã lọc) — không
+  // giữ state riêng để khỏi lệch khi đổi bộ lọc. Nộp tất cả rồi thì câu
+  // chưa làm cũng tính là đã làm (sai).
+  const doneCount = submittedAll ? visibleQuestions.length : visibleQuestions.filter(q => resultById[q.id]).length;
+  const correctCount = visibleQuestions.filter(q => resultById[q.id]?.correct).length;
+  // Số thật trong đề của từng câu — tính trên TOÀN BỘ câu hỏi, không phải
+  // danh sách đã lọc (lọc theo dạng không được làm lệch số câu).
+  const trueNumberById: Record<string, number> = {};
+  {
+    const pc: Record<number, number> = {};
+    questions.forEach(q => {
+      const idx = (pc[q.part] ?? 0) + 1;
+      pc[q.part] = idx;
+      trueNumberById[q.id] = realQuestionNumber(exam, q.part, idx);
+    });
+  }
+
   // Luyện 1 Part: isListening theo Part đó. Luyện cả đề: nghe/đọc tính theo
   // từng câu (q.part) — xem usePartAudioFor + renderQuestion.
   const isListening = !isFullPractice && part <= 4;
@@ -117,9 +144,10 @@ export default function PracticeSession() {
     q.options.every(o => !o.content || !o.content.trim());
 
   // Đếm số lần mỗi tiêu đề được chọn (matching_headings) để cảnh báo khi
-  // 2 câu trong cùng 1 passage chọn trùng 1 tiêu đề.
+  // 2 câu trong cùng 1 passage chọn trùng 1 tiêu đề — chỉ tính câu đang
+  // hiện (câu bị lọc ẩn không gây cảnh báo nhầm).
   const headingCounts: Record<string, number> = {};
-  questions.forEach(q => {
+  visibleQuestions.forEach(q => {
     if (q.questionType === 'matching_headings') {
       const v = selectedById[q.id];
       if (v) headingCounts[v] = (headingCounts[v] ?? 0) + 1;
@@ -139,21 +167,11 @@ export default function PracticeSession() {
     try {
       const r = await api.practiceAnswer(q.id, selected);
       setResultById(m => ({ ...m, [q.id]: r }));
-      setScore(s => ({ correct: s.correct + (r.correct ? 1 : 0), done: s.done + 1 }));
     } catch (e) { setError(e); }
   };
 
   // Số thật trong đề của 1 câu (để báo lỗi giới hạn từ đúng câu).
-  const questionNumber = (target: Question) => {
-    let idx = 0;
-    for (const qq of questions) {
-      if (qq.part === target.part) {
-        idx += 1;
-        if (qq.id === target.id) break;
-      }
-    }
-    return realQuestionNumber(exam, target.part, idx);
-  };
+  const questionNumber = (target: Question) => trueNumberById[target.id] ?? realQuestionNumber(exam, target.part, 1);
 
   // Nộp tất cả (chế độ 'submit-all'): chấm lần lượt từng câu đã làm theo
   // thứ tự trong đề; câu chưa làm KHÔNG gọi API (backend trả 400 với đáp
@@ -161,9 +179,11 @@ export default function PracticeSession() {
   // chấm vẫn giữ kết quả, bấm lại để chấm nốt phần còn lại.
   const submitAll = async () => {
     if (submittedAll) return;
-    const answered = questions.filter(q => selectedById[q.id]);
+    // Chỉ chấm các câu ĐANG HIỆN (đã lọc theo dạng) — câu bị lọc ẩn giữ
+    // nguyên đáp án đã chọn, chấm khi chuyển lại bộ lọc đó.
+    const answered = visibleQuestions.filter(q => selectedById[q.id]);
     if (!answered.length) return;
-    const unanswered = questions.length - answered.length;
+    const unanswered = visibleQuestions.length - answered.length;
     if (unanswered > 0 && !window.confirm(`Còn ${unanswered} câu chưa làm, vẫn nộp?`)) return;
     // (a) Kiểm tra giới hạn số từ cho TẤT CẢ câu điền từ đã làm TRƯỚC
     // khi nộp câu nào — vượt thì báo lỗi (ghi rõ số câu) và dừng hẳn.
@@ -175,41 +195,46 @@ export default function PracticeSession() {
     }
     // (b) Chấm tuần tự theo thứ tự trong đề.
     const nextResults: Record<string, AnswerResult> = {};
-    let correct = 0;
     for (const q of answered) {
       const already = resultById[q.id];
       if (already) {
         nextResults[q.id] = already;
-        if (already.correct) correct += 1;
         continue;
       }
       try {
         const r = await api.practiceAnswer(q.id, selectedById[q.id]);
         nextResults[q.id] = r;
-        if (r.correct) correct += 1;
       } catch (e) {
         const merged = { ...resultById, ...nextResults };
         setResultById(merged);
-        setScore({ correct: Object.values(merged).filter(r => r.correct).length, done: Object.keys(merged).length });
         setError(e);
         return;
       }
     }
-    // (c) Xong: câu chưa làm tính là sai (done = tổng số câu).
+    // (c) Xong: câu chưa làm tính là sai (done = tổng số câu đang hiện).
     setResultById(m => ({ ...m, ...nextResults }));
-    setScore({ correct, done: questions.length });
     setSubmittedAll(true);
   };
 
   if (loading || ((isListening || isFullPractice) && !!testSetId && !partMediaLoaded)) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải câu hỏi…" />;
   if (!questions.length) return <div><ErrorBox error={error} /><p>{isFullPractice ? 'Chưa có câu hỏi trong đề này.' : <>Chưa có câu hỏi cho {isIelts ? partLabel(part, exam) : `Part ${part}`} này.</>} {testSetId ? <Link to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link to="/practice">Quay lại chọn Part</Link>}</p></div>;
+  if (!visibleQuestions.length) return (
+    <div>
+      <ErrorBox error={error} />
+      <p>Không có câu dạng <strong>{questionTypeName(typeFilter)}</strong> trong {isFullPractice ? 'đề này' : `${partLabel(part, exam)} của đề này`}.</p>
+      <div className="btn-row">
+        <button className="btn" onClick={() => setTypeFilter('')}>Hiện tất cả các dạng</button>
+        {testSetId ? <Link className="btn secondary" to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link className="btn secondary" to="/practice">Quay lại chọn Part</Link>}
+      </div>
+    </div>
+  );
   if (finished) {
     return (
       <div className="card">
         <h1>Hoàn thành!</h1>
-        {testSetTitle && <p className="muted">{testSetTitle}</p>}
-        <p className="big">{score.correct}/{score.done} câu đúng</p>
-        <p>{score.done ? `Tỉ lệ đúng: ${Math.round((score.correct / score.done) * 100)}%` : ''}</p>
+        {testSetTitle && <p className="muted">{testSetTitle}{typeFilter ? ` · ${questionTypeName(typeFilter)}` : ''}</p>}
+        <p className="big">{correctCount}/{doneCount} câu đúng</p>
+        <p>{doneCount ? `Tỉ lệ đúng: ${Math.round((correctCount / doneCount) * 100)}%` : ''}</p>
         <div className="btn-row">
           {testSetId
             ? <><Link className="btn" to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link><Link className="btn secondary" to="/wrong">Ôn câu sai</Link></>
@@ -232,11 +257,10 @@ export default function PracticeSession() {
   // số thật là 32–70).
   type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number }[] };
   const blocks: Block[] = [];
-  const partCount: Record<number, number> = {};
-  questions.forEach((q) => {
-    const idx = (partCount[q.part] ?? 0) + 1;
-    partCount[q.part] = idx;
-    const n = realQuestionNumber(exam, q.part, idx);
+  // Nhóm trên các câu ĐANG HIỆN; số câu n lấy từ trueNumberById (số thật
+  // trong đề) để lọc theo dạng không làm lệch số.
+  visibleQuestions.forEach((q) => {
+    const n = trueNumberById[q.id] ?? realQuestionNumber(exam, q.part, 1);
     const last = blocks[blocks.length - 1];
     const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
     const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
@@ -485,10 +509,10 @@ export default function PracticeSession() {
   };
 
   // Khóa chọn chế độ chấm khi đã chọn đáp án cho câu nào trong đề hiện
-  // tại (chỉ tính câu của đề này — selectedById cũ của buổi trước không
+  // tại (chỉ tính câu đang hiện — selectedById cũ của buổi trước không
   // khóa nhầm). Chọn xong thì không đổi chế độ giữa buổi.
-  const modeLocked = questions.some(q => selectedById[q.id]);
-  const answeredCount = questions.filter(q => selectedById[q.id]).length;
+  const modeLocked = visibleQuestions.some(q => selectedById[q.id]);
+  const answeredCount = visibleQuestions.filter(q => selectedById[q.id]).length;
 
   // IELTS-only: thanh số câu (kiểu YouPass) — bấm số để nhảy tới câu đó.
   // Trạng thái: đã chấm thì xanh/đỏ theo đúng/sai, chưa chấm mà đã chọn
@@ -506,12 +530,24 @@ export default function PracticeSession() {
       <div className="exam-head">
         <h2 className="exam-part">
           {isFullPractice
-            ? <>Luyện cả đề<span> — {questions.length} câu · không bấm giờ</span></>
+            ? <>Luyện cả đề<span> — {visibleQuestions.length} câu · không bấm giờ{typeFilter ? ` · ${questionTypeName(typeFilter)}` : ''}</span></>
             : isIelts
-              ? <>{partLabel(part, exam)}<span> — {part <= 4 ? 'Listening' : 'Reading'}</span></>
+              ? <>{partLabel(part, exam)}<span> — {part <= 4 ? 'Listening' : 'Reading'}{typeFilter ? ` · ${questionTypeName(typeFilter)}` : ''}</span></>
               : <>Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</>}
         </h2>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
+          {/* Ý 2 (IELTS-only): lọc theo dạng câu hỏi trong phạm vi buổi luyện. */}
+          {isIelts && (
+            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.4rem', fontWeight: 500 }}>
+              Dạng câu hỏi:
+              <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} aria-label="Lọc theo dạng câu hỏi">
+                <option value="">Tất cả các dạng</option>
+                {availableTypes.map(t => (
+                  <option key={t} value={t}>{questionTypeName(t)}</option>
+                ))}
+              </select>
+            </label>
+          )}
           {/* Chọn chế độ chấm — chỉ đổi được trước khi chọn đáp án đầu tiên. */}
           <span role="group" aria-label="Chế độ chấm điểm" title={modeLocked ? 'Đã chọn đáp án nên không đổi được chế độ chấm trong buổi này' : undefined}
             style={{ display: 'inline-flex', border: '1px solid var(--accent)', borderRadius: 8, overflow: 'hidden', opacity: modeLocked ? .55 : 1 }}>
@@ -525,7 +561,7 @@ export default function PracticeSession() {
               </button>
             ))}
           </span>
-          <span className="progress-badge">Đã làm {score.done}/{questions.length}</span>
+          <span className="progress-badge">Đã làm {doneCount}/{visibleQuestions.length}</span>
         </span>
       </div>
       {usePartAudio && (
@@ -543,10 +579,10 @@ export default function PracticeSession() {
       </div>
       <div className="practice-bar">
         {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} />}
-        <span className="progress">Đã làm {score.done}/{questions.length} • Đúng {score.correct}</span>
+        <span className="progress">Đã làm {doneCount}/{visibleQuestions.length} • Đúng {correctCount}</span>
         <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>🚪 Thoát</button>
         {gradingMode === 'submit-all' && !submittedAll ? (
-          <button className="btn btn-sm" disabled={answeredCount === 0} onClick={() => void submitAll()}>Nộp tất cả · {answeredCount}/{questions.length} câu</button>
+          <button className="btn btn-sm" disabled={answeredCount === 0} onClick={() => void submitAll()}>Nộp tất cả · {answeredCount}/{visibleQuestions.length} câu</button>
         ) : (
           <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
         )}

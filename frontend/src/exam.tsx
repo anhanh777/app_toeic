@@ -248,6 +248,44 @@ export function listeningReadingProgress(ts: TestSet): { listening: { answered: 
   };
 }
 
+// Gom nhóm đề IELTS theo sách Cambridge (Ý 2): parse số sách từ tiêu đề
+// ("Cambridge IELTS 21 — Test 01" → 21). Nhóm sắp xếp sách mới trước,
+// đề không thuộc sách Cambridge nào (VD đề mẫu tự soạn TS-024) gom vào
+// nhóm "Đề khác" ở cuối. Tự động nhận sách mới (Cam 17/18...) nếu import
+// thêm — không hardcode danh sách sách.
+export type BookGroup = { label: string; book: number | null; sets: TestSet[] };
+export function cambridgeBookOf(title: string): number | null {
+  const m = /Cambridge IELTS (\d+)/i.exec(title);
+  return m ? Number(m[1]) : null;
+}
+export function groupTestSetsByBook(testSets: TestSet[]): BookGroup[] {
+  const byBook = new Map<number, TestSet[]>();
+  const other: TestSet[] = [];
+  for (const ts of testSets) {
+    const book = cambridgeBookOf(ts.title);
+    if (book == null) { other.push(ts); continue; }
+    const arr = byBook.get(book) ?? [];
+    arr.push(ts);
+    byBook.set(book, arr);
+  }
+  const groups: BookGroup[] = [...byBook.entries()]
+    .sort((a, b) => b[0] - a[0])
+    .map(([book, sets]) => ({ label: `Cambridge IELTS ${book}`, book, sets }));
+  if (other.length) groups.push({ label: 'Đề khác', book: null, sets: other });
+  return groups;
+}
+
+// Trạng thái làm đề (Ý 2, tính từ progress đã có): 'todo' = chưa làm câu
+// nào, 'doing' = làm dở, 'done' = đã làm hết số câu của đề.
+export type SetStatus = 'todo' | 'doing' | 'done';
+export function testSetStatus(ts: TestSet): SetStatus {
+  const total = ts.totalQuestions || 0;
+  const answered = ts.progress?.answeredTotal || 0;
+  if (answered <= 0) return 'todo';
+  if (total > 0 && answered >= total) return 'done';
+  return 'doing';
+}
+
 // Số câu THẬT trong đề. Luyện riêng 1 Part/Section thì danh sách chỉ chứa
 // câu của Part đó nên số thứ tự trong danh sách (1–39) không phải số thật
 // (32–70) — cộng thêm mốc đầu Part: TOEIC P1=1, P2=7, P3=32, P4=71,
