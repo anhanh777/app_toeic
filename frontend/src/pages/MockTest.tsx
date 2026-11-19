@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, type Question, type TestSet } from '../api';
-import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, partName, type BlankState, type PaletteItemState } from '../components';
+import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
 import { partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
-import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitListeningSegments } from '../ielts-ui';
+import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitGroupSegments } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 
@@ -231,12 +231,13 @@ export default function MockTest() {
     if (first) jumpToQuestion(first.q.id);
   };
 
-  // Render các câu trong 1 khối: khối Listening IELTS thì chia thành các
-  // đoạn (khối ghi chú inline / bảng matching / câu lẻ); còn lại render
-  // từng câu như cũ. Thi thử không có dải chấm (không chấm từng câu).
+  // Render các câu trong 1 khối: khối IELTS thì chia thành các đoạn
+  // (khối ghi chú inline — chỉ Listening — / bảng matching — cả Listening
+  // lẫn Reading, xếp dọc ở Reading vì cột phải hẹp — / câu lẻ); TOEIC
+  // render từng câu như cũ. Thi thử không có dải chấm (không chấm từng câu).
   const renderBlockQuestions = (block: Block) => {
-    if (!isIelts || block.part > 4) return block.questions.map(item => renderQuestion(item));
-    return splitListeningSegments(block.questions).map((seg, si) => {
+    if (!isIelts) return block.questions.map(item => renderQuestion(item));
+    return splitGroupSegments(block.questions).map((seg, si) => {
       if (seg.kind === 'single') return renderQuestion(seg.item);
       const groupProps = {
         items: seg.items,
@@ -249,7 +250,7 @@ export default function MockTest() {
       };
       return (
         <div key={`${block.key}-seg-${si}`}>
-          {seg.kind === 'notes' ? <IeltsNotesBlock {...groupProps} /> : <IeltsMatchingBoard {...groupProps} />}
+          {seg.kind === 'notes' ? <IeltsNotesBlock {...groupProps} /> : <IeltsMatchingBoard {...groupProps} layout={block.part >= 5 ? 'stacked' : 'side'} />}
         </div>
       );
     });
@@ -309,9 +310,10 @@ export default function MockTest() {
               thay vì nằm riêng ở cột phải như trước. Part 6 không hiện
               chữ câu hỏi (câu chứa chỗ trống đã nằm trong đoạn văn trên).
               Nội dung gốc đôi khi đã có số ở đầu ("147. Where...") thì
-              bỏ đi để khỏi lặp. */}
+              bỏ đi để khỏi lặp. IELTS: chữ thường, chỉ chỗ trống in đậm
+              (đỡ nặng mắt); TOEIC giữ in đậm như cũ. */}
           {!hideListeningText && !isP6 && q.content ? (
-            <p><span className="exam-q-num">{n}.</span><strong>{stripLeadingNumber(q.content, n)}</strong></p>
+            <p><span className="exam-q-num">{n}.</span>{isIelts ? <QuestionText text={stripLeadingNumber(q.content, n)} /> : <strong>{stripLeadingNumber(q.content, n)}</strong>}</p>
           ) : null}
         </div>
         <div className="exam-q-side">
@@ -427,11 +429,11 @@ export default function MockTest() {
             <div className={`paper-cluster${split ? ' paper-cluster--split' : ''}`}>
               {renderPassage(block)}
               {split ? (
-                <div>{block.questions.map(item => renderQuestion(item))}</div>
+                <div>{renderBlockQuestions(block)}</div>
               ) : block.questions.every(({ q }) => isDuoQuestion(q)) ? (
                 <div className="exam-q-grid2">{block.questions.map(item => renderQuestion(item))}</div>
               ) : (
-                block.questions.map(item => renderQuestion(item))
+                renderBlockQuestions(block)
               )}
             </div>
           ) : (
@@ -445,15 +447,12 @@ export default function MockTest() {
   };
 
   return (
-    <div className={`ts-${textLevel}`}>
+    <div className={`ts-${textLevel} exam-room`}>
       <div className="exam-head">
         <div style={{ display: 'flex', alignItems: 'center', gap: '.8rem', flexWrap: 'wrap', minWidth: 0 }}>
           <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
           <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
         </div>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
-          <span className="progress-badge">Đã trả lời {answeredCount}/{questions.length}</span>
-        </span>
       </div>
       <ErrorBox error={error} />
       <div className="paper">

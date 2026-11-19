@@ -1,13 +1,14 @@
 /**
- * menuIcons.ts — biểu tượng emoji của 17 mục (12 mục menu trang chủ +
+ * menuIcons.ts — biểu tượng emoji của 19 mục (12 mục menu trang chủ +
  * Trang chủ, Thống kê, nút Đổi bài thi, thẻ TOEIC/IELTS — bổ sung
- * 2026-11-19), sửa được từ web quản trị (bản sao tương tự sẽ có ở app
- * học viên — giữ 2 bản đồng bộ khi sửa).
+ * 2026-11-19 — + cờ đánh dấu / đã đánh dấu câu IELTS), sửa được từ web
+ * quản trị (bản sao tương tự sẽ có ở app học viên — giữ 2 bản đồng bộ
+ * khi sửa).
  *
  * - Tài liệu phẳng: { today, practice, mock, wrong, vocabulary,
  *   leaderboard, settings, diagnostic, errors, writing, speaking,
- *   ielts-setup, home, stats, switch-exam, exam-toeic, exam-ielts } —
- *   mỗi key là 1 emoji.
+ *   ielts-setup, home, stats, switch-exam, exam-toeic, exam-ielts,
+ *   flag, flagged } — mỗi key là 1 emoji.
  *   Backend trả về ở GET /api/menu-icons (công khai); admin sửa qua
  *   PUT /api/admin/menu-icons (PUT từng phần giữ nguyên các icon khác,
  *   key lạ → 400, icon phải 1–10 code point).
@@ -32,7 +33,9 @@ export type MenuIconKey =
   | 'stats'
   | 'switch-exam'
   | 'exam-toeic'
-  | 'exam-ielts';
+  | 'exam-ielts'
+  | 'flag'
+  | 'flagged';
 
 export type MenuIconsDoc = Record<MenuIconKey, string>;
 
@@ -54,6 +57,8 @@ export const MENU_ICON_KEYS: MenuIconKey[] = [
   'switch-exam',
   'exam-toeic',
   'exam-ielts',
+  'flag',
+  'flagged',
 ];
 
 /** Nhãn hiển thị trong trang quản trị (khớp menu trang chủ app học viên). */
@@ -75,6 +80,8 @@ export const MENU_ICON_LABELS: Record<MenuIconKey, string> = {
   'switch-exam': 'Đổi bài thi',
   'exam-toeic': 'Thẻ TOEIC',
   'exam-ielts': 'Thẻ IELTS',
+  flag: 'Cờ đánh dấu (chưa đánh dấu)',
+  flagged: 'Cờ đánh dấu (đã đánh dấu)',
 };
 
 export const MENU_ICON_DEFAULTS: MenuIconsDoc = {
@@ -95,6 +102,10 @@ export const MENU_ICON_DEFAULTS: MenuIconsDoc = {
   'switch-exam': '⇄',
   'exam-toeic': '🌸',
   'exam-ielts': '🎓',
+  // Cờ đánh dấu câu (phòng thi IELTS): flag dùng 🏳️ KÈM VS16 để bắt buộc
+  // hiện dạng emoji — 🏳 trơn hiện dạng text outline trên 1 số máy.
+  flag: '🏳️',
+  flagged: '🚩',
 };
 
 const MAX_EMOJI = 10;

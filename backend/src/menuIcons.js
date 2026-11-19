@@ -30,6 +30,11 @@ const DEFAULTS = Object.freeze({
   'switch-exam': '⇄',
   'exam-toeic': '🌸',
   'exam-ielts': '🎓',
+  // Bo sung 2026-11-19: icon co danh dau cau (phong thi IELTS). `flag`
+  // dung 🏳️ KEM VS16 (U+FE0F) de bat buoc hien dang emoji — 🏳 tron (khong
+  // VS16) hien dang text outline tren 1 so may, nhin nhu ky tu loi.
+  flag: '🏳️',
+  flagged: '🚩',
 });
 
 const MENU_KEYS = Object.freeze([
@@ -50,6 +55,8 @@ const MENU_KEYS = Object.freeze([
   'switch-exam',
   'exam-toeic',
   'exam-ielts',
+  'flag',
+  'flagged',
 ]);
 
 /** Nhan hien thi tieng Viet cua tung muc menu (dung o web admin). */
@@ -71,6 +78,8 @@ const LABELS = Object.freeze({
   'switch-exam': 'Đổi bài thi',
   'exam-toeic': 'Thẻ TOEIC',
   'exam-ielts': 'Thẻ IELTS',
+  flag: 'Cờ đánh dấu (chưa đánh dấu)',
+  flagged: 'Cờ đánh dấu (đã đánh dấu)',
 });
 
 function getDefault(key) {

@@ -38,6 +38,12 @@ export function clearHighlights(): void {
   if (hl) hl.clear();
 }
 
+/** Số đoạn chữ đang được tô vàng trong phiên (để ẩn nút "Xóa highlight"
+ * khi chưa có đoạn nào). */
+export function getHighlightCount(): number {
+  return hl ? hl.size : 0;
+}
+
 /* ---- Ghi chú theo câu hỏi (localStorage) ---- */
 
 const NOTES_KEY = 'ielts-question-notes-v1';
@@ -72,12 +78,14 @@ export function useIeltsNotes() {
 
 /* ---- Thanh công cụ (trên tờ đề) ---- */
 
-export function IeltsToolsBar({ onHighlight, onNotes, onClearHighlights, hlSupported, notesCount }: {
+export function IeltsToolsBar({ onHighlight, onNotes, onClearHighlights, hlSupported, notesCount, hlCount }: {
   onHighlight: () => void;
   onNotes: () => void;
   onClearHighlights: () => void;
   hlSupported: boolean;
   notesCount: number;
+  /** Số đoạn đang tô vàng — nút "Xóa highlight" chỉ hiện khi > 0. */
+  hlCount: number;
 }) {
   return (
     <div className="ielts-tools" role="toolbar" aria-label="Công cụ luyện tập">
@@ -91,10 +99,12 @@ export function IeltsToolsBar({ onHighlight, onNotes, onClearHighlights, hlSuppo
         title="Ghi chú cho câu đang làm (phím N)">
         📝 Ghi chú <kbd>N</kbd>{notesCount > 0 ? ` (${notesCount})` : ''}
       </button>
-      <button type="button" className="btn btn-sm secondary" onClick={onClearHighlights}
-        disabled={!hlSupported} title="Xóa tất cả đoạn đã tô vàng trong buổi này">
-        🗑 Xóa highlight
-      </button>
+      {hlCount > 0 && (
+        <button type="button" className="btn btn-sm secondary" onClick={onClearHighlights}
+          title="Xóa tất cả đoạn đã tô vàng trong buổi này">
+          🗑 Xóa highlight
+        </button>
+      )}
     </div>
   );
 }

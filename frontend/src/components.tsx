@@ -362,6 +362,20 @@ export function ListeningAudio({
   );
 }
 
+/** Nội dung câu hỏi IELTS: chữ thường, chỉ chỗ trống ______ in đậm — cả
+ * câu in đậm như trước thì đoạn dài đọc nặng mắt. Số câu đã đậm sẵn ở
+ * .exam-q-num nên không đậm thêm ở đây. */
+export function QuestionText({ text }: { text: string }) {
+  const parts = text.split(/(__+)/).filter(Boolean);
+  return (
+    <>
+      {parts.map((p, i) =>
+        /^_+$/.test(p) ? <strong key={i}>{p}</strong> : <span key={i}>{p}</span>
+      )}
+    </>
+  );
+}
+
 /** Thanh số câu (kiểu YouPass) cho phòng thi IELTS: bấm số để nhảy tới câu
  * đó. state: todo = chưa làm, done = đã trả lời (thi thử) hoặc đã chọn đáp
  * án nhưng chưa chấm (luyện tập), correct/wrong = đã chấm (luyện tập).

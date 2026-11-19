@@ -5,6 +5,7 @@
 import { useState } from 'react';
 import type { Question } from './api';
 import { isFillIn, isMatching, isMultiAnswer, parseSelectedLabels, stripLeadingNumber, toggleSelectedLabel, wordCount } from './exam';
+import { useMenuIcons } from './menuIcons';
 
 export interface AnswerResultLike {
   correct: boolean;
@@ -227,11 +228,11 @@ export type BlockSegment =
   | { kind: 'matching'; items: BlockItem[] }
   | { kind: 'single'; item: BlockItem };
 
-/** Chia các câu trong 1 khối Listening thành: khối ghi chú inline (≥2 câu
- * điền từ liên tiếp cùng dạng), bảng matching kéo-thả (≥2 câu nối liên
- * tiếp cùng dạng + cùng danh sách phương án), còn lại render từng câu
- * như cũ. Chỉ áp dụng cho Listening (part ≤ 4); Reading giữ nguyên. */
-export function splitListeningSegments(items: BlockItem[]): BlockSegment[] {
+/** Chia các câu trong 1 khối thành: khối ghi chú inline (≥2 câu điền từ
+ * liên tiếp cùng dạng — CHỈ Listening), bảng matching kéo-thả (≥2 câu nối
+ * liên tiếp cùng dạng + cùng danh sách phương án — cả Listening lẫn
+ * Reading), còn lại render từng câu như cũ. */
+export function splitGroupSegments(items: BlockItem[]): BlockSegment[] {
   const out: BlockSegment[] = [];
   const optionsSig = (q: Question) => q.options.map(o => `${o.label}=${o.content ?? ''}`).join('|');
   let i = 0;
@@ -239,7 +240,7 @@ export function splitListeningSegments(items: BlockItem[]): BlockSegment[] {
     const { q } = items[i];
     const type = q.questionType || 'multiple_choice';
     const isFill = q.part <= 4 && isFillIn(type);
-    const isMatch = q.part <= 4 && isMatching(type);
+    const isMatch = isMatching(type);
     if (isFill || isMatch) {
       let j = i + 1;
       while (j < items.length) {
@@ -276,13 +277,17 @@ interface GroupBlockProps {
   onFocusQuestion?: (q: Question) => void;
 }
 
+/** Nút đánh dấu câu — icon lấy từ hệ thống quản lí biểu tượng
+ * (menu-icons: flag / flagged, sửa được từ web quản trị), không hard-code
+ * emoji ở đây nữa (🏳 trơn từng hiện dạng text outline, nhìn như ký tự lỗi). */
 export function FlagButton({ flagged, onToggle, label }: { flagged: boolean; onToggle: () => void; label: string }) {
+  const { icons } = useMenuIcons();
   return (
     <button
       type="button" className={`flag-btn${flagged ? ' flag-btn--on' : ''}`}
       onClick={onToggle} title={flagged ? 'Bỏ đánh dấu câu này' : 'Đánh dấu câu này để xem lại sau'}
       aria-label={label} aria-pressed={flagged}
-    >{flagged ? '🚩' : '🏳'}</button>
+    >{flagged ? icons.flagged : icons.flag}</button>
   );
 }
 
@@ -348,8 +353,9 @@ export function IeltsNotesBlock({ items, valueOf, onChange, onCommit, disabled, 
  * cột phải là danh sách đáp án — bấm chọn đáp án rồi bấm vào ô trống để
  * đặt (hoặc kéo đáp án vào ô). Bấm vào ô đã điền để xóa đáp án đó.
  * matching_headings được dùng lại 1 tiêu đề (theo luật thi thật) nên đáp
- * án đã dùng không bị khóa; các dạng nối khác mỗi đáp án chỉ dùng 1 lần. */
-export function IeltsMatchingBoard({ items, valueOf, onChange, onCommit, disabled, gradedById, flaggedById, onToggleFlag, onFocusQuestion }: GroupBlockProps) {
+ * án đã dùng không bị khóa; các dạng nối khác mỗi đáp án chỉ dùng 1 lần.
+ * layout='stacked' (Reading, cột phải hẹp): xếp dọc, đáp án nằm dưới. */
+export function IeltsMatchingBoard({ items, valueOf, onChange, onCommit, disabled, gradedById, flaggedById, onToggleFlag, onFocusQuestion, layout }: GroupBlockProps & { layout?: 'side' | 'stacked' }) {
   const first = items[0];
   const last = items[items.length - 1];
   const type = first.q.questionType || 'matching';
@@ -381,7 +387,7 @@ export function IeltsMatchingBoard({ items, valueOf, onChange, onCommit, disable
     <div className="ielts-match">
       <p className="ielts-notes-head"><strong>Questions {first.n}–{last.n}</strong></p>
       <p className="ielts-notes-inst">{matchInstructionFor(type)}</p>
-      <div className="ielts-match-grid">
+      <div className={`ielts-match-grid${layout === 'stacked' ? ' ielts-match-grid--stacked' : ''}`}>
         <div className="ielts-match-items">
           {items.map(({ q, n }) => {
             const value = valueOf(q);

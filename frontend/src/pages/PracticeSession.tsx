@@ -17,11 +17,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 import { api, type Question } from '../api';
-import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, partName, type BlankState, type PaletteItemState } from '../components';
+import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
 import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
-import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitListeningSegments } from '../ielts-ui';
-import { clearHighlights, highlightSelection, highlightSupported, IeltsNotePanel, IeltsToolsBar, useIeltsNotes } from '../ielts-tools';
+import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitGroupSegments } from '../ielts-ui';
+import { clearHighlights, getHighlightCount, highlightSelection, highlightSupported, IeltsNotePanel, IeltsToolsBar, useIeltsNotes } from '../ielts-tools';
 import { RootCausePicker, fmtClock, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
 
@@ -64,6 +64,15 @@ export default function PracticeSession() {
   const { notesById, setNote } = useIeltsNotes();
   const [notePanelOpen, setNotePanelOpen] = useState(false);
   const paperRef = useRef<HTMLDivElement>(null);
+  // Số đoạn chữ đang tô vàng — nút "Xóa highlight" chỉ hiện khi > 0.
+  const [hlCount, setHlCount] = useState(0);
+  const doHighlight = () => {
+    if (highlightSelection(paperRef.current)) setHlCount(getHighlightCount());
+  };
+  const doClearHighlights = () => {
+    clearHighlights();
+    setHlCount(0);
+  };
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
   const [finished, setFinished] = useState(false);
@@ -121,7 +130,7 @@ export default function PracticeSession() {
       const tag = t?.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || e.ctrlKey || e.metaKey || e.altKey) return;
       if (e.key === 'h' || e.key === 'H') {
-        if (highlightSelection(paperRef.current)) e.preventDefault();
+        if (highlightSelection(paperRef.current)) { setHlCount(getHighlightCount()); e.preventDefault(); }
       } else if (e.key === 'n' || e.key === 'N') {
         setNotePanelOpen(true);
         e.preventDefault();
@@ -424,12 +433,13 @@ export default function PracticeSession() {
     </div>
   );
 
-  // Render các câu trong 1 khối: khối Listening IELTS thì chia thành các
-  // đoạn (khối ghi chú inline / bảng matching / câu lẻ); còn lại render
-  // từng câu như cũ.
+  // Render các câu trong 1 khối: khối IELTS thì chia thành các đoạn
+  // (khối ghi chú inline — chỉ Listening — / bảng matching — cả Listening
+  // lẫn Reading, xếp dọc ở Reading vì cột phải hẹp — / câu lẻ); TOEIC
+  // render từng câu như cũ.
   const renderBlockQuestions = (block: Block) => {
-    if (!isIelts || block.part > 4) return block.questions.map(item => renderQuestion(item));
-    return splitListeningSegments(block.questions).map((seg, si) => {
+    if (!isIelts) return block.questions.map(item => renderQuestion(item));
+    return splitGroupSegments(block.questions).map((seg, si) => {
       if (seg.kind === 'single') return renderQuestion(seg.item);
       const groupProps = {
         items: seg.items,
@@ -443,7 +453,7 @@ export default function PracticeSession() {
       };
       return (
         <div key={`${block.key}-seg-${si}`}>
-          {seg.kind === 'notes' ? <IeltsNotesBlock {...groupProps} /> : <IeltsMatchingBoard {...groupProps} />}
+          {seg.kind === 'notes' ? <IeltsNotesBlock {...groupProps} /> : <IeltsMatchingBoard {...groupProps} layout={block.part >= 5 ? 'stacked' : 'side'} />}
           {renderGradingStrip(seg.items)}
         </div>
       );
@@ -503,9 +513,11 @@ export default function PracticeSession() {
           )}
           {/* Số câu gắn ngay đầu chữ câu hỏi (căn thẳng hàng với câu hỏi),
               thay vì nằm riêng ở cột phải như trước. Nội dung gốc đôi khi
-              đã có số ở đầu ("147. Where...") thì bỏ đi để khỏi lặp. */}
+              đã có số ở đầu ("147. Where...") thì bỏ đi để khỏi lặp.
+              IELTS: chữ thường, chỉ chỗ trống in đậm (đỡ nặng mắt);
+              TOEIC giữ in đậm như cũ. */}
           {showContent ? (
-            <p><span className="exam-q-num">{n}.</span><strong>{stripLeadingNumber(q.content, n)}</strong></p>
+            <p><span className="exam-q-num">{n}.</span>{isIelts ? <QuestionText text={stripLeadingNumber(q.content, n)} /> : <strong>{stripLeadingNumber(q.content, n)}</strong>}</p>
           ) : null}
         </div>
         <div className="exam-q-side">
@@ -613,11 +625,11 @@ export default function PracticeSession() {
         <div className={`paper-cluster${split ? ' paper-cluster--split' : ''}`} key={block.key}>
           {renderPassage(block)}
           {split ? (
-            <div>{block.questions.map(item => renderQuestion(item))}</div>
+            <div>{renderBlockQuestions(block)}</div>
           ) : block.questions.every(({ q }) => isDuoQuestion(q)) ? (
             <div className="exam-q-grid2">{block.questions.map(item => renderQuestion(item))}</div>
           ) : (
-            block.questions.map(item => renderQuestion(item))
+            renderBlockQuestions(block)
           )}
         </div>
       ) : (
@@ -667,22 +679,31 @@ export default function PracticeSession() {
     if (first) jumpToQuestion(first.q.id);
   };
 
+  // Tiêu đề thanh đầu trang 2 hàng: dòng chính 1 dòng (không gãy), dòng phụ
+  // nhỏ bên dưới. Badge "Đã làm" bỏ khỏi đầu trang (đã có ở thanh dưới).
+  const headTitle = isFullPractice ? 'Luyện cả đề' : isIelts ? partLabel(part, exam) : `Part ${part}`;
+  const headSub = isFullPractice
+    ? `${visibleQuestions.length} câu · không bấm giờ${typeFilter ? ` · ${questionTypeName(typeFilter)}` : ''}`
+    : isIelts
+      ? `${part <= 4 ? 'Listening' : 'Reading'} · ${visibleQuestions.length} câu${typeFilter ? ` · ${questionTypeName(typeFilter)}` : ''}`
+      : (partName(part).split('—')[1]?.trim() ?? '');
+
   return (
-    <div className={`ts-${textLevel}`}>
+    <div className={`ts-${textLevel} exam-room exam-room--practice`}>
       {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
-      <div className="exam-head">
-        <h2 className="exam-part">
-          {isFullPractice
-            ? <>Luyện cả đề<span> — {visibleQuestions.length} câu · không bấm giờ{typeFilter ? ` · ${questionTypeName(typeFilter)}` : ''}</span></>
-            : isIelts
-              ? <>{partLabel(part, exam)}<span> — {part <= 4 ? 'Listening' : 'Reading'}{typeFilter ? ` · ${questionTypeName(typeFilter)}` : ''}</span></>
-              : <>Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</>}
-        </h2>
-        <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
+      <div className="exam-head exam-head--2row">
+        <div className="exam-head-row">
+          <div className="exam-head-title">
+            <h2 className="exam-part">{headTitle}</h2>
+            {headSub && <span className="exam-head-sub">{headSub}</span>}
+          </div>
+          {isIelts && <span className="progress-badge progress-badge--neutral" title="Thời gian đã luyện trong buổi này">⏱ {fmtClock(elapsed)}</span>}
+        </div>
+        <div className="exam-head-row exam-head-controls">
           {/* Ý 2 (IELTS-only): lọc theo dạng câu hỏi trong phạm vi buổi luyện. */}
           {isIelts && (
             <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.4rem', fontWeight: 500 }}>
-              Dạng câu hỏi:
+              Dạng:
               <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} aria-label="Lọc theo dạng câu hỏi">
                 <option value="">Tất cả các dạng</option>
                 {availableTypes.map(t => (
@@ -704,9 +725,7 @@ export default function PracticeSession() {
               </button>
             ))}
           </span>
-          <span className="progress-badge">Đã làm {doneCount}/{visibleQuestions.length}</span>
-          {isIelts && <span className="progress-badge" title="Thời gian đã luyện trong buổi này">⏱ {fmtClock(elapsed)}</span>}
-        </span>
+        </div>
       </div>
       {usePartAudio && (
         <div className="part-audio">
@@ -720,11 +739,12 @@ export default function PracticeSession() {
       <ErrorBox error={error} />
       {isIelts && (
         <IeltsToolsBar
-          onHighlight={() => highlightSelection(paperRef.current)}
+          onHighlight={doHighlight}
           onNotes={() => setNotePanelOpen(true)}
-          onClearHighlights={clearHighlights}
+          onClearHighlights={doClearHighlights}
           hlSupported={highlightSupported()}
           notesCount={sessionNotes.length}
+          hlCount={hlCount}
         />
       )}
       <div className="paper" ref={paperRef}>
