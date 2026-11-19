@@ -7,7 +7,9 @@
 //   source đổi); khi 1 hộp bắt đầu phát, hộp đang phát trước đó tự dừng
 //   (module-level activeStop, như web).
 // - Thanh tiến trình bấm để tua (tap-to-seek, không thêm dep slider),
-//   tốc độ phát 0.5–1.5x (bước 0.25x).
+//   tốc độ phát 0.5–1.5x (bước 0.25x), tua lùi/tiến 5 giây (kiểu
+//   YouPass, như web) + thanh trượt âm lượng (tap-to-set, cùng kiểu
+//   với thanh tiến trình — không thêm dep slider).
 // - playOnce (thi thử IELTS): mỗi Section chỉ phát 1 lần — phát xong
 //   nút bị khóa hẳn, chỉ tạm dừng/tiếp tục được trong lần phát đó.
 // - Thời gian của expo-audio tính bằng GIÂY (expo-av dùng mili-giây).
@@ -62,6 +64,10 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
   const [barWidth, setBarWidth] = useState(0);
   const [rate, setRate] = useState(1);
   const rateRef = useRef(1);
+  // Âm lượng 0–1 (mặc định 1) — chỉ áp cho file audio, như web.
+  const [volume, setVolume] = useState(1);
+  const volumeRef = useRef(1);
+  const [volWidth, setVolWidth] = useState(0);
   const uiStatusRef = useRef(uiStatus);
   const playedOnceRef = useRef(false);
   const positionMs = Math.round(status.currentTime * 1000);
@@ -94,6 +100,17 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
       playerRef.current.setPlaybackRate(rateRef.current);
     } catch {
       /* thử lại khi bấm phát */
+    }
+  }, [player]);
+
+  // Âm lượng cũng gán lại mỗi khi player mới được tạo (đổi source) —
+  // đi qua ref như tốc độ (không gán thuộc tính trực tiếp lên giá trị
+  // hook trả về); bọc try/catch như trên.
+  useEffect(() => {
+    try {
+      playerRef.current.volume = volumeRef.current;
+    } catch {
+      /* thử lại khi đổi âm lượng / bấm phát */
     }
   }, [player]);
 
@@ -169,12 +186,14 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
       if (activeStop && activeStop !== stopSelfRef.current) activeStop();
       activeStop = stopSelfRef.current;
       if (uiStatusRef.current === 'ended') player.seekTo(0).catch(() => {});
-      // Áp lại tốc độ lúc bắt đầu phát (phòng khi effect gán tốc độ
-      // lúc player chưa nạp xong đã throw và bỏ qua).
+      // Áp lại tốc độ + âm lượng lúc bắt đầu phát (phòng khi effect gán
+      // lúc player chưa nạp xong đã throw và bỏ qua) — qua ref, không
+      // gán thuộc tính trực tiếp lên giá trị hook trả về.
       try {
         player.setPlaybackRate(rateRef.current);
+        playerRef.current.volume = volumeRef.current;
       } catch {
-        /* phát ở tốc độ mặc định */
+        /* phát ở tốc độ / âm lượng mặc định */
       }
       player.play();
       setUiStatus('playing');
@@ -207,6 +226,43 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
       }
     },
     [durationMs, barWidth, player],
+  );
+
+  // Tua lùi/tiến 5 giây (kiểu YouPass, như web) — vẫn trong cùng 1 lượt
+  // phát nên không vi phạm chế độ phát 1 lần của thi thử.
+  const seekBy = useCallback(
+    (sec: number) => {
+      if (!durationMs) return;
+      const next = Math.min(Math.max(0, positionMs / 1000 + sec), durationMs / 1000);
+      try {
+        player.seekTo(next).catch(() => {});
+        if (uiStatusRef.current === 'ended') setUiStatus('paused');
+      } catch {
+        /* bỏ qua */
+      }
+    },
+    [durationMs, positionMs, player],
+  );
+
+  // Đổi âm lượng: áp ngay lên player (qua ref) + giữ lại cho player
+  // mới khi đổi source (effect ở trên).
+  const changeVolume = useCallback((v: number) => {
+    const next = Math.min(1, Math.max(0, v));
+    volumeRef.current = next;
+    setVolume(next);
+    try {
+      playerRef.current.volume = next;
+    } catch {
+      /* âm lượng sẽ áp lại khi đổi source / bấm phát */
+    }
+  }, []);
+
+  const setVolumeFromX = useCallback(
+    (x: number) => {
+      if (!volWidth) return;
+      changeVolume(Math.min(1, Math.max(0, x / volWidth)));
+    },
+    [volWidth, changeVolume],
   );
 
   const playDisabled = !!playOnce && playedOnce && (uiStatus === 'ended' || uiStatus === 'idle');
@@ -266,6 +322,36 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
           {fmtTime(positionMs)} / {fmtTime(durationMs)}
         </Text>
       </View>
+      <View style={styles.controlsRow}>
+        <Pressable
+          style={[styles.skipButton, { borderColor: colors.border }]}
+          onPress={() => seekBy(-5)}
+          accessibilityLabel="Tua lùi 5 giây"
+        >
+          <Text style={{ color: colors.text, fontSize: scaled(14), fontWeight: '700' }}>⏪ 5s</Text>
+        </Pressable>
+        <Pressable
+          style={[styles.skipButton, { borderColor: colors.border }]}
+          onPress={() => seekBy(5)}
+          accessibilityLabel="Tua tới 5 giây"
+        >
+          <Text style={{ color: colors.text, fontSize: scaled(14), fontWeight: '700' }}>5s ⏩</Text>
+        </Pressable>
+        <View style={styles.volumeWrap}>
+          <Text style={{ color: colors.text, fontSize: scaled(14) }} accessibilityLabel="Âm lượng">🔊</Text>
+          <Pressable
+            style={[styles.bar, { backgroundColor: colors.surfaceMuted }]}
+            onLayout={(e) => setVolWidth(e.nativeEvent.layout.width)}
+            onPress={(e) => setVolumeFromX(e.nativeEvent.locationX)}
+            accessibilityLabel="Âm lượng"
+            accessibilityRole="adjustable"
+            accessibilityValue={{ min: 0, max: 100, now: Math.round(volume * 100) }}
+          >
+            <View style={[styles.fill, { width: `${Math.round(volume * 100)}%`, backgroundColor: colors.accent }]} />
+          </Pressable>
+          <Text style={[styles.time, { color: colors.muted, fontSize: scaled(13) }]}>{Math.round(volume * 100)}%</Text>
+        </View>
+      </View>
     </View>
   );
 }
@@ -299,6 +385,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   seekRow: { flexDirection: 'row', gap: SPACING.sm, alignItems: 'center' },
+  controlsRow: { flexDirection: 'row', gap: SPACING.sm, alignItems: 'center', flexWrap: 'wrap' },
+  skipButton: {
+    borderWidth: 1,
+    borderRadius: RADIUS.button,
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.md,
+    minHeight: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  volumeWrap: { flexDirection: 'row', gap: SPACING.sm, alignItems: 'center', flexGrow: 1, flexShrink: 1, minWidth: 140 },
   bar: {
     flex: 1,
     height: 10,

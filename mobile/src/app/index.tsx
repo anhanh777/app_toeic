@@ -14,9 +14,10 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
-import { api, type ExamInfo } from '../api';
+import { api, targetScoreOf, type ExamInfo, type StatsOverview } from '../api';
 import { useAuth } from '../auth';
 import { useExam, type ExamId } from '../exam';
+import { bandLevel, partNameFor, questionTypeName } from '../lib';
 import {
   BREAKPOINTS,
   horizontalPadding,
@@ -28,6 +29,7 @@ import { useTextSize, useTheme } from '../theme';
 import { useMenuIcons, type MenuIconKey } from '../menuIcons';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
+import { TierBadge, XpBar } from '../components/TierBadge';
 
 const FALLBACK_EXAMS: ExamInfo[] = [
   { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990', testSetCount: 25, questionCount: 5000 },
@@ -69,6 +71,8 @@ export default function HomeScreen() {
   const { width } = useWindowDimensions();
   const [exams, setExams] = useState<ExamInfo[] | null>(null);
   const [loadingExams, setLoadingExams] = useState(true);
+  // Thống kê tổng quan cho khối stat-card (port Home.tsx:37-51).
+  const [stats, setStats] = useState<StatsOverview | null>(null);
 
   // Đích đến đang chờ: bấm tab cần kỳ thi khi chưa chọn → về đây chọn,
   // chọn xong tự mở đúng tab đó. Chỉ nhận 3 tab cần kỳ thi.
@@ -88,6 +92,16 @@ export default function HomeScreen() {
       .finally(() => setLoadingExams(false));
   }, [exam]);
 
+  useEffect(() => {
+    if (!exam) return;
+    api
+      .statsOverview(exam)
+      .then(setStats)
+      .catch(() => {
+        /* không có thống kê thì ẩn khối stat, vẫn hiện menu */
+      });
+  }, [exam]);
+
   const pick = useCallback(
     (id: string) => {
       if (id !== 'toeic' && id !== 'ielts') return;
@@ -101,6 +115,20 @@ export default function HomeScreen() {
   const wide = width >= BREAKPOINTS.wide;
   const list = exams?.length ? exams : FALLBACK_EXAMS;
   const chosen = exam ? list.find((e) => e.id === exam) : null;
+
+  // Khối stat-card (chuẩn web Home.tsx:37-51).
+  const isIelts = exam === 'ielts';
+  const target = targetScoreOf(user);
+  const best = stats?.recentScores?.length
+    ? Math.max(...stats.recentScores.map((s) => s.totalScore))
+    : null;
+  const bestBand = stats?.bandHistory?.length
+    ? Math.max(...stats.bandHistory.map((b) => b.overallBand))
+    : null;
+  const latestBand = stats?.bandHistory?.length
+    ? stats.bandHistory[stats.bandHistory.length - 1]
+    : null;
+  const hearts = '❤️'.repeat(Math.min(7, Math.max(0, stats?.streakDays ?? 0))) || '♡';
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
@@ -180,6 +208,73 @@ export default function HomeScreen() {
                 {chosen?.subtitle ?? ''} • {chosen?.testSetCount ?? '—'} đề • {chosen?.questionCount ?? '—'} câu • Thang điểm: {chosen?.scale ?? ''}
               </Text>
             </Animated.View>
+
+            {/* 3 stat-card phía trên hub menu (chuẩn web Home.tsx:37-51). */}
+            {stats ? (
+              <View style={styles.stats}>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                  <Text style={[styles.statIco, { fontSize: scaled(20) }]}>🎯</Text>
+                  <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>
+                    {isIelts ? 'Band tổng cao nhất' : 'Mục tiêu điểm'}
+                  </Text>
+                  <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(20) }]}>
+                    {isIelts ? (bestBand != null ? `Band ${bestBand}` : '—') : target}
+                  </Text>
+                  {isIelts ? (
+                    <>
+                      <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
+                        {bestBand != null
+                          ? `Mức: ${bandLevel(bestBand)} (band ước lượng)`
+                          : 'Chưa có bài thi thử nào.'}
+                      </Text>
+                      {latestBand ? (
+                        <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
+                          Gần nhất: Listening {latestBand.listeningBand} • Reading {latestBand.readingBand} (band ước lượng)
+                        </Text>
+                      ) : null}
+                    </>
+                  ) : (
+                    <>
+                      <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
+                        {best != null
+                          ? `Điểm thi thử cao nhất: ${best} (điểm ước lượng)`
+                          : 'Chưa có bài thi thử nào.'}
+                      </Text>
+                      {best != null ? <TierBadge total={best} /> : null}
+                    </>
+                  )}
+                </View>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                  <Text style={[styles.statIco, { fontSize: scaled(20) }]}>📊</Text>
+                  <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>
+                    {isIelts ? 'Section/Passage yếu nhất' : 'Part yếu nhất'}
+                  </Text>
+                  <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(18) }]}>
+                    {stats.weakestPart != null ? partNameFor(stats.weakestPart, exam) : '—'}
+                  </Text>
+                  <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
+                    Tỉ lệ đúng chung: {`${Math.round(stats.accuracy * 100)}%`}
+                  </Text>
+                  {isIelts && stats.weakestType ? (
+                    <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
+                      Dạng yếu nhất: {questionTypeName(stats.weakestType)}
+                    </Text>
+                  ) : null}
+                </View>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                  <Text style={[styles.statIco, { fontSize: scaled(20) }]}>🔥</Text>
+                  <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Streak</Text>
+                  <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(20) }]}>
+                    {stats.streakDays ?? 0} ngày
+                  </Text>
+                  <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>{hearts}</Text>
+                  <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
+                    Tổng XP: {stats.totalXp ?? 0}
+                  </Text>
+                  <XpBar xp={stats.totalXp ?? 0} />
+                </View>
+              </View>
+            ) : null}
 
             <View style={styles.menu}>
               {[...MENU_COMMON, ...(exam === 'ielts' ? MENU_IELTS : [])].map((m) => (
@@ -280,6 +375,19 @@ const styles = StyleSheet.create({
   },
   pickButtonText: { fontWeight: '700' },
   homeWrap: { gap: SPACING.sm, width: '100%' },
+  // 3 stat-card phía trên hub menu — xếp dọc 1 cột trên mobile hẹp.
+  stats: { gap: SPACING.sm, width: '100%' },
+  statCard: {
+    borderRadius: RADIUS.card,
+    borderWidth: 1,
+    padding: SPACING.md,
+    gap: 2,
+    width: '100%',
+  },
+  statIco: {},
+  statLabel: {},
+  statBig: { fontWeight: '700', flexWrap: 'wrap' },
+  statFoot: { flexWrap: 'wrap' },
   // Menu chính: lưới 2 cột ô vuông (icon trên, nhãn dưới) — luôn 2 cột
   // kể cả màn hẹp, không còn danh sách dọc 1 cột.
   menu: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },

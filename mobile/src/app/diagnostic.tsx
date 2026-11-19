@@ -3,7 +3,8 @@
 // này (màn Thi thử Phase 1 chưa có trong bản build này nên bài chẩn
 // đoán tự vẽ tờ đề rút gọn: FlatList + windowing, audio từng câu) rồi
 // lưu 1 attempt làm chẩn đoán; (b) bản đồ năng lực từ diagnostic/latest;
-// (c) baseline Writing; (d) baseline Speaking (link sang 2 màn riêng).
+// (c) baseline Writing; (d) baseline Speaking (link sang 2 màn riêng,
+// kèm param baseline=1 để màn đó nộp với isBaseline: true như web).
 // Tất cả baseline đều ghi rõ "Bài mẫu — nội dung tự soạn, chưa phải đề
 // thi thật" và "Chưa chấm AI — sẽ có ở Giai đoạn 2".
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
@@ -202,6 +203,11 @@ export default function DiagnosticScreen() {
   const [paperLeft, setPaperLeft] = useState(DIAGNOSTIC_MINUTES * 60);
   const [submitting, setSubmitting] = useState(false);
   const [playingQid, setPlayingQid] = useState<string | null>(null);
+  // Thi thử IELTS: audio mỗi câu chỉ phát 1 lần (như Mock — playOnce):
+  // đã bắt đầu phát thì ghi nhận, vẫn tạm dừng/tiếp tục được trong lần
+  // phát đó; phát xong thì nút bị vô hiệu, không nghe lại được.
+  const [playedQids, setPlayedQids] = useState<Record<string, boolean>>({});
+  const [pausedQid, setPausedQid] = useState<string | null>(null);
   // expo-audio: 1 player cho audio từng câu (tự release khi unmount).
   const diagPlayer = useAudioPlayer();
   const diagStatus = useAudioPlayerStatus(diagPlayer);
@@ -235,7 +241,10 @@ export default function DiagnosticScreen() {
   const [prevDidJustFinish, setPrevDidJustFinish] = useState(false);
   if (diagStatus.didJustFinish !== prevDidJustFinish) {
     setPrevDidJustFinish(diagStatus.didJustFinish);
-    if (diagStatus.didJustFinish) setPlayingQid(null);
+    if (diagStatus.didJustFinish) {
+      setPlayingQid(null);
+      setPausedQid(null);
+    }
   }
 
   // Đếm ngược 90 phút khi đang làm bài; hết giờ thì tự nộp (1 lần).
@@ -270,6 +279,9 @@ export default function DiagnosticScreen() {
       setAttemptId(created.attemptId);
       setPaperQuestions(ordered);
       setPaperAnswers({});
+      setPlayedQids({});
+      setPausedQid(null);
+      setPlayingQid(null);
       setPaperLeft(DIAGNOSTIC_MINUTES * 60);
       autoSubmittedRef.current = false;
       setPaperActive(true);
@@ -322,6 +334,7 @@ export default function DiagnosticScreen() {
           if (attemptId) void api.abandonTest(attemptId).catch(() => undefined);
           diagPlayer.pause();
           setPlayingQid(null);
+          setPausedQid(null);
           setPaperActive(false);
           setAttemptId(null);
         },
@@ -331,18 +344,30 @@ export default function DiagnosticScreen() {
 
   const playAudio = useCallback((qid: string, url: string) => {
     try {
+      // Đang phát câu này → tạm dừng (vẫn tiếp tục được trong lần phát đó).
       if (playingQid === qid) {
         diagPlayer.pause();
         setPlayingQid(null);
+        setPausedQid(qid);
         return;
       }
+      // Đang tạm dừng câu này → tiếp tục nghe hết lần phát duy nhất.
+      if (pausedQid === qid) {
+        diagPlayer.play();
+        setPlayingQid(qid);
+        setPausedQid(null);
+        return;
+      }
+      // Đã phát xong 1 lần rồi → không phát lại.
+      if (playedQids[qid]) return;
       diagPlayer.replace(url);
       diagPlayer.play();
       setPlayingQid(qid);
+      setPlayedQids((m) => ({ ...m, [qid]: true }));
     } catch {
       setPlayingQid(null);
     }
-  }, [playingQid, diagPlayer]);
+  }, [playingQid, pausedQid, playedQids, diagPlayer]);
 
   const setAnswer = useCallback((id: string, v: string) => {
     setPaperAnswers((m) => ({ ...m, [id]: v }));
@@ -364,16 +389,27 @@ export default function DiagnosticScreen() {
           {showPassage && (
             <Text style={[styles.passage, { color: colors.text, fontSize: scaled(15) }]}>{q.passageText}</Text>
           )}
-          {q.script ? (
-            <Text style={[styles.script, { color: colors.muted, fontSize: scaled(14) }]}>{q.script}</Text>
-          ) : null}
+          {/* Transcript (script) KHÔNG hiện trong lúc làm bài — nếu đề có
+              script thì bài nghe thành bài đọc. Chỉ xem ở màn kết quả
+              sau khi chấm (như web: transcript ở trang Result). */}
           {q.audioUrl ? (
             <Pressable
-              style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border }]}
+              style={[
+                styles.smallButton,
+                styles.outlineButton,
+                { borderColor: colors.border, opacity: playedQids[q.id] && playingQid !== q.id && pausedQid !== q.id ? 0.6 : 1 },
+              ]}
+              disabled={!!playedQids[q.id] && playingQid !== q.id && pausedQid !== q.id}
               onPress={() => void playAudio(q.id, q.audioUrl as string)}
             >
               <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>
-                {playingQid === q.id ? '⏸ Dừng audio' : '▶ Nghe audio câu này'}
+                {playingQid === q.id
+                  ? '⏸ Dừng audio'
+                  : pausedQid === q.id
+                    ? '▶ Tiếp tục'
+                    : playedQids[q.id]
+                      ? '✓ Đã nghe 1 lần'
+                      : '▶ Nghe audio câu này (1 lần)'}
               </Text>
             </Pressable>
           ) : null}
@@ -382,7 +418,7 @@ export default function DiagnosticScreen() {
         </View>
       );
     },
-    [paperQuestions, paperAnswers, colors, scaled, playingQid, playAudio, setAnswer],
+    [paperQuestions, paperAnswers, colors, scaled, playingQid, pausedQid, playedQids, playAudio, setAnswer],
   );
 
   const pad = horizontalPadding(width);
@@ -552,9 +588,12 @@ export default function DiagnosticScreen() {
           <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
             {SAMPLE_NOTE} {NO_AI_NOTE}
           </Text>
+          <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
+            Bài nộp từ đây được đánh dấu là bài mẫu chẩn đoán.
+          </Text>
           <Pressable
             style={[styles.button, { backgroundColor: colors.accent }]}
-            onPress={() => router.push('/writing')}
+            onPress={() => router.push({ pathname: '/writing', params: { baseline: '1' } })}
           >
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở màn Writing để nộp bài mẫu →</Text>
           </Pressable>
@@ -565,9 +604,12 @@ export default function DiagnosticScreen() {
           <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
             {SAMPLE_NOTE} {NO_AI_NOTE}
           </Text>
+          <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
+            Bản ghi lưu từ đây được đánh dấu là bài mẫu chẩn đoán.
+          </Text>
           <Pressable
             style={[styles.button, { backgroundColor: colors.accent }]}
-            onPress={() => router.push('/speaking')}
+            onPress={() => router.push({ pathname: '/speaking', params: { baseline: '1' } })}
           >
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở màn Speaking để ghi âm bài mẫu →</Text>
           </Pressable>

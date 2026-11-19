@@ -6,7 +6,7 @@
 // Streak + bad-day dùng chung cho cả 2 kỳ thi, 1 streak duy nhất.
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState, type ElementRef } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -186,6 +186,9 @@ export default function TodayScreen() {
     month: 'numeric',
     year: 'numeric',
   });
+  // "▶ Bắt đầu hôm nay": cuộn tới khối 1 (ôn lỗi đến hạn).
+  const scrollRef = useRef<ElementRef<typeof ScrollView>>(null);
+  const reviewY = useRef(0);
 
   useEffect(() => {
     api
@@ -262,7 +265,7 @@ export default function TodayScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <TabScreen href="/today">
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
+      <ScrollView ref={scrollRef} style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
           <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>☀️ Hôm nay</Text>
@@ -323,6 +326,11 @@ export default function TodayScreen() {
                 <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>🌧️ Bài ngày nhẹ (5–10 phút)</Text>
                 <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>{badDay.title}</Text>
                 <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(15) }]}>{badDay.detail}</Text>
+                {!isIelts && (
+                  <Pressable onPress={() => router.push('/practice')}>
+                    <Text style={[styles.link, { color: colors.accent, fontSize: scaled(15) }]}>Mở luyện tập TOEIC →</Text>
+                  </Pressable>
+                )}
                 <Pressable
                   style={[styles.button, { backgroundColor: colors.accent, opacity: badDayDone ? 0.6 : 1 }]}
                   disabled={badDayDone}
@@ -338,13 +346,26 @@ export default function TodayScreen() {
               </View>
             )}
 
+            {/* Chuẩn web Today.tsx — nút cuộn tới khối 1. */}
+            <Pressable
+              style={[styles.button, { backgroundColor: colors.gold }]}
+              onPress={() => scrollRef.current?.scrollTo({ y: reviewY.current, animated: true })}
+            >
+              <Text style={[styles.buttonText, { color: colors.goldInk, fontSize: scaled(15) }]}>▶ Bắt đầu hôm nay</Text>
+            </Pressable>
+
             {data.carriedOver?.length > 0 && (
               <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
                 📌 Khối dồn từ hôm qua (tối đa 1): {data.carriedOver.join(', ')}
               </Text>
             )}
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View
+              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
+              onLayout={(e) => {
+                reviewY.current = e.nativeEvent.layout.y;
+              }}
+            >
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                 1️⃣ Ôn lỗi đến hạn {done.includes('review') ? '✓' : ''}
               </Text>
@@ -355,6 +376,15 @@ export default function TodayScreen() {
                   <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>
                     Có <Text style={{ fontWeight: '700' }}>{review?.dueCount ?? 0}</Text> câu sai đến hạn ôn hôm nay.
                   </Text>
+                  {review?.dueIds?.length ? (
+                    <View style={styles.dueList}>
+                      {review.dueIds.slice(0, 10).map((qid) => (
+                        <Pressable key={qid} onPress={() => router.push('/wrong')}>
+                          <Text style={[styles.dueId, { color: colors.accent, fontSize: scaled(15) }]}>{qid}</Text>
+                        </Pressable>
+                      ))}
+                    </View>
+                  ) : null}
                   <View style={styles.row}>
                     <Pressable
                       style={[styles.button, { backgroundColor: colors.accent, flex: 1 }]}
@@ -390,6 +420,9 @@ export default function TodayScreen() {
                     {drill?.weakestPart
                       ? `Part yếu nhất: ${partLabel(drill.weakestPart, 'toeic')}${drill.questionCount ? ` — ${drill.questionCount} câu` : ''}`
                       : 'Chưa đủ dữ liệu để xác định Part yếu nhất — luyện 1 Part bất kỳ nhé.'}
+                  </Text>
+                  <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(14) }]}>
+                    Trang Luyện tập hiện chưa nhận sẵn Part từ link, bạn chọn Part ở đó nhé.
                   </Text>
                   <View style={styles.row}>
                     <Pressable
@@ -914,6 +947,9 @@ const styles = StyleSheet.create({
   },
   cardTitle: { fontWeight: '700', flexWrap: 'wrap' },
   cardText: { flexWrap: 'wrap' },
+  link: { fontWeight: '700', flexWrap: 'wrap' },
+  dueList: { gap: 2, width: '100%' },
+  dueId: { fontWeight: '600', flexWrap: 'wrap' },
   statRow: { flexDirection: 'row', gap: SPACING.sm, width: '100%' },
   stat: {
     flex: 1,

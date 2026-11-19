@@ -14,7 +14,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type PartInfo, type StatsOverview, type TestSet } from '../api';
 import { useExam } from '../exam';
-import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import { CARD_PADDING, columnsForWidth, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
@@ -29,6 +29,8 @@ export default function PracticeScreen() {
   const { width } = useWindowDimensions();
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
+  // Lưới thẻ đề: màn hẹp 1 cột, màn rộng (≥600dp) 2 cột.
+  const columns = columnsForWidth(width);
   const [tab, setTab] = useState<'sets' | 'parts'>('sets');
 
   // Chưa chọn kỳ thi thì không vào được — về màn chọn, nhớ đích đến.
@@ -103,7 +105,11 @@ export default function PracticeScreen() {
             if (v) cardRefs.current.set(ts.id, v);
             else cardRefs.current.delete(ts.id);
           }}
-          style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
+          style={[
+            styles.card,
+            columns === 2 && styles.cardWide,
+            { backgroundColor: colors.surface, borderColor: colors.border },
+          ]}
           onPress={() => openSet(ts.id, ts.title)}
         >
           <View style={styles.cardHead}>
@@ -112,9 +118,6 @@ export default function PracticeScreen() {
               <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }]}>NHÁP</Text>
             ) : null}
           </View>
-          {ts.description ? (
-            <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>{ts.description}</Text>
-          ) : null}
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
             <Text style={{ fontWeight: '700' }}>{total}</Text> câu
             {ts.parts.length ? (
@@ -127,9 +130,11 @@ export default function PracticeScreen() {
             )}
           </Text>
           {ts.missing.length > 0 ? (
-            <Text style={[styles.line, { color: colors.danger, fontSize: scaled(14) }]}>
-              ⚠ Chưa đủ câu: {ts.missing.map((m) => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}
-            </Text>
+            <View style={[styles.warnBox, { backgroundColor: colors.amberBg }]}>
+              <Text style={[styles.line, { color: colors.amber, fontSize: scaled(14) }]}>
+                ⚠ Chưa đủ câu: {ts.missing.map((m) => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}
+              </Text>
+            </View>
           ) : null}
           {ts.progress ? (
             <View style={styles.progressWrap}>
@@ -151,7 +156,7 @@ export default function PracticeScreen() {
         </Pressable>
       );
     },
-    [colors, scaled, ex, openSet],
+    [colors, scaled, ex, openSet, columns],
   );
 
   const renderPartCard = useCallback(
@@ -248,8 +253,11 @@ export default function PracticeScreen() {
           ) : (
             <FlatList
               data={testSets}
+              key={`sets-${columns}`}
               keyExtractor={(ts) => ts.id}
               renderItem={renderSet}
+              numColumns={columns}
+              columnWrapperStyle={columns === 2 ? styles.setsRow : undefined}
               contentContainerStyle={styles.list}
               {...LIST_DEFAULTS}
             />
@@ -296,7 +304,11 @@ const styles = StyleSheet.create({
   tab: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, flexGrow: 1, alignItems: 'center' },
   list: { gap: SPACING.sm, paddingBottom: SPACING.xl },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md },
-  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, width: '100%' },
+  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },
+  /** Thẻ đề ở lưới 2 cột (màn ≥600dp): chia đều hàng, bỏ width 100%. */
+  cardWide: { flex: 1, width: 'auto' },
+  setsRow: { gap: SPACING.sm },
+  warnBox: { borderRadius: RADIUS.button, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   partCard: { flexGrow: 1, flexBasis: '45%' },
   cardHead: { flexDirection: 'row', justifyContent: 'space-between', gap: SPACING.sm, alignItems: 'flex-start' },
   cardTitle: { fontWeight: '700', flexShrink: 1, flexWrap: 'wrap' },

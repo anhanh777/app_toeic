@@ -190,9 +190,11 @@ export default function IeltsAnswerControl({ q, value, onChange, onCommit, disab
           );
         })}
         {type === 'matching_headings' && duplicateHeading ? (
-          <Text style={[styles.answerLine, { color: colors.danger, fontSize: scaled(14) }]}>
-            ⚠ Thi thật được dùng lại 1 tiêu đề, nhưng 2 đoạn cùng 1 tiêu đề thường là 1 câu sai — kiểm tra lại nhé.
-          </Text>
+          <View style={[styles.warnBox, { backgroundColor: colors.amberBg }]}>
+            <Text style={{ color: colors.amber, fontSize: scaled(14), flexWrap: 'wrap' }}>
+              ⚠ Thi thật được dùng lại 1 tiêu đề, nhưng 2 đoạn cùng 1 tiêu đề thường là 1 câu sai — kiểm tra lại nhé.
+            </Text>
+          </View>
         ) : null}
         {graded && graded.correctLabel ? (
           <Text style={[styles.answerLine, { color: colors.text, fontSize: scaled(14) }]}>
@@ -298,4 +300,5 @@ const styles = StyleSheet.create({
   },
   wordCount: { flexWrap: 'wrap' },
   answerLine: { flexWrap: 'wrap' },
+  warnBox: { borderRadius: RADIUS.button, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
 });

@@ -15,6 +15,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
 import { ApiError, api, type WritingSubmission, type WritingTask } from '../api';
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { wordCount } from '../lib';
@@ -65,6 +66,8 @@ type SelfScoreKey = (typeof SELF_SCORE_KEYS)[number][0];
 export default function WritingScreen() {
   const { colors } = useTheme();
   const { scaled } = useTextSize();
+  // Chẩn đoán: màn Diagnostic mở kèm baseline=1 thì bài nộp là bài mẫu.
+  const { baseline } = useLocalSearchParams<{ baseline?: string }>();
   const { width } = useWindowDimensions();
   const [tasks, setTasks] = useState<WritingTask[]>([]);
   const [subs, setSubs] = useState<WritingSubmission[]>([]);
@@ -140,6 +143,7 @@ export default function WritingScreen() {
           ? Math.round((Date.now() - startedAtRef.current) / 1000)
           : (task.minutes * 60 - left),
         ...(Object.keys(scores).length ? { selfScores: scores } : {}),
+        isBaseline: baseline === '1',
       });
       setSubmitted(true);
       setRunning(false);
@@ -149,7 +153,7 @@ export default function WritingScreen() {
     } finally {
       setSaving(false);
     }
-  }, [task, content, saving, selfScores, left, loadSubs]);
+  }, [task, content, saving, selfScores, left, baseline, loadSubs]);
 
   const minWords = task?.type === 'task1' ? 150 : 250;
   const words = wordCount(content);

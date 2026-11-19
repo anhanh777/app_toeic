@@ -20,6 +20,7 @@ import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, r
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
 import { useTextSize, useTheme } from '../../theme';
 import RootCausePicker, { skillOfPart } from '../../components/RootCausePicker';
+import { TierBadge } from '../../components/TierBadge';
 import { WordText } from '../../components/WordLookup';
 import { partName } from '../../components/QuestionView';
 
@@ -236,6 +237,7 @@ export default function ResultScreen() {
           <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Tổng điểm (điểm ước lượng)</Text>
             <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>{data.total_score} / 990</Text>
+            <TierBadge total={data.total_score} />
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {scoreLevel(data.total_score)}</Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
               {'★'.repeat(data.total_score >= 900 ? 3 : data.total_score >= 600 ? 2 : 1)}
@@ -309,11 +311,24 @@ export default function ResultScreen() {
               contentContainerStyle={styles.list}
               {...LIST_DEFAULTS}
             />
+            {/* Chuẩn web Result.tsx:194-204 — nút ôn lại câu sai cuối khối chi tiết. */}
+            <Pressable
+              style={[styles.button, { backgroundColor: colors.accent }]}
+              onPress={() => router.push('/wrong')}
+            >
+              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn lại câu sai</Text>
+            </Pressable>
           </View>
         ) : data.wrongQuestionIds?.length ? (
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
             <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>Câu làm sai ({data.wrongQuestionIds.length})</Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>{data.wrongQuestionIds.join(', ')}</Text>
+            <Pressable
+              style={[styles.button, { backgroundColor: colors.accent }]}
+              onPress={() => router.push('/wrong')}
+            >
+              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn lại câu sai</Text>
+            </Pressable>
           </View>
         ) : (
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>

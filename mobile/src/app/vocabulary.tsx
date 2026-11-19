@@ -395,29 +395,30 @@ function MyWords() {
       )}
 
       {w ? (
-        <Pressable
-          style={[styles.flashcard, { backgroundColor: colors.surface, borderColor: colors.accent }]}
-          onPress={() => setFlipped((f) => !f)}
-        >
-          {!flipped ? (
-            <>
-              <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(24) }]}>{w.word}</Text>
-              <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>
-                {[w.phonetic, w.pos].filter(Boolean).join(' · ')}
-              </Text>
-              <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(14) }]}>Chạm để lật thẻ</Text>
-            </>
-          ) : (
-            <>
-              <Text style={[styles.flashMeaning, { color: colors.text, fontSize: scaled(18) }]}>{w.meaning}</Text>
-              {w.example ? (
-                <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>{w.example}</Text>
-              ) : null}
-            </>
-          )}
-          <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(13) }]}>
-            Từ {safeIdx + 1}/{filtered.length} • {STATUS_LABEL[w.status]}
-          </Text>
+        <View style={[styles.flashcard, { backgroundColor: colors.surface, borderColor: colors.accent }]}>
+          {/* Vùng lật thẻ RIÊNG — các nút điều hướng/đánh dấu nằm NGOÀI
+              Pressable này nên bấm nút không còn lật thẻ nữa. */}
+          <Pressable style={styles.flashFlip} onPress={() => setFlipped((f) => !f)}>
+            {!flipped ? (
+              <>
+                <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(24) }]}>{w.word}</Text>
+                <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>
+                  {[w.phonetic, w.pos].filter(Boolean).join(' · ')}
+                </Text>
+                <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(14) }]}>Chạm để lật thẻ</Text>
+              </>
+            ) : (
+              <>
+                <Text style={[styles.flashMeaning, { color: colors.text, fontSize: scaled(18) }]}>{w.meaning}</Text>
+                {w.example ? (
+                  <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>{w.example}</Text>
+                ) : null}
+              </>
+            )}
+            <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(13) }]}>
+              Từ {safeIdx + 1}/{filtered.length} • {STATUS_LABEL[w.status]}
+            </Text>
+          </Pressable>
           <View style={styles.row}>
             <Pressable
               style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1, opacity: safeIdx === 0 ? 0.5 : 1 }]}
@@ -454,7 +455,7 @@ function MyWords() {
               <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Chưa thuộc ❌</Text>
             </Pressable>
           </View>
-        </Pressable>
+        </View>
       ) : (
         !loading && (
           <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
@@ -532,14 +533,34 @@ function SharedWords({ exam }: { exam: string }) {
   const [error, setError] = useState('');
   const [msg, setMsg] = useState('');
   const [loading, setLoading] = useState(true);
+  // Lọc theo chủ đề + flashcard (chuẩn web Vocabulary.tsx SharedWords).
+  const [topic, setTopic] = useState('');
+  const [flipped, setFlipped] = useState(false);
+  const [idx, setIdx] = useState(0);
+  const [allTopics, setAllTopics] = useState<string[]>([]);
 
   useEffect(() => {
     api
-      .vocabulary('', 100, exam)
-      .then(setWords)
+      .vocabulary(topic, 100, exam)
+      .then((w) => {
+        setWords(w);
+        setIdx(0);
+        setFlipped(false);
+        // Giữ lại mọi chủ đề từng thấy để bộ lọc không bị thu hẹp
+        // khi đang lọc theo 1 chủ đề (bản web cũng chỉ lấy từ danh
+        // sách hiện tại nên sẽ mất các chủ đề khác).
+        setAllTopics((prev) => [...new Set([...prev, ...w.map((x) => x.topic || 'Chung')])]);
+      })
       .catch((e) => setError(e instanceof ApiError ? e.message : 'Không tải được từ chung.'))
       .finally(() => setLoading(false));
-  }, [exam]);
+  }, [topic, exam]);
+
+  const topics = useMemo(
+    () => (allTopics.length ? allTopics : [...new Set(words.map((w) => w.topic || 'Chung'))]),
+    [allTopics, words],
+  );
+  const safeIdx = words.length ? Math.min(idx, words.length - 1) : 0;
+  const w = words[safeIdx];
 
   const mark = useCallback(async (id: string, status: 'learning' | 'learned' | 'wrong') => {
     try {
@@ -590,32 +611,116 @@ function SharedWords({ exam }: { exam: string }) {
   );
 
   if (loading) return <ActivityIndicator color={colors.accent} style={styles.loader} />;
-  return (
-    <View style={styles.flex}>
+  const header = (
+    <>
       {error ? (
         <Text style={[styles.error, { color: colors.danger, fontSize: scaled(14) }]}>{error}</Text>
       ) : null}
       {msg ? (
         <Text style={[styles.note, { color: colors.success, fontSize: scaled(14) }]}>{msg}</Text>
       ) : null}
-      {words.length === 0 ? (
-        <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-          <Text style={styles.emptyIcon}>📖</Text>
-          <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15), textAlign: 'center' }]}>
-            Chưa có từ chung — từ vựng giờ lấy từ quá trình luyện tập của bạn: khi luyện tập, bấm vào từ
-            trong đoạn văn rồi chọn ＋ Lưu vào từ vựng, từ sẽ nằm ở tab “Từ của tôi”.
-          </Text>
+      {/* Lọc theo chủ đề: 1 hàng trượt ngang. */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
+        {['', ...topics].map((t) => (
+          <Pressable
+            key={t || 'all'}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: topic === t ? colors.accent : colors.surface }]}
+            onPress={() => {
+              setLoading(true);
+              setTopic(t);
+            }}
+          >
+            <Text style={{ color: topic === t ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
+              {t === '' ? 'Tất cả chủ đề' : t}
+            </Text>
+          </Pressable>
+        ))}
+      </ScrollView>
+      {w ? (
+        <View style={[styles.flashcard, { backgroundColor: colors.surface, borderColor: colors.accent }]}>
+          <Pressable style={styles.flashFlip} onPress={() => setFlipped((f) => !f)}>
+            {!flipped ? (
+              <>
+                <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(24) }]}>{w.word}</Text>
+                <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>{w.phonetic || ''}</Text>
+                <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(14) }]}>Chạm để lật thẻ</Text>
+              </>
+            ) : (
+              <>
+                <Text style={[styles.flashMeaning, { color: colors.text, fontSize: scaled(18) }]}>{w.meaning}</Text>
+                {w.example ? (
+                  <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>{w.example}</Text>
+                ) : null}
+              </>
+            )}
+            <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(13) }]}>
+              Từ {safeIdx + 1}/{words.length}
+            </Text>
+          </Pressable>
+          <View style={styles.row}>
+            <Pressable
+              style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1, opacity: safeIdx === 0 ? 0.5 : 1 }]}
+              disabled={safeIdx === 0}
+              onPress={() => {
+                setIdx((i) => i - 1);
+                setFlipped(false);
+              }}
+            >
+              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>← Từ trước</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1, opacity: safeIdx + 1 >= words.length ? 0.5 : 1 }]}
+              disabled={safeIdx + 1 >= words.length}
+              onPress={() => {
+                setIdx((i) => i + 1);
+                setFlipped(false);
+              }}
+            >
+              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>Từ tiếp →</Text>
+            </Pressable>
+          </View>
+          <View style={styles.row}>
+            <Pressable
+              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }]}
+              onPress={() => void mark(w.id, 'learned')}
+            >
+              <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Đã thuộc ✅</Text>
+            </Pressable>
+            <Pressable
+              style={[styles.smallButton, { backgroundColor: colors.danger, flex: 1 }]}
+              onPress={() => void mark(w.id, 'wrong')}
+            >
+              <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Chưa thuộc ❌</Text>
+            </Pressable>
+          </View>
         </View>
-      ) : (
-        <FlatList
-          data={words}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-          {...LIST_DEFAULTS}
-          style={styles.flex}
-          contentContainerStyle={styles.list}
-        />
-      )}
+      ) : null}
+      <Text style={[styles.section, { color: colors.text, fontSize: scaled(18) }]}>
+        Danh sách từ ({words.length})
+      </Text>
+    </>
+  );
+  return (
+    <View style={styles.flex}>
+      <FlatList
+        data={words}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        {...LIST_DEFAULTS}
+        style={styles.flex}
+        ListHeaderComponent={header}
+        ListEmptyComponent={
+          <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Text style={styles.emptyIcon}>📖</Text>
+            <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15), textAlign: 'center' }]}>
+              {topic
+                ? `Không có từ chung thuộc chủ đề “${topic}”.`
+                : 'Chưa có từ chung — từ vựng giờ lấy từ quá trình luyện tập của bạn: khi luyện tập, bấm vào từ trong đoạn văn rồi chọn ＋ Lưu vào từ vựng, từ sẽ nằm ở tab “Từ của tôi”.'}
+            </Text>
+          </View>
+        }
+        contentContainerStyle={styles.list}
+      />
     </View>
   );
 }
@@ -709,6 +814,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  // Vùng lật thẻ: chỉ phần mặt thẻ nhận bấm lật, nút nằm ngoài.
+  flashFlip: { alignItems: 'center', gap: SPACING.sm, width: '100%' },
   flashWord: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   flashMeaning: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   flashMeta: { textAlign: 'center', flexWrap: 'wrap' },

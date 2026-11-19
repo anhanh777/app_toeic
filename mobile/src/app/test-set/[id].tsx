@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type TestSet } from '../../api';
 import { useExam } from '../../exam';
 import { partLabel, partNameFor } from '../../lib';
-import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
+import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
 import { useTextSize, useTheme } from '../../theme';
 import { BackButton } from '../../components/BackButton';
 import { HeroFlight, type HeroRect } from '../../components/HeroFlight';
@@ -61,6 +61,19 @@ export default function TestSetDetailScreen() {
   const ex = (ts?.exam === 'ielts' || ts?.exam === 'toeic' ? ts.exam : ctxExam) ?? 'toeic';
   const isIelts = ex === 'ielts';
   const fullMinutes = isIelts ? 90 : 120;
+  // IELTS-only: tiến độ tách Listening/Reading (như web
+  // listeningReadingProgress — tính từ progress.byPart + parts).
+  const lr = useMemo(() => {
+    if (!isIelts || !ts) return null;
+    const totalFor = (pred: (p: number) => boolean) =>
+      ts.parts.filter((p) => pred(p.part)).reduce((s, p) => s + p.count, 0);
+    const answeredFor = (pred: (p: number) => boolean) =>
+      (ts.progress?.byPart ?? []).filter((b) => pred(b.part)).reduce((s, b) => s + b.answered, 0);
+    return {
+      listening: { answered: answeredFor((p) => p <= 4), total: totalFor((p) => p <= 4) },
+      reading: { answered: answeredFor((p) => p >= 5), total: totalFor((p) => p >= 5) },
+    };
+  }, [isIelts, ts]);
   const pad = horizontalPadding(width);
 
   const goPractice = useCallback(
@@ -184,11 +197,24 @@ export default function TestSetDetailScreen() {
                   ]}
                 />
               </View>
-              {ts.missing.length > 0 ? (
-                <Text style={[styles.line, { color: colors.danger, fontSize: scaled(14) }]}>
-                  ⚠ Đề chưa đủ câu chuẩn: {ts.missing.map((m) => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}. Bạn vẫn có
-                  thể luyện các câu hiện có.
+              {isIelts && lr ? (
+                <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
+                  🎧 Listening {lr.listening.answered}/{lr.listening.total} câu · 📖 Reading {lr.reading.answered}/
+                  {lr.reading.total} câu
                 </Text>
+              ) : null}
+              {isIelts ? (
+                <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
+                  ⏱️ Thi thử {fullMinutes} phút · Luyện tập không bấm giờ
+                </Text>
+              ) : null}
+              {ts.missing.length > 0 ? (
+                <View style={[styles.warnBox, { backgroundColor: colors.amberBg }]}>
+                  <Text style={[styles.line, { color: colors.amber, fontSize: scaled(14) }]}>
+                    ⚠ Đề chưa đủ câu chuẩn: {ts.missing.map((m) => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}. Bạn vẫn có
+                    thể luyện các câu hiện có.
+                  </Text>
+                </View>
               ) : null}
               <Pressable
                 style={[styles.button, { backgroundColor: colors.accent }, !ts.totalQuestions && styles.disabled]}
@@ -246,10 +272,11 @@ const styles = StyleSheet.create({
   wrap: { gap: SPACING.sm, paddingTop: SPACING.sm },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   line: { flexWrap: 'wrap' },
-  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, width: '100%' },
+  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },
   partCard: { flexGrow: 1, flexBasis: '45%' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
   pill: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.sm, paddingVertical: 2, overflow: 'hidden', alignSelf: 'flex-start' },
+  warnBox: { borderRadius: RADIUS.button, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   bar: { height: 8, borderRadius: 4, overflow: 'hidden', width: '100%' },
   barFill: { height: '100%', borderRadius: 4 },
   button: { borderRadius: RADIUS.button, paddingVertical: SPACING.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },

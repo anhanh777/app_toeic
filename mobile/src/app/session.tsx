@@ -521,6 +521,14 @@ export default function PracticeSessionScreen() {
                   {testSetId ? 'Quay lại đề thi' : 'Luyện Part khác'}
                 </Text>
               </Pressable>
+              {score.done > score.correct ? (
+                <Pressable
+                  style={[styles.button, styles.flexButton, { backgroundColor: colors.surfaceMuted }]}
+                  onPress={() => router.push('/wrong')}
+                >
+                  <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Ôn câu sai</Text>
+                </Pressable>
+              ) : null}
               <Pressable
                 style={[styles.button, styles.flexButton, { backgroundColor: colors.surfaceMuted }]}
                 onPress={() => router.push('/')}
@@ -542,7 +550,12 @@ export default function PracticeSessionScreen() {
             {testSetTitle ? (
               <Text style={[styles.tag, { color: colors.muted, fontSize: scaled(13) }]}>📚 {testSetTitle}</Text>
             ) : null}
-            <Text style={[styles.title, { color: colors.text, fontSize: scaled(20) }]}>
+            <Text
+              style={[
+                styles.title,
+                { color: colors.examBlue, fontSize: scaled(20), textTransform: 'uppercase' },
+              ]}
+            >
               {isIelts
                 ? `${partLabel(part, exam)} — ${part <= 4 ? 'Listening' : 'Reading'}`
                 : partName(part)}
@@ -632,11 +645,21 @@ export default function PracticeSessionScreen() {
           {...LIST_DEFAULTS_WITH_MEDIA}
         />
         <View style={[styles.bottomBar, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
-          <Text style={[styles.progress, { color: colors.text, fontSize: scaled(14) }]}>
+          <Text
+            style={[
+              styles.progress,
+              {
+                color: colors.text,
+                fontSize: scaled(14),
+                borderColor: colors.border,
+                backgroundColor: colors.surface,
+              },
+            ]}
+          >
             Đã làm {score.done}/{questions.length} • Đúng {score.correct}
           </Text>
           <Pressable style={[styles.barButton, { borderColor: colors.border }]} onPress={exit}>
-            <Text style={{ color: colors.text, fontSize: scaled(15) }}>🚪 Thoát</Text>
+            <Text style={{ color: colors.text, fontSize: scaled(15) }}>← Thoát</Text>
           </Pressable>
           {gradingMode === 'submit-all' && !submittedAll ? (
             <Pressable
@@ -677,7 +700,7 @@ const styles = StyleSheet.create({
   line: { flexWrap: 'wrap' },
   big: { fontWeight: '700', textAlign: 'center' },
   card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.lg, gap: SPACING.md, width: '100%', alignItems: 'center' },
-  btnRow: { flexDirection: 'row', gap: SPACING.md, width: '100%' },
+  btnRow: { flexDirection: 'row', gap: SPACING.md, width: '100%', flexWrap: 'wrap' },
   button: { borderRadius: RADIUS.button, paddingVertical: SPACING.md, paddingHorizontal: SPACING.lg, alignItems: 'center', minHeight: 48, justifyContent: 'center' },
   flexButton: { flex: 1 },
   buttonText: { fontWeight: '700', textAlign: 'center' },
@@ -689,7 +712,18 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm,
     flexWrap: 'wrap',
   },
-  progress: { flexGrow: 1, flexShrink: 1, flexWrap: 'wrap' },
+  // Thanh tiến độ ở thanh dưới — dạng pill bo tròn như web
+  // (.practice-bar .progress: viền + bo 999px + padding).
+  progress: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexWrap: 'wrap',
+    fontWeight: '700',
+    borderWidth: 1,
+    borderRadius: RADIUS.pill,
+    paddingHorizontal: SPACING.md,
+    paddingVertical: SPACING.sm,
+  },
   barButton: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, minHeight: 44, justifyContent: 'center' },
   modeRow: {
     flexDirection: 'row',

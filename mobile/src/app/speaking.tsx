@@ -23,6 +23,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
 import { ApiError, api, type SpeakingPrompt, type SpeakingRecording } from '../api';
 import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
@@ -122,6 +123,8 @@ const PromptRow = memo(function PromptRow({
 export default function SpeakingScreen() {
   const { colors } = useTheme();
   const { scaled } = useTextSize();
+  // Chẩn đoán: màn Diagnostic mở kèm baseline=1 thì bản ghi là bài mẫu.
+  const { baseline } = useLocalSearchParams<{ baseline?: string }>();
   const { width } = useWindowDimensions();
   const [prompts, setPrompts] = useState<SpeakingPrompt[]>([]);
   const [recs, setRecs] = useState<SpeakingRecording[]>([]);
@@ -246,6 +249,7 @@ export default function SpeakingScreen() {
         audioBase64: base64,
         mimeType: mimeTypeOf(audioUri),
         durationSec: elapsed,
+        isBaseline: baseline === '1',
       });
       setSaved(true);
       loadRecs();
@@ -254,7 +258,7 @@ export default function SpeakingScreen() {
     } finally {
       setSaving(false);
     }
-  }, [audioUri, active, saving, elapsed, loadRecs]);
+  }, [audioUri, active, saving, elapsed, baseline, loadRecs]);
 
   const rows: Row[] = ([1, 2, 3] as const).flatMap((n) => [
     { kind: 'header', part: n } as Row,

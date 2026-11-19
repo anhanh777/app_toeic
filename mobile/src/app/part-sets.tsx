@@ -46,7 +46,10 @@ export default function PartSetsScreen() {
   const hasExam = !!paramExam || !!ctxExam;
   const isIelts = ex === 'ielts';
   const part = Number(params.part || 5);
-  const partNum = Number.isInteger(part) && part >= 1 && part <= 7 ? part : 5;
+  // Part không hợp lệ thì hiện card lỗi (như web) thay vì kẹp ngầm về
+  // Part 5 như trước.
+  const partValid = Number.isInteger(part) && part >= 1 && part <= 7;
+  const partNum = partValid ? part : 5;
   const partTitle = isIelts ? `${partLabel(partNum, ex)} — ${sectionOf(partNum)}` : partName(partNum);
 
   // Chưa chọn kỳ thi thì không vào được — về màn chọn, nhớ đích đến.
@@ -66,9 +69,9 @@ export default function PartSetsScreen() {
   }
 
   useEffect(() => {
-    if (!hasExam) return;
+    if (!hasExam || !partValid) return;
     api.testSets(ex).then(setTestSets).catch((e) => setError(e instanceof Error ? e.message : String(e))).finally(() => setLoading(false));
-  }, [ex, hasExam]);
+  }, [ex, hasExam, partValid]);
 
   const sortedSets = useMemo(() => sortNewestFirst(testSets), [testSets]);
   const pad = horizontalPadding(width);
@@ -108,14 +111,35 @@ export default function PartSetsScreen() {
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có câu</Text>
           ) : (
             <View style={[styles.button, { backgroundColor: colors.accent }]}>
-              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>▶ Luyện {partNameFor(partNum, ex)}</Text>
+              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+                ▶ Luyện {isIelts ? partNameFor(partNum, ex) : partName(partNum)}
+              </Text>
             </View>
           )}
         </Pressable>
       );
     },
-    [colors, ex, openSession, partNum, scaled],
+    [colors, ex, isIelts, openSession, partNum, scaled],
   );
+
+  // Part không hợp lệ: card lỗi + nút quay lại (như web), không tải
+  // danh sách đề, không kẹp về Part 5.
+  if (!partValid) {
+    return (
+      <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+        <View style={[styles.container, { paddingHorizontal: pad }]}>
+          <View style={styles.header}>
+            <BackButton />
+            <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Part không hợp lệ</Text>
+          </View>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <Text style={{ color: colors.text, fontSize: scaled(15) }}>Part không hợp lệ.</Text>
+          </View>
+        </View>
+        <BottomNav />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>

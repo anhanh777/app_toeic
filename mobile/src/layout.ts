@@ -5,16 +5,17 @@
 //   phải vừa từ điện thoại nhỏ (~360px) tới tablet.
 // - SafeAreaView / safe-area insets ở layout gốc (app/_layout.tsx).
 // - Tôn trọng font scale hệ thống: không đặt allowFontScaling={false}
-//   tràn lan; text-size của app chỉ nhân tối đa 1.3x (xem theme.ts).
+//   tràn lan; text-size của app chỉ nhân tối đa 1.25x (xem theme.tsx).
 // - Danh sách dài dùng FlatList + windowing, không render hết 200 câu.
 import { useWindowDimensions } from 'react-native';
 
 // ---- Breakpoints (theo chiều rộng màn hình, dp) ----
+// Chuẩn duy nhất cho mốc duo 2 cột là BREAKPOINTS.wide = 600 +
+// columnsForWidth (không còn mốc 640 của web hay 390 lẻ — mốc 390 cũ
+// không chỗ nào dùng nên đã dọn).
 export const BREAKPOINTS = {
   /** Điện thoại nhỏ, vd. 360px. */
   small: 360,
-  /** Điện thoại chuẩn, vd. 390px. */
-  standard: 390,
   /** Từ đây coi như màn hình lớn (điện thoại lớn / tablet nhỏ). */
   wide: 600,
 } as const;
@@ -65,4 +66,8 @@ export const LIST_DEFAULTS_WITH_MEDIA = {
 
 // ---- Spacing / bo góc chung (Pastel) ----
 export const SPACING = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24 } as const;
-export const RADIUS = { card: 16, button: 12, pill: 999 } as const;
+/** Padding trong của card danh sách (thẻ đề / thẻ Part / thẻ xếp hạng):
+ * web .card padding .85rem 1rem (~14/16px); mobile dùng 12 cho gọn.
+ * Các card đang dùng `padding: SPACING.sm` (8) thì đổi sang hằng này. */
+export const CARD_PADDING = 12;
+export const RADIUS = { card: 20, button: 12, pill: 999 } as const;

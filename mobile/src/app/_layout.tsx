@@ -12,6 +12,7 @@ import { BrandProvider } from '../brand';
 import { ExamProvider } from '../exam';
 import { MenuIconsProvider } from '../menuIcons';
 import { TextSizeProvider, ThemeProvider, useTheme } from '../theme';
+import { UiSettingsProvider } from '../uiSettings';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -76,19 +77,24 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
-        <ThemeProvider>
-          <TextSizeProvider>
-            <AuthProvider>
-              <ExamProvider>
-                <BrandProvider>
-                  <MenuIconsProvider>
-                    <RootLayoutNav />
-                  </MenuIconsProvider>
-                </BrandProvider>
-              </ExamProvider>
-            </AuthProvider>
-          </TextSizeProvider>
-        </ThemeProvider>
+        {/* UiSettingsProvider phải ở ngoài ThemeProvider/TextSizeProvider để
+            cấp accent server cho ThemeProvider và fontScale cho
+            TextSizeProvider (không copy nesting của web App.tsx). */}
+        <UiSettingsProvider>
+          <ThemeProvider>
+            <TextSizeProvider>
+              <AuthProvider>
+                <ExamProvider>
+                  <BrandProvider>
+                    <MenuIconsProvider>
+                      <RootLayoutNav />
+                    </MenuIconsProvider>
+                  </BrandProvider>
+                </ExamProvider>
+              </AuthProvider>
+            </TextSizeProvider>
+          </ThemeProvider>
+        </UiSettingsProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
   );

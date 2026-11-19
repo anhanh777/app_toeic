@@ -11,7 +11,7 @@
 // - Khối kết quả (Practice): đúng/sai + XP; IELTS sai/đoán mò thì cổng
 //   RootCausePicker trước khi hiện giải thích; transcript CHỈ ở Part nghe
 //   (P1–4) — Part đọc chỉ hiện giải thích (đoạn văn đã hiện phía trên).
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Question } from '../api';
@@ -125,6 +125,15 @@ function QuestionViewInner({
   const isP6 = exam === 'toeic' && q.part === 6;
   const showContent = !!q.content && !hideText && !isP6;
   const overLimit = isFillIn(qType) && q.wordLimit != null && wordCount(selected) > q.wordLimit;
+  // Chiều cao tự nhiên của ảnh câu hỏi: đo tỉ lệ thật khi ảnh nạp xong
+  // (expo-image onLoad trả width/height gốc), giữ tỉ lệ, không crop.
+  // Trước khi nạp xong giữ chiều cao 220 làm chỗ giữ (tránh nhảy layout).
+  const [imgAspect, setImgAspect] = useState<number | null>(null);
+  const [prevImgUrl, setPrevImgUrl] = useState(q.imageUrl);
+  if (prevImgUrl !== q.imageUrl) {
+    setPrevImgUrl(q.imageUrl);
+    setImgAspect(null);
+  }
   // Audio từng câu: khi không có player cấp Part. TOEIC luôn vẽ (chưa có
   // file thì AudioPlayer hiện khối "chưa có audio"); IELTS chỉ vẽ khi có
   // file audio thật (không dùng TTS — đọc trước thì lộ nội dung bài nghe).
@@ -144,7 +153,11 @@ function QuestionViewInner({
       {q.imageUrl ? (
         <Image
           source={{ uri: q.imageUrl }}
-          style={styles.image}
+          style={[styles.image, imgAspect ? { height: undefined, aspectRatio: imgAspect } : null]}
+          onLoad={(e) => {
+            const { width: w, height: h } = e.source;
+            if (w > 0 && h > 0) setImgAspect(w / h);
+          }}
           contentFit="contain"
           transition={150}
           accessibilityLabel="Ảnh minh họa"
@@ -163,7 +176,12 @@ function QuestionViewInner({
         />
       ) : null}
       {showContent ? (
-        <Text style={[styles.content, { color: colors.text, fontSize: scaled(16) }]}>
+        <Text
+          style={[
+            styles.content,
+            { color: colors.text, fontSize: scaled(16), fontWeight: exam === 'toeic' ? '700' : '400' },
+          ]}
+        >
           <Text style={{ fontWeight: '700' }}>{n}. </Text>
           {stripLeadingNumber(q.content, n)}
         </Text>
