@@ -62,7 +62,7 @@ a:hover{text-decoration:underline}
 button{font:inherit; cursor:pointer; color:var(--ink)}
 input,select,textarea{
   font:inherit; width:100%; padding:.65rem .8rem; color:var(--ink);
-  background:var(--input-bg); border:1px solid var(--border); border-radius:10px;
+  background:var(--input-bg); border:1px solid var(--border); border-radius:12px;
 }
 input:focus,select:focus,textarea:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent)}
 label{display:block; font-weight:600; font-size:.9rem; color:var(--ink-soft); margin:.8rem 0 .3rem}
@@ -205,7 +205,7 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 .container{max-width:960px; width:100%; margin:0 auto; padding:1rem; flex:1}
 .card{
   background:var(--surface);
-  border:1px solid var(--border); border-radius:16px; padding:.85rem 1rem; margin-bottom:1rem;
+  border:1px solid var(--border); border-radius:20px; padding:.85rem 1rem; margin-bottom:1rem;
   box-shadow:0 2px 12px rgba(93,64,28,.06);
 }
 .card h2{margin-top:0}
@@ -348,7 +348,7 @@ select + .card{margin-top:1rem}
 .flashcard-face .big{font-size:1.05rem; word-break:break-word}
 .passage{
   white-space:pre-wrap; background:var(--surface-soft); color:var(--ink); border:1px solid var(--border);
-  padding:.65rem .85rem; border-radius:10px; margin-bottom:.55rem; line-height:1.6;
+  padding:.65rem .85rem; border-radius:16px; margin-bottom:.55rem; line-height:1.6;
 }
 .audio-box{background:var(--sky) !important; border:1px solid var(--audio-border) !important}
 .audio-box .muted{color:var(--ink-soft)}
@@ -357,7 +357,7 @@ select + .card{margin-top:1rem}
 .option{
   display:block; width:100%; text-align:left; font-size:1rem;
   background:var(--surface); color:var(--ink); border:1px solid var(--border);
-  border-radius:12px; padding:.55rem .75rem; margin:.35rem 0;
+  border-radius:14px; padding:.55rem .75rem; margin:.35rem 0;
   transition:border-color .15s, background .15s;
 }
 .option:hover{border-color:var(--accent)}
@@ -438,7 +438,7 @@ tbody tr:hover{background:var(--surface-soft)}
    Toàn bộ 1 Part nằm trong 1 khối giấy (.paper) duy nhất, các câu nối
    tiếp nhau bằng đường kẻ mảnh thay vì hộp .panel lồng nhau. */
 .paper{
-  background:var(--surface); border:1px solid var(--border); border-radius:16px;
+  background:var(--surface); border:1px solid var(--border); border-radius:20px;
   padding:.3rem 1rem .7rem; margin-top:.7rem;
 }
 /* 1 câu hỏi trong tờ đề: kẻ mảnh phân cách, nhịp dọc gọn */
@@ -479,17 +479,12 @@ tbody tr:hover{background:var(--surface-soft)}
     display:grid; grid-template-columns:1.2fr 1fr; gap:0; align-items:start;
   }
   .paper-cluster--split .passage{
-    position:sticky; top:130px; max-height:calc(100vh - 150px);
+    position:sticky; top:70px; max-height:calc(100vh - 90px);
     overflow-y:auto; margin-bottom:0; padding-right:1.25rem;
   }
   /* Đường phân cách giữa 2 cột (cột câu hỏi có viền trái + đệm). */
   .paper-cluster--split > div:last-child{
     border-left:1px solid var(--border); padding-left:1.25rem; min-width:0;
-  }
-  /* Phòng Luyện tập: thanh đầu trang 2 hàng nên cao hơn — đoạn văn dính
-     thấp xuống cho khỏi chui dưới thanh đầu trang khi cuộn. */
-  .exam-room--practice .paper-cluster--split .passage{
-    top:175px; max-height:calc(100vh - 195px);
   }
 }
 /* Part 1: lưới ảnh — 1 cột trên điện thoại, 2 cột từ 640px */
@@ -545,7 +540,6 @@ tbody tr:hover{background:var(--surface-soft)}
 /* Đầu trang bài làm dính khi cuộn (ngay dưới topbar sticky): tiêu đề
    Part xanh dương đậm + badge cam tiến độ góc phải */
 .exam-head{
-  position:sticky; top:60px; z-index:9; background:var(--surface);
   display:flex; align-items:center; justify-content:space-between; gap:.8rem;
   padding:.55rem 0 .5rem; margin:0 0 .1rem; border-bottom:1px solid var(--border-soft);
 }
@@ -562,10 +556,22 @@ tbody tr:hover{background:var(--surface-soft)}
   text-transform:uppercase; letter-spacing:.02em; line-height:1.2;
 }
 .exam-part span{font-size:.85rem; font-weight:600; color:var(--muted); text-transform:none; letter-spacing:0}
-.exam-head .timer{font-size:1.05rem}
+/* Chip đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
+   tách thành chip cố định góc phải dưới thanh điều hướng, luôn thấy được
+   khi cuộn. pointer-events:none để chip không chặn bấm vào nội dung bên
+   dưới; góc phải-trên ít che nội dung nhất (bảng ghi chú nằm góc dưới). */
+.timer-chip{
+  position:fixed; top:72px; right:12px; z-index:20;
+  display:inline-flex; align-items:center; gap:.35rem;
+  background:var(--surface); color:var(--ink); font-weight:800; font-size:1rem;
+  padding:.45rem .85rem; border:1px solid var(--border); border-radius:999px;
+  box-shadow:0 4px 16px rgba(0,0,0,.18); font-variant-numeric:tabular-nums;
+  pointer-events:none;
+}
+.timer-chip.low{color:var(--red-ink); border-color:var(--red-border)}
 .progress-badge{
   flex:0 0 auto; background:var(--exam-orange); color:#fff; font-weight:800;
-  font-size:.95rem; padding:.4rem .9rem; border-radius:10px;
+  font-size:.95rem; padding:.4rem .9rem; border-radius:12px;
   font-variant-numeric:tabular-nums; white-space:nowrap;
 }
 /* Badge trung tính (đồng hồ luyện tập): màu nóng chỉ dành cho trạng thái
@@ -697,14 +703,14 @@ tbody tr:hover{background:var(--surface-soft)}
 /* Nút đánh dấu câu (🚩/🏳) — nhỏ, không viền nền, chỉ đổi màu khi bật. */
 .flag-btn{
   background:none; border:none; padding:.15rem .3rem; font-size:1rem; line-height:1;
-  cursor:pointer; opacity:.55; border-radius:6px; flex:0 0 auto;
+  cursor:pointer; opacity:.55; border-radius:8px; flex:0 0 auto;
 }
 .flag-btn:hover{opacity:1; background:var(--accent-soft)}
 .flag-btn--on{opacity:1}
 
 /* Khối ghi chú inline kiểu YouPass (phòng nghe IELTS): các dòng câu của
    1 nhóm điền từ, ô nhập nằm ngay trong dòng chữ. */
-.ielts-notes{margin:.5rem 0 1rem; padding:.8rem 1rem; border:1px solid var(--border); border-radius:12px; background:var(--surface)}
+.ielts-notes{margin:.5rem 0 1rem; padding:.8rem 1rem; border:1px solid var(--border); border-radius:16px; background:var(--surface)}
 .ielts-notes-head{margin:0 0 .3rem}
 .ielts-notes-inst{margin:0 0 .2rem; color:var(--muted); font-style:italic}
 .ielts-notes-body{margin-top:.6rem}
@@ -718,7 +724,7 @@ tbody tr:hover{background:var(--surface-soft)}
 }
 .notes-blank input{
   width:11rem; max-width:45vw; padding:.25rem .5rem; font-size:.95rem;
-  border:1px solid var(--accent); border-radius:6px; background:var(--surface); color:var(--ink);
+  border:1px solid var(--accent); border-radius:8px; background:var(--surface); color:var(--ink);
 }
 .notes-blank input:focus{outline:2px solid var(--accent); outline-offset:1px}
 .notes-blank--correct input{border-color:var(--green); background:var(--green-bg)}
@@ -727,7 +733,7 @@ tbody tr:hover{background:var(--surface-soft)}
 
 /* Bảng matching kiểu YouPass: mục cần nối + ô trống (trái), danh sách đáp
    án kéo-thả/bấm-đặt (phải). */
-.ielts-match{margin:.5rem 0 1rem; padding:.8rem 1rem; border:1px solid var(--border); border-radius:12px; background:var(--surface)}
+.ielts-match{margin:.5rem 0 1rem; padding:.8rem 1rem; border:1px solid var(--border); border-radius:16px; background:var(--surface)}
 .ielts-match-grid{display:grid; grid-template-columns:1fr; gap:1rem; margin-top:.6rem}
 @media (min-width: 760px){ .ielts-match-grid{grid-template-columns:1.4fr 1fr} }
 /* Bảng matching xếp dọc (Reading, cột phải hẹp): luôn 1 cột, danh sách
@@ -738,7 +744,7 @@ tbody tr:hover{background:var(--surface-soft)}
 .ielts-match-item{flex:1 1 auto; min-width:0}
 .ielts-match-gap{
   flex:0 0 auto; min-width:7rem; max-width:16rem; min-height:2rem; padding:.25rem .6rem;
-  border:1.5px dashed var(--accent); border-radius:8px; background:var(--accent-soft);
+  border:1.5px dashed var(--accent); border-radius:10px; background:var(--accent-soft);
   color:var(--ink); font-size:.9rem; text-align:left; cursor:pointer;
 }
 .ielts-match-gap--filled{border-style:solid; background:var(--surface)}
@@ -749,7 +755,7 @@ tbody tr:hover{background:var(--surface-soft)}
 @media (max-width: 759px){ .ielts-match-options{border-left:none; padding-left:0; border-top:1px solid var(--border); padding-top:.6rem} }
 .ielts-match-chips{display:flex; flex-direction:column; gap:.4rem}
 .ielts-match-chip{
-  padding:.4rem .6rem; border:1px solid var(--border); border-radius:8px;
+  padding:.4rem .6rem; border:1px solid var(--border); border-radius:10px;
   background:var(--surface); color:var(--ink); font-size:.9rem; text-align:left; cursor:grab;
 }
 .ielts-match-chip--picked{border-color:var(--accent); background:var(--accent-soft); outline:2px solid var(--accent)}

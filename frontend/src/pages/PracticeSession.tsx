@@ -689,7 +689,7 @@ export default function PracticeSession() {
       : (partName(part).split('—')[1]?.trim() ?? '');
 
   return (
-    <div className={`ts-${textLevel} exam-room exam-room--practice`}>
+    <div className={`ts-${textLevel} exam-room`}>
       {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
       <div className="exam-head exam-head--2row">
         <div className="exam-head-row">
@@ -697,7 +697,6 @@ export default function PracticeSession() {
             <h2 className="exam-part">{headTitle}</h2>
             {headSub && <span className="exam-head-sub">{headSub}</span>}
           </div>
-          {isIelts && <span className="progress-badge progress-badge--neutral" title="Thời gian đã luyện trong buổi này">⏱ {fmtClock(elapsed)}</span>}
         </div>
         <div className="exam-head-row exam-head-controls">
           {/* Ý 2 (IELTS-only): lọc theo dạng câu hỏi trong phạm vi buổi luyện. */}
@@ -714,7 +713,7 @@ export default function PracticeSession() {
           )}
           {/* Chọn chế độ chấm — chỉ đổi được trước khi chọn đáp án đầu tiên. */}
           <span role="group" aria-label="Chế độ chấm điểm" title={modeLocked ? 'Đã chọn đáp án nên không đổi được chế độ chấm trong buổi này' : undefined}
-            style={{ display: 'inline-flex', border: '1px solid var(--accent)', borderRadius: 8, overflow: 'hidden', opacity: modeLocked ? .55 : 1 }}>
+            style={{ display: 'inline-flex', border: '1px solid var(--accent)', borderRadius: 12, overflow: 'hidden', opacity: modeLocked ? .55 : 1 }}>
             {(['instant', 'submit-all'] as const).map(m => (
               <button key={m} type="button" className="btn btn-sm" disabled={modeLocked} aria-pressed={gradingMode === m}
                 onClick={() => setGradingMode(m)}
@@ -727,6 +726,9 @@ export default function PracticeSession() {
           </span>
         </div>
       </div>
+      {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
+          tách thành chip cố định góc phải, luôn thấy được khi cuộn. */}
+      {isIelts && <span className="timer-chip" title="Thời gian đã luyện trong buổi này">⏱ {fmtClock(elapsed)}</span>}
       {usePartAudio && (
         <div className="part-audio">
           <ListeningAudio audioUrl={partMedia[part]} ttsText="" stopKey={`part-${part}`} onError={setError} />

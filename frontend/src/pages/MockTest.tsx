@@ -449,11 +449,12 @@ export default function MockTest() {
   return (
     <div className={`ts-${textLevel} exam-room`}>
       <div className="exam-head">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '.8rem', flexWrap: 'wrap', minWidth: 0 }}>
-          <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
-          <span className={`timer ${secondsLeft < 300 ? 'low' : ''}`}>⏱ {fmt(secondsLeft)}</span>
-        </div>
+        <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
       </div>
+      {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
+          đếm ngược tách thành chip cố định góc phải, luôn thấy được khi
+          cuộn (hết giờ là tự nộp bài nên không được để mất đồng hồ). */}
+      <span className={`timer-chip${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱ {fmt(secondsLeft)}</span>
       <ErrorBox error={error} />
       <div className="paper">
         {renderPaper()}
