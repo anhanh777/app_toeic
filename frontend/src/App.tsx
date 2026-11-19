@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, NavLink, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { Component, useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import { ExamProvider, ExamPicker, TextSizeControl, TextSizeProvider, useExam, useIeltsSetupRedirect, useTextSize } from './exam';
@@ -163,6 +163,9 @@ function Layout() {
   const { user, logout } = useAuth();
   const { exam, clearExam } = useExam();
   const nav = useNavigate();
+  const loc = useLocation();
+  // Phong thi/luyen tap mo rong (phuong an A): khung 1400px thay vi 960px.
+  const wideRoom = loc.pathname === '/practice/session' || loc.pathname === '/mock';
   // IELTS-only: chưa setup lần đầu thì chuyển sang /ielts/setup
   // (TOEIC không bao giờ bị chuyển). Xem exam.tsx.
   useIeltsSetupRedirect();
@@ -285,7 +288,7 @@ function Layout() {
         )}
         <ThemeToggle />
       </header>
-      <main className="container">
+      <main className={wideRoom ? 'container container--wide' : 'container'}>
         {/* Sau đăng nhập mà chưa chọn kỳ thi thì hiện màn hình chọn kỳ thi;
             các trang chỉ fetch dữ liệu sau khi đã chọn exam. */}
         {user && exam === null ? (

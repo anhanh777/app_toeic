@@ -153,7 +153,7 @@ export default function MockTest() {
   if (!attemptId) {
     if (testSetId) {
       return (
-        <div className="card">
+        <div className="card card--narrow">
           <h1>Thi thử cả đề</h1>
           <ErrorBox error={error} />
           {testSet ? (
@@ -176,7 +176,7 @@ export default function MockTest() {
       );
     }
     return (
-      <div className="card">
+      <div className="card card--narrow">
         <h1>Thi thử</h1>
         <ErrorBox error={error} />
         <label>Loại bài thi</label>
@@ -472,36 +472,65 @@ export default function MockTest() {
   };
 
   return (
-    <div className={`ts-${textLevel} exam-room`}>
-      <div className="exam-head">
-        <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
-      </div>
-      {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
-          đếm ngược tách thành chip cố định góc phải, luôn thấy được khi
-          cuộn (hết giờ là tự nộp bài nên không được để mất đồng hồ). */}
-      <span className={`timer-chip${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱️ {fmt(secondsLeft)}</span>
-      <ErrorBox error={error} />
-      <div className="paper">
-        {renderPaper()}
-      </div>
-      <div className="practice-bar">
-        {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />}
-        {isIelts && partOrder.length > 1 && (
+    <div className={`ts-${textLevel} exam-room exam-room--sidelayout`}>
+      <div className="exam-main">
+        <div className="exam-head">
+          <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
+        </div>
+        {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
+            đếm ngược tách thành chip cố định góc phải, luôn thấy được khi
+            cuộn (hết giờ là tự nộp bài nên không được để mất đồng hồ). */}
+        <span className={`timer-chip${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱️ {fmt(secondsLeft)}</span>
+        <ErrorBox error={error} />
+        <div className="paper">
+          {renderPaper()}
+        </div>
+        <div className="practice-bar">
+          {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />}
+          {isIelts && partOrder.length > 1 && (
+            <span className="btn-row" style={{ margin: 0 }}>
+              <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
+                onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
+              <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
+                onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
+            </span>
+          )}
+          <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
           <span className="btn-row" style={{ margin: 0 }}>
-            <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
-              onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
-            <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
-              onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
+            <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
+              onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '← Thoát'}</button>
+            <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
           </span>
-        )}
-        <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
-        <span className="btn-row" style={{ margin: 0 }}>
-          <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
-            onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '← Thoát'}</button>
-          <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
-        </span>
+        </div>
+        <p className="muted" style={{ margin: '.45rem 0 0' }}>Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>
       </div>
-      <p className="muted" style={{ margin: '.45rem 0 0' }}>Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>
+      {/* Cot phai (phuong an A): man hinh rong (>=1100px) thi bang cau hoi
+          + tien do + nut bam nam o day, thanh duoi an di; man hinh hep
+          thi cot nay an, thanh duoi hien nhu cu. */}
+      <aside className="room-side">
+        {isIelts && (
+          <div className="room-side-block">
+            <h3 className="room-side-title">Câu hỏi</h3>
+            <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
+          </div>
+        )}
+        <div className="room-side-block room-side-actions">
+          {isIelts && partOrder.length > 1 && (
+            <span className="btn-row" style={{ margin: 0 }}>
+              <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
+                onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
+              <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
+                onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
+            </span>
+          )}
+          <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
+          <span className="btn-row" style={{ margin: 0 }}>
+            <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
+              onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '← Thoát'}</button>
+            <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
+          </span>
+        </div>
+      </aside>
     </div>
   );
 }

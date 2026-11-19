@@ -313,7 +313,7 @@ export default function PracticeSession() {
   );
   if (finished) {
     return (
-      <div className="card">
+      <div className="card card--narrow">
         <h1>Hoàn thành!</h1>
         {testSetTitle && <p className="muted">{testSetTitle}{typeFilter ? ` · ${questionTypeName(typeFilter)}` : ''}</p>}
         <p className="big">{correctCount}/{doneCount} câu đúng</p>
@@ -709,98 +709,130 @@ export default function PracticeSession() {
       : (partName(part).split('—')[1]?.trim() ?? '');
 
   return (
-    <div className={`ts-${textLevel} exam-room`}>
-      {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
-      <div className="exam-head exam-head--2row">
-        <div className="exam-head-row">
-          <div className="exam-head-title">
-            <h2 className="exam-part">{headTitle}</h2>
-            {headSub && <span className="exam-head-sub">{headSub}</span>}
+    <div className={`ts-${textLevel} exam-room exam-room--sidelayout`}>
+      <div className="exam-main">
+        {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
+        <div className="exam-head exam-head--2row">
+          <div className="exam-head-row">
+            <div className="exam-head-title">
+              <h2 className="exam-part">{headTitle}</h2>
+              {headSub && <span className="exam-head-sub">{headSub}</span>}
+            </div>
+          </div>
+          <div className="exam-head-row exam-head-controls">
+            {/* Ý 2 (IELTS-only): lọc theo dạng câu hỏi trong phạm vi buổi luyện. */}
+            {isIelts && (
+              <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.4rem', fontWeight: 500 }}>
+                Dạng:
+                <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} aria-label="Lọc theo dạng câu hỏi">
+                  <option value="">Tất cả các dạng</option>
+                  {availableTypes.map(t => (
+                    <option key={t} value={t}>{questionTypeName(t)}</option>
+                  ))}
+                </select>
+              </label>
+            )}
+            {/* Chọn chế độ chấm — chỉ đổi được trước khi chọn đáp án đầu tiên. */}
+            <span role="group" aria-label="Chế độ chấm điểm" title={modeLocked ? 'Đã chọn đáp án nên không đổi được chế độ chấm trong buổi này' : undefined}
+              style={{ display: 'inline-flex', border: '1px solid var(--accent)', borderRadius: 12, overflow: 'hidden', opacity: modeLocked ? .55 : 1 }}>
+              {(['instant', 'submit-all'] as const).map(m => (
+                <button key={m} type="button" className="btn btn-sm" disabled={modeLocked} aria-pressed={gradingMode === m}
+                  onClick={() => setGradingMode(m)}
+                  style={gradingMode === m
+                    ? { borderRadius: 0, boxShadow: 'none' }
+                    : { borderRadius: 0, boxShadow: 'none', background: 'transparent', color: 'var(--accent-dark)' }}>
+                  {m === 'instant' ? 'Chấm từng câu' : 'Làm xong mới chấm'}
+                </button>
+              ))}
+            </span>
           </div>
         </div>
-        <div className="exam-head-row exam-head-controls">
-          {/* Ý 2 (IELTS-only): lọc theo dạng câu hỏi trong phạm vi buổi luyện. */}
-          {isIelts && (
-            <label style={{ display: 'inline-flex', alignItems: 'center', gap: '.4rem', fontWeight: 500 }}>
-              Dạng:
-              <select value={typeFilter} onChange={e => setTypeFilter(e.target.value)} aria-label="Lọc theo dạng câu hỏi">
-                <option value="">Tất cả các dạng</option>
-                {availableTypes.map(t => (
-                  <option key={t} value={t}>{questionTypeName(t)}</option>
-                ))}
-              </select>
-            </label>
-          )}
-          {/* Chọn chế độ chấm — chỉ đổi được trước khi chọn đáp án đầu tiên. */}
-          <span role="group" aria-label="Chế độ chấm điểm" title={modeLocked ? 'Đã chọn đáp án nên không đổi được chế độ chấm trong buổi này' : undefined}
-            style={{ display: 'inline-flex', border: '1px solid var(--accent)', borderRadius: 12, overflow: 'hidden', opacity: modeLocked ? .55 : 1 }}>
-            {(['instant', 'submit-all'] as const).map(m => (
-              <button key={m} type="button" className="btn btn-sm" disabled={modeLocked} aria-pressed={gradingMode === m}
-                onClick={() => setGradingMode(m)}
-                style={gradingMode === m
-                  ? { borderRadius: 0, boxShadow: 'none' }
-                  : { borderRadius: 0, boxShadow: 'none', background: 'transparent', color: 'var(--accent-dark)' }}>
-                {m === 'instant' ? 'Chấm từng câu' : 'Làm xong mới chấm'}
-              </button>
-            ))}
-          </span>
-        </div>
-      </div>
-      {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
-          tách thành chip cố định góc phải, luôn thấy được khi cuộn. */}
-      {isIelts && <span className="timer-chip" title="Thời gian đã luyện trong buổi này">⏱️ {fmtClock(elapsed)}</span>}
-      {usePartAudio && (
-        <div className="part-audio">
-          <ListeningAudio audioUrl={partMedia[part]} ttsText="" stopKey={`part-${part}`} onError={setError} />
-          <p className="muted">🎧 Nghe cả {isIelts ? `Section ${part}` : `Part ${part}`} — bấm 1 lần rồi làm hết các câu của {isIelts ? 'Section' : 'Part'} trong lúc nghe.</p>
-        </div>
-      )}
-      {ieltsNoAudio && (
-        <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
-      )}
-      <ErrorBox error={error} />
-      {isIelts && (
-        <IeltsToolsBar
-          onHighlight={doHighlight}
-          onNotes={() => setNotePanelOpen(true)}
-          onClearHighlights={doClearHighlights}
-          hlSupported={highlightSupported()}
-          notesCount={sessionNotes.length}
-          hlCount={hlCount}
-        />
-      )}
-      <div className="paper" ref={paperRef}>
-        {renderPaper()}
-      </div>
-      <div className="practice-bar">
-        {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />}
-        {isIelts && partOrder.length > 1 && (
-          <span className="btn-row" style={{ margin: 0 }}>
-            <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
-              onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
-            <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
-              onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
-          </span>
+        {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
+            tách thành chip cố định góc phải, luôn thấy được khi cuộn. */}
+        {isIelts && <span className="timer-chip" title="Thời gian đã luyện trong buổi này">⏱️ {fmtClock(elapsed)}</span>}
+        {usePartAudio && (
+          <div className="part-audio">
+            <ListeningAudio audioUrl={partMedia[part]} ttsText="" stopKey={`part-${part}`} onError={setError} />
+            <p className="muted">🎧 Nghe cả {isIelts ? `Section ${part}` : `Part ${part}`} — bấm 1 lần rồi làm hết các câu của {isIelts ? 'Section' : 'Part'} trong lúc nghe.</p>
+          </div>
         )}
-        <span className="progress">Đã làm {doneCount}/{visibleQuestions.length} • Đúng {correctCount}</span>
-        <span className="btn-row" style={{ margin: 0 }}>
-          <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>← Thoát</button>
-          {gradingMode === 'submit-all' && !submittedAll ? (
-            <button className="btn btn-sm" disabled={answeredCount === 0} onClick={() => void submitAll()}>Nộp tất cả · {answeredCount}/{visibleQuestions.length} câu</button>
-          ) : (
-            <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
+        {ieltsNoAudio && (
+          <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
+        )}
+        <ErrorBox error={error} />
+        {isIelts && (
+          <IeltsToolsBar
+            onHighlight={doHighlight}
+            onNotes={() => setNotePanelOpen(true)}
+            onClearHighlights={doClearHighlights}
+            hlSupported={highlightSupported()}
+            notesCount={sessionNotes.length}
+            hlCount={hlCount}
+          />
+        )}
+        <div className="paper" ref={paperRef}>
+          {renderPaper()}
+        </div>
+        <div className="practice-bar">
+          {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />}
+          {isIelts && partOrder.length > 1 && (
+            <span className="btn-row" style={{ margin: 0 }}>
+              <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
+                onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
+              <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
+                onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
+            </span>
           )}
-        </span>
+          <span className="progress">Đã làm {doneCount}/{visibleQuestions.length} • Đúng {correctCount}</span>
+          <span className="btn-row" style={{ margin: 0 }}>
+            <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>← Thoát</button>
+            {gradingMode === 'submit-all' && !submittedAll ? (
+              <button className="btn btn-sm" disabled={answeredCount === 0} onClick={() => void submitAll()}>Nộp tất cả · {answeredCount}/{visibleQuestions.length} câu</button>
+            ) : (
+              <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
+            )}
+          </span>
+        </div>
+        {isIelts && notePanelOpen && (
+          <IeltsNotePanel
+            current={currentNote}
+            sessionNotes={sessionNotes}
+            onSave={setNote}
+            onJump={id => { jumpToQuestion(id); setNotePanelOpen(false); }}
+            onClose={() => setNotePanelOpen(false)}
+          />
+        )}
       </div>
-      {isIelts && notePanelOpen && (
-        <IeltsNotePanel
-          current={currentNote}
-          sessionNotes={sessionNotes}
-          onSave={setNote}
-          onJump={id => { jumpToQuestion(id); setNotePanelOpen(false); }}
-          onClose={() => setNotePanelOpen(false)}
-        />
-      )}
+      {/* Cot phai (phuong an A): man hinh rong (>=1100px) thi bang cau hoi
+          + tien do + nut bam nam o day, thanh duoi an di; man hinh hep
+          thi cot nay an, thanh duoi hien nhu cu. */}
+      <aside className="room-side">
+        {isIelts && (
+          <div className="room-side-block">
+            <h3 className="room-side-title">Câu hỏi</h3>
+            <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
+          </div>
+        )}
+        <div className="room-side-block room-side-actions">
+          {isIelts && partOrder.length > 1 && (
+            <span className="btn-row" style={{ margin: 0 }}>
+              <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
+                onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
+              <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
+                onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
+            </span>
+          )}
+          <span className="progress">Đã làm {doneCount}/{visibleQuestions.length} • Đúng {correctCount}</span>
+          <span className="btn-row" style={{ margin: 0 }}>
+            <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>← Thoát</button>
+            {gradingMode === 'submit-all' && !submittedAll ? (
+              <button className="btn btn-sm" disabled={answeredCount === 0} onClick={() => void submitAll()}>Nộp tất cả · {answeredCount}/{visibleQuestions.length} câu</button>
+            ) : (
+              <button className="btn btn-sm" onClick={() => { stopSpeak(); setFinished(true); }}>Xem kết quả</button>
+            )}
+          </span>
+        </div>
+      </aside>
     </div>
   );
 }

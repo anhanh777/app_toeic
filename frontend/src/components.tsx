@@ -384,16 +384,19 @@ export function QuestionText({ text }: { text: string }) {
  * đánh dấu (chấm cam). */
 export type PaletteItemState = 'todo' | 'done' | 'correct' | 'wrong';
 export interface PaletteItem { n: number; id: string; state: PaletteItemState; group?: string; flagged?: boolean; noted?: boolean }
-export function QuestionPalette({ items, onJump, currentId }: {
+export function QuestionPalette({ items, onJump, currentId, variant = 'bar' }: {
   items: PaletteItem[];
   onJump: (id: string) => void;
   currentId?: string | null;
+  // 'bar': hang ngang cuon duoi phong thi; 'side': luoi doc trong cot phai.
+  variant?: 'bar' | 'side';
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
-  // Khi cau dang lam doi (scroll-spy), cuon ngang bang cau hoi de nut cau
-  // do luon nam trong vung nhin — quan trong o bai full 80 cau, neu khong
-  // nut duoc highlight se nam ngoai man hinh ben phai. inline:'nearest'
-  // chi cuon khi nut dang nam ngoai vung nhin, khong tranh cuon voi tay.
+  // Khi cau dang lam doi (scroll-spy), cuon bang cau hoi de nut cau do
+  // luon nam trong vung nhin — quan trong o bai full 80 cau (hang ngang
+  // o thanh duoi, cot doc o cot phai), neu khong nut duoc highlight se
+  // nam ngoai man hinh. 'nearest' chi cuon khi nut dang nam ngoai vung
+  // nhin, khong tranh cuon voi tay.
   useEffect(() => {
     if (!currentId) return;
     wrapRef.current?.querySelector('.q-palette-btn--current')
@@ -408,7 +411,7 @@ export function QuestionPalette({ items, onJump, currentId }: {
     else groups.push({ label: it.group, items: [it] });
   }
   return (
-    <div ref={wrapRef} className="q-palette" role="navigation" aria-label="Điều hướng câu hỏi">
+    <div ref={wrapRef} className={`q-palette${variant === 'side' ? ' q-palette--side' : ''}`} role="navigation" aria-label="Điều hướng câu hỏi">
       {groups.map((g, gi) => (
         <span key={gi} className="q-palette-group">
           {g.label && <span className="q-palette-group-label">{g.label}</span>}

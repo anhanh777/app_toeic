@@ -203,6 +203,13 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 }
 .theme-toggle:hover{border-color:var(--accent); transform:translateY(-1px)}
 .container{max-width:960px; width:100%; margin:0 auto; padding:1rem; flex:1}
+/* Phong thi/luyen tap rong (phuong an A): man hinh rong thi khung mo ra
+   1400px thay vi 960px, de noi dung khong bi bo trong 2 ben. App.tsx gan
+   class nay cho <main> khi route la /practice/session hoac /mock. */
+.container--wide{max-width:1400px}
+/* The hep giua trang: dung cho man hinh mo dau thi thu va man hinh hoan
+   thanh luyen tap, de chung khong bi keo dan het chieu rong 1400px. */
+.card--narrow{max-width:720px; margin-left:auto; margin-right:auto}
 .card{
   background:var(--surface);
   border:1px solid var(--border); border-radius:20px; padding:.85rem 1rem; margin-bottom:1rem;
@@ -676,12 +683,42 @@ tbody tr:hover{background:var(--surface-soft)}
   box-shadow:0 8px 24px var(--shadow, rgba(0,0,0,.2));
   display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap;
 }
-.practice-bar .progress{
+.practice-bar .progress, .room-side .progress{
   font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums;
   display:inline-flex; align-items:center; gap:.35rem;
   background:var(--surface); border:1px solid var(--border); border-radius:999px;
   padding:.35rem .8rem;
 }
+/* Cot bang cau hoi doc ben phai (phuong an A). Mac dinh an — man hinh hep
+   dung thanh duoi .practice-bar nhu cu. Tu 1100px tro len, phong thi xep
+   2 cot: noi dung chinh + cot phai dinh (sticky), thanh duoi an di.
+   Dong ho noi .timer-chip nam o top:72px goc phai nen cot phai bat dau
+   tu 120px de khong bi chong len. */
+.room-side{display:none}
+@media (min-width:1100px){
+  .exam-room.exam-room--sidelayout{
+    display:grid; grid-template-columns:minmax(0,1fr) 252px; gap:1rem; align-items:start;
+    padding-bottom:1rem;
+  }
+  .exam-room--sidelayout .exam-main{min-width:0}
+  .exam-room--sidelayout .practice-bar{display:none}
+  .room-side{
+    display:block; position:sticky; top:120px; max-height:calc(100vh - 140px);
+    overflow-y:auto; background:var(--surface); border:1px solid var(--border);
+    border-radius:20px; padding:.8rem; box-shadow:0 2px 12px rgba(93,64,28,.06);
+  }
+}
+.room-side-title{margin:.1rem 0 .5rem; font-size:.8rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
+.room-side-block + .room-side-block{margin-top:.9rem; padding-top:.9rem; border-top:1px solid var(--border)}
+.room-side-actions{display:flex; flex-direction:column; gap:.6rem; align-items:stretch}
+.room-side-actions .progress{align-self:flex-start}
+.room-side-actions .btn-row{flex-direction:column; align-items:stretch}
+/* Bang cau hoi dang luoi doc trong cot phai: cac nut xep thanh nhieu hang,
+   moi nhom Section/Passage bat dau mot dong moi. */
+.q-palette--side{flex-wrap:wrap; overflow-x:visible; padding:0}
+.q-palette--side .q-palette-group{flex-basis:100%; flex-wrap:wrap}
+.q-palette--side .q-palette-group-label{flex-basis:100%; margin:.45rem 0 .25rem}
+.q-palette--side .q-palette-group:first-child .q-palette-group-label{margin-top:0}
 /* Thanh so cau (kieu YouPass): bam so de nhay toi cau do. Nam trong
    practice-bar (sticky duoi), 1 hang rieng, cuon ngang khi nhieu cau. */
 .q-palette{display:flex; gap:.3rem; flex-wrap:nowrap; overflow-x:auto; padding:.3rem 0; flex-basis:100%; scrollbar-width:thin; align-items:center}
