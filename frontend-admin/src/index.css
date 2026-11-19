@@ -213,7 +213,7 @@ hr{border:none; border-top:1px solid var(--border); margin:.9rem 0}
 .container{max-width:1024px; width:100%; margin:0 auto; padding:.9rem; flex:1; min-width:0}
 .card{
   background:var(--surface);
-  border:1px solid var(--border); border-radius:14px; padding:.85rem 1rem; margin-bottom:.8rem;
+  border:1px solid var(--border); border-radius:20px; padding:.85rem 1rem; margin-bottom:.8rem;
   box-shadow:0 2px 12px rgba(93,64,28,.06);
 }
 .card h2{margin-top:0}
@@ -525,8 +525,8 @@ tbody tr:hover{background:var(--surface-soft)}
    Toàn bộ 1 Part nằm trong 1 khối giấy (.paper) duy nhất, các câu nối
    tiếp nhau bằng đường kẻ mảnh thay vì hộp .panel lồng nhau. */
 .paper{
-  background:var(--surface); border:1px solid var(--border); border-radius:16px;
-  padding:.2rem .9rem .5rem; margin-top:.6rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:20px;
+  padding:.5rem .9rem .5rem; margin-top:.6rem;
 }
 /* 1 câu hỏi trong tờ đề: kẻ mảnh phân cách, nhịp dọc gọn */
 .paper-q{padding:.35rem 0; border-bottom:1px solid var(--border-soft)}
