@@ -1031,3 +1031,16 @@ tbody tr:hover{background:var(--surface-soft)}
 .wl-popover{position:fixed; z-index:60; width:min(320px, calc(100vw - 16px)); background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:.8rem; box-shadow:0 8px 28px rgba(0,0,0,.18); max-height:300px; overflow:auto}
 .wl-pop-head{display:flex; align-items:baseline; gap:.4rem}
 .wl-close{margin-left:auto}
+
+/* --- Tu vung: on tap ngat quang --- */
+.vocab-due-card{display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; background:var(--accent-soft); border:1px solid var(--accent); border-radius:20px; padding:.9rem 1.1rem; margin:.9rem 0}
+.vocab-mastery{display:flex; align-items:center; gap:.4rem; min-width:110px}
+.vocab-mastery-track{flex:1; height:8px; background:var(--surface-soft); border:1px solid var(--border); border-radius:999px; overflow:hidden}
+.vocab-mastery-fill{height:100%; background:var(--accent); border-radius:999px; transition:width .2s}
+.vocab-mastery-num{font-size:.82rem; color:var(--muted); min-width:2.2rem; text-align:right}
+.vocab-progress{height:8px; background:var(--surface-soft); border:1px solid var(--border); border-radius:999px; overflow:hidden; margin:.5rem 0 .9rem}
+.vocab-progress-fill{height:100%; background:var(--accent); border-radius:999px; transition:width .2s}
+.vocab-quiz-q{font-size:1.15rem; font-weight:700; margin:.4rem 0 .8rem}
+.vocab-opt--correct{border-color:var(--green-border); background:var(--green-bg)}
+.vocab-opt--wrong{border-color:var(--red-border); background:var(--red-bg)}
+.vocab-cloze{font-size:1.05rem; line-height:1.7; background:var(--surface-soft); border:1px solid var(--border); border-radius:12px; padding:.7rem .9rem; margin:.5rem 0}

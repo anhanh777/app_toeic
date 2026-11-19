@@ -94,7 +94,7 @@ export interface Vocab { id: string; word: string; phonetic?: string; meaning: s
 /** Ket qua tra tu dien: nghia tieng Viet + loai tu + phien am + vi du. */
 export interface DictionaryEntry { word: string; phonetic?: string | null; pos?: string | null; meaning_vi: string; example?: string | null; cached?: boolean; saved?: boolean; id?: number; status?: 'learning' | 'learned' | 'wrong'; }
 /** 1 tu trong kho ca nhan "Tu cua toi" (luu theo user). */
-export interface UserWord { id: number; word: string; phonetic?: string | null; pos?: string | null; meaning: string; example?: string | null; context?: string | null; topic?: string | null; status: 'learning' | 'learned' | 'wrong'; createdAt?: string; updatedAt?: string; }
+export interface UserWord { id: number; word: string; phonetic?: string | null; pos?: string | null; meaning: string; example?: string | null; context?: string | null; topic?: string | null; status: 'learning' | 'learned' | 'wrong'; reviewStage?: number; reviewDue?: string | null; mastery?: number; wrongCount?: number; lastReviewCorrect?: boolean | null; createdAt?: string; updatedAt?: string; }
 export interface StatsOverview {
   totalAnswered: number; totalCorrect: number; accuracy: number;
   byPart: { part: number; answered: number; correct: number; accuracy: number }[];
@@ -336,6 +336,12 @@ export const api = {
     req<{ ok: boolean }>(`/api/user-words/${id}`, { method: 'DELETE' }),
   markUserWord: (id: number, status: 'learning' | 'learned' | 'wrong') =>
     req<UserWord>(`/api/user-words/${id}/mark`, { method: 'POST', body: JSON.stringify({ status }) }),
+  dueUserWords: async (limit = 20) => {
+    const data = await req<{ total: number; items: UserWord[] }>(`/api/user-words/due?limit=${limit}`);
+    return data;
+  },
+  reviewUserWord: (id: number, correct: boolean) =>
+    req<{ word: UserWord; xpAwarded: number; xpCapped: boolean }>(`/api/user-words/${id}/review`, { method: 'POST', body: JSON.stringify({ correct }) }),
 
   statsOverview: (exam?: string) => req<StatsOverview>(exam ? `/api/stats/overview?exam=${encodeURIComponent(exam)}` : '/api/stats/overview'),
   statsHistory: (exam?: string) => req<Attempt[]>(exam ? `/api/stats/history?exam=${encodeURIComponent(exam)}` : '/api/stats/history'),

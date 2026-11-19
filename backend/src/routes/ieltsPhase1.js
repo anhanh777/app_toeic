@@ -137,6 +137,8 @@ function buildTodayResponse(userId, exam) {
   const today = db.todayStr();
   const diagnostic = db.getLatestMockTest(userId, 'diagnostic');
   const profile = db.getIeltsProfile(userId);
+  // Khoi on tu vung dung chung ca 2 ky thi (tu vung khong tach theo exam).
+  const vocabDue = db.countDueUserWords(userId);
 
   let blocks;
   if (exam === 'toeic') {
@@ -168,6 +170,7 @@ function buildTodayResponse(userId, exam) {
         ...(weakestPart == null ? { message: 'Lam 1 bai thi thu hoac luyen tap truoc de biet Part yeu nhat' } : {}),
       },
       { id: 'active', kind: 'toeic-practice', part: weakestPart || 5 },
+      { id: 'vocab', dueCount: vocabDue },
     ];
   } else {
     // (1) Review = loi IELTS den han on.
@@ -194,6 +197,7 @@ function buildTodayResponse(userId, exam) {
         ...(weakestType == null ? { message: 'Lam bai diagnostic truoc de biet dang yeu nhat' } : {}),
       },
       { id: 'active', kind: 'skim' },
+      { id: 'vocab', dueCount: vocabDue },
     ];
   }
 

@@ -9,10 +9,14 @@
 const express = require('express');
 const db = require('../db');
 const { authMiddleware } = require('../auth');
+const { awardXp } = require('../xp');
 const { normalizeWordInput, isValidWordInput } = require('../wordUtils');
 
 const router = express.Router();
 const STATUSES = new Set(['learning', 'learned', 'wrong']);
+const VOCAB_REVIEW_XP = 2;
+const VOCAB_XP_DAILY_CAP = 20;
+const VOCAB_REVIEW_REASON = 'vocab_review';
 const MAX_LEN = { phonetic: 100, pos: 50, meaning: 500, example: 1000, context: 1000, topic: 100 };
 
 /** Chuoi tuy chon: undefined neu khong gui, null neu sai dinh dang, chuoi (co the rong = xoa) neu hop le. */
@@ -42,6 +46,15 @@ router.get('/user-words', authMiddleware, (req, res) => {
   const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 100, 1), 500);
   const offset = Math.max(parseInt(req.query.offset, 10) || 0, 0);
   return res.json(db.listUserWords(req.user.id, { status, limit, offset }));
+});
+
+/** Hang doi on tap hom nay: cac tu den han (total = tat ca, items = trang dau). */
+router.get('/user-words/due', authMiddleware, (req, res) => {
+  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 20, 1), 100);
+  return res.json({
+    total: db.countDueUserWords(req.user.id),
+    items: db.listDueUserWords(req.user.id, limit),
+  });
 });
 
 router.post('/user-words', authMiddleware, (req, res) => {
@@ -107,7 +120,35 @@ router.post('/user-words/:id/mark', authMiddleware, (req, res) => {
   if (!STATUSES.has(status)) {
     return res.status(400).json({ error: 'status phai la learning, learned hoac wrong' });
   }
+  // Danh dau tay cung la 1 buoc on tap (khong cong XP):
+  // "Da thuoc" = on dung (len bac, trang thai theo y nguoi hoc),
+  // "Chua thuoc" = on sai (ve 1 ngay). "Dang hoc" chi doi trang thai.
+  if (status === 'learned') return res.json(db.reviewUserWord(row.id, true, 'learned'));
+  if (status === 'wrong') return res.json(db.reviewUserWord(row.id, false));
   return res.json(db.markUserWord(row.id, status));
+});
+
+/** Nop 1 luot on tap tu phien kiem tra: dung +5 diem / +2 XP (tran 20 XP/ngay). */
+router.post('/user-words/:id/review', authMiddleware, (req, res) => {
+  const row = loadOwned(req, res);
+  if (!row) return;
+  const correct = req.body && req.body.correct;
+  if (typeof correct !== 'boolean') {
+    return res.status(400).json({ error: 'correct phai la true hoac false' });
+  }
+  const updated = db.reviewUserWord(row.id, correct);
+  let xpAwarded = 0;
+  let xpCapped = false;
+  if (correct) {
+    const todayXp = db.sumXpTodayByReason(req.user.id, VOCAB_REVIEW_REASON);
+    if (todayXp + VOCAB_REVIEW_XP <= VOCAB_XP_DAILY_CAP) {
+      const r = awardXp(req.user.id, VOCAB_REVIEW_XP, VOCAB_REVIEW_REASON);
+      xpAwarded = r.xpAwarded;
+    } else {
+      xpCapped = true;
+    }
+  }
+  return res.json({ word: updated, xpAwarded, xpCapped });
 });
 
 module.exports = router;

@@ -1,10 +1,79 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api, type UserWord, type Vocab } from '../api';
 import { ErrorBox } from '../components';
 import { useExam } from '../exam';
 
 type WordStatus = 'learning' | 'learned' | 'wrong';
 const STATUS_LABEL: Record<WordStatus, string> = { learning: 'Đang học', learned: 'Đã thuộc', wrong: 'Chưa thuộc' };
+const REVIEW_STAGE_MAX = 5;
+
+/** Chu ngay on lai gon: "Den han on" / "On: dd/mm/yyyy" / "Da thuoc lau dai". */
+function dueText(w: UserWord): string {
+  if ((w.reviewStage ?? 0) >= REVIEW_STAGE_MAX) return 'Đã thuộc lâu dài';
+  if (!w.reviewDue) return 'Đến hạn ôn';
+  const today = new Date().toISOString().slice(0, 10);
+  if (w.reviewDue <= today) return 'Đến hạn ôn';
+  return `Ôn: ${new Date(`${w.reviewDue}T00:00:00`).toLocaleDateString('vi-VN')}`;
+}
+
+function normAnswer(s: string): string {
+  return s.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const out = [...arr];
+  for (let i = out.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+/** Che tu goc trong cau ngu canh (khong phan biet hoa/thuong); null neu khong che duoc. */
+function clozeSentence(context: string | null | undefined, word: string): string | null {
+  if (!context) return null;
+  const esc = word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(esc, 'i');
+  if (!re.test(context)) return null;
+  return context.replace(re, '______');
+}
+
+type QuizType = 'mcq' | 'type' | 'cloze';
+interface QuizQ { type: QuizType; word: UserWord; options?: string[]; cloze?: string; }
+
+/** 1 cau hoi cho 1 tu: xoay vong mcq -> go tu -> dien cau ngu canh, co fallback
+ * khi khong du du lieu (it hon 4 tu thi khong co mcq; khong co context thi khong co cloze). */
+function buildQuiz(word: UserWord, all: UserWord[], idx: number): QuizQ {
+  const order: QuizType[] = ['mcq', 'type', 'cloze'];
+  let type = order[idx % 3];
+  const distinctMeanings = [
+    ...new Set(
+      all.filter((w) => w.id !== word.id).map((w) => w.meaning.trim()).filter((m) => m && m !== word.meaning.trim()),
+    ),
+  ];
+  if (type === 'mcq' && distinctMeanings.length < 3) type = 'type';
+  if (type === 'cloze') {
+    const c = clozeSentence(word.context, word.word);
+    if (c) return { type: 'cloze', word, cloze: c };
+    type = 'type';
+  }
+  if (type === 'mcq') {
+    const picks = shuffle(distinctMeanings).slice(0, 3);
+    return { type: 'mcq', word, options: shuffle([word.meaning, ...picks]) };
+  }
+  return { type: 'type', word };
+}
+
+function MasteryBar({ value }: { value: number }) {
+  const pct = Math.max(0, Math.min(100, value || 0));
+  return (
+    <div className="vocab-mastery">
+      <div className="vocab-mastery-track"><div className="vocab-mastery-fill" style={{ width: `${pct}%` }} /></div>
+      <span className="vocab-mastery-num">{pct}%</span>
+    </div>
+  );
+}
 
 /**
  * Trang Từ vựng — 2 kho:
@@ -28,6 +97,161 @@ export default function Vocabulary() {
   );
 }
 
+/* Phien kiem tra on tap: 1 cau hoi/lan, tra loi xong moi nop len server
+ * (moi cau la 1 buoc on tap ngat quang). Het phien moi hien tong ket. */
+function VocabReviewSession({ queue, allWords, onReviewed, onClose }: {
+  queue: UserWord[];
+  allWords: UserWord[];
+  onReviewed: (w: UserWord) => void;
+  onClose: () => void;
+}) {
+  // Cau hoi chot ngay khi mo phien (khong xao lai khi danh sach tu doi).
+  const [quizzes] = useState<QuizQ[]>(() => queue.map((w, i) => buildQuiz(w, allWords, i)));
+  const [idx, setIdx] = useState(0);
+  const [picked, setPicked] = useState<string | null>(null);
+  const [typed, setTyped] = useState('');
+  const [feedback, setFeedback] = useState<null | { correct: boolean; xp: number }>(null);
+  const [results, setResults] = useState<boolean[]>([]);
+  const [totalXp, setTotalXp] = useState(0);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<unknown>(null);
+  const [finished, setFinished] = useState(false);
+
+  const quiz = quizzes[idx];
+  const progress = quizzes.length ? Math.round(((idx + (feedback ? 1 : 0)) / quizzes.length) * 100) : 0;
+
+  const submit = async (answer: string) => {
+    if (!quiz || feedback || busy) return;
+    const correct = quiz.type === 'mcq'
+      ? answer === quiz.word.meaning
+      : normAnswer(answer) === normAnswer(quiz.word.word);
+    setBusy(true);
+    try {
+      const r = await api.reviewUserWord(quiz.word.id, correct);
+      onReviewed(r.word);
+      setFeedback({ correct, xp: r.xpAwarded });
+      setResults((prev) => [...prev, correct]);
+      setTotalXp((x) => x + r.xpAwarded);
+    } catch (e) { setError(e); } finally { setBusy(false); }
+  };
+
+  const next = () => {
+    if (idx + 1 >= quizzes.length) { setFinished(true); return; }
+    setIdx((i) => i + 1);
+    setPicked(null);
+    setTyped('');
+    setFeedback(null);
+  };
+
+  if (finished) {
+    const nCorrect = results.filter(Boolean).length;
+    return (
+      <div className="card">
+        <h2>🎉 Đã ôn xong!</h2>
+        <ErrorBox error={error} />
+        <p>Đúng <strong>{nCorrect}/{results.length}</strong> từ{totalXp > 0 ? <> • +<strong>{totalXp} XP</strong></> : ''}.</p>
+        <p className="muted">Các từ đã được lên lịch ôn lại theo lịch ngắt quãng (1–3–7–14–30 ngày). Từ nào sai sẽ ôn lại vào ngày mai.</p>
+        <div className="btn-row">
+          <button type="button" className="btn" onClick={onClose}>Về danh sách từ</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!quiz) return null;
+  const { word } = quiz;
+
+  return (
+    <div className="card">
+      <div className="btn-row" style={{ justifyContent: 'space-between' }}>
+        <h2 style={{ margin: 0 }}>Ôn tập hôm nay</h2>
+        <button type="button" className="btn ghost btn-sm" onClick={onClose}>← Thoát phiên ôn</button>
+      </div>
+      <ErrorBox error={error} />
+      <p className="muted">Câu {idx + 1}/{quizzes.length} • Thành thạo hiện tại: {word.mastery ?? 0}%</p>
+      <div className="vocab-progress"><div className="vocab-progress-fill" style={{ width: `${progress}%` }} /></div>
+
+      {quiz.type === 'mcq' && (
+        <>
+          <p className="vocab-quiz-q">“{word.word}” có nghĩa là gì?</p>
+          {quiz.options?.map((opt) => {
+            const isPicked = picked === opt;
+            const isRight = opt === word.meaning;
+            const cls = feedback
+              ? `option vocab-opt${isRight ? ' vocab-opt--correct' : ''}${isPicked && !isRight ? ' vocab-opt--wrong' : ''}`
+              : 'option vocab-opt';
+            return (
+              <button key={opt} type="button" className={cls} disabled={!!feedback || busy} onClick={() => { setPicked(opt); void submit(opt); }}>
+                {opt}
+              </button>
+            );
+          })}
+        </>
+      )}
+
+      {quiz.type === 'type' && (
+        <>
+          <p className="vocab-quiz-q">Từ nào có nghĩa “{word.meaning}”?</p>
+          <div className="btn-row">
+            <input
+              value={typed}
+              disabled={!!feedback || busy}
+              onChange={(e) => setTyped(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') void submit(typed); }}
+              placeholder="Gõ từ tiếng Anh…"
+              aria-label="Gõ từ tiếng Anh"
+            />
+            <button type="button" className="btn" disabled={!!feedback || busy || !typed.trim()} onClick={() => void submit(typed)}>
+              {busy ? 'Đang chấm…' : 'Trả lời'}
+            </button>
+          </div>
+        </>
+      )}
+
+      {quiz.type === 'cloze' && (
+        <>
+          <p className="vocab-quiz-q">Điền từ còn thiếu vào câu:</p>
+          <p className="vocab-cloze">{quiz.cloze}</p>
+          <p className="muted">Gợi ý: {word.meaning}</p>
+          <div className="btn-row">
+            <input
+              value={typed}
+              disabled={!!feedback || busy}
+              onChange={(e) => setTyped(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') void submit(typed); }}
+              placeholder="Gõ từ còn thiếu…"
+              aria-label="Gõ từ còn thiếu"
+            />
+            <button type="button" className="btn" disabled={!!feedback || busy || !typed.trim()} onClick={() => void submit(typed)}>
+              {busy ? 'Đang chấm…' : 'Trả lời'}
+            </button>
+          </div>
+        </>
+      )}
+
+      {feedback && (
+        <>
+          {feedback.correct ? (
+            <div className="success">Chính xác! +5 điểm thành thạo{feedback.xp > 0 ? ` • +${feedback.xp} XP` : ''}.</div>
+          ) : (
+            <div className="error">
+              Chưa đúng. {quiz.type === 'mcq'
+                ? <>Đáp án đúng: <strong>{word.meaning}</strong>.</>
+                : <>Từ đúng: <strong>{word.word}</strong> — {word.meaning}.</>}
+              {' '}Từ này sẽ ôn lại vào ngày mai.
+            </div>
+          )}
+          <div className="btn-row">
+            <button type="button" className="btn" onClick={next}>
+              {idx + 1 >= quizzes.length ? 'Xem kết quả' : 'Câu tiếp theo →'}
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 function MyWords() {
   const [words, setWords] = useState<UserWord[]>([]);
   const [error, setError] = useState<unknown>(null);
@@ -35,6 +259,12 @@ function MyWords() {
   const [flipped, setFlipped] = useState(false);
   const [idx, setIdx] = useState(0);
   const [statusFilter, setStatusFilter] = useState('');
+  // On tap ngat quang: hang doi tu den han + phien kiem tra.
+  const [dueItems, setDueItems] = useState<UserWord[]>([]);
+  const [dueTotal, setDueTotal] = useState(0);
+  const [session, setSession] = useState<{ queue: UserWord[] } | null>(null);
+  const [searchParams] = useSearchParams();
+  const autoStartRef = useRef(false);
   // Sửa từ: form mở theo từ đang sửa.
   const [editing, setEditing] = useState<UserWord | null>(null);
   const [editForm, setEditForm] = useState({ phonetic: '', pos: '', meaning: '', example: '', topic: '' });
@@ -46,8 +276,24 @@ function MyWords() {
 
   const load = () => {
     api.userWords('', 500, 0).then((d) => { setWords(d.items); setIdx(0); setFlipped(false); }).catch(setError);
+    api.dueUserWords(20).then((d) => { setDueItems(d.items); setDueTotal(d.total); }).catch(setError);
   };
   useEffect(load, []);
+
+  // Mo tu trang Hom nay (?review=due): tu dong bat phien on khi co tu den han.
+  useEffect(() => {
+    if (searchParams.get('review') === 'due' && dueItems.length > 0 && !autoStartRef.current) {
+      autoStartRef.current = true;
+      setSession({ queue: dueItems.slice(0, 20) });
+    }
+  }, [searchParams, dueItems]);
+
+  /** 1 tu vua duoc on trong phien: cap nhat danh sach + rut khoi hang doi. */
+  const handleReviewed = (updated: UserWord) => {
+    setWords((list) => list.map((x) => (x.id === updated.id ? updated : x)));
+    setDueItems((list) => list.filter((x) => x.id !== updated.id));
+    setDueTotal((n) => Math.max(0, n - 1));
+  };
 
   const filtered = useMemo(
     () => (statusFilter ? words.filter((w) => w.status === statusFilter) : words),
@@ -57,18 +303,29 @@ function MyWords() {
   const w = filtered[safeIdx];
 
   const mark = async (id: number, status: WordStatus) => {
+    const wasDue = dueItems.some((x) => x.id === id);
     try {
       const updated = await api.markUserWord(id, status);
       setWords((list) => list.map((x) => (x.id === id ? updated : x)));
+      // Danh dau Da thuoc/Chua thuoc cung len lich on moi -> rut khoi hang doi hom nay.
+      if (wasDue && status !== 'learning') {
+        setDueItems((list) => list.filter((x) => x.id !== id));
+        setDueTotal((n) => Math.max(0, n - 1));
+      }
       setMsg(`Đã đánh dấu "${updated.word}": ${STATUS_LABEL[status]}.`);
     } catch (e) { setError(e); }
   };
 
   const removeWord = async (word: UserWord) => {
     if (!window.confirm(`Xóa từ "${word.word}" khỏi Từ của tôi?`)) return;
+    const wasDue = dueItems.some((x) => x.id === word.id);
     try {
       await api.deleteUserWord(word.id);
       setWords((list) => list.filter((x) => x.id !== word.id));
+      if (wasDue) {
+        setDueItems((list) => list.filter((x) => x.id !== word.id));
+        setDueTotal((n) => Math.max(0, n - 1));
+      }
       setMsg(`Đã xóa từ "${word.word}".`);
     } catch (e) { setError(e); }
   };
@@ -149,6 +406,26 @@ function MyWords() {
     <div>
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
+      {session ? (
+        <VocabReviewSession
+          queue={session.queue}
+          allWords={words}
+          onReviewed={handleReviewed}
+          onClose={() => setSession(null)}
+        />
+      ) : (
+        <>
+          {dueTotal > 0 ? (
+            <div className="vocab-due-card">
+              <div>
+                <div style={{ fontWeight: 700 }}>📖 Ôn tập hôm nay</div>
+                <div className="muted">Có <strong>{dueTotal} từ</strong> đến hạn ôn — mỗi từ ôn đúng +2 XP (tối đa 20 XP/ngày).</div>
+              </div>
+              <button type="button" className="btn" onClick={() => setSession({ queue: dueItems.slice(0, 20) })}>Bắt đầu ôn →</button>
+            </div>
+          ) : words.length > 0 ? (
+            <div className="success">🎉 Hôm nay không còn từ đến hạn ôn.</div>
+          ) : null}
       <div className="btn-row" style={{ alignItems: 'center' }}>
         <label htmlFor="my-status">Trạng thái</label>
         <select id="my-status" value={statusFilter} onChange={(e) => { setStatusFilter(e.target.value); setIdx(0); setFlipped(false); }}>
@@ -212,6 +489,10 @@ function MyWords() {
             <button type="button" className="btn danger" onClick={() => void mark(w.id, 'wrong')}>Chưa thuộc ❌</button>
           </div>
           <p className="muted">Từ {safeIdx + 1}/{filtered.length} • {STATUS_LABEL[w.status]}</p>
+          <div style={{ display: 'flex', gap: '.6rem', alignItems: 'center', flexWrap: 'wrap' }}>
+            <MasteryBar value={w.mastery ?? 0} />
+            <span className="muted">{dueText(w)}</span>
+          </div>
         </div>
       ) : (
         <div className="card">
@@ -243,7 +524,7 @@ function MyWords() {
         <div className="card">
           <h2>Danh sách từ ({filtered.length})</h2>
           <table>
-            <thead><tr><th>Từ</th><th>Nghĩa</th><th>Trạng thái</th><th></th></tr></thead>
+            <thead><tr><th>Từ</th><th>Nghĩa</th><th>Thành thạo</th><th>Trạng thái</th><th></th></tr></thead>
             <tbody>
               {filtered.map((v) => (
                 <tr key={v.id}>
@@ -253,6 +534,10 @@ function MyWords() {
                     <br /><span className="muted">{v.example || ''}</span>
                   </td>
                   <td>{v.meaning}</td>
+                  <td>
+                    <MasteryBar value={v.mastery ?? 0} />
+                    <div className="muted" style={{ fontSize: '.78rem' }}>{dueText(v)}</div>
+                  </td>
                   <td>
                     <select value={v.status} onChange={(e) => void mark(v.id, e.target.value as WordStatus)} aria-label={`Trạng thái của từ ${v.word}`}>
                       <option value="learning">Đang học</option>
@@ -271,6 +556,8 @@ function MyWords() {
             </tbody>
           </table>
         </div>
+      )}
+        </>
       )}
     </div>
   );

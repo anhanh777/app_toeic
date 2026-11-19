@@ -176,6 +176,11 @@ CREATE TABLE IF NOT EXISTS user_words (
   context TEXT,
   topic TEXT,
   status TEXT DEFAULT 'learning',
+  review_stage INTEGER DEFAULT 0,
+  review_due TEXT,
+  mastery INTEGER DEFAULT 0,
+  wrong_count INTEGER DEFAULT 0,
+  last_review_correct INTEGER,
   created_at TEXT,
   updated_at TEXT,
   UNIQUE(user_id, word)
@@ -366,6 +371,13 @@ function initDb() {
   ensureColumn('passages', 'test_set_id', 'TEXT');
   ensureColumn('passages', 'audio_url', 'TEXT');
   ensureColumn('attempts', 'test_set_id', 'TEXT');
+  // Tu vung ca nhan: on tap ngat quang (them sau — DB cu chua co cac cot nay).
+  ensureColumn('user_words', 'review_stage', 'INTEGER DEFAULT 0');
+  ensureColumn('user_words', 'review_due', 'TEXT');
+  ensureColumn('user_words', 'mastery', 'INTEGER DEFAULT 0');
+  ensureColumn('user_words', 'wrong_count', 'INTEGER DEFAULT 0');
+  ensureColumn('user_words', 'last_review_correct', 'INTEGER');
+  db.exec('CREATE INDEX IF NOT EXISTS idx_user_words_due ON user_words(user_id, review_due)');
   db.exec('CREATE INDEX IF NOT EXISTS idx_questions_testset_part ON questions(test_set_id, part)');
 }
 
@@ -1717,6 +1729,11 @@ function mapUserWord(row) {
     context: row.context,
     topic: row.topic,
     status: row.status,
+    reviewStage: row.review_stage != null ? row.review_stage : 0,
+    reviewDue: row.review_due || null,
+    mastery: row.mastery != null ? row.mastery : 0,
+    wrongCount: row.wrong_count != null ? row.wrong_count : 0,
+    lastReviewCorrect: row.last_review_correct == null ? null : row.last_review_correct === 1,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -1754,9 +1771,10 @@ function getUserWordByWord(userId, word) {
 
 function insertUserWord(userId, data) {
   const now = nowIso();
+  // Tu moi vao hang doi on ngay: stage 0, han on = ngay mai.
   const info = db.prepare(
-    `INSERT INTO user_words (user_id, word, phonetic, pos, meaning, example, context, topic, status, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    `INSERT INTO user_words (user_id, word, phonetic, pos, meaning, example, context, topic, status, review_stage, review_due, mastery, wrong_count, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, ?, 0, 0, ?, ?)`
   ).run(
     userId,
     String(data.word).toLowerCase(),
@@ -1767,6 +1785,7 @@ function insertUserWord(userId, data) {
     data.context || null,
     data.topic || null,
     data.status || 'learning',
+    addDaysStr(todayStr(), 1),
     now,
     now
   );
@@ -1799,6 +1818,71 @@ function deleteUserWord(id) {
 function markUserWord(id, status) {
   db.prepare('UPDATE user_words SET status = ?, updated_at = ? WHERE id = ?').run(status, nowIso(), id);
   return getUserWordById(id);
+}
+
+/* --- On tap ngat quang cho tu vung ca nhan (cung ladder REVIEW_DAYS
+ * [1,3,7,14,30] nhu reviewErrorLog) --- */
+const WORD_MASTERY_MAX = 100;
+const WORD_MASTERY_LEARNED = 80;
+const WORD_REVIEW_CORRECT_POINTS = 5;
+const WORD_REVIEW_WRONG_POINTS = 10;
+
+/**
+ * Tien 1 buoc on tap cho 1 tu. Tra ve row da cap nhat (null neu khong co).
+ * Dung: stage + 1, han = hom nay + days[stage moi]; dung o stage 4
+ * -> stage 5 (tot nghiep), review_due = NULL (khong den han nua).
+ * Sai: stage ve 0, han = ngay mai, wrong_count + 1.
+ * Diem thanh thao: dung +5, sai -10 (keo 0-100). >= 80 -> 'learned';
+ * sai -> 'wrong'. forceStatus (danh dau tay) ghi de trang thai cuoi.
+ */
+function reviewUserWord(id, correct, forceStatus) {
+  const cur = db.prepare('SELECT * FROM user_words WHERE id = ?').get(id);
+  if (!cur) return null;
+  let stage = cur.review_stage != null ? cur.review_stage : 0;
+  let mastery = cur.mastery != null ? cur.mastery : 0;
+  let status = cur.status;
+  let due;
+  if (correct) {
+    mastery = Math.min(WORD_MASTERY_MAX, mastery + WORD_REVIEW_CORRECT_POINTS);
+    stage += 1;
+    if (stage >= REVIEW_DAYS.length) {
+      stage = REVIEW_DAYS.length;
+      due = null;
+    } else {
+      due = addDaysStr(todayStr(), REVIEW_DAYS[stage]);
+    }
+    if (mastery >= WORD_MASTERY_LEARNED) status = 'learned';
+    else if (status === 'wrong') status = 'learning';
+  } else {
+    mastery = Math.max(0, mastery - WORD_REVIEW_WRONG_POINTS);
+    stage = 0;
+    due = addDaysStr(todayStr(), 1);
+    status = 'wrong';
+  }
+  if (forceStatus) status = forceStatus;
+  db.prepare(
+    `UPDATE user_words SET review_stage = ?, review_due = ?, mastery = ?,
+       wrong_count = ?, last_review_correct = ?, status = ?, updated_at = ? WHERE id = ?`
+  ).run(stage, due, mastery, (cur.wrong_count || 0) + (correct ? 0 : 1), correct ? 1 : 0, status, nowIso(), id);
+  return getUserWordById(id);
+}
+
+/** Cac tu den han on: chua tot nghiep (stage < 5) va (chua co lich hoac den han).
+ * Thu tu: den han som nhat -> diem thap nhat -> sai nhieu nhat. */
+function listDueUserWords(userId, limit = 20) {
+  const rows = db.prepare(
+    `SELECT * FROM user_words WHERE user_id = ? AND COALESCE(review_stage, 0) < ?
+     AND (review_due IS NULL OR review_due <= ?)
+     ORDER BY review_due ASC, mastery ASC, wrong_count DESC, id ASC LIMIT ?`
+  ).all(userId, REVIEW_DAYS.length, todayStr(), Math.min(Math.max(limit, 1), 100));
+  return rows.map(mapUserWord);
+}
+
+function countDueUserWords(userId) {
+  return db.prepare(
+    `SELECT COUNT(*) AS c FROM user_words WHERE user_id = ? AND COALESCE(review_stage, 0) < ?
+     AND (review_due IS NULL OR review_due <= ?)`
+  ).get(userId, REVIEW_DAYS.length, todayStr()).c;
 }
 
 function getAllUserWordsForBackup() {
@@ -1834,6 +1918,15 @@ function hasXpReason(userId, reason) {
       .prepare('SELECT COUNT(*) AS c FROM xp_events WHERE user_id = ? AND reason = ?')
       .get(userId, reason).c > 0
   );
+}
+
+/** Tong XP hom nay (UTC) cua 1 reason — dung de tran XP on tu vung/ngay. */
+function sumXpTodayByReason(userId, reason) {
+  const row = db.prepare(
+    `SELECT COALESCE(SUM(xp), 0) AS s FROM xp_events
+     WHERE user_id = ? AND reason = ? AND date(created_at) = date('now')`
+  ).get(userId, reason);
+  return row ? row.s : 0;
 }
 
 /** Bang diem: bai full hop le tot nhat cua moi user trong khoang (sinceIso null = moi luc). */
@@ -2834,10 +2927,14 @@ module.exports = {
   updateUserWord,
   deleteUserWord,
   markUserWord,
+  reviewUserWord,
+  listDueUserWords,
+  countDueUserWords,
   getAllUserWordsForBackup,
   // xp & leaderboard
   addXpEvent,
   sumXp,
+  sumXpTodayByReason,
   hasXpReason,
   getBestFullScores,
   getBestFullBands,

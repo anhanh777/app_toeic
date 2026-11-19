@@ -75,6 +75,7 @@ export default function Today() {
   if (loading) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải kế hoạch hôm nay…" />;
   const review = data?.blocks.find(b => b.id === 'review');
   const drill = data?.blocks.find(b => b.id === 'drill');
+  const vocab = data?.blocks.find(b => b.id === 'vocab');
   const streak = data?.streak;
   const quitReason = data?.profile?.quitReason;
 
@@ -194,6 +195,21 @@ export default function Today() {
                   <button className="btn secondary btn-sm" onClick={() => void markDone('active', 15)}>Đánh dấu đã luyện</button>
                 </div>
               </>
+            )}
+          </div>
+
+          {/* Ôn từ vựng đến hạn — không tính vào 3 khối chính, chỉ nhắc nhiệm vụ ngày */}
+          <div className="card">
+            <h2>📖 Ôn từ vựng đến hạn</h2>
+            {(vocab?.dueCount ?? 0) > 0 ? (
+              <>
+                <p>Có <strong>{vocab?.dueCount}</strong> từ đến hạn ôn hôm nay — mỗi từ ôn đúng +2 XP.</p>
+                <div className="btn-row">
+                  <Link className="btn" to="/vocabulary?review=due">Ôn ngay →</Link>
+                </div>
+              </>
+            ) : (
+              <p>🎉 Hôm nay không có từ đến hạn ôn.</p>
             )}
           </div>
 
