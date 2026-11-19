@@ -121,6 +121,29 @@ async function main() {
     return;
   }
   lib.log(`live co du lieu nguoi dung (${check.reason}) — tien hanh backup.`);
+  // Bao ve backup-latest khoi anh chup "bi xoa mot phan" (gap that
+  // 2026-11-19): live chi con demo nhung da co nguoi dung demo luyen
+  // tiep nen looksWiped() khong nhan ra la vua bi xoa; neu backup luc
+  // nay se ghi de ban tot (179 dong) bang anh chup thieu tai khoan
+  // (97 dong). Doi chieu voi backup-latest hien tai: neu live thieu
+  // tai khoan that thi BAO LOI (exit 1) de cron bao cao, khong upload.
+  const folder0 = lib.findFolderByName(lib.DRIVE_FOLDER_NAME);
+  if (folder0) {
+    const files0 = lib.listFolderFiles(folder0.id);
+    const latestFile0 = files0.find((f) => f.name === 'backup-latest.json');
+    if (latestFile0) {
+      const comparePath = path.join(WORK_DIR, 'compare-backup-latest.json');
+      lib.downloadFile(latestFile0.id, comparePath);
+      const latestDoc = JSON.parse(fs.readFileSync(comparePath, 'utf8'));
+      const partial = lib.isPartialWipe(backup.userData, latestDoc.userData);
+      if (partial.partial) {
+        throw new Error(
+          `live thieu tai khoan that (${partial.reason}) — BO QUA lan backup nay, ` +
+            `khong ghi de backup-latest.json. Restore-watch se khoi phuc truoc.`
+        );
+      }
+    }
+  }
   // Chi giu du lieu nguoi dung — noi dung seed lai tu git.
   const slim = {
     version: backup.version || 1,

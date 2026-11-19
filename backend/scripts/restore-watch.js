@@ -4,7 +4,7 @@
  * restore-watch.js — kiem tra live DB co vua bi Render xoa khong; neu co
  * thi khoi phuc tu ban backup moi nhat tren Drive.
  *
- * Chay bang cron (de xuat: moi 30 phut):
+ * Chay bang cron (moi 5 phut tu 2026-11-19):
  *   node backend/scripts/restore-watch.js
  *
  * Env (khong bat buoc): API_BASE, ADMIN_TOKEN_FILE, DRIVE_FOLDER_NAME
@@ -16,6 +16,13 @@
  *    nguoi dung khac deu rong. Neu live co bat ky du lieu nguoi dung nao
  *    (tai khoan moi, tu da luu, bai da lam...) thi KHONG khoi phuc — tranh
  *    ghi de du lieu moi bang du lieu cu trong backup.
+ *  - NGOAI LE "bi xoa mot phan" (gap that 2026-11-19): live chi con 2
+ *    demo NHUNG co du lieu nguoi dung (ai do dung demo luyen tiep sau
+ *    khi wipe) thi looksWiped() ket luan sai la "live co du lieu". Truoc
+ *    khi tu choi, phai doi chieu voi ban backup moi nhat: neu backup
+ *    giu tai khoan that (khong phai demo) ma live da mat thi KHOI PHUC
+ *    (lib.isPartialWipe). Chi tu khoi phuc khi live khong con tai khoan
+ *    that nao — tranh hoi sinh tai khoan admin vua xoa co y.
  *  - CHI khoi phuc khi ban backup co du lieu nguoi dung that (nhieu hon
  *    2 dong demo).
  *  - Sau khi khoi phuc, doi chieu lai so dong tung bang voi ban backup;
@@ -90,31 +97,66 @@ async function main() {
   const live = await lib.apiGetBackup(token);
   const check = looksWiped(live.userData, live.counts);
   lib.log(`kiem tra live: ${check.reason}.`);
-  if (!check.wiped) {
-    lib.log('live co du lieu nguoi dung — KHONG khoi phuc (tranh ghi de du lieu moi).');
+  if (check.wiped) {
+    await restoreFromLatest(token, 'live vua bi xoa');
     return;
   }
 
+  // Live khong trong hoan toan nhung co the dang "bi xoa mot phan": chi
+  // con demo, tai khoan that da mat (gap that 2026-11-19: live bi wipe
+  // roi co nguoi dung demo luyen tiep nen attempts > 0, looksWiped()
+  // ket luan "live co du lieu" va tu choi khoi phuc trong khi tai khoan
+  // a@gmail.com da bien mat). So sanh voi ban backup moi nhat truoc khi
+  // ket luan "live co du lieu".
+  const backup = await downloadLatestBackup();
+  if (!backup) {
+    lib.log('khong co backup de doi chieu — KHONG khoi phuc (tranh ghi de du lieu moi).');
+    return;
+  }
+  const partial = lib.isPartialWipe(live.userData, backup.doc.userData);
+  lib.log(`doi chieu voi ${backup.fileName}: ${partial.reason}.`);
+  if (partial.partial) {
+    await doRestore(token, backup.doc, backup.fileName, 'live thieu tai khoan that');
+    return;
+  }
+  lib.log('live co du lieu nguoi dung — KHONG khoi phuc (tranh ghi de du lieu moi).');
+}
+
+/** Tai ban backup moi nhat ve; tra ve null neu khong co backup nao. */
+function downloadLatestBackup() {
   const folder = lib.findFolderByName(lib.DRIVE_FOLDER_NAME);
   if (!folder) {
-    lib.log(`khong co thu muc Drive ${lib.DRIVE_FOLDER_NAME} — chua co backup nao, khong khoi phuc duoc.`);
-    return;
+    lib.log(`khong co thu muc Drive ${lib.DRIVE_FOLDER_NAME} — chua co backup nao.`);
+    return null;
   }
   const files = lib.listFolderFiles(folder.id);
   const latestFile = pickLatestBackup(files);
   if (!latestFile) {
-    lib.log('thu muc backup trong — chua co backup nao, khong khoi phuc duoc.');
-    return;
+    lib.log('thu muc backup trong — chua co backup nao.');
+    return null;
   }
   const localPath = path.join(WORK_DIR, `restore-${latestFile.name}`);
   lib.downloadFile(latestFile.id, localPath);
-  const backupDoc = JSON.parse(fs.readFileSync(localPath, 'utf8'));
+  const doc = JSON.parse(fs.readFileSync(localPath, 'utf8'));
+  return { doc, fileName: latestFile.name };
+}
+
+async function restoreFromLatest(token, why) {
+  const backup = await downloadLatestBackup();
+  if (!backup) {
+    lib.log('khong khoi phuc duoc: chua co backup nao.');
+    return;
+  }
+  await doRestore(token, backup.doc, backup.fileName, why);
+}
+
+async function doRestore(token, backupDoc, fileName, why) {
   if (!backupDoc.userData || countUserRows(backupDoc.userData) <= 2) {
-    lib.log(`ban backup ${latestFile.name} khong co du lieu nguoi dung that — khong khoi phuc.`);
+    lib.log(`ban backup ${fileName} khong co du lieu nguoi dung that — khong khoi phuc.`);
     return;
   }
   lib.log(
-    `live vua bi xoa — khoi phuc tu ${latestFile.name} ` +
+    `${why} — khoi phuc tu ${fileName} ` +
       `(${countUserRows(backupDoc.userData)} dong)...`
   );
   const result = await lib.apiPostRestore(token, backupDoc);
@@ -129,7 +171,7 @@ async function main() {
   if (mismatches.length) {
     throw new Error(`khoi phuc xong nhung so lieu lech: ${mismatches.join('; ')}`);
   }
-  lib.log(`khoi phuc XONG tu ${latestFile.name}: ${JSON.stringify(result.restored)}.`);
+  lib.log(`khoi phuc XONG tu ${fileName}: ${JSON.stringify(result.restored)}.`);
 }
 
 main().catch((err) => {

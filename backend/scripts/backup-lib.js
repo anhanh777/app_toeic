@@ -21,6 +21,72 @@ const TOKEN_FILE =
   process.env.ADMIN_TOKEN_FILE ||
   path.join(os.homedir(), 'workspace', 'drive-ets', 'token-admin.txt');
 
+const DEMO_EMAILS = ['demo@toeic.app', 'user@toeic.app'];
+
+function countUserRows(userData) {
+  return Object.values(userData || {}).reduce(
+    (sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0),
+    0
+  );
+}
+
+/**
+ * Tai khoan co trong backup nhung khong con tren live, va tai khoan that
+ * (khong phai demo) dang co tren live.
+ */
+function findMissingAccounts(liveUserData, backupUserData) {
+  const liveEmails = new Set(
+    ((liveUserData && liveUserData.users) || []).map((u) => u.email).filter(Boolean)
+  );
+  const backupEmails = ((backupUserData && backupUserData.users) || [])
+    .map((u) => u.email)
+    .filter(Boolean);
+  const missing = backupEmails.filter((e) => !liveEmails.has(e));
+  const liveNonDemo = [...liveEmails].filter((e) => !DEMO_EMAILS.includes(e));
+  return { missing, liveNonDemo };
+}
+
+/**
+ * Live co phai dang "bi xoa mot phan" khong: chi con tai khoan demo,
+ * trong khi ban backup van giu tai khoan that (khong phai demo) da bien
+ * mat khoi live.
+ *
+ * Truong hop gap that 2026-11-19: live bi wipe roi co nguoi dung demo
+ * luyen tiep (attempts 9->11) nen looksWiped() ket luan "live co du lieu"
+ * va tu choi khoi phuc, trong khi tai khoan a@gmail.com da mat. Chi
+ * duoc dung de QUYET DINH KHOI PHUC / BO QUA BACKUP — khong thay the
+ * looksWiped().
+ *
+ * An toan: chi tra ve true khi live KHONG con tai khoan that nao. Neu
+ * admin xoa 1 tai khoan trong khi van con tai khoan that khac thi khong
+ * tu khoi phuc (tranh hoi sinh tai khoan vua xoa co y). Truong hop duy
+ * nhat van co the hoi sinh: admin xoa dung tai khoan that duy nhat —
+ * nhung xoa chinh minh da bi chan o backend, va truong hop do hiem hon
+ * nhieu so voi wipe.
+ */
+function isPartialWipe(liveUserData, backupUserData) {
+  if (countUserRows(backupUserData) <= 2) {
+    return { partial: false, reason: 'ban backup khong co du lieu nguoi dung that' };
+  }
+  const { missing, liveNonDemo } = findMissingAccounts(liveUserData, backupUserData);
+  const missingReal = missing.filter((e) => !DEMO_EMAILS.includes(e));
+  if (!missingReal.length) {
+    return { partial: false, reason: 'live khong thieu tai khoan that nao so voi backup' };
+  }
+  if (liveNonDemo.length) {
+    return {
+      partial: false,
+      reason:
+        `live thieu ${missingReal.join(',')} nhung van con tai khoan that khac ` +
+        `(${liveNonDemo.join(',')}) — khong tu khoi phuc`,
+    };
+  }
+  return {
+    partial: true,
+    reason: `live thieu tai khoan that: ${missingReal.join(',')} (chi con demo)`,
+  };
+}
+
 function log(msg) {
   console.log(`[${new Date().toISOString()}] ${msg}`);
 }
@@ -178,11 +244,15 @@ function deleteDriveFile(fileId) {
 module.exports = {
   DRIVE_FOLDER_NAME,
   API_BASE,
+  DEMO_EMAILS,
   log,
   readAdminToken,
   waitForBackend,
   apiGetBackup,
   apiPostRestore,
+  countUserRows,
+  findMissingAccounts,
+  isPartialWipe,
   findFolderByName,
   ensureFolder,
   listFolderFiles,

@@ -8,7 +8,7 @@ lưu, lịch sử làm bài, XP, hồ sơ IELTS...) thì mất. Cơ chế backup
   chỉ giữ phần dữ liệu người dùng, upload lên thư mục Drive riêng tư
   `app-toeic-backups` (1 bản theo ngày `backup-YYYYMMDD-HHmmss.json` +
   1 bản `backup-latest.json`).
-- **Khôi phục tự động** (cron, đề xuất mỗi 30 phút): `restore-watch.js`
+- **Khôi phục tự động** (cron, mỗi 5 phút từ 2026-11-19): `restore-watch.js`
   phát hiện live DB vừa bị xóa thì tải bản backup mới nhất về và gọi
   `POST /api/admin/restore`.
 
@@ -86,13 +86,31 @@ Chỉ khi TẤT CẢ các điều kiện sau đúng:
    `user@toeic.app`), không có tài khoản nào khác.
 2. 2 tài khoản demo vừa được tạo (created_at trong 12 giờ qua) — tức là
    DB vừa được seed lại sau khi bị xóa.
-3. Mọi bảng dữ liệu người dùng khác đều rỗng (trừ `app_settings`, vì seed
-   luôn chèn giá trị mặc định khi boot).
+3. Mọi bảng dữ liệu người dùng khác đều rỗng (trừ `app_settings`,
+   `brand_settings`, `menu_icons`, vì seed luôn chèn giá trị mặc định
+   khi boot).
 4. Bản backup mới nhất có dữ liệu người dùng thật (nhiều hơn 2 dòng demo).
 
 Nếu live có bất kỳ dữ liệu người dùng nào (tài khoản mới, từ đã lưu, bài
 đã làm...) thì **không khôi phục** — tránh ghi đè dữ liệu mới bằng dữ
 liệu cũ trong backup. Trường hợp này phải khôi phục thủ công (xem dưới).
+
+### Ngoại lệ: "bị xóa một phần" (thêm 2026-11-19)
+
+Ngày 2026-11-19 gặp trường hợp: live bị xóa rồi có người dùng demo
+luyện tiếp (attempts 9→11), nên điều kiện 3 sai và restore-watch từ
+chối khôi phục — trong khi tài khoản thật `a@gmail.com` đã biến mất.
+Từ đó, trước khi từ chối, restore-watch **đối chiếu tài khoản với bản
+backup mới nhất**: nếu live **không còn tài khoản thật nào** (chỉ còn
+demo) mà backup vẫn giữ tài khoản thật đã mất thì **khôi phục tự động**
+(`lib.isPartialWipe`). Chỉ tự khôi phục khi live không còn tài khoản
+thật nào — nếu admin xóa 1 tài khoản trong khi vẫn còn tài khoản thật
+khác thì không tự khôi phục (tránh hồi sinh tài khoản vừa xóa có ý).
+
+Tương tự, `backup-to-drive.js` cũng đối chiếu trước khi upload: nếu
+live đang thiếu tài khoản thật so với `backup-latest.json` thì **báo
+lỗi và bỏ qua lần backup đó** (exit 1 để cron báo cáo), tránh ghi đè
+bản backup tốt bằng ảnh chụp thiếu tài khoản.
 
 ## Khôi phục thủ công
 
