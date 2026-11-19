@@ -82,6 +82,10 @@ export default function MenuIcons() {
         Emoji hiển thị trước tên từng mục menu trên trang chủ app học viên.
         Lưu vào backend nên đổi là có hiệu lực ngay, không cần deploy lại code.
       </p>
+      <p className="muted">
+        Bấm 1 emoji trong bảng chọn là đổi ngay trên trang này — nhớ bấm “Lưu biểu tượng menu”
+        ở cuối trang để lưu hẳn. Nút “✓ Dùng” chỉ dùng cho ô “Dán emoji khác…” bên cạnh nó.
+      </p>
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
 
@@ -129,7 +133,10 @@ export default function MenuIcons() {
                 onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); applyCustom(key); } }}
                 style={{ flex: 1, minWidth: 0 }}
               />
-              <button className="btn secondary btn-sm" type="button" onClick={() => applyCustom(key)}>
+              <button className="btn secondary btn-sm" type="button"
+                disabled={(custom[key] ?? '').trim() === ''}
+                title={(custom[key] ?? '').trim() === '' ? 'Dán 1 emoji vào ô bên trái trước nhé' : 'Dùng emoji đã dán'}
+                onClick={() => applyCustom(key)}>
                 ✓ Dùng
               </button>
             </div>
