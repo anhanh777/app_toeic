@@ -4,7 +4,7 @@
 // Passage N → part 4+N (5, 6, 7).
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { api, type ExamInfo } from './api';
+import { api, type Attempt, type ExamInfo, type TestSet } from './api';
 import { ErrorBox } from './components';
 import { useMenuIcons } from './menuIcons';
 
@@ -219,6 +219,33 @@ export function bandLevel(band?: number | null): string {
   if (band < 7) return 'Khá';
   if (band < 8) return 'Tốt';
   return 'Xuất sắc';
+}
+
+/** Thống kê thi thử full của 1 bộ đề: số lần thi, band cao nhất, band lần
+ * gần nhất. Lịch sử backend trả đã xếp mới nhất trước (started_at DESC)
+ * nên "gần nhất" là phần tử đầu tiên có band. Chỉ tính bài full (bài mini
+ * không có band). */
+export function attemptStatsFor(attempts: Attempt[], testSetId: string): { count: number; bestBand: number | null; lastBand: number | null } {
+  const mine = attempts.filter(a => a.testSetId === testSetId && a.mode === 'full');
+  const bands = mine.map(a => a.overallBand).filter((b): b is number => typeof b === 'number');
+  return {
+    count: mine.length,
+    bestBand: bands.length ? Math.max(...bands) : null,
+    lastBand: bands.length ? bands[0] : null,
+  };
+}
+
+/** Tiến độ tách Listening / Reading của 1 bộ đề: số câu đã làm / tổng số
+ * câu mỗi kỹ năng (tính từ progress.byPart + parts). */
+export function listeningReadingProgress(ts: TestSet): { listening: { answered: number; total: number }; reading: { answered: number; total: number } } {
+  const totalFor = (pred: (p: number) => boolean) =>
+    ts.parts.filter(p => pred(p.part)).reduce((s, p) => s + p.count, 0);
+  const answeredFor = (pred: (p: number) => boolean) =>
+    (ts.progress?.byPart || []).filter(b => pred(b.part)).reduce((s, b) => s + b.answered, 0);
+  return {
+    listening: { answered: answeredFor(p => p <= 4), total: totalFor(p => p <= 4) },
+    reading: { answered: answeredFor(p => p >= 5), total: totalFor(p => p >= 5) },
+  };
 }
 
 // Số câu THẬT trong đề. Luyện riêng 1 Part/Section thì danh sách chỉ chứa

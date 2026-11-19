@@ -112,6 +112,10 @@ export interface Attempt {
   listening_correct?: number; reading_correct?: number; duration_sec?: number;
   /** IELTS (giai đoạn 2): kỳ thi + band (chỉ bài full IELTS mới có). */
   exam?: string; listeningBand?: number; readingBand?: number; overallBand?: number;
+  /** Backend /api/tests/history + /api/stats/history tra them cac truong
+   * nay (camelCase): de thi cua bai lam + moc thoi gian — dung de tinh
+   * so lan thi / band cao nhat / band gan nhat theo tung de. */
+  testSetId?: string; startedAt?: string; finishedAt?: string;
 }
 
 // ---- IELTS Giai đoạn 1 (v3): hồ sơ, Hôm nay, chẩn đoán, Viết/Nói,
@@ -190,6 +194,9 @@ export interface TestSet {
   parts: TestSetPartCount[]; missing: TestSetMissing[];
   progress: TestSetProgress | null;
   exam?: string;
+  /** IELTS-only: cac dang cau hoi co trong de (kem so cau), sap xep theo
+   * so cau giam dan — backend chi tra truong nay cho de IELTS. */
+  byType?: { questionType: string; count: number }[];
 }
 export interface ImportQuestion {
   id?: string; part: number; content: string;

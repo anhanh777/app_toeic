@@ -334,3 +334,27 @@ export function ListeningAudio({
     </div>
   );
 }
+
+/** Thanh số câu (kiểu YouPass) cho phòng thi IELTS: bấm số để nhảy tới câu
+ * đó. state: todo = chưa làm, done = đã trả lời (thi thử) hoặc đã chọn đáp
+ * án nhưng chưa chấm (luyện tập), correct/wrong = đã chấm (luyện tập). */
+export type PaletteItemState = 'todo' | 'done' | 'correct' | 'wrong';
+export function QuestionPalette({ items, onJump }: {
+  items: { n: number; id: string; state: PaletteItemState }[];
+  onJump: (id: string) => void;
+}) {
+  if (!items.length) return null;
+  return (
+    <div className="q-palette" role="navigation" aria-label="Điều hướng câu hỏi">
+      {items.map(it => (
+        <button
+          key={it.id} type="button"
+          className={`q-palette-btn q-palette-btn--${it.state}`}
+          onClick={() => onJump(it.id)}
+          aria-label={`Câu ${it.n}`}
+          title={`Câu ${it.n}`}
+        >{it.n}</button>
+      ))}
+    </div>
+  );
+}

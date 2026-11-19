@@ -466,6 +466,19 @@ tbody tr:hover{background:var(--surface-soft)}
 .paper-cluster h4{margin:.1rem 0 .5rem}
 .paper-cluster > label{margin:.5rem 0 .25rem}
 .paper-cluster .btn-row{margin-top:.7rem}
+/* IELTS Reading chia doi man hinh (kieu YouPass): trai doan van, phai cau
+   hoi. Chi ap dung khi cum co class .paper-cluster--split, man hinh rong
+   (>= 900px). Doan van dinh (sticky) + cuon rieng; man hinh hep thi xep
+   doc nhu cu. */
+@media (min-width:900px){
+  .paper-cluster--split{
+    display:grid; grid-template-columns:1fr 1fr; gap:0 1.5rem; align-items:start;
+  }
+  .paper-cluster--split .passage{
+    position:sticky; top:130px; max-height:calc(100vh - 150px);
+    overflow-y:auto; margin-bottom:0;
+  }
+}
 /* Part 1: lưới ảnh — 1 cột trên điện thoại, 2 cột từ 640px */
 .p1-grid{display:grid; gap:0 1.2rem; grid-template-columns:1fr}
 .p1-cell{padding:.85rem 0; border-bottom:1px solid var(--border-soft)}
@@ -632,6 +645,17 @@ tbody tr:hover{background:var(--surface-soft)}
   display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap;
 }
 .practice-bar .progress{font-weight:700; color:var(--ink)}
+/* Thanh so cau (kieu YouPass): bam so de nhay toi cau do. Nam trong
+   practice-bar (sticky duoi), 1 hang rieng, cuon ngang khi nhieu cau. */
+.q-palette{display:flex; gap:.3rem; flex-wrap:nowrap; overflow-x:auto; padding:.2rem 0; flex-basis:100%; scrollbar-width:thin}
+.q-palette-btn{
+  min-width:2rem; height:2rem; padding:0 .35rem; border-radius:999px; flex:0 0 auto;
+  border:1px solid var(--border); background:var(--surface); color:var(--ink);
+  font-weight:700; font-size:.85rem; font-variant-numeric:tabular-nums;
+}
+.q-palette-btn--done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+.q-palette-btn--correct{background:var(--green-bg); border-color:var(--green); color:var(--green-ink)}
+.q-palette-btn--wrong{background:var(--red-bg); border-color:var(--red); color:var(--red-ink)}
 
 /* Nút "Nộp đáp án" từng câu (Practice): hàng inline gọn, không cộng
    margin 1rem của .btn-row mặc định */

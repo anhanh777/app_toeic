@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { api, type Question, type TestSet } from '../api';
-import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState } from '../components';
+import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
 import { partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
@@ -202,6 +202,14 @@ export default function MockTest() {
   // (hoặc thi mini/full không kèm đề) thì giữ nút nghe từng câu như cũ.
   const usePartAudioFor = (p: number) => p <= 4 && !!testSetId && !!partMedia[p];
 
+  // IELTS-only: thanh số câu (kiểu YouPass) — bấm số để nhảy tới câu đó.
+  // Thi thử chưa chấm nên chỉ phân biệt đã trả lời / chưa trả lời.
+  const paletteItems = blocks.flatMap(b => b.questions.map(({ q, n }) => {
+    const state: PaletteItemState = answers[q.id] ? 'done' : 'todo';
+    return { n, id: q.id, state };
+  }));
+  const jumpToQuestion = (id: string) => document.getElementById(`q-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
   const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
     const listeningOnly = isListeningOnly(q);
     // Part 1/2 thi that (TOEIC): trong bai thi chi hien tranh (Part 1) +
@@ -328,7 +336,8 @@ export default function MockTest() {
   // Tờ đề: câu Reading trắc nghiệm xếp 2 câu 1 hàng (lưới 2 cột); các khối
   // liên tiếp không có đoạn văn (Part 5) gom chung 1 lưới; khối có đoạn văn
   // (Part 6/7) thì lưới nằm trong cụm đoạn văn. Tiêu đề Part vẫn hiện khi
-  // chuyển Part.
+  // chuyển Part. IELTS Reading: khối có đoạn văn thì chia đôi màn hình
+  // (đoạn văn trái, câu hỏi phải — xem .paper-cluster--split trong CSS).
   const renderPaper = () => {
     const out: React.ReactNode[] = [];
     let duoRun: { q: Question; n: number }[] = [];
@@ -339,6 +348,7 @@ export default function MockTest() {
     };
     blocks.forEach((block, bi) => {
       const showPart = bi === 0 || blocks[bi - 1].part !== block.part;
+      const split = isIelts && block.part >= 5 && !!block.passageText;
       const duoBlock = !block.passageText && block.questions.every(({ q }) => isDuoQuestion(q));
       if (duoBlock) {
         if (showPart) {
@@ -367,9 +377,11 @@ export default function MockTest() {
             <p className="muted">📌 Bộ đề mẫu chưa có audio — bạn vẫn làm bài bình thường.</p>
           )}
           {block.passageText ? (
-            <div className="paper-cluster">
+            <div className={`paper-cluster${split ? ' paper-cluster--split' : ''}`}>
               {renderPassage(block)}
-              {block.questions.every(({ q }) => isDuoQuestion(q)) ? (
+              {split ? (
+                <div>{block.questions.map(item => renderQuestion(item))}</div>
+              ) : block.questions.every(({ q }) => isDuoQuestion(q)) ? (
                 <div className="exam-q-grid2">{block.questions.map(item => renderQuestion(item))}</div>
               ) : (
                 block.questions.map(item => renderQuestion(item))
@@ -401,6 +413,7 @@ export default function MockTest() {
         {renderPaper()}
       </div>
       <div className="practice-bar">
+        {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} />}
         <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
         <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
           onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '🚪 Thoát'}</button>

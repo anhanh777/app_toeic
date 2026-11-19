@@ -21,6 +21,10 @@ function partsWithCounts(testSetId) {
   return PARTS.map((part) => ({ part, count: byPart.get(part) || 0 }));
 }
 
+function typesWithCounts(testSetId) {
+  return db.countByTypeForTestSet(testSetId);
+}
+
 function missingParts(parts, exam) {
   const standard = exam === 'ielts' ? IELTS_STANDARD : STANDARD;
   return parts
@@ -55,6 +59,9 @@ function serializeTestSet(testSet, user) {
     parts,
     missing: missingParts(parts, testSet.exam),
     progress: progressFor(user, testSet),
+    // IELTS-only: cac dang cau hoi co trong de (kem so cau) — dung cho the
+    // de. De TOEIC khong co truong nay (response TOEIC giu nguyen nhu cu).
+    ...(testSet.exam === 'ielts' ? { byType: typesWithCounts(testSet.id) } : {}),
   };
 }
 

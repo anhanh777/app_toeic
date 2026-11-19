@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api, type PartInfo, type StatsOverview, type TestSet } from '../api';
+import { api, type Attempt, type PartInfo, type StatsOverview, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
-import { partLabel, partNameFor, useExam } from '../exam';
+import { attemptStatsFor, listeningReadingProgress, partLabel, partNameFor, questionTypeName, useExam } from '../exam';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 
 export default function Practice() {
@@ -19,11 +19,14 @@ export default function Practice() {
   const [stats, setStats] = useState<StatsOverview | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [part, setPart] = useState(5);
+  // Lich su thi thu — de tinh so lan thi + band theo tung de (IELTS).
+  const [history, setHistory] = useState<Attempt[]>([]);
 
   useEffect(() => {
     api.testSets(ex).then(setTestSets).catch(setSetsError).finally(() => setSetsLoading(false));
     api.parts(ex).then(setParts).catch(setError);
     api.statsOverview(ex).then(setStats).catch(() => undefined);
+    api.statsHistory(ex).then(setHistory).catch(() => undefined);
   }, [ex]);
 
   const acc = (p: number) => stats?.byPart.find(b => b.part === p);
@@ -71,6 +74,9 @@ export default function Practice() {
               const total = ts.totalQuestions || 0;
               const answered = ts.progress?.answeredTotal || 0;
               const pct = total ? Math.round((answered / total) * 100) : 0;
+              // IELTS-only: tien do tach Listening/Reading + thong ke thi thu.
+              const lr = isIelts ? listeningReadingProgress(ts) : null;
+              const att = isIelts ? attemptStatsFor(history, ts.id) : null;
               return (
                 <div key={ts.id} className="card part-card" onClick={() => nav(`/practice/test-set/${ts.id}`)}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: '.5rem', flexWrap: 'wrap' }}>
@@ -80,6 +86,18 @@ export default function Practice() {
                   <p className="muted parts-line">
                     {ts.parts.map(p => `${partLabel(p.part, ex)} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
                   </p>
+                  {isIelts && lr && (
+                    <p className="muted" style={{ margin: 0 }}>🎧 {lr.listening.answered}/{lr.listening.total} · 📖 {lr.reading.answered}/{lr.reading.total} · ⏱ 90 phút thi thử</p>
+                  )}
+                  {isIelts && ts.byType && ts.byType.length > 0 && (
+                    <p className="muted" style={{ margin: 0 }}>
+                      {ts.byType.slice(0, 3).map(t => `${questionTypeName(t.questionType)} ${t.count}`).join(' · ')}
+                      {ts.byType.length > 3 ? ` · +${ts.byType.length - 3} dạng nữa` : ''}
+                    </p>
+                  )}
+                  {isIelts && att && att.count > 0 && (
+                    <p className="muted" style={{ margin: 0 }}>🏆 Thi thử {att.count} lần{att.bestBand != null ? <> · Band cao nhất {att.bestBand}</> : ''}{att.lastBand != null ? <> · Gần nhất Band {att.lastBand}</> : ''}</p>
+                  )}
                   {ts.missing.length > 0 && (
                     <p style={{ color: 'var(--amber)' }}>⚠ Chưa đủ câu: {ts.missing.map(m => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}</p>
                   )}

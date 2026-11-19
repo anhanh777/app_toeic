@@ -1,6 +1,9 @@
 // Luyện tập theo Part — dạng danh sách liền mạch như tờ đề thi:
 // LUYỆN HẾT câu của Part (không giới hạn số lượng): toàn bộ câu của Part
 // đó — trong 1 đề hoặc toàn ngân hàng — nằm trong 1 tờ giấy (.paper),
+// hoặc luyện cả đề không bấm giờ (?part=all, IELTS): toàn bộ câu của đề
+// (80 câu), có tiêu đề từng Section/Passage. IELTS Reading chia đôi màn
+// hình (đoạn văn trái, câu hỏi phải, màn hình rộng) + thanh số câu ở dưới.
 // các câu nối tiếp nhau bằng đường kẻ mảnh; mặc định chấm điểm theo
 // từng câu ngay sau khi bấm "Nộp đáp án" của câu đó (giữ nguyên API
 // practiceAnswer, XP, ghi câu sai), hoặc chọn "Làm xong mới chấm" ở đầu
@@ -14,7 +17,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 import { api, type Question } from '../api';
-import { ErrorBox, ListeningAudio, PassageWithBlanks, partName, type BlankState } from '../components';
+import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
 import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
@@ -26,7 +29,12 @@ type AnswerResult = { correct: boolean; correctLabel: string; correctText?: stri
 export default function PracticeSession() {
   const [params] = useSearchParams();
   const nav = useNavigate();
-  const part = Number(params.get('part') || 5);
+  // Luyện cả đề không bấm giờ (IELTS, từ hộp thoại chọn chế độ):
+  // ?part=all — toàn bộ câu của đề, không lọc theo Part. Ngược lại thì
+  // luyện 1 Part như trước (mặc định Part 5 nếu thiếu tham số).
+  const partParam = params.get('part');
+  const isFullPractice = partParam === 'all';
+  const part = isFullPractice ? 0 : Number(partParam || 5);
   const { exam: ctxExam } = useExam();
   const { settings } = useUiSettings();
   const qExam = params.get('exam');
@@ -70,28 +78,35 @@ export default function PracticeSession() {
     setGradingMode('instant');
     setSubmittedAll(false);
     if (testSetId) api.testSet(testSetId).then(t => setTestSetTitle(t.title)).catch(() => undefined);
+    // Luyện cả đề (part = 0) vẫn có Listening nên vẫn tải audio cấp Part.
     if (part <= 4) {
       (testSetId ? api.partMedia(testSetId) : Promise.resolve<Record<number, string>>({}))
         .then(setPartMedia)
         .catch(() => setPartMedia({}))
         .finally(() => setPartMediaLoaded(true));
     }
-    api.questionsAll(part, testSetId, exam).then(setQuestions).catch(setError).finally(() => setLoading(false));
+    api.questionsAll(isFullPractice ? undefined : part, testSetId, exam).then(setQuestions).catch(setError).finally(() => setLoading(false));
     return () => stopSpeak();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [part, testSetId, exam]);
 
-  const isListening = part <= 4;
+  // Luyện 1 Part: isListening theo Part đó. Luyện cả đề: nghe/đọc tính theo
+  // từng câu (q.part) — xem usePartAudioFor + renderQuestion.
+  const isListening = !isFullPractice && part <= 4;
   // 1 nút nghe DUY NHẤT cho cả Part: chỉ khi luyện trong 1 bộ đề (có
   // testSetId) VÀ đề đó có file audio cấp Part. Đề chưa có audio Part
   // (hoặc luyện theo Part không kèm đề) thì giữ nút nghe từng câu như cũ.
-  const usePartAudio = isListening && !!testSetId && !!partMedia[part];
+  // Luyện cả đề: mỗi Listening Part có 1 nút riêng (xem renderPaper).
+  const usePartAudioFor = (p: number) => p <= 4 && !!testSetId && !!partMedia[p];
+  const usePartAudio = isListening && usePartAudioFor(part);
   // IELTS: đề chưa có audio (VD đề mẫu TS-024) — không render nút nghe hỏng,
   // chỉ hiện ghi chú và cho làm bài bình thường. Đề chẩn đoán TS-028 đã có
   // audio cấp Part. Cũng không dùng TTS đọc transcript cho IELTS (đọc trước
   // thì lộ nội dung bài nghe).
-  const ieltsNoAudio = isIelts && isListening && partMediaLoaded
-    && !partMedia[part] && !questions.some(q => q.audioUrl);
+  const ieltsNoAudio = isIelts && partMediaLoaded && !questions.some(q => q.audioUrl)
+    && (isFullPractice
+      ? ![1, 2, 3, 4].some(p => partMedia[p])
+      : isListening && !partMedia[part]);
 
   // Câu chỉ-nghe (Part 1/2 TOEIC): toàn bộ phương án đều rỗng nội dung
   // (chỉ có nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
@@ -186,8 +201,8 @@ export default function PracticeSession() {
     setSubmittedAll(true);
   };
 
-  if (loading || (isListening && !!testSetId && !partMediaLoaded)) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải câu hỏi…" />;
-  if (!questions.length) return <div><ErrorBox error={error} /><p>Chưa có câu hỏi cho {isIelts ? partLabel(part, exam) : `Part ${part}`} này. {testSetId ? <Link to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link to="/practice">Quay lại chọn Part</Link>}</p></div>;
+  if (loading || ((isListening || isFullPractice) && !!testSetId && !partMediaLoaded)) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải câu hỏi…" />;
+  if (!questions.length) return <div><ErrorBox error={error} /><p>{isFullPractice ? 'Chưa có câu hỏi trong đề này.' : <>Chưa có câu hỏi cho {isIelts ? partLabel(part, exam) : `Part ${part}`} này.</>} {testSetId ? <Link to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link to="/practice">Quay lại chọn Part</Link>}</p></div>;
   if (finished) {
     return (
       <div className="card">
@@ -215,7 +230,7 @@ export default function PracticeSession() {
   // Số thứ tự n là SỐ THẬT trong đề (mốc đầu Part + vị trí trong Part),
   // không phải vị trí trong danh sách (luyện riêng Part 3 thì 1–39 sai,
   // số thật là 32–70).
-  type Block = { key: string; passageText?: string; questions: { q: Question; n: number }[] };
+  type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number }[] };
   const blocks: Block[] = [];
   const partCount: Record<number, number> = {};
   questions.forEach((q) => {
@@ -226,7 +241,7 @@ export default function PracticeSession() {
     const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
     const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
     if ((sameId || sameText) && last) last.questions.push({ q, n });
-    else blocks.push({ key: q.id, passageText: q.passageText, questions: [{ q, n }] });
+    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n }] });
   });
 
   const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
@@ -267,7 +282,7 @@ export default function PracticeSession() {
           {listeningOnly && q.part === 1 && !q.imageUrl && (
             <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
           )}
-          {isListening && !usePartAudio && (exam === 'toeic' || q.audioUrl) && (
+          {q.part <= 4 && !usePartAudioFor(q.part) && (exam === 'toeic' || q.audioUrl) && (
             <ListeningAudio
               // Ưu tiên: audio câu hỏi → audio đoạn văn đã gộp sẵn trong
               // q.audioUrl → audio cấp Part. Không có audio nào thì TTS như cũ.
@@ -275,6 +290,8 @@ export default function PracticeSession() {
               // cả Part chỉ còn 1 nút nghe duy nhất ở đầu Part (ngay dưới
               // tiêu đề PART X). IELTS: chỉ render khi có file audio thật,
               // không dùng TTS đọc transcript (lộ nội dung bài nghe).
+              // Luyện cả đề: tính theo Part của từng câu (q.part), không
+              // theo Part của buổi luyện.
               audioUrl={q.audioUrl || partMedia[q.part]}
               ttsText={ttsTextFor(q)}
               stopKey={q.id}
@@ -367,10 +384,12 @@ export default function PracticeSession() {
               return (
                 <>
                   {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}
-                  {/* Transcript chỉ ở Part nghe (P1–4): ở Part đọc (P6/P7 TOEIC, Reading IELTS)
-                     "transcript" API trả về thực chất là đoạn văn dùng chung, đã hiện 1 lần
-                     phía trên rồi — sau khi nộp chỉ hiện giải thích, không in lại cả đoạn. */}
-                  {isListening && result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
+                  {/* Transcript chỉ ở câu nghe (part 1–4): ở câu đọc
+                     "transcript" API trả về thực chất là đoạn văn dùng chung,
+                     đã hiện 1 lần phía trên rồi — sau khi nộp chỉ hiện giải
+                     thích, không in lại cả đoạn. Luyện cả đề: tính theo Part
+                     của từng câu. */}
+                  {q.part <= 4 && result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
                 </>
               );
             })()}
@@ -410,6 +429,11 @@ export default function PracticeSession() {
   // Tờ đề: câu Reading trắc nghiệm xếp 2 câu 1 hàng (lưới 2 cột); các khối
   // liên tiếp không có đoạn văn (Part 5) gom chung 1 lưới; khối có đoạn văn
   // (Part 6/7) thì lưới nằm trong cụm đoạn văn.
+  // IELTS Reading: khối có đoạn văn thì chia đôi màn hình (đoạn văn trái,
+  // câu hỏi phải, màn hình rộng — xem .paper-cluster--split trong CSS).
+  // TOEIC giữ nguyên 1 cột. Luyện cả đề: thêm tiêu đề + nút nghe cấp Part
+  // mỗi khi chuyển sang Part mới.
+  const isSplitBlock = (block: Block) => isIelts && block.part >= 5 && !!block.passageText;
   const renderPaper = () => {
     const out: React.ReactNode[] = [];
     let duoRun: { q: Question; n: number }[] = [];
@@ -418,14 +442,35 @@ export default function PracticeSession() {
       out.push(<div className="exam-q-grid2" key={key}>{duoRun.map(item => renderQuestion(item))}</div>);
       duoRun = [];
     };
+    let prevPart = -1;
     for (const block of blocks) {
+      const split = isSplitBlock(block);
+      if (isFullPractice && block.part !== prevPart) {
+        flushDuo(`duo-before-part-${block.part}`);
+        out.push(
+          <h3 className="paper-part" key={`part-${block.part}`}>
+            {isIelts ? `${partLabel(block.part, exam)} — ${block.part <= 4 ? 'Listening' : 'Reading'}` : `Part ${block.part}`}
+          </h3>
+        );
+        if (block.part <= 4 && usePartAudioFor(block.part)) {
+          out.push(
+            <div className="part-audio" key={`audio-${block.part}`}>
+              <ListeningAudio audioUrl={partMedia[block.part]} ttsText="" stopKey={`part-${block.part}`} onError={setError} />
+              <p className="muted">🎧 Nghe cả {isIelts ? `Section ${block.part}` : `Part ${block.part}`} — bấm 1 lần rồi làm hết các câu của {isIelts ? 'Section' : 'Part'} trong lúc nghe.</p>
+            </div>
+          );
+        }
+      }
+      prevPart = block.part;
       const duoBlock = !block.passageText && block.questions.every(({ q }) => isDuoQuestion(q));
       if (duoBlock) { duoRun.push(...block.questions); continue; }
       flushDuo(`duo-${block.key}`);
       out.push(block.passageText ? (
-        <div className="paper-cluster" key={block.key}>
+        <div className={`paper-cluster${split ? ' paper-cluster--split' : ''}`} key={block.key}>
           {renderPassage(block)}
-          {block.questions.every(({ q }) => isDuoQuestion(q)) ? (
+          {split ? (
+            <div>{block.questions.map(item => renderQuestion(item))}</div>
+          ) : block.questions.every(({ q }) => isDuoQuestion(q)) ? (
             <div className="exam-q-grid2">{block.questions.map(item => renderQuestion(item))}</div>
           ) : (
             block.questions.map(item => renderQuestion(item))
@@ -445,14 +490,26 @@ export default function PracticeSession() {
   const modeLocked = questions.some(q => selectedById[q.id]);
   const answeredCount = questions.filter(q => selectedById[q.id]).length;
 
+  // IELTS-only: thanh số câu (kiểu YouPass) — bấm số để nhảy tới câu đó.
+  // Trạng thái: đã chấm thì xanh/đỏ theo đúng/sai, chưa chấm mà đã chọn
+  // đáp án thì "done", nộp tất cả rồi mà câu chưa làm thì tính là sai.
+  const paletteItems = blocks.flatMap(b => b.questions.map(({ q, n }) => {
+    const r = resultById[q.id];
+    const state: PaletteItemState = r ? (r.correct ? 'correct' : 'wrong') : submittedAll ? 'wrong' : selectedById[q.id] ? 'done' : 'todo';
+    return { n, id: q.id, state };
+  }));
+  const jumpToQuestion = (id: string) => document.getElementById(`q-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
   return (
     <div className={`ts-${textLevel}`}>
       {testSetTitle && <p className="tag" style={{ margin: '.15rem 0' }}>📚 {testSetTitle}</p>}
       <div className="exam-head">
         <h2 className="exam-part">
-          {isIelts
-            ? <>{partLabel(part, exam)}<span> — {part <= 4 ? 'Listening' : 'Reading'}</span></>
-            : <>Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</>}
+          {isFullPractice
+            ? <>Luyện cả đề<span> — {questions.length} câu · không bấm giờ</span></>
+            : isIelts
+              ? <>{partLabel(part, exam)}<span> — {part <= 4 ? 'Listening' : 'Reading'}</span></>
+              : <>Part {part}{partName(part).split('—')[1]?.trim() ? <span> — {partName(part).split('—')[1]?.trim()}</span> : null}</>}
         </h2>
         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '.6rem', flexWrap: 'wrap' }}>
           {/* Chọn chế độ chấm — chỉ đổi được trước khi chọn đáp án đầu tiên. */}
@@ -485,6 +542,7 @@ export default function PracticeSession() {
         {renderPaper()}
       </div>
       <div className="practice-bar">
+        {isIelts && <QuestionPalette items={paletteItems} onJump={jumpToQuestion} />}
         <span className="progress">Đã làm {score.done}/{questions.length} • Đúng {score.correct}</span>
         <button className="btn secondary btn-sm" onClick={() => { stopSpeak(); nav(testSetId ? `/practice/test-set/${testSetId}` : '/practice'); }}>🚪 Thoát</button>
         {gradingMode === 'submit-all' && !submittedAll ? (

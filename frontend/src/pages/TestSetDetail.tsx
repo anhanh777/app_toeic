@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { api, type TestSet } from '../api';
+import { api, type Attempt, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
-import { partLabel, partNameFor, useExam } from '../exam';
+import { attemptStatsFor, listeningReadingProgress, partLabel, partNameFor, questionTypeName, useExam } from '../exam';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 
 export default function TestSetDetail() {
@@ -13,11 +13,30 @@ export default function TestSetDetail() {
   const [ts, setTs] = useState<TestSet | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(true);
+  // Lich su thi thu (de tinh so lan thi + band theo de) + hop thoai chon
+  // che do lam bai (IELTS-only, xem nut "Lam ca de" ben duoi).
+  const [history, setHistory] = useState<Attempt[]>([]);
+  const [modeDialog, setModeDialog] = useState(false);
 
   useEffect(() => {
     if (!id) return;
     api.testSet(id).then(setTs).catch(setError).finally(() => setLoading(false));
   }, [id]);
+
+  // Lich su thi thu can biet ky thi cua de (chi co sau khi tai xong de).
+  useEffect(() => {
+    if (!ts) return;
+    const ex2 = ts.exam === 'ielts' || ts.exam === 'toeic' ? ts.exam : ctxExam ?? 'toeic';
+    api.statsHistory(ex2).then(setHistory).catch(() => undefined);
+  }, [ts, ctxExam]);
+
+  // Dong hop thoai chon che do bang phim Escape.
+  useEffect(() => {
+    if (!modeDialog) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setModeDialog(false); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [modeDialog]);
 
   if (loading) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải đề thi…" />;
   if (!ts) return <div><ErrorBox error={error} /><p>Không tìm thấy bộ đề. <Link to="/practice">Quay lại danh sách đề</Link></p></div>;
@@ -31,6 +50,9 @@ export default function TestSetDetail() {
   const correct = ts.progress?.correctTotal || 0;
   const pct = total ? Math.round((answered / total) * 100) : 0;
   const partProgress = (p: number) => ts.progress?.byPart.find(b => b.part === p);
+  // IELTS-only: tien do tach Listening/Reading + thong ke thi thu cua de.
+  const lr = isIelts ? listeningReadingProgress(ts) : null;
+  const att = isIelts ? attemptStatsFor(history, ts.id) : null;
   const renderPartCard = (p: number) => {
     const info = ts.parts.find(x => x.part === p);
     const n = info?.count || 0;
@@ -71,13 +93,32 @@ export default function TestSetDetail() {
       <div className="card">
         <p><span className="stat-num">{total}</span> câu • Đã làm {answered}/{total} câu ({pct}%) • Đúng {correct} câu</p>
         <div className="bar green"><i style={{ width: `${pct}%` }} /></div>
+        {isIelts && lr && (
+          <p className="muted" style={{ marginTop: '.6rem' }}>🎧 Listening {lr.listening.answered}/{lr.listening.total} câu · 📖 Reading {lr.reading.answered}/{lr.reading.total} câu</p>
+        )}
+        {isIelts && ts.byType && ts.byType.length > 0 && (
+          <p className="muted">
+            Dạng câu hỏi: {ts.byType.slice(0, 4).map(t => `${questionTypeName(t.questionType)} ${t.count}`).join(' · ')}
+            {ts.byType.length > 4 ? ` · +${ts.byType.length - 4} dạng nữa` : ''}
+          </p>
+        )}
+        {isIelts && att && att.count > 0 && (
+          <p className="muted">🏆 Đã thi thử {att.count} lần{att.bestBand != null ? <> · Band cao nhất {att.bestBand}</> : ''}{att.lastBand != null ? <> · Gần nhất Band {att.lastBand}</> : ''}</p>
+        )}
+        {isIelts && (
+          <p className="muted">⏱ Thi thử {fullMinutes} phút · Luyện tập không bấm giờ</p>
+        )}
         {ts.missing.length > 0 && (
           <p style={{ color: 'var(--amber)', marginTop: '.6rem' }}>
             ⚠ Đề chưa đủ câu chuẩn: {ts.missing.map(m => `${partLabel(m.part, ex)} thiếu ${m.missing} câu`).join(', ')}. Bạn vẫn có thể luyện các câu hiện có.
           </p>
         )}
         <div className="btn-row">
-          <button className="btn gold" disabled={!total} onClick={() => nav(`/mock?testSetId=${ts.id}&exam=${ex}`)}>🏆 Thi thử cả đề ({total} câu · {fullMinutes} phút)</button>
+          {isIelts ? (
+            <button className="btn gold" disabled={!total} onClick={() => setModeDialog(true)}>▶ Làm cả đề ({total} câu)</button>
+          ) : (
+            <button className="btn gold" disabled={!total} onClick={() => nav(`/mock?testSetId=${ts.id}&exam=${ex}`)}>🏆 Thi thử cả đề ({total} câu · {fullMinutes} phút)</button>
+          )}
         </div>
       </div>
 
@@ -89,6 +130,43 @@ export default function TestSetDetail() {
       <div className="grid parts-grid">
         {[5, 6, 7].map(renderPartCard)}
       </div>
+
+      {/* IELTS-only: hop thoai chon cach lam ca de — Luyen tap (khong bam
+          gio, cham + giai thich ngay tung cau) hoac Thi that (90 phut,
+          giong thi may). TOEIC giu nut "Thi thu ca de" nhu cu. */}
+      {isIelts && modeDialog && (
+        <div
+          role="dialog" aria-modal="true" aria-label="Chọn cách làm bài"
+          onClick={() => setModeDialog(false)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(30, 25, 20, 0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem', zIndex: 50 }}
+        >
+          <div className="card" onClick={e => e.stopPropagation()} style={{ maxWidth: 480, width: '100%', margin: 0 }}>
+            <h2 style={{ marginTop: 0 }}>Chọn cách làm bài</h2>
+            <p className="muted">{ts.title} · {total} câu</p>
+            <div
+              className="card" role="button" tabIndex={0}
+              onClick={() => nav(`/practice/session?testSetId=${ts.id}&part=all&exam=ielts`)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') nav(`/practice/session?testSetId=${ts.id}&part=all&exam=ielts`); }}
+              style={{ cursor: 'pointer' }}
+            >
+              <strong>📝 Luyện tập</strong>
+              <p className="muted" style={{ margin: '.2rem 0 0' }}>Không bấm giờ · Chấm + giải thích ngay từng câu · Nghe lại thoải mái</p>
+            </div>
+            <div
+              className="card" role="button" tabIndex={0}
+              onClick={() => nav(`/mock?testSetId=${ts.id}&exam=ielts`)}
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') nav(`/mock?testSetId=${ts.id}&exam=ielts`); }}
+              style={{ cursor: 'pointer' }}
+            >
+              <strong>🏆 Thi thật</strong>
+              <p className="muted" style={{ margin: '.2rem 0 0' }}>{fullMinutes} phút · Giống thi máy · Audio mỗi Section chỉ phát 1 lần · Chỉ xem điểm sau khi nộp</p>
+            </div>
+            <div className="btn-row">
+              <button className="btn secondary" onClick={() => setModeDialog(false)}>Đóng</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

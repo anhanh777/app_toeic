@@ -1040,6 +1040,19 @@ function countByPartForTestSet(testSetId) {
   return rows.map((r) => ({ part: r.part, count: r.c }));
 }
 
+// Dem cau hoi theo dang cau hoi (question_type) trong 1 bo de — dung cho
+// the de IELTS (hien cac dang cau co trong de). Cau khong co dang thi bo qua.
+function countByTypeForTestSet(testSetId) {
+  const rows = db
+    .prepare(
+      `SELECT question_type, COUNT(*) AS c FROM questions
+       WHERE test_set_id = ? AND question_type IS NOT NULL AND question_type != ''
+       GROUP BY question_type ORDER BY c DESC, question_type`
+    )
+    .all(testSetId);
+  return rows.map((r) => ({ questionType: r.question_type, count: r.c }));
+}
+
 /**
  * Tien do cua user trong 1 de: dem tu answers JOIN attempts JOIN questions,
  * chi tinh cau co test_set_id = de do. answered = so cau distinct da tra loi
@@ -2742,6 +2755,7 @@ module.exports = {
   deleteTestSet,
   nextTestSetId,
   countByPartForTestSet,
+  countByTypeForTestSet,
   getUserProgressByTestSet,
   validateImportQuestion,
   importTestSetQuestions,
