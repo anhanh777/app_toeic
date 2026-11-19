@@ -295,7 +295,7 @@ export const api = {
       '/api/practice/answer', { method: 'POST', body: JSON.stringify({ questionId, selected }) }),
 
   createTest: (mode: 'mini' | 'full', part?: number, durationMinutes = 120, testSetId?: string, exam?: string) =>
-    req<{ attemptId: number; questionIds: string[]; durationSec: number; startedAt: string }>(
+    req<{ attemptId: number; testSetId?: string | null; questionIds: string[]; durationSec: number; startedAt: string }>(
       '/api/tests', { method: 'POST', body: JSON.stringify({ mode, part, durationMinutes, ...(testSetId ? { testSetId } : {}), ...(exam ? { exam } : {}) }) }),
   saveTestAnswer: (attemptId: number, questionId: string, selected: string) =>
     req(`/api/tests/${attemptId}/answers`, { method: 'POST', body: JSON.stringify({ questionId, selected }) }),

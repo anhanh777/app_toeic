@@ -185,6 +185,12 @@ export default function MockTestScreen() {
       const t = paramTestSetId
         ? await api.createTest('full', undefined, fullMinutes, paramTestSetId, exam)
         : await api.createTest(mode, mode === 'mini' ? part : undefined, minutes, tsId, exam);
+      // Mini không kèm đề: backend chọn ngẫu nhiên 1 đề và trả về testSetId
+      // của đề đó — tải audio theo đề được chọn để nghe đúng file audio.
+      // Khớp web (38cb1c6). Nếu đã tải theo đề đã chọn thì bỏ qua.
+      if (t.testSetId && t.testSetId !== tsId) {
+        try { setPartMedia(await api.partMedia(t.testSetId)); } catch { /* giữ {} */ }
+      }
       setAttemptId(t.attemptId);
       setSecondsLeft(t.durationSec || minutes * 60);
       setLoadingQuestions(true);

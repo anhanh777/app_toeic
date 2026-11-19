@@ -32,9 +32,9 @@ const FALLBACK_EXAMS: ExamInfo[] = [
   { id: 'ielts', title: 'IELTS Academic', subtitle: 'Listening + Reading', scale: 'Band 0–9', testSetCount: 12, questionCount: 960 },
 ];
 
-const EXAM_META: Record<ExamId, { emoji: string; detail: string }> = {
-  toeic: { emoji: '🌸', detail: 'Listening + Reading, 7 Part' },
-  ielts: { emoji: '🎓', detail: 'Listening 4 Section + Reading 3 Passage' },
+const EXAM_META: Record<ExamId, { detail: string }> = {
+  toeic: { detail: 'Listening + Reading, 7 Part' },
+  ielts: { detail: 'Listening 4 Section + Reading 3 Passage' },
 };
 
 // Menu trang chính — mục IELTS chỉ hiện khi đang chọn kỳ thi IELTS
@@ -141,7 +141,7 @@ export default function HomeScreen() {
                   onPress={() => pick(e.id)}
                 >
                   <Text style={[styles.emoji, { fontSize: scaled(28) }]}>
-                    {EXAM_META[e.id as ExamId]?.emoji ?? '📚'}
+                    {e.id === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}
                   </Text>
                   <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(20) }]}>
                     {e.title}
@@ -165,7 +165,7 @@ export default function HomeScreen() {
           <View style={styles.homeWrap}>
             <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
               <Text style={[styles.emoji, { fontSize: scaled(28) }]}>
-                {EXAM_META[exam]?.emoji ?? '📚'}
+                {exam === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}
               </Text>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(20) }]}>
                 {chosen?.title ?? exam.toUpperCase()}
@@ -198,7 +198,7 @@ export default function HomeScreen() {
                 style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
                 onPress={clearExam}
               >
-                <Text style={[styles.menuEmoji, { fontSize: scaled(24) }]}>⇄</Text>
+                <Text style={[styles.menuEmoji, { fontSize: scaled(24) }]}>{icons['switch-exam']}</Text>
                 <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                   Đổi bài thi
                 </Text>

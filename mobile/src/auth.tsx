@@ -8,7 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { api, loadStoredToken, setToken, type User } from './api';
+import { api, ApiError, loadStoredToken, setToken, type User } from './api';
 
 interface AuthCtx {
   user: User | null;
@@ -29,9 +29,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refresh = useCallback(async () => {
     try {
       setUser(await api.me());
-    } catch {
-      setUser(null);
-      await setToken(null);
+    } catch (e) {
+      // Chỉ đăng xuất khi token hết hạn/không hợp lệ (401). Lỗi mạng
+      // (status 0) hay lỗi máy chủ tạm thời thì GIỮ NGUYÊN token — lần mở
+      // app sau sẽ thử lại /me và khôi phục phiên, thay vì bắt người dùng
+      // đăng nhập lại chỉ vì mạng chớp chơn một lúc. Khớp web (a59bc36).
+      if (e instanceof ApiError && e.status === 401) {
+        setUser(null);
+        await setToken(null);
+      } else {
+        setUser(null);
+      }
     }
   }, []);
 

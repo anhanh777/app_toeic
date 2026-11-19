@@ -2,6 +2,8 @@
 // GET /api/menu-icons (công khai, không cần auth); giá trị thiếu/sai ->
 // mặc định trong code (normalizeMenuIcons), fetch lỗi -> giữ mặc định,
 // thử lại 1 lần sau 6s. Port ý tưởng từ mobile/src/brand.tsx.
+// 19 key: 12 mục menu + Trang chủ, Thống kê, nút Đổi bài thi, thẻ
+// TOEIC/IELTS, cờ đánh dấu câu (flag/flagged) — khớp backend/src/menuIcons.js.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { API_URL } from './api';
 
@@ -17,7 +19,14 @@ export type MenuIconKey =
   | 'errors'
   | 'writing'
   | 'speaking'
-  | 'ielts-setup';
+  | 'ielts-setup'
+  | 'home'
+  | 'stats'
+  | 'switch-exam'
+  | 'exam-toeic'
+  | 'exam-ielts'
+  | 'flag'
+  | 'flagged';
 
 export type MenuIcons = Record<MenuIconKey, string>;
 
@@ -34,6 +43,13 @@ export const MENU_ICON_KEYS: MenuIconKey[] = [
   'writing',
   'speaking',
   'ielts-setup',
+  'home',
+  'stats',
+  'switch-exam',
+  'exam-toeic',
+  'exam-ielts',
+  'flag',
+  'flagged',
 ];
 
 export const MENU_ICON_DEFAULTS: MenuIcons = {
@@ -49,6 +65,16 @@ export const MENU_ICON_DEFAULTS: MenuIcons = {
   writing: '✍️',
   speaking: '🎤',
   'ielts-setup': '📝',
+  home: '🏠',
+  stats: '📊',
+  'switch-exam': '⇄',
+  'exam-toeic': '🌸',
+  'exam-ielts': '🎓',
+  // Cờ đánh dấu câu (phòng thi IELTS): flag dùng 🏳️ KÈM VS16 (U+FE0F)
+  // để bắt buộc hiện dạng emoji — 🏳 trơn hiện dạng text outline trên
+  // một số máy. Khớp backend/src/menuIcons.js.
+  flag: '🏳️',
+  flagged: '🚩',
 };
 
 /** Độ dài theo ký tự hiển thị (emoji tính là 1, không phải 2 đơn vị UTF-16). */
