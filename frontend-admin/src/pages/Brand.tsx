@@ -119,7 +119,7 @@ export default function Brand() {
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
 
-      <div className="split">
+      <div className="split-even">
         <div className="card">
           <h2>Tên &amp; tagline</h2>
           <label>Tên app <span className="muted">(1–30 ký tự)</span></label>

@@ -448,6 +448,13 @@ tbody tr:hover{background:var(--surface-soft)}
 .split .card{margin-top:0}
 .split>div>.card+.card{margin-top:.8rem}
 @media(min-width:900px){.split{grid-template-columns:minmax(15rem,1fr) 3fr}}
+/* Bố cục 2 box cân bằng 1 hàng (UiSettings, Brand: form + xem trước).
+   Dùng riêng — không sửa .split (các trang form + danh sách vẫn giữ 1/4 + 3/4).
+   Dưới 900px xếp dọc. */
+.split-even{display:grid; gap:.8rem; align-items:start}
+.split-even>*{min-width:0}
+.split-even .card{margin-top:0}
+@media(min-width:900px){.split-even{grid-template-columns:1fr 1fr}}
 /* Audio theo Part/Section: 2 cột trên màn rộng, 1 cột trên màn hẹp. */
 .audio-grid{display:grid; gap:.8rem}
 .audio-grid .panel{margin-top:0}

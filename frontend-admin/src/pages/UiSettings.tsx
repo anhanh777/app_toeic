@@ -92,7 +92,7 @@ export default function UiSettings() {
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
 
-      <div className="split">
+      <div className="split-even">
         <div className="card">
           <h2>Màu chủ đạo</h2>
           <div className="btn-row" style={{ alignItems: 'center' }}>
