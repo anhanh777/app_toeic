@@ -389,6 +389,16 @@ export function QuestionPalette({ items, onJump, currentId }: {
   onJump: (id: string) => void;
   currentId?: string | null;
 }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  // Khi cau dang lam doi (scroll-spy), cuon ngang bang cau hoi de nut cau
+  // do luon nam trong vung nhin — quan trong o bai full 80 cau, neu khong
+  // nut duoc highlight se nam ngoai man hinh ben phai. inline:'nearest'
+  // chi cuon khi nut dang nam ngoai vung nhin, khong tranh cuon voi tay.
+  useEffect(() => {
+    if (!currentId) return;
+    wrapRef.current?.querySelector('.q-palette-btn--current')
+      ?.scrollIntoView({ behavior: 'auto', inline: 'nearest', block: 'nearest' });
+  }, [currentId]);
   if (!items.length) return null;
   // Gom các câu liên tiếp cùng nhóm (theo group) để hiện nhãn 1 lần.
   const groups: { label?: string; items: PaletteItem[] }[] = [];
@@ -398,7 +408,7 @@ export function QuestionPalette({ items, onJump, currentId }: {
     else groups.push({ label: it.group, items: [it] });
   }
   return (
-    <div className="q-palette" role="navigation" aria-label="Điều hướng câu hỏi">
+    <div ref={wrapRef} className="q-palette" role="navigation" aria-label="Điều hướng câu hỏi">
       {groups.map((g, gi) => (
         <span key={gi} className="q-palette-group">
           {g.label && <span className="q-palette-group-label">{g.label}</span>}

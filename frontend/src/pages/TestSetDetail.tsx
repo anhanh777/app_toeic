@@ -59,7 +59,7 @@ export default function TestSetDetail() {
     const prog = partProgress(p);
     return (
       <div key={p} className="card part-card">
-        <div className="part-ico">{p <= 4 ? '🎧' : '📖'} {partLabel(p, ex)}</div>
+        <div className="part-ico" aria-hidden>{p <= 4 ? '🎧' : '📖'}</div>
         <p style={{ margin: 0 }}>
           <strong>{isIelts ? partNameFor(p, ex) : partName(p)}</strong> <span className="pill">{sectionOf(p)}</span>{' '}
           <span className="muted">{n} câu trong đề này</span>

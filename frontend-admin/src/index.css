@@ -389,7 +389,7 @@ tbody tr:hover{background:var(--surface-soft)}
 .panel .table-scroll{background:var(--surface-soft)}
 .panel .table-scroll thead th{background:var(--surface-soft)}
 /* Nút tác vụ trong ô bảng: gọn, không cộng margin của .btn-row. */
-.tbl-actions{display:flex; gap:.35rem; flex-wrap:wrap; align-items:center}
+.tbl-actions{display:flex; gap:.35rem; flex-wrap:nowrap; align-items:center}
 .tbl-actions .btn{white-space:nowrap}
 /* Trạng thái đề: phát hành = xanh lá, nháp = xám nhạt. */
 .pill--live{background:var(--green-bg); color:var(--green-ink)}

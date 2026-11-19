@@ -5,6 +5,14 @@ import { useAuth } from '../auth';
 import { bandLevel, partLabel, partNameFor, questionTypeName, useExam } from '../exam';
 import { ErrorBox, partName, TierBadge, XpBar } from '../components';
 
+/** Ngay lam bai dang dd/mm/yyyy — backend tra camelCase (finishedAt) nhung
+ * giu fallback snake_case (finished_at) neu co. */
+function fmtDate(iso?: string): string {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? iso.slice(0, 10) : d.toLocaleDateString('vi-VN');
+}
+
 export default function Stats() {
   const { user } = useAuth();
   const { exam } = useExam();
@@ -119,7 +127,7 @@ export default function Stats() {
         {history.length === 0 ? <p className="muted">Chưa có lịch sử.</p> : (
           <table><thead><tr><th>Ngày</th><th>Đề</th><th>Chế độ</th><th>{isIelts ? 'Band' : 'Điểm'}</th><th></th></tr></thead><tbody>
             {history.map(a => (
-              <tr key={a.id}><td>{(a.finished_at || a.started_at || '').slice(0, 10)}</td><td>{a.testSetId ? (testSetTitleById.get(a.testSetId) ?? a.testSetId) : '—'}</td><td>{a.mode}{a.part ? ` — ${isIelts ? partLabel(a.part, ex) : `Part ${a.part}`}` : ''}</td><td>{isIelts ? (a.overallBand != null ? `Band ${a.overallBand}` : '—') : (a.total_score ?? '—')}</td>
+              <tr key={a.id}><td>{fmtDate(a.finishedAt || a.finished_at || a.startedAt || a.started_at)}</td><td>{a.testSetId ? (testSetTitleById.get(a.testSetId) ?? a.testSetId) : '—'}</td><td>{a.mode}{a.part ? ` — ${isIelts ? partLabel(a.part, ex) : `Part ${a.part}`}` : ''}</td><td>{isIelts ? (a.overallBand != null ? `Band ${a.overallBand}` : '—') : (a.total_score ?? '—')}</td>
                 <td>{a.mode !== 'practice' ? <Link to={`/result/${a.id}`}>Xem lại</Link> : ''}</td></tr>
             ))}
           </tbody></table>
