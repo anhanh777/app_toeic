@@ -19,6 +19,7 @@ export default function Users() {
   const [roleFilter, setRoleFilter] = useState<'all' | 'user' | 'admin'>('all');
 
   const [createForm, setCreateForm] = useState({ email: '', password: '', name: '', role: 'user' as 'user' | 'admin' });
+  const [createOpen, setCreateOpen] = useState(false);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState({ name: '', role: 'user' as 'user' | 'admin', targetScore: 650, hideOnLeaderboard: false });
   const [resetId, setResetId] = useState<number | null>(null);
@@ -91,6 +92,7 @@ export default function Users() {
       });
       setMsg(`Đã tạo tài khoản ${r.user.email}.`);
       setCreateForm({ email: '', password: '', name: '', role: 'user' });
+      setCreateOpen(false);
       load();
     } catch (err) { setError(err); } finally { setBusy(false); }
   };
@@ -155,28 +157,11 @@ export default function Users() {
       {msg && <div className="success">{msg}</div>}
       {loading && <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải danh sách tài khoản…" />}
 
-      <div className="card form-narrow">
-        <h2>Thêm tài khoản mới</h2>
-        <form onSubmit={createUser}>
-          <label>Email</label>
-          <input type="email" value={createForm.email} onChange={e => setCreateForm({ ...createForm, email: e.target.value })} required placeholder="VD: hocvien@example.com" />
-          <label>Mật khẩu (ít nhất 6 ký tự)</label>
-          <input type="password" value={createForm.password} onChange={e => setCreateForm({ ...createForm, password: e.target.value })} required />
-          <label>Tên hiển thị</label>
-          <input value={createForm.name} onChange={e => setCreateForm({ ...createForm, name: e.target.value })} placeholder="Để trống thì dùng phần trước @" />
-          <label>Quyền</label>
-          <select value={createForm.role} onChange={e => setCreateForm({ ...createForm, role: e.target.value as 'user' | 'admin' })}>
-            <option value="user">Học viên</option>
-            <option value="admin">Admin</option>
-          </select>
-          <div className="btn-row">
-            <button className="btn btn-block" type="submit" disabled={busy}>{busy ? 'Đang tạo…' : 'Tạo tài khoản'}</button>
-          </div>
-        </form>
-      </div>
-
       <div className="card">
-        <h2>Danh sách tài khoản ({filtered.length}/{users.length})</h2>
+        <div className="card-head">
+          <h2>Danh sách tài khoản ({filtered.length}/{users.length})</h2>
+          <button className="btn" onClick={() => setCreateOpen(true)}>＋ Thêm tài khoản</button>
+        </div>
         <div className="table-toolbar">
           <input style={{ flex: 1 }} value={search} onChange={e => setSearch(e.target.value)} placeholder="Tìm theo email hoặc tên…" />
           <select value={roleFilter} onChange={e => setRoleFilter(e.target.value as 'all' | 'user' | 'admin')}>
@@ -216,6 +201,28 @@ export default function Users() {
         </div>
         {filtered.length === 0 && !loading && <p className="muted">Không tìm thấy tài khoản nào.</p>}
       </div>
+
+      {createOpen && (
+        <Modal title="Thêm tài khoản mới" onClose={() => setCreateOpen(false)}>
+          <form onSubmit={createUser}>
+            <label>Email</label>
+            <input type="email" value={createForm.email} onChange={e => setCreateForm({ ...createForm, email: e.target.value })} required placeholder="VD: hocvien@example.com" />
+            <label>Mật khẩu (ít nhất 6 ký tự)</label>
+            <input type="password" value={createForm.password} onChange={e => setCreateForm({ ...createForm, password: e.target.value })} required />
+            <label>Tên hiển thị</label>
+            <input value={createForm.name} onChange={e => setCreateForm({ ...createForm, name: e.target.value })} placeholder="Để trống thì dùng phần trước @" />
+            <label>Quyền</label>
+            <select value={createForm.role} onChange={e => setCreateForm({ ...createForm, role: e.target.value as 'user' | 'admin' })}>
+              <option value="user">Học viên</option>
+              <option value="admin">Admin</option>
+            </select>
+            <div className="btn-row">
+              <button className="btn" type="submit" disabled={busy}>{busy ? 'Đang tạo…' : 'Tạo tài khoản'}</button>
+              <button type="button" className="btn secondary" onClick={() => setCreateOpen(false)}>Hủy</button>
+            </div>
+          </form>
+        </Modal>
+      )}
 
       {editingId != null && (
         <Modal title={`Sửa tài khoản #${editingId}`} onClose={() => setEditingId(null)}>
