@@ -44,10 +44,10 @@
 /** Hieu ung loading da cai san trong ca 2 app (CSS o index.css moi app). */
 const EFFECTS = Object.freeze({
   spinner: Object.freeze({ label: 'Vòng xoay', locations: ['loginButton', 'page', 'table'] }),
-  'dual-ring': Object.freeze({ label: 'Vòng kép', locations: ['loginButton', 'page'] }),
+  'dual-ring': Object.freeze({ label: 'Vòng kép', locations: ['loginButton', 'page', 'table'] }),
   'bouncing-dots': Object.freeze({ label: 'Ba chấm nảy', locations: ['loginButton', 'page', 'table'] }),
-  skeleton: Object.freeze({ label: 'Skeleton (khung mờ)', locations: ['table'] }),
-  'progress-bar': Object.freeze({ label: 'Thanh tiến trình', locations: ['page'] }),
+  skeleton: Object.freeze({ label: 'Skeleton (khung mờ)', locations: ['loginButton', 'page', 'table'] }),
+  'progress-bar': Object.freeze({ label: 'Thanh tiến trình', locations: ['loginButton', 'page', 'table'] }),
 });
 
 const EFFECT_IDS = Object.keys(EFFECTS);
@@ -133,17 +133,17 @@ function validateLoadingField(field, value) {
   switch (field) {
     case 'loginButton':
       if (!EFFECTS[value] || !EFFECTS[value].locations.includes('loginButton')) {
-        return 'loginButton phai la mot trong: spinner, dual-ring, bouncing-dots';
+        return 'loginButton phai la mot trong: spinner, dual-ring, bouncing-dots, skeleton, progress-bar';
       }
       return null;
     case 'page':
       if (!EFFECTS[value] || !EFFECTS[value].locations.includes('page')) {
-        return 'page phai la mot trong: spinner, dual-ring, bouncing-dots, progress-bar';
+        return 'page phai la mot trong: spinner, dual-ring, bouncing-dots, skeleton, progress-bar';
       }
       return null;
     case 'table':
       if (!EFFECTS[value] || !EFFECTS[value].locations.includes('table')) {
-        return 'table phai la mot trong: skeleton, spinner, bouncing-dots';
+        return 'table phai la mot trong: spinner, dual-ring, bouncing-dots, skeleton, progress-bar';
       }
       return null;
     case 'speed':

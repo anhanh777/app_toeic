@@ -31,10 +31,15 @@ import {
    fontScale × hệ số mức của người học. Trang này không động gì đến
    lựa chọn đó. Mọi thay đổi trong trang (kể cả trong Modal) chỉ nằm ở
    doc tạm cho tới khi bấm "Lưu cài đặt". */
+/* Hieu ung chon duoc theo tung cho — lay tu LOADING_EFFECTS.locations
+   (1 nguon duy nhat) nen mo them cho cho hieu ung nao thi modal tu hien. */
 const EFFECT_OPTIONS: Record<LoadingLocation, LoadingEffectId[]> = {
-  loginButton: ['spinner', 'dual-ring', 'bouncing-dots'],
-  page: ['spinner', 'dual-ring', 'bouncing-dots', 'progress-bar'],
-  table: ['skeleton', 'spinner', 'bouncing-dots'],
+  loginButton: (Object.keys(LOADING_EFFECTS) as LoadingEffectId[]).filter(id =>
+    LOADING_EFFECTS[id].locations.includes('loginButton')),
+  page: (Object.keys(LOADING_EFFECTS) as LoadingEffectId[]).filter(id =>
+    LOADING_EFFECTS[id].locations.includes('page')),
+  table: (Object.keys(LOADING_EFFECTS) as LoadingEffectId[]).filter(id =>
+    LOADING_EFFECTS[id].locations.includes('table')),
 };
 
 const LOCATION_LABELS: Record<LoadingLocation, string> = {
@@ -331,7 +336,7 @@ export default function UiSettings() {
                       onClick={() => updateStyleLoading(configStyle, { [loc]: id })}
                     >
                       <span className="ld-pick-anim">
-                        <LoadingEffect effect={id} speed={cfg.loading.speed} size="lg" />
+                        <LoadingEffect effect={id} speed={cfg.loading.speed} size="md" />
                       </span>
                       <span className="ld-pick-label">{LOADING_EFFECTS[id].label}</span>
                     </button>

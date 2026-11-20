@@ -101,10 +101,10 @@ export function activeStyle(settings: UiSettings): StyleSettings {
 
 export const LOADING_EFFECTS: Record<LoadingEffectId, { label: string; locations: LoadingLocation[] }> = {
   spinner: { label: 'Vòng xoay', locations: ['loginButton', 'page', 'table'] },
-  'dual-ring': { label: 'Vòng kép', locations: ['loginButton', 'page'] },
+  'dual-ring': { label: 'Vòng kép', locations: ['loginButton', 'page', 'table'] },
   'bouncing-dots': { label: 'Ba chấm nảy', locations: ['loginButton', 'page', 'table'] },
-  skeleton: { label: 'Skeleton (khung mờ)', locations: ['table'] },
-  'progress-bar': { label: 'Thanh tiến trình', locations: ['page'] },
+  skeleton: { label: 'Skeleton (khung mờ)', locations: ['loginButton', 'page', 'table'] },
+  'progress-bar': { label: 'Thanh tiến trình', locations: ['loginButton', 'page', 'table'] },
 };
 
 export const ACCENT_PRESETS: { name: string; value: string }[] = [

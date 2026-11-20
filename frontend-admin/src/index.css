@@ -436,6 +436,11 @@ tbody tr:hover{background:var(--surface-soft)}
 @keyframes ld-progress{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
 .ld-line{display:flex; align-items:center; gap:.5rem}
 .ld-line .ld-skeleton{flex:1}
+.ld-line .ld-progress{flex:1; width:auto; min-width:6rem}
+/* Skeleton/progress la khoi block: trong nut dang nhap phai thu gon lai thanh
+   1 khoi inline nam chung hang voi chu, khong thi nut bi vo 2 dong. */
+.btn .ld-skeleton{display:inline-flex; width:5rem; min-width:0; vertical-align:middle}
+.btn .ld-progress{display:inline-block; width:6rem; max-width:6rem; vertical-align:middle}
 .ld-mascot{width:72px; height:72px; object-fit:contain; animation:ld-bob 2.4s ease-in-out infinite}
 @keyframes ld-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .ld-page-center{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.7rem; min-height:50vh; text-align:center}
@@ -843,20 +848,22 @@ tbody tr:hover{background:var(--surface-soft)}
 .modal--wide{width:min(58rem, 100%)}
 .modal--narrow{width:min(30rem, 100%)}
 .modal--lg{width:min(52rem, 100%)}
-/* The chon hieu ung loading dang the xem truoc (trang Cai dat giao dien):
-   luoi deu nhau, the hien animation that + ten; the dang chon vien accent. */
-.ld-pick-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(9.5rem, 1fr)); gap:.6rem; margin:.25rem 0 .5rem}
+/* O chon hieu ung loading dang luoi o deu nhau (kieu trang Bieu tuong menu):
+   5 o 1 hang, animation that + ten ben trong; o dang chon vien accent noi bat. */
+.ld-pick-grid{display:grid; grid-template-columns:repeat(5, 1fr); gap:.5rem; margin:.35rem 0 .9rem}
 .ld-pick-card{
-  display:flex; flex-direction:column; align-items:center; gap:.55rem;
-  padding:.8rem .5rem; border:1px solid var(--border); border-radius:12px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.35rem;
+  min-height:4.4rem; padding:.5rem .4rem; border:1px solid var(--border); border-radius:10px;
   background:var(--surface); color:var(--ink); font:inherit; cursor:pointer;
 }
 .ld-pick-card:hover{border-color:var(--accent)}
-.ld-pick-card--on{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent)}
-.ld-pick-anim{min-height:2.6rem; display:flex; align-items:center; justify-content:center}
-.ld-pick-card .ld-skeleton{min-width:0; width:100%}
+.ld-pick-card--on{border:2px solid var(--accent); box-shadow:0 0 0 2px var(--accent-soft-strong)}
+.ld-pick-anim{min-height:1.9rem; display:flex; align-items:center; justify-content:center}
+.ld-pick-card .ld-skeleton{min-width:0; width:100%; gap:.3em}
+.ld-pick-card .ld-skeleton i{height:.6em}
 .ld-pick-card .ld-progress{max-width:100%}
-.ld-pick-label{font-size:.85rem; font-weight:600; text-align:center}
+.ld-pick-label{font-size:.8rem; font-weight:600; text-align:center; line-height:1.25}
+@media (max-width:560px){.ld-pick-grid{grid-template-columns:repeat(auto-fill, minmax(7.5rem, 1fr))}}
 /* Can chinh rieng noi dung modal Cau hinh giao dien: khoang cach cac muc deu tay. */
 .ui-config h3{margin:1.2rem 0 .5rem}
 .ui-config h3:first-child{margin-top:0}

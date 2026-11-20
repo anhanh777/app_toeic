@@ -1076,6 +1076,11 @@ tbody tr:hover{background:var(--surface-soft)}
 @keyframes ld-progress{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
 .ld-line{display:flex; align-items:center; gap:.5rem}
 .ld-line .ld-skeleton{flex:1}
+.ld-line .ld-progress{flex:1; width:auto; min-width:6rem}
+/* Skeleton/progress la khoi block: trong nut dang nhap phai thu gon lai thanh
+   1 khoi inline nam chung hang voi chu, khong thi nut bi vo 2 dong. */
+.btn .ld-skeleton{display:inline-flex; width:5rem; min-width:0; vertical-align:middle}
+.btn .ld-progress{display:inline-block; width:6rem; max-width:6rem; vertical-align:middle}
 .ld-mascot{width:72px; height:72px; object-fit:contain; animation:lively-bob 2.4s ease-in-out infinite}
 .ld-page-center{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.7rem; min-height:50vh; text-align:center}
 .ld-page-top{display:flex; flex-direction:column; align-items:center; gap:.7rem; padding:2rem 0; text-align:center}
