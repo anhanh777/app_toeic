@@ -33,6 +33,17 @@ const LOCATION_LABELS: Record<LoadingLocation, string> = {
   table: 'Danh sách / bảng đang tải',
 };
 
+type UiStyleId = 'pastel' | 'lively';
+
+/** Phong cách giao diện — contract với uiSettings.tsx (field `ui.style`,
+ *  mặc định 'pastel'). Trang này đọc/ghi kiểu "mềm" (ép kiểu cục bộ, xem
+ *  updateStyle và uiStyle bên dưới) để biên dịch được cả khi field chưa
+ *  có trong type UiSettings lẫn sau khi đã được thêm vào. */
+const STYLE_OPTIONS: { id: UiStyleId; name: string; desc: string; accent: string }[] = [
+  { id: 'pastel', name: 'Pastel nhẹ nhàng', desc: 'Giao diện hiện tại: nền kem ấm, thẻ trắng, màu sage dịu.', accent: '#5FA8A0' },
+  { id: 'lively', name: 'Sống động', desc: 'Kiểu Duolingo: xanh lá tươi, nút nổi, gamified (streak, xu, nhiệm vụ).', accent: '#58CC02' },
+];
+
 export default function UiSettings() {
   const { applySettings } = useUiSettings();
   const [doc, setDoc] = useState<UiSettings | null>(null);
@@ -54,6 +65,15 @@ export default function UiSettings() {
   };
   const updateLoading = (patch: Partial<UiSettings['ui']['loading']>) => {
     setDoc(prev => (prev ? { ui: { ...prev.ui, loading: { ...prev.ui.loading, ...patch } } } : prev));
+    setMsg('');
+  };
+
+  /** Ghi `ui.style` ('pastel' | 'lively') vào doc — doc này được nút Lưu
+   *  PUT nguyên vẹn cùng các field khác (xem save()). Ép kiểu cục bộ vì
+   *  field thuộc contract đang được thêm vào UiSettings; sau khi type đã
+   *  có field thì phép ép vẫn biên dịch bình thường. */
+  const updateStyle = (next: UiStyleId) => {
+    setDoc(prev => (prev ? { ...prev, ui: { ...prev.ui, style: next } as UiSettings['ui'] } : prev));
     setMsg('');
   };
 
@@ -80,12 +100,14 @@ export default function UiSettings() {
   if (!doc) return <div><h1>🎨 Cài đặt giao diện</h1><ErrorBox error={error} /><p className="muted">Không tải được cài đặt.</p></div>;
 
   const { accent, fontScale, loading: loadingCfg } = doc.ui;
+  /* Field `ui.style` theo contract — doc cũ chưa có thì mặc định 'pastel'. */
+  const uiStyle: UiStyleId = (doc.ui as UiSettings['ui'] & { style?: UiStyleId }).style ?? 'pastel';
 
   return (
     <div>
       <h1>🎨 Cài đặt giao diện</h1>
       <p className="muted">
-        Màu chủ đạo, cỡ chữ cơ sở và hiệu ứng loading cho cả 2 app (học viên + quản trị).
+        Phong cách, màu chủ đạo, cỡ chữ cơ sở và hiệu ứng loading cho cả 2 app (học viên + quản trị).
         Lưu vào backend nên đổi là có hiệu lực ngay, không cần deploy lại code.
         Cỡ chữ ở đây chỉ là cỡ cơ sở — người học vẫn giữ nút 🔠 chọn cỡ chữ riêng của mình.
       </p>
@@ -113,6 +135,41 @@ export default function UiSettings() {
               >
                 <span aria-hidden="true" style={{ display: 'inline-block', width: '.8rem', height: '.8rem', borderRadius: '50%', background: p.value, verticalAlign: '-.05rem', marginRight: '.3rem' }} />
                 {p.name}
+              </button>
+            ))}
+          </div>
+
+          <h2 style={{ marginTop: '1.2rem' }}>🎨 Phong cách</h2>
+          <p className="muted" style={{ marginTop: 0 }}>
+            Pastel là giao diện hiện tại. Sống động đổi sang kiểu Duolingo: xanh lá tươi, nút nổi, gamified.
+            Đổi phong cách không làm mất màu chủ đạo đã lưu.
+          </p>
+          <div className="btn-row" role="radiogroup" aria-label="Phong cách giao diện" style={{ alignItems: 'stretch' }}>
+            {STYLE_OPTIONS.map(o => (
+              <button
+                key={o.id} type="button" role="radio" aria-checked={uiStyle === o.id}
+                className="btn secondary"
+                style={uiStyle === o.id
+                  ? { borderColor: o.accent, boxShadow: `0 0 0 2px ${o.accent}55`, textAlign: 'left' }
+                  : { textAlign: 'left' }}
+                onClick={() => updateStyle(o.id)}
+              >
+                <span style={{ display: 'block', fontWeight: 700 }}>
+                  {o.id === 'pastel' ? '🌸' : '🚀'} {o.name}{uiStyle === o.id ? ' ✓' : ''}
+                </span>
+                <span className="muted" style={{ display: 'block', fontWeight: 400, fontSize: '.85rem', marginTop: '.2rem' }}>
+                  {o.desc}
+                </span>
+                <span
+                  aria-hidden="true"
+                  style={{
+                    display: 'inline-block', marginTop: '.5rem', padding: '.35rem 1rem',
+                    borderRadius: o.id === 'lively' ? 12 : 8, background: o.accent, color: '#fff',
+                    fontWeight: 700, boxShadow: o.id === 'lively' ? '0 4px 0 #46A302' : 'none',
+                  }}
+                >
+                  Nút mẫu
+                </span>
               </button>
             ))}
           </div>
@@ -186,6 +243,28 @@ export default function UiSettings() {
             </div>
             <p style={{ fontSize: `calc(1rem * ${fontScale})`, margin: '1rem 0 0' }}>
               Chữ mẫu cỡ {fontScale.toFixed(2)}× với màu {accent}.
+            </p>
+            <h3 style={{ margin: '1rem 0 .5rem', fontSize: '1rem' }}>
+              Phong cách đang chọn: {uiStyle === 'lively' ? 'Sống động' : 'Pastel nhẹ nhàng'}
+            </h3>
+            <div style={{ display: 'flex', gap: '.8rem', flexWrap: 'wrap' }}>
+              {STYLE_OPTIONS.map(o => (
+                <span
+                  key={o.id}
+                  style={{
+                    padding: '.45rem 1rem', borderRadius: o.id === 'lively' ? 12 : 8,
+                    background: o.accent, color: '#fff', fontWeight: 700,
+                    boxShadow: o.id === 'lively' ? '0 4px 0 #46A302' : 'none',
+                    outline: uiStyle === o.id ? `2px solid ${o.accent}` : 'none',
+                    outlineOffset: 2, opacity: uiStyle === o.id ? 1 : 0.55,
+                  }}
+                >
+                  {o.name}{uiStyle === o.id ? ' ✓' : ''}
+                </span>
+              ))}
+            </div>
+            <p className="muted" style={{ margin: '.6rem 0 0', fontSize: '.85rem' }}>
+              Pastel: nút sage phẳng, bo góc nhẹ. Sống động: nút xanh lá tươi #58CC02, bo góc lớn, bóng đổ dày 4px.
             </p>
           </div>
         </div>

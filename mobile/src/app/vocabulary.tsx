@@ -20,7 +20,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type UserWord, type Vocab } from '../api';
 import { useExam } from '../exam';
-import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 
@@ -824,7 +824,7 @@ const styles = StyleSheet.create({
   wordCard: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },

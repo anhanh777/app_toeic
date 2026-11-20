@@ -7,6 +7,7 @@
 // lên bảng tĩnh: họ màu accent dẫn xuất theo deriveAccent của web,
 // fontScale nhân thêm lên hệ số mức chữ của người dùng.
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as SystemUI from 'expo-system-ui';
 import {
   createContext,
   useCallback,
@@ -16,12 +17,18 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, type ViewStyle } from 'react-native';
 import { deriveAccent, useUiSettingsOptional } from './uiSettings';
 
 export type Theme = 'light' | 'dark';
 
 export interface Palette {
+  /** Phong cách giao diện đang áp: 'pastel' mặc định, 'lively' = Sống động (Duolingo). */
+  style: 'pastel' | 'lively';
+  /** Cam streak 🔥 + vàng xu 🪙 + xanh dương Duolingo (lively dùng #FF9600/#FFC800/#1CB0F6). */
+  streak: string;
+  coin: string;
+  duoBlue: string;
   background: string;
   surface: string;
   surfaceMuted: string;
@@ -79,6 +86,10 @@ export interface Palette {
 }
 
 export const LIGHT: Palette = {
+  style: 'pastel',
+  streak: '#F5821F',
+  coin: '#E9B949',
+  duoBlue: '#0B5CAD',
   background: '#FDF8F3',
   surface: '#FFFFFF',
   surfaceMuted: '#FBF6F0',
@@ -125,6 +136,10 @@ export const LIGHT: Palette = {
 };
 
 export const DARK: Palette = {
+  style: 'pastel',
+  streak: '#F59A4D',
+  coin: '#E9B949',
+  duoBlue: '#6FB3F2',
   background: '#211E1B',
   surface: '#2B2723',
   surfaceMuted: '#332E28',
@@ -170,16 +185,141 @@ export const DARK: Palette = {
   lavenderBorder: '#453D63',
 };
 
+// ---- Phong cách "Sống động" (Duolingo) — chỉ áp khi ui.style === 'lively'.
+// Token khớp bản web: accent #58CC02, accent-dark/bóng đổ #46A302,
+// accent-soft #DFF3C2, nền #F8FDF0, thẻ trắng viền 2px #E5E5E5,
+// cam streak #FF9600, vàng xu #FFC800, xanh dương #1CB0F6.
+// Khi lively, accent #58CC02 này ÁT accent đã lưu của người dùng;
+// quay về Pastel thì dùng lại accent đã lưu như cũ (xem ThemeProvider). ----
+export const LIVELY_LIGHT: Palette = {
+  style: 'lively',
+  streak: '#FF9600',
+  coin: '#FFC800',
+  duoBlue: '#1CB0F6',
+  background: '#F8FDF0',
+  surface: '#FFFFFF',
+  surfaceMuted: '#EFF7DF',
+  text: '#3C3C3C',
+  muted: '#8A837B',
+  border: '#E5E5E5',
+  accent: '#58CC02',
+  onAccent: '#FFFFFF',
+  danger: '#FF4B4B',
+  success: '#58CC02',
+  inkSoft: '#5C564F',
+  borderSoft: '#EFEFEF',
+  accentDark: '#46A302',
+  accentSoft: '#DFF3C2',
+  accentSoftStrong: '#C9E9A8',
+  green: '#58CC02',
+  greenBg: '#DFF3C2',
+  greenInk: '#3E7A02',
+  greenSoft: '#DFF3C2',
+  greenBorder: '#BEE89A',
+  red: '#FF4B4B',
+  redBg: '#FFEDED',
+  redInk: '#D33131',
+  redSoft: '#FFD9D9',
+  redBorder: '#FFC2C2',
+  amber: '#FFC800',
+  amberBg: '#FFF6CC',
+  gold: '#FFC800',
+  goldInk: '#8A6D1F',
+  silver: '#B9C2D4',
+  bronze: '#D89B6A',
+  examBlue: '#1CB0F6',
+  examOrange: '#FF9600',
+  track: '#E5E5E5',
+  warnBg: '#FFF6CC',
+  warnBorder: '#FFC800',
+  mint: '#DFF3C2',
+  pink: '#FBDCE2',
+  cream: '#FFF6CC',
+  creamStrong: '#FFEEB0',
+  sky: '#DDF4FF',
+  lavender: '#E8DEF8',
+  lavenderBorder: '#DCCDF5',
+};
+
+export const LIVELY_DARK: Palette = {
+  style: 'lively',
+  streak: '#FF9600',
+  coin: '#FFC800',
+  duoBlue: '#1CB0F6',
+  background: '#20291A',
+  surface: '#2A3620',
+  surfaceMuted: '#33402A',
+  text: '#F2F7E8',
+  muted: '#B9C4A8',
+  border: '#42522F',
+  accent: '#58CC02',
+  onAccent: '#FFFFFF',
+  danger: '#FF6B6B',
+  success: '#7ED321',
+  inkSoft: '#D5DCC8',
+  borderSoft: '#38452C',
+  accentDark: '#7ED321',
+  accentSoft: '#2E4A1A',
+  accentSoftStrong: '#3A5C22',
+  green: '#7ED321',
+  greenBg: '#24391A',
+  greenInk: '#A8E063',
+  greenSoft: '#2A4A32',
+  greenBorder: '#3E5C2A',
+  red: '#FF6B6B',
+  redBg: '#3A2323',
+  redInk: '#F2A8A8',
+  redSoft: '#4A2A2A',
+  redBorder: '#5A3434',
+  amber: '#FFC800',
+  amberBg: '#3A2F18',
+  gold: '#FFC800',
+  goldInk: '#E8C86A',
+  silver: '#9AA3B8',
+  bronze: '#D89B6A',
+  examBlue: '#1CB0F6',
+  examOrange: '#FF9600',
+  track: '#33402A',
+  warnBg: '#3A2F18',
+  warnBorder: '#8A6D2B',
+  mint: '#1E3A2C',
+  pink: '#3D2A30',
+  cream: '#3A3220',
+  creamStrong: '#453A24',
+  sky: '#22334A',
+  lavender: '#2E2842',
+  lavenderBorder: '#453D63',
+};
+
 const THEME_KEY = 'toeic_theme';
 
 interface ThemeCtx {
   theme: Theme;
   colors: Palette;
+  /** Phong cách giao diện từ settings (mặc định 'pastel'). */
+  style: 'pastel' | 'lively';
+  /** true khi style === 'lively' — các màn chỉ thêm điểm nhấn khi này. */
+  isLively: boolean;
   /** 'system' = theo hệ thống; đặt 'light'/'dark' để khóa. */
   setTheme: (t: Theme | 'system') => void;
   toggleTheme: () => void;
 }
 const ThemeContext = createContext<ThemeCtx | null>(null);
+
+/** Nút chính kiểu Duolingo khi lively: bo 16 + "nổi" nhờ viền dưới dày
+ * màu accent-dark; pastel trả về {} (giữ nguyên nút hiện tại).
+ * Đặt CUỐI mảng style của Pressable để ghi đè bo góc tĩnh. */
+export function raisedButton(colors: Palette): ViewStyle {
+  if (colors.style !== 'lively') return {};
+  return { borderBottomWidth: 4, borderBottomColor: colors.accentDark, borderRadius: 16 };
+}
+
+/** Thẻ viền rõ kiểu Duolingo khi lively (viền 2px #E5E5E5);
+ * pastel trả về {} (giữ borderWidth: 1 tĩnh của thẻ). */
+export function livelyCard(colors: Palette): ViewStyle {
+  if (colors.style !== 'lively') return {};
+  return { borderWidth: 2, borderColor: colors.border };
+}
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const system = useColorScheme();
@@ -189,6 +329,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Không có UiSettingsProvider phía trên thì dùng bảng tĩnh LIGHT/DARK.
   const ui = useUiSettingsOptional();
   const serverAccent = ui?.settings.ui.accent;
+  // Phong cách từ settings (mặc định 'pastel'). Khi lively: dùng trọn bộ
+  // token LIVELY_* (accent #58CC02), KHÔNG dẫn xuất từ accent đã lưu;
+  // khi pastel: giữ nguyên hành vi cũ (deriveAccent từ accent đã lưu).
 
   useEffect(() => {
     AsyncStorage.getItem(THEME_KEY)
@@ -211,7 +354,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   }, [setTheme, theme]);
 
+  const style = ui?.settings.ui.style ?? 'pastel';
+  const isLively = style === 'lively';
+
   const colors = useMemo<Palette>(() => {
+    if (isLively) return theme === 'dark' ? LIVELY_DARK : LIVELY_LIGHT;
     const base = theme === 'dark' ? DARK : LIGHT;
     if (!serverAccent) return base;
     const d = deriveAccent(serverAccent, theme);
@@ -222,11 +369,21 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       accentSoft: d.accentSoft,
       accentSoftStrong: d.accentSoftStrong,
     };
-  }, [theme, serverAccent]);
+  }, [theme, serverAccent, isLively]);
+
+  // Nền native (root view) theo theme: mỗi lần chuyển tab bằng
+  // router.replace, màn cũ unmount rồi màn mới mới paint frame đầu —
+  // khoảng giữa đó container trong suốt sẽ lộ nền root view. Mặc định
+  // Expo là trắng #ffffff nên mới nháy trắng (dark mode càng lộ).
+  // expo-system-ui đã có sẵn trong Expo Go, gọi động để nền native
+  // bám theo theme sáng/tối thay vì 1 màu cố định trong app.json.
+  useEffect(() => {
+    SystemUI.setBackgroundColorAsync(colors.background).catch(() => {});
+  }, [colors.background]);
 
   const value = useMemo<ThemeCtx>(
-    () => ({ theme, colors, setTheme, toggleTheme }),
-    [theme, colors, setTheme, toggleTheme],
+    () => ({ theme, colors, style, isLively, setTheme, toggleTheme }),
+    [theme, colors, style, isLively, setTheme, toggleTheme],
   );
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }

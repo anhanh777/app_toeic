@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, scoreLevel } from '../api';
-import { ErrorBox, partName, TierBadge } from '../components';
+import { ErrorBox, LivelyMascot, partName, TierBadge } from '../components';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, questionTypeName, realQuestionNumber, stripLeadingNumber } from '../exam';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { LoadingLine, useUiSettings } from '../uiSettings';
@@ -62,6 +62,10 @@ export default function Result() {
   return (
     <div>
       <h1>Kết quả thi thử</h1>
+      {/* Lively-only: mascot nho o dau trang ket qua, khong lan noi dung. */}
+      {settings.ui.style === 'lively' && (
+        <div className="lively-result-mascot-wrap"><LivelyMascot size={88} alt="Mascot ANHANH" /></div>
+      )}
       {isIelts ? (
         isFull && data.overallBand != null ? (
           <div className="card" style={{ textAlign: 'center' }}>

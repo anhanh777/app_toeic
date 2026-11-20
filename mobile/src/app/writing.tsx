@@ -17,9 +17,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { ApiError, api, type WritingSubmission, type WritingTask } from '../api';
-import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { wordCount } from '../lib';
-import { useTextSize, useTheme } from '../theme';
+import { raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 
 export function fmtClock(sec: number): string {
@@ -272,7 +272,7 @@ export default function WritingScreen() {
                   ))}
                 </View>
                 <Pressable
-                  style={[styles.button, { backgroundColor: colors.accent, opacity: !content.trim() || saving ? 0.6 : 1 }]}
+                  style={[styles.button, { backgroundColor: colors.accent, opacity: !content.trim() || saving ? 0.6 : 1 }, raisedButton(colors)]}
                   onPress={() => void submit()}
                   disabled={!content.trim() || saving}
                 >
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
   taskCard: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },
@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
   chart: {
     borderWidth: 1,
     borderRadius: RADIUS.button,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },
@@ -395,7 +395,7 @@ const styles = StyleSheet.create({
     minHeight: 220,
   },
   scoreGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
-  scoreCell: { flexGrow: 1, flexBasis: '45%', minWidth: 140, gap: SPACING.xs },
+  scoreCell: { flexGrow: 1, flexBasis: '45%', maxWidth: '48%', minWidth: 140, gap: SPACING.xs },
   scoreLabel: { flexWrap: 'wrap' },
   scoreInput: {
     borderWidth: 1,
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
   subItem: {
     borderWidth: 1,
     borderRadius: RADIUS.button,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },

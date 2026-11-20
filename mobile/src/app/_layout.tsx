@@ -41,11 +41,17 @@ function RootLayoutNav() {
     );
   }
 
+  // Lớp nền theme bao quanh Stack: container của navigator trong suốt,
+  // lúc replace tab (màn cũ đã gỡ, màn mới chưa paint) khoảng trống sẽ
+  // hiện màu theme thay vì nền trắng của root view. Cùng với nền native
+  // (SystemUI trong theme.tsx + backgroundColor trong app.json) thì mọi
+  // lớp dưới màn hình đều là màu theme, không còn khung trắng nào lộ ra.
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        contentStyle: { backgroundColor: colors.background },
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: { backgroundColor: colors.background },
         // Màn thường: trượt từ phải, ~280ms (mặc định ~200ms hơi gắt).
         animation: 'slide_from_right',
         animationDuration: 280,
@@ -58,8 +64,11 @@ function RootLayoutNav() {
           vào màn (trượt theo hướng tab / zoom từ nút giữa) do TabScreen
           chạy bằng reanimated lúc màn mount. Native 'fade' 200ms cũ bị
           chê "phèn"; còn trượt native thì lộ nền trắng khi replace nên
-          không dùng. 'none' + TabScreen = trượt có hướng, nền vẫn là
-          màu theme nên không nháy trắng. */}
+          không dùng. 'none' + TabScreen = trượt có hướng; nhưng 'none'
+          vẫn nháy trắng lúc replace (màn cũ gỡ rồi màn mới mới paint,
+          contentStyle/SafeAreaView chưa kịp lên) nên phải chặn bằng lớp
+          nền theme quanh Stack + nền native theo theme (theme.tsx dùng
+          SystemUI, app.json backgroundColor). Xem theme.tsx. */}
       <Stack.Screen name="index" options={{ animation: 'none' }} />
       <Stack.Screen name="login" />
       <Stack.Screen name="today" options={{ animation: 'none' }} />
@@ -69,7 +78,8 @@ function RootLayoutNav() {
       {/* Chi tiết bộ đề: fade nhẹ để hiệu ứng "thẻ bay" (HeroFlight) làm
           nhân vật chính, không bị trượt native giành spotlight. */}
       <Stack.Screen name="test-set/[id]" options={{ animation: 'fade', animationDuration: 220 }} />
-    </Stack>
+      </Stack>
+    </View>
   );
 }
 

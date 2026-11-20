@@ -1182,3 +1182,216 @@ tbody tr:hover{background:var(--surface-soft)}
   .flashcard-inner{transition:none}
   .vocab-mastery-fill,.vocab-progress-fill{transition:none}
 }
+/* ================================================================
+   PHONG CACH "SONG DONG" (Duolingo) — chi co hieu luc khi
+   <html data-style="lively"> (uiSettings.tsx dat khi ui.style='lively').
+   Pastel (mac dinh) KHONG them bat cu thuoc tinh nao moi nen giu
+   nguyen y het hien tai. Token: accent #58CC02, accent-dark #46A302,
+   accent-soft #DFF3C2, nen #F8FDF0, the trang vien 2px #E5E5E5,
+   cam #FF9600 (streak), vang #FFC800 (xu), xanh duong #1CB0F6.
+   Accent nguoi dung da luu (vd. #5B9E4D) TAM KHONG DUNG khi lively —
+   applyUiSettings() ep dung bo token tren; ve Pastel thi dung lai.
+   ================================================================ */
+[data-style="lively"]{
+  --bg:#F8FDF0; --surface:#FFFFFF; --surface-soft:#F2F9E6;
+  --ink:#3C3C3C; --ink-soft:#4B4B4B; --muted:#777777;
+  --border:#E5E5E5; --border-soft:#EFEFEF;
+  --accent:#58CC02; --accent-dark:#46A302; --accent-soft:#DFF3C2; --accent-soft-strong:#C9E9A8;
+  --mint:#DFF3C2; --pink:#FFDFE6; --cream:#FFF3C4; --cream-strong:#FFE58A; --sky:#DDF4FF; --lavender:#E9E2FF; --lavender-border:#CFC2F5;
+  --green:#58CC02; --green-bg:#DFF3C2; --green-ink:#46A302; --green-soft:#C9E9A8; --green-border:#A8D97A;
+  --red:#FF4B4B; --red-bg:#FFEDED; --red-ink:#D92D20; --red-soft:#FFD6D6; --red-border:#FFB3B3;
+  --amber:#FF9600; --amber-bg:#FFF3D6;
+  --gold:#FFC800; --gold-ink:#7A5C00;
+  --exam-blue:#1CB0F6; --exam-orange:#FF9600;
+  --track:#E7F3D3; --input-bg:#FFFFFF; --audio-border:#8ED8F8;
+  --warn-bg:#FFF3D6; --warn-border:#FF9600;
+}
+/* Che do toi + lively: giu nen toi cho de nhin, chi doi accent/bien phu. */
+[data-theme="dark"][data-style="lively"]{
+  --bg:#1F2A18; --surface:#28331F; --surface-soft:#2F3D24;
+  --ink:#F2F5E9; --ink-soft:#D8E0C8; --muted:#A9B795;
+  --border:#3D4A33; --border-soft:#33402A;
+  --accent:#58CC02; --accent-dark:#8FE04A; --accent-soft:#2C4418; --accent-soft-strong:#38571F;
+  --mint:#2C4418; --pink:#4A2A32; --cream:#3A3220; --cream-strong:#453A24; --sky:#1E3A4A; --lavender:#2E2842; --lavender-border:#453D63;
+  --green:#58CC02; --green-bg:#2C4418; --green-ink:#8FE04A; --green-soft:#38571F; --green-border:#4A6B2E;
+  --red:#FF7A7A; --red-bg:#3A2323; --red-ink:#FFA8A8; --red-soft:#4A2A2A; --red-border:#5A3434;
+  --amber:#FF9600; --amber-bg:#3A2F18;
+  --gold:#FFC800; --gold-ink:#FFD84D;
+  --exam-blue:#5CC8F8; --exam-orange:#FF9600;
+  --track:#33402A; --input-bg:#28331F; --audio-border:#2E5A66;
+  --warn-bg:#3A2F18; --warn-border:#8A6D2B;
+}
+[data-style="lively"] h1{font-size:1.55rem; font-weight:800}
+[data-style="lively"] h2{font-size:1.2rem; font-weight:800}
+[data-style="lively"] h3{font-weight:800}
+[data-style="lively"] .big{font-weight:800}
+[data-style="lively"] .stat-num{color:var(--accent-dark)}
+/* --- Thanh tren: logo xanh la, muc dang chon la nut xanh co bong day --- */
+[data-style="lively"] .topbar{background:var(--surface); border-bottom:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+[data-style="lively"] .topbar .brand{color:var(--accent-dark)}
+[data-style="lively"] .topbar nav a{font-weight:700; border:2px solid transparent}
+[data-style="lively"] .topbar nav a.active{background:var(--accent); color:#fff; box-shadow:0 3px 0 var(--accent-dark)}
+[data-style="lively"] .topbar nav a:hover{border-color:var(--border); background:var(--surface-soft)}
+[data-style="lively"] .icon-btn,[data-style="lively"] .nav-menu-btn,[data-style="lively"] .theme-toggle{border:2px solid var(--border)}
+[data-style="lively"] .avatar-btn{background:var(--accent); box-shadow:0 3px 0 var(--accent-dark)}
+/* --- The: vien 2px ro, bo tron, bong day nhe --- */
+[data-style="lively"] .card{border:2px solid var(--border); border-radius:16px; box-shadow:0 2px 0 var(--border)}
+[data-style="lively"] .card .card{border-width:2px; box-shadow:none}
+[data-style="lively"] .panel{border:2px solid var(--border-soft); border-radius:14px}
+[data-style="lively"] .paper{border:2px solid var(--border); border-radius:16px}
+[data-style="lively"] .screen{border:2px solid var(--border) !important; box-shadow:0 2px 0 var(--border) !important}
+[data-style="lively"] .hero{
+  border:2px solid var(--border); border-radius:16px;
+  background:linear-gradient(135deg, #DFF3C2, #FFF9DB 55%, #DDF4FF);
+  box-shadow:0 4px 0 var(--border);
+}
+[data-style="lively"] .stat-card::before{background:linear-gradient(90deg,#58CC02,#1CB0F6,#FFC800)}
+[data-style="lively"] .stat-card .ico{font-size:1.4rem}
+[data-style="lively"] .hearts{color:#FF9600}
+[data-style="lively"] .streak-flame{color:#FF9600}
+/* --- Nut: nut chinh xanh la bong day duoi, bam thi lun xuong --- */
+[data-style="lively"] .btn{
+  font-weight:800; border-radius:14px; border:2px solid transparent;
+  background:var(--accent); color:#fff;
+  box-shadow:0 4px 0 var(--accent-dark);
+  transition:background .15s, transform .1s, box-shadow .1s, filter .15s;
+}
+[data-style="lively"] .btn:hover{background:#61D507; filter:none; transform:translateY(-1px); box-shadow:0 5px 0 var(--accent-dark)}
+[data-style="lively"] .btn:active{transform:translateY(2px); box-shadow:0 2px 0 var(--accent-dark)}
+[data-style="lively"] .btn:disabled{box-shadow:none; transform:none}
+[data-style="lively"] .btn.secondary{
+  background:#fff; color:#4B4B4B; border-color:#E5E5E5; box-shadow:0 4px 0 #E5E5E5;
+}
+[data-style="lively"] .btn.secondary:hover{background:#F7F7F7; border-color:#E5E5E5; box-shadow:0 4px 0 #E5E5E5}
+[data-style="lively"] .btn.secondary:active{box-shadow:0 2px 0 #E5E5E5}
+[data-style="lively"] .btn.ghost{background:#fff; color:var(--accent-dark); border-color:var(--accent); box-shadow:0 4px 0 var(--accent-soft-strong)}
+[data-style="lively"] .btn.ghost:hover{background:var(--accent-soft)}
+[data-style="lively"] .btn.neon{background:var(--accent-soft); color:var(--accent-dark); box-shadow:0 4px 0 var(--accent-soft-strong)}
+[data-style="lively"] .btn.gold{background:#FFC800; color:#4B4B4B; box-shadow:0 4px 0 #D9A400}
+[data-style="lively"] .btn.gold:hover{background:#FFD21F; box-shadow:0 5px 0 #D9A400}
+[data-style="lively"] .btn.gold:active{box-shadow:0 2px 0 #D9A400}
+[data-style="lively"] .btn.danger{background:#fff; color:#FF4B4B; border-color:#FF4B4B; box-shadow:0 4px 0 #FFD6D6}
+[data-style="lively"] .btn.danger:hover{background:#FFEDED}
+/* --- Badge / chip / tag: vien ro, chu dam --- */
+[data-style="lively"] .pill{background:var(--accent-soft); color:var(--accent-dark); font-weight:800; border:2px solid var(--accent-soft-strong)}
+[data-style="lively"] .tag{color:var(--accent-dark); font-weight:800}
+[data-style="lively"] .progress-badge{background:#FF9600; box-shadow:0 3px 0 #CC7800; border-radius:12px}
+[data-style="lively"] .timer-chip{border:2px solid var(--border); box-shadow:0 4px 0 var(--border)}
+[data-style="lively"] .tier{border:2px solid transparent}
+[data-style="lively"] .tier-gold{background:#FFC800; color:#7A5C00}
+[data-style="lively"] .rank-1{background:#FFC800}
+[data-style="lively"] .rank-2{background:#AFBACA}
+[data-style="lively"] .rank-3{background:#FF9600}
+/* --- Thanh tien do / XP: xanh la dam, ray vang cho XP --- */
+[data-style="lively"] .xpbar{height:12px; border:2px solid var(--border); background:#fff}
+[data-style="lively"] .xpbar>i{background:#58CC02}
+[data-style="lively"] .xpbar.gold>i{background:#FFC800}
+[data-style="lively"] .bar{height:10px; border:2px solid var(--border); background:#fff}
+[data-style="lively"] .bar>i{background:#58CC02}
+[data-style="lively"] .bar.green>i{background:#58CC02}
+[data-style="lively"] .hp-bar{height:.6rem; border:2px solid var(--border)}
+[data-style="lively"] .hp-bar i{background:#FF4B4B}
+[data-style="lively"] .vocab-progress,[data-style="lively"] .vocab-mastery-track{border:2px solid var(--border)}
+[data-style="lively"] .vocab-progress-fill,[data-style="lively"] .vocab-mastery-fill{background:#58CC02}
+/* --- Lua chon dap an: chon thi vien xanh + nen xanh nhat --- */
+[data-style="lively"] .option{border:2px solid var(--border); border-radius:14px; font-weight:600}
+[data-style="lively"] .option:hover{border-color:var(--accent)}
+[data-style="lively"] .option.selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 2px 0 var(--accent-soft-strong)}
+[data-style="lively"] .option.correct{border-color:#58CC02; background:#DFF3C2}
+[data-style="lively"] .option.correct strong{background:#58CC02; color:#fff}
+[data-style="lively"] .option.wrong{border-color:#FF4B4B; background:#FFEDED}
+[data-style="lively"] .option.wrong strong{background:#FF4B4B; color:#fff}
+[data-style="lively"] .exam-opts .option strong{border:2px solid var(--border)}
+[data-style="lively"] .exam-opts .option.selected strong{border-color:var(--accent); background:var(--accent); color:#fff}
+[data-style="lively"] .exam-opts .option.correct strong{border-color:#58CC02; background:#58CC02; color:#fff}
+[data-style="lively"] .exam-opts .option.wrong strong{border-color:#FF4B4B; background:#FF4B4B; color:#fff}
+[data-style="lively"] .radio-pill{border:2px solid var(--border)}
+[data-style="lively"] .radio-pill:has(input:checked){background:var(--accent-soft); border-color:var(--accent)}
+[data-style="lively"] .blank-chip{color:var(--accent-dark); font-weight:800}
+[data-style="lively"] .exam-part{color:#1CB0F6}
+[data-style="lively"] .paper-part{color:#1CB0F6}
+[data-style="lively"] .exam-q-num{font-weight:800}
+[data-style="lively"] .audio-box{background:#DDF4FF !important; border:2px solid #8ED8F8 !important}
+[data-style="lively"] .audio-box.audio-missing{border:2px dashed #FF9600 !important; background:#FFF3D6 !important}
+[data-style="lively"] .listen-progress{border:2px solid var(--border)}
+[data-style="lively"] .listen-progress i{background:#58CC02}
+/* --- The chon Part / de thi / ky thi --- */
+[data-style="lively"] .pick-box{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+[data-style="lively"] .pick-box:hover{border-color:var(--accent)}
+[data-style="lively"] .pick-box--selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 2px 0 var(--accent-dark)}
+[data-style="lively"] .part-card:hover{border-color:var(--accent); box-shadow:0 4px 0 var(--accent-soft-strong)}
+[data-style="lively"] .part-card.selected{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft), 0 4px 0 var(--accent-dark)}
+[data-style="lively"] .exam-pick .card:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 0 var(--accent-soft-strong)}
+[data-style="lively"] .band-num{color:var(--accent-dark)}
+/* --- Bang cau hoi (palette): da lam xanh nhat, dang lam vien xanh dam --- */
+[data-style="lively"] .q-palette-btn{border:2px solid var(--border); font-weight:800}
+[data-style="lively"] .q-palette-btn--done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+[data-style="lively"] .q-palette-btn--correct{background:#DFF3C2; border-color:#58CC02; color:#46A302}
+[data-style="lively"] .q-palette-btn--wrong{background:#FFEDED; border-color:#FF4B4B; color:#D92D20}
+[data-style="lively"] .q-palette-btn--current{box-shadow:0 0 0 2px var(--surface), 0 0 0 4px var(--accent)}
+[data-style="lively"] .q-palette-group-label{background:var(--accent-soft); color:var(--accent-dark)}
+[data-style="lively"] .flag-btn--on{opacity:1}
+[data-style="lively"] .practice-bar{border:2px solid var(--border); box-shadow:0 4px 0 var(--border)}
+[data-style="lively"] .practice-bar .progress{border:2px solid var(--border)}
+[data-style="lively"] .room-side{border:2px solid var(--border)}
+[data-style="lively"] .room-side .progress{border:2px solid var(--border)}
+/* --- Flashcard, bang xep hang, menu --- */
+[data-style="lively"] .flashcard-face{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+[data-style="lively"] .flashcard-face.back{background:#DFF3C2; border-color:#A8D97A}
+[data-style="lively"] .top3-place{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+[data-style="lively"] .top3-place .medal-1{background:#FFC800}
+[data-style="lively"] .top3-place .medal-3{background:#FF9600}
+[data-style="lively"] .nav-menu,[data-style="lively"] .profile-menu,[data-style="lively"] .text-size-popover{border:2px solid var(--border); box-shadow:0 4px 0 var(--border)}
+[data-style="lively"] .pin-btn.pinned{background:var(--accent-soft); border-color:var(--accent)}
+[data-style="lively"] .error{border:2px solid var(--red-border)}
+[data-style="lively"] .success{border:2px solid var(--green-border)}
+[data-style="lively"] .monster-card{border:2px solid var(--border)}
+[data-style="lively"] .monster-killed{border-color:#58CC02; background:#DFF3C2}
+[data-style="lively"] .today-bad-day{border:2px dashed #FF9600; background:#FFF3D6}
+[data-style="lively"] .vocab-due-card{border:2px solid var(--accent); background:var(--accent-soft)}
+[data-style="lively"] .vocab-opt--correct{border-color:#58CC02; background:#DFF3C2}
+[data-style="lively"] .vocab-opt--wrong{border-color:#FF4B4B; background:#FFEDED}
+[data-style="lively"] .ielts-match-gap{border:2px dashed var(--accent)}
+[data-style="lively"] .ielts-match-chip--picked{border-color:var(--accent); outline:2px solid var(--accent)}
+[data-style="lively"] .ielts-match-gap--correct{border-color:#58CC02; background:#DFF3C2}
+[data-style="lively"] .ielts-match-gap--wrong{border-color:#FF4B4B; background:#FFEDED}
+[data-style="lively"] .ielts-notes,[data-style="lively"] .ielts-match{border:2px solid var(--border)}
+[data-style="lively"] .notes-blank input{border:2px solid var(--accent)}
+[data-style="lively"] .notes-blank--correct input{border-color:#58CC02; background:#DFF3C2}
+[data-style="lively"] .notes-blank--wrong input{border-color:#FF4B4B; background:#FFEDED}
+[data-style="lively"] input:focus,[data-style="lively"] select:focus,[data-style="lively"] textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
+[data-style="lively"] input,[data-style="lively"] select,[data-style="lively"] textarea{border:2px solid var(--border)}
+[data-style="lively"] ::selection{background:var(--accent-soft)}
+/* --- Dai nhiem vu hang ngay + mascot (Home / Today, chi khi lively) --- */
+[data-style="lively"] .lively-strip{
+  display:flex; gap:1rem; align-items:flex-start; flex-wrap:wrap;
+  border:2px solid var(--border); border-radius:16px; background:#fff;
+  box-shadow:0 4px 0 var(--border); padding:.9rem 1rem; margin-bottom:1rem;
+}
+[data-theme="dark"][data-style="lively"] .lively-strip{background:var(--surface)}
+[data-style="lively"] .lively-strip-mascot{flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:.3rem}
+[data-style="lively"] .lively-strip-bubble{
+  background:#FFC800; color:#4B4B4B; font-weight:800; font-size:.85rem;
+  border-radius:999px; padding:.3rem .7rem; box-shadow:0 3px 0 #D9A400; white-space:nowrap;
+}
+[data-style="lively"] .lively-strip-body{flex:1 1 260px; min-width:0}
+[data-style="lively"] .lively-strip-stats{display:flex; gap:.5rem; flex-wrap:wrap; margin-bottom:.6rem}
+[data-style="lively"] .lively-stat{
+  font-weight:800; font-size:.95rem; border-radius:999px; padding:.35rem .8rem; border:2px solid transparent;
+}
+[data-style="lively"] .lively-stat--streak{background:#FFEED6; color:#CC7800; border-color:#FFD9A0}
+[data-style="lively"] .lively-stat--xp{background:#DFF3C2; color:#46A302; border-color:#A8D97A}
+[data-style="lively"] .lively-stat--tasks{background:#DDF4FF; color:#0B7DB3; border-color:#8ED8F8}
+[data-style="lively"] .lively-tasks{list-style:none; margin:0; padding:0; display:grid; gap:.45rem}
+@media(min-width:640px){[data-style="lively"] .lively-tasks{grid-template-columns:1fr 1fr}}
+[data-style="lively"] .lively-task{
+  display:flex; gap:.5rem; align-items:center; font-weight:700; color:var(--ink);
+  background:var(--surface-soft); border:2px solid var(--border); border-radius:12px; padding:.5rem .7rem;
+}
+[data-style="lively"] .lively-task:hover{text-decoration:none; border-color:var(--accent)}
+[data-style="lively"] .lively-task--done{background:#DFF3C2; border-color:#58CC02}
+[data-style="lively"] .lively-task-meta{font-weight:600; color:var(--muted); font-size:.85rem}
+[data-style="lively"] .lively-mascot{border-radius:16px; animation:lively-bob 2.4s ease-in-out infinite}
+@keyframes lively-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(prefers-reduced-motion:reduce){[data-style="lively"] .lively-mascot{animation:none}}
+[data-style="lively"] .lively-result-mascot-wrap,[data-style="lively"] .lively-login-mascot-wrap{display:flex; justify-content:center; margin:.2rem 0 .6rem}

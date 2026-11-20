@@ -20,9 +20,9 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type BadDayTask, type ErrorLogEntry, type Question, type TodayData, type WeeklyError } from '../api';
 import { useExam } from '../exam';
-import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
-import { useTextSize, useTheme } from '../theme';
+import { raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
@@ -162,7 +162,7 @@ const DrillAnswerControl = memo(function DrillAnswerControl({
 
 export default function TodayScreen() {
   const { exam } = useExam();
-  const { colors } = useTheme();
+  const { colors, isLively } = useTheme();
   const { scaled } = useTextSize();
   const { width } = useWindowDimensions();
   const ex = exam ?? 'toeic';
@@ -290,7 +290,7 @@ export default function TodayScreen() {
               <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }]}>
                 <Text style={[styles.statEmoji, { fontSize: scaled(20) }]}>🔥</Text>
                 <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Streak</Text>
-                <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(16) }]}>{streak?.current ?? 0} ngày</Text>
+                <Text style={[styles.statBig, { color: isLively ? colors.streak : colors.text, fontSize: scaled(16) }]}>{streak?.current ?? 0} ngày</Text>
                 <Text style={[styles.statNote, { color: colors.muted, fontSize: scaled(12) }]}>
                   {(streak?.freeRestLeft ?? 1) > 0 ? 'Còn 1 ngày nghỉ miễn phí tuần này' : 'Đã dùng ngày nghỉ tuần này'}
                 </Text>
@@ -387,7 +387,7 @@ export default function TodayScreen() {
                   ) : null}
                   <View style={styles.row}>
                     <Pressable
-                      style={[styles.button, { backgroundColor: colors.accent, flex: 1 }]}
+                      style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
                       onPress={() => router.push('/wrong')}
                     >
                       <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn ngay →</Text>
@@ -426,7 +426,7 @@ export default function TodayScreen() {
                   </Text>
                   <View style={styles.row}>
                     <Pressable
-                      style={[styles.button, { backgroundColor: colors.accent, flex: 1 }]}
+                      style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
                       onPress={() => router.push('/practice')}
                     >
                       <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở luyện tập →</Text>
@@ -455,7 +455,7 @@ export default function TodayScreen() {
                   </Text>
                   <View style={styles.row}>
                     <Pressable
-                      style={[styles.button, { backgroundColor: colors.accent, flex: 1 }]}
+                      style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
                       onPress={() => router.push('/practice')}
                     >
                       <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở luyện tập →</Text>
@@ -666,7 +666,7 @@ function IeltsDrillBlock({
       </Text>
       {!started && (
         <View style={styles.row}>
-          <Pressable style={[styles.button, { backgroundColor: colors.accent, flex: 1 }]} onPress={() => void start()}>
+          <Pressable style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]} onPress={() => void start()}>
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Luyện 10 câu dạng này →</Text>
           </Pressable>
         </View>
@@ -955,7 +955,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: 2,
     alignItems: 'center',
   },
@@ -975,7 +975,7 @@ const styles = StyleSheet.create({
   panel: {
     borderWidth: 1,
     borderRadius: RADIUS.button,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },

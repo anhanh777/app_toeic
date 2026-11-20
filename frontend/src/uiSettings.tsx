@@ -27,6 +27,7 @@ export interface UiSettings {
   ui: {
     accent: string;
     fontScale: number;
+    style: 'pastel' | 'lively';
     loading: {
       loginButton: LoadingEffectId;
       page: LoadingEffectId;
@@ -41,6 +42,7 @@ export const UI_SETTINGS_DEFAULTS: UiSettings = {
   ui: {
     accent: '#5FA8A0',
     fontScale: 1,
+    style: 'pastel',
     loading: {
       loginButton: 'spinner',
       page: 'spinner',
@@ -67,6 +69,7 @@ export const ACCENT_PRESETS: { name: string; value: string }[] = [
   { name: 'Xanh ngọc', value: '#2E9E8F' },
   { name: 'Cam đất', value: '#C98A2E' },
   { name: 'Xanh lá', value: '#5B9E4D' },
+  { name: 'Xanh lá tươi (Duolingo)', value: '#58CC02' },
 ];
 
 function isHexColor(v: unknown): v is string {
@@ -98,6 +101,7 @@ export function normalizeSettings(input: unknown): UiSettings {
     ui: {
       accent: isHexColor(ui.accent) ? ui.accent : d.accent,
       fontScale: isNumberIn(ui.fontScale, 0.9, 1.15) ? ui.fontScale : d.fontScale,
+      style: ui.style === 'pastel' || ui.style === 'lively' ? ui.style : d.style,
       loading: {
         loginButton: validEffect(loading.loginButton, 'loginButton') ? loading.loginButton : d.loading.loginButton,
         page: validEffect(loading.page, 'page') ? loading.page : d.loading.page,
@@ -153,10 +157,40 @@ function deriveAccent(hex: string, theme: 'light' | 'dark') {
  * Ap cai dat vao :root: co chu co so (--ui-font-scale) + mau chu dao
  * (--accent, --accent-dark, --accent-soft, --accent-soft-strong).
  * Khong cham gi den lua chon co chu rieng cua nguoi dung.
+ *
+ * Phong cach 'lively' (Duolingo): accent CO DINH #58CC02 — accent nguoi
+ * dung da luu (vd. #5B9E4D) TAM THOI KHONG DUNG khi lively, de giu dung
+ * chat Duolingo; quay ve 'pastel' thi accent da luu dung lai nhu cu.
+ * Dat `data-style="lively"` len <html> de CSS lively trong index.css
+ * (scoped duoi [data-style="lively"]) chi co hieu luc khi do; pastel
+ * khong them bat cu thuoc tinh/class nao moi.
  */
+export const LIVELY_TOKENS_LIGHT = {
+  accent: '#58CC02',
+  accentDark: '#46A302',
+  accentSoft: '#DFF3C2',
+  accentSoftStrong: '#C9E9A8',
+};
+export const LIVELY_TOKENS_DARK = {
+  accent: '#58CC02',
+  accentDark: '#8FE04A',
+  accentSoft: '#2C4418',
+  accentSoftStrong: '#38571F',
+};
+
 export function applyUiSettings(settings: UiSettings): void {
   const root = document.documentElement;
   root.style.setProperty('--ui-font-scale', String(settings.ui.fontScale));
+  if (settings.ui.style === 'lively') {
+    root.dataset.style = 'lively';
+    const t = currentTheme() === 'dark' ? LIVELY_TOKENS_DARK : LIVELY_TOKENS_LIGHT;
+    root.style.setProperty('--accent', t.accent);
+    root.style.setProperty('--accent-dark', t.accentDark);
+    root.style.setProperty('--accent-soft', t.accentSoft);
+    root.style.setProperty('--accent-soft-strong', t.accentSoftStrong);
+    return;
+  }
+  delete root.dataset.style;
   const derived = deriveAccent(settings.ui.accent, currentTheme());
   root.style.setProperty('--accent', derived.accent);
   root.style.setProperty('--accent-dark', derived.accentDark);

@@ -1,6 +1,7 @@
 // Màn hình chính Phase 0: chọn kỳ thi (2 thẻ lớn TOEIC / IELTS Academic)
 // rồi màn Home placeholder hiển thị kỳ thi đã chọn + nút đăng xuất.
 // Layout flex thuần: màn hẹp xếp dọc, màn rộng (≥600dp) xếp ngang 2 cột.
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -11,10 +12,11 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
+import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
-import { api, targetScoreOf, type ExamInfo, type StatsOverview } from '../api';
+import { api, targetScoreOf, type ExamInfo, type StatsOverview, type TodayData } from '../api';
 import { useAuth } from '../auth';
 import { useExam, type ExamId } from '../exam';
 import { bandLevel, partNameFor, questionTypeName } from '../lib';
@@ -25,7 +27,7 @@ import {
   RADIUS,
   SPACING,
 } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 import { useMenuIcons, type MenuIconKey } from '../menuIcons';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
@@ -62,10 +64,18 @@ const MENU_IELTS: { icon: MenuIconKey; label: string; href: string }[] = [
   { icon: 'ielts-setup', label: 'Thiết lập IELTS', href: '/ielts-setup' },
 ];
 
+// Nhãn nhiệm vụ hằng ngày theo id block của GET /api/today (không có
+// title trong API nên map cố định theo id — khớp màn Hôm nay).
+const TODAY_TASK_LABEL: Record<string, string> = {
+  review: 'Ôn câu sai đến hạn',
+  drill: 'Luyện dạng yếu nhất',
+  active: 'Luyện chủ động',
+};
+
 export default function HomeScreen() {
   const { user, logout } = useAuth();
   const { exam, setExam, clearExam } = useExam();
-  const { colors, theme, toggleTheme } = useTheme();
+  const { colors, theme, toggleTheme, isLively } = useTheme();
   const { scaled } = useTextSize();
   const { icons } = useMenuIcons();
   const { width } = useWindowDimensions();
@@ -73,6 +83,10 @@ export default function HomeScreen() {
   const [loadingExams, setLoadingExams] = useState(true);
   // Thống kê tổng quan cho khối stat-card (port Home.tsx:37-51).
   const [stats, setStats] = useState<StatsOverview | null>(null);
+  // Sống động: kế hoạch hôm nay (thật, GET /api/today) + số khối đã xong
+  // (cùng key AsyncStorage `today_done_<date>` màn Hôm nay ghi).
+  const [todayData, setTodayData] = useState<TodayData | null>(null);
+  const [todayDone, setTodayDone] = useState<string[]>([]);
 
   // Đích đến đang chờ: bấm tab cần kỳ thi khi chưa chọn → về đây chọn,
   // chọn xong tự mở đúng tab đó. Chỉ nhận 3 tab cần kỳ thi.
@@ -101,6 +115,27 @@ export default function HomeScreen() {
         /* không có thống kê thì ẩn khối stat, vẫn hiện menu */
       });
   }, [exam]);
+
+  useEffect(() => {
+    if (!exam || !isLively) return;
+    api
+      .today(exam)
+      .then((d) => {
+        setTodayData(d);
+        AsyncStorage.getItem(`today_done_${d.date}`)
+          .then((v) => {
+            try {
+              setTodayDone(v ? (JSON.parse(v) as string[]) : []);
+            } catch {
+              setTodayDone([]);
+            }
+          })
+          .catch(() => undefined);
+      })
+      .catch(() => {
+        /* không tải được thì chỉ ẩn thẻ nhiệm vụ, vẫn hiện streak/XP */
+      });
+  }, [exam, isLively]);
 
   const pick = useCallback(
     (id: string) => {
@@ -168,6 +203,7 @@ export default function HomeScreen() {
                     styles.card,
                     wide && styles.cardHalf,
                     { backgroundColor: colors.surface, borderColor: colors.border },
+                    livelyCard(colors),
                   ]}
                   onPress={() => pick(e.id)}
                 >
@@ -183,7 +219,7 @@ export default function HomeScreen() {
                   <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>
                     {e.testSetCount} đề • {e.questionCount} câu • Thang điểm: {e.scale}
                   </Text>
-                  <View style={[styles.pickButton, { backgroundColor: colors.accent }]}>
+                  <View style={[styles.pickButton, { backgroundColor: colors.accent }, raisedButton(colors)]}>
                     <Text style={[styles.pickButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                       Chọn {e.title}
                     </Text>
@@ -274,6 +310,65 @@ export default function HomeScreen() {
                   <XpBar xp={stats.totalXp ?? 0} />
                 </View>
               </View>
+            ) : null}
+
+            {/* Sống động: hàng streak/XP + mascot + nhiệm vụ hằng ngày.
+                Chỉ hiện khi lively. Số liệu thật: streak/XP từ statsOverview,
+                nhiệm vụ từ GET /api/today, trạng thái xong từ AsyncStorage
+                (màn Hôm nay ghi). Không tải được today thì ẩn thẻ nhiệm vụ. */}
+            {isLively ? (
+              <View style={[styles.livelyHero, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}>
+                <Image
+                  source={require('../../assets/mascot.png')}
+                  style={{ width: 84, height: 84 }}
+                  contentFit="contain"
+                />
+                <View style={styles.livelyHeroText}>
+                  <Text style={[styles.livelyHeroTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                    Học tiếp nào! 💪
+                  </Text>
+                  <View style={styles.livelyChips}>
+                    <View style={[styles.livelyChip, { backgroundColor: colors.accentSoft }]}>
+                      <Text style={[styles.livelyChipText, { color: colors.streak, fontSize: scaled(15) }]}>
+                        🔥 {stats?.streakDays ?? todayData?.streak.current ?? 0} ngày
+                      </Text>
+                    </View>
+                    <View style={[styles.livelyChip, { backgroundColor: colors.accentSoft }]}>
+                      <Text style={[styles.livelyChipText, { color: colors.coin, fontSize: scaled(15) }]}>
+                        🪙 {stats?.totalXp ?? 0} XP
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            ) : null}
+            {isLively && todayData ? (
+              <Pressable
+                style={[styles.card, styles.livelyTasks, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}
+                onPress={() => router.push('/today')}
+              >
+                <Text style={[styles.livelyTasksTitle, { color: colors.text, fontSize: scaled(16) }]}>
+                  🎯 Nhiệm vụ hôm nay · {todayDone.length}/{todayData.blocks.length} xong
+                </Text>
+                {todayData.blocks.map((b) => {
+                  const done = todayDone.includes(b.id);
+                  const count = b.dueCount ?? b.questionCount;
+                  return (
+                    <View key={b.id} style={styles.livelyTaskRow}>
+                      <Text style={[styles.livelyTaskCheck, { color: done ? colors.success : colors.muted, fontSize: scaled(16) }]}>
+                        {done ? '✅' : '⭕'}
+                      </Text>
+                      <Text style={[styles.livelyTaskLabel, { color: colors.text, fontSize: scaled(15) }]}>
+                        {TODAY_TASK_LABEL[b.id] ?? b.id}
+                        {count != null ? ` · ${count} câu` : ''}
+                      </Text>
+                    </View>
+                  );
+                })}
+                <Text style={[styles.livelyTasksMore, { color: colors.accent, fontSize: scaled(14) }]}>
+                  Mở màn Hôm nay →
+                </Text>
+              </Pressable>
             ) : null}
 
             <View style={styles.menu}>
@@ -375,6 +470,28 @@ const styles = StyleSheet.create({
   },
   pickButtonText: { fontWeight: '700' },
   homeWrap: { gap: SPACING.sm, width: '100%' },
+  // Sống động (chỉ render khi lively): hero mascot + chip streak/XP,
+  // thẻ nhiệm vụ hằng ngày.
+  livelyHero: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
+    borderRadius: RADIUS.card,
+    borderWidth: 1,
+    padding: SPACING.md,
+    width: '100%',
+  },
+  livelyHeroText: { flex: 1, gap: SPACING.sm, flexShrink: 1 },
+  livelyHeroTitle: { fontWeight: '800', flexWrap: 'wrap' },
+  livelyChips: { flexDirection: 'row', gap: SPACING.sm, flexWrap: 'wrap' },
+  livelyChip: { borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: 6 },
+  livelyChipText: { fontWeight: '800' },
+  livelyTasks: { alignItems: 'flex-start', gap: SPACING.sm },
+  livelyTasksTitle: { fontWeight: '800', flexWrap: 'wrap' },
+  livelyTaskRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
+  livelyTaskCheck: {},
+  livelyTaskLabel: { fontWeight: '600', flexWrap: 'wrap', flexShrink: 1 },
+  livelyTasksMore: { fontWeight: '700' },
   // 3 stat-card phía trên hub menu — xếp dọc 1 cột trên mobile hẹp.
   stats: { gap: SPACING.sm, width: '100%' },
   statCard: {
@@ -402,6 +519,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.sm,
     width: '48%',
     flexGrow: 1,
+    // Ô lẻ cuối hàng (vd. "Hồ sơ & Cài đặt" ở chế độ TOEIC) không được
+    // giãn full-width — giữ đúng 1 cột như lưới web.
+    maxWidth: '48%',
     minHeight: 72,
   },
   menuEmoji: { textAlign: 'center' },

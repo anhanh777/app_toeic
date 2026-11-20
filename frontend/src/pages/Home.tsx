@@ -1,24 +1,35 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { api, targetScoreOf, type StatsOverview } from '../api';
+import { api, targetScoreOf, type StatsOverview, type TodayData } from '../api';
 import { useAuth } from '../auth';
 import { bandLevel, partNameFor, questionTypeName, useExam } from '../exam';
-import { ErrorBox, TierBadge, XpBar } from '../components';
+import { ErrorBox, LivelyDailyStrip, TierBadge, XpBar, type DailyTaskItem } from '../components';
 import { useMenuIcons } from '../menuIcons';
+import { useUiSettings } from '../uiSettings';
 import Today from './Today';
 
 export default function Home() {
   const { user } = useAuth();
   const { exam } = useExam();
   const { icons } = useMenuIcons();
+  const { settings } = useUiSettings();
+  const lively = settings.ui.style === 'lively';
   const ex = exam ?? 'toeic';
   const isIelts = ex === 'ielts';
   const [stats, setStats] = useState<StatsOverview | null>(null);
   const [error, setError] = useState<unknown>(null);
+  // Lively-only: du lieu "Hom nay" that (GET /api/today) de lap dai
+  // nhiem vu hang ngay — IELTS khong can vi Home IELTS chinh la <Today/>.
+  const [todayData, setTodayData] = useState<TodayData | null>(null);
 
   useEffect(() => {
     api.statsOverview(ex).then(setStats).catch(setError);
   }, [ex]);
+
+  useEffect(() => {
+    if (!lively || isIelts) return;
+    api.today(ex).then(setTodayData).catch(() => undefined);
+  }, [lively, isIelts, ex]);
 
   const target = targetScoreOf(user);
   const best = stats?.recentScores?.length ? Math.max(...stats.recentScores.map(s => s.totalScore)) : null;
@@ -32,12 +43,31 @@ export default function Home() {
   // bằng link nav (scope update 2026-11-16). Đặt sau mọi hook để
   // không phá thứ tự hook khi đổi exam.
   if (isIelts) return <Today />;
+  // Lively-only: nhiem vu hang ngay tu du lieu that (/api/today + o
+  // "da xong" localStorage ma Today.tsx ghi). Thieu du lieu -> hien 0,
+  // khong bia so. Pastel khong tinh gi them.
+  const doneToday: string[] = (() => {
+    if (!todayData) return [];
+    try { return JSON.parse(localStorage.getItem(`today_done_${todayData.date}`) || '[]') as string[]; } catch { return []; }
+  })();
+  const reviewBlock = todayData?.blocks.find(b => b.id === 'review');
+  const drillBlock = todayData?.blocks.find(b => b.id === 'drill');
+  const vocabBlock = todayData?.blocks.find(b => b.id === 'vocab');
+  const livelyTasks: DailyTaskItem[] = lively ? [
+    { id: 'review', label: 'Ôn lỗi đến hạn', meta: `${reviewBlock?.dueCount ?? 0} câu`, to: '/wrong', done: doneToday.includes('review') },
+    { id: 'drill', label: 'Luyện dạng yếu nhất', meta: drillBlock?.weakestPart ? partNameFor(drillBlock.weakestPart, ex) : undefined, to: '/practice', done: doneToday.includes('drill') },
+    { id: 'active', label: 'Luyện chủ động', meta: '1 Part bất kỳ', to: '/practice', done: doneToday.includes('active') },
+    { id: 'vocab', label: 'Ôn từ vựng đến hạn', meta: `${vocabBlock?.dueCount ?? 0} từ`, to: '/vocabulary?review=due', done: (vocabBlock?.dueCount ?? 0) === 0 },
+  ] : [];
   return (
     <div>
       <div className="hero">
         <h1>{isIelts ? `${icons['exam-ielts']} Luyện thi IELTS` : `${icons['exam-toeic']} Luyện thi TOEIC`}</h1>
         <p className="sub">Chào {user?.name || 'bạn'} — hôm nay mình luyện tiếp nhé.</p>
       </div>
+      {lively && (
+        <LivelyDailyStrip streakDays={stats?.streakDays ?? 0} totalXp={stats?.totalXp ?? 0} tasks={livelyTasks} />
+      )}
       <ErrorBox error={error} />
       <div className="grid grid3">
         {isIelts ? (

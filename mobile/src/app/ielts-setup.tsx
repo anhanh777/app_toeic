@@ -241,7 +241,7 @@ const styles = StyleSheet.create({
   },
   section: { fontWeight: '700', marginTop: SPACING.md },
   bandGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.md, width: '100%' },
-  bandCell: { flexGrow: 1, flexBasis: '45%', minWidth: 140, gap: SPACING.xs },
+  bandCell: { flexGrow: 1, flexBasis: '45%', maxWidth: '48%', minWidth: 140, gap: SPACING.xs },
   reason: {
     borderWidth: 1,
     borderRadius: RADIUS.button,

@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { ApiError } from './api';
 import { speak, stopSpeak, pauseSpeak, resumeSpeak, ttsSupported } from './tts';
 
@@ -100,6 +101,61 @@ export function XpBar({ xp, gold }: { xp: number; gold?: boolean }) {
 export function TierBadge({ total }: { total?: number | null }) {
   const t = tierOf(total);
   return <span className={`tier ${t.cls}`}>{t.icon} {t.name}</span>;
+}
+
+/* ---- Phong cach 'lively' (Duolingo): mascot + dai nhiem vu hang ngay ----
+   Chi render khi trang goi no (khi style==='lively'); pastel khong goi
+   nen khong thay gi. MASCOT: /mascot.png (cu hong cam hoa anh dao).
+   DU LIEU THAT: streak/XP/nhiem vu do trang truyen vao (tu statsOverview
+   / /api/today); thieu thi hien 0, KHONG bia so. Backend KHONG co so du
+   xu (coin) — chi co XP (xp_events) nen dai nay chi hien XP, khong hien
+   so xu gia. */
+export function LivelyMascot({ size = 96, alt = 'Mascot ANHANH' }: { size?: number; alt?: string }) {
+  return (
+    <img src="/mascot.png" alt={alt} className="lively-mascot" width={size} height={size} />
+  );
+}
+
+export interface DailyTaskItem {
+  id: string;
+  label: string;
+  meta?: string;
+  to: string;
+  done: boolean;
+}
+
+export function LivelyDailyStrip({ streakDays, totalXp, tasks }: {
+  streakDays: number;
+  /** XP tong (statsOverview.totalXp). Khong co thi truyen undefined — chip XP se an. */
+  totalXp?: number;
+  tasks: DailyTaskItem[];
+}) {
+  const doneCount = tasks.filter(t => t.done).length;
+  return (
+    <section className="lively-strip" aria-label="Nhiệm vụ hôm nay">
+      <div className="lively-strip-mascot">
+        <LivelyMascot size={96} />
+        <span className="lively-strip-bubble">Học tiếp nào! 💪</span>
+      </div>
+      <div className="lively-strip-body">
+        <div className="lively-strip-stats">
+          <span className="lively-stat lively-stat--streak">🔥 {streakDays} ngày</span>
+          {totalXp != null && <span className="lively-stat lively-stat--xp">⭐ {totalXp} XP</span>}
+          <span className="lively-stat lively-stat--tasks">🎯 {doneCount}/{tasks.length} nhiệm vụ</span>
+        </div>
+        <ul className="lively-tasks">
+          {tasks.map(t => (
+            <li key={t.id}>
+              <Link to={t.to} className={`lively-task${t.done ? ' lively-task--done' : ''}`}>
+                <span aria-hidden>{t.done ? '✅' : '⭕'}</span>
+                <span>{t.label}{t.meta ? <span className="lively-task-meta"> — {t.meta}</span> : null}</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
 }
 
 export function RankChip({ rank }: { rank: number }) {

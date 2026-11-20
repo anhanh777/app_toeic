@@ -10,7 +10,7 @@ import { api, type TestSet } from '../../api';
 import { useExam } from '../../exam';
 import { partLabel, partNameFor } from '../../lib';
 import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
-import { useTextSize, useTheme } from '../../theme';
+import { raisedButton, useTextSize, useTheme } from '../../theme';
 import { BackButton } from '../../components/BackButton';
 import { HeroFlight, type HeroRect } from '../../components/HeroFlight';
 import { partName, sectionOf } from '../../components/QuestionView';
@@ -118,7 +118,7 @@ export default function TestSetDetailScreen() {
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa làm câu nào ở {partLabel(p, ex)} này</Text>
           )}
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent }, !n && styles.disabled]}
+            style={[styles.button, { backgroundColor: colors.accent }, !n && styles.disabled, raisedButton(colors)]}
             disabled={!n}
             onPress={() => goPractice(p)}
           >
@@ -217,7 +217,7 @@ export default function TestSetDetailScreen() {
                 </View>
               ) : null}
               <Pressable
-                style={[styles.button, { backgroundColor: colors.accent }, !ts.totalQuestions && styles.disabled]}
+                style={[styles.button, { backgroundColor: colors.accent }, !ts.totalQuestions && styles.disabled, raisedButton(colors)]}
                 disabled={!ts.totalQuestions}
                 onPress={goMock}
               >
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
   title: { fontWeight: '700', flexWrap: 'wrap' },
   line: { flexWrap: 'wrap' },
   card: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },
-  partCard: { flexGrow: 1, flexBasis: '45%' },
+  partCard: { flexGrow: 1, flexBasis: '45%', maxWidth: '48%' },
   grid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
   pill: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.sm, paddingVertical: 2, overflow: 'hidden', alignSelf: 'flex-start' },
   warnBox: { borderRadius: RADIUS.button, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },

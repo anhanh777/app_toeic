@@ -15,7 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type PartInfo, type StatsOverview, type TestSet } from '../api';
 import { useExam } from '../exam';
 import { CARD_PADDING, columnsForWidth, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
@@ -198,7 +198,7 @@ export default function PracticeScreen() {
             ) : null}
           </Pressable>
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent }]}
+            style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
             onPress={() => openSetPicker(p.part)}
             accessibilityRole="button"
             accessibilityLabel={`Luyện ${isIelts ? partNameFor(p.part, ex) : partName(p.part)}`}
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   cardWide: { flex: 1, width: 'auto' },
   setsRow: { gap: SPACING.sm },
   warnBox: { borderRadius: RADIUS.button, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
-  partCard: { flexGrow: 1, flexBasis: '45%' },
+  partCard: { flexGrow: 1, flexBasis: '45%', maxWidth: '48%' },
   cardHead: { flexDirection: 'row', justifyContent: 'space-between', gap: SPACING.sm, alignItems: 'flex-start' },
   cardTitle: { fontWeight: '700', flexShrink: 1, flexWrap: 'wrap' },
   pill: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.sm, paddingVertical: 2, overflow: 'hidden', alignSelf: 'flex-start' },

@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   FlatList,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -21,6 +22,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type Question, type TestSet } from '../api';
 import { useExam, type ExamId } from '../exam';
 import {
+  CARD_PADDING,
   columnsForWidth,
   horizontalPadding,
   LIST_DEFAULTS_WITH_MEDIA,
@@ -29,7 +31,7 @@ import {
   SPACING,
 } from '../layout';
 import { partLabel, partNameFor, realQuestionNumber } from '../lib';
-import { useTextSize, useTheme } from '../theme';
+import { raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
@@ -447,7 +449,14 @@ export default function MockTestScreen() {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
         <TabScreen href="/mock">
-        <View style={[styles.container, { paddingHorizontal: pad }]}>
+        {/* Màn setup phải cuộn được: thi full liệt kê 28 đề nên nút
+          "Bắt đầu thi" nằm dưới đáy màn hình nhỏ — trước đây dùng View
+          thường nên không lướt xuống được. */}
+        <ScrollView
+          style={styles.setupScroll}
+          contentContainerStyle={[styles.setupContent, { paddingHorizontal: pad }]}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.header}>
             <BackButton />
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Thi thử</Text>
@@ -588,12 +597,12 @@ export default function MockTestScreen() {
                   🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.
                 </Text>
               ) : null}
-              <Pressable style={[styles.button, { backgroundColor: colors.accent }, busy && styles.disabled]} disabled={busy} onPress={() => void start()}>
+              <Pressable style={[styles.button, { backgroundColor: colors.accent }, busy && styles.disabled, raisedButton(colors)]} disabled={busy} onPress={() => void start()}>
                 <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</Text>
               </Pressable>
             </View>
           )}
-        </View>
+        </ScrollView>
         </TabScreen>
         <BottomNav />
       </SafeAreaView>
@@ -647,7 +656,7 @@ export default function MockTestScreen() {
           <Pressable style={[styles.barButton, { borderColor: colors.border }]} onPress={() => void exitTest()}>
             <Text style={{ color: colors.text, fontSize: scaled(15) }}>{confirmExit ? '⚠️ Bấm lại để thoát' : '🚪 Thoát'}</Text>
           </Pressable>
-          <Pressable style={[styles.barButton, { backgroundColor: colors.accent }]} onPress={() => void submit()}>
+          <Pressable style={[styles.barButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => void submit()}>
             <Text style={{ color: colors.onAccent, fontSize: scaled(15), fontWeight: '700' }}>Nộp bài</Text>
           </Pressable>
         </View>
@@ -660,6 +669,10 @@ export default function MockTestScreen() {
 const styles = StyleSheet.create({
   safe: { flex: 1 },
   container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md },
+  // Màn setup: ScrollView cuộn (xem ghi chú ở TabScreen) — nội dung căn
+  // giữa tối đa 720dp như các màn khác, đáy chừa 12dp khỏi BottomNav.
+  setupScroll: { flex: 1, width: '100%' },
+  setupContent: { width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, paddingBottom: SPACING.md },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md, paddingHorizontal: SPACING.lg },
   header: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, flexWrap: 'wrap', marginBottom: SPACING.sm },
   headerTitle: { flexShrink: 1, flexWrap: 'wrap' },
@@ -668,7 +681,7 @@ const styles = StyleSheet.create({
   badge: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   list: { gap: SPACING.sm, paddingBottom: SPACING.md },
   cluster: { gap: SPACING.sm },
-  passage: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm },
+  passage: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING },
   duoRow: { flexDirection: 'row', gap: SPACING.sm, width: '100%' },
   duoCell: { flex: 1, minWidth: 0 },
   partHeader: { gap: SPACING.sm },
@@ -679,7 +692,7 @@ const styles = StyleSheet.create({
   tabs: { gap: SPACING.sm },
   tab: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, alignItems: 'center' },
   partGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm },
-  partChip: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, flexGrow: 1, flexBasis: '45%', justifyContent: 'center' },
+  partChip: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, flexGrow: 1, flexBasis: '45%', maxWidth: '48%', justifyContent: 'center' },
   setList: { gap: SPACING.sm },
   setRow: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md },
   button: { borderRadius: RADIUS.button, paddingVertical: SPACING.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },

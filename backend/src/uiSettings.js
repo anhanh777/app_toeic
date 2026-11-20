@@ -2,9 +2,14 @@
 
 /**
  * uiSettings.js — schema + gia tri mac dinh + validate cho cai dat giao dien
- * dong (scope C): hieu ung loading + co chu co so + mau chu dao, quan tri tu
- * web admin, luu trong bang app_settings, ca 2 app (hoc vien + admin) doc
- * dong luc chay — doi cai dat khong can deploy lai code.
+ * dong (scope C): phong cach giao dien + hieu ung loading + co chu co so
+ * + mau chu dao, quan tri tu web admin, luu trong bang app_settings, ca 2
+ * app (hoc vien + admin) doc dong luc chay — doi cai dat khong can deploy
+ * lai code.
+ *
+ * Phong cach giao dien (`ui.style`): 'pastel' (mac dinh, Pastel nhe nhang)
+ * hoac 'lively' (Song dong, kieu Duolingo). Admin doi bang nut gat trong
+ * trang Cai dat giao dien; app ap dung theo gia tri nay luc mo app.
  *
  * NGUYEN TAC CO CHU (quan trong):
  * - `ui.fontScale` chi la CO CHU CO SO / mac dinh cua app. Nguoi hoc van
@@ -25,6 +30,7 @@
 
 const DEFAULTS = Object.freeze({
   ui: Object.freeze({
+    style: 'pastel',
     accent: '#5FA8A0',
     fontScale: 1,
     loading: Object.freeze({
@@ -59,6 +65,9 @@ function isNumberIn(v, min, max) {
 /** Validate 1 key rieng le. Tra ve null neu hop le, neu khong tra ly do. */
 function validateSetting(key, value) {
   switch (key) {
+    case 'ui.style':
+      if (value !== 'pastel' && value !== 'lively') return "ui.style phai la 'pastel' hoac 'lively'";
+      return null;
     case 'ui.accent':
       if (!isHexColor(value)) return 'ui.accent phai la mau hex dang #RRGGBB';
       return null;
@@ -94,6 +103,7 @@ function validateSetting(key, value) {
 }
 
 const SETTING_KEYS = Object.freeze([
+  'ui.style',
   'ui.accent',
   'ui.fontScale',
   'ui.loading.loginButton',
@@ -117,6 +127,7 @@ function normalizeSettings(input) {
   const loading = ui.loading && typeof ui.loading === 'object' ? ui.loading : {};
   const doc = {
     ui: {
+      style: ui.style,
       accent: ui.accent,
       fontScale: ui.fontScale,
       loading: {
@@ -141,6 +152,7 @@ function flattenSettings(doc) {
   const ui = d.ui && typeof d.ui === 'object' ? d.ui : {};
   const loading = ui.loading && typeof ui.loading === 'object' ? ui.loading : {};
   return {
+    'ui.style': ui.style,
     'ui.accent': ui.accent,
     'ui.fontScale': ui.fontScale,
     'ui.loading.loginButton': loading.loginButton,
@@ -154,6 +166,7 @@ function flattenSettings(doc) {
 function unflattenSettings(flat) {
   return {
     ui: {
+      style: flat['ui.style'],
       accent: flat['ui.accent'],
       fontScale: flat['ui.fontScale'],
       loading: {

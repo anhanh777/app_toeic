@@ -21,11 +21,11 @@ import { useAuth } from '../auth';
 import { useBrand } from '../brand';
 import { GoogleSignInButton } from '../components/GoogleSignInButton';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 
 export default function LoginScreen() {
   const { login } = useAuth();
-  const { colors } = useTheme();
+  const { colors, isLively } = useTheme();
   const { scaled } = useTextSize();
   const { brand } = useBrand();
   const { width } = useWindowDimensions();
@@ -68,6 +68,13 @@ export default function LoginScreen() {
           keyboardShouldPersistTaps="handled"
         >
           <View style={styles.hero}>
+            {isLively ? (
+              <Image
+                source={require('../../assets/mascot.png')}
+                style={{ width: 96, height: 96 }}
+                contentFit="contain"
+              />
+            ) : null}
             <View style={[styles.logo, { backgroundColor: colors.accent }]}>
               {brand.logoType === 'image' && brand.logoUrl ? (
                 <Image
@@ -87,7 +94,7 @@ export default function LoginScreen() {
             ) : null}
           </View>
 
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}>
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>
               Đăng nhập
             </Text>
@@ -132,7 +139,7 @@ export default function LoginScreen() {
             ) : null}
 
             <Pressable
-              style={[styles.button, { backgroundColor: colors.accent, opacity: busy ? 0.7 : 1 }]}
+              style={[styles.button, { backgroundColor: colors.accent, opacity: busy ? 0.7 : 1 }, raisedButton(colors)]}
               onPress={submit}
               disabled={busy}
             >

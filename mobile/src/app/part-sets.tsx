@@ -16,8 +16,8 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type TestSet } from '../api';
 import { useExam, type ExamId } from '../exam';
-import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import { raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { BackButton } from '../components/BackButton';
 import { partLabel, partNameFor } from '../lib';
@@ -110,7 +110,7 @@ export default function PartSetsScreen() {
           {disabled ? (
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có câu</Text>
           ) : (
-            <View style={[styles.button, { backgroundColor: colors.accent }]}>
+            <View style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}>
               <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                 ▶ Luyện {isIelts ? partNameFor(partNum, ex) : partName(partNum)}
               </Text>
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
   title: { fontWeight: '700', flexShrink: 1, flexWrap: 'wrap' },
   list: { gap: SPACING.sm, paddingBottom: SPACING.xl },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md },
-  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, width: '100%' },
+  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },
   cardHead: { flexDirection: 'row', justifyContent: 'space-between', gap: SPACING.sm, alignItems: 'flex-start' },
   cardTitle: { fontWeight: '700', flexShrink: 1, flexWrap: 'wrap' },
   pill: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.sm, paddingVertical: 2, overflow: 'hidden', alignSelf: 'flex-start' },

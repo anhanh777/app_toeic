@@ -24,9 +24,9 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type Attempt, type DiagnosticMap, type Question } from '../api';
-import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, partNameFor, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
-import { useTextSize, useTheme } from '../theme';
+import { raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
 import { BackButton } from '../components/BackButton';
 import { fmtClock } from './writing';
@@ -571,7 +571,7 @@ export default function DiagnosticScreen() {
             Làm bài thi thử đầy đủ (TS-028, 80 câu, 90 phút, nghe 1 lần) rồi lưu làm chẩn đoán.
           </Text>
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent, opacity: paperLoading ? 0.6 : 1 }]}
+            style={[styles.button, { backgroundColor: colors.accent, opacity: paperLoading ? 0.6 : 1 }, raisedButton(colors)]}
             onPress={() => void startPaper()}
             disabled={paperLoading}
           >
@@ -725,7 +725,7 @@ const styles = StyleSheet.create({
   panel: {
     borderWidth: 1,
     borderRadius: RADIUS.button,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },

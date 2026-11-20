@@ -8,7 +8,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api, type BadDayTask, type ErrorLogEntry, type Question, type TodayData, type WeeklyError } from '../api';
-import { ErrorBox } from '../components';
+import { ErrorBox, LivelyDailyStrip, type DailyTaskItem } from '../components';
 import { bandLevel, isFillIn, isMultiAnswer, partNameFor, questionTypeName, useExam, wordCount } from '../exam';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 import { errorCodeName, fmtClock, useCountdown } from '../ielts-phase1';
@@ -89,6 +89,17 @@ export default function Today() {
       {!data && <div className="card"><p>Chưa tải được kế hoạch hôm nay. Bạn vẫn có thể <Link to="/practice">luyện tập</Link> bình thường.</p></div>}
       {data && (
         <>
+          {settings.ui.style === 'lively' && (
+            <LivelyDailyStrip
+              streakDays={streak?.current ?? 0}
+              tasks={([
+                { id: 'review', label: 'Ôn lỗi đến hạn', meta: `${review?.dueCount ?? 0} câu`, to: isIelts ? '#today-block-review' : '/wrong', done: done.includes('review') },
+                { id: 'drill', label: 'Luyện dạng yếu nhất', meta: drill?.weakestType ? questionTypeName(drill.weakestType) : drill?.weakestPart ? partNameFor(drill.weakestPart, 'toeic') : undefined, to: '/practice', done: done.includes('drill') },
+                { id: 'active', label: 'Luyện chủ động', meta: '1 Part bất kỳ', to: '/practice', done: done.includes('active') },
+                { id: 'vocab', label: 'Ôn từ vựng đến hạn', meta: `${vocab?.dueCount ?? 0} từ`, to: '/vocabulary?review=due', done: (vocab?.dueCount ?? 0) === 0 },
+              ] as DailyTaskItem[])}
+            />
+          )}
           <div className="grid grid3">
             <div className="card stat-card">
               <div className="ico">🔥</div><div className="muted">Streak</div>

@@ -628,7 +628,7 @@ const styles = StyleSheet.create({
   checkMark: { fontWeight: '700', fontSize: 16, lineHeight: 20 },
   checkLabel: { flex: 1, flexWrap: 'wrap' },
   bandGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
-  bandCell: { flexGrow: 1, flexBasis: '45%', minWidth: 140, gap: SPACING.xs },
+  bandCell: { flexGrow: 1, flexBasis: '45%', maxWidth: '48%', minWidth: 140, gap: SPACING.xs },
   chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
   chip: {
     borderWidth: 1,

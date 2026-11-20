@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type ErrorCode, type ErrorLogEntry, type Monster, type WeeklyError } from '../api';
-import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { questionTypeName } from '../lib';
 import { maybeScheduleDueReminder } from '../notifications';
 import { useTextSize, useTheme } from '../theme';
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
   panel: {
     borderWidth: 1,
     borderRadius: RADIUS.button,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },
@@ -531,10 +531,12 @@ const styles = StyleSheet.create({
   monster: {
     flexGrow: 1,
     flexBasis: '45%',
+    // Ô lẻ cuối hàng không giãn full-width (như menu Home / thẻ Part).
+    maxWidth: '48%',
     minWidth: 150,
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
   },
   monsterEmoji: { textAlign: 'left' },

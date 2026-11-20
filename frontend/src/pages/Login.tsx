@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../auth';
-import { ErrorBox } from '../components';
+import { ErrorBox, LivelyMascot } from '../components';
 import { LoadingEffect, useUiSettings } from '../uiSettings';
 import { useBrand } from '../brand';
 
@@ -33,6 +33,9 @@ export default function Login() {
     <>
     {/* Hero thuong hieu — giong ban mobile: logo + ten + tagline, tren the dang nhap. */}
     <div style={{ textAlign: 'center', margin: '2rem auto 0', maxWidth: 480 }}>
+      {settings.ui.style === 'lively' && (
+        <div className="lively-login-mascot-wrap"><LivelyMascot size={96} alt="Mascot ANHANH chào bạn" /></div>
+      )}
       {brand.logoType === 'image' && brand.logoUrl ? (
         <img src={brand.logoUrl} alt="" style={{ width: 56, height: 56, borderRadius: 14 }} />
       ) : (

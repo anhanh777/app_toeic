@@ -28,6 +28,7 @@ export interface UiSettings {
   ui: {
     accent: string;
     fontScale: number;
+    style: 'pastel' | 'lively';
     loading: {
       loginButton: LoadingEffectId;
       page: LoadingEffectId;
@@ -42,6 +43,7 @@ export const UI_SETTINGS_DEFAULTS: UiSettings = {
   ui: {
     accent: '#5FA8A0',
     fontScale: 1,
+    style: 'pastel',
     loading: {
       loginButton: 'spinner',
       page: 'spinner',
@@ -68,6 +70,7 @@ export const ACCENT_PRESETS: { name: string; value: string }[] = [
   { name: 'Xanh ngọc', value: '#2E9E8F' },
   { name: 'Cam đất', value: '#C98A2E' },
   { name: 'Xanh lá', value: '#5B9E4D' },
+  { name: 'Xanh lá tươi (Duolingo)', value: '#58CC02' },
 ];
 
 function isHexColor(v: unknown): v is string {
@@ -100,6 +103,7 @@ export function normalizeSettings(input: unknown): UiSettings {
     ui: {
       accent: isHexColor(ui.accent) ? ui.accent : d.accent,
       fontScale: isNumberIn(ui.fontScale, 0.9, 1.15) ? ui.fontScale : d.fontScale,
+      style: ui.style === 'pastel' || ui.style === 'lively' ? ui.style : d.style,
       loading: {
         loginButton: validEffect(loading.loginButton, 'loginButton') ? loading.loginButton : d.loading.loginButton,
         page: validEffect(loading.page, 'page') ? loading.page : d.loading.page,

@@ -25,7 +25,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { ApiError, api, type SpeakingPrompt, type SpeakingRecording } from '../api';
-import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
+import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 import { fmtClock } from './writing';
@@ -453,7 +453,7 @@ const styles = StyleSheet.create({
   promptCard: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },
@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
   micError: {
     borderWidth: 1,
     borderRadius: RADIUS.card,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },
@@ -507,7 +507,7 @@ const styles = StyleSheet.create({
   recItem: {
     borderWidth: 1,
     borderRadius: RADIUS.button,
-    padding: SPACING.sm,
+    padding: CARD_PADDING,
     gap: SPACING.xs,
     width: '100%',
   },

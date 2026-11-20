@@ -34,7 +34,7 @@ import {
   realQuestionNumber,
   wordCount,
 } from '../lib';
-import { useTextSize, useTheme } from '../theme';
+import { raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
 import PassageView, { type BlankState } from '../components/PassageView';
 import QuestionView, { isListeningOnly, partName, type AnswerResult } from '../components/QuestionView';
@@ -675,7 +675,7 @@ export default function PracticeSessionScreen() {
           </Pressable>
           {gradingMode === 'submit-all' && !submittedAll ? (
             <Pressable
-              style={[styles.barButton, { backgroundColor: colors.accent }, answeredCount === 0 && styles.disabled]}
+              style={[styles.barButton, { backgroundColor: colors.accent }, answeredCount === 0 && styles.disabled, raisedButton(colors)]}
               disabled={answeredCount === 0}
               onPress={handleSubmitAll}
             >
@@ -684,7 +684,7 @@ export default function PracticeSessionScreen() {
               </Text>
             </Pressable>
           ) : (
-            <Pressable style={[styles.barButton, { backgroundColor: colors.accent }]} onPress={() => setFinished(true)}>
+            <Pressable style={[styles.barButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => setFinished(true)}>
               <Text style={{ color: colors.onAccent, fontSize: scaled(15), fontWeight: '700' }}>Xem kết quả</Text>
             </Pressable>
           )}

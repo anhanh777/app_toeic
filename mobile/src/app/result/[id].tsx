@@ -15,10 +15,11 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Image } from 'expo-image';
 import { api, scoreLevel, type TestResultDetail } from '../../api';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, realQuestionNumber, stripLeadingNumber } from '../../lib';
-import { horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
-import { useTextSize, useTheme } from '../../theme';
+import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
+import { livelyCard, useTextSize, useTheme } from '../../theme';
 import RootCausePicker, { skillOfPart } from '../../components/RootCausePicker';
 import { TierBadge } from '../../components/TierBadge';
 import { WordText } from '../../components/WordLookup';
@@ -33,7 +34,7 @@ interface DetailRow {
 
 export default function ResultScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { colors } = useTheme();
+  const { colors, isLively } = useTheme();
   const { scaled } = useTextSize();
   const { width } = useWindowDimensions();
   const [data, setData] = useState<Awaited<ReturnType<typeof api.testResult>> | null>(null);
@@ -199,9 +200,26 @@ export default function ResultScreen() {
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.container, { paddingHorizontal: pad }]}>
         <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Kết quả thi thử</Text>
+        {isLively ? (
+          <View style={styles.mascotRow}>
+            <Image
+              source={require('../../../assets/mascot.png')}
+              style={{ width: 64, height: 64 }}
+              contentFit="contain"
+            />
+            <Text style={[styles.mascotText, { color: colors.text, fontSize: scaled(15) }]}>
+              {detailAll.length > 0 && correctCount / detailAll.length >= 0.8
+                ? 'Xuất sắc! 🎉'
+                : detailAll.length > 0 && correctCount / detailAll.length >= 0.5
+                  ? 'Tốt lắm, cố thêm chút nữa! 💪'
+                  : 'Không sao, ôn lại câu sai nhé! 🌱'}{' '}
+              {correctCount}/{detailAll.length} câu đúng.
+            </Text>
+          </View>
+        ) : null}
         {isIelts ? (
           isFull && data.overallBand != null ? (
-            <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}>
               <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Band tổng (band ước lượng để tham khảo)</Text>
               <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>Band {data.overallBand}</Text>
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {bandLevel(data.overallBand)}</Text>
@@ -234,7 +252,7 @@ export default function ResultScreen() {
             </View>
           )
         ) : isFull && data.total_score != null ? (
-          <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}>
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Tổng điểm (điểm ước lượng)</Text>
             <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>{data.total_score} / 990</Text>
             <TierBadge total={data.total_score} />
@@ -353,13 +371,16 @@ const styles = StyleSheet.create({
   container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, gap: SPACING.sm },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md },
   title: { fontWeight: '700', flexWrap: 'wrap' },
-  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, width: '100%' },
+  // Sống động (chỉ render khi lively): mascot nhỏ cạnh lời động viên.
+  mascotRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
+  mascotText: { fontWeight: '700', flexWrap: 'wrap', flexShrink: 1 },
+  card: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },
   centerCard: { alignItems: 'center' },
   big: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   line: { flexWrap: 'wrap' },
   sectionTitle: { fontWeight: '700', flexWrap: 'wrap' },
   scoreRow: { flexDirection: 'row', gap: SPACING.md, width: '100%' },
-  scoreBox: { flex: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, alignItems: 'center' },
+  scoreBox: { flex: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, alignItems: 'center' },
   byPartRow: { gap: 4 },
   byPartHead: { flexDirection: 'row', justifyContent: 'space-between' },
   bar: { height: 8, borderRadius: 4, overflow: 'hidden', width: '100%' },
@@ -368,7 +389,7 @@ const styles = StyleSheet.create({
   tabs: { flexDirection: 'row', gap: SPACING.sm, flexWrap: 'wrap' },
   tab: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   list: { gap: SPACING.sm, paddingBottom: SPACING.md },
-  rowCard: { borderWidth: 1, borderRadius: RADIUS.card, padding: SPACING.sm, gap: SPACING.xs, width: '100%' },
+  rowCard: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },
   gate: { gap: SPACING.sm },
   detailBlock: { gap: SPACING.xs },
   btnRow: { flexDirection: 'row', gap: SPACING.md, width: '100%', paddingBottom: SPACING.sm },
