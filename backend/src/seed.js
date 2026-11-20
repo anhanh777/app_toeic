@@ -977,8 +977,30 @@ function seedUiSettings() {
   // (INSERT OR IGNORE) — khong bao gio ghi de cai dat admin da sua.
   // Mac dinh nam trong code (backend/src/uiSettings.js) nen Render
   // free-tier reseed van khoi phuc duoc.
-  const { defaultFlatSettings } = require('./uiSettings');
+  //
+  // Migrate 1 lan (2026-11-20, mo hinh styles): khoi styles moi lay theo
+  // cai dat chung cu dang co trong DB — pastel.accent lay theo ui.accent
+  // (mau co ay da luu), loading moi kieu lay theo ui.loading chung
+  // (page=bouncing-dots, text="Bình tĩnh...."); lively.accent mac dinh
+  // #58CC02 tu registry. Chi ap khi key styles chua co trong DB.
+  const { defaultFlatSettings, STYLE_REGISTRY } = require('./uiSettings');
   const defaults = defaultFlatSettings();
+  const legacyAccent = db.getSetting('ui.accent');
+  if (
+    legacyAccent !== undefined &&
+    /^#[0-9a-fA-F]{6}$/.test(legacyAccent) &&
+    db.getSetting('ui.styles.pastel.accent') === undefined
+  ) {
+    defaults['ui.styles.pastel.accent'] = legacyAccent;
+  }
+  for (const s of STYLE_REGISTRY) {
+    for (const f of ['loginButton', 'page', 'table', 'speed', 'text']) {
+      const legacy = db.getSetting(`ui.loading.${f}`);
+      if (legacy !== undefined && db.getSetting(`ui.styles.${s.id}.loading.${f}`) === undefined) {
+        defaults[`ui.styles.${s.id}.loading.${f}`] = legacy;
+      }
+    }
+  }
   let added = 0;
   for (const [key, value] of Object.entries(defaults)) {
     if (db.getSetting(key) === undefined) {

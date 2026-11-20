@@ -23,7 +23,7 @@ export default function Result() {
   }, [id]);
 
   if (error) return <div><ErrorBox error={error} /><Link className="btn secondary btn-sm" to="/">Về trang chủ</Link></div>;
-  if (!data) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải kết quả…" />;
+  if (!data) return <LoadingLine location="page" text="Đang tải kết quả…" />;
 
   const isFull = data.mode === 'full';
   const isIelts = data.exam === 'ielts' || data.overallBand != null;

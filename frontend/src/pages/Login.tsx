@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '../auth';
 import { ErrorBox, LivelyMascot } from '../components';
-import { LoadingEffect, useUiSettings } from '../uiSettings';
+import { LoadingEffect, activeStyle, useUiSettings } from '../uiSettings';
 import { useBrand } from '../brand';
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
@@ -60,7 +60,7 @@ export default function Login() {
         <label htmlFor="password">Mật khẩu</label>
         <input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} />
         <ErrorBox error={error} />
-        <div className="btn-row"><button className="btn" disabled={busy}>{busy ? <><LoadingEffect effect={settings.ui.loading.loginButton} speed={settings.ui.loading.speed} size="sm" /> Đang xử lý…</> : mode === 'login' ? 'Đăng nhập' : 'Đăng ký'}</button></div>
+        <div className="btn-row"><button className="btn" disabled={busy}>{busy ? <><LoadingEffect effect={activeStyle(settings).loading.loginButton} speed={activeStyle(settings).loading.speed} size="sm" /> Đang xử lý…</> : mode === 'login' ? 'Đăng nhập' : 'Đăng ký'}</button></div>
       </form>
       <p><button type="button" className="btn ghost" onClick={() => setMode(mode === 'login' ? 'register' : 'login')}>
         {mode === 'login' ? 'Chưa có tài khoản? Đăng ký' : 'Đã có tài khoản? Đăng nhập'}

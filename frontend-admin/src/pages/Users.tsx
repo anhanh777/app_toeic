@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { api, type User } from '../api';
 import { useAuth } from '../auth';
 import { ErrorBox, Modal, Toggle } from '../components';
-import { LoadingLine, useUiSettings } from '../uiSettings';
+import { LoadingLine } from '../uiSettings';
 
 /* Quản lý tài khoản — thêm, sửa, xóa, cập nhật, đặt lại mật khẩu.
    Chỉ đặt lại MẬT KHẨU (không reset tiến độ học). Các luật bảo vệ ở
@@ -29,7 +29,6 @@ function GlassField({ icon, children }: { icon: GlassIconName; children: React.R
 }
 export default function Users() {
   const { user: me } = useAuth();
-  const { settings } = useUiSettings();
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<unknown>(null);
   const [msg, setMsg] = useState('');
@@ -174,7 +173,7 @@ export default function Users() {
       <p className="muted">Thêm, sửa, xóa tài khoản; cập nhật quyền và điểm mục tiêu; đặt lại mật khẩu. Tiến độ học của tài khoản chỉ bị xóa cùng lúc khi xóa tài khoản — không có nút reset tiến độ riêng.</p>
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
-      {loading && <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải danh sách tài khoản…" />}
+      {loading && <LoadingLine location="table" text="Đang tải danh sách tài khoản…" />}
 
       <div className="card">
         <div className="card-head">

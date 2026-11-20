@@ -8,14 +8,13 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { api, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
 import { groupTestSetsByBook, partLabel, partNameFor, questionTypeName, useExam } from '../exam';
-import { LoadingLine, useUiSettings } from '../uiSettings';
+import { LoadingLine } from '../uiSettings';
 
 export default function PracticePartSets() {
   const nav = useNavigate();
   const { part: partParam } = useParams<{ part: string }>();
   const [searchParams] = useSearchParams();
   const { exam: ctxExam } = useExam();
-  const { settings } = useUiSettings();
   const part = Number(partParam);
   const qExam = searchParams.get('exam');
   const exam = qExam === 'ielts' || qExam === 'toeic' ? qExam : ctxExam ?? 'toeic';
@@ -80,7 +79,7 @@ export default function PracticePartSets() {
       <h1>{title}</h1>
       <p className="muted">Chọn 1 đề để luyện {shortLabel} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.{questionType ? <> Đang luyện riêng dạng: <strong>{questionTypeName(questionType)}</strong>.</> : ''}</p>
       <ErrorBox error={error} />
-      {loading && <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải danh sách bộ đề…" />}
+      {loading && <LoadingLine location="table" text="Đang tải danh sách bộ đề…" />}
       {!loading && !testSets.length && !error && (
         <div className="card"><p>Chưa có bộ đề nào.</p></div>
       )}

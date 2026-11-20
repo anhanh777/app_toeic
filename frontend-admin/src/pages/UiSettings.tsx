@@ -1,26 +1,35 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api';
-import { ErrorBox } from '../components';
+import { ErrorBox, Modal } from '../components';
 import {
   ACCENT_PRESETS,
   LOADING_EFFECTS,
   LoadingEffect,
+  STYLE_REGISTRY,
   UI_SETTINGS_DEFAULTS,
   normalizeSettings,
   useUiSettings,
   type LoadingEffectId,
+  type LoadingImage,
   type LoadingLocation,
+  type LoadingPosition,
+  type StyleLoading,
+  type StyleSettings,
   type UiSettings,
+  type UiStyleId,
 } from '../uiSettings';
 
-/* Cài đặt giao diện (scope C) — chỉ admin: màu chủ đạo, cỡ chữ cơ sở,
-   hiệu ứng loading từng vị trí, tốc độ, câu chờ máy chủ. Lưu vào backend
-   (bang app_settings), cả 2 app đọc động lúc mở — đổi là có hiệu lực ngay,
+/* Cài đặt giao diện (scope C) — chỉ admin. 2 box giao diện (render theo
+   registry trong uiSettings.tsx — thêm kiểu mới thì box tự hiện) + cấu
+   hình riêng từng kiểu (màu chủ đạo + hiệu ứng loading riêng, mở bằng
+   Modal dùng chung) + cỡ chữ cơ sở dùng chung. Lưu vào backend (bảng
+   app_settings), cả 2 app đọc động lúc mở — đổi là có hiệu lực ngay,
    không cần deploy lại code.
    LƯU Ý: fontScale chỉ là CỠ CHỮ CƠ SỞ. Người học vẫn tự chọn cỡ chữ
    riêng bằng nút 🔠 (localStorage app_text_size); cỡ chữ hiệu dụng =
    fontScale × hệ số mức của người học. Trang này không động gì đến
-   lựa chọn đó. */
+   lựa chọn đó. Mọi thay đổi trong trang (kể cả trong Modal) chỉ nằm ở
+   doc tạm cho tới khi bấm "Lưu cài đặt". */
 const EFFECT_OPTIONS: Record<LoadingLocation, LoadingEffectId[]> = {
   loginButton: ['spinner', 'dual-ring', 'bouncing-dots'],
   page: ['spinner', 'dual-ring', 'bouncing-dots', 'progress-bar'],
@@ -33,16 +42,21 @@ const LOCATION_LABELS: Record<LoadingLocation, string> = {
   table: 'Danh sách / bảng đang tải',
 };
 
-type UiStyleId = 'pastel' | 'lively';
-
-/** Phong cách giao diện — contract với uiSettings.tsx (field `ui.style`,
- *  mặc định 'pastel'). Trang này đọc/ghi kiểu "mềm" (ép kiểu cục bộ, xem
- *  updateStyle và uiStyle bên dưới) để biên dịch được cả khi field chưa
- *  có trong type UiSettings lẫn sau khi đã được thêm vào. */
-const STYLE_OPTIONS: { id: UiStyleId; name: string; desc: string; accent: string }[] = [
-  { id: 'pastel', name: 'Pastel nhẹ nhàng', desc: 'Giao diện hiện tại: nền kem ấm, thẻ trắng, màu sage dịu.', accent: '#5FA8A0' },
-  { id: 'lively', name: 'Sống động', desc: 'Kiểu Duolingo: xanh lá tươi, nút nổi, gamified (streak, xu, nhiệm vụ).', accent: '#58CC02' },
+const POSITION_OPTIONS: { id: LoadingPosition; name: string }[] = [
+  { id: 'center', name: 'Giữa màn hình' },
+  { id: 'top', name: 'Trên đầu trang' },
 ];
+
+const IMAGE_OPTIONS: { id: LoadingImage; name: string; desc: string }[] = [
+  { id: 'none', name: 'Không dùng ảnh', desc: 'Chỉ hiệu ứng + câu chữ lúc chờ.' },
+  { id: 'mascot', name: 'Mascot cú hồng', desc: 'Cú hồng cầm hoa anh đào, nhún nhảy lúc chờ.' },
+  { id: 'custom', name: 'Link ảnh GIF tùy chỉnh', desc: 'Dán link ảnh động (GIF) của bạn.' },
+];
+
+const PREVIEW_BG: Record<UiStyleId, string> = {
+  pastel: '#FDF8F3',
+  lively: '#F8FDF0',
+};
 
 export default function UiSettings() {
   const { applySettings } = useUiSettings();
@@ -51,6 +65,8 @@ export default function UiSettings() {
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
   const [error, setError] = useState<unknown>(null);
+  /** Kiểu đang mở Modal cấu hình (null = không mở). */
+  const [configStyle, setConfigStyle] = useState<UiStyleId | null>(null);
 
   useEffect(() => {
     api.adminUiSettings()
@@ -63,17 +79,36 @@ export default function UiSettings() {
     setDoc(prev => (prev ? { ui: { ...prev.ui, ...patch } } : prev));
     setMsg('');
   };
-  const updateLoading = (patch: Partial<UiSettings['ui']['loading']>) => {
-    setDoc(prev => (prev ? { ui: { ...prev.ui, loading: { ...prev.ui.loading, ...patch } } } : prev));
+
+  /** Chọn kiểu đang dùng (chưa lưu thì app thật vẫn dùng kiểu cũ). */
+  const updateStyle = (next: UiStyleId) => {
+    setDoc(prev => (prev ? { ...prev, ui: { ...prev.ui, style: next } } : prev));
     setMsg('');
   };
 
-  /** Ghi `ui.style` ('pastel' | 'lively') vào doc — doc này được nút Lưu
-   *  PUT nguyên vẹn cùng các field khác (xem save()). Ép kiểu cục bộ vì
-   *  field thuộc contract đang được thêm vào UiSettings; sau khi type đã
-   *  có field thì phép ép vẫn biên dịch bình thường. */
-  const updateStyle = (next: UiStyleId) => {
-    setDoc(prev => (prev ? { ...prev, ui: { ...prev.ui, style: next } as UiSettings['ui'] } : prev));
+  /** Sửa cài đặt riêng của 1 kiểu (màu / loading) — nằm trong Modal. */
+  const updateStyleConfig = (id: UiStyleId, patch: Partial<StyleSettings>) => {
+    setDoc(prev =>
+      prev
+        ? { ui: { ...prev.ui, styles: { ...prev.ui.styles, [id]: { ...prev.ui.styles[id], ...patch } } } }
+        : prev,
+    );
+    setMsg('');
+  };
+  const updateStyleLoading = (id: UiStyleId, patch: Partial<StyleLoading>) => {
+    setDoc(prev =>
+      prev
+        ? {
+            ui: {
+              ...prev.ui,
+              styles: {
+                ...prev.ui.styles,
+                [id]: { ...prev.ui.styles[id], loading: { ...prev.ui.styles[id].loading, ...patch } },
+              },
+            },
+          }
+        : prev,
+    );
     setMsg('');
   };
 
@@ -99,82 +134,85 @@ export default function UiSettings() {
   if (loading) return <div><h1>🎨 Cài đặt giao diện</h1><p>Đang tải cài đặt…</p></div>;
   if (!doc) return <div><h1>🎨 Cài đặt giao diện</h1><ErrorBox error={error} /><p className="muted">Không tải được cài đặt.</p></div>;
 
-  const { accent, fontScale, loading: loadingCfg } = doc.ui;
-  /* Field `ui.style` theo contract — doc cũ chưa có thì mặc định 'pastel'. */
-  const uiStyle: UiStyleId = (doc.ui as UiSettings['ui'] & { style?: UiStyleId }).style ?? 'pastel';
+  const { fontScale } = doc.ui;
+  const uiStyle = doc.ui.style;
+  const cfg = configStyle ? doc.ui.styles[configStyle] : null;
+  const cfgMeta = configStyle ? STYLE_REGISTRY.find(s => s.id === configStyle) : null;
 
   return (
     <div>
       <h1>🎨 Cài đặt giao diện</h1>
       <p className="muted">
-        Phong cách, màu chủ đạo, cỡ chữ cơ sở và hiệu ứng loading cho cả 2 app (học viên + quản trị).
-        Lưu vào backend nên đổi là có hiệu lực ngay, không cần deploy lại code.
+        2 giao diện — mỗi kiểu có màu chủ đạo và hiệu ứng loading riêng. Bấm vào box để chọn kiểu đang dùng,
+        bấm "⚙️ Cấu hình" để chỉnh sâu từng kiểu. Lưu vào backend nên đổi là có hiệu lực ngay, không cần deploy lại code.
         Cỡ chữ ở đây chỉ là cỡ cơ sở — người học vẫn giữ nút 🔠 chọn cỡ chữ riêng của mình.
       </p>
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
 
       <div className="split-even">
-        <div className="card">
-          <h2>Màu chủ đạo</h2>
-          <div className="btn-row" style={{ alignItems: 'center' }}>
-            <input
-              type="color" value={accent} aria-label="Chọn màu chủ đạo"
-              onChange={e => update({ accent: e.target.value })}
-              style={{ width: '3rem', height: '2.4rem', padding: 0 }}
-            />
-            <span style={{ fontWeight: 700 }}>{accent}</span>
-          </div>
-          <div className="btn-row" style={{ marginTop: '.6rem' }}>
-            {ACCENT_PRESETS.map(p => (
-              <button
-                key={p.value} type="button" className="btn secondary btn-sm"
-                title={p.name}
-                style={accent === p.value ? { borderColor: p.value, boxShadow: `0 0 0 2px ${p.value}55` } : undefined}
-                onClick={() => update({ accent: p.value })}
+        {STYLE_REGISTRY.map(meta => {
+          const st = doc.ui.styles[meta.id];
+          const active = uiStyle === meta.id;
+          return (
+            <div className="card" key={meta.id}>
+              <div
+                style={{
+                  background: PREVIEW_BG[meta.id] ?? 'var(--surface-soft)',
+                  border: `1px solid var(--border)`,
+                  borderRadius: 12,
+                  padding: '1rem',
+                }}
               >
-                <span aria-hidden="true" style={{ display: 'inline-block', width: '.8rem', height: '.8rem', borderRadius: '50%', background: p.value, verticalAlign: '-.05rem', marginRight: '.3rem' }} />
-                {p.name}
-              </button>
-            ))}
-          </div>
-
-          <h2 style={{ marginTop: '1.2rem' }}>🎨 Phong cách</h2>
-          <p className="muted" style={{ marginTop: 0 }}>
-            Pastel là giao diện hiện tại. Sống động đổi sang kiểu Duolingo: xanh lá tươi, nút nổi, gamified.
-            Đổi phong cách không làm mất màu chủ đạo đã lưu.
-          </p>
-          <div className="btn-row" role="radiogroup" aria-label="Phong cách giao diện" style={{ alignItems: 'stretch' }}>
-            {STYLE_OPTIONS.map(o => (
-              <button
-                key={o.id} type="button" role="radio" aria-checked={uiStyle === o.id}
-                className="btn secondary"
-                style={uiStyle === o.id
-                  ? { borderColor: o.accent, boxShadow: `0 0 0 2px ${o.accent}55`, textAlign: 'left' }
-                  : { textAlign: 'left' }}
-                onClick={() => updateStyle(o.id)}
-              >
-                <span style={{ display: 'block', fontWeight: 700 }}>
-                  {o.id === 'pastel' ? '🌸' : '🚀'} {o.name}{uiStyle === o.id ? ' ✓' : ''}
-                </span>
-                <span className="muted" style={{ display: 'block', fontWeight: 400, fontSize: '.85rem', marginTop: '.2rem' }}>
-                  {o.desc}
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '.6rem' }}>
+                  {meta.id === 'lively' && (
+                    <img src="/mascot.png" alt="" aria-hidden="true" className="ld-mascot" style={{ width: 56, height: 56 }} />
+                  )}
+                  <div>
+                    <h2 style={{ margin: 0 }}>
+                      {meta.id === 'pastel' ? '🌸' : '🚀'} {meta.name}{' '}
+                      {active && <span style={{ fontSize: '.8rem', color: 'var(--green-ink)' }}>✓ Đang dùng</span>}
+                    </h2>
+                    <p className="muted" style={{ margin: '.2rem 0 0' }}>{meta.desc}</p>
+                  </div>
+                </div>
                 <span
                   aria-hidden="true"
                   style={{
-                    display: 'inline-block', marginTop: '.5rem', padding: '.35rem 1rem',
-                    borderRadius: o.id === 'lively' ? 12 : 8, background: o.accent, color: '#fff',
-                    fontWeight: 700, boxShadow: o.id === 'lively' ? '0 4px 0 #46A302' : 'none',
+                    display: 'inline-block', marginTop: '.8rem', padding: '.45rem 1.2rem',
+                    borderRadius: meta.id === 'lively' ? 12 : 8, background: st.accent, color: '#fff',
+                    fontWeight: 700, boxShadow: meta.id === 'lively' ? `0 4px 0 ${st.accent}8C` : 'none',
                   }}
                 >
                   Nút mẫu
                 </span>
-              </button>
-            ))}
-          </div>
+                <span style={{ display: 'inline-block', margin: '.8rem 0 0 .8rem' }}>
+                  <LoadingEffect effect={st.loading.page} speed={st.loading.speed} size="sm" />
+                </span>
+              </div>
+              <p className="muted" style={{ margin: '.6rem 0' }}>
+                Màu chủ đạo: <b>{st.accent}</b> · Hiệu ứng trang:{' '}
+                {LOADING_EFFECTS[st.loading.page].label} · Câu chờ: "{st.loading.text}"
+              </p>
+              <div className="btn-row">
+                <button
+                  className="btn" type="button" disabled={active}
+                  onClick={() => updateStyle(meta.id)}
+                >
+                  {active ? '✓ Đang dùng' : 'Dùng giao diện này'}
+                </button>
+                <button className="btn secondary" type="button" onClick={() => setConfigStyle(meta.id)}>
+                  ⚙️ Cấu hình
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-          <h2 style={{ marginTop: '1.2rem' }}>Cỡ chữ cơ sở</h2>
+      <div className="split-even" style={{ marginTop: '1rem' }}>
+        <div className="card">
+          <h2>Cỡ chữ cơ sở</h2>
           <label>Cỡ chữ cơ sở: <b>{fontScale.toFixed(2)}×</b> <span className="muted">(0.90 – 1.15; nhân với mức 🔠 của từng người)</span></label>
           <input
             type="range" min={0.9} max={1.15} step={0.05} value={fontScale}
@@ -184,35 +222,15 @@ export default function UiSettings() {
           <p style={{ fontSize: `calc(1rem * ${fontScale})` }}>
             Chữ mẫu ở cỡ {fontScale.toFixed(2)}× — đoạn văn, câu hỏi và phương án sẽ to/nhỏ theo tỉ lệ này.
           </p>
+        </div>
 
-          <h2 style={{ marginTop: '1.2rem' }}>Hiệu ứng loading</h2>
-          {(Object.keys(LOCATION_LABELS) as LoadingLocation[]).map(loc => (
-            <div key={loc}>
-              <label>{LOCATION_LABELS[loc]}</label>
-              <select
-                value={loadingCfg[loc]}
-                onChange={e => updateLoading({ [loc]: e.target.value as LoadingEffectId })}
-              >
-                {EFFECT_OPTIONS[loc].map(id => (
-                  <option key={id} value={id}>{LOADING_EFFECTS[id].label}</option>
-                ))}
-              </select>
-            </div>
-          ))}
-          <label>Tốc độ hiệu ứng: <b>{loadingCfg.speed.toFixed(2)}×</b> <span className="muted">(0.5 chậm – 2 nhanh)</span></label>
-          <input
-            type="range" min={0.5} max={2} step={0.25} value={loadingCfg.speed}
-            onChange={e => updateLoading({ speed: Number(e.target.value) })}
-            aria-label="Tốc độ hiệu ứng"
-          />
-          <label>Câu chờ khi máy chủ đang khởi động</label>
-          <input
-            type="text" value={loadingCfg.text} maxLength={120}
-            onChange={e => updateLoading({ text: e.target.value })}
-            placeholder="Máy chủ đang khởi động, chờ một chút nhé…"
-          />
-
-          <div className="btn-row" style={{ marginTop: '1rem' }}>
+        <div className="card">
+          <h2>Lưu cài đặt</h2>
+          <p className="muted">
+            Mọi thay đổi ở trên (kể cả trong cửa sổ Cấu hình) chỉ nằm ở trang này cho tới khi bấm Lưu.
+            Sau khi lưu, cả web học viên và app sẽ dùng ngay khi mở lại.
+          </p>
+          <div className="btn-row">
             <button className="btn" type="button" disabled={saving} onClick={() => void save()}>
               {saving ? 'Đang lưu…' : 'Lưu cài đặt'}
             </button>
@@ -221,54 +239,115 @@ export default function UiSettings() {
             </button>
           </div>
         </div>
+      </div>
 
-        <div className="card">
-          <h2>Xem trước (chưa lưu)</h2>
-          <p className="muted">Hiệu ứng và màu dưới đây dùng đúng giá trị đang chọn ở cột bên — chưa lưu thì app thật vẫn dùng cài đặt cũ.</p>
-          <div style={{ border: '1px solid var(--border)', borderRadius: 12, padding: '1rem', background: 'var(--surface-soft)' }}>
-            <button
-              type="button" className="btn btn-block"
-              style={{ background: accent, borderColor: accent }}
-              disabled
-            >
-              <LoadingEffect effect={loadingCfg.loginButton} speed={loadingCfg.speed} size="sm" /> Đang đăng nhập…
-            </button>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.6rem', padding: '1rem 0' }}>
-              <LoadingEffect effect={loadingCfg.page} speed={loadingCfg.speed} size="lg" />
-              <span className="muted">{loadingCfg.text}</span>
+      {configStyle && cfg && cfgMeta && (
+        <Modal
+          title={`Cấu hình giao diện ${cfgMeta.name}`}
+          subtitle="Màu chủ đạo + hiệu ứng loading riêng của kiểu này. Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng."
+          onClose={() => setConfigStyle(null)}
+        >
+          <h3 style={{ marginTop: 0 }}>Màu chủ đạo</h3>
+          <div className="btn-row" style={{ alignItems: 'center' }}>
+            <input
+              type="color" value={cfg.accent} aria-label="Chọn màu chủ đạo"
+              onChange={e => updateStyleConfig(configStyle, { accent: e.target.value })}
+              style={{ width: '3rem', height: '2.4rem', padding: 0 }}
+            />
+            <span style={{ fontWeight: 700 }}>{cfg.accent}</span>
+          </div>
+          <div className="btn-row" style={{ marginTop: '.6rem' }}>
+            {ACCENT_PRESETS.map(p => (
+              <button
+                key={p.value} type="button" className="btn secondary btn-sm"
+                title={p.name}
+                style={cfg.accent === p.value ? { borderColor: p.value, boxShadow: `0 0 0 2px ${p.value}55` } : undefined}
+                onClick={() => updateStyleConfig(configStyle, { accent: p.value })}
+              >
+                <span aria-hidden="true" style={{ display: 'inline-block', width: '.8rem', height: '.8rem', borderRadius: '50%', background: p.value, verticalAlign: '-.05rem', marginRight: '.3rem' }} />
+                {p.name}
+              </button>
+            ))}
+          </div>
+
+          <h3>Hiệu ứng loading</h3>
+          {(Object.keys(LOCATION_LABELS) as LoadingLocation[]).map(loc => (
+            <div key={loc}>
+              <label>{LOCATION_LABELS[loc]}</label>
+              <select
+                value={cfg.loading[loc]}
+                onChange={e => updateStyleLoading(configStyle, { [loc]: e.target.value as LoadingEffectId })}
+              >
+                {EFFECT_OPTIONS[loc].map(id => (
+                  <option key={id} value={id}>{LOADING_EFFECTS[id].label}</option>
+                ))}
+              </select>
             </div>
+          ))}
+          <label>Tốc độ hiệu ứng: <b>{cfg.loading.speed.toFixed(2)}×</b> <span className="muted">(0.5 chậm – 2 nhanh)</span></label>
+          <input
+            type="range" min={0.5} max={2} step={0.25} value={cfg.loading.speed}
+            onChange={e => updateStyleLoading(configStyle, { speed: Number(e.target.value) })}
+            aria-label="Tốc độ hiệu ứng"
+          />
+          <label>Câu chờ khi máy chủ đang khởi động</label>
+          <input
+            type="text" value={cfg.loading.text} maxLength={120}
+            onChange={e => updateStyleLoading(configStyle, { text: e.target.value })}
+            placeholder="Máy chủ đang khởi động, chờ một chút nhé…"
+          />
+          <label>Vị trí hiển thị lúc chờ trang</label>
+          <select
+            value={cfg.loading.position}
+            onChange={e => updateStyleLoading(configStyle, { position: e.target.value as LoadingPosition })}
+          >
+            {POSITION_OPTIONS.map(o => (
+              <option key={o.id} value={o.id}>{o.name}</option>
+            ))}
+          </select>
+          <label>Ảnh động lúc chờ</label>
+          <select
+            value={cfg.loading.image}
+            onChange={e => updateStyleLoading(configStyle, { image: e.target.value as LoadingImage })}
+          >
+            {IMAGE_OPTIONS.map(o => (
+              <option key={o.id} value={o.id}>{o.name} — {o.desc}</option>
+            ))}
+          </select>
+          {cfg.loading.image === 'custom' && (
             <div>
-              <p className="muted" style={{ margin: '0 0 .5rem' }}>Danh sách đang tải:</p>
-              <LoadingEffect effect={loadingCfg.table} speed={loadingCfg.speed} />
+              <label>Link ảnh GIF</label>
+              <input
+                type="url" value={cfg.loading.imageUrl} maxLength={500}
+                onChange={e => updateStyleLoading(configStyle, { imageUrl: e.target.value })}
+                placeholder="https://.../anh-dong.gif"
+              />
             </div>
-            <p style={{ fontSize: `calc(1rem * ${fontScale})`, margin: '1rem 0 0' }}>
-              Chữ mẫu cỡ {fontScale.toFixed(2)}× với màu {accent}.
-            </p>
-            <h3 style={{ margin: '1rem 0 .5rem', fontSize: '1rem' }}>
-              Phong cách đang chọn: {uiStyle === 'lively' ? 'Sống động' : 'Pastel nhẹ nhàng'}
-            </h3>
-            <div style={{ display: 'flex', gap: '.8rem', flexWrap: 'wrap' }}>
-              {STYLE_OPTIONS.map(o => (
-                <span
-                  key={o.id}
-                  style={{
-                    padding: '.45rem 1rem', borderRadius: o.id === 'lively' ? 12 : 8,
-                    background: o.accent, color: '#fff', fontWeight: 700,
-                    boxShadow: o.id === 'lively' ? '0 4px 0 #46A302' : 'none',
-                    outline: uiStyle === o.id ? `2px solid ${o.accent}` : 'none',
-                    outlineOffset: 2, opacity: uiStyle === o.id ? 1 : 0.55,
-                  }}
-                >
-                  {o.name}{uiStyle === o.id ? ' ✓' : ''}
-                </span>
-              ))}
+          )}
+
+          <h3>Xem trước</h3>
+          <div style={{ border: '1px solid var(--border)', borderRadius: 12, padding: '1rem', background: 'var(--surface-soft)', textAlign: 'center' }}>
+            {cfg.loading.image === 'mascot' && (
+              <img src="/mascot.png" alt="Mascot" className="ld-mascot" style={{ margin: '0 auto .5rem' }} />
+            )}
+            {cfg.loading.image === 'custom' && cfg.loading.imageUrl && (
+              <img src={cfg.loading.imageUrl} alt="Ảnh động tùy chỉnh" className="ld-mascot" style={{ margin: '0 auto .5rem' }} />
+            )}
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <LoadingEffect effect={cfg.loading.page} speed={cfg.loading.speed} size="lg" />
             </div>
-            <p className="muted" style={{ margin: '.6rem 0 0', fontSize: '.85rem' }}>
-              Pastel: nút sage phẳng, bo góc nhẹ. Sống động: nút xanh lá tươi #58CC02, bo góc lớn, bóng đổ dày 4px.
+            <p className="muted" style={{ margin: '.4rem 0 0' }}>{cfg.loading.text}</p>
+            <p style={{ margin: '.6rem 0 0' }}>
+              Vị trí: {cfg.loading.position === 'center' ? 'Giữa màn hình' : 'Trên đầu trang'} · Màu nút mẫu:{' '}
+              <span style={{ display: 'inline-block', padding: '.2rem .8rem', borderRadius: 8, background: cfg.accent, color: '#fff', fontWeight: 700 }}>Nút mẫu</span>
             </p>
           </div>
-        </div>
-      </div>
+
+          <div className="btn-row" style={{ marginTop: '1rem' }}>
+            <button className="btn" type="button" onClick={() => setConfigStyle(null)}>Xong</button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }

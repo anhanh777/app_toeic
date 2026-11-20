@@ -3,7 +3,7 @@ import { Component, useEffect, useRef, useState } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import { ExamProvider, ExamPicker, TextSizeControl, TextSizeProvider, useExam, useIeltsSetupRedirect, useTextSize } from './exam';
 import { applyTheme, resolveTheme, type Theme } from './theme';
-import { LoadingEffect, UiSettingsProvider, useUiSettings } from './uiSettings';
+import { LoadingEffect, LoadingImage, UiSettingsProvider, activeStyle, useUiSettings } from './uiSettings';
 import { BrandProvider, useBrand } from './brand';
 import { MenuIconsProvider, useMenuIcons, type MenuIconKey } from './menuIcons';
 import Login from './pages/Login';
@@ -33,14 +33,17 @@ function RequireAuth({ children }: { children: ReactNode }) {
   const { settings } = useUiSettings();
   // Đang chờ máy chủ (Render bản miễn phí ngủ khi không dùng, dậy mất vài
   // giây): hiện thẻ chờ rõ ràng thay vì 1 dòng "Đang tải…" trên nền tối
-  // trống — nhìn như trang bị đen. Hiệu ứng + câu chờ theo cài đặt giao diện.
+  // trống — nhìn như trang bị đen. Hiệu ứng + câu chờ + vị trí + ảnh động
+  // theo cài đặt loading của kiểu giao diện đang chọn.
+  const waitLoading = activeStyle(settings).loading;
   if (loading) return (
-    <div className="card" style={{ marginTop: '1rem', textAlign: 'center', padding: '2rem 1rem' }}>
+    <div className="card" style={{ marginTop: waitLoading.position === 'center' ? '18vh' : '1rem', textAlign: 'center', padding: '2rem 1rem' }}>
+      <LoadingImage image={waitLoading.image} imageUrl={waitLoading.imageUrl} />
       <div style={{ display: 'flex', justifyContent: 'center' }}>
-        <LoadingEffect effect={settings.ui.loading.page} speed={settings.ui.loading.speed} size="lg" />
+        <LoadingEffect effect={waitLoading.page} speed={waitLoading.speed} size="lg" />
       </div>
       <p style={{ fontWeight: 700, margin: '.4rem 0' }}>Đang mở app…</p>
-      <p className="muted" style={{ margin: 0 }}>{settings.ui.loading.text}</p>
+      <p className="muted" style={{ margin: 0 }}>{waitLoading.text}</p>
     </div>
   );
   if (!user) return <Navigate to="/login" replace />;

@@ -436,6 +436,10 @@ tbody tr:hover{background:var(--surface-soft)}
 @keyframes ld-progress{0%{transform:translateX(-110%)}100%{transform:translateX(320%)}}
 .ld-line{display:flex; align-items:center; gap:.5rem}
 .ld-line .ld-skeleton{flex:1}
+.ld-mascot{width:72px; height:72px; object-fit:contain; animation:ld-bob 2.4s ease-in-out infinite}
+@keyframes ld-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.ld-page-center{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.7rem; min-height:50vh; text-align:center}
+.ld-page-top{display:flex; flex-direction:column; align-items:center; gap:.7rem; padding:2rem 0; text-align:center}
 /* Nút chính trải hết chiều rộng (form đăng nhập). */
 .btn-block{display:block; width:100%}
 /* Form 2 cột cho các trường ngắn (kỳ thi + dạng câu, Part + độ khó…). */

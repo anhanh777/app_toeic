@@ -2,7 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { ErrorBox } from '../components';
-import { LoadingEffect, useUiSettings } from '../uiSettings';
+import { LoadingEffect, activeStyle, useUiSettings } from '../uiSettings';
 import { useBrand } from '../brand';
 import '../login.css';
 
@@ -74,15 +74,15 @@ export default function Login() {
           <ErrorBox error={error} />
           <button className="btn btn-block login-btn" type="submit" disabled={busy}>
             {busy ? (
-              <><LoadingEffect effect={settings.ui.loading.loginButton} speed={settings.ui.loading.speed} size="sm" /> Đang đăng nhập…</>
+              <><LoadingEffect effect={activeStyle(settings).loading.loginButton} speed={activeStyle(settings).loading.speed} size="sm" /> Đang đăng nhập…</>
             ) : (
               'Đăng nhập'
             )}
           </button>
           {busy && slow && (
             <p className="login-slow">
-              <LoadingEffect effect={settings.ui.loading.page} speed={settings.ui.loading.speed} size="sm" />
-              {settings.ui.loading.text}
+              <LoadingEffect effect={activeStyle(settings).loading.page} speed={activeStyle(settings).loading.speed} size="sm" />
+              {activeStyle(settings).loading.text}
             </p>
           )}
         </form>

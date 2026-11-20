@@ -18,7 +18,7 @@ import {
   type ReactNode,
 } from 'react';
 import { useColorScheme, type ViewStyle } from 'react-native';
-import { deriveAccent, useUiSettingsOptional } from './uiSettings';
+import { deriveAccent, deriveLivelyAccent, useUiSettingsOptional } from './uiSettings';
 
 export type Theme = 'light' | 'dark';
 
@@ -385,10 +385,15 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // accent theo đúng cách web dẫn xuất (deriveAccent) theo theme hiện tại.
   // Không có UiSettingsProvider phía trên thì dùng bảng tĩnh LIGHT/DARK.
   const ui = useUiSettingsOptional();
-  const serverAccent = ui?.settings.ui.accent;
-  // Phong cách từ settings (mặc định 'pastel'). Khi lively: dùng trọn bộ
-  // token LIVELY_* (accent #58CC02), KHÔNG dẫn xuất từ accent đã lưu;
-  // khi pastel: giữ nguyên hành vi cũ (deriveAccent từ accent đã lưu).
+  // Mau chu dao theo kieu dang chon (`styles[<kieu>].accent`); thieu thi
+  // roi ve mau cu `ui.accent`. Pastel dung mau Pastel da luu (vd. #5B9E4D),
+  // Song dong dung mau lively da luu (mac dinh #58CC02).
+  const styleAccent =
+    ui?.settings.ui.styles?.[ui.settings.ui.style]?.accent ?? ui?.settings.ui.accent;
+  // Phong cach tu settings (mac dinh 'pastel'). Khi lively: dung bang
+  // LIVELY_* lam nen, nhung ho mau accent dan xuat tu mau lively da luu
+  // (deriveLivelyAccent) thay vi co dinh #58CC02 nhu truoc; khi pastel:
+  // giu nguyen hanh vi cu (deriveAccent tu mau Pastel da luu).
 
   useEffect(() => {
     AsyncStorage.getItem(THEME_KEY)
@@ -415,10 +420,25 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const isLively = style === 'lively';
 
   const colors = useMemo<Palette>(() => {
-    if (isLively) return theme === 'dark' ? LIVELY_DARK : LIVELY_LIGHT;
+    if (isLively) {
+      const base = theme === 'dark' ? LIVELY_DARK : LIVELY_LIGHT;
+      const t = deriveLivelyAccent(styleAccent ?? '#58CC02', theme);
+      return {
+        ...base,
+        accent: t.accent,
+        accentDark: t.accentDark,
+        accentSoft: t.accentSoft,
+        accentSoftStrong: t.accentSoftStrong,
+        green: t.accent,
+        greenBg: t.accentSoft,
+        greenSoft: t.accentSoft,
+        greenBorder: t.accentSoftStrong,
+        greenInk: t.accentDark,
+      };
+    }
     const base = theme === 'dark' ? DARK : LIGHT;
-    if (!serverAccent) return base;
-    const d = deriveAccent(serverAccent, theme);
+    if (!styleAccent) return base;
+    const d = deriveAccent(styleAccent, theme);
     return {
       ...base,
       accent: d.accent,
@@ -426,7 +446,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       accentSoft: d.accentSoft,
       accentSoftStrong: d.accentSoftStrong,
     };
-  }, [theme, serverAccent, isLively]);
+  }, [theme, styleAccent, isLively]);
 
   // Nền native (root view) theo theme: mỗi lần chuyển tab bằng
   // router.replace, màn cũ unmount rồi màn mới mới paint frame đầu —

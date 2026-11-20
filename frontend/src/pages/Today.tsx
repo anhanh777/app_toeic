@@ -72,7 +72,7 @@ export default function Today() {
     });
   };
 
-  if (loading) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải kế hoạch hôm nay…" />;
+  if (loading) return <LoadingLine location="page" text="Đang tải kế hoạch hôm nay…" />;
   const review = data?.blocks.find(b => b.id === 'review');
   const drill = data?.blocks.find(b => b.id === 'drill');
   const vocab = data?.blocks.find(b => b.id === 'vocab');
@@ -251,7 +251,6 @@ export default function Today() {
 
 /* ================= IELTS: khối 1 — hàng đợi ôn lỗi inline ================= */
 function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () => void }) {
-  const { settings } = useUiSettings();
   const [items, setItems] = useState<ErrorLogEntry[] | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [reviewed, setReviewed] = useState(0);
@@ -266,7 +265,7 @@ function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () =
       if (r.xpAwarded) setError(null);
     } catch (e) { setError(e); }
   };
-  if (!items) return <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải câu đến hạn…" />;
+  if (!items) return <LoadingLine location="table" text="Đang tải câu đến hạn…" />;
   return (
     <div>
       <ErrorBox error={error} />
@@ -298,7 +297,6 @@ function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () =
 function IeltsDrillBlock({ diagnosticDone, weakestType, questionCount, onDone }: {
   diagnosticDone: boolean; weakestType: string | null; questionCount: number; onDone: () => void;
 }) {
-  const { settings } = useUiSettings();
   const [qs, setQs] = useState<Question[] | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [answers, setAnswers] = useState<Record<string, { ok: boolean; correctLabel?: string; correctText?: string }>>({});
@@ -339,7 +337,7 @@ function IeltsDrillBlock({ diagnosticDone, weakestType, questionCount, onDone }:
         </div>
       )}
       <ErrorBox error={error} />
-      {started && !qs && <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải câu hỏi…" />}
+      {started && !qs && <LoadingLine location="table" text="Đang tải câu hỏi…" />}
       {qs?.map((q, i) => {
         const a = answers[q.id];
         const qType = q.questionType || 'multiple_choice';

@@ -23,36 +23,81 @@ import { API_URL } from './api';
 
 export type LoadingEffectId = 'spinner' | 'dual-ring' | 'bouncing-dots' | 'skeleton' | 'progress-bar';
 export type LoadingLocation = 'loginButton' | 'page' | 'table';
+export type LoadingPosition = 'center' | 'top';
+export type LoadingImage = 'none' | 'mascot' | 'custom';
+export type UiStyleId = 'pastel' | 'lively';
+
+/** 1 khối loading đầy đủ (8 trường): hiệu ứng từng chỗ + tốc độ + câu chờ + vị trí + ảnh động. */
+export interface StyleLoading {
+  loginButton: LoadingEffectId;
+  page: LoadingEffectId;
+  table: LoadingEffectId;
+  speed: number;
+  text: string;
+  position: LoadingPosition;
+  image: LoadingImage;
+  imageUrl: string;
+}
+
+/** 1 kiểu giao diện: màu chủ đạo + loading riêng của kiểu đó. */
+export interface StyleSettings {
+  accent: string;
+  loading: StyleLoading;
+}
 
 export interface UiSettings {
   ui: {
+    /** Màu chủ đạo cũ (fallback cho client cũ chưa biết `styles`). */
     accent: string;
     fontScale: number;
-    style: 'pastel' | 'lively';
-    loading: {
-      loginButton: LoadingEffectId;
-      page: LoadingEffectId;
-      table: LoadingEffectId;
-      speed: number;
-      text: string;
-    };
+    style: UiStyleId;
+    /** Cài đặt riêng từng kiểu, key theo id kiểu. */
+    styles: Record<UiStyleId, StyleSettings>;
+    /** Loading cũ (fallback); app mới dùng `styles[<kiểu đang chọn>].loading`. */
+    loading: StyleLoading;
   };
 }
+
+/**
+ * Registry các kiểu giao diện — THÊM KIỂU MỚI = thêm 1 entry ở đây (+ 1
+ * khối token ở theme/CSS + 1 entry ở backend registry). Trang Cài đặt
+ * giao diện render box theo registry này, không hardcode từng kiểu.
+ */
+export const STYLE_REGISTRY: { id: UiStyleId; name: string; desc: string }[] = [
+  { id: 'pastel', name: 'Pastel nhẹ nhàng', desc: 'Giao diện hiện tại: nền kem ấm, thẻ trắng, màu sage dịu.' },
+  { id: 'lively', name: 'Sống động', desc: 'Kiểu Duolingo: xanh lá tươi, nút nổi, gamified (streak, xu, nhiệm vụ).' },
+];
+
+const DEFAULT_STYLE_LOADING: StyleLoading = {
+  loginButton: 'spinner',
+  page: 'spinner',
+  table: 'skeleton',
+  speed: 1,
+  text: 'Máy chủ đang khởi động, chờ một chút nhé…',
+  position: 'center',
+  image: 'none',
+  imageUrl: '',
+};
 
 export const UI_SETTINGS_DEFAULTS: UiSettings = {
   ui: {
     accent: '#5FA8A0',
     fontScale: 1,
     style: 'pastel',
-    loading: {
-      loginButton: 'spinner',
-      page: 'spinner',
-      table: 'skeleton',
-      speed: 1,
-      text: 'Máy chủ đang khởi động, chờ một chút nhé…',
+    styles: {
+      pastel: { accent: '#5FA8A0', loading: { ...DEFAULT_STYLE_LOADING } },
+      lively: { accent: '#58CC02', loading: { ...DEFAULT_STYLE_LOADING } },
     },
+    loading: { ...DEFAULT_STYLE_LOADING },
   },
 };
+
+/** Cài đặt của kiểu đang chọn (màu + loading riêng); thiếu thì rơi về legacy. */
+export function activeStyle(settings: UiSettings): StyleSettings {
+  const s = settings.ui.styles?.[settings.ui.style];
+  if (s) return s;
+  return { accent: settings.ui.accent, loading: settings.ui.loading };
+}
 
 export const LOADING_EFFECTS: Record<LoadingEffectId, { label: string; locations: LoadingLocation[] }> = {
   spinner: { label: 'Vòng xoay', locations: ['loginButton', 'page', 'table'] },
@@ -89,28 +134,51 @@ function validEffect(v: unknown, location: LoadingLocation): v is LoadingEffectI
   );
 }
 
+function normalizeLoading(input: unknown, defaults: StyleLoading): StyleLoading {
+  const ld = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
+  const text =
+    typeof ld.text === 'string' && ld.text.trim() && ld.text.length <= 120 ? ld.text : defaults.text;
+  return {
+    loginButton: validEffect(ld.loginButton, 'loginButton') ? ld.loginButton : defaults.loginButton,
+    page: validEffect(ld.page, 'page') ? ld.page : defaults.page,
+    table: validEffect(ld.table, 'table') ? ld.table : defaults.table,
+    speed: isNumberIn(ld.speed, 0.5, 2) ? ld.speed : defaults.speed,
+    text,
+    position: ld.position === 'center' || ld.position === 'top' ? ld.position : defaults.position,
+    image: ld.image === 'none' || ld.image === 'mascot' || ld.image === 'custom' ? ld.image : defaults.image,
+    imageUrl:
+      typeof ld.imageUrl === 'string' &&
+      ld.imageUrl.length <= 500 &&
+      (ld.imageUrl === '' || /^https?:\/\/\S+$/.test(ld.imageUrl))
+        ? ld.imageUrl
+        : defaults.imageUrl,
+  };
+}
+
 /** Gộp tài liệu (có thể thiếu/sai) về đầy đủ + hợp lệ, sai chỗ nào về mặc định chỗ đó. */
 export function normalizeSettings(input: unknown): UiSettings {
   const src = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
   const ui = (src.ui && typeof src.ui === 'object' ? src.ui : {}) as Record<string, unknown>;
-  const loading = (ui.loading && typeof ui.loading === 'object' ? ui.loading : {}) as Record<string, unknown>;
   const d = UI_SETTINGS_DEFAULTS.ui;
-  const text =
-    typeof loading.text === 'string' && loading.text.trim() && loading.text.length <= 120
-      ? loading.text
-      : d.loading.text;
+  const stylesIn = (ui.styles && typeof ui.styles === 'object' ? ui.styles : {}) as Record<string, unknown>;
+  const styles = {} as Record<UiStyleId, StyleSettings>;
+  for (const s of STYLE_REGISTRY) {
+    const st = (
+      stylesIn[s.id] && typeof stylesIn[s.id] === 'object' ? stylesIn[s.id] : {}
+    ) as Record<string, unknown>;
+    const fallback = d.styles[s.id];
+    styles[s.id] = {
+      accent: isHexColor(st.accent) ? st.accent : fallback.accent,
+      loading: normalizeLoading(st.loading, fallback.loading),
+    };
+  }
   return {
     ui: {
       accent: isHexColor(ui.accent) ? ui.accent : d.accent,
       fontScale: isNumberIn(ui.fontScale, 0.9, 1.15) ? ui.fontScale : d.fontScale,
       style: ui.style === 'pastel' || ui.style === 'lively' ? ui.style : d.style,
-      loading: {
-        loginButton: validEffect(loading.loginButton, 'loginButton') ? loading.loginButton : d.loading.loginButton,
-        page: validEffect(loading.page, 'page') ? loading.page : d.loading.page,
-        table: validEffect(loading.table, 'table') ? loading.table : d.loading.table,
-        speed: isNumberIn(loading.speed, 0.5, 2) ? loading.speed : d.loading.speed,
-        text,
-      },
+      styles,
+      loading: normalizeLoading(ui.loading, d.loading),
     },
   };
 }
@@ -152,6 +220,28 @@ export function deriveAccent(hex: string, theme: 'light' | 'dark') {
     accentDark: mix(hex, 'black', 0.18),
     accentSoft: mix(hex, 'white', 0.86),
     accentSoftStrong: mix(hex, 'white', 0.78),
+  };
+}
+
+/**
+ * Họ màu accent của kiểu Sống động, dẫn xuất từ màu riêng đã lưu của kiểu
+ * đó (mặc định #58CC02) — cùng công thức với web. Tỉ lệ trộn được chọn để
+ * ở màu mặc định cho ra đúng bộ token Duolingo cũ (accent-dark #46A302).
+ */
+export function deriveLivelyAccent(hex: string, theme: 'light' | 'dark') {
+  if (theme === 'dark') {
+    return {
+      accent: hex,
+      accentDark: mix(hex, 'white', 0.35),
+      accentSoft: mix(hex, 'black', 0.72),
+      accentSoftStrong: mix(hex, 'black', 0.62),
+    };
+  }
+  return {
+    accent: hex,
+    accentDark: mix(hex, 'black', 0.2),
+    accentSoft: mix(hex, 'white', 0.78),
+    accentSoftStrong: mix(hex, 'white', 0.7),
   };
 }
 

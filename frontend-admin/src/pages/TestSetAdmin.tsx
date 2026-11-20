@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { api, ApiError, type Question, type TestSet, type ImportQuestion, type AiParseResult, type AnswerKeyResult, type MediaConfig } from '../api';
 import { useAuth } from '../auth';
 import { ErrorBox, Modal, partName } from '../components';
-import { LoadingLine, useUiSettings } from '../uiSettings';
+import { LoadingLine } from '../uiSettings';
 import { uploadToCloudinary } from '../cloudinary';
 import { STANDARD_COUNTS, normalizeImportFile, splitValid, validateQuestion, type QuestionError } from '../testSetUtils';
 import BatchManualForm from './BatchManualForm';
@@ -28,7 +28,6 @@ const emptyManual = {
 export default function TestSetAdmin() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
-  const { settings } = useUiSettings();
   const [ts, setTs] = useState<TestSet | null>(null);
   const [error, setError] = useState<unknown>(null);
   const [msg, setMsg] = useState('');
@@ -77,7 +76,7 @@ export default function TestSetAdmin() {
   if (user?.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Bạn không có quyền xem trang này.</p></div>;
   }
-  if (loading) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải đề thi…" />;
+  if (loading) return <LoadingLine location="page" text="Đang tải đề thi…" />;
   if (!ts) return <div><ErrorBox error={error} /><p>Không tìm thấy bộ đề. <Link to="/toeic">Quay lại trang Quản trị</Link></p></div>;
 
   const countOf = (p: number) => ts.parts.find(x => x.part === p)?.count || 0;

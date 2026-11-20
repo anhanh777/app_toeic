@@ -2,7 +2,7 @@ import { BrowserRouter, Link, NavLink, Route, Routes, useNavigate } from 'react-
 import { useState, type ReactNode } from 'react';
 import { AuthProvider, useAuth } from './auth';
 import { applyTheme, resolveTheme, type Theme } from './theme';
-import { UiSettingsProvider, LoadingLine, useUiSettings } from './uiSettings';
+import { UiSettingsProvider, LoadingLine, activeStyle, useUiSettings } from './uiSettings';
 import { BrandProvider, useBrand } from './brand';
 import Brand from './pages/Brand';
 import MenuIcons from './pages/MenuIcons';
@@ -39,7 +39,7 @@ function ThemeToggle() {
 function RequireAdmin({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const { settings } = useUiSettings();
-  if (loading) return <div className="card"><LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text={settings.ui.loading.text} /></div>;
+  if (loading) return <div className="card"><LoadingLine location="page" text={activeStyle(settings).loading.text} /></div>;
   if (!user) return <div className="card"><h1>Chưa đăng nhập</h1><p><Link to="/login">Đăng nhập</Link> bằng tài khoản admin để tiếp tục.</p></div>;
   if (user.role !== 'admin') {
     return <div className="card"><h1>Không có quyền truy cập</h1><p>Trang quản trị chỉ dành cho tài khoản admin. Tài khoản của bạn không có quyền xem trang này.</p></div>;

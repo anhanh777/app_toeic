@@ -15,7 +15,7 @@
 // đủ dạng câu hỏi (T/F/NG, Y/N/NG, matching, điền từ có giới hạn số từ).
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
-import { LoadingLine, useUiSettings } from '../uiSettings';
+import { LoadingLine } from '../uiSettings';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
@@ -37,7 +37,6 @@ export default function PracticeSession() {
   const isFullPractice = partParam === 'all';
   const part = isFullPractice ? 0 : Number(partParam || 5);
   const { exam: ctxExam } = useExam();
-  const { settings } = useUiSettings();
   const qExam = params.get('exam');
   const exam = qExam === 'ielts' || qExam === 'toeic' ? qExam : ctxExam ?? 'toeic';
   const isIelts = exam === 'ielts';
@@ -313,7 +312,7 @@ export default function PracticeSession() {
     setSubmittedAll(true);
   };
 
-  if (loading || ((isListening || isFullPractice) && !!testSetId && !partMediaLoaded)) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải câu hỏi…" />;
+  if (loading || ((isListening || isFullPractice) && !!testSetId && !partMediaLoaded)) return <LoadingLine location="page" text="Đang tải câu hỏi…" />;
   if (!questions.length) return <div><ErrorBox error={error} /><p>{isFullPractice ? 'Chưa có câu hỏi trong đề này.' : <>Chưa có câu hỏi cho {isIelts ? partLabel(part, exam) : `Part ${part}`} này.</>} {testSetId ? <Link className="btn secondary btn-sm" to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link className="btn secondary btn-sm" to="/practice">Quay lại chọn Part</Link>}</p></div>;
   if (!visibleQuestions.length) return (
     <div>

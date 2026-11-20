@@ -7,9 +7,22 @@
  * app (hoc vien + admin) doc dong luc chay — doi cai dat khong can deploy
  * lai code.
  *
- * Phong cach giao dien (`ui.style`): 'pastel' (mac dinh, Pastel nhe nhang)
- * hoac 'lively' (Song dong, kieu Duolingo). Admin doi bang nut gat trong
- * trang Cai dat giao dien; app ap dung theo gia tri nay luc mo app.
+ * MO HINH (2026-11-20): moi phong cach giao dien la 1 khoi rieng
+ * `ui.styles.<id> = { accent, loading }` — mau chu dao + hieu ung loading
+ * rieng tung kieu (hieu ung tung cho, toc do, cau cho, vi tri, anh dong).
+ * `ui.style` chon kieu dang dung; app ap mau + loading cua kieu do.
+ *
+ * REGISTRY (`STYLE_REGISTRY`): 1 cho duy nhat dinh nghia cac kieu giao
+ * dien (id, ten, mo ta, mau + loading mac dinh). Them kieu moi sau nay =
+ * them 1 entry vao registry (kem 1 khoi token CSS [data-style="<id>"] o
+ * web + 1 palette o mobile) — khong sua logic chon/ap/validate/seed.
+ *
+ * TUONG THICH NGUOC: `ui.accent` + `ui.loading` cu VAN DUOC LUU (fallback
+ * cho client cu chua biet `styles`). PUT doc cu (khong co `styles`) thi
+ * giu nguyen `styles` trong DB, khong reset. Seed/migrate: `pastel.accent`
+ * lay theo `ui.accent` hien co trong DB (mau co ay da luu); loading moi
+ * kieu lay theo `ui.loading` chung hien co; `lively.accent` mac dinh
+ * #58CC02.
  *
  * NGUYEN TAC CO CHU (quan trong):
  * - `ui.fontScale` chi la CO CHU CO SO / mac dinh cua app. Nguoi hoc van
@@ -25,23 +38,8 @@
  *   khi thieu) de Render free-tier reseed van khoi phuc duoc.
  *
  * Luu tru: moi la (leaf) la 1 dong trong app_settings (key = duong dan
- * cham, value = JSON). Vi du: key `ui.accent`, value `"#5FA8A0"`.
+ * cham, value = JSON). Vi du: key `ui.styles.pastel.accent`, value `"#5B9E4D"`.
  */
-
-const DEFAULTS = Object.freeze({
-  ui: Object.freeze({
-    style: 'pastel',
-    accent: '#5FA8A0',
-    fontScale: 1,
-    loading: Object.freeze({
-      loginButton: 'spinner',
-      page: 'spinner',
-      table: 'skeleton',
-      speed: 1,
-      text: 'Máy chủ đang khởi động, chờ một chút nhé…',
-    }),
-  }),
-});
 
 /** Hieu ung loading da cai san trong ca 2 app (CSS o index.css moi app). */
 const EFFECTS = Object.freeze({
@@ -54,6 +52,70 @@ const EFFECTS = Object.freeze({
 
 const EFFECT_IDS = Object.keys(EFFECTS);
 
+/** Cac truong cua 1 khoi loading (chung + rieng tung kieu). */
+const LOADING_FIELDS = Object.freeze([
+  'loginButton',
+  'page',
+  'table',
+  'speed',
+  'text',
+  'position',
+  'image',
+  'imageUrl',
+]);
+
+/** Loading mac dinh cua 1 kieu (cung la mac dinh cua `ui.loading` cu). */
+const DEFAULT_LOADING = Object.freeze({
+  loginButton: 'spinner',
+  page: 'spinner',
+  table: 'skeleton',
+  speed: 1,
+  text: 'Máy chủ đang khởi động, chờ một chút nhé…',
+  position: 'center',
+  image: 'none',
+  imageUrl: '',
+});
+
+/**
+ * Registry cac kieu giao dien — THEM KIEU MOI = them 1 entry o day.
+ * `defaultLoading` dung chung 1 khoi mac dinh cho moi kieu; neu kieu moi
+ * muon loading mac dinh khac thi truyen object rieng o day.
+ */
+const STYLE_REGISTRY = Object.freeze([
+  Object.freeze({
+    id: 'pastel',
+    name: 'Pastel nhẹ nhàng',
+    desc: 'Giao diện hiện tại: nền kem ấm, thẻ trắng, màu sage dịu.',
+    defaultAccent: '#5FA8A0',
+    defaultLoading: DEFAULT_LOADING,
+  }),
+  Object.freeze({
+    id: 'lively',
+    name: 'Sống động',
+    desc: 'Kiểu Duolingo: xanh lá tươi, nút nổi, gamified (streak, xu, nhiệm vụ).',
+    defaultAccent: '#58CC02',
+    defaultLoading: DEFAULT_LOADING,
+  }),
+]);
+
+const STYLE_IDS = Object.freeze(STYLE_REGISTRY.map((s) => s.id));
+
+const DEFAULTS = Object.freeze({
+  ui: Object.freeze({
+    style: 'pastel',
+    accent: '#5FA8A0',
+    fontScale: 1,
+    loading: DEFAULT_LOADING,
+    styles: Object.freeze(
+      Object.fromEntries(
+        STYLE_REGISTRY.map((s) =>
+          [s.id, Object.freeze({ accent: s.defaultAccent, loading: s.defaultLoading })]
+        ),
+      ),
+    ),
+  }),
+});
+
 function isHexColor(v) {
   return typeof v === 'string' && /^#[0-9a-fA-F]{6}$/.test(v);
 }
@@ -62,11 +124,57 @@ function isNumberIn(v, min, max) {
   return typeof v === 'number' && Number.isFinite(v) && v >= min && v <= max;
 }
 
+function isHttpUrl(v) {
+  return typeof v === 'string' && v.length <= 500 && (v === '' || /^https?:\/\/\S+$/.test(v));
+}
+
+/** Validate 1 truong loading. Tra ve null neu hop le, neu khong tra ly do. */
+function validateLoadingField(field, value) {
+  switch (field) {
+    case 'loginButton':
+      if (!EFFECTS[value] || !EFFECTS[value].locations.includes('loginButton')) {
+        return 'loginButton phai la mot trong: spinner, dual-ring, bouncing-dots';
+      }
+      return null;
+    case 'page':
+      if (!EFFECTS[value] || !EFFECTS[value].locations.includes('page')) {
+        return 'page phai la mot trong: spinner, dual-ring, bouncing-dots, progress-bar';
+      }
+      return null;
+    case 'table':
+      if (!EFFECTS[value] || !EFFECTS[value].locations.includes('table')) {
+        return 'table phai la mot trong: skeleton, spinner, bouncing-dots';
+      }
+      return null;
+    case 'speed':
+      if (!isNumberIn(value, 0.5, 2)) return 'speed phai la so tu 0.5 den 2';
+      return null;
+    case 'text':
+      if (typeof value !== 'string' || !value.trim() || value.length > 120) {
+        return 'text phai la chuoi 1-120 ky tu';
+      }
+      return null;
+    case 'position':
+      if (value !== 'center' && value !== 'top') return "position phai la 'center' hoac 'top'";
+      return null;
+    case 'image':
+      if (value !== 'none' && value !== 'mascot' && value !== 'custom') {
+        return "image phai la 'none', 'mascot' hoac 'custom'";
+      }
+      return null;
+    case 'imageUrl':
+      if (!isHttpUrl(value)) return "imageUrl phai la '' hoac URL http(s) toi da 500 ky tu";
+      return null;
+    default:
+      return `truong loading khong duoc phep: ${field}`;
+  }
+}
+
 /** Validate 1 key rieng le. Tra ve null neu hop le, neu khong tra ly do. */
 function validateSetting(key, value) {
   switch (key) {
     case 'ui.style':
-      if (value !== 'pastel' && value !== 'lively') return "ui.style phai la 'pastel' hoac 'lively'";
+      if (!STYLE_IDS.includes(value)) return `ui.style phai la mot trong: ${STYLE_IDS.join(', ')}`;
       return null;
     case 'ui.accent':
       if (!isHexColor(value)) return 'ui.accent phai la mau hex dang #RRGGBB';
@@ -74,31 +182,32 @@ function validateSetting(key, value) {
     case 'ui.fontScale':
       if (!isNumberIn(value, 0.9, 1.15)) return 'ui.fontScale phai la so tu 0.9 den 1.15';
       return null;
-    case 'ui.loading.loginButton':
-      if (!EFFECTS[value] || !EFFECTS[value].locations.includes('loginButton')) {
-        return 'ui.loading.loginButton phai la mot trong: spinner, dual-ring, bouncing-dots';
+    default: {
+      // Loading cu (chi 5 key cu duoc luu o DB; position/image/imageUrl cua
+      // `ui.loading` khong co dong rieng — doc ve mac dinh khi thieu).
+      if (key.startsWith('ui.loading.')) {
+        const field = key.slice('ui.loading.'.length);
+        if (!['loginButton', 'page', 'table', 'speed', 'text'].includes(field)) {
+          return `key khong duoc phep: ${key}`;
+        }
+        return validateLoadingField(field, value);
       }
-      return null;
-    case 'ui.loading.page':
-      if (!EFFECTS[value] || !EFFECTS[value].locations.includes('page')) {
-        return 'ui.loading.page phai la mot trong: spinner, dual-ring, bouncing-dots, progress-bar';
+      // Loading + accent rieng tung kieu: ui.styles.<id>.accent / .loading.<field>
+      const m = key.match(/^ui\.styles\.([A-Za-z0-9_-]+)\.(.+)$/);
+      if (m) {
+        const [, id, rest] = m;
+        if (!STYLE_IDS.includes(id)) return `kieu giao dien khong co: ${id}`;
+        if (rest === 'accent') {
+          if (!isHexColor(value)) return `ui.styles.${id}.accent phai la mau hex dang #RRGGBB`;
+          return null;
+        }
+        if (rest.startsWith('loading.')) {
+          return validateLoadingField(rest.slice('loading.'.length), value);
+        }
+        return `key khong duoc phep: ${key}`;
       }
-      return null;
-    case 'ui.loading.table':
-      if (!EFFECTS[value] || !EFFECTS[value].locations.includes('table')) {
-        return 'ui.loading.table phai la mot trong: skeleton, spinner, bouncing-dots';
-      }
-      return null;
-    case 'ui.loading.speed':
-      if (!isNumberIn(value, 0.5, 2)) return 'ui.loading.speed phai la so tu 0.5 den 2';
-      return null;
-    case 'ui.loading.text':
-      if (typeof value !== 'string' || !value.trim() || value.length > 120) {
-        return 'ui.loading.text phai la chuoi 1-120 ky tu';
-      }
-      return null;
-    default:
       return `key khong duoc phep: ${key}`;
+    }
   }
 }
 
@@ -111,6 +220,10 @@ const SETTING_KEYS = Object.freeze([
   'ui.loading.table',
   'ui.loading.speed',
   'ui.loading.text',
+  ...STYLE_REGISTRY.flatMap((s) => [
+    `ui.styles.${s.id}.accent`,
+    ...LOADING_FIELDS.map((f) => `ui.styles.${s.id}.loading.${f}`),
+  ]),
 ]);
 
 function getDefault(key) {
@@ -120,23 +233,53 @@ function getDefault(key) {
   return cur;
 }
 
+function validEffectFor(v, location) {
+  return typeof v === 'string' && EFFECTS[v] && EFFECTS[v].locations.includes(location);
+}
+
+/** Gop 1 khoi loading (co the thieu/sai) ve day du + hop le. */
+function normalizeLoading(ld, defaults) {
+  const src = ld && typeof ld === 'object' ? ld : {};
+  const text =
+    typeof src.text === 'string' && src.text.trim() && src.text.length <= 120
+      ? src.text
+      : defaults.text;
+  return {
+    loginButton: validEffectFor(src.loginButton, 'loginButton') ? src.loginButton : defaults.loginButton,
+    page: validEffectFor(src.page, 'page') ? src.page : defaults.page,
+    table: validEffectFor(src.table, 'table') ? src.table : defaults.table,
+    speed: isNumberIn(src.speed, 0.5, 2) ? src.speed : defaults.speed,
+    text,
+    position: src.position === 'center' || src.position === 'top' ? src.position : defaults.position,
+    image:
+      src.image === 'none' || src.image === 'mascot' || src.image === 'custom'
+        ? src.image
+        : defaults.image,
+    imageUrl: isHttpUrl(src.imageUrl) ? src.imageUrl : defaults.imageUrl,
+  };
+}
+
 /** Gop 1 tai lieu (co the thieu/sai) ve day du + hop le, sai cho nao ve mac dinh cho do. */
 function normalizeSettings(input) {
   const src = input && typeof input === 'object' ? input : {};
   const ui = src.ui && typeof src.ui === 'object' ? src.ui : {};
   const loading = ui.loading && typeof ui.loading === 'object' ? ui.loading : {};
+  const stylesIn = ui.styles && typeof ui.styles === 'object' ? ui.styles : {};
+  const styles = {};
+  for (const s of STYLE_REGISTRY) {
+    const st = stylesIn[s.id] && typeof stylesIn[s.id] === 'object' ? stylesIn[s.id] : {};
+    styles[s.id] = {
+      accent: isHexColor(st.accent) ? st.accent : s.defaultAccent,
+      loading: normalizeLoading(st.loading, s.defaultLoading),
+    };
+  }
   const doc = {
     ui: {
       style: ui.style,
       accent: ui.accent,
       fontScale: ui.fontScale,
-      loading: {
-        loginButton: loading.loginButton,
-        page: loading.page,
-        table: loading.table,
-        speed: loading.speed,
-        text: loading.text,
-      },
+      loading: normalizeLoading(loading, DEFAULT_LOADING),
+      styles,
     },
   };
   const flat = flattenSettings(doc);
@@ -146,12 +289,16 @@ function normalizeSettings(input) {
   return unflattenSettings(flat);
 }
 
-/** Tai lieu long -> map phang {key: value}. */
+/**
+ * Tai lieu long -> map phang {key: value}.
+ * `styles` chi ghi key cua kieu CO TRONG doc — doc cu (khong co styles)
+ * PUT len thi khong dong den `styles` trong DB.
+ */
 function flattenSettings(doc) {
   const d = doc && typeof doc === 'object' ? doc : {};
   const ui = d.ui && typeof d.ui === 'object' ? d.ui : {};
   const loading = ui.loading && typeof ui.loading === 'object' ? ui.loading : {};
-  return {
+  const flat = {
     'ui.style': ui.style,
     'ui.accent': ui.accent,
     'ui.fontScale': ui.fontScale,
@@ -161,21 +308,41 @@ function flattenSettings(doc) {
     'ui.loading.speed': loading.speed,
     'ui.loading.text': loading.text,
   };
+  const styles = ui.styles && typeof ui.styles === 'object' ? ui.styles : {};
+  for (const s of STYLE_REGISTRY) {
+    const st = styles[s.id];
+    if (!st || typeof st !== 'object') continue;
+    flat[`ui.styles.${s.id}.accent`] = st.accent;
+    const ld = st.loading && typeof st.loading === 'object' ? st.loading : {};
+    for (const f of LOADING_FIELDS) flat[`ui.styles.${s.id}.loading.${f}`] = ld[f];
+  }
+  return flat;
 }
 
 function unflattenSettings(flat) {
+  const f = flat && typeof flat === 'object' ? flat : {};
+  const styles = {};
+  for (const s of STYLE_REGISTRY) {
+    const ld = {};
+    for (const fld of LOADING_FIELDS) ld[fld] = f[`ui.styles.${s.id}.loading.${fld}`];
+    styles[s.id] = { accent: f[`ui.styles.${s.id}.accent`], loading: ld };
+  }
   return {
     ui: {
-      style: flat['ui.style'],
-      accent: flat['ui.accent'],
-      fontScale: flat['ui.fontScale'],
+      style: f['ui.style'],
+      accent: f['ui.accent'],
+      fontScale: f['ui.fontScale'],
       loading: {
-        loginButton: flat['ui.loading.loginButton'],
-        page: flat['ui.loading.page'],
-        table: flat['ui.loading.table'],
-        speed: flat['ui.loading.speed'],
-        text: flat['ui.loading.text'],
+        loginButton: f['ui.loading.loginButton'],
+        page: f['ui.loading.page'],
+        table: f['ui.loading.table'],
+        speed: f['ui.loading.speed'],
+        text: f['ui.loading.text'],
+        position: f['ui.loading.position'],
+        image: f['ui.loading.image'],
+        imageUrl: f['ui.loading.imageUrl'],
       },
+      styles,
     },
   };
 }
@@ -191,6 +358,9 @@ module.exports = {
   DEFAULTS,
   EFFECTS,
   EFFECT_IDS,
+  LOADING_FIELDS,
+  STYLE_REGISTRY,
+  STYLE_IDS,
   SETTING_KEYS,
   validateSetting,
   normalizeSettings,

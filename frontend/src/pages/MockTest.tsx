@@ -8,7 +8,7 @@ import { WordText } from '../wordLookup';
 import { attemptStatsFor, partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
 import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitGroupSegments } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
-import { LoadingLine, useUiSettings } from '../uiSettings';
+import { LoadingLine } from '../uiSettings';
 
 function fmt(s: number) {
   const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
@@ -21,7 +21,6 @@ export default function MockTest() {
   const testSetId = params.get('testSetId') || undefined;
   const { exam: ctxExam } = useExam();
   const { user, loading: authLoading } = useAuth();
-  const { settings } = useUiSettings();
   // Cỡ chữ thi thử (A- / A+), lưu localStorage.
   const { level: textLevel } = useTextSize();
   const [testSet, setTestSet] = useState<TestSet | null>(null);
@@ -518,7 +517,7 @@ export default function MockTest() {
   };
 
   if (restoring) {
-    return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang khôi phục bài thi đang làm dở…" />;
+    return <LoadingLine location="page" text="Đang khôi phục bài thi đang làm dở…" />;
   }
 
   if (!attemptId) {
@@ -550,7 +549,7 @@ export default function MockTest() {
                 <div className="mock-warn">⚠️ Đề chưa đủ câu chuẩn: {testSet.missing.map(m => `${partLabel(m.part, exam)} thiếu ${m.missing} câu`).join(', ')}.</div>
               )}
             </div>
-          ) : <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải thông tin đề thi…" />}
+          ) : <LoadingLine location="page" text="Đang tải thông tin đề thi…" />}
           <div className="mock-note">
             <p className="muted">Làm đủ {testSet?.totalQuestions || ''} câu, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu. {isIelts ? <>Band thi thử là <strong>band ước lượng để tham khảo</strong> (thang 0–9).</> : <>Điểm thi thử là <strong>điểm ước lượng</strong> (thang 10–990).</>}</p>
             {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
@@ -627,7 +626,7 @@ export default function MockTest() {
     );
   }
 
-  if (!questions.length) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải đề thi…" />;
+  if (!questions.length) return <LoadingLine location="page" text="Đang tải đề thi…" />;
   const answeredCount = Object.keys(answers).length;
   const unansweredCount = questions.length - answeredCount;
 
