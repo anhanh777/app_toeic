@@ -163,6 +163,40 @@ router.post('/tests', authMiddleware, (req, res) => {
   });
 });
 
+/** Bai thi chua nop moi nhat cua user — de hien the "Tiep tuc bai dang lam
+    do" o man hinh Thi thu + khoi phuc bai sau khi tai lai trang. Chi tra
+    attempt cua chinh user dang dang nhap (loc them ?exam= neu co).
+    secondsLeft tinh tu startedAt + durationSec TREN SERVER — server la
+    chuan gio, tai lai trang khong duoc them gio, khong mat gio. */
+router.get('/tests/in-progress', authMiddleware, (req, res) => {
+  const exam = req.query.exam === 'ielts' || req.query.exam === 'toeic' ? req.query.exam : undefined;
+  const attempt = db.getLatestInProgressAttempt(req.user.id, exam);
+  if (!attempt) return res.json({ attempt: null, answers: {} });
+  const answers = db.getAnswersByAttempt(attempt.id);
+  const durationSec = attempt.durationSec || 0;
+  const elapsedSec = Math.max(0, Math.round((Date.now() - new Date(attempt.startedAt).getTime()) / 1000));
+  const secondsLeft = Math.max(0, durationSec - elapsedSec);
+  const testSet = attempt.testSetId ? db.getTestSet(attempt.testSetId) : null;
+  const answerMap = {};
+  for (const a of answers) answerMap[a.questionId] = a.selected;
+  return res.json({
+    attempt: {
+      attemptId: attempt.id,
+      mode: attempt.mode,
+      part: attempt.part,
+      testSetId: attempt.testSetId,
+      testSetTitle: testSet ? testSet.title : null,
+      exam: attempt.exam || 'toeic',
+      questionIds: attempt.questionIds,
+      startedAt: attempt.startedAt,
+      durationSec,
+      secondsLeft,
+      answeredCount: answers.length,
+    },
+    answers: answerMap,
+  });
+});
+
 router.post('/tests/:id/answers', authMiddleware, (req, res) => {
   const attempt = db.getAttempt(parseInt(req.params.id, 10));
   if (!attempt) return res.status(404).json({ error: 'khong tim thay bai thi' });

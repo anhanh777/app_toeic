@@ -49,6 +49,25 @@ router.get('/questions/:id', authMiddleware, (req, res) => {
   return res.json(q);
 });
 
+// Lay nhieu cau hoi trong 1 lan goi — dung khi bat dau / tiep tuc bai thi
+// thu (80-200 cau) thay cho N lan goi le /questions/:id. Tra ve dung thu
+// tu ids; id khong ton tai nam trong `missing` de frontend bao loi ro
+// rang thay vi lang le bo cau. Khong bao gio tra dap an dung / giai thich.
+router.post('/questions/batch', authMiddleware, (req, res) => {
+  const ids = (req.body && req.body.ids) || [];
+  if (!Array.isArray(ids) || !ids.length) {
+    return res.status(400).json({ error: 'ids phai la mang khong rong' });
+  }
+  if (ids.length > 200) {
+    return res.status(400).json({ error: 'toi da 200 cau hoi 1 lan' });
+  }
+  const clean = [...new Set(ids.filter((id) => typeof id === 'string'))];
+  const items = db.getQuestionsByIds(clean);
+  const found = new Set(items.map((q) => q.id));
+  const missing = clean.filter((id) => !found.has(id));
+  return res.json({ items, missing });
+});
+
 router.get('/passages/:id', authMiddleware, (req, res) => {
   const p = db.getPassage(req.params.id);
   if (!p) return res.status(404).json({ error: 'khong tim thay doan van' });

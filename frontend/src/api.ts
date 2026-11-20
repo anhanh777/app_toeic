@@ -118,6 +118,15 @@ export interface Attempt {
   testSetId?: string; startedAt?: string; finishedAt?: string;
 }
 
+/** Bai thi thu chua nop (GET /api/tests/in-progress) — de tiep tuc bai do. */
+export interface InProgressTest {
+  attemptId: number; mode: 'mini' | 'full'; part?: number | null;
+  testSetId?: string | null; testSetTitle?: string | null;
+  exam: string; questionIds: string[]; startedAt: string;
+  durationSec: number; secondsLeft: number; answeredCount: number;
+  answers: Record<string, string>;
+}
+
 // ---- IELTS Giai đoạn 1 (v3): hồ sơ, Hôm nay, chẩn đoán, Viết/Nói,
 // sổ lỗi + quái (error codes = monsters). Backend đang xây song song
 // theo đúng contract này; các endpoint Today dùng chung có bản alias
@@ -274,6 +283,10 @@ export const api = {
     return all;
   },
   question: (id: string) => req<Question>(`/api/questions/${encodeURIComponent(id)}`),
+  // Lay nhieu cau hoi trong 1 lan goi (bat dau / tiep tuc bai thi thu).
+  // `missing` = id khong tim thay — frontend phai bao loi ro thay vi lang le bo cau.
+  questionsBatch: (ids: string[]) =>
+    req<{ items: Question[]; missing: string[] }>('/api/questions/batch', { method: 'POST', body: JSON.stringify({ ids }) }),
   passage: (id: string) => req<{ id: string; part: number; title?: string; content?: string; script?: string; audioUrl?: string | null }>(`/api/passages/${encodeURIComponent(id)}`),
 
   exams: () => req<ExamInfo[]>('/api/exams'),
@@ -294,6 +307,14 @@ export const api = {
   // Hủy bài thi chưa nộp (nút Thoát ở MockTest): xóa attempt + đáp án đã lưu.
   abandonTest: (attemptId: number) =>
     req<{ ok: boolean }>(`/api/tests/${attemptId}`, { method: 'DELETE' }),
+  // Bai thi chua nop moi nhat cua user (the "Tiep tuc bai dang lam do" +
+  // khoi phuc sau khi tai lai trang). secondsLeft do server tinh tu
+  // startedAt + durationSec — server la chuan gio.
+  inProgressTest: async (exam?: string) => {
+    const data = await req<{ attempt: Omit<InProgressTest, 'answers'> | null; answers: Record<string, string> }>(
+      `/api/tests/in-progress${exam ? `?exam=${encodeURIComponent(exam)}` : ''}`);
+    return data.attempt ? { ...data.attempt, answers: data.answers } : null;
+  },
   testResult: (attemptId: number) => req<Attempt & { byPart?: { part: number; correct: number; total: number }[]; wrongQuestionIds?: string[]; detail?: TestResultDetail[] }>(`/api/tests/${attemptId}/result`),
   testHistory: (exam?: string) => req<Attempt[]>(exam ? `/api/tests/history?exam=${encodeURIComponent(exam)}` : '/api/tests/history'),
 

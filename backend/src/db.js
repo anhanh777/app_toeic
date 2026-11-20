@@ -851,6 +851,21 @@ function getQuestionById(id, admin) {
   return hydrateQuestions([row], !!admin)[0];
 }
 
+// Lay nhieu cau hoi theo danh sach id (1 lan truy van) — dung cho endpoint
+// batch khi bat dau / tiep tuc bai thi thu, thay cho N lan goi le. Tra ve
+// dung thu tu ids da cho (bo qua id khong ton tai); khong bao gio tra dap
+// an dung / giai thich (admin = false).
+function getQuestionsByIds(ids) {
+  const clean = [...new Set((ids || []).filter((id) => typeof id === 'string'))];
+  if (!clean.length) return [];
+  const rows = db
+    .prepare(`SELECT * FROM questions WHERE id IN (${clean.map(() => '?').join(',')})`)
+    .all(...clean);
+  const items = hydrateQuestions(rows, false);
+  const byId = new Map(items.map((q) => [q.id, q]));
+  return clean.map((id) => byId.get(id)).filter(Boolean);
+}
+
 function getQuestionRowById(id) {
   // Row tho (gom dap an) cho logic cham diem noi bo.
   const row = db.prepare('SELECT * FROM questions WHERE id = ?').get(id);
@@ -1355,6 +1370,21 @@ function createAttempt({ userId, mode, part, questionIds, durationSec, testSetId
 
 function getAttempt(id) {
   const row = db.prepare('SELECT * FROM attempts WHERE id = ?').get(id);
+  return mapAttempt(row);
+}
+
+// Bai thi chua nop moi nhat cua user (de hien "Tiep tuc bai dang lam do"
+// + khoi phuc sau khi tai lai trang). Chi lay attempt cua chinh user do;
+// exam (neu co) loc theo ky thi.
+function getLatestInProgressAttempt(userId, exam) {
+  const params = [userId];
+  let sql = 'SELECT * FROM attempts WHERE user_id = ? AND finished_at IS NULL';
+  if (exam) {
+    sql += ' AND exam = ?';
+    params.push(exam);
+  }
+  sql += ' ORDER BY started_at DESC, id DESC LIMIT 1';
+  const row = db.prepare(sql).get(...params);
   return mapAttempt(row);
 }
 
@@ -2872,6 +2902,7 @@ module.exports = {
   updateQuestion,
   deleteQuestion,
   getQuestionById,
+  getQuestionsByIds,
   getQuestionRowById,
   countQuestions,
   countByPart,
@@ -2899,6 +2930,7 @@ module.exports = {
   // attempts & answers
   createAttempt,
   getAttempt,
+  getLatestInProgressAttempt,
   listAttemptsByUser,
   finishAttempt,
   deleteAttempt,

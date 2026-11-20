@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { api, type Attempt, type Question, type TestSet } from '../api';
+import { ApiError, api, type Attempt, type InProgressTest, type Question, type TestSet } from '../api';
+import { useAuth } from '../auth';
+import { clearMockTest, isPageReload, readDraft, readPaper, writeDraft, writePaper, type MockDraft } from '../mockDraft';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
 import { attemptStatsFor, partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
@@ -18,6 +20,7 @@ export default function MockTest() {
   const [params] = useSearchParams();
   const testSetId = params.get('testSetId') || undefined;
   const { exam: ctxExam } = useExam();
+  const { user, loading: authLoading } = useAuth();
   const { settings } = useUiSettings();
   // Cỡ chữ thi thử (A- / A+), lưu localStorage.
   const { level: textLevel } = useTextSize();
@@ -31,6 +34,25 @@ export default function MockTest() {
   const [mode, setMode] = useState<'mini' | 'full'>('mini');
   const [part, setPart] = useState(5);
   const [attemptId, setAttemptId] = useState<number | null>(null);
+  // Id cac cau cua bai dang lam + de cua bai (mini khong kem de thi de do
+  // backend chon ngau nhien) — can cho nhap localStorage + khoi phuc.
+  const [questionIds, setQuestionIds] = useState<string[]>([]);
+  const [attemptTestSetId, setAttemptTestSetId] = useState<string | null>(null);
+  // Trang thai luu dap an len server (chi bao nho canh dong ho).
+  const [saveState, setSaveState] = useState<'saved' | 'saving' | 'offline' | 'error'>('saved');
+  // Bai thi chua nop moi nhat (the "Tiep tuc bai dang lam do").
+  const [inProgress, setInProgress] = useState<InProgressTest | null>(null);
+  const [restoring, setRestoring] = useState(false);
+  const [restoredNotice, setRestoredNotice] = useState(false);
+  const [resumeArmed, setResumeArmed] = useState(false);
+  // Hang doi dap an chua luu kip len server (mang loi): {questionId: selected}.
+  const pendingRef = useRef(new Map<string, string>());
+  const flushingRef = useRef(false);
+  const flushTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const flushBackoffRef = useRef(1000);
+  const restoreDoneRef = useRef(false);
+  const secondsLeftRef = useRef(0);
+  const attemptIdRef = useRef<number | null>(null);
   // Nút Thoát: bấm lần 1 để xác nhận, lần 2 mới thoát thật.
   const [confirmExit, setConfirmExit] = useState(false);
   // Menu ⋮ (Phương án A): Nộp/Thoát dời khỏi thanh dưới vào popup neo
@@ -54,6 +76,10 @@ export default function MockTest() {
   // khi nộp — thi thử KHÔNG chấm ngay từng câu).
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [secondsLeft, setSecondsLeft] = useState(0);
+  // Ref dong bo de hang doi luu + ghi nhap doc duoc gia tri moi nhat
+  // trong callback/timeout (tranh stale closure).
+  secondsLeftRef.current = secondsLeft;
+  attemptIdRef.current = attemptId;
   const [error, setError] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
   const submittedRef = useRef(false);
@@ -76,6 +102,13 @@ export default function MockTest() {
   const start = async () => {
     setBusy(true); setError(null);
     try {
+      // Bat dau bai moi thi huy bai do cu (cung ky thi) — best-effort,
+      // khong chan viec tao bai moi.
+      if (inProgress) {
+        try { await api.abandonTest(inProgress.attemptId); } catch { /* bo qua */ }
+        setInProgress(null);
+      }
+      clearLocalTest();
       // Tải audio cấp Part trước khi bắt đầu để câu đầu tiên đã có audio.
       // Lỗi (backend chưa có endpoint) thì bỏ qua, fallback về {}.
       try { setPartMedia(testSetId ? await api.partMedia(testSetId) : {}); } catch { setPartMedia({}); }
@@ -87,14 +120,25 @@ export default function MockTest() {
       if (t.testSetId && t.testSetId !== testSetId) {
         try { setPartMedia(await api.partMedia(t.testSetId)); } catch { /* giu {} */ }
       }
-      setAttemptId(t.attemptId);
-      setSecondsLeft(t.durationSec || fullMinutes * 60);
-      const qs: Question[] = [];
-      for (const id of t.questionIds) {
-        try { qs.push(await api.question(id)); } catch { /* skip missing */ }
+      // Tai cau hoi theo lo (1 lan goi + retry). Loi thi huy attempt vua
+      // tao de khong de lai bai do, roi bao loi ro rang cho user thu lai.
+      let qs: Question[];
+      try {
+        qs = await loadQuestionsBatch(t.questionIds);
+      } catch (e) {
+        try { await api.abandonTest(t.attemptId); } catch { /* bo qua */ }
+        throw e;
       }
+      setAttemptTestSetId(t.testSetId ?? testSetId ?? null);
+      setQuestionIds(t.questionIds);
       setQuestions(qs);
       setAnswers({});
+      setFlaggedById({});
+      setPlayedSections({});
+      pendingRef.current.clear();
+      setSaveState('saved');
+      setSecondsLeft(t.durationSec || fullMinutes * 60);
+      setAttemptId(t.attemptId);
     } catch (e) { setError(e); } finally { setBusy(false); }
   };
 
@@ -102,8 +146,13 @@ export default function MockTest() {
     if (!attemptId || submittedRef.current) return;
     submittedRef.current = true;
     stopSpeak();
-    try { await api.submitTest(attemptId); nav(`/result/${attemptId}`); }
-    catch (e) { submittedRef.current = false; setError(e); }
+    try {
+      // Day het dap an dang cho len server truoc khi nop de khong mat cau.
+      await flushQueue();
+      await api.submitTest(attemptId);
+      clearLocalTest();
+      nav(`/result/${attemptId}`);
+    } catch (e) { submittedRef.current = false; setError(e); }
   };
 
   // Nộp bài từ menu ⋮: 1 lần bấm như cũ — nộp 1 lần duy nhất
@@ -111,6 +160,81 @@ export default function MockTest() {
   const submitFromMenu = () => {
     closeMenu();
     void submit();
+  };
+
+  // ---- Hang doi luu dap an: dap an gui that bai (mang loi) thi xep hang
+  // va tu gui lai (backoff + khi co mang lai + dinh ky), thay vi hien loi
+  // do va mat dap an. Upsert o server nen gui lai an toan.
+  const scheduleFlush = () => {
+    if (flushTimerRef.current) return;
+    const delay = flushBackoffRef.current;
+    flushBackoffRef.current = Math.min(flushBackoffRef.current * 2, 30000);
+    flushTimerRef.current = setTimeout(() => { flushTimerRef.current = null; void flushQueue(); }, delay);
+  };
+  const flushQueue = async () => {
+    if (flushingRef.current) return;
+    flushingRef.current = true;
+    try {
+      while (pendingRef.current.size > 0) {
+        const id = attemptIdRef.current;
+        if (!id) return;
+        setSaveState('saving');
+        const [qid, val] = [...pendingRef.current.entries()][0];
+        try {
+          await api.saveTestAnswer(id, qid, val);
+          // Chi xoa khi gia tri trong hang van la gia tri vua gui (nguoi
+          // dung co the doi dap an trong luc gui — gia tri moi o lai hang).
+          if (pendingRef.current.get(qid) === val) pendingRef.current.delete(qid);
+        } catch (e) {
+          setSaveState(!navigator.onLine || (e instanceof ApiError && e.status === 0) ? 'offline' : 'error');
+          scheduleFlush();
+          return;
+        }
+      }
+      setSaveState('saved');
+      flushBackoffRef.current = 1000;
+    } finally {
+      flushingRef.current = false;
+    }
+  };
+
+  // ---- Tai cau hoi theo lo (1 lan goi + retry), thay cho vong lap goi le
+  // tung cau nhu truoc. Cau nao khong tai duoc thi BAO LOI RO RANG thay vi
+  // lang le bo cau khoi de. Neu backend cu chua co endpoint batch (404,
+  // cua so deploy) thi fallback ve tai tung cau.
+  const loadQuestionsSequential = async (ids: string[]): Promise<Question[]> => {
+    const qs: Question[] = [];
+    const failed: string[] = [];
+    for (const id of ids) {
+      try { qs.push(await api.question(id)); } catch { failed.push(id); }
+    }
+    if (failed.length > 0) {
+      throw new Error(`Không tải được ${failed.length}/${ids.length} câu hỏi. Kiểm tra mạng rồi thử lại.`);
+    }
+    return qs;
+  };
+  const loadQuestionsBatch = async (ids: string[]): Promise<Question[]> => {
+    let lastErr: unknown = null;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const r = await api.questionsBatch(ids);
+        if (r.missing.length > 0) {
+          throw new Error(`Không tải được ${r.missing.length}/${ids.length} câu hỏi. Kiểm tra mạng rồi thử lại.`);
+        }
+        return r.items;
+      } catch (e) {
+        if (e instanceof ApiError && e.status === 404) return loadQuestionsSequential(ids);
+        lastErr = e;
+        if (attempt < 2) await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+      }
+    }
+    if (lastErr instanceof Error) throw lastErr;
+    throw new Error('Không tải được đề thi. Kiểm tra mạng rồi thử lại.');
+  };
+
+  // Xoa nhap + de luu trong may (nop bai / thoat / huy bai).
+  const clearLocalTest = () => {
+    if (user) clearMockTest(exam, user.id);
   };
 
   useEffect(() => {
@@ -128,6 +252,139 @@ export default function MockTest() {
       api.statsHistory(exam).then(setHistory).catch(() => undefined);
     }
   }, [exam, testSetId]);
+
+  // Hang doi luu: tu day lai khi co mang / quay lai tab / dinh ky 15s.
+  useEffect(() => {
+    const onOnline = () => { flushBackoffRef.current = 1000; void flushQueue(); };
+    const onVisibility = () => { if (!document.hidden) void flushQueue(); };
+    window.addEventListener('online', onOnline);
+    document.addEventListener('visibilitychange', onVisibility);
+    const t = setInterval(() => { if (pendingRef.current.size > 0) void flushQueue(); }, 15000);
+    return () => {
+      window.removeEventListener('online', onOnline);
+      document.removeEventListener('visibilitychange', onVisibility);
+      clearInterval(t);
+      if (flushTimerRef.current) clearTimeout(flushTimerRef.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Ghi nhap bai thi vao localStorage moi lan doi trang thai (dap an, co,
+  // audio da phat) — tai lai trang giua bai thi khoi phuc tu nhap nay.
+  useEffect(() => {
+    if (!attemptId || !user) return;
+    const draft: MockDraft = {
+      v: 1,
+      attemptId,
+      userId: user.id,
+      exam,
+      mode,
+      part: mode === 'mini' ? part : null,
+      testSetId: attemptTestSetId ?? testSetId ?? null,
+      questionIds,
+      answers,
+      secondsLeft: secondsLeftRef.current,
+      deadlineAt: Date.now() + Math.max(0, secondsLeftRef.current) * 1000,
+      savedAt: Date.now(),
+      flaggedById,
+      playedSections,
+    };
+    writeDraft(exam, user.id, draft);
+  }, [attemptId, user, exam, mode, part, attemptTestSetId, testSetId, questionIds, answers, flaggedById, playedSections]);
+
+  // Dong ho trong nhap cap nhat moi 5s (de khoi phuc dung gio con lai).
+  useEffect(() => {
+    if (!attemptId || !user) return;
+    const t = setInterval(() => {
+      const d = readDraft(exam, user.id);
+      if (!d || d.attemptId !== attemptId) return;
+      writeDraft(exam, user.id, {
+        ...d,
+        secondsLeft: secondsLeftRef.current,
+        deadlineAt: Date.now() + Math.max(0, secondsLeftRef.current) * 1000,
+        savedAt: Date.now(),
+      });
+    }, 5000);
+    return () => clearInterval(t);
+  }, [attemptId, user, exam]);
+
+  // Luu toan bo cau hoi cua de vao may (1 lan khi vua tai de) — khoi phuc
+  // duoc ca khi mang sut khong tai lai duoc cau hoi.
+  useEffect(() => {
+    if (!attemptId || !user || questions.length === 0) return;
+    writePaper(exam, user.id, { v: 1, attemptId, questions });
+  }, [attemptId, user, exam, questions]);
+
+  // Khi mo trang: lay bai dang lam do (the "Tiep tuc") + neu trang vua
+  // TAI LAI giua bai thi thi tu khoi phuc tu nhap. Gio server la chuan
+  // khi online; chi dung gio nhap khi khong lien lac duoc server.
+  useEffect(() => {
+    if (authLoading || !user || restoreDoneRef.current) return;
+    restoreDoneRef.current = true;
+    void (async () => {
+      let ip: InProgressTest | null = null;
+      let ipFetchOk = false;
+      try {
+        ip = await api.inProgressTest(exam);
+        ipFetchOk = true;
+      } catch { ip = null; }
+      setInProgress(ip);
+      if (!isPageReload()) return;
+      const draft = readDraft(exam, user.id);
+      if (!draft) return;
+      // Server co bai do khac voi nhap -> nhap da cu (bai da bi huy o noi
+      // khac): bo nhap, de user tiep tuc bai tren server qua the resume.
+      if (ipFetchOk && ip && ip.attemptId !== draft.attemptId) {
+        clearMockTest(exam, user.id);
+        return;
+      }
+      // Server xac nhan khong con bai do (online, khong loi) -> bai cua
+      // nhap da bi huy: bo nhap.
+      if (ipFetchOk && !ip) {
+        clearMockTest(exam, user.id);
+        return;
+      }
+      setRestoring(true);
+      try {
+        const paper = readPaper(exam, user.id);
+        let qs: Question[];
+        if (paper && paper.attemptId === draft.attemptId && paper.questions.length === draft.questionIds.length) {
+          qs = paper.questions;
+        } else {
+          qs = await loadQuestionsBatch(draft.questionIds);
+        }
+        if (draft.testSetId) {
+          try { setPartMedia(await api.partMedia(draft.testSetId)); } catch { setPartMedia({}); }
+          try { setTestSet(await api.testSet(draft.testSetId)); } catch { /* giu null */ }
+        }
+        // Dap an: nhap (moi nhat, co the gom cau chua luu kip khi mat mang)
+        // de len tren dap an server.
+        const merged = { ...(ip ? ip.answers : {}), ...draft.answers };
+        const seconds = ip
+          ? ip.secondsLeft
+          : Math.max(0, Math.floor((draft.deadlineAt - Date.now()) / 1000));
+        setMode(draft.mode);
+        if (draft.mode === 'mini' && draft.part) setPart(draft.part);
+        setAttemptTestSetId(draft.testSetId);
+        setQuestionIds(draft.questionIds);
+        setQuestions(qs);
+        setAnswers(merged);
+        setFlaggedById(draft.flaggedById);
+        setPlayedSections(draft.playedSections);
+        setSecondsLeft(seconds);
+        setAttemptId(draft.attemptId);
+        // Gui lai toan bo dap an trong nhap len server (upsert nen an toan).
+        for (const [qid, val] of Object.entries(draft.answers)) pendingRef.current.set(qid, val);
+        setRestoredNotice(true);
+        void flushQueue();
+      } catch (e) {
+        setError(e);
+      } finally {
+        setRestoring(false);
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authLoading, user, exam]);
 
   useEffect(() => {
     if (!attemptId || secondsLeft <= 0) return;
@@ -169,14 +426,100 @@ export default function MockTest() {
     setAnswers(a => ({ ...a, [q.id]: value }));
     setCurrentId(q.id);
   };
+  // Luu dap an len server qua hang doi: that bai thi tu gui lai sau, khong
+  // hien loi do am i nua (xem chi bao trang thai luu canh dong ho).
   const saveAnswer = async (q: Question, value: string) => {
-    if (!q || !attemptId) return;
-    try { await api.saveTestAnswer(attemptId, q.id, value); } catch (e) { setError(e); }
+    if (!q || !attemptIdRef.current) return;
+    pendingRef.current.set(q.id, value);
+    void flushQueue();
   };
   const choose = async (q: Question, label: string) => {
     setAnswer(q, label);
     await saveAnswer(q, label);
   };
+
+  // Tiep tuc bai dang lam do tu server: dap an + gio con lai lay tu server;
+  // nhap trong may (neu cung attempt) de them dap an chua luu kip + co +
+  // audio da phat. Het gio roi thi vao bai la tu nop nhu binh thuong.
+  const resumeInProgress = async () => {
+    if (!inProgress || !user) return;
+    setBusy(true); setError(null);
+    try {
+      const ip = inProgress;
+      const draft = readDraft(exam, user.id);
+      const sameDraft = draft && draft.attemptId === ip.attemptId ? draft : null;
+      const paper = readPaper(exam, user.id);
+      let qs: Question[];
+      if (paper && paper.attemptId === ip.attemptId && paper.questions.length === ip.questionIds.length) {
+        qs = paper.questions;
+      } else {
+        qs = await loadQuestionsBatch(ip.questionIds);
+      }
+      if (ip.testSetId) {
+        try { setPartMedia(await api.partMedia(ip.testSetId)); } catch { setPartMedia({}); }
+        try { setTestSet(await api.testSet(ip.testSetId)); } catch { /* giu null */ }
+      }
+      setMode(ip.mode);
+      if (ip.mode === 'mini' && ip.part) setPart(ip.part);
+      setAttemptTestSetId(ip.testSetId ?? null);
+      setQuestionIds(ip.questionIds);
+      setQuestions(qs);
+      setAnswers({ ...ip.answers, ...(sameDraft ? sameDraft.answers : {}) });
+      setFlaggedById(sameDraft ? sameDraft.flaggedById : {});
+      setPlayedSections(sameDraft ? sameDraft.playedSections : {});
+      setSecondsLeft(ip.secondsLeft);
+      setAttemptId(ip.attemptId);
+      if (sameDraft) {
+        for (const [qid, val] of Object.entries(sameDraft.answers)) pendingRef.current.set(qid, val);
+      }
+      setRestoredNotice(true);
+      void flushQueue();
+    } catch (e) { setError(e); } finally { setBusy(false); }
+  };
+
+  // Huy bai dang lam do tu the resume: bam 2 lan de xac nhan (nhu nut Thoat).
+  const abandonInProgress = async () => {
+    if (!inProgress) return;
+    if (!resumeArmed) { setResumeArmed(true); return; }
+    setResumeArmed(false);
+    try { await api.abandonTest(inProgress.attemptId); } catch { /* best-effort */ }
+    setInProgress(null);
+    if (user) clearMockTest(exam, user.id);
+  };
+
+  // The "Tiep tuc bai dang lam do" — hien o man chon de (moi bai do) va o
+  // man chi tiet de (chi khi bai do thuoc dung de nay).
+  const renderResumeCard = () => {
+    if (!inProgress) return null;
+    const title = inProgress.testSetTitle
+      ? (inProgress.mode === 'mini' && inProgress.part
+        ? `${inProgress.testSetTitle} — ${partLabel(inProgress.part, exam)}`
+        : inProgress.testSetTitle)
+      : (inProgress.mode === 'mini' && inProgress.part
+        ? `Thi mini — ${partLabel(inProgress.part, exam)}`
+        : 'Thi full — Toàn bộ ngân hàng');
+    const expired = inProgress.secondsLeft <= 0;
+    return (
+      <div className="resume-card">
+        <div>
+          <b>↩️ Bài thi đang làm dở</b>
+          <p className="muted">{title} • Đã làm {inProgress.answeredCount}/{inProgress.questionIds.length} câu • {expired ? 'Đã hết giờ' : `Còn lại ${fmt(inProgress.secondsLeft)}`}</p>
+        </div>
+        <div className="btn-row" style={{ margin: 0 }}>
+          <button className="btn" disabled={busy} onClick={() => void resumeInProgress()}>
+            {busy ? 'Đang mở bài…' : expired ? 'Nộp bài và xem kết quả' : 'Tiếp tục làm bài'}
+          </button>
+          <button className="btn secondary" onClick={() => void abandonInProgress()}>
+            {resumeArmed ? 'Bấm lại để hủy bài dở' : 'Hủy bài dở'}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  if (restoring) {
+    return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang khôi phục bài thi đang làm dở…" />;
+  }
 
   if (!attemptId) {
     if (testSetId) {
@@ -184,6 +527,7 @@ export default function MockTest() {
         <div className="card card--mid">
           <h1>Thi thử cả đề</h1>
           <ErrorBox error={error} />
+          {inProgress && inProgress.testSetId === testSetId && renderResumeCard()}
           {testSet ? (
             <div>
               <h2 style={{ margin: '.2rem 0 .3rem' }}>{testSet.title}</h2>
@@ -222,6 +566,7 @@ export default function MockTest() {
       <div className="card card--mid">
         <h1>Thi thử</h1>
         <ErrorBox error={error} />
+        {renderResumeCard()}
         <span className="mock-label">Loại bài thi</span>
         <span role="group" aria-label="Loại bài thi"
           style={{ display: 'inline-flex', border: '1px solid var(--accent)', borderRadius: 12, overflow: 'hidden' }}>
@@ -513,6 +858,7 @@ export default function MockTest() {
     if (!confirmExit) { setConfirmExit(true); return; }
     stopSpeak();
     if (attemptId) { try { await api.abandonTest(attemptId); } catch { /* vẫn thoát */ } }
+    clearLocalTest();
     nav('/');
   };
 
@@ -589,6 +935,11 @@ export default function MockTest() {
           <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
         </div>
         <div className="exam-head-right">
+          <span className={`save-indicator save-indicator--${saveState}`}
+            title={saveState === 'saved' ? 'Mọi đáp án đã lưu lên máy chủ' : saveState === 'saving' ? 'Đang lưu đáp án…' : 'Mất kết nối — đáp án sẽ tự lưu lại khi có mạng'}>
+            <span className="save-dot" />
+            <span className="save-text">{saveState === 'saved' ? 'Đã lưu' : saveState === 'saving' ? 'Đang lưu…' : saveState === 'offline' ? 'Mất mạng — sẽ tự lưu lại' : 'Chưa lưu được — đang thử lại'}</span>
+          </span>
           <span className={`timer-chip timer-chip--inline${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱️ {fmt(secondsLeft)}</span>
           <div className="mock-menu-wrap" ref={menuRef}>
             <button type="button" className="icon-btn mock-menu-btn" aria-label="Mở menu thi thử" aria-haspopup="menu" aria-expanded={menuOpen}
@@ -611,6 +962,9 @@ export default function MockTest() {
       <div className="mock-room-grid">
       <div className="exam-main">
         <ErrorBox error={error} />
+        {restoredNotice && (
+          <div className="mock-note">↩️ Đã khôi phục bài thi đang làm dở — đáp án và thời gian còn lại giữ nguyên.</div>
+        )}
         <div className="paper">
           {renderPaper()}
         </div>

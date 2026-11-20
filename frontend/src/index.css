@@ -610,6 +610,20 @@ tbody tr:hover{background:var(--surface-soft)}
 .exam-head--mock .exam-head-title{flex:1 1 auto; min-width:0}
 .exam-head-right{display:flex; align-items:center; gap:.5rem; flex:0 0 auto}
 .timer-chip--inline{position:static; pointer-events:auto; box-shadow:0 2px 8px rgba(0,0,0,.12)}
+/* Chi bao trang thai luu dap an (phong Thi thu): cham mau + chu ngan canh
+   dong ho. Man hep chi hien cham de khoi chat thanh tieu de. */
+.save-indicator{display:inline-flex; align-items:center; gap:.35rem; font-size:.8rem; font-weight:600; color:var(--muted); white-space:nowrap}
+.save-dot{width:.55rem; height:.55rem; border-radius:50%; background:var(--muted); flex-shrink:0}
+.save-indicator--saved{color:var(--ink-soft)}
+.save-indicator--saved .save-dot{background:#5B9E4D}
+.save-indicator--saving .save-dot{animation:save-pulse 1s ease-in-out infinite}
+.save-indicator--offline,.save-indicator--error{color:var(--amber)}
+.save-indicator--offline .save-dot,.save-indicator--error .save-dot{background:var(--amber)}
+@keyframes save-pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@media (max-width:640px){.save-indicator .save-text{display:none}}
+/* The "Tiep tuc bai dang lam do" o man hinh Thi thu. */
+.resume-card{display:flex; flex-wrap:wrap; gap:.7rem; align-items:center; justify-content:space-between; background:var(--accent-soft); border:1px solid var(--accent); border-radius:16px; padding:.8rem 1rem; margin:.8rem 0}
+.resume-card p{margin:.2rem 0 0}
 .mock-menu-wrap{position:relative; flex:0 0 auto}
 .mock-menu-btn{font-size:1.35rem; font-weight:800}
 .mock-menu{
