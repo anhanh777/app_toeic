@@ -155,8 +155,7 @@ export default function Users() {
       {msg && <div className="success">{msg}</div>}
       {loading && <LoadingLine effect={settings.ui.loading.table} speed={settings.ui.loading.speed} text="Đang tải danh sách tài khoản…" />}
 
-      <div className="split">
-      <div className="card">
+      <div className="card form-narrow">
         <h2>Thêm tài khoản mới</h2>
         <form onSubmit={createUser}>
           <label>Email</label>
@@ -178,7 +177,7 @@ export default function Users() {
 
       <div className="card">
         <h2>Danh sách tài khoản ({filtered.length}/{users.length})</h2>
-        <div className="btn-row">
+        <div className="table-toolbar">
           <input style={{ flex: 1 }} value={search} onChange={e => setSearch(e.target.value)} placeholder="Tìm theo email hoặc tên…" />
           <select value={roleFilter} onChange={e => setRoleFilter(e.target.value as 'all' | 'user' | 'admin')}>
             <option value="all">Tất cả quyền</option>
@@ -192,31 +191,30 @@ export default function Users() {
             <tr key={u.id}>
               <td>{u.email}{isSelf(u) ? ' (bạn)' : ''}</td>
               <td>{u.name || '—'}</td>
-              <td>{u.role === 'admin' ? 'Admin' : 'Học viên'}</td>
+              <td><span className={u.role === 'admin' ? 'pill pill--admin' : 'pill pill--user'}>{u.role === 'admin' ? 'Admin' : 'Học viên'}</span></td>
               <td>
-                <div className="btn-row" style={{ alignItems: 'center' }}>
+                <span className="toggle-cell">
                   <Toggle checked={isActive(u)} onChange={() => void toggleActive(u)} disabled={togglingId === u.id || cannotDeactivate(u)} label={isActive(u) ? 'Đang hoạt động' : 'Đã khóa'} />
-                  <span className="muted" style={{ fontSize: '.8rem' }}>{isActive(u) ? 'Đang hoạt động' : 'Đã khóa'}</span>
-                </div>
-                {lockNote(u) && <p className="muted">{lockNote(u)}</p>}
+                  <span className={isActive(u) ? 'pill pill--live' : 'pill pill--off'}>{isActive(u) ? 'Đang hoạt động' : 'Đã khóa'}</span>
+                </span>
+                {lockNote(u) && <p className="muted user-note">{lockNote(u)}</p>}
               </td>
               <td>{u.targetScore ?? 650}</td>
               <td>{u.createdAt ? new Date(u.createdAt).toLocaleDateString('vi-VN') : '—'}</td>
               <td>{u.hideOnLeaderboard ? '✓' : '—'}</td>
               <td>
-                <div className="btn-row">
+                <div className="tbl-actions">
                   <button className="btn secondary btn-sm" onClick={() => startEdit(u)}>Sửa</button>
                   <button className="btn secondary btn-sm" onClick={() => { setResetId(u.id); setResetPassword(''); setEditingId(null); }}>Đặt lại MK</button>
                   <button className="btn danger btn-sm" disabled={cannotDelete(u)} title={guardNote(u) || 'Xóa tài khoản'} onClick={() => void deleteUser(u)}>Xóa</button>
                 </div>
-                {guardNote(u) && <p className="muted">{guardNote(u)}</p>}
+                {guardNote(u) && <p className="muted user-note">{guardNote(u)}</p>}
               </td>
             </tr>
           ))}
         </tbody></table>
         </div>
         {filtered.length === 0 && !loading && <p className="muted">Không tìm thấy tài khoản nào.</p>}
-      </div>
       </div>
 
       {editingId != null && (

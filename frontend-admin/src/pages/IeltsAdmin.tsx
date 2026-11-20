@@ -165,12 +165,14 @@ export default function IeltsAdmin() {
         <table className="tbl-nowrap"><thead><tr><th>Tên đề</th><th>Số câu</th><th>Part</th><th>Thiếu</th><th>Trạng thái</th><th>Ngày tạo</th><th></th></tr></thead><tbody>
           {testSets.map(ts => {
             const missingTotal = (ts.missing || []).reduce((n, m) => n + m.missing, 0);
+            const total = ts.totalQuestions ?? 0;
+            const covPct = Math.min(100, Math.round((total / 80) * 100));
             return (
             <tr key={ts.id}>
               <td><Link to={`/ielts/test-set/${ts.id}`}><strong>{ts.title}</strong></Link><br /><span className="muted">{ts.id}</span></td>
-              <td>{ts.totalQuestions ?? 0}</td>
+              <td><span className="cov"><span className="cov-num">{total}/80</span><span className="cov-bar"><i style={{ width: `${covPct}%` }} /></span></span></td>
               <td>{ts.parts?.length ?? 0} Part</td>
-              <td>{missingTotal === 0 ? 'Đủ' : `Thiếu ${missingTotal}`}</td>
+              <td>{missingTotal === 0 ? <span className="pill pill--live">Đủ</span> : <span className="pill pill--warn">Thiếu {missingTotal}</span>}</td>
               <td><span className="toggle-cell">
                 <Toggle checked={ts.isPublished} disabled={togglingId === ts.id}
                   label={ts.isPublished ? `Đã phát hành — bấm để chuyển "${ts.title}" về Nháp` : `Nháp — bấm để phát hành "${ts.title}"`}

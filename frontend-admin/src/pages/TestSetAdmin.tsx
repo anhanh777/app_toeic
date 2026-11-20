@@ -357,11 +357,12 @@ export default function TestSetAdmin() {
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
       <div className="card">
-        <p>
-          <span className="stat-num">{ts.totalQuestions}</span> / 200 câu •
-          {' '}<span className={`pill ${ts.isPublished ? 'pill--live' : 'pill--draft'}`}>{ts.isPublished ? 'ĐÃ PHÁT HÀNH' : 'NHÁP'}</span>
-          {' '}• Tạo ngày {ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : '—'}
-        </p>
+        <div className="detail-head">
+          <span><span className="detail-num">{ts.totalQuestions}</span> <span className="muted">/ 200 câu</span></span>
+          <span className={`pill ${ts.isPublished ? 'pill--live' : 'pill--draft'}`}>{ts.isPublished ? 'ĐÃ PHÁT HÀNH' : 'NHÁP'}</span>
+          <span className="muted">Tạo ngày {ts.createdAt ? new Date(ts.createdAt).toLocaleDateString('vi-VN') : '—'}</span>
+          <div className="bar"><i style={{ width: `${Math.min(100, Math.round((ts.totalQuestions / 200) * 100))}%` }} /></div>
+        </div>
         {ts.missing.length > 0 && (
           <p style={{ color: 'var(--amber)' }}>⚠️ Chưa đủ câu: {ts.missing.map(m => `Part ${m.part} thiếu ${m.missing} câu`).join(', ')}</p>
         )}
@@ -537,9 +538,11 @@ export default function TestSetAdmin() {
       <BatchManualForm testSetId={ts.id} mediaCfg={mediaCfg} partMedia={partMedia} onSaved={load} />
 
       {[1, 2, 3, 4, 5, 6, 7].map(p => (
-        <div key={p} className="card">
-          <h2>{partName(p)}</h2>
-          <p><span className="stat-num">{countOf(p)}/{STANDARD_COUNTS[p]}</span> câu</p>
+        <div key={p} className="card part-admin-card">
+          <div className="part-admin-head">
+            <h2>{partName(p)}</h2>
+            <span className="part-admin-count"><span className="stat-num">{countOf(p)}/{STANDARD_COUNTS[p]}</span> câu</span>
+          </div>
           <div className="bar"><i style={{ width: `${Math.min(100, Math.round((countOf(p) / STANDARD_COUNTS[p]) * 100))}%` }} /></div>
           <div className="btn-row">
             <label className="btn secondary" style={{ cursor: 'pointer' }}>

@@ -253,7 +253,7 @@ export default function IeltsTestSetAdmin() {
     <div>
       <p><Link to="/ielts">← Quay lại quản lý đề IELTS</Link></p>
       <h1>{ts.title}</h1>
-      <p className="muted">{ts.id} • IELTS Academic • <span className={`pill ${ts.isPublished ? 'pill--live' : 'pill--draft'}`}>{ts.isPublished ? 'ĐÃ PHÁT HÀNH' : 'NHÁP'}</span></p>
+      <p className="muted detail-meta"><span>{ts.id}</span><span>IELTS Academic</span><span className={`pill ${ts.isPublished ? 'pill--live' : 'pill--draft'}`}>{ts.isPublished ? 'ĐÃ PHÁT HÀNH' : 'NHÁP'}</span></p>
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
       <div className="btn-row">
@@ -295,9 +295,11 @@ export default function IeltsTestSetAdmin() {
       </div>
 
       {[1, 2, 3, 4, 5, 6, 7].map(p => (
-        <div key={p} className="card">
-          <h2>{IELTS_PART_LABELS[p]}</h2>
-          <p><span className="stat-num">{countOf(p)}/{IELTS_STANDARD_COUNTS[p]}</span> câu</p>
+        <div key={p} className="card part-admin-card">
+          <div className="part-admin-head">
+            <h2>{IELTS_PART_LABELS[p]}</h2>
+            <span className="part-admin-count"><span className="stat-num">{countOf(p)}/{IELTS_STANDARD_COUNTS[p]}</span> câu</span>
+          </div>
           <div className="bar"><i style={{ width: `${Math.min(100, Math.round((countOf(p) / IELTS_STANDARD_COUNTS[p]) * 100))}%` }} /></div>
           <div className="btn-row">
             <label className="btn secondary" style={{ cursor: 'pointer' }}>

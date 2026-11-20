@@ -54,17 +54,17 @@ function Dashboard() {
       <p className="muted">Chọn một mục để quản lý nội dung và tài khoản của app học viên.</p>
       <div className="grid3">
       <div className="card dash-card">
-        <h2>📚 Đề TOEIC</h2>
+        <h2><span className="dash-ico" aria-hidden="true">📚</span>Đề TOEIC</h2>
         <p>Quản lý bộ đề, câu hỏi, nhận diện bằng AI, audio/ảnh theo Part, nhập tay theo loạt, từ vựng và sao lưu.</p>
         <div className="btn-row"><Link className="btn btn-block" to="/toeic">Mở quản lý đề TOEIC →</Link></div>
       </div>
       <div className="card dash-card">
-        <h2>🎧 Đề IELTS</h2>
+        <h2><span className="dash-ico" aria-hidden="true">🎧</span>Đề IELTS</h2>
         <p>Quản lý đề IELTS Academic riêng: 19 dạng câu hỏi, câu trả lời gõ tay, giới hạn số từ, ảnh bản đồ, audio từng Section.</p>
         <div className="btn-row"><Link className="btn btn-block" to="/ielts">Mở quản lý đề IELTS →</Link></div>
       </div>
       <div className="card dash-card">
-        <h2>👤 Tài khoản</h2>
+        <h2><span className="dash-ico" aria-hidden="true">👤</span>Tài khoản</h2>
         <p>Thêm, sửa, xóa tài khoản; cập nhật quyền và điểm mục tiêu; đặt lại mật khẩu.</p>
         <div className="btn-row"><Link className="btn btn-block" to="/users">Mở quản lý tài khoản →</Link></div>
       </div>
@@ -92,13 +92,22 @@ function Layout() {
         <p className="sidebar-sub muted">{brand.tagline || 'Luyện thi TOEIC · IELTS'}</p>
         {user && user.role === 'admin' && (
           <nav>
-            <NavLink to="/" end>🏠 Trang chủ</NavLink>
-            <NavLink to="/toeic">📚 Đề TOEIC</NavLink>
-            <NavLink to="/ielts">🎧 Đề IELTS</NavLink>
-            <NavLink to="/users">👤 Tài khoản</NavLink>
-            <NavLink to="/settings">🎨 Cài đặt giao diện</NavLink>
-            <NavLink to="/brand">🏷️ Tên &amp; Logo</NavLink>
-            <NavLink to="/menu-icons">🎨 Biểu tượng menu</NavLink>
+            <div className="sidebar-group">
+              <span className="sidebar-group-label">Chính</span>
+              <NavLink to="/" end>🏠 Trang chủ</NavLink>
+            </div>
+            <div className="sidebar-group">
+              <span className="sidebar-group-label">Quản lý</span>
+              <NavLink to="/toeic">📚 Đề TOEIC</NavLink>
+              <NavLink to="/ielts">🎧 Đề IELTS</NavLink>
+              <NavLink to="/users">👤 Tài khoản</NavLink>
+            </div>
+            <div className="sidebar-group">
+              <span className="sidebar-group-label">Hệ thống</span>
+              <NavLink to="/settings">🎨 Cài đặt giao diện</NavLink>
+              <NavLink to="/brand">🏷️ Tên &amp; Logo</NavLink>
+              <NavLink to="/menu-icons">🎨 Biểu tượng menu</NavLink>
+            </div>
           </nav>
         )}
         <div className="sidebar-footer">
@@ -123,6 +132,15 @@ function Layout() {
         </div>
       </aside>
       <main className="container">
+        {user && (
+          <header className="topbar">
+            <div className="topbar-greet">
+              Xin chào, {displayName}
+              <small>Quản trị nội dung và tài khoản của app học viên.</small>
+            </div>
+            <span className="topbar-date">📅 {new Date().toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
+          </header>
+        )}
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<RequireAdmin><Dashboard /></RequireAdmin>} />
