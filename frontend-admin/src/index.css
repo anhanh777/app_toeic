@@ -814,32 +814,94 @@ tbody tr:hover{background:var(--surface-soft)}
 .monster-killed .hp-bar i{background:var(--green)}
 .today-bad-day{border:1px dashed var(--amber); background:var(--amber-bg)}
 
-/* ============ Popup (modal) — Sửa / Xem ============ */
-/* Lớp phủ tối toàn màn hình; hộp thoại ở giữa, gọn (không full-screen). */
+/* ============ Popup (modal) — Sửa / Xem — kiểu Dark glass (mẫu C) ============
+   Vỏ kính mờ: nền mờ + blur, bo 24px, tiêu đề lớn + dòng mô tả. Theme sáng
+   dùng kính trắng mờ, theme tối dùng kính tối — chữ và ô nhập ăn theo theme. */
 .modal-overlay{
   position:fixed; inset:0; z-index:50;
-  background:rgba(43,32,19,.55);
+  background:rgba(16,16,26,.55);
   display:flex; align-items:flex-start; justify-content:center;
   padding:2rem 1rem; overflow-y:auto;
 }
 .modal{
-  background:var(--surface); color:var(--ink);
-  border:1px solid var(--border); border-radius:16px;
-  box-shadow:0 12px 40px rgba(43,32,19,.25);
+  background:rgba(255,255,255,.86); color:var(--ink);
+  -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);
+  border:1px solid rgba(60,60,80,.14); border-radius:24px;
+  box-shadow:0 30px 70px rgba(20,20,30,.35);
   width:min(38rem, 100%); max-height:calc(100vh - 4rem);
   display:flex; flex-direction:column; outline:none;
 }
+[data-theme="dark"] .modal{
+  background:rgba(38,38,56,.72);
+  border-color:rgba(255,255,255,.16);
+  box-shadow:0 30px 70px rgba(0,0,0,.6);
+}
 .modal--wide{width:min(58rem, 100%)}
-.modal-head{display:flex; align-items:center; gap:.5rem; padding:.8rem 1rem .6rem; border-bottom:1px solid var(--border)}
-.modal-title{margin:0; font-size:1.05rem; flex:1; min-width:0}
+.modal--narrow{width:min(30rem, 100%)}
+.modal-head{display:flex; align-items:flex-start; gap:.75rem; padding:1.875rem 1.875rem 0}
+.modal-head-text{flex:1; min-width:0}
+.modal-title{margin:0; font-size:1.5rem; line-height:1.25}
+.modal-subtitle{margin:.3rem 0 0; font-size:.85rem; color:#6b6b7a; line-height:1.5}
+[data-theme="dark"] .modal-subtitle{color:#b9b9cc}
 .modal-close{
   flex:0 0 auto; width:2rem; height:2rem; border-radius:50%;
   display:inline-flex; align-items:center; justify-content:center;
-  background:var(--surface-soft); color:var(--ink); border:1px solid var(--border);
+  background:rgba(0,0,0,.06); color:var(--ink); border:none;
   font-size:.9rem; line-height:1; padding:0; cursor:pointer;
 }
-.modal-close:hover{background:var(--red-bg); border-color:var(--red-border)}
-.modal-body{padding:.9rem 1rem 1rem; overflow-y:auto}
+[data-theme="dark"] .modal-close{background:rgba(255,255,255,.1)}
+.modal-close:hover{background:var(--red-bg)}
+.modal-body{padding:1.375rem 1.875rem 1.875rem; overflow-y:auto}
+@media (max-width:480px){
+  .modal-head{padding:1.25rem 1.25rem 0}
+  .modal-body{padding:1.1rem 1.25rem 1.25rem}
+  .modal-title{font-size:1.3rem}
+}
+
+/* ============ Form trong popup kính (trang Tài khoản) ============
+   Ô nhập viên thuốc + icon, nhãn uppercase, nút chính gradient — chỉ áp
+   cho form có class glass-form, các popup khác giữ form chuẩn. */
+.glass-form .glass-label{
+  font-size:.75rem; text-transform:uppercase; letter-spacing:.04em;
+  color:#5c5c6e; margin:1rem 0 .4rem;
+}
+[data-theme="dark"] .glass-form .glass-label{color:#d6d6e2}
+.glass-form > .glass-label:first-child{margin-top:0}
+.glass-field{position:relative}
+.glass-field svg{
+  position:absolute; left:16px; top:50%; transform:translateY(-50%);
+  color:#8a8a9a; pointer-events:none;
+}
+[data-theme="dark"] .glass-field svg{color:#a5a5bd}
+.glass-field input, .glass-field select{
+  background:rgba(255,255,255,.75); border:1px solid rgba(60,60,80,.16);
+  border-radius:999px; padding:.8rem 1.1rem .8rem 2.9rem; color:var(--ink);
+}
+.glass-field input::placeholder{color:#9a9ab0}
+[data-theme="dark"] .glass-field input, [data-theme="dark"] .glass-field select{
+  background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.14); color:#fff;
+}
+.glass-field input:focus, .glass-field select:focus{
+  border-color:rgba(45,212,191,.7); box-shadow:0 0 0 3px rgba(45,212,191,.2);
+}
+.glass-form .btn-row{margin:1.375rem 0 0}
+.glass-form .btn{
+  flex:1; background:linear-gradient(90deg,#38bdf8,#2dd4bf); color:#062a2a;
+  border:none; border-radius:999px; padding:.875rem 1rem; box-shadow:none;
+}
+.glass-form .btn:hover{
+  background:linear-gradient(90deg,#38bdf8,#2dd4bf); filter:brightness(1.06);
+  box-shadow:0 6px 18px rgba(45,212,191,.35);
+}
+.glass-form .btn.secondary{
+  flex:0 0 auto; background:rgba(255,255,255,.6); color:var(--ink);
+  border:1px solid rgba(60,60,80,.16); box-shadow:none;
+}
+[data-theme="dark"] .glass-form .btn.secondary{
+  background:rgba(255,255,255,.08); color:#ddd; border-color:rgba(255,255,255,.16);
+}
+.glass-form .btn.secondary:hover{background:rgba(255,255,255,.85); border-color:rgba(60,60,80,.16)}
+[data-theme="dark"] .glass-form .btn.secondary:hover{background:rgba(255,255,255,.16); border-color:rgba(255,255,255,.16)}
 
 /* ============ Giao diện quản trị kiểu mẫu 11 (Tabor Study) ============
    Chỉ đổi trình bày — không đổi chức năng. Mọi màu đều ăn theo biến CSS
@@ -882,7 +944,6 @@ h1{font-size:1.4rem}
 
 /* --- Nút: bo tròn hơn theo mẫu --- */
 .btn{border-radius:12px}
-.modal{border-radius:20px}
 
 /* --- Bảng kiểu mẫu 11: tiêu đề cột nền nhạt + dính, ô thoáng hơn --- */
 th{white-space:nowrap}

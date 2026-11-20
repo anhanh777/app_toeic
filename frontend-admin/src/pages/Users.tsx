@@ -8,6 +8,25 @@ import { LoadingLine, useUiSettings } from '../uiSettings';
    Chỉ đặt lại MẬT KHẨU (không reset tiến độ học). Các luật bảo vệ ở
    backend cũng được thể hiện ở giao diện: không tự xóa / tự hạ quyền
    của mình, không xóa / hạ quyền admin cuối cùng. */
+
+const GLASS_ICONS = {
+  mail: (<><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></>),
+  lock: (<><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></>),
+  user: (<><circle cx="12" cy="8" r="4" /><path d="M4 21c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5" /></>),
+  shield: (<path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z" />),
+  target: (<><circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" /><circle cx="12" cy="12" r="1" /></>),
+} as const;
+type GlassIconName = keyof typeof GLASS_ICONS;
+
+/** Ô nhập viên thuốc có icon bên trái — kiểu Dark glass cho form trong popup. */
+function GlassField({ icon, children }: { icon: GlassIconName; children: React.ReactNode }) {
+  return (
+    <div className="glass-field">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">{GLASS_ICONS[icon]}</svg>
+      {children}
+    </div>
+  );
+}
 export default function Users() {
   const { user: me } = useAuth();
   const { settings } = useUiSettings();
@@ -203,19 +222,27 @@ export default function Users() {
       </div>
 
       {createOpen && (
-        <Modal title="Thêm tài khoản mới" onClose={() => setCreateOpen(false)}>
-          <form onSubmit={createUser}>
-            <label>Email</label>
-            <input type="email" value={createForm.email} onChange={e => setCreateForm({ ...createForm, email: e.target.value })} required placeholder="VD: hocvien@example.com" />
-            <label>Mật khẩu (ít nhất 6 ký tự)</label>
-            <input type="password" value={createForm.password} onChange={e => setCreateForm({ ...createForm, password: e.target.value })} required />
-            <label>Tên hiển thị</label>
-            <input value={createForm.name} onChange={e => setCreateForm({ ...createForm, name: e.target.value })} placeholder="Để trống thì dùng phần trước @" />
-            <label>Quyền</label>
-            <select value={createForm.role} onChange={e => setCreateForm({ ...createForm, role: e.target.value as 'user' | 'admin' })}>
-              <option value="user">Học viên</option>
-              <option value="admin">Admin</option>
-            </select>
+        <Modal title="Thêm tài khoản mới" subtitle="Tạo tài khoản cho học viên mới của app." narrow onClose={() => setCreateOpen(false)}>
+          <form className="glass-form" onSubmit={createUser}>
+            <label className="glass-label">Email</label>
+            <GlassField icon="mail">
+              <input type="email" value={createForm.email} onChange={e => setCreateForm({ ...createForm, email: e.target.value })} required placeholder="VD: hocvien@example.com" />
+            </GlassField>
+            <label className="glass-label">Mật khẩu</label>
+            <GlassField icon="lock">
+              <input type="password" value={createForm.password} onChange={e => setCreateForm({ ...createForm, password: e.target.value })} required placeholder="Ít nhất 6 ký tự" />
+            </GlassField>
+            <label className="glass-label">Tên hiển thị</label>
+            <GlassField icon="user">
+              <input value={createForm.name} onChange={e => setCreateForm({ ...createForm, name: e.target.value })} placeholder="Để trống thì dùng phần trước @" />
+            </GlassField>
+            <label className="glass-label">Quyền</label>
+            <GlassField icon="shield">
+              <select value={createForm.role} onChange={e => setCreateForm({ ...createForm, role: e.target.value as 'user' | 'admin' })}>
+                <option value="user">Học viên</option>
+                <option value="admin">Admin</option>
+              </select>
+            </GlassField>
             <div className="btn-row">
               <button className="btn" type="submit" disabled={busy}>{busy ? 'Đang tạo…' : 'Tạo tài khoản'}</button>
               <button type="button" className="btn secondary" onClick={() => setCreateOpen(false)}>Hủy</button>
@@ -225,22 +252,28 @@ export default function Users() {
       )}
 
       {editingId != null && (
-        <Modal title={`Sửa tài khoản #${editingId}`} onClose={() => setEditingId(null)}>
-          <form onSubmit={saveEdit}>
-            <label>Tên hiển thị</label>
-            <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} required />
-            <label>Quyền</label>
-            <select value={editForm.role} onChange={e => setEditForm({ ...editForm, role: e.target.value as 'user' | 'admin' })}
-              disabled={editingId != null && users.find(u => u.id === editingId) != null && cannotDemote(users.find(u => u.id === editingId)!)}
-            >
-              <option value="user">Học viên</option>
-              <option value="admin">Admin</option>
-            </select>
+        <Modal title={`Sửa tài khoản #${editingId}`} subtitle="Cập nhật tên, quyền và điểm mục tiêu." narrow onClose={() => setEditingId(null)}>
+          <form className="glass-form" onSubmit={saveEdit}>
+            <label className="glass-label">Tên hiển thị</label>
+            <GlassField icon="user">
+              <input value={editForm.name} onChange={e => setEditForm({ ...editForm, name: e.target.value })} required />
+            </GlassField>
+            <label className="glass-label">Quyền</label>
+            <GlassField icon="shield">
+              <select value={editForm.role} onChange={e => setEditForm({ ...editForm, role: e.target.value as 'user' | 'admin' })}
+                disabled={editingId != null && users.find(u => u.id === editingId) != null && cannotDemote(users.find(u => u.id === editingId)!)}
+              >
+                <option value="user">Học viên</option>
+                <option value="admin">Admin</option>
+              </select>
+            </GlassField>
             {editingId != null && users.find(u => u.id === editingId) != null && cannotDemote(users.find(u => u.id === editingId)!) && (
               <p className="muted">{guardNote(users.find(u => u.id === editingId)!)}</p>
             )}
-            <label>Điểm TOEIC mục tiêu (10–990)</label>
-            <input type="number" min={10} max={990} value={editForm.targetScore} onChange={e => setEditForm({ ...editForm, targetScore: Number(e.target.value) })} />
+            <label className="glass-label">Điểm TOEIC mục tiêu (10–990)</label>
+            <GlassField icon="target">
+              <input type="number" min={10} max={990} value={editForm.targetScore} onChange={e => setEditForm({ ...editForm, targetScore: Number(e.target.value) })} />
+            </GlassField>
             <label><input type="checkbox" checked={editForm.hideOnLeaderboard} onChange={e => setEditForm({ ...editForm, hideOnLeaderboard: e.target.checked })} /> Ẩn khỏi bảng xếp hạng</label>
             <div className="btn-row">
               <button className="btn" type="submit" disabled={busy}>{busy ? 'Đang lưu…' : 'Lưu thay đổi'}</button>
@@ -251,11 +284,12 @@ export default function Users() {
       )}
 
       {resetTarget && (
-        <Modal title={`Đặt lại mật khẩu — ${resetTarget.email}`} onClose={() => { setResetId(null); setResetPassword(''); }}>
-          <p className="muted">Đặt mật khẩu tạm mới cho tài khoản này. Gửi mật khẩu cho người dùng và nhắc họ đổi lại trong phần Hồ sơ sau khi đăng nhập.</p>
-          <form onSubmit={resetUserPassword}>
-            <label>Mật khẩu mới (ít nhất 6 ký tự)</label>
-            <input type="password" value={resetPassword} onChange={e => setResetPassword(e.target.value)} required />
+        <Modal title={`Đặt lại mật khẩu — ${resetTarget.email}`} subtitle="Đặt mật khẩu tạm mới cho tài khoản này. Gửi mật khẩu cho người dùng và nhắc họ đổi lại trong phần Hồ sơ sau khi đăng nhập." narrow onClose={() => { setResetId(null); setResetPassword(''); }}>
+          <form className="glass-form" onSubmit={resetUserPassword}>
+            <label className="glass-label">Mật khẩu mới</label>
+            <GlassField icon="lock">
+              <input type="password" value={resetPassword} onChange={e => setResetPassword(e.target.value)} required placeholder="Ít nhất 6 ký tự" />
+            </GlassField>
             <div className="btn-row">
               <button className="btn" type="submit" disabled={busy}>{busy ? 'Đang lưu…' : 'Đặt lại mật khẩu'}</button>
               <button type="button" className="btn secondary" onClick={() => { setResetId(null); setResetPassword(''); }}>Hủy</button>

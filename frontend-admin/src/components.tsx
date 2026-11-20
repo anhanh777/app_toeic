@@ -12,10 +12,12 @@ export function ErrorBox({ error }: { error: unknown }) {
 /** Popup (modal) dùng chung cho các thao tác Sửa / Xem: thay cho các
  *  panel hiện inline bên dưới danh sách. Lớp phủ tối, hộp thoại ở giữa,
  *  bấm ra ngoài hoặc phím Escape để đóng, nội dung dài thì cuộn trong hộp. */
-export function Modal({ title, onClose, wide, children }: {
+export function Modal({ title, subtitle, onClose, wide, narrow, children }: {
   title: string;
+  subtitle?: string;
   onClose: () => void;
   wide?: boolean;
+  narrow?: boolean;
   children: React.ReactNode;
 }) {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -35,12 +37,15 @@ export function Modal({ title, onClose, wide, children }: {
   return (
     <div className="modal-overlay" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
       <div
-        className={wide ? 'modal modal--wide' : 'modal'}
+        className={wide ? 'modal modal--wide' : narrow ? 'modal modal--narrow' : 'modal'}
         role="dialog" aria-modal="true" aria-label={title}
         tabIndex={-1} ref={boxRef}
       >
         <div className="modal-head">
-          <h2 className="modal-title">{title}</h2>
+          <div className="modal-head-text">
+            <h2 className="modal-title">{title}</h2>
+            {subtitle && <p className="modal-subtitle">{subtitle}</p>}
+          </div>
           <button type="button" className="modal-close" aria-label="Đóng" onClick={onClose}>✕</button>
         </div>
         <div className="modal-body">{children}</div>
