@@ -1433,11 +1433,14 @@ function finishAttempt(id, fields) {
 function deleteAttempt(id) {
   const cur = getAttempt(id);
   if (!cur) return false;
+  // transaction() chay fn ngay va tra ket qua cua fn — KHONG goi them ()
+  // (ban cu `transaction(...)()` goi ket qua `true` nhu ham -> TypeError
+  // sau khi da COMMIT, nen DELETE tra 500 du attempt da bi xoa that).
   return transaction(() => {
     db.prepare('DELETE FROM answers WHERE attempt_id = ?').run(id);
     db.prepare('DELETE FROM attempts WHERE id = ?').run(id);
     return true;
-  })();
+  });
 }
 
 function countAttempts() {
