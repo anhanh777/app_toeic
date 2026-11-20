@@ -1044,3 +1044,6 @@ tbody tr:hover{background:var(--surface-soft)}
 .vocab-opt--correct{border-color:var(--green-border); background:var(--green-bg)}
 .vocab-opt--wrong{border-color:var(--red-border); background:var(--red-bg)}
 .vocab-cloze{font-size:1.05rem; line-height:1.7; background:var(--surface-soft); border:1px solid var(--border); border-radius:12px; padding:.7rem .9rem; margin:.5rem 0}
+/* --- Tu chung: nut Luu + phien am khong xuong dong trong bang --- */
+.vocab-save-btn{white-space:nowrap}
+.vocab-phonetic{white-space:nowrap}

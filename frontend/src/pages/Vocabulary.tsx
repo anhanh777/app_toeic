@@ -78,10 +78,10 @@ function MasteryBar({ value }: { value: number }) {
 /**
  * Trang Từ vựng — 2 kho:
  * - "Từ của tôi" (mặc định): từ cá nhân, lưu khi tra từ trong đoạn văn
- *   lúc luyện tập hoặc thêm tay; sửa/xóa/đánh dấu được.
- * - "Từ chung": kho từ chung do admin quản (hiện đã làm trống theo
- *   hướng mới — từ vựng lấy từ quá trình luyện tập); người học chỉ
- *   đánh dấu đã thuộc/chưa thuộc.
+ *   lúc luyện tập hoặc thêm tay; sửa/xóa/đánh dấu được; ôn theo lịch
+ *   ngắt quãng 1–3–7–14–30 ngày kèm điểm thành thạo.
+ * - "Từ chung": cụm từ/collocations trích từ đề thi trong app, chia theo
+ *   chủ đề; bấm "＋ Lưu" để đưa cụm vào "Từ của tôi" kèm lịch ôn.
  */
 export default function Vocabulary() {
   const [tab, setTab] = useState<'mine' | 'shared'>('mine');
@@ -566,19 +566,40 @@ function MyWords() {
 function SharedWords() {
   const { exam } = useExam();
   const ex = exam ?? 'toeic';
+  const [topics, setTopics] = useState<{ topic: string; count: number }[]>([]);
+  const [topic, setTopic] = useState<string | null>(null);
   const [words, setWords] = useState<Vocab[]>([]);
-  const [topic, setTopic] = useState('');
+  const [savedWords, setSavedWords] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<unknown>(null);
   const [flipped, setFlipped] = useState(false);
   const [idx, setIdx] = useState(0);
   const [msg, setMsg] = useState('');
+  const [learning, setLearning] = useState(false);
 
   useEffect(() => {
-    api.vocabulary(topic, 100, ex).then((w) => { setWords(w); setIdx(0); }).catch(setError);
+    setTopic(null);
+    setLoading(true);
+    api.vocabularyTopics(ex).then(setTopics).catch(setError).finally(() => setLoading(false));
+  }, [ex]);
+
+  useEffect(() => {
+    if (!topic) return;
+    setLoading(true);
+    setMsg('');
+    Promise.all([api.vocabulary(topic, 500, ex), api.userWords('', 500)])
+      .then(([ws, mine]) => {
+        setWords(ws);
+        setIdx(0);
+        setFlipped(false);
+        setSavedWords(new Set(mine.items.map((w) => w.word.toLowerCase())));
+      })
+      .catch(setError)
+      .finally(() => setLoading(false));
   }, [topic, ex]);
 
-  const topics = useMemo(() => [...new Set(words.map((w) => w.topic || 'Chung'))], [words]);
   const w = words[idx];
+  const total = topics.reduce((s, t) => s + t.count, 0);
 
   const mark = async (status: 'learning' | 'learned' | 'wrong', vocabId?: string) => {
     const id = vocabId || w?.id;
@@ -589,49 +610,102 @@ function SharedWords() {
     } catch (e) { setError(e); }
   };
 
+  const learnOne = async (v: Vocab) => {
+    try {
+      const r = await api.learnVocab(v.id);
+      setSavedWords((s) => new Set(s).add(v.word.toLowerCase()));
+      setMsg(r.alreadyExists ? `"${v.word}" đã có trong Từ của tôi.` : `Đã lưu "${v.word}" vào Từ của tôi — sẽ ôn lại vào ngày mai.`);
+    } catch (e) { setError(e); }
+  };
+
+  const learnSet = async () => {
+    if (!topic || learning) return;
+    setLearning(true);
+    try {
+      const r = await api.learnVocabSet(topic, ex);
+      setSavedWords((s) => {
+        const next = new Set(s);
+        words.forEach((v) => next.add(v.word.toLowerCase()));
+        return next;
+      });
+      setMsg(r.added > 0
+        ? `Đã thêm ${r.added} cụm vào Từ của tôi${r.skipped > 0 ? ` (${r.skipped} cụm đã có sẵn)` : ''} — các cụm mới sẽ ôn lại vào ngày mai.`
+        : 'Cả bộ này đã có trong Từ của tôi rồi.');
+    } catch (e) { setError(e); } finally { setLearning(false); }
+  };
+
+  if (loading && !topic && topics.length === 0) {
+    return <p className="muted">Đang tải kho từ chung…</p>;
+  }
+
   return (
     <div>
       <ErrorBox error={error} />
       {msg && <div className="success">{msg}</div>}
-      {words.length === 0 ? (
+      {topics.length === 0 ? (
         <div className="card">
-          <p>Chưa có từ chung — từ vựng giờ lấy từ quá trình luyện tập của bạn: khi luyện tập, bấm vào từ trong đoạn văn rồi chọn ＋ Lưu vào từ vựng, từ sẽ nằm ở tab "Từ của tôi".</p>
+          <p>Chưa có từ chung cho kỳ thi này.</p>
         </div>
+      ) : topic === null ? (
+        <>
+          <p className="muted">Cụm từ và collocations trích từ đề thi trong app, chia theo chủ đề — xếp theo tần suất gặp trong đề. Bấm vào một chủ đề để xem danh sách cụm và lưu vào "Từ của tôi" kèm lịch ôn.</p>
+          <div className="pick-grid">
+            {topics.map((t) => (
+              <button key={t.topic} type="button" className="pick-box" onClick={() => setTopic(t.topic)}>
+                <b>{t.topic}</b>
+                <span>{t.count} cụm</span>
+              </button>
+            ))}
+          </div>
+          <p className="muted">Tổng cộng {total} cụm.</p>
+        </>
       ) : (
         <>
-          <label htmlFor="topic">Chủ đề</label>
-          <select id="topic" value={topic} onChange={(e) => setTopic(e.target.value)}>
-            <option value="">Tất cả chủ đề</option>
-            {topics.map((t) => <option key={t} value={t}>{t}</option>)}
-          </select>
-
-          {w && (
-            <div className="card">
-              <h2>Flashcard</h2>
-              <div className={`flashcard ${flipped ? 'flipped' : ''}`} onClick={() => setFlipped((f) => !f)}>
-                <div className="flashcard-inner">
-                  <div className="flashcard-face"><div className="big">{w.word}</div><div className="muted">{w.phonetic || ''}</div><p className="muted">Bấm để lật thẻ</p></div>
-                  <div className="flashcard-face back"><div><strong>{w.meaning}</strong></div><p>{w.example || ''}</p></div>
-                </div>
-              </div>
-              <div className="btn-row">
-                <button type="button" className="btn secondary" disabled={idx === 0} onClick={() => { setIdx((i) => i - 1); setFlipped(false); }}>← Từ trước</button>
-                <button type="button" className="btn secondary" disabled={idx + 1 >= words.length} onClick={() => { setIdx((i) => i + 1); setFlipped(false); }}>Từ tiếp →</button>
-                <button type="button" className="btn" onClick={() => void mark('learned')}>Đã thuộc ✅</button>
-                <button type="button" className="btn danger" onClick={() => void mark('wrong')}>Chưa thuộc ❌</button>
-              </div>
-              <p className="muted">Từ {idx + 1}/{words.length}</p>
-            </div>
-          )}
-
-          <div className="card">
-            <h2>Danh sách từ ({words.length})</h2>
-            <table><thead><tr><th>Từ</th><th>Phiên âm</th><th>Nghĩa</th><th>Chủ đề</th><th></th></tr></thead>
-              <tbody>{words.map((v) => (
-                <tr key={v.id}><td><strong>{v.word}</strong><br /><span className="muted">{v.example || ''}</span></td><td>{v.phonetic || ''}</td><td>{v.meaning}</td><td>{v.topic || ''}</td>
-                  <td><button type="button" className="btn ghost" onClick={() => void mark('learned', v.id)}>Đã thuộc</button></td></tr>
-              ))}</tbody></table>
+          <div className="btn-row">
+            <button type="button" className="btn ghost" onClick={() => { setTopic(null); setMsg(''); }}>← Tất cả chủ đề</button>
+            <button type="button" className="btn" disabled={learning || words.length === 0} onClick={() => void learnSet()}>
+              {learning ? 'Đang lưu…' : `Học bộ này (${words.length} cụm)`}
+            </button>
           </div>
+          <h2>{topic}</h2>
+          {loading ? (
+            <p className="muted">Đang tải…</p>
+          ) : words.length === 0 ? (
+            <div className="card"><p>Chủ đề này chưa có cụm từ nào.</p></div>
+          ) : (
+            <>
+              {w && (
+                <div className="card">
+                  <h2>Flashcard</h2>
+                  <div className={`flashcard ${flipped ? 'flipped' : ''}`} onClick={() => setFlipped((f) => !f)}>
+                    <div className="flashcard-inner">
+                      <div className="flashcard-face"><div className="big">{w.word}</div><div className="muted">{w.phonetic || ''}</div><p className="muted">Bấm để lật thẻ</p></div>
+                      <div className="flashcard-face back"><div><strong>{w.meaning}</strong></div><p>{w.example || ''}</p></div>
+                    </div>
+                  </div>
+                  <div className="btn-row">
+                    <button type="button" className="btn secondary" disabled={idx === 0} onClick={() => { setIdx((i) => i - 1); setFlipped(false); }}>← Từ trước</button>
+                    <button type="button" className="btn secondary" disabled={idx + 1 >= words.length} onClick={() => { setIdx((i) => i + 1); setFlipped(false); }}>Từ tiếp →</button>
+                    <button type="button" className="btn" onClick={() => void mark('learned')}>Đã thuộc ✅</button>
+                    <button type="button" className="btn danger" onClick={() => void mark('wrong')}>Chưa thuộc ❌</button>
+                  </div>
+                  <p className="muted">Từ {idx + 1}/{words.length}</p>
+                </div>
+              )}
+
+              <div className="card">
+                <h2>Danh sách cụm ({words.length})</h2>
+                <table><thead><tr><th>Cụm từ</th><th>Phiên âm</th><th>Nghĩa</th><th></th></tr></thead>
+                  <tbody>{words.map((v) => {
+                    const saved = savedWords.has(v.word.toLowerCase());
+                    return (
+                      <tr key={v.id}><td><strong>{v.word}</strong><br /><span className="muted">{v.example || ''}</span></td><td className="vocab-phonetic">{v.phonetic || ''}</td><td>{v.meaning}</td>
+                        <td><button type="button" className="btn ghost vocab-save-btn" disabled={saved} onClick={() => void learnOne(v)}>{saved ? 'Đã lưu ✓' : '＋ Lưu'}</button></td></tr>
+                    );
+                  })}</tbody></table>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

@@ -1639,6 +1639,15 @@ function getVocabularyById(id) {
   return db.prepare('SELECT * FROM vocabulary WHERE id = ?').get(id) || null;
 }
 
+/** Dem so cum theo chu de (cho luoi box chu de). Xep theo so luong giam dan. */
+function countVocabularyByTopic(exam) {
+  const where = exam ? 'WHERE exam = ?' : '';
+  const params = exam ? [exam] : [];
+  return db
+    .prepare(`SELECT topic, COUNT(*) AS count FROM vocabulary ${where} GROUP BY topic ORDER BY count DESC, topic ASC`)
+    .all(...params);
+}
+
 function insertVocabulary(v) {
   db.prepare(
     'INSERT INTO vocabulary (id, word, phonetic, meaning, example, topic, exam) VALUES (?, ?, ?, ?, ?, ?, ?)'
@@ -2910,6 +2919,7 @@ module.exports = {
   countVocabulary,
   listVocabulary,
   getVocabularyById,
+  countVocabularyByTopic,
   insertVocabulary,
   updateVocabulary,
   deleteVocabulary,

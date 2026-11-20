@@ -317,8 +317,17 @@ export const api = {
     const data = await req<{ total: number; items: Vocab[] }>(`/api/vocabulary?${q}`);
     return data.items;
   },
+  vocabularyTopics: async (exam?: string) => {
+    const q = exam ? `?exam=${encodeURIComponent(exam)}` : '';
+    const data = await req<{ topics: { topic: string; count: number }[] }>(`/api/vocabulary/topics${q}`);
+    return data.topics;
+  },
   markVocab: (id: string, status: 'learning' | 'learned' | 'wrong') =>
     req(`/api/vocabulary/${encodeURIComponent(id)}/mark`, { method: 'POST', body: JSON.stringify({ status }) }),
+  learnVocab: (id: string) =>
+    req<{ ok: boolean; alreadyExists: boolean; word: UserWord }>(`/api/vocabulary/${encodeURIComponent(id)}/learn`, { method: 'POST' }),
+  learnVocabSet: (topic: string, exam?: string) =>
+    req<{ ok: boolean; total: number; added: number; skipped: number }>('/api/vocabulary/learn-set', { method: 'POST', body: JSON.stringify({ topic, exam }) }),
 
   // ---- Tu dien + tu vung ca nhan ("Tu cua toi") ----
   dictionaryLookup: (word: string, context?: string) =>

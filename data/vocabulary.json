@@ -1,1 +1,263 @@
-[]
+[
+  {
+    "id": "TOEIC-PHR-001",
+    "word": "respond to",
+    "phonetic": "/rɪˈspɒnd tuː/",
+    "meaning": "phản hồi, trả lời",
+    "example": "Please respond to this e-mail to confirm.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-002",
+    "word": "work on",
+    "phonetic": "/ˈwɜːrk ɒn/",
+    "meaning": "thực hiện; cải thiện",
+    "example": "I can work on Sunday.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-003",
+    "word": "conference room",
+    "phonetic": "/ˈkɒnfərəns ruːm/",
+    "meaning": "phòng hội nghị",
+    "example": "Conference Room 2100 Hosted by the President’s Office",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-004",
+    "word": "participate in",
+    "phonetic": "/pɑːrˈtɪsɪpeɪt ɪn/",
+    "meaning": "tham gia vào, tham dự vào",
+    "example": "Thus, I am writing to ask if I may participate in the Gorgeous Gardens Tour.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-005",
+    "word": "meet with",
+    "phonetic": "/ˈmiːt wɪð/",
+    "meaning": "gặp gỡ, hội kiến",
+    "example": "So she wants to meet with them all at once.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-006",
+    "word": "set up",
+    "phonetic": "/ˌsɛt ˈʌp/",
+    "meaning": "sắp xếp, thu xếp",
+    "example": "Call 615-555-0189 to set up VIS for your accounts.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-007",
+    "word": "work in",
+    "phonetic": "/wɜːrk ɪn/",
+    "meaning": "làm việc trong, hoạt động trong",
+    "example": "You can see my rates and previous work in the attachment to this e-mail.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-008",
+    "word": "interest in",
+    "phonetic": "/ˈɪntrəst ɪn/",
+    "meaning": "sự quan tâm đến",
+    "example": "Rhodes, Thank you for your interest in CRR’s services.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-009",
+    "word": "best regards",
+    "phonetic": "/ˌbest rɪˈɡɑːrdz/",
+    "meaning": "trân trọng (lời chào kết thư)",
+    "example": "Best regards, Neela Balay",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-010",
+    "word": "real estate",
+    "phonetic": "/ˈriːəl ɪˈsteɪt/",
+    "meaning": "bất động sản",
+    "example": "Sincerely, Kenneth Carnahan Senior Agent, KV Real Estate",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-011",
+    "word": "focus on",
+    "phonetic": "/ˈfəʊkəs ɒn/",
+    "meaning": "tập trung vào",
+    "example": "This allows your staff to focus on more complex tasks.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-012",
+    "word": "staff members",
+    "phonetic": "/ˈstæf ˈmɛmbərz/",
+    "meaning": "nhân viên",
+    "example": "Still, one of our staff members will speak to Mr.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-013",
+    "word": "city council",
+    "phonetic": "/ˈsɪti ˈkaʊnsl/",
+    "meaning": "hội đồng thành phố",
+    "example": "Minutes of the Special Meeting of the Arlford City Council 14 January 1.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-014",
+    "word": "talk about",
+    "phonetic": "/ˈtɔːk əˌbaʊt/",
+    "meaning": "thảo luận về",
+    "example": "What would you like me to talk about?",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-015",
+    "word": "payment method",
+    "phonetic": "ˈpeɪmənt ˈmeθəd",
+    "meaning": "phương thức thanh toán",
+    "example": "A full refund for your ticket or tickets has been issued via your chosen payment method.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-017",
+    "word": "reply to",
+    "phonetic": "/rɪˈplaɪ tuː/",
+    "meaning": "trả lời",
+    "example": "Just reply to this e-mail.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-018",
+    "word": "team members",
+    "phonetic": "/ˈtiːm ˈmembərz/",
+    "meaning": "thành viên nhóm",
+    "example": "Ohtani expects all team members to attend his weekly meeting.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-019",
+    "word": "contact information",
+    "phonetic": "/ˈkɒntækt ˌɪnfərˈmeɪʃən/",
+    "meaning": "thông tin liên hệ",
+    "example": "This year, the deadline to review your contact information is July 29.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-020",
+    "word": "arrive at",
+    "phonetic": "/əˈraɪv æt/",
+    "meaning": "đến, tới (một địa điểm)",
+    "example": "I expect to arrive at your house no later than 5 p.m.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-021",
+    "word": "full refund",
+    "phonetic": "/fʊl ˈriːfʌnd/",
+    "meaning": "hoàn tiền đầy đủ",
+    "example": "A full refund for your ticket or tickets has been issued via your chosen payment method.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-022",
+    "word": "mobile app",
+    "phonetic": "/ˈmoʊbaɪl æp/",
+    "meaning": "ứng dụng di động",
+    "example": "Finally, the SAFEX mobile app’s “Check-In” feature must be used whenever an employee is working alone in the lab.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-024",
+    "word": "from home",
+    "phonetic": null,
+    "meaning": "tại nhà, từ nhà (khi làm việc)",
+    "example": "They enable users to work not only from home or the office but virtually anywhere.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "TOEIC-PHR-028",
+    "word": "need for",
+    "phonetic": "/niːd fɔːr/",
+    "meaning": "nhu cầu về",
+    "example": "But the notes I need for the call are on my desk.",
+    "topic": "Văn phòng & công việc",
+    "exam": "toeic"
+  },
+  {
+    "id": "IELTS-PHR-002",
+    "word": "talk about",
+    "phonetic": "/ˈtɔːk əˌbaʊt/",
+    "meaning": "thảo luận về",
+    "example": "What is there to talk about?",
+    "topic": "Xã hội & văn hóa",
+    "exam": "ielts"
+  },
+  {
+    "id": "IELTS-PHR-006",
+    "word": "focus on",
+    "phonetic": "/ˈfəʊkəs ɒn/",
+    "meaning": "tập trung vào",
+    "example": "We could focus on poverty.",
+    "topic": "Xã hội & văn hóa",
+    "exam": "ielts"
+  },
+  {
+    "id": "IELTS-PHR-014",
+    "word": "need for",
+    "phonetic": "/niːd fɔːr/",
+    "meaning": "nhu cầu về",
+    "example": "I think that's all the info you need for now.",
+    "topic": "Xã hội & văn hóa",
+    "exam": "ielts"
+  },
+  {
+    "id": "IELTS-PHR-017",
+    "word": "set up",
+    "phonetic": "/ˌsɛt ˈʌp/",
+    "meaning": "sắp xếp, thu xếp",
+    "example": "He then built log houses in the mountains in Japan before moving to Hong Kong to set up a digital marketing business.",
+    "topic": "Xã hội & văn hóa",
+    "exam": "ielts"
+  },
+  {
+    "id": "IELTS-PHR-046",
+    "word": "interest in",
+    "phonetic": "/ˈɪntrəst ɪn/",
+    "meaning": "sự quan tâm đến",
+    "example": "Do you think there’ll be more interest in gluten and lactose-free food?",
+    "topic": "Xã hội & văn hóa",
+    "exam": "ielts"
+  },
+  {
+    "id": "IELTS-PHR-056",
+    "word": "work in",
+    "phonetic": "/wɜːrk ɪn/",
+    "meaning": "làm việc trong, hoạt động trong",
+    "example": "These birds have been the foundation of all subsequent work in managing the species.",
+    "topic": "Xã hội & văn hóa",
+    "exam": "ielts"
+  }
+]
