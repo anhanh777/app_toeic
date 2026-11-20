@@ -12,12 +12,13 @@ import {
   Alert,
   FlatList,
   Pressable,
+  StatusBar,
   StyleSheet,
   Text,
   View,
   useWindowDimensions,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api, type Question } from '../api';
 import { useExam, type ExamId } from '../exam';
 import {
@@ -479,6 +480,11 @@ export default function PracticeSessionScreen() {
   );
 
   const pad = horizontalPadding(width);
+  // Khoảng cách trên cùng tường minh (như màn Thi thử): header không
+  // được vẽ lấn lên status bar — lấy max của inset hệ thống và chiều
+  // cao status bar Android.
+  const insets = useSafeAreaInsets();
+  const topPad = Math.max(insets.top, StatusBar.currentHeight ?? 0) + SPACING.md;
 
   if (loading || (isListening && !!testSetId && !partMediaLoaded)) {
     return (
@@ -550,8 +556,8 @@ export default function PracticeSessionScreen() {
   }
 
   return (
-    <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { paddingHorizontal: pad }]}>
+    <SafeAreaView edges={['left', 'right', 'bottom']} style={[styles.safe, { backgroundColor: colors.background }]}>
+      <View style={[styles.container, { paddingHorizontal: pad, paddingTop: topPad }]}>
         <View style={styles.header}>
           <View style={styles.headerText}>
             {testSetTitle ? (

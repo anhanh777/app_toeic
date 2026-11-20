@@ -606,7 +606,7 @@ tbody tr:hover{background:var(--surface-soft)}
    tiêu đề dính để luôn thấy khi cuộn — thay cho chip đồng hồ nổi +
    thanh dưới cũ. top:60px = vừa dưới topbar sticky (~54px); nền
    surface để chữ câu hỏi không lộ qua khi cuộn. */
-.exam-head--mock{position:sticky; top:60px; z-index:15; background:var(--surface)}
+.exam-head--mock{position:sticky; top:60px; z-index:15; background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:.55rem .9rem; margin:0 0 .75rem; box-shadow:0 2px 12px rgba(93,64,28,.06)}
 .exam-head--mock .exam-head-title{flex:1 1 auto; min-width:0}
 .exam-head-right{display:flex; align-items:center; gap:.5rem; flex:0 0 auto}
 .timer-chip--inline{position:static; pointer-events:auto; box-shadow:0 2px 8px rgba(0,0,0,.12)}
@@ -758,6 +758,11 @@ tbody tr:hover{background:var(--surface-soft)}
     display:grid; grid-template-columns:minmax(0,1fr) 252px; gap:1rem; align-items:start;
     padding-bottom:1rem;
   }
+  /* Màn Thi thử: thanh tiêu đề (ETS + đồng hồ + ⋮) nằm NGOÀI lưới 2 cột
+     nên chiếm full chiều ngang (bằng cả 2 cột dưới cộng lại); lưới chỉ
+     còn ôm .exam-main + cột phải. Chỉ áp cho mock (class riêng). */
+  .exam-room.exam-room--sidelayout.exam-room--mockhead{display:block; padding-bottom:1rem}
+  .exam-room--mockhead .mock-room-grid{display:grid; grid-template-columns:minmax(0,1fr) 252px; gap:1rem; align-items:start}
   .exam-room--sidelayout .exam-main{min-width:0}
   .exam-room--sidelayout .practice-bar{display:none}
   /* Hang loc Dang + che do cham o dau trang an di — ban sao cua no
@@ -1532,7 +1537,7 @@ tbody tr:hover{background:var(--surface-soft)}
 [data-style="lively"] .mock-menu{border:2px solid var(--border); border-radius:20px; padding:.9rem; box-shadow:0 4px 0 var(--border)}
 [data-style="lively"] .mock-menu-item{border-radius:12px; font-weight:700}
 [data-style="lively"] .mock-menu-btn{border-width:2px; box-shadow:0 3px 0 var(--border)}
-[data-style="lively"] .exam-head--mock{border-bottom-width:2px}
+[data-style="lively"] .exam-head--mock{border:2px solid var(--border); border-radius:20px; padding:.7rem 1rem; box-shadow:0 4px 0 var(--border)}
 [data-style="lively"] .progress-badge{border-radius:14px; padding:.5rem 1rem; box-shadow:0 4px 0 #CC7800}
 [data-style="lively"] .pill{padding:.35rem .8rem; font-weight:800}
 /* --- G. Flashcard / bang xep hang / the ket qua --- */

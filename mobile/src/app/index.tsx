@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 import { api, targetScoreOf, type ExamInfo, type StatsOverview, type TodayData } from '../api';
 import { useAuth } from '../auth';
@@ -29,12 +29,13 @@ import {
 } from '../layout';
 import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { useMenuIcons, type MenuIconKey } from '../menuIcons';
+import { useUiSettings } from '../uiSettings';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { TierBadge, XpBar } from '../components/TierBadge';
 
 const FALLBACK_EXAMS: ExamInfo[] = [
-  { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990', testSetCount: 25, questionCount: 5000 },
+  { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990', testSetCount: 28, questionCount: 5600 },
   { id: 'ielts', title: 'IELTS Academic', subtitle: 'Listening + Reading', scale: 'Band 0–9', testSetCount: 12, questionCount: 960 },
 ];
 
@@ -95,8 +96,12 @@ export default function HomeScreen() {
     next === '/today' || next === '/practice' || next === '/mock' ? next : undefined;
   const nextLabel = nextRoute === '/today' ? 'Hôm nay' : nextRoute === '/practice' ? 'Luyện tập' : 'Thi thử';
 
-  useEffect(() => {
-    if (exam) return;
+  const { refresh: refreshSettings } = useUiSettings();
+  // Số đề/câu lấy ĐỘNG từ GET /api/exams (28 đề / 5600 câu) — trước đây
+  // effect chỉ chạy khi chưa chọn kỳ thi (`if (exam) return`) nên app mở
+  // lên với kỳ thi đã lưu thì không bao giờ tải, rớt về fallback hardcode
+  // cũ "25 đề • 5000 câu". Giờ tải luôn, bất kể đã chọn kỳ thi hay chưa.
+  const loadExams = useCallback(() => {
     api
       .exams()
       .then(setExams)
@@ -104,7 +109,23 @@ export default function HomeScreen() {
         /* dùng số fallback */
       })
       .finally(() => setLoadingExams(false));
-  }, [exam]);
+  }, []);
+
+  useEffect(() => {
+    loadExams();
+  }, [loadExams]);
+
+  // Về Trang chủ là tải lại cài đặt giao diện + số đề/câu: gạt nút phong
+  // cách ở admin hay thêm đề mới đều hiện ngay — trước đây settings chỉ
+  // fetch 1 lần lúc mở app nên gạt sang Sống động xong mà app đang mở
+  // thì Trang chủ vẫn Pastel (không mascot, không nhiệm vụ) cho tới khi
+  // mở lại app.
+  useFocusEffect(
+    useCallback(() => {
+      refreshSettings();
+      loadExams();
+    }, [refreshSettings, loadExams]),
+  );
 
   useEffect(() => {
     if (!exam) return;
@@ -249,11 +270,13 @@ export default function HomeScreen() {
             {stats ? (
               <View style={styles.stats}>
                 <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
-                  <Text style={[styles.statIco, { fontSize: scaled(isLively ? 26 : 20) }]}>🎯</Text>
+                  <View style={[styles.statIcoBox, { backgroundColor: colors.greenBg }]}>
+                    <Text style={{ fontSize: scaled(isLively ? 30 : 26) }}>🎯</Text>
+                  </View>
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>
                     {isIelts ? 'Band tổng cao nhất' : 'Mục tiêu điểm'}
                   </Text>
-                  <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(20) }]}>
+                  <Text style={[styles.statBig, { color: colors.green, fontSize: scaled(22) }]}>
                     {isIelts ? (bestBand != null ? `Band ${bestBand}` : '—') : target}
                   </Text>
                   {isIelts ? (
@@ -281,11 +304,13 @@ export default function HomeScreen() {
                   )}
                 </View>
                 <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
-                  <Text style={[styles.statIco, { fontSize: scaled(isLively ? 26 : 20) }]}>📊</Text>
+                  <View style={[styles.statIcoBox, { backgroundColor: colors.sky }]}>
+                    <Text style={{ fontSize: scaled(isLively ? 30 : 26) }}>📊</Text>
+                  </View>
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>
                     {isIelts ? 'Section/Passage yếu nhất' : 'Part yếu nhất'}
                   </Text>
-                  <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(18) }]}>
+                  <Text style={[styles.statBig, { color: colors.duoBlue, fontSize: scaled(20) }]}>
                     {stats.weakestPart != null ? partNameFor(stats.weakestPart, exam) : '—'}
                   </Text>
                   <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
@@ -298,9 +323,11 @@ export default function HomeScreen() {
                   ) : null}
                 </View>
                 <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
-                  <Text style={[styles.statIco, { fontSize: scaled(isLively ? 26 : 20) }]}>🔥</Text>
+                  <View style={[styles.statIcoBox, { backgroundColor: colors.amberBg }]}>
+                    <Text style={{ fontSize: scaled(isLively ? 30 : 26) }}>🔥</Text>
+                  </View>
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Streak</Text>
-                  <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(20) }]}>
+                  <Text style={[styles.statBig, { color: colors.streak, fontSize: scaled(22) }]}>
                     {stats.streakDays ?? 0} ngày
                   </Text>
                   <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>{hearts}</Text>
@@ -311,6 +338,23 @@ export default function HomeScreen() {
                 </View>
               </View>
             ) : null}
+
+            {/* Hàng nút hành động nhanh: Luyện tiếp / Thi thử — 2 nút to
+                nổi bật ngay dưới thẻ thống kê (menu lưới bên dưới vẫn giữ). */}
+            <View style={styles.quickRow}>
+              <Pressable
+                style={[styles.quickBtn, { backgroundColor: colors.accent }, raisedButton(colors)]}
+                onPress={() => router.push('/practice')}
+              >
+                <Text style={[styles.quickBtnText, { color: colors.onAccent, fontSize: scaled(16) }]}>▶ Luyện tiếp</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.quickBtn, { backgroundColor: colors.gold }, raisedButton(colors, colors.goldInk)]}
+                onPress={() => router.push('/mock')}
+              >
+                <Text style={[styles.quickBtnText, { color: colors.goldInk, fontSize: scaled(16) }]}>⏱ Thi thử</Text>
+              </Pressable>
+            </View>
 
             {/* Sống động: hàng streak/XP + mascot + nhiệm vụ hằng ngày.
                 Chỉ hiện khi lively. Số liệu thật: streak/XP từ statsOverview,
@@ -502,7 +546,27 @@ const styles = StyleSheet.create({
     gap: 2,
     width: '100%',
   },
-  statIco: {},
+  // Ô icon màu riêng từng thẻ: mục tiêu xanh lá, Part yếu xanh dương,
+  // streak cam — số liệu to đậm cùng màu ô icon.
+  statIcoBox: {
+    width: 48,
+    height: 48,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 2,
+  },
+  // Hàng nút hành động nhanh (Luyện tiếp / Thi thử) dưới thẻ thống kê.
+  quickRow: { flexDirection: 'row', gap: SPACING.sm, width: '100%' },
+  quickBtn: {
+    flex: 1,
+    borderRadius: RADIUS.button,
+    paddingVertical: 14,
+    minHeight: 52,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  quickBtnText: { fontWeight: '800', textAlign: 'center' },
   statLabel: {},
   statBig: { fontWeight: '700', flexWrap: 'wrap' },
   statFoot: { flexWrap: 'wrap' },

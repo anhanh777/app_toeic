@@ -580,35 +580,36 @@ export default function MockTest() {
   };
 
   return (
-    <div className={`ts-${textLevel} exam-room exam-room--sidelayout`}>
-      <div className="exam-main">
-        {/* Thanh tiêu đề (Phương án A): tiêu đề + đồng hồ + icon ⋮. Đồng hồ
-            nằm trong thanh tiêu đề dính (xem .exam-head--mock) để luôn thấy
-            khi cuộn — thay cho chip đồng hồ nổi + thanh dưới cũ. */}
-        <div className="exam-head exam-head--mock">
-          <div className="exam-head-title">
-            <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
-          </div>
-          <div className="exam-head-right">
-            <span className={`timer-chip timer-chip--inline${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱️ {fmt(secondsLeft)}</span>
-            <div className="mock-menu-wrap" ref={menuRef}>
-              <button type="button" className="icon-btn mock-menu-btn" aria-label="Mở menu thi thử" aria-haspopup="menu" aria-expanded={menuOpen}
-                title="Mở menu thi thử" onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}>⋮</button>
-              {menuOpen && (
-                <div className="mock-menu" role="menu" aria-label="Menu thi thử">
-                  <p className="mock-menu-head">Đã trả lời {answeredCount}/{questions.length} câu</p>
-                  <button type="button" className="mock-menu-item" role="menuitem" onClick={submitFromMenu}>
-                    {`✅ Nộp bài · ${answeredCount}/${questions.length} câu (còn ${unansweredCount} câu chưa làm)`}
-                  </button>
-                  <button type="button" className={`mock-menu-item mock-menu-item--exit${confirmExit ? ' mock-menu-item--armed' : ''}`} role="menuitem" onClick={() => void exitTest()}>
-                    {confirmExit ? '⚠️ Bấm lại để thoát (sẽ hủy bài thi này)' : '🚪 Thoát (sẽ hủy bài thi này)'}
-                  </button>
-                  <button type="button" className="mock-menu-item mock-menu-item--close" role="menuitem" onClick={closeMenu}>Đóng</button>
-                </div>
-              )}
-            </div>
+    <div className={`ts-${textLevel} exam-room exam-room--sidelayout exam-room--mockhead`}>
+      {/* Thanh tiêu đề (Phương án A): tiêu đề + đồng hồ + icon ⋮, full
+          chiều ngang (bằng cả 2 cột dưới cộng lại), bo góc như 1 thẻ.
+          Đồng hồ nằm trong thanh tiêu đề dính để luôn thấy khi cuộn. */}
+      <div className="exam-head exam-head--mock">
+        <div className="exam-head-title">
+          <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
+        </div>
+        <div className="exam-head-right">
+          <span className={`timer-chip timer-chip--inline${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱️ {fmt(secondsLeft)}</span>
+          <div className="mock-menu-wrap" ref={menuRef}>
+            <button type="button" className="icon-btn mock-menu-btn" aria-label="Mở menu thi thử" aria-haspopup="menu" aria-expanded={menuOpen}
+              title="Mở menu thi thử" onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}>⋮</button>
+            {menuOpen && (
+              <div className="mock-menu" role="menu" aria-label="Menu thi thử">
+                <p className="mock-menu-head">Đã trả lời {answeredCount}/{questions.length} câu</p>
+                <button type="button" className="mock-menu-item" role="menuitem" onClick={submitFromMenu}>
+                  {`✅ Nộp bài · ${answeredCount}/${questions.length} câu (còn ${unansweredCount} câu chưa làm)`}
+                </button>
+                <button type="button" className={`mock-menu-item mock-menu-item--exit${confirmExit ? ' mock-menu-item--armed' : ''}`} role="menuitem" onClick={() => void exitTest()}>
+                  {confirmExit ? '⚠️ Bấm lại để thoát (sẽ hủy bài thi này)' : '🚪 Thoát (sẽ hủy bài thi này)'}
+                </button>
+                <button type="button" className="mock-menu-item mock-menu-item--close" role="menuitem" onClick={closeMenu}>Đóng</button>
+              </div>
+            )}
           </div>
         </div>
+      </div>
+      <div className="mock-room-grid">
+      <div className="exam-main">
         <ErrorBox error={error} />
         <div className="paper">
           {renderPaper()}
@@ -647,6 +648,7 @@ export default function MockTest() {
           </div>
         )}
       </aside>
+      </div>
     </div>
   );
 }

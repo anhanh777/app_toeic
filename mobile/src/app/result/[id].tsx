@@ -3,12 +3,17 @@
 // Tất cả / ✓ Đúng / ✗ Sai + số lượng, số câu thật, badge trạng thái,
 // giải thích/transcript/đoạn văn. IELTS câu sai/chưa trả lời bị cổng
 // sau RootCausePicker (phải ghi nguyên nhân gốc mới hiện đáp án đúng).
+// Toàn màn hình là MỘT vùng cuộn duy nhất: tiêu đề + mascot + thẻ điểm
+// + điểm theo Part + bộ lọc + chi tiết từng câu + nút cuối trang cuộn
+// cùng nhau trong 1 FlatList (header/footer) — không còn FlatList con
+// cuộn riêng trong View cố định như trước.
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
   FlatList,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   View,
@@ -196,148 +201,186 @@ export default function ResultScreen() {
     );
   };
 
-  return (
-    <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { paddingHorizontal: pad }]}>
-        <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Kết quả thi thử</Text>
-        {isLively ? (
-          <View style={styles.mascotRow}>
-            <Image
-              source={require('../../../assets/mascot.png')}
-              style={{ width: 80, height: 80 }}
-              contentFit="contain"
-            />
-            <Text style={[styles.mascotText, { color: colors.text, fontSize: scaled(15) }]}>
-              {detailAll.length > 0 && correctCount / detailAll.length >= 0.8
-                ? 'Xuất sắc! 🎉'
-                : detailAll.length > 0 && correctCount / detailAll.length >= 0.5
-                  ? 'Tốt lắm, cố thêm chút nữa! 💪'
-                  : 'Không sao, ôn lại câu sai nhé! 🌱'}{' '}
-              {correctCount}/{detailAll.length} câu đúng.
-            </Text>
-          </View>
-        ) : null}
-        {isIelts ? (
-          isFull && data.overallBand != null ? (
-            <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
-              <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Band tổng (band ước lượng để tham khảo)</Text>
-              <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>Band {data.overallBand}</Text>
-              <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {bandLevel(data.overallBand)}</Text>
-              <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
-                {'★'.repeat(data.overallBand >= 8 ? 3 : data.overallBand >= 6.5 ? 2 : 1)}
-                {'☆'.repeat(data.overallBand >= 8 ? 0 : data.overallBand >= 6.5 ? 1 : 2)}
-              </Text>
-              <View style={styles.scoreRow}>
-                <View style={[styles.scoreBox, { backgroundColor: colors.surfaceMuted }, livelyCard(colors, 'compact')]}>
-                  <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>🎧 Listening</Text>
-                  <Text style={[styles.big, { color: colors.text, fontSize: scaled(20) }]}>Band {data.listeningBand ?? '—'}</Text>
-                  <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>{data.listening_correct ?? 0}/40 câu đúng</Text>
-                </View>
-                <View style={[styles.scoreBox, { backgroundColor: colors.surfaceMuted }, livelyCard(colors, 'compact')]}>
-                  <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>📖 Reading</Text>
-                  <Text style={[styles.big, { color: colors.text, fontSize: scaled(20) }]}>Band {data.readingBand ?? '—'}</Text>
-                  <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>{data.reading_correct ?? 0}/40 câu đúng</Text>
-                </View>
-              </View>
-              <Text style={[styles.line, { color: colors.muted, fontSize: scaled(13) }]}>
-                Band ước lượng theo bảng quy đổi tham khảo công khai, không phải band chính thức.
-              </Text>
-            </View>
-          ) : (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
-              <Text style={[styles.big, { color: colors.text, fontSize: scaled(22) }]}>{totalCorrect} câu đúng</Text>
-              <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-                Bài thi mini (1 Section/Passage) chỉ báo số câu đúng/tổng, không có band.
-              </Text>
-            </View>
-          )
-        ) : isFull && data.total_score != null ? (
+  // Header dùng chung cho cả 2 nhánh: tiêu đề + mascot + thẻ điểm +
+  // điểm theo Part — nằm trong ListHeaderComponent (có chi tiết câu) hoặc
+  // đầu ScrollView (không có chi tiết câu).
+  const headerContent = (
+    <View style={styles.headerWrap}>
+      <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Kết quả thi thử</Text>
+      {isLively ? (
+        <View style={styles.mascotRow}>
+          <Image
+            source={require('../../../assets/mascot.png')}
+            style={{ width: 80, height: 80 }}
+            contentFit="contain"
+          />
+          <Text style={[styles.mascotText, { color: colors.text, fontSize: scaled(15) }]}>
+            {detailAll.length > 0 && correctCount / detailAll.length >= 0.8
+              ? 'Xuất sắc! 🎉'
+              : detailAll.length > 0 && correctCount / detailAll.length >= 0.5
+                ? 'Tốt lắm, cố thêm chút nữa! 💪'
+                : 'Không sao, ôn lại câu sai nhé! 🌱'}{' '}
+            {correctCount}/{detailAll.length} câu đúng.
+          </Text>
+        </View>
+      ) : null}
+      {isIelts ? (
+        isFull && data.overallBand != null ? (
           <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
-            <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Tổng điểm (điểm ước lượng)</Text>
-            <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>{data.total_score} / 990</Text>
-            <TierBadge total={data.total_score} />
-            <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {scoreLevel(data.total_score)}</Text>
+            <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Band tổng (band ước lượng để tham khảo)</Text>
+            <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>Band {data.overallBand}</Text>
+            <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {bandLevel(data.overallBand)}</Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
-              {'★'.repeat(data.total_score >= 900 ? 3 : data.total_score >= 600 ? 2 : 1)}
-              {'☆'.repeat(data.total_score >= 900 ? 0 : data.total_score >= 600 ? 1 : 2)}
+              {'★'.repeat(data.overallBand >= 8 ? 3 : data.overallBand >= 6.5 ? 2 : 1)}
+              {'☆'.repeat(data.overallBand >= 8 ? 0 : data.overallBand >= 6.5 ? 1 : 2)}
             </Text>
-            <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
-              Listening: {data.listening_score ?? '—'} ({data.listening_correct ?? 0} câu đúng) • Reading: {data.reading_score ?? '—'} (
-              {data.reading_correct ?? 0} câu đúng)
-            </Text>
+            <View style={styles.scoreRow}>
+              <View style={[styles.scoreBox, { backgroundColor: colors.surfaceMuted }, livelyCard(colors, 'compact')]}>
+                <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>🎧 Listening</Text>
+                <Text style={[styles.big, { color: colors.text, fontSize: scaled(20) }]}>Band {data.listeningBand ?? '—'}</Text>
+                <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>{data.listening_correct ?? 0}/40 câu đúng</Text>
+              </View>
+              <View style={[styles.scoreBox, { backgroundColor: colors.surfaceMuted }, livelyCard(colors, 'compact')]}>
+                <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>📖 Reading</Text>
+                <Text style={[styles.big, { color: colors.text, fontSize: scaled(20) }]}>Band {data.readingBand ?? '—'}</Text>
+                <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>{data.reading_correct ?? 0}/40 câu đúng</Text>
+              </View>
+            </View>
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(13) }]}>
-              Điểm ước lượng theo bảng quy đổi tham khảo công khai, không phải điểm chính thức của ETS.
+              Band ước lượng theo bảng quy đổi tham khảo công khai, không phải band chính thức.
             </Text>
           </View>
         ) : (
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.big, { color: colors.text, fontSize: scaled(22) }]}>{totalCorrect} câu đúng</Text>
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-              Bài thi mini (1 Part) chỉ báo số câu đúng/tổng, không có điểm 10–990.
+              Bài thi mini (1 Section/Passage) chỉ báo số câu đúng/tổng, không có band.
             </Text>
           </View>
-        )}
-        {data.byPart ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
-            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
-              {isIelts ? 'Điểm theo Section/Passage' : 'Điểm theo Part'}
-            </Text>
-            {data.byPart.map((b) => (
-              <View key={b.part} style={styles.byPartRow}>
-                <View style={styles.byPartHead}>
-                  <Text style={{ color: colors.text, fontSize: scaled(15) }}>{isIelts ? partNameFor(b.part, 'ielts') : partName(b.part)}</Text>
-                  <Text style={{ color: colors.text, fontSize: scaled(15) }}>
-                    {b.correct}/{b.total}
-                  </Text>
-                </View>
-                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
-                  <View style={[styles.barFill, { width: `${b.total ? (b.correct / b.total) * 100 : 0}%`, backgroundColor: colors.accent }]} />
-                </View>
+        )
+      ) : isFull && data.total_score != null ? (
+        <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+          <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Tổng điểm (điểm ước lượng)</Text>
+          <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>{data.total_score} / 990</Text>
+          <TierBadge total={data.total_score} />
+          <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {scoreLevel(data.total_score)}</Text>
+          <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
+            {'★'.repeat(data.total_score >= 900 ? 3 : data.total_score >= 600 ? 2 : 1)}
+            {'☆'.repeat(data.total_score >= 900 ? 0 : data.total_score >= 600 ? 1 : 2)}
+          </Text>
+          <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
+            Listening: {data.listening_score ?? '—'} ({data.listening_correct ?? 0} câu đúng) • Reading: {data.reading_score ?? '—'} (
+            {data.reading_correct ?? 0} câu đúng)
+          </Text>
+          <Text style={[styles.line, { color: colors.muted, fontSize: scaled(13) }]}>
+            Điểm ước lượng theo bảng quy đổi tham khảo công khai, không phải điểm chính thức của ETS.
+          </Text>
+        </View>
+      ) : (
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+          <Text style={[styles.big, { color: colors.text, fontSize: scaled(22) }]}>{totalCorrect} câu đúng</Text>
+          <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
+            Bài thi mini (1 Part) chỉ báo số câu đúng/tổng, không có điểm 10–990.
+          </Text>
+        </View>
+      )}
+      {data.byPart ? (
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+          <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
+            {isIelts ? 'Điểm theo Section/Passage' : 'Điểm theo Part'}
+          </Text>
+          {data.byPart.map((b) => (
+            <View key={b.part} style={styles.byPartRow}>
+              <View style={styles.byPartHead}>
+                <Text style={{ color: colors.text, fontSize: scaled(15) }}>{isIelts ? partNameFor(b.part, 'ielts') : partName(b.part)}</Text>
+                <Text style={{ color: colors.text, fontSize: scaled(15) }}>
+                  {b.correct}/{b.total}
+                </Text>
               </View>
-            ))}
-          </View>
-        ) : null}
-        {detailAll.length ? (
-          <View style={styles.detailWrap}>
-            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
-              Chi tiết từng câu ({correctCount}/{detailAll.length} đúng)
-            </Text>
-            {wrongCount === 0 ? (
-              <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>🎉 Không có câu sai!</Text>
-            ) : null}
-            <View style={styles.tabs}>
-              {(
-                [
-                  ['all', `Tất cả (${detailAll.length})`],
-                  ['correct', `✓ Đúng (${correctCount})`],
-                  ['wrong', `✗ Sai (${wrongCount})`],
-                ] as [Filter, string][]
-              ).map(([f, label]) => (
-                <Pressable
-                  key={f}
-                  style={[styles.tab, { borderColor: colors.border }, filter === f && { backgroundColor: colors.accent }, livelyChip(colors)]}
-                  onPress={() => setFilter(f)}
-                >
-                  <Text style={{ color: filter === f ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>{label}</Text>
-                </Pressable>
-              ))}
+              <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
+                <View style={[styles.barFill, { width: `${b.total ? (b.correct / b.total) * 100 : 0}%`, backgroundColor: colors.accent }]} />
+              </View>
             </View>
-            <FlatList
-              data={filtered}
-              keyExtractor={(r) => r.d.questionId}
-              renderItem={renderRow}
-              contentContainerStyle={styles.list}
-              {...LIST_DEFAULTS}
-            />
-            {/* Chuẩn web Result.tsx:194-204 — nút ôn lại câu sai cuối khối chi tiết. */}
-            <Pressable
-              style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
-              onPress={() => router.push('/wrong')}
-            >
-              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn lại câu sai</Text>
-            </Pressable>
-          </View>
-        ) : data.wrongQuestionIds?.length ? (
+          ))}
+        </View>
+      ) : null}
+    </View>
+  );
+
+  const bottomButtons = (
+    <View style={styles.btnRow}>
+      <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => router.push('/mock')}>
+        <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Thi thử lại</Text>
+      </Pressable>
+      <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.surfaceMuted }]} onPress={() => router.push('/')}>
+        <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Về trang chủ</Text>
+      </Pressable>
+    </View>
+  );
+
+  // Có chi tiết từng câu: 1 FlatList duy nhất — header + từng câu +
+  // footer (nút Ôn lại câu sai + Thi thử lại/Về trang chủ) cuộn cùng nhau.
+  if (detailAll.length) {
+    return (
+      <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+        <FlatList
+          data={filtered}
+          keyExtractor={(r) => r.d.questionId}
+          renderItem={renderRow}
+          ListHeaderComponent={
+            <View style={styles.headerWrap}>
+              {headerContent}
+              <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                Chi tiết từng câu ({correctCount}/{detailAll.length} đúng)
+              </Text>
+              {wrongCount === 0 ? (
+                <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>🎉 Không có câu sai!</Text>
+              ) : null}
+              <View style={styles.tabs}>
+                {(
+                  [
+                    ['all', `Tất cả (${detailAll.length})`],
+                    ['correct', `✓ Đúng (${correctCount})`],
+                    ['wrong', `✗ Sai (${wrongCount})`],
+                  ] as [Filter, string][]
+                ).map(([f, label]) => (
+                  <Pressable
+                    key={f}
+                    style={[styles.tab, { borderColor: colors.border }, filter === f && { backgroundColor: colors.accent }, livelyChip(colors)]}
+                    onPress={() => setFilter(f)}
+                  >
+                    <Text style={{ color: filter === f ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>{label}</Text>
+                  </Pressable>
+                ))}
+              </View>
+            </View>
+          }
+          ListFooterComponent={
+            <View style={styles.footerWrap}>
+              {/* Chuẩn web Result.tsx:194-204 — nút ôn lại câu sai cuối khối chi tiết. */}
+              <Pressable
+                style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
+                onPress={() => router.push('/wrong')}
+              >
+                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn lại câu sai</Text>
+              </Pressable>
+              {bottomButtons}
+            </View>
+          }
+          contentContainerStyle={[styles.listContainer, { paddingHorizontal: pad }]}
+          {...LIST_DEFAULTS}
+        />
+      </SafeAreaView>
+    );
+  }
+
+  // Không có chi tiết từng câu (chỉ có danh sách id câu sai, hoặc không
+  // có câu sai): ScrollView thường với cùng header + nút cuối trang.
+  return (
+    <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+      <ScrollView contentContainerStyle={[styles.listContainer, { paddingHorizontal: pad }]}>
+        {headerContent}
+        {data.wrongQuestionIds?.length ? (
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>Câu làm sai ({data.wrongQuestionIds.length})</Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>{data.wrongQuestionIds.join(', ')}</Text>
@@ -353,23 +396,27 @@ export default function ResultScreen() {
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>🎉 Không có câu sai!</Text>
           </View>
         )}
-        <View style={styles.btnRow}>
-          <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => router.push('/mock')}>
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Thi thử lại</Text>
-          </Pressable>
-          <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.surfaceMuted }]} onPress={() => router.push('/')}>
-            <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Về trang chủ</Text>
-          </Pressable>
-        </View>
-      </View>
+        {bottomButtons}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   safe: { flex: 1 },
-  container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, gap: SPACING.sm },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md },
+  // Vùng cuộn duy nhất của màn: header + từng câu + footer, căn giữa
+  // tối đa 720dp như các màn khác.
+  listContainer: {
+    width: '100%',
+    maxWidth: MAX_CONTENT_WIDTH,
+    alignSelf: 'center',
+    paddingTop: SPACING.md,
+    paddingBottom: SPACING.md,
+    gap: SPACING.sm,
+  },
+  headerWrap: { gap: SPACING.sm },
+  footerWrap: { gap: SPACING.sm },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   // Sống động (chỉ render khi lively): mascot nhỏ cạnh lời động viên.
   mascotRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
@@ -385,10 +432,8 @@ const styles = StyleSheet.create({
   byPartHead: { flexDirection: 'row', justifyContent: 'space-between' },
   bar: { height: 8, borderRadius: 4, overflow: 'hidden', width: '100%' },
   barFill: { height: '100%', borderRadius: 4 },
-  detailWrap: { flex: 1, gap: SPACING.sm },
   tabs: { flexDirection: 'row', gap: SPACING.sm, flexWrap: 'wrap' },
   tab: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
-  list: { gap: SPACING.sm, paddingBottom: SPACING.md },
   rowCard: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },
   gate: { gap: SPACING.sm },
   detailBlock: { gap: SPACING.xs },

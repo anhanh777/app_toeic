@@ -14,13 +14,14 @@ import {
   Modal,
   Pressable,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   View,
   useWindowDimensions,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api, type Question, type TestSet } from '../api';
 import { useExam, type ExamId } from '../exam';
 import {
@@ -462,6 +463,13 @@ export default function MockTestScreen() {
   );
 
   const pad = horizontalPadding(width);
+  // Khoảng cách trên cùng: inset tường minh thay vì chỉ trông vào
+  // SafeAreaView — trên máy cô ấy header từng vẽ lấn lên status bar
+  // (tiêu đề bị cắt nửa + dải tối ở trên khi mở sheet ⋮). Lấy max của
+  // inset hệ thống và chiều cao status bar Android để chắc chắn header
+  // nằm gọn dưới notch/status bar trên mọi máy.
+  const insets = useSafeAreaInsets();
+  const topPad = Math.max(insets.top, StatusBar.currentHeight ?? 0) + SPACING.md;
 
   // ---------- Màn setup (chưa bắt đầu) ----------
   if (!attemptId) {
@@ -642,8 +650,8 @@ export default function MockTestScreen() {
   }
 
   return (
-    <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-      <View style={[styles.container, { paddingHorizontal: pad }]}>
+    <SafeAreaView edges={['left', 'right', 'bottom']} style={[styles.safe, { backgroundColor: colors.background }]}>
+      <View style={[styles.container, { paddingHorizontal: pad, paddingTop: topPad }]}>
         {/* Thanh tiêu đề (Phương án A): tiêu đề + đồng hồ + icon ⋮.
             Số câu đã trả lời + Nộp/Thoát dời vào bottom-sheet của ⋮. */}
         <View style={styles.header}>
@@ -678,13 +686,16 @@ export default function MockTestScreen() {
         />
         <Text style={[styles.line, { color: colors.muted, fontSize: scaled(13) }]}>Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</Text>
       </View>
-      <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={closeMenu}>
+      {/* statusBarTranslucent={false}: sheet không vẽ lấn lên vùng status
+          bar — nền mờ chỉ phủ phần nội dung, không tạo dải tối ở trên. */}
+      <Modal visible={menuOpen} transparent animationType="slide" statusBarTranslucent={false} onRequestClose={closeMenu}>
         <Pressable style={styles.sheetBackdrop} onPress={closeMenu}>
           <Pressable
             style={[
               styles.sheet,
               { backgroundColor: colors.surface, borderColor: colors.border },
               colors.style === 'lively' && styles.sheetLively,
+              { paddingBottom: Math.max(insets.bottom, SPACING.lg) },
             ]}
             onPress={() => {
               /* bấm trong sheet không đóng modal */
