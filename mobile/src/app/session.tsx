@@ -34,7 +34,7 @@ import {
   realQuestionNumber,
   wordCount,
 } from '../lib';
-import { raisedButton, useTextSize, useTheme } from '../theme';
+import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
 import PassageView, { type BlankState } from '../components/PassageView';
 import QuestionView, { isListeningOnly, partName, type AnswerResult } from '../components/QuestionView';
@@ -434,7 +434,7 @@ export default function PracticeSessionScreen() {
         return (
           <View style={styles.cluster}>
             {block.passageText ? (
-              <View style={[styles.passage, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+              <View style={[styles.passage, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'card')]}>
                 <PassageView
                   text={block.passageText}
                   isP6={isP6Block}
@@ -499,7 +499,7 @@ export default function PracticeSessionScreen() {
           <Text style={{ color: colors.text, fontSize: scaled(16), textAlign: 'center' }}>
             Chưa có câu hỏi cho {isIelts ? partLabel(part, exam) : `Part ${part}`} này.
           </Text>
-          <Pressable style={[styles.button, { backgroundColor: colors.accent }]} onPress={exit}>
+          <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={exit}>
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Quay lại</Text>
           </Pressable>
         </View>
@@ -511,7 +511,7 @@ export default function PracticeSessionScreen() {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
         <View style={[styles.center, { paddingHorizontal: pad }]}>
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Hoàn thành!</Text>
             {testSetTitle ? (
               <Text style={[styles.line, { color: colors.muted, fontSize: scaled(15) }]}>📚 {testSetTitle}</Text>
@@ -523,7 +523,7 @@ export default function PracticeSessionScreen() {
               {score.done ? `Tỉ lệ đúng: ${Math.round((score.correct / score.done) * 100)}%` : ''}
             </Text>
             <View style={styles.btnRow}>
-              <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.accent }]} onPress={exit}>
+              <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={exit}>
                 <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                   {testSetId ? 'Quay lại đề thi' : 'Luyện Part khác'}
                 </Text>
@@ -568,12 +568,12 @@ export default function PracticeSessionScreen() {
                 : partName(part)}
             </Text>
           </View>
-          <Text style={[styles.badge, { color: colors.text, fontSize: scaled(14), borderColor: colors.border }]}>
+          <Text style={[styles.badge, { color: colors.text, fontSize: scaled(14), borderColor: colors.border }, livelyChip(colors)]}>
             Đã làm {score.done}/{questions.length}
           </Text>
         </View>
         {error ? <Text style={{ color: colors.danger, fontSize: scaled(14) }}>{error}</Text> : null}
-        <View style={[styles.modeRow, { borderColor: colors.border }, modeLocked && styles.disabled]}>
+        <View style={[styles.modeRow, { borderColor: colors.border }, modeLocked && styles.disabled, livelyCard(colors, 'compact')]}>
           <Pressable
             style={[
               styles.modeOption,
@@ -666,6 +666,7 @@ export default function PracticeSessionScreen() {
                 borderColor: colors.border,
                 backgroundColor: colors.surface,
               },
+              livelyChip(colors),
             ]}
           >
             Đã làm {score.done}/{questions.length} • Đúng {score.correct}

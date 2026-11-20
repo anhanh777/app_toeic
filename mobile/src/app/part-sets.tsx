@@ -17,7 +17,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type TestSet } from '../api';
 import { useExam, type ExamId } from '../exam';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { raisedButton, useTextSize, useTheme } from '../theme';
+import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { BackButton } from '../components/BackButton';
 import { partLabel, partNameFor } from '../lib';
@@ -91,6 +91,7 @@ export default function PartSetsScreen() {
           style={[
             styles.card,
             { backgroundColor: colors.surface, borderColor: colors.border, opacity: disabled ? 0.55 : 1 },
+            livelyCard(colors, 'compact'),
           ]}
           onPress={() => openSession(ts)}
           accessibilityRole="button"
@@ -132,7 +133,7 @@ export default function PartSetsScreen() {
             <BackButton />
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Part không hợp lệ</Text>
           </View>
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
             <Text style={{ color: colors.text, fontSize: scaled(15) }}>Part không hợp lệ.</Text>
           </View>
         </View>
@@ -159,7 +160,7 @@ export default function PartSetsScreen() {
         ) : error ? (
           <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text>
         ) : sortedSets.length === 0 ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
             <Text style={{ color: colors.text, fontSize: scaled(15) }}>Chưa có bộ đề nào.</Text>
           </View>
         ) : (

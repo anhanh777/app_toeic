@@ -26,7 +26,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type Attempt, type DiagnosticMap, type Question } from '../api';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, partNameFor, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
-import { raisedButton, useTextSize, useTheme } from '../theme';
+import { livelyBarTrack, livelyCard, livelyChip, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
 import { BackButton } from '../components/BackButton';
 import { fmtClock } from './writing';
@@ -68,6 +68,7 @@ const PaperAnswerControl = memo(function PaperAnswerControl({
                 borderColor: value === l ? colors.accent : colors.border,
                 backgroundColor: value === l ? colors.surfaceMuted : colors.surface,
               },
+              livelyChip(colors),
             ]}
           >
             <Text style={[styles.pillText, { color: colors.text, fontSize: scaled(13) }]}>{l}</Text>
@@ -112,7 +113,7 @@ const PaperAnswerControl = memo(function PaperAnswerControl({
     return (
       <View style={styles.optList}>
         <TextInput
-          style={[styles.input, { borderColor: over ? colors.danger : colors.border, color: colors.text, fontSize: scaled(16) }]}
+          style={[styles.input, { borderColor: over ? colors.danger : colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
           value={value}
           onChangeText={onChange}
           placeholder={q.wordLimit != null ? `Nhập đáp án (tối đa ${q.wordLimit} từ)` : 'Nhập đáp án'}
@@ -139,6 +140,7 @@ const PaperAnswerControl = memo(function PaperAnswerControl({
                 borderColor: isSel ? colors.accent : colors.border,
                 backgroundColor: isSel ? colors.surfaceMuted : colors.surface,
               },
+              livelyOption(colors, isSel ? 'selected' : 'default'),
             ]}
           >
             <Text style={[styles.optionText, { color: colors.text, fontSize: scaled(15) }]}>
@@ -171,7 +173,7 @@ function ScoreTable({
               {v.correct}/{v.total}
             </Text>
           </View>
-          <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }]}>
+          <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
             <View
               style={[
                 styles.barFill,
@@ -413,7 +415,7 @@ export default function DiagnosticScreen() {
       return (
         <>
           {isFirstOfSection ? (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(16) }]}>
                 {partNameFor(q.part, 'ielts')} — Listening
               </Text>
@@ -444,7 +446,7 @@ export default function DiagnosticScreen() {
               ) : null}
             </View>
           ) : null}
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
           <Text style={[styles.tag, { color: colors.muted, fontSize: scaled(13) }]}>
             Câu {index + 1}/80 · {partLabel(q.part, 'ielts')}
             {q.questionType ? ` · ${questionTypeName(q.questionType)}` : ''}
@@ -524,7 +526,7 @@ export default function DiagnosticScreen() {
               <Text style={[styles.buttonText, { color: colors.danger, fontSize: scaled(15) }]}>Thoát (hủy bài)</Text>
             </Pressable>
             <Pressable
-              style={[styles.button, { backgroundColor: colors.accent, flex: 2, opacity: submitting ? 0.6 : 1 }]}
+              style={[styles.button, { backgroundColor: colors.accent, flex: 2, opacity: submitting ? 0.6 : 1 }, raisedButton(colors)]}
               onPress={() => {
                 Alert.alert(
                   'Nộp bài chẩn đoán?',
@@ -563,7 +565,7 @@ export default function DiagnosticScreen() {
         ) : null}
         <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>{SAMPLE_NOTE}</Text>
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
             (a) Listening + Reading — thi thử full 90 phút
           </Text>
@@ -583,7 +585,7 @@ export default function DiagnosticScreen() {
             <>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(16) }]}>Bài thi thử full gần đây</Text>
               {attempts.slice(0, 5).map((a) => (
-                <View key={a.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+                <View key={a.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
                   <Text style={[styles.panelText, { color: colors.text, fontSize: scaled(15) }]}>
                     #{a.id} · {a.finished_at ? new Date(a.finished_at).toLocaleDateString('vi-VN') : ''} · Band{' '}
                     {a.overallBand ?? '—'} (L {a.listeningBand ?? '—'} · R {a.readingBand ?? '—'})
@@ -603,7 +605,7 @@ export default function DiagnosticScreen() {
           )}
         </View>
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>(b) Bản đồ năng lực</Text>
           {loading ? (
             <ActivityIndicator color={colors.accent} />
@@ -652,7 +654,7 @@ export default function DiagnosticScreen() {
           )}
         </View>
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>(c) Baseline Writing</Text>
           <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
             {SAMPLE_NOTE} {NO_AI_NOTE}
@@ -661,14 +663,14 @@ export default function DiagnosticScreen() {
             Bài nộp từ đây được đánh dấu là bài mẫu chẩn đoán.
           </Text>
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent }]}
+            style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
             onPress={() => router.push({ pathname: '/writing', params: { baseline: '1' } })}
           >
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở màn Writing để nộp bài mẫu →</Text>
           </Pressable>
         </View>
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>(d) Baseline Speaking</Text>
           <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
             {SAMPLE_NOTE} {NO_AI_NOTE}
@@ -677,7 +679,7 @@ export default function DiagnosticScreen() {
             Bản ghi lưu từ đây được đánh dấu là bài mẫu chẩn đoán.
           </Text>
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent }]}
+            style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
             onPress={() => router.push({ pathname: '/speaking', params: { baseline: '1' } })}
           >
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở màn Speaking để ghi âm bài mẫu →</Text>

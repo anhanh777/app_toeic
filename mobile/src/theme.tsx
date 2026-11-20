@@ -35,6 +35,8 @@ export interface Palette {
   text: string;
   muted: string;
   border: string;
+  /** Màu viền dưới cứng kiểu Duolingo (đậm hơn border) — chỉ lively dùng. */
+  borderHard: string;
   accent: string;
   onAccent: string;
   danger: string;
@@ -96,6 +98,7 @@ export const LIGHT: Palette = {
   text: '#3D3A36',
   muted: '#8A837B',
   border: '#EFE6DB',
+  borderHard: '#E3D9CC',
   accent: '#5FA8A0',
   onAccent: '#FFFFFF',
   danger: '#C4574E',
@@ -146,6 +149,7 @@ export const DARK: Palette = {
   text: '#F2EEE7',
   muted: '#C4BBB0',
   border: '#453E35',
+  borderHard: '#332E28',
   accent: '#6FBFB6',
   onAccent: '#1D2B29',
   danger: '#E08A80',
@@ -202,6 +206,7 @@ export const LIVELY_LIGHT: Palette = {
   text: '#3C3C3C',
   muted: '#8A837B',
   border: '#E5E5E5',
+  borderHard: '#CFCFCF',
   accent: '#58CC02',
   onAccent: '#FFFFFF',
   danger: '#FF4B4B',
@@ -252,6 +257,7 @@ export const LIVELY_DARK: Palette = {
   text: '#F2F7E8',
   muted: '#B9C4A8',
   border: '#42522F',
+  borderHard: '#22301A',
   accent: '#58CC02',
   onAccent: '#FFFFFF',
   danger: '#FF6B6B',
@@ -306,19 +312,70 @@ interface ThemeCtx {
 }
 const ThemeContext = createContext<ThemeCtx | null>(null);
 
+export type LivelyCardSize = 'hero' | 'card' | 'compact';
+
 /** Nút chính kiểu Duolingo khi lively: bo 16 + "nổi" nhờ viền dưới dày
- * màu accent-dark; pastel trả về {} (giữ nguyên nút hiện tại).
- * Đặt CUỐI mảng style của Pressable để ghi đè bo góc tĩnh. */
-export function raisedButton(colors: Palette): ViewStyle {
+ * màu đậm hơn (mặc định accent-dark); pastel trả về {} (giữ nguyên nút
+ * hiện tại). Đặt CUỐI mảng style của Pressable để ghi đè bo góc tĩnh.
+ * bottomColor: màu viền dưới riêng cho nút không dùng accent (vd. nút
+ * vàng #FFC800 thì viền dưới vàng đậm). */
+export function raisedButton(colors: Palette, bottomColor?: string): ViewStyle {
   if (colors.style !== 'lively') return {};
-  return { borderBottomWidth: 4, borderBottomColor: colors.accentDark, borderRadius: 16 };
+  return { borderBottomWidth: 4, borderBottomColor: bottomColor ?? colors.accentDark, borderRadius: 16 };
 }
 
-/** Thẻ viền rõ kiểu Duolingo khi lively (viền 2px #E5E5E5);
- * pastel trả về {} (giữ borderWidth: 1 tĩnh của thẻ). */
-export function livelyCard(colors: Palette): ViewStyle {
+/** Thẻ kiểu Duolingo khi lively: viền 2px + viền dưới CỨNG dày màu đậm
+ * hơn (borderHard) thay cho shadow mờ, bo tròn lớn, padding rộng.
+ * pastel trả về {} (giữ nguyên thẻ hiện tại).
+ * - 'hero': màn chính/Hôm nay — bo 20, padding 18, viền dưới 4.
+ * - 'card': thẻ nội dung thường — bo 18, padding 16, viền dưới 4.
+ * - 'compact': danh sách dài — bo 14, viền dưới 3, KHÔNG đổi padding.
+ * KHÔNG ghi đè borderColor: màu viền inline (vd. thẻ đang chọn viền
+ * accent) được giữ nguyên; bottomColor mặc định borderHard, truyền
+ * riêng khi thẻ đã có viền màu (vd. accentDark cho thẻ viền accent).
+ * Đặt CUỐI mảng style để ghi đè bo góc/padding tĩnh. */
+export function livelyCard(colors: Palette, size: LivelyCardSize = 'card', bottomColor?: string): ViewStyle {
   if (colors.style !== 'lively') return {};
-  return { borderWidth: 2, borderColor: colors.border };
+  const base: ViewStyle = {
+    borderWidth: 2,
+    borderBottomWidth: 4,
+    borderBottomColor: bottomColor ?? colors.borderHard,
+  };
+  if (size === 'hero') return { ...base, borderRadius: 20, padding: 18 };
+  if (size === 'compact') return { ...base, borderRadius: 14, borderBottomWidth: 3 };
+  return { ...base, borderRadius: 18, padding: 16 };
+}
+
+/** Chip/pill kiểu Duolingo khi lively: viền 2px + viền dưới cứng 3px.
+ * pastel trả về {}. Đặt CUỐI mảng style. */
+export function livelyChip(colors: Palette): ViewStyle {
+  if (colors.style !== 'lively') return {};
+  return { borderWidth: 2, borderBottomWidth: 3, borderBottomColor: colors.borderHard, borderRadius: 999 };
+}
+
+/** Track thanh tiến độ/XP kiểu Duolingo khi lively: dày 14, bo tròn,
+ * viền 2px rõ. pastel trả về {}. Đặt CUỐI mảng style của track. */
+export function livelyBarTrack(colors: Palette): ViewStyle {
+  if (colors.style !== 'lively') return {};
+  return { height: 14, borderRadius: 7, borderWidth: 2, borderColor: colors.border, overflow: 'hidden' };
+}
+
+/** Ô đáp án kiểu Duolingo khi lively: bo 14, viền 2px + viền dưới cứng
+ * 3px; chọn thì nền xanh nhạt + viền xanh đậm, đúng thì xanh lá,
+ * sai thì đỏ. pastel trả về {}. Đặt CUỐI mảng style của ô đáp án. */
+export function livelyOption(
+  colors: Palette,
+  state: 'default' | 'selected' | 'correct' | 'wrong' = 'default',
+): ViewStyle {
+  if (colors.style !== 'lively') return {};
+  const base: ViewStyle = { borderWidth: 2, borderBottomWidth: 3, borderRadius: 14 };
+  if (state === 'selected')
+    return { ...base, borderColor: colors.accent, backgroundColor: colors.accentSoft, borderBottomColor: colors.accentDark };
+  if (state === 'correct')
+    return { ...base, borderColor: colors.success, backgroundColor: colors.greenBg, borderBottomColor: colors.greenInk };
+  if (state === 'wrong')
+    return { ...base, borderColor: colors.danger, backgroundColor: colors.redBg, borderBottomColor: colors.redInk };
+  return { ...base, borderColor: colors.border, backgroundColor: colors.surface, borderBottomColor: colors.borderHard };
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {

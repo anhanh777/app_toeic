@@ -2,7 +2,7 @@
 // xpLevel, TierBadge, XpBar). Ngưỡng/mốc giữ đúng bản web:
 // tier theo tổng điểm TOEIC, 100 XP = 1 cấp.
 import { StyleSheet, Text, View } from 'react-native';
-import { useTextSize, useTheme, type Palette } from '../theme';
+import { livelyBarTrack, useTextSize, useTheme, type Palette } from '../theme';
 
 export interface Tier {
   name: string;
@@ -67,7 +67,7 @@ export function XpBar({ xp, gold }: { xp: number; gold?: boolean }) {
         <Text style={[styles.xpLabel, { color: colors.text, fontSize: scaled(13) }]}>⭐ Cấp {level}</Text>
         <Text style={[styles.xpLabel, { color: colors.muted, fontSize: scaled(13) }]}>{progress}/100 XP</Text>
       </View>
-      <View style={[styles.xpTrack, { backgroundColor: colors.surfaceMuted }]}>
+      <View style={[styles.xpTrack, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
         <View
           style={[
             styles.xpFill,

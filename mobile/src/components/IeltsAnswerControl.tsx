@@ -20,7 +20,7 @@ import {
   wordCount,
 } from '../lib';
 import { RADIUS, SPACING } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { livelyCard, livelyChip, livelyOption, useTextSize, useTheme } from '../theme';
 
 export interface AnswerResultLike {
   correct: boolean;
@@ -83,6 +83,7 @@ export default function IeltsAnswerControl({ q, value, onChange, onCommit, disab
                   isSel && { borderColor: colors.accent, backgroundColor: colors.surfaceMuted },
                   isCorrect && { borderColor: colors.success, backgroundColor: colors.surfaceMuted },
                   isWrong && { borderColor: colors.danger, backgroundColor: colors.surfaceMuted },
+                  livelyChip(colors),
                 ]}
                 disabled={disabled || !!graded}
                 onPress={() => {
@@ -130,6 +131,7 @@ export default function IeltsAnswerControl({ q, value, onChange, onCommit, disab
                 isSel && { borderColor: colors.accent, backgroundColor: colors.surfaceMuted },
                 isCorrect && { borderColor: colors.success, backgroundColor: colors.surfaceMuted },
                 isWrong && { borderColor: colors.danger, backgroundColor: colors.surfaceMuted },
+                livelyOption(colors, isCorrect ? 'correct' : isWrong ? 'wrong' : isSel ? 'selected' : 'default'),
               ]}
               disabled={disabled || !!graded}
               onPress={() => {
@@ -173,6 +175,7 @@ export default function IeltsAnswerControl({ q, value, onChange, onCommit, disab
                 isSel && { borderColor: colors.accent, backgroundColor: colors.surfaceMuted },
                 isCorrect && { borderColor: colors.success, backgroundColor: colors.surfaceMuted },
                 isWrong && { borderColor: colors.danger, backgroundColor: colors.surfaceMuted },
+                livelyOption(colors, isCorrect ? 'correct' : isWrong ? 'wrong' : isSel ? 'selected' : 'default'),
               ]}
               disabled={disabled || !!graded}
               onPress={() => {
@@ -252,6 +255,7 @@ function FillInInput({
             color: colors.text,
             fontSize: scaled(15),
           },
+          livelyCard(colors, 'compact'),
         ]}
       />
       <Text style={[styles.wordCount, { color: over ? colors.danger : colors.muted, fontSize: scaled(13) }]}>

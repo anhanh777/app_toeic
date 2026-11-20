@@ -24,7 +24,7 @@ import {
   wordCount,
 } from '../lib';
 import { RADIUS, SPACING } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { livelyCard, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from './AudioPlayer';
 import IeltsAnswerControl from './IeltsAnswerControl';
 import RootCausePicker from './RootCausePicker';
@@ -115,7 +115,7 @@ function QuestionViewInner({
   hideText, isListening, usePartAudio, audioUrl, playOnce, onFirstPlay,
   onAudioError, duplicateHeading,
 }: Props) {
-  const { colors } = useTheme();
+  const { colors, isLively } = useTheme();
   const { scaled } = useTextSize();
   const isIelts = exam === 'ielts';
   const listeningOnly = isListeningOnly(q, exam);
@@ -147,7 +147,7 @@ function QuestionViewInner({
     : result?.correctLabel ?? result?.correctText ?? '';
 
   return (
-    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
       {hideText && q.part === 2 && listeningOnly ? (
         <Text style={[styles.line, { color: colors.text, fontSize: scaled(15), fontWeight: '700' }]}>
           🎧 Nghe và chọn đáp án đúng
@@ -156,7 +156,7 @@ function QuestionViewInner({
       {q.imageUrl ? (
         <Image
           source={{ uri: q.imageUrl }}
-          style={[styles.image, imgAspect ? { height: undefined, aspectRatio: imgAspect } : null]}
+          style={[styles.image, imgAspect ? { height: undefined, aspectRatio: imgAspect } : null, isLively && { borderRadius: 16 }]}
           onLoad={(e) => {
             const { width: w, height: h } = e.source;
             if (w > 0 && h > 0) setImgAspect(w / h);
@@ -217,6 +217,7 @@ function QuestionViewInner({
                   isSel && { borderColor: colors.accent, backgroundColor: colors.surfaceMuted },
                   isCorrect && { borderColor: colors.success, backgroundColor: colors.surfaceMuted },
                   isWrong && { borderColor: colors.danger, backgroundColor: colors.surfaceMuted },
+                  livelyOption(colors, isCorrect ? 'correct' : isWrong ? 'wrong' : isSel ? 'selected' : 'default'),
                 ]}
                 disabled={mode === 'practice' && (!!result || !!submittedAll)}
                 onPress={() => {
@@ -254,7 +255,7 @@ function QuestionViewInner({
         <View style={styles.submitRow}>
           {!hideSubmitButton ? (
             <Pressable
-              style={[styles.submitButton, { backgroundColor: colors.accent }, (!selected || overLimit) && styles.disabled]}
+              style={[styles.submitButton, { backgroundColor: colors.accent }, (!selected || overLimit) && styles.disabled, raisedButton(colors)]}
               disabled={!selected || overLimit}
               onPress={() => onSubmit?.(q.id)}
             >

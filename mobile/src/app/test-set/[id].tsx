@@ -10,7 +10,7 @@ import { api, type TestSet } from '../../api';
 import { useExam } from '../../exam';
 import { partLabel, partNameFor } from '../../lib';
 import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
-import { raisedButton, useTextSize, useTheme } from '../../theme';
+import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../../theme';
 import { BackButton } from '../../components/BackButton';
 import { HeroFlight, type HeroRect } from '../../components/HeroFlight';
 import { partName, sectionOf } from '../../components/QuestionView';
@@ -95,21 +95,21 @@ export default function TestSetDetailScreen() {
       const n = info?.count || 0;
       const prog = ts.progress?.byPart.find((b) => b.part === p);
       return (
-        <View key={p} style={[styles.card, styles.partCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View key={p} style={[styles.card, styles.partCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
             {p <= 4 ? '🎧' : '📖'} {partLabel(p, ex)} · {n} câu
           </Text>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(16), fontWeight: '700' }]}>
             {isIelts ? partNameFor(p, ex) : partName(p)}
           </Text>
-          <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }]}>{sectionOf(p)}</Text>
+          <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }, livelyChip(colors)]}>{sectionOf(p)}</Text>
           {prog ? (
             <>
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
                 Đã làm {prog.answered}/{n} câu · đúng {prog.correct}
               </Text>
               {n > 0 ? (
-                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }]}>
+                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
                   <View style={[styles.barFill, { width: `${Math.round((prog.answered / n) * 100)}%`, backgroundColor: colors.accent }]} />
                 </View>
               ) : null}
@@ -186,7 +186,7 @@ export default function TestSetDetailScreen() {
                 {ts.totalQuestions ? Math.round(((ts.progress?.answeredTotal || 0) / ts.totalQuestions) * 100) : 0}%) • Đúng{' '}
                 {ts.progress?.correctTotal || 0} câu
               </Text>
-              <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }]}>
+              <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
                 <View
                   style={[
                     styles.barFill,

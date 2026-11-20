@@ -22,7 +22,7 @@ import { ApiError, api, type BadDayTask, type ErrorLogEntry, type Question, type
 import { useExam } from '../exam';
 import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
-import { raisedButton, useTextSize, useTheme } from '../theme';
+import { livelyBarTrack, livelyCard, livelyChip, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
@@ -74,6 +74,7 @@ const DrillAnswerControl = memo(function DrillAnswerControl({
                   borderColor: isRight ? colors.success : isSel ? colors.accent : colors.border,
                   backgroundColor: isRight || isSel ? colors.surfaceMuted : colors.surface,
                 },
+                livelyChip(colors),
               ]}
             >
               <Text style={[styles.pillText, { color: colors.text, fontSize: scaled(13) }]}>{l}</Text>
@@ -119,7 +120,7 @@ const DrillAnswerControl = memo(function DrillAnswerControl({
     return (
       <View style={styles.optList}>
         <TextInput
-          style={[styles.input, { borderColor: over ? colors.danger : colors.border, color: colors.text, fontSize: scaled(16) }]}
+          style={[styles.input, { borderColor: over ? colors.danger : colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
           value={value}
           onChangeText={onChange}
           placeholder={q.wordLimit != null ? `Nhập đáp án (tối đa ${q.wordLimit} từ)` : 'Nhập đáp án'}
@@ -148,6 +149,7 @@ const DrillAnswerControl = memo(function DrillAnswerControl({
                 borderColor: isRight ? colors.success : isSel ? colors.accent : colors.border,
                 backgroundColor: isSel || isRight ? colors.surfaceMuted : colors.surface,
               },
+              livelyOption(colors, isRight ? 'correct' : isSel ? 'selected' : 'default'),
             ]}
           >
             <Text style={[styles.optionText, { color: colors.text, fontSize: scaled(15) }]}>
@@ -279,7 +281,7 @@ export default function TodayScreen() {
         {loading ? (
           <ActivityIndicator color={colors.accent} />
         ) : !data ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>
               Chưa tải được kế hoạch hôm nay.
             </Text>
@@ -287,24 +289,24 @@ export default function TodayScreen() {
         ) : (
           <>
             <View style={styles.statRow}>
-              <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Text style={[styles.statEmoji, { fontSize: scaled(20) }]}>🔥</Text>
+              <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                <Text style={[styles.statEmoji, { fontSize: scaled(isLively ? 26 : 20) }]}>🔥</Text>
                 <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Streak</Text>
                 <Text style={[styles.statBig, { color: isLively ? colors.streak : colors.text, fontSize: scaled(16) }]}>{streak?.current ?? 0} ngày</Text>
                 <Text style={[styles.statNote, { color: colors.muted, fontSize: scaled(12) }]}>
                   {(streak?.freeRestLeft ?? 1) > 0 ? 'Còn 1 ngày nghỉ miễn phí tuần này' : 'Đã dùng ngày nghỉ tuần này'}
                 </Text>
               </View>
-              <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Text style={[styles.statEmoji, { fontSize: scaled(20) }]}>📅</Text>
+              <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                <Text style={[styles.statEmoji, { fontSize: scaled(isLively ? 26 : 20) }]}>📅</Text>
                 <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Đã xong hôm nay</Text>
                 <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(16) }]}>{done.length}/3 khối</Text>
                 <Text style={[styles.statNote, { color: colors.muted, fontSize: scaled(12) }]}>
                   {done.length >= 3 ? '🎉 Xong hết rồi — nghỉ thôi!' : 'Cứ từ từ, từng khối một.'}
                 </Text>
               </View>
-              <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                <Text style={[styles.statEmoji, { fontSize: scaled(20) }]}>🌧️</Text>
+              <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                <Text style={[styles.statEmoji, { fontSize: scaled(isLively ? 26 : 20) }]}>🌧️</Text>
                 <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Ngày mệt?</Text>
                 <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(15) }]}>
                   {data.badDayAvailable ? 'Có chế độ ngày nhẹ' : 'Hôm nay đã dùng ngày nhẹ'}
@@ -322,7 +324,7 @@ export default function TodayScreen() {
             </View>
 
             {badDay && (
-              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
                 <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>🌧️ Bài ngày nhẹ (5–10 phút)</Text>
                 <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>{badDay.title}</Text>
                 <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(15) }]}>{badDay.detail}</Text>
@@ -332,7 +334,7 @@ export default function TodayScreen() {
                   </Pressable>
                 )}
                 <Pressable
-                  style={[styles.button, { backgroundColor: colors.accent, opacity: badDayDone ? 0.6 : 1 }]}
+                  style={[styles.button, { backgroundColor: colors.accent, opacity: badDayDone ? 0.6 : 1 }, raisedButton(colors)]}
                   disabled={badDayDone}
                   onPress={() => {
                     setBadDayDone(true);
@@ -348,7 +350,7 @@ export default function TodayScreen() {
 
             {/* Chuẩn web Today.tsx — nút cuộn tới khối 1. */}
             <Pressable
-              style={[styles.button, { backgroundColor: colors.gold }]}
+              style={[styles.button, { backgroundColor: colors.gold }, raisedButton(colors, '#D9A400')]}
               onPress={() => scrollRef.current?.scrollTo({ y: reviewY.current, animated: true })}
             >
               <Text style={[styles.buttonText, { color: colors.goldInk, fontSize: scaled(15) }]}>▶ Bắt đầu hôm nay</Text>
@@ -361,7 +363,7 @@ export default function TodayScreen() {
             )}
 
             <View
-              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
+              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}
               onLayout={(e) => {
                 reviewY.current = e.nativeEvent.layout.y;
               }}
@@ -403,7 +405,7 @@ export default function TodayScreen() {
               )}
             </View>
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                 2️⃣ Luyện dạng yếu nhất {done.includes('drill') ? '✓' : ''}
               </Text>
@@ -442,7 +444,7 @@ export default function TodayScreen() {
               )}
             </View>
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                 3️⃣ Luyện chủ động {done.includes('active') ? '✓' : ''}
               </Text>
@@ -472,7 +474,7 @@ export default function TodayScreen() {
             </View>
 
             {isIelts && quitReason === 'chan' && (
-              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
                 <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>🎲 Đổi gió theo chủ đề bạn thích</Text>
                 <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
                   Chọn chủ đề — app sẽ ưu tiên bài đọc/nghe cùng chủ đề khi có.
@@ -483,7 +485,7 @@ export default function TodayScreen() {
                     return (
                       <Pressable
                         key={t}
-                        style={[styles.chip, { borderColor: colors.border, backgroundColor: selected ? colors.accent : colors.surface }]}
+                        style={[styles.chip, { borderColor: colors.border, backgroundColor: selected ? colors.accent : colors.surface }, livelyChip(colors)]}
                         onPress={() => toggleTopic(t)}
                       >
                         <Text style={{ color: selected ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -493,7 +495,7 @@ export default function TodayScreen() {
                     );
                   })}
                 </View>
-                <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+                <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
                   <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>👹 Boss cuối tuần</Text>
                   <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
                     Mini test 20–30 phút, đánh 1 con quái to — sẽ mở ở Giai đoạn 6. Cứ luyện đều mỗi ngày
@@ -551,7 +553,7 @@ function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () =
         <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>🎉 Hết lỗi đến hạn rồi!</Text>
       )}
       {items.map((it) => (
-        <View key={it.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+        <View key={it.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
           <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>
             {errorCodeName(it.errorCode)} ·{' '}
             {it.skill === 'listening' ? '🎧 Listening' : it.skill === 'reading' ? '📖 Reading' : it.skill === 'writing' ? '✍️ Writing' : '🎤 Speaking'}
@@ -567,7 +569,7 @@ function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () =
           ) : null}
           <View style={styles.row}>
             <Pressable
-              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }]}
+              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
               onPress={() => void review(it.id, true)}
             >
               <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Tôi đã làm đúng ✓</Text>
@@ -588,7 +590,7 @@ function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDone: () =
         >
           <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>Mở sổ lỗi đầy đủ →</Text>
         </Pressable>
-        <Pressable style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }]} onPress={onDone}>
+        <Pressable style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]} onPress={onDone}>
           <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Xong khối ôn lỗi</Text>
         </Pressable>
       </View>
@@ -624,7 +626,7 @@ function IeltsDrillBlock({
           Chưa có kết quả chẩn đoán nên chưa biết dạng nào yếu nhất.
         </Text>
         <Pressable
-          style={[styles.button, { backgroundColor: colors.accent }]}
+          style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
           onPress={() => router.push('/diagnostic')}
         >
           <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Làm chẩn đoán trước →</Text>
@@ -682,7 +684,7 @@ function IeltsDrillBlock({
         const overLimit =
           isFillIn(qType) && q.wordLimit != null && wordCount(selected[q.id] ?? '') > q.wordLimit;
         return (
-          <View key={q.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+          <View key={q.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
             <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>
               {i + 1}. {q.content}
             </Text>
@@ -701,7 +703,7 @@ function IeltsDrillBlock({
             {needsSubmit && !a && (
               <View style={styles.row}>
                 <Pressable
-                  style={[styles.smallButton, { backgroundColor: colors.accent, opacity: !selected[q.id]?.trim() || overLimit ? 0.6 : 1 }]}
+                  style={[styles.smallButton, { backgroundColor: colors.accent, opacity: !selected[q.id]?.trim() || overLimit ? 0.6 : 1 }, raisedButton(colors)]}
                   disabled={!selected[q.id]?.trim() || overLimit}
                   onPress={() => void answer(q, selected[q.id] ?? '')}
                 >
@@ -721,7 +723,7 @@ function IeltsDrillBlock({
         );
       })}
       {qs && (
-        <Pressable style={[styles.button, { backgroundColor: colors.accent }]} onPress={onDone}>
+        <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={onDone}>
           <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Xong khối luyện dạng yếu</Text>
         </Pressable>
       )}
@@ -782,7 +784,7 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
       ) : null}
       <View style={styles.chipRow}>
         <Pressable
-          style={[styles.chip, { borderColor: colors.border, backgroundColor: mode === 'skim' ? colors.accent : colors.surface }]}
+          style={[styles.chip, { borderColor: colors.border, backgroundColor: mode === 'skim' ? colors.accent : colors.surface }, livelyChip(colors)]}
           onPress={() => setMode('skim')}
         >
           <Text style={{ color: mode === 'skim' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -790,7 +792,7 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
           </Text>
         </Pressable>
         <Pressable
-          style={[styles.chip, { borderColor: colors.border, backgroundColor: mode === 'dictation' ? colors.accent : colors.surface }]}
+          style={[styles.chip, { borderColor: colors.border, backgroundColor: mode === 'dictation' ? colors.accent : colors.surface }, livelyChip(colors)]}
           onPress={() => setMode('dictation')}
         >
           <Text style={{ color: mode === 'dictation' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -804,7 +806,7 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
             Đọc lướt đoạn văn dưới đây trong <Text style={{ fontWeight: '700' }}>90 giây</Text>, rồi tóm tắt
             mỗi đoạn bằng <Text style={{ fontWeight: '700' }}>5–8 từ</Text>.
           </Text>
-          <View style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+          <View style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
             <Text style={[styles.passageText, { color: colors.text, fontSize: scaled(15) }]}>
               {passage || 'Đang tải đoạn văn mẫu (TS-028)…'}
             </Text>
@@ -813,7 +815,7 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
             ⏱ Còn lại: <Text style={{ fontWeight: '700' }}>{fmtClock(left)}</Text>
           </Text>
           <Pressable
-            style={[styles.smallButton, { backgroundColor: colors.accent, opacity: started ? 0.6 : 1 }]}
+            style={[styles.smallButton, { backgroundColor: colors.accent, opacity: started ? 0.6 : 1 }, raisedButton(colors)]}
             disabled={started}
             onPress={() => {
               setLeft(90);
@@ -824,7 +826,7 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
           </Pressable>
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Tóm tắt mỗi đoạn 5–8 từ</Text>
           <TextInput
-            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
             value={summary}
             onChangeText={setSummary}
             placeholder="VD: Đoạn 1: … (5–8 từ). Đoạn 2: …"
@@ -848,20 +850,20 @@ function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
             </Text>
           </Pressable>
           {showScript && script ? (
-            <View style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+            <View style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
               <Text style={[styles.passageText, { color: colors.text, fontSize: scaled(15) }]}>{script}</Text>
             </View>
           ) : null}
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Gõ lại những gì bạn đọc được</Text>
           <TextInput
-            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
             value={dictation}
             onChangeText={setDictation}
             multiline
           />
         </>
       )}
-      <Pressable style={[styles.button, { backgroundColor: colors.accent }]} onPress={onDone}>
+      <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={onDone}>
         <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Xong khối luyện chủ động</Text>
       </Pressable>
     </View>
@@ -882,7 +884,7 @@ function BandCompassBlock() {
 
   const max = Math.max(1, ...(weekly ?? []).map((w) => w.count));
   return (
-    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
       <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>🧭 Band Compass — bạn đang ở đâu?</Text>
       {bands ? (
         <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>
@@ -909,7 +911,7 @@ function BandCompassBlock() {
       {weekly?.slice(0, 12).map((w, i) => (
         <View key={`${w.week}-${w.code}-${i}`} style={styles.barRow}>
           <Text style={[styles.barLabel, { color: colors.text, fontSize: scaled(13) }]}>{w.week} · {w.code}</Text>
-          <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }]}>
+          <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
             <View style={[styles.barFill, { width: `${(w.count / max) * 100}%`, backgroundColor: colors.accent }]} />
           </View>
           <Text style={[styles.barCount, { color: colors.text, fontSize: scaled(13) }]}>{w.count}</Text>

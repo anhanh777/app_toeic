@@ -26,7 +26,7 @@ import {
   cancelDailyReminder,
   scheduleDailyReminder,
 } from '../notifications';
-import { TEXT_SIZE_LABELS, useTextSize, useTheme } from '../theme';
+import { TEXT_SIZE_LABELS, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
@@ -324,7 +324,7 @@ export default function SettingsScreen() {
           <Text style={[styles.note, { color: colors.success, fontSize: scaled(14) }]}>{ieltsMsg}</Text>
         ) : null}
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>Thông tin tài khoản</Text>
           <View style={styles.avatarRow}>
             {avatarUrl ? (
@@ -372,7 +372,7 @@ export default function SettingsScreen() {
           </Text>
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Tên hiển thị</Text>
           <TextInput
-            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
             value={name}
             onChangeText={setName}
             placeholder="Tên bạn muốn hiện trên app"
@@ -380,7 +380,7 @@ export default function SettingsScreen() {
           />
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Mục tiêu điểm TOEIC (10–990)</Text>
           <TextInput
-            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
             value={target}
             onChangeText={(v) => setTarget(v.replace(/[^0-9]/g, ''))}
             keyboardType="number-pad"
@@ -396,7 +396,7 @@ export default function SettingsScreen() {
             </Text>
           </Pressable>
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent, opacity: savingProfile ? 0.6 : 1 }]}
+            style={[styles.button, { backgroundColor: colors.accent, opacity: savingProfile ? 0.6 : 1 }, raisedButton(colors)]}
             onPress={() => void saveProfile()}
             disabled={savingProfile}
           >
@@ -407,7 +407,7 @@ export default function SettingsScreen() {
         </View>
 
         {showIelts && (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
             <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>Hồ sơ IELTS</Text>
             {!hasIelts ? (
               <View style={styles.row}>
@@ -427,7 +427,7 @@ export default function SettingsScreen() {
               <>
                 <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Ngày thi dự kiến</Text>
                 <TextInput
-                  style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+                  style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
                   value={ieltsDate}
                   onChangeText={setIeltsDate}
                   placeholder="VD: 2027-03-15 (năm-tháng-ngày)"
@@ -445,7 +445,7 @@ export default function SettingsScreen() {
                     <View key={key} style={styles.bandCell}>
                       <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>{label}</Text>
                       <TextInput
-                        style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+                        style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
                         value={value}
                         onChangeText={(v) => setter(v.replace(/[^0-9.]/g, ''))}
                         keyboardType="decimal-pad"
@@ -460,7 +460,7 @@ export default function SettingsScreen() {
                   {QUIT_REASON_OPTIONS.map((o) => (
                     <Pressable
                       key={o.value}
-                      style={[styles.chip, { borderColor: colors.border, backgroundColor: quitReason === o.value ? colors.accent : colors.surface }]}
+                      style={[styles.chip, { borderColor: colors.border, backgroundColor: quitReason === o.value ? colors.accent : colors.surface }, livelyChip(colors)]}
                       onPress={() => setQuitReason(o.value)}
                     >
                       <Text style={{ color: quitReason === o.value ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -470,7 +470,7 @@ export default function SettingsScreen() {
                   ))}
                 </View>
                 <Pressable
-                  style={[styles.button, { backgroundColor: colors.accent, opacity: savingIelts ? 0.6 : 1 }]}
+                  style={[styles.button, { backgroundColor: colors.accent, opacity: savingIelts ? 0.6 : 1 }, raisedButton(colors)]}
                   onPress={() => void saveIelts()}
                   disabled={savingIelts}
                 >
@@ -483,14 +483,14 @@ export default function SettingsScreen() {
           </View>
         )}
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>Đổi mật khẩu</Text>
           <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
             Tài khoản đăng nhập bằng Google không có mật khẩu — bỏ qua mục này.
           </Text>
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Mật khẩu hiện tại</Text>
           <TextInput
-            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
             value={current}
             onChangeText={setCurrent}
             secureTextEntry
@@ -499,7 +499,7 @@ export default function SettingsScreen() {
           />
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Mật khẩu mới</Text>
           <TextInput
-            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
             value={next}
             onChangeText={setNext}
             secureTextEntry
@@ -507,7 +507,7 @@ export default function SettingsScreen() {
             placeholderTextColor={colors.muted}
           />
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent, opacity: changingPw ? 0.6 : 1 }]}
+            style={[styles.button, { backgroundColor: colors.accent, opacity: changingPw ? 0.6 : 1 }, raisedButton(colors)]}
             onPress={() => void changePw()}
             disabled={changingPw}
           >
@@ -542,7 +542,7 @@ export default function SettingsScreen() {
           </Text>
         </View>
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>Nhắc nhở</Text>
           <Pressable
             style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}

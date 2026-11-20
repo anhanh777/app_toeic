@@ -14,7 +14,7 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ActivityIndicator, Modal, Pressable, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import { api, type DictionaryEntry, type UserWord } from '../api';
 import { MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 
 /* ---- cache từ đã lưu (module-level) ---- */
 
@@ -272,7 +272,7 @@ export function WordLookupModal({
                 {pop.entry?.phonetic ? (
                   <Text style={[styles.sheetPhonetic, { color: colors.muted, fontSize: scaled(15) }]}>{pop.entry.phonetic}</Text>
                 ) : null}
-                <Pressable onPress={onClose} style={[styles.closeButton, { borderColor: colors.border }]} accessibilityLabel="Đóng">
+                <Pressable onPress={onClose} style={[styles.closeButton, { borderColor: colors.border }, livelyChip(colors)]} accessibilityLabel="Đóng">
                   <Text style={{ color: colors.text, fontSize: scaled(15) }}>✕</Text>
                 </Pressable>
               </View>
@@ -306,7 +306,7 @@ export function WordLookupModal({
                     </Pressable>
                   ) : (
                     <Pressable
-                      style={[styles.saveButton, { backgroundColor: colors.accent }, saving && styles.disabled]}
+                      style={[styles.saveButton, { backgroundColor: colors.accent }, saving && styles.disabled, raisedButton(colors)]}
                       disabled={saving}
                       onPress={onSave}
                     >

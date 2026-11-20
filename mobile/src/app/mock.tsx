@@ -31,7 +31,7 @@ import {
   SPACING,
 } from '../layout';
 import { partLabel, partNameFor, realQuestionNumber } from '../lib';
-import { raisedButton, useTextSize, useTheme } from '../theme';
+import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
@@ -396,7 +396,7 @@ export default function MockTestScreen() {
           <View style={styles.cluster}>
             {header}
             {block.passageText ? (
-              <View style={[styles.passage, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+              <View style={[styles.passage, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'card')]}>
                 <PassageView text={block.passageText} isP6={isP6Block} blanks={blanks} wordLookup={isReading} />
               </View>
             ) : null}
@@ -463,7 +463,7 @@ export default function MockTestScreen() {
           </View>
           {error ? <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text> : null}
           {paramTestSetId ? (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
               <Text style={[styles.title, { color: colors.text, fontSize: scaled(18) }]}>Thi thử cả đề</Text>
               {testSet ? (
                 <>
@@ -504,7 +504,7 @@ export default function MockTestScreen() {
                 </Text>
               ) : null}
               <Pressable
-                style={[styles.button, { backgroundColor: colors.accent }, (busy || !testSet || !testSet.totalQuestions) && styles.disabled]}
+                style={[styles.button, { backgroundColor: colors.accent }, (busy || !testSet || !testSet.totalQuestions) && styles.disabled, raisedButton(colors)]}
                 disabled={busy || !testSet || !testSet.totalQuestions}
                 onPress={() => void start()}
               >
@@ -512,11 +512,11 @@ export default function MockTestScreen() {
               </Pressable>
             </View>
           ) : (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(15) }]}>Loại bài thi</Text>
               <View style={styles.tabs}>
                 <Pressable
-                  style={[styles.tab, { borderColor: colors.border }, mode === 'mini' && { backgroundColor: colors.accent }]}
+                  style={[styles.tab, { borderColor: colors.border }, mode === 'mini' && { backgroundColor: colors.accent }, livelyChip(colors)]}
                   onPress={() => setMode('mini')}
                 >
                   <Text style={{ color: mode === 'mini' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
@@ -524,7 +524,7 @@ export default function MockTestScreen() {
                   </Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.tab, { borderColor: colors.border }, mode === 'full' && { backgroundColor: colors.accent }]}
+                  style={[styles.tab, { borderColor: colors.border }, mode === 'full' && { backgroundColor: colors.accent }, livelyChip(colors)]}
                   onPress={() => setMode('full')}
                 >
                   <Text style={{ color: mode === 'full' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
@@ -541,7 +541,7 @@ export default function MockTestScreen() {
                     {[1, 2, 3, 4, 5, 6, 7].map((p) => (
                       <Pressable
                         key={p}
-                        style={[styles.partChip, { borderColor: part === p ? colors.accent : colors.border, backgroundColor: part === p ? colors.surfaceMuted : colors.surface }]}
+                        style={[styles.partChip, { borderColor: part === p ? colors.accent : colors.border, backgroundColor: part === p ? colors.surfaceMuted : colors.surface }, livelyChip(colors)]}
                         onPress={() => setPart(p)}
                       >
                         <Text style={{ color: colors.text, fontSize: scaled(14), textAlign: 'center' }}>
@@ -556,7 +556,7 @@ export default function MockTestScreen() {
                   <Text style={[styles.label, { color: colors.text, fontSize: scaled(15) }]}>Chọn đề thi</Text>
                   <View style={styles.setList}>
                     <Pressable
-                      style={[styles.setRow, { borderColor: selectedTestSetId === '' ? colors.accent : colors.border, backgroundColor: selectedTestSetId === '' ? colors.surfaceMuted : colors.surface }]}
+                      style={[styles.setRow, { borderColor: selectedTestSetId === '' ? colors.accent : colors.border, backgroundColor: selectedTestSetId === '' ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}
                       onPress={() => setSelectedTestSetId('')}
                     >
                       <Text style={{ color: colors.text, fontSize: scaled(15) }}>Toàn bộ ngân hàng</Text>
@@ -564,7 +564,7 @@ export default function MockTestScreen() {
                     {testSets.map((s) => (
                       <Pressable
                         key={s.id}
-                        style={[styles.setRow, { borderColor: selectedTestSetId === s.id ? colors.accent : colors.border, backgroundColor: selectedTestSetId === s.id ? colors.surfaceMuted : colors.surface }]}
+                        style={[styles.setRow, { borderColor: selectedTestSetId === s.id ? colors.accent : colors.border, backgroundColor: selectedTestSetId === s.id ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}
                         onPress={() => setSelectedTestSetId(s.id)}
                       >
                         <Text style={{ color: colors.text, fontSize: scaled(15) }}>
@@ -633,11 +633,12 @@ export default function MockTestScreen() {
             style={[
               styles.timer,
               { color: secondsLeft < 300 ? colors.danger : colors.text, fontSize: scaled(16), borderColor: colors.border },
+              livelyChip(colors),
             ]}
           >
             ⏱ {fmt(secondsLeft)}
           </Text>
-          <Text style={[styles.badge, { color: colors.text, fontSize: scaled(14), borderColor: colors.border }]}>
+          <Text style={[styles.badge, { color: colors.text, fontSize: scaled(14), borderColor: colors.border }, livelyChip(colors)]}>
             Đã trả lời {answeredCount}/{questions.length}
           </Text>
         </View>

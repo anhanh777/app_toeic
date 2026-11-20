@@ -19,7 +19,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { ApiError, api, type WritingSubmission, type WritingTask } from '../api';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { wordCount } from '../lib';
-import { raisedButton, useTextSize, useTheme } from '../theme';
+import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 
 export function fmtClock(sec: number): string {
@@ -47,7 +47,7 @@ const ChartText = memo(function ChartText({ data }: { data: NonNullable<WritingT
   }
   if (!lines.length) return null;
   return (
-    <View style={[styles.chart, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
+    <View style={[styles.chart, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
       {lines.map((l, i) => (
         <Text key={i} style={[styles.chartLine, { color: colors.text, fontSize: scaled(14) }]}>{l}</Text>
       ))}
@@ -171,6 +171,7 @@ export default function WritingScreen() {
               borderColor: selected ? colors.accent : colors.border,
               backgroundColor: selected ? colors.surfaceMuted : colors.surface,
             },
+            livelyCard(colors, 'card', selected ? colors.accentDark : undefined),
           ]}
           onPress={() => pick(t)}
         >
@@ -218,7 +219,7 @@ export default function WritingScreen() {
             />
 
             {task && (
-              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
                 <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                   {task.title} <Text style={{ color: colors.accent }}>· {task.type === 'task1' ? 'Task 1' : 'Task 2'}</Text>
                 </Text>
@@ -238,7 +239,7 @@ export default function WritingScreen() {
                 </Pressable>
                 <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Bài viết của bạn</Text>
                 <TextInput
-                  style={[styles.editor, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+                  style={[styles.editor, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
                   value={content}
                   onChangeText={setContent}
                   placeholder="Viết bài của bạn ở đây…"
@@ -288,7 +289,7 @@ export default function WritingScreen() {
               </View>
             )}
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>Bài đã nộp ({subs.length})</Text>
               {!subs.length && (
                 <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>Chưa có bài nộp nào.</Text>

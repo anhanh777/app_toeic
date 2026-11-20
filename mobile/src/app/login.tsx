@@ -71,11 +71,11 @@ export default function LoginScreen() {
             {isLively ? (
               <Image
                 source={require('../../assets/mascot.png')}
-                style={{ width: 96, height: 96 }}
+                style={{ width: 112, height: 112 }}
                 contentFit="contain"
               />
             ) : null}
-            <View style={[styles.logo, { backgroundColor: colors.accent }]}>
+            <View style={[styles.logo, { backgroundColor: colors.accent }, isLively && { borderWidth: 2, borderColor: colors.borderHard, borderBottomWidth: 4, borderBottomColor: colors.accentDark }]}>
               {brand.logoType === 'image' && brand.logoUrl ? (
                 <Image
                   source={{ uri: brand.logoUrl }}
@@ -94,7 +94,7 @@ export default function LoginScreen() {
             ) : null}
           </View>
 
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>
               Đăng nhập
             </Text>
@@ -107,6 +107,7 @@ export default function LoginScreen() {
               style={[
                 styles.input,
                 { borderColor: colors.border, backgroundColor: colors.surfaceMuted, color: colors.text, fontSize: scaled(16) },
+                livelyCard(colors, 'compact'),
               ]}
               value={email}
               onChangeText={setEmail}
@@ -123,6 +124,7 @@ export default function LoginScreen() {
               style={[
                 styles.input,
                 { borderColor: colors.border, backgroundColor: colors.surfaceMuted, color: colors.text, fontSize: scaled(16) },
+                livelyCard(colors, 'compact'),
               ]}
               value={password}
               onChangeText={setPassword}

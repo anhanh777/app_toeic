@@ -19,7 +19,7 @@ import { Image } from 'expo-image';
 import { api, scoreLevel, type TestResultDetail } from '../../api';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, realQuestionNumber, stripLeadingNumber } from '../../lib';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
-import { livelyCard, useTextSize, useTheme } from '../../theme';
+import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../../theme';
 import RootCausePicker, { skillOfPart } from '../../components/RootCausePicker';
 import { TierBadge } from '../../components/TierBadge';
 import { WordText } from '../../components/WordLookup';
@@ -78,7 +78,7 @@ export default function ResultScreen() {
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
         <View style={[styles.center, { paddingHorizontal: pad }]}>
           <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text>
-          <Pressable style={[styles.button, { backgroundColor: colors.accent }]} onPress={() => router.push('/')}>
+          <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => router.push('/')}>
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Về trang chủ</Text>
           </Pressable>
         </View>
@@ -119,7 +119,7 @@ export default function ResultScreen() {
     const showTranscript = expanded[`t-${d.questionId}`];
     const showPassage = expanded[`p-${d.questionId}`];
     return (
-      <View style={[styles.rowCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+      <View style={[styles.rowCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
         <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
           <Text style={{ fontWeight: '700' }}>
             Câu {n} · <Text style={{ color: statusColor }}>{status}</Text>
@@ -204,7 +204,7 @@ export default function ResultScreen() {
           <View style={styles.mascotRow}>
             <Image
               source={require('../../../assets/mascot.png')}
-              style={{ width: 64, height: 64 }}
+              style={{ width: 80, height: 80 }}
               contentFit="contain"
             />
             <Text style={[styles.mascotText, { color: colors.text, fontSize: scaled(15) }]}>
@@ -219,7 +219,7 @@ export default function ResultScreen() {
         ) : null}
         {isIelts ? (
           isFull && data.overallBand != null ? (
-            <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}>
+            <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
               <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Band tổng (band ước lượng để tham khảo)</Text>
               <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>Band {data.overallBand}</Text>
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {bandLevel(data.overallBand)}</Text>
@@ -228,12 +228,12 @@ export default function ResultScreen() {
                 {'☆'.repeat(data.overallBand >= 8 ? 0 : data.overallBand >= 6.5 ? 1 : 2)}
               </Text>
               <View style={styles.scoreRow}>
-                <View style={[styles.scoreBox, { backgroundColor: colors.surfaceMuted }]}>
+                <View style={[styles.scoreBox, { backgroundColor: colors.surfaceMuted }, livelyCard(colors, 'compact')]}>
                   <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>🎧 Listening</Text>
                   <Text style={[styles.big, { color: colors.text, fontSize: scaled(20) }]}>Band {data.listeningBand ?? '—'}</Text>
                   <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>{data.listening_correct ?? 0}/40 câu đúng</Text>
                 </View>
-                <View style={[styles.scoreBox, { backgroundColor: colors.surfaceMuted }]}>
+                <View style={[styles.scoreBox, { backgroundColor: colors.surfaceMuted }, livelyCard(colors, 'compact')]}>
                   <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>📖 Reading</Text>
                   <Text style={[styles.big, { color: colors.text, fontSize: scaled(20) }]}>Band {data.readingBand ?? '—'}</Text>
                   <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>{data.reading_correct ?? 0}/40 câu đúng</Text>
@@ -244,7 +244,7 @@ export default function ResultScreen() {
               </Text>
             </View>
           ) : (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
               <Text style={[styles.big, { color: colors.text, fontSize: scaled(22) }]}>{totalCorrect} câu đúng</Text>
               <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
                 Bài thi mini (1 Section/Passage) chỉ báo số câu đúng/tổng, không có band.
@@ -252,7 +252,7 @@ export default function ResultScreen() {
             </View>
           )
         ) : isFull && data.total_score != null ? (
-          <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}>
+          <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Tổng điểm (điểm ước lượng)</Text>
             <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>{data.total_score} / 990</Text>
             <TierBadge total={data.total_score} />
@@ -270,7 +270,7 @@ export default function ResultScreen() {
             </Text>
           </View>
         ) : (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.big, { color: colors.text, fontSize: scaled(22) }]}>{totalCorrect} câu đúng</Text>
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
               Bài thi mini (1 Part) chỉ báo số câu đúng/tổng, không có điểm 10–990.
@@ -278,7 +278,7 @@ export default function ResultScreen() {
           </View>
         )}
         {data.byPart ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
               {isIelts ? 'Điểm theo Section/Passage' : 'Điểm theo Part'}
             </Text>
@@ -290,7 +290,7 @@ export default function ResultScreen() {
                     {b.correct}/{b.total}
                   </Text>
                 </View>
-                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }]}>
+                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
                   <View style={[styles.barFill, { width: `${b.total ? (b.correct / b.total) * 100 : 0}%`, backgroundColor: colors.accent }]} />
                 </View>
               </View>
@@ -315,7 +315,7 @@ export default function ResultScreen() {
               ).map(([f, label]) => (
                 <Pressable
                   key={f}
-                  style={[styles.tab, { borderColor: colors.border }, filter === f && { backgroundColor: colors.accent }]}
+                  style={[styles.tab, { borderColor: colors.border }, filter === f && { backgroundColor: colors.accent }, livelyChip(colors)]}
                   onPress={() => setFilter(f)}
                 >
                   <Text style={{ color: filter === f ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>{label}</Text>
@@ -331,30 +331,30 @@ export default function ResultScreen() {
             />
             {/* Chuẩn web Result.tsx:194-204 — nút ôn lại câu sai cuối khối chi tiết. */}
             <Pressable
-              style={[styles.button, { backgroundColor: colors.accent }]}
+              style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
               onPress={() => router.push('/wrong')}
             >
               <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn lại câu sai</Text>
             </Pressable>
           </View>
         ) : data.wrongQuestionIds?.length ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>Câu làm sai ({data.wrongQuestionIds.length})</Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>{data.wrongQuestionIds.join(', ')}</Text>
             <Pressable
-              style={[styles.button, { backgroundColor: colors.accent }]}
+              style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
               onPress={() => router.push('/wrong')}
             >
               <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn lại câu sai</Text>
             </Pressable>
           </View>
         ) : (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>🎉 Không có câu sai!</Text>
           </View>
         )}
         <View style={styles.btnRow}>
-          <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.accent }]} onPress={() => router.push('/mock')}>
+          <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => router.push('/mock')}>
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Thi thử lại</Text>
           </Pressable>
           <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.surfaceMuted }]} onPress={() => router.push('/')}>

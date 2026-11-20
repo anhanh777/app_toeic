@@ -16,7 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type LeaderboardEntry } from '../api';
 import { useExam } from '../exam';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { livelyCard, livelyChip, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 
 type Metric = 'score' | 'xp' | 'band';
@@ -40,7 +40,7 @@ const EntryRow = memo(function EntryRow({
   const { colors } = useTheme();
   const { scaled } = useTextSize();
   return (
-    <View style={[styles.row, { borderColor: colors.border, backgroundColor: e.rank <= 3 ? colors.surfaceMuted : colors.surface }]}>
+    <View style={[styles.row, { borderColor: colors.border, backgroundColor: e.rank <= 3 ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}>
       <Text style={[styles.rank, { color: colors.text, fontSize: scaled(15) }]}>
         {e.rank <= 3 ? MEDALS[e.rank - 1] : `#${e.rank}`}
       </Text>
@@ -135,7 +135,7 @@ export default function LeaderboardScreen() {
 
         <View style={styles.chipRow}>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: metric !== 'xp' ? colors.accent : colors.surface }]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: metric !== 'xp' ? colors.accent : colors.surface }, livelyChip(colors)]}
             onPress={() => setMetric(isIelts ? 'band' : 'score')}
           >
             <Text style={{ color: metric !== 'xp' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -143,7 +143,7 @@ export default function LeaderboardScreen() {
             </Text>
           </Pressable>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: metric === 'xp' ? colors.accent : colors.surface }]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: metric === 'xp' ? colors.accent : colors.surface }, livelyChip(colors)]}
             onPress={() => setMetric('xp')}
           >
             <Text style={{ color: metric === 'xp' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -155,7 +155,7 @@ export default function LeaderboardScreen() {
           {TABS.map((t) => (
             <Pressable
               key={t.id}
-              style={[styles.chip, { borderColor: colors.border, backgroundColor: tab === t.id ? colors.accent : colors.surface }]}
+              style={[styles.chip, { borderColor: colors.border, backgroundColor: tab === t.id ? colors.accent : colors.surface }, livelyChip(colors)]}
               onPress={() => {
                 setTab(t.id);
                 setLoading(true);
@@ -179,8 +179,8 @@ export default function LeaderboardScreen() {
             {top3.length >= 3 && (
               <View style={styles.top3}>
                 {top3.map((e) => (
-                  <View key={e.rank} style={[styles.top3Card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                    <Text style={[styles.medal, { fontSize: scaled(20) }]}>{MEDALS[e.rank - 1]}</Text>
+                  <View key={e.rank} style={[styles.top3Card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+                    <Text style={[styles.medal, { fontSize: scaled(colors.style === 'lively' ? 26 : 20) }]}>{MEDALS[e.rank - 1]}</Text>
                     <Text style={[styles.top3Name, { color: colors.text, fontSize: scaled(14) }]} numberOfLines={1}>
                       {e.name}
                     </Text>
@@ -205,7 +205,7 @@ export default function LeaderboardScreen() {
         )}
 
         {me && (
-          <View style={[styles.meCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.meCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
             <Text style={[styles.meText, { color: colors.text, fontSize: scaled(15) }]}>
               Bạn đang hạng #{me.rank} — {metric === 'xp' ? `XP: ${me.xp}` : fmtValue(me)}
               {gap != null && gap > 0

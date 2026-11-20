@@ -27,7 +27,7 @@ import {
   RADIUS,
   SPACING,
 } from '../layout';
-import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
+import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { useMenuIcons, type MenuIconKey } from '../menuIcons';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
@@ -173,7 +173,7 @@ export default function HomeScreen() {
           <Text style={[styles.hello, { color: colors.text, fontSize: scaled(20) }]}>
             Xin chào, {user?.name || user?.email || 'bạn'} 👋
           </Text>
-          <Pressable onPress={toggleTheme} style={[styles.chip, { borderColor: colors.border }]}>
+          <Pressable onPress={toggleTheme} style={[styles.chip, { borderColor: colors.border }, livelyChip(colors)]}>
             <Text style={{ color: colors.text, fontSize: scaled(14) }}>
               {theme === 'dark' ? '☀️ Sáng' : '🌙 Tối'}
             </Text>
@@ -203,11 +203,11 @@ export default function HomeScreen() {
                     styles.card,
                     wide && styles.cardHalf,
                     { backgroundColor: colors.surface, borderColor: colors.border },
-                    livelyCard(colors),
+                    livelyCard(colors, 'hero'),
                   ]}
                   onPress={() => pick(e.id)}
                 >
-                  <Text style={[styles.emoji, { fontSize: scaled(28) }]}>
+                  <Text style={[styles.emoji, { fontSize: scaled(isLively ? 36 : 28) }]}>
                     {e.id === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}
                   </Text>
                   <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(20) }]}>
@@ -232,9 +232,9 @@ export default function HomeScreen() {
           <Animated.View entering={FadeIn.duration(280)} style={styles.homeWrap}>
             <Animated.View
               entering={ZoomIn.duration(320)}
-              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}
+              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}
             >
-              <Text style={[styles.emoji, { fontSize: scaled(28) }]}>
+              <Text style={[styles.emoji, { fontSize: scaled(isLively ? 36 : 28) }]}>
                 {exam === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}
               </Text>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(20) }]}>
@@ -248,8 +248,8 @@ export default function HomeScreen() {
             {/* 3 stat-card phía trên hub menu (chuẩn web Home.tsx:37-51). */}
             {stats ? (
               <View style={styles.stats}>
-                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                  <Text style={[styles.statIco, { fontSize: scaled(20) }]}>🎯</Text>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                  <Text style={[styles.statIco, { fontSize: scaled(isLively ? 26 : 20) }]}>🎯</Text>
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>
                     {isIelts ? 'Band tổng cao nhất' : 'Mục tiêu điểm'}
                   </Text>
@@ -280,8 +280,8 @@ export default function HomeScreen() {
                     </>
                   )}
                 </View>
-                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                  <Text style={[styles.statIco, { fontSize: scaled(20) }]}>📊</Text>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                  <Text style={[styles.statIco, { fontSize: scaled(isLively ? 26 : 20) }]}>📊</Text>
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>
                     {isIelts ? 'Section/Passage yếu nhất' : 'Part yếu nhất'}
                   </Text>
@@ -297,8 +297,8 @@ export default function HomeScreen() {
                     </Text>
                   ) : null}
                 </View>
-                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }]}>
-                  <Text style={[styles.statIco, { fontSize: scaled(20) }]}>🔥</Text>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                  <Text style={[styles.statIco, { fontSize: scaled(isLively ? 26 : 20) }]}>🔥</Text>
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Streak</Text>
                   <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(20) }]}>
                     {stats.streakDays ?? 0} ngày
@@ -317,10 +317,10 @@ export default function HomeScreen() {
                 nhiệm vụ từ GET /api/today, trạng thái xong từ AsyncStorage
                 (màn Hôm nay ghi). Không tải được today thì ẩn thẻ nhiệm vụ. */}
             {isLively ? (
-              <View style={[styles.livelyHero, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}>
+              <View style={[styles.livelyHero, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
                 <Image
                   source={require('../../assets/mascot.png')}
-                  style={{ width: 84, height: 84 }}
+                  style={{ width: 96, height: 96 }}
                   contentFit="contain"
                 />
                 <View style={styles.livelyHeroText}>
@@ -344,7 +344,7 @@ export default function HomeScreen() {
             ) : null}
             {isLively && todayData ? (
               <Pressable
-                style={[styles.card, styles.livelyTasks, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors)]}
+                style={[styles.card, styles.livelyTasks, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}
                 onPress={() => router.push('/today')}
               >
                 <Text style={[styles.livelyTasksTitle, { color: colors.text, fontSize: scaled(16) }]}>
@@ -378,10 +378,11 @@ export default function HomeScreen() {
                   style={[
                     styles.menuItem,
                     { backgroundColor: colors.surface, borderColor: colors.border },
+                    livelyCard(colors, 'compact'),
                   ]}
                   onPress={() => router.push(m.href as never)}
                 >
-                  <Text style={[styles.menuEmoji, { fontSize: scaled(24) }]}>{icons[m.icon]}</Text>
+                  <Text style={[styles.menuEmoji, { fontSize: scaled(isLively ? 28 : 24) }]}>{icons[m.icon]}</Text>
                   <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                     {m.label}
                   </Text>
@@ -391,19 +392,19 @@ export default function HomeScreen() {
 
             <View style={styles.menu}>
               <Pressable
-                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}
                 onPress={clearExam}
               >
-                <Text style={[styles.menuEmoji, { fontSize: scaled(24) }]}>{icons['switch-exam']}</Text>
+                <Text style={[styles.menuEmoji, { fontSize: scaled(isLively ? 28 : 24) }]}>{icons['switch-exam']}</Text>
                 <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                   Đổi bài thi
                 </Text>
               </Pressable>
               <Pressable
-                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}
                 onPress={logout}
               >
-                <Text style={[styles.menuEmoji, { fontSize: scaled(24) }]}>🚪</Text>
+                <Text style={[styles.menuEmoji, { fontSize: scaled(isLively ? 28 : 24) }]}>🚪</Text>
                 <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
                   Đăng xuất
                 </Text>

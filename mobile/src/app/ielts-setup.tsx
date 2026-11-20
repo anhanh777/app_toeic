@@ -18,7 +18,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type QuitReason } from '../api';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { useTextSize, useTheme } from '../theme';
+import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 
 const REASONS: { id: QuitReason; label: string; note: string }[] = [
@@ -128,10 +128,10 @@ export default function IeltsSetupScreen() {
         {loading ? (
           <ActivityIndicator color={colors.accent} />
         ) : (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Ngày thi dự kiến</Text>
             <TextInput
-              style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+              style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
               value={examDate}
               onChangeText={setExamDate}
               placeholder="VD: 2027-03-15 (năm-tháng-ngày)"
@@ -143,7 +143,7 @@ export default function IeltsSetupScreen() {
                 <View key={k} style={styles.bandCell}>
                   <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>{label}</Text>
                   <TextInput
-                    style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }]}
+                    style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
                     value={bands[k]}
                     onChangeText={(v) => setBand(k, v)}
                     keyboardType="decimal-pad"
@@ -167,6 +167,7 @@ export default function IeltsSetupScreen() {
                       borderColor: selected ? colors.accent : colors.border,
                       backgroundColor: selected ? colors.surfaceMuted : colors.surface,
                     },
+                    livelyCard(colors, 'compact', selected ? colors.accentDark : undefined),
                   ]}
                   onPress={() => setQuitReason(selected ? '' : r.id)}
                 >
@@ -182,7 +183,7 @@ export default function IeltsSetupScreen() {
             ) : null}
             <View style={styles.row}>
               <Pressable
-                style={[styles.button, { backgroundColor: colors.accent, flex: 1, opacity: saving ? 0.7 : 1 }]}
+                style={[styles.button, { backgroundColor: colors.accent, flex: 1, opacity: saving ? 0.7 : 1 }, raisedButton(colors)]}
                 onPress={() => void submit(false)}
                 disabled={saving}
               >
