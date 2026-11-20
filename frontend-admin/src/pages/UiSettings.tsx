@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import { api } from '../api';
+import { useEffect, useState, type ChangeEvent } from 'react';
+import { api, type MediaConfig } from '../api';
 import { ErrorBox, Modal } from '../components';
+import { uploadToCloudinary } from '../cloudinary';
 import {
   ACCENT_PRESETS,
   LOADING_EFFECTS,
@@ -67,12 +68,20 @@ export default function UiSettings() {
   const [error, setError] = useState<unknown>(null);
   /** Kiểu đang mở Modal cấu hình (null = không mở). */
   const [configStyle, setConfigStyle] = useState<UiStyleId | null>(null);
+  /** Cấu hình Cloudinary (để tải ảnh động lên) + trạng thái upload trong Modal. */
+  const [mediaCfg, setMediaCfg] = useState<MediaConfig | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
 
   useEffect(() => {
     api.adminUiSettings()
       .then(d => setDoc(normalizeSettings(d)))
       .catch(setError)
       .finally(() => setLoading(false));
+  }, []);
+  // Cấu hình Cloudinary lấy 1 lần khi mở trang (chỉ admin gọi được).
+  useEffect(() => {
+    api.mediaConfig().then(setMediaCfg).catch(() => setMediaCfg(null));
   }, []);
 
   const update = (patch: Partial<UiSettings['ui']>) => {
@@ -110,6 +119,34 @@ export default function UiSettings() {
         : prev,
     );
     setMsg('');
+  };
+
+  /** Tải ảnh động (GIF/PNG) lên Cloudinary thư mục toeic/loading — up nguyên
+      file, không qua cắt (cắt ra PNG sẽ mất animation). Xong thì tự điền
+      imageUrl + đặt image='custom' cho kiểu đang cấu hình. */
+  const onUploadLoadingImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    // Cho phép chọn lại đúng file vừa chọn (nếu upload trước đó lỗi).
+    e.target.value = '';
+    if (!file || !configStyle) return;
+    setUploadError('');
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError('Ảnh tối đa 5MB. Hãy nén ảnh nhỏ lại rồi chọn lại.');
+      return;
+    }
+    if (!mediaCfg) {
+      setUploadError('Chưa tải được cấu hình Cloudinary. Tải lại trang rồi thử lại.');
+      return;
+    }
+    setUploading(true);
+    try {
+      const url = await uploadToCloudinary(file, 'toeic/loading', mediaCfg);
+      updateStyleLoading(configStyle, { image: 'custom', imageUrl: url });
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : 'Tải lên thất bại.');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const save = async (toSave?: UiSettings) => {
@@ -244,44 +281,63 @@ export default function UiSettings() {
       {configStyle && cfg && cfgMeta && (
         <Modal
           title={`Cấu hình giao diện ${cfgMeta.name}`}
-          subtitle="Màu chủ đạo + hiệu ứng loading riêng của kiểu này. Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng."
+          subtitle={
+            configStyle === 'pastel'
+              ? 'Màu chủ đạo + hiệu ứng loading riêng của kiểu này. Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng.'
+              : 'Hiệu ứng loading riêng của kiểu này (màu xanh Duolingo cố định). Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng.'
+          }
           onClose={() => setConfigStyle(null)}
+          lg
         >
-          <h3 style={{ marginTop: 0 }}>Màu chủ đạo</h3>
-          <div className="btn-row" style={{ alignItems: 'center' }}>
-            <input
-              type="color" value={cfg.accent} aria-label="Chọn màu chủ đạo"
-              onChange={e => updateStyleConfig(configStyle, { accent: e.target.value })}
-              style={{ width: '3rem', height: '2.4rem', padding: 0 }}
-            />
-            <span style={{ fontWeight: 700 }}>{cfg.accent}</span>
-          </div>
-          <div className="btn-row" style={{ marginTop: '.6rem' }}>
-            {ACCENT_PRESETS.map(p => (
-              <button
-                key={p.value} type="button" className="btn secondary btn-sm"
-                title={p.name}
-                style={cfg.accent === p.value ? { borderColor: p.value, boxShadow: `0 0 0 2px ${p.value}55` } : undefined}
-                onClick={() => updateStyleConfig(configStyle, { accent: p.value })}
-              >
-                <span aria-hidden="true" style={{ display: 'inline-block', width: '.8rem', height: '.8rem', borderRadius: '50%', background: p.value, verticalAlign: '-.05rem', marginRight: '.3rem' }} />
-                {p.name}
-              </button>
-            ))}
-          </div>
+          <div className="ui-config">
+          {configStyle === 'pastel' && (
+            <>
+              <h3 style={{ marginTop: 0 }}>Màu chủ đạo</h3>
+              <div className="btn-row" style={{ alignItems: 'center' }}>
+                <input
+                  type="color" value={cfg.accent} aria-label="Chọn màu chủ đạo"
+                  onChange={e => updateStyleConfig(configStyle, { accent: e.target.value })}
+                  style={{ width: '3rem', height: '2.4rem', padding: 0 }}
+                />
+                <span style={{ fontWeight: 700 }}>{cfg.accent}</span>
+              </div>
+              <div className="btn-row" style={{ marginTop: '.6rem' }}>
+                {ACCENT_PRESETS.map(p => (
+                  <button
+                    key={p.value} type="button" className="btn secondary btn-sm"
+                    title={p.name}
+                    style={cfg.accent === p.value ? { borderColor: p.value, boxShadow: `0 0 0 2px ${p.value}55` } : undefined}
+                    onClick={() => updateStyleConfig(configStyle, { accent: p.value })}
+                  >
+                    <span aria-hidden="true" style={{ display: 'inline-block', width: '.8rem', height: '.8rem', borderRadius: '50%', background: p.value, verticalAlign: '-.05rem', marginRight: '.3rem' }} />
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
 
           <h3>Hiệu ứng loading</h3>
           {(Object.keys(LOCATION_LABELS) as LoadingLocation[]).map(loc => (
             <div key={loc}>
               <label>{LOCATION_LABELS[loc]}</label>
-              <select
-                value={cfg.loading[loc]}
-                onChange={e => updateStyleLoading(configStyle, { [loc]: e.target.value as LoadingEffectId })}
-              >
-                {EFFECT_OPTIONS[loc].map(id => (
-                  <option key={id} value={id}>{LOADING_EFFECTS[id].label}</option>
-                ))}
-              </select>
+              <div className="ld-pick-grid" role="radiogroup" aria-label={LOCATION_LABELS[loc]}>
+                {EFFECT_OPTIONS[loc].map(id => {
+                  const on = cfg.loading[loc] === id;
+                  return (
+                    <button
+                      key={id} type="button" role="radio" aria-checked={on}
+                      className={on ? 'ld-pick-card ld-pick-card--on' : 'ld-pick-card'}
+                      onClick={() => updateStyleLoading(configStyle, { [loc]: id })}
+                    >
+                      <span className="ld-pick-anim">
+                        <LoadingEffect effect={id} speed={cfg.loading.speed} size="lg" />
+                      </span>
+                      <span className="ld-pick-label">{LOADING_EFFECTS[id].label}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           ))}
           <label>Tốc độ hiệu ứng: <b>{cfg.loading.speed.toFixed(2)}×</b> <span className="muted">(0.5 chậm – 2 nhanh)</span></label>
@@ -322,6 +378,25 @@ export default function UiSettings() {
                 onChange={e => updateStyleLoading(configStyle, { imageUrl: e.target.value })}
                 placeholder="https://.../anh-dong.gif"
               />
+              <div className="btn-row" style={{ marginTop: '.5rem', alignItems: 'center' }}>
+                <label className="btn secondary btn-sm" style={{ cursor: uploading ? 'wait' : 'pointer', margin: 0 }}>
+                  📤 Tải ảnh lên (GIF/PNG, tối đa 5MB)
+                  <input
+                    type="file" accept=".gif,.png,.jpg,.jpeg" hidden
+                    onChange={e => void onUploadLoadingImage(e)} disabled={uploading}
+                  />
+                </label>
+                {uploading && <span className="muted">Đang tải lên…</span>}
+              </div>
+              {uploadError && <p className="error" style={{ marginTop: '.4rem' }}>{uploadError}</p>}
+              {cfg.loading.imageUrl && (
+                <div style={{ marginTop: '.5rem' }}>
+                  <img
+                    src={cfg.loading.imageUrl} alt="Ảnh động đã chọn"
+                    style={{ maxWidth: '100%', maxHeight: 120, borderRadius: 8, border: '1px solid var(--border)' }}
+                  />
+                </div>
+              )}
             </div>
           )}
 
@@ -345,6 +420,7 @@ export default function UiSettings() {
 
           <div className="btn-row" style={{ marginTop: '1rem' }}>
             <button className="btn" type="button" onClick={() => setConfigStyle(null)}>Xong</button>
+          </div>
           </div>
         </Modal>
       )}

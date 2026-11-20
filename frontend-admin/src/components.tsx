@@ -12,12 +12,14 @@ export function ErrorBox({ error }: { error: unknown }) {
 /** Popup (modal) dùng chung cho các thao tác Sửa / Xem: thay cho các
  *  panel hiện inline bên dưới danh sách. Lớp phủ tối, hộp thoại ở giữa,
  *  bấm ra ngoài hoặc phím Escape để đóng, nội dung dài thì cuộn trong hộp. */
-export function Modal({ title, subtitle, onClose, wide, narrow, children }: {
+export function Modal({ title, subtitle, onClose, wide, narrow, lg, children }: {
   title: string;
   subtitle?: string;
   onClose: () => void;
   wide?: boolean;
   narrow?: boolean;
+  /** Rộng vừa (~52rem): dùng cho modal cấu hình nhiều mục. */
+  lg?: boolean;
   children: React.ReactNode;
 }) {
   const boxRef = useRef<HTMLDivElement>(null);
@@ -37,7 +39,7 @@ export function Modal({ title, subtitle, onClose, wide, narrow, children }: {
   return (
     <div className="modal-overlay" onMouseDown={e => { if (e.target === e.currentTarget) onClose(); }}>
       <div
-        className={wide ? 'modal modal--wide' : narrow ? 'modal modal--narrow' : 'modal'}
+        className={wide ? 'modal modal--wide' : narrow ? 'modal modal--narrow' : lg ? 'modal modal--lg' : 'modal'}
         role="dialog" aria-modal="true" aria-label={title}
         tabIndex={-1} ref={boxRef}
       >

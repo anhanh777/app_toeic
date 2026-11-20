@@ -842,6 +842,24 @@ tbody tr:hover{background:var(--surface-soft)}
 }
 .modal--wide{width:min(58rem, 100%)}
 .modal--narrow{width:min(30rem, 100%)}
+.modal--lg{width:min(52rem, 100%)}
+/* The chon hieu ung loading dang the xem truoc (trang Cai dat giao dien):
+   luoi deu nhau, the hien animation that + ten; the dang chon vien accent. */
+.ld-pick-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(9.5rem, 1fr)); gap:.6rem; margin:.25rem 0 .5rem}
+.ld-pick-card{
+  display:flex; flex-direction:column; align-items:center; gap:.55rem;
+  padding:.8rem .5rem; border:1px solid var(--border); border-radius:12px;
+  background:var(--surface); color:var(--ink); font:inherit; cursor:pointer;
+}
+.ld-pick-card:hover{border-color:var(--accent)}
+.ld-pick-card--on{border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent)}
+.ld-pick-anim{min-height:2.6rem; display:flex; align-items:center; justify-content:center}
+.ld-pick-card .ld-skeleton{min-width:0; width:100%}
+.ld-pick-card .ld-progress{max-width:100%}
+.ld-pick-label{font-size:.85rem; font-weight:600; text-align:center}
+/* Can chinh rieng noi dung modal Cau hinh giao dien: khoang cach cac muc deu tay. */
+.ui-config h3{margin:1.2rem 0 .5rem}
+.ui-config h3:first-child{margin-top:0}
 .modal-head{display:flex; align-items:flex-start; gap:.75rem; padding:1.875rem 1.875rem 0}
 .modal-head-text{flex:1; min-width:0}
 .modal-title{margin:0; font-size:1.5rem; line-height:1.25}
