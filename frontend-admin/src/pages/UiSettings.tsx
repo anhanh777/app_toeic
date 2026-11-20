@@ -4,6 +4,7 @@ import { ErrorBox, Modal } from '../components';
 import { uploadToCloudinary } from '../cloudinary';
 import {
   ACCENT_PRESETS,
+  EXTRA_EFFECT_IDS,
   LOADING_EFFECTS,
   LoadingEffect,
   STYLE_REGISTRY,
@@ -32,15 +33,16 @@ import {
    lựa chọn đó. Mọi thay đổi trong trang (kể cả trong Modal) chỉ nằm ở
    doc tạm cho tới khi bấm "Lưu cài đặt". */
 /* Hieu ung chon duoc theo tung cho — lay tu LOADING_EFFECTS.locations
-   (1 nguon duy nhat) nen mo them cho cho hieu ung nao thi modal tu hien. */
-const EFFECT_OPTIONS: Record<LoadingLocation, LoadingEffectId[]> = {
-  loginButton: (Object.keys(LOADING_EFFECTS) as LoadingEffectId[]).filter(id =>
-    LOADING_EFFECTS[id].locations.includes('loginButton')),
-  page: (Object.keys(LOADING_EFFECTS) as LoadingEffectId[]).filter(id =>
-    LOADING_EFFECTS[id].locations.includes('page')),
-  table: (Object.keys(LOADING_EFFECTS) as LoadingEffectId[]).filter(id =>
-    LOADING_EFFECTS[id].locations.includes('table')),
-};
+   (1 nguon duy nhat) nen mo them cho cho hieu ung nao thi modal tu hien.
+   Hieu ung them tay (EXTRA_EFFECT_IDS) chi hien khi da co trong danh sach
+   `extraEffects` cua doc — chua them thi chi thay o bang chon them. */
+function effectOptionsFor(loc: LoadingLocation, extraEffects: LoadingEffectId[]): LoadingEffectId[] {
+  return (Object.keys(LOADING_EFFECTS) as LoadingEffectId[]).filter(
+    id =>
+      LOADING_EFFECTS[id].locations.includes(loc) &&
+      (!EXTRA_EFFECT_IDS.includes(id) || extraEffects.includes(id)),
+  );
+}
 
 const LOCATION_LABELS: Record<LoadingLocation, string> = {
   loginButton: 'Nút đăng nhập',
@@ -73,6 +75,8 @@ export default function UiSettings() {
   const [error, setError] = useState<unknown>(null);
   /** Kiểu đang mở Modal cấu hình (null = không mở). */
   const [configStyle, setConfigStyle] = useState<UiStyleId | null>(null);
+  /** Bảng chọn "Thêm hiệu ứng" đang mở trong Modal cấu hình hay không. */
+  const [addPanelOpen, setAddPanelOpen] = useState(false);
   /** Cấu hình Cloudinary (để tải ảnh động lên) + trạng thái upload trong Modal. */
   const [mediaCfg, setMediaCfg] = useState<MediaConfig | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -124,6 +128,57 @@ export default function UiSettings() {
         : prev,
     );
     setMsg('');
+  };
+
+  /** Thêm 1 hiệu ứng vào danh sách thêm tay (hiện trong lưới ở cả 3 mục). */
+  const addExtraEffect = (id: LoadingEffectId) => {
+    setDoc(prev => {
+      if (!prev || prev.ui.loading.extraEffects.includes(id)) return prev;
+      if (prev.ui.loading.extraEffects.length >= EXTRA_EFFECT_IDS.length) return prev;
+      return {
+        ...prev,
+        ui: { ...prev.ui, loading: { ...prev.ui.loading, extraEffects: [...prev.ui.loading.extraEffects, id] } },
+      };
+    });
+    setMsg('');
+  };
+
+  /** Gỡ 1 hiệu ứng khỏi danh sách thêm tay (mất khỏi lưới ở cả 3 mục).
+   * Chỗ nào (loading chung + loading riêng từng kiểu) đang dùng hiệu ứng
+   * đó thì tự về mặc định spinner — không để giá trị mồ côi. */
+  const removeExtraEffect = (id: LoadingEffectId) => {
+    const resetIfUsed = (ld: StyleLoading): StyleLoading => ({
+      ...ld,
+      loginButton: ld.loginButton === id ? 'spinner' : ld.loginButton,
+      page: ld.page === id ? 'spinner' : ld.page,
+      table: ld.table === id ? 'spinner' : ld.table,
+    });
+    setDoc(prev => {
+      if (!prev || !prev.ui.loading.extraEffects.includes(id)) return prev;
+      return {
+        ...prev,
+        ui: {
+          ...prev.ui,
+          loading: {
+            ...resetIfUsed(prev.ui.loading),
+            extraEffects: prev.ui.loading.extraEffects.filter(x => x !== id),
+          },
+          styles: Object.fromEntries(
+            STYLE_REGISTRY.map(s => [
+              s.id,
+              { ...prev.ui.styles[s.id], loading: resetIfUsed(prev.ui.styles[s.id].loading) },
+            ]),
+          ) as UiSettings['ui']['styles'],
+        },
+      };
+    });
+    setMsg('');
+  };
+
+  /** Đóng Modal cấu hình (kèm bảng chọn thêm nếu đang mở). */
+  const closeConfig = () => {
+    setConfigStyle(null);
+    setAddPanelOpen(false);
   };
 
   /** Tải ảnh động (GIF/PNG) lên Cloudinary thư mục toeic/loading — up nguyên
@@ -180,13 +235,17 @@ export default function UiSettings() {
   const uiStyle = doc.ui.style;
   const cfg = configStyle ? doc.ui.styles[configStyle] : null;
   const cfgMeta = configStyle ? STYLE_REGISTRY.find(s => s.id === configStyle) : null;
+  /** Danh sách hiệu ứng thêm tay (global) + những hiệu ứng còn thêm được. */
+  const extraEffects = doc.ui.loading.extraEffects;
+  const remainingExtras = EXTRA_EFFECT_IDS.filter(id => !extraEffects.includes(id));
 
   return (
     <div>
       <h1>🎨 Cài đặt giao diện</h1>
       <p className="muted">
         2 giao diện — mỗi kiểu có màu chủ đạo và hiệu ứng loading riêng. Bấm vào box để chọn kiểu đang dùng,
-        bấm "⚙️ Cấu hình" để chỉnh sâu từng kiểu. Lưu vào backend nên đổi là có hiệu lực ngay, không cần deploy lại code.
+        bấm "⚙️ Cấu hình" để chỉnh sâu từng kiểu. Trong cửa sổ Cấu hình, nút "＋ Thêm hiệu ứng" ở cuối mỗi lưới
+        sẽ thêm hiệu ứng mới vào lưới chọn ở cả 3 mục. Lưu vào backend nên đổi là có hiệu lực ngay, không cần deploy lại code.
         Cỡ chữ ở đây chỉ là cỡ cơ sở — người học vẫn giữ nút 🔠 chọn cỡ chữ riêng của mình.
       </p>
       <ErrorBox error={error} />
@@ -291,7 +350,7 @@ export default function UiSettings() {
               ? 'Màu chủ đạo + hiệu ứng loading riêng của kiểu này. Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng.'
               : 'Hiệu ứng loading riêng của kiểu này (màu xanh Duolingo cố định). Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng.'
           }
-          onClose={() => setConfigStyle(null)}
+          onClose={closeConfig}
           lg
         >
           <div className="ui-config">
@@ -327,24 +386,71 @@ export default function UiSettings() {
             <div key={loc}>
               <label>{LOCATION_LABELS[loc]}</label>
               <div className="ld-pick-grid" role="radiogroup" aria-label={LOCATION_LABELS[loc]}>
-                {EFFECT_OPTIONS[loc].map(id => {
+                {effectOptionsFor(loc, extraEffects).map(id => {
                   const on = cfg.loading[loc] === id;
+                  const isExtra = EXTRA_EFFECT_IDS.includes(id);
                   return (
-                    <button
-                      key={id} type="button" role="radio" aria-checked={on}
-                      className={on ? 'ld-pick-card ld-pick-card--on' : 'ld-pick-card'}
-                      onClick={() => updateStyleLoading(configStyle, { [loc]: id })}
-                    >
-                      <span className="ld-pick-anim">
-                        <LoadingEffect effect={id} speed={cfg.loading.speed} size="md" />
-                      </span>
-                      <span className="ld-pick-label">{LOADING_EFFECTS[id].label}</span>
-                    </button>
+                    <div key={id} className="ld-pick-wrap">
+                      <button
+                        type="button" role="radio" aria-checked={on}
+                        className={on ? 'ld-pick-card ld-pick-card--on' : 'ld-pick-card'}
+                        onClick={() => updateStyleLoading(configStyle, { [loc]: id })}
+                      >
+                        <span className="ld-pick-anim">
+                          <LoadingEffect effect={id} speed={cfg.loading.speed} size="md" />
+                        </span>
+                        <span className="ld-pick-label">{LOADING_EFFECTS[id].label}</span>
+                      </button>
+                      {isExtra && (
+                        <button
+                          type="button" className="ld-pick-remove"
+                          aria-label={`Gỡ hiệu ứng ${LOADING_EFFECTS[id].label}`}
+                          title={`Gỡ ${LOADING_EFFECTS[id].label} khỏi danh sách`}
+                          onClick={() => removeExtraEffect(id)}
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
                   );
                 })}
+                {remainingExtras.length > 0 && (
+                  <button
+                    type="button" className="ld-pick-card ld-pick-add"
+                    onClick={() => setAddPanelOpen(true)}
+                    title="Thêm hiệu ứng vào lưới chọn"
+                  >
+                    <span className="ld-pick-plus" aria-hidden="true">＋</span>
+                    <span className="ld-pick-label">Thêm hiệu ứng</span>
+                  </button>
+                )}
               </div>
             </div>
           ))}
+          {addPanelOpen && (
+            <div className="ld-add-panel">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '.6rem' }}>
+                <b>Thêm hiệu ứng</b>
+                <button type="button" className="btn secondary btn-sm" onClick={() => setAddPanelOpen(false)}>Đóng</button>
+              </div>
+              <p className="muted" style={{ margin: '.3rem 0 .4rem' }}>
+                Hiệu ứng được thêm sẽ xuất hiện trong lưới chọn ở cả 3 mục trên. Nhớ bấm Lưu cài đặt ở trang chính để lưu hẳn.
+              </p>
+              {remainingExtras.length === 0 ? (
+                <p className="muted" style={{ margin: '.2rem 0' }}>Đã thêm hết 6 hiệu ứng.</p>
+              ) : (
+                remainingExtras.map(id => (
+                  <div key={id} className="ld-add-row">
+                    <span className="ld-add-anim">
+                      <LoadingEffect effect={id} speed={cfg.loading.speed} size="md" />
+                    </span>
+                    <span className="ld-add-name">{LOADING_EFFECTS[id].label}</span>
+                    <button type="button" className="btn secondary btn-sm" onClick={() => addExtraEffect(id)}>＋ Thêm</button>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
           <label>Tốc độ hiệu ứng: <b>{cfg.loading.speed.toFixed(2)}×</b> <span className="muted">(0.5 chậm – 2 nhanh)</span></label>
           <input
             type="range" min={0.5} max={2} step={0.25} value={cfg.loading.speed}
@@ -424,7 +530,7 @@ export default function UiSettings() {
           </div>
 
           <div className="btn-row" style={{ marginTop: '1rem' }}>
-            <button className="btn" type="button" onClick={() => setConfigStyle(null)}>Xong</button>
+            <button className="btn" type="button" onClick={closeConfig}>Xong</button>
           </div>
           </div>
         </Modal>

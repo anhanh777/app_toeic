@@ -41,16 +41,30 @@
  * cham, value = JSON). Vi du: key `ui.styles.pastel.accent`, value `"#5B9E4D"`.
  */
 
-/** Hieu ung loading da cai san trong ca 2 app (CSS o index.css moi app). */
+/** Hieu ung loading da cai san trong ca 2 app (CSS o index.css moi app).
+ * 5 hieu ung dau luon co san trong luoi chon; 6 hieu ung sau (EXTRA) chi
+ * hien khi admin bam "+ Them hieu ung" (luu trong `ui.loading.extraEffects`). */
 const EFFECTS = Object.freeze({
   spinner: Object.freeze({ label: 'Vòng xoay', locations: ['loginButton', 'page', 'table'] }),
   'dual-ring': Object.freeze({ label: 'Vòng kép', locations: ['loginButton', 'page', 'table'] }),
   'bouncing-dots': Object.freeze({ label: 'Ba chấm nảy', locations: ['loginButton', 'page', 'table'] }),
   skeleton: Object.freeze({ label: 'Skeleton (khung mờ)', locations: ['loginButton', 'page', 'table'] }),
   'progress-bar': Object.freeze({ label: 'Thanh tiến trình', locations: ['loginButton', 'page', 'table'] }),
+  ripple: Object.freeze({ label: 'Vòng lan tỏa', locations: ['loginButton', 'page', 'table'] }),
+  equalizer: Object.freeze({ label: 'Thanh nhảy', locations: ['loginButton', 'page', 'table'] }),
+  orbit: Object.freeze({ label: 'Chấm xoay quanh', locations: ['loginButton', 'page', 'table'] }),
+  pulse: Object.freeze({ label: 'Chấm đập', locations: ['loginButton', 'page', 'table'] }),
+  wave: Object.freeze({ label: 'Sóng chấm', locations: ['loginButton', 'page', 'table'] }),
+  flip: Object.freeze({ label: 'Ô vuông lật', locations: ['loginButton', 'page', 'table'] }),
 });
 
 const EFFECT_IDS = Object.keys(EFFECTS);
+
+/** 6 hieu ung them duoc (khong co san trong luoi — admin them tay). */
+const EXTRA_EFFECT_IDS = Object.freeze(['ripple', 'equalizer', 'orbit', 'pulse', 'wave', 'flip']);
+
+/** 5 hieu ung mac dinh, luon co trong luoi chon. */
+const DEFAULT_EFFECT_IDS = Object.freeze(['spinner', 'dual-ring', 'bouncing-dots', 'skeleton', 'progress-bar']);
 
 /** Cac truong cua 1 khoi loading (chung + rieng tung kieu). */
 const LOADING_FIELDS = Object.freeze([
@@ -64,7 +78,9 @@ const LOADING_FIELDS = Object.freeze([
   'imageUrl',
 ]);
 
-/** Loading mac dinh cua 1 kieu (cung la mac dinh cua `ui.loading` cu). */
+/** Loading mac dinh cua 1 kieu (cung la mac dinh cua `ui.loading` cu).
+ * `extraEffects` la danh sach global (dung chung ca 2 kieu): cac hieu ung
+ * them tay da them vao luoi chon — mac dinh rong. */
 const DEFAULT_LOADING = Object.freeze({
   loginButton: 'spinner',
   page: 'spinner',
@@ -74,6 +90,7 @@ const DEFAULT_LOADING = Object.freeze({
   position: 'center',
   image: 'none',
   imageUrl: '',
+  extraEffects: Object.freeze([]),
 });
 
 /**
@@ -130,20 +147,31 @@ function isHttpUrl(v) {
 
 /** Validate 1 truong loading. Tra ve null neu hop le, neu khong tra ly do. */
 function validateLoadingField(field, value) {
+  const effectList = EFFECT_IDS.join(', ');
   switch (field) {
     case 'loginButton':
       if (!EFFECTS[value] || !EFFECTS[value].locations.includes('loginButton')) {
-        return 'loginButton phai la mot trong: spinner, dual-ring, bouncing-dots, skeleton, progress-bar';
+        return `loginButton phai la mot trong: ${effectList}`;
       }
       return null;
     case 'page':
       if (!EFFECTS[value] || !EFFECTS[value].locations.includes('page')) {
-        return 'page phai la mot trong: spinner, dual-ring, bouncing-dots, skeleton, progress-bar';
+        return `page phai la mot trong: ${effectList}`;
       }
       return null;
     case 'table':
       if (!EFFECTS[value] || !EFFECTS[value].locations.includes('table')) {
-        return 'table phai la mot trong: spinner, dual-ring, bouncing-dots, skeleton, progress-bar';
+        return `table phai la mot trong: ${effectList}`;
+      }
+      return null;
+    case 'extraEffects':
+      if (!Array.isArray(value)) return 'extraEffects phai la mot mang';
+      if (value.length > EXTRA_EFFECT_IDS.length) {
+        return `extraEffects toi da ${EXTRA_EFFECT_IDS.length} hieu ung`;
+      }
+      if (new Set(value).size !== value.length) return 'extraEffects khong duoc trung nhau';
+      if (value.some((id) => !EXTRA_EFFECT_IDS.includes(id))) {
+        return `extraEffects chi duoc chua: ${EXTRA_EFFECT_IDS.join(', ')}`;
       }
       return null;
     case 'speed':
@@ -185,9 +213,10 @@ function validateSetting(key, value) {
     default: {
       // Loading cu (chi 5 key cu duoc luu o DB; position/image/imageUrl cua
       // `ui.loading` khong co dong rieng — doc ve mac dinh khi thieu).
+      // `ui.loading.extraEffects` la key rieng: danh sach hieu ung them tay.
       if (key.startsWith('ui.loading.')) {
         const field = key.slice('ui.loading.'.length);
-        if (!['loginButton', 'page', 'table', 'speed', 'text'].includes(field)) {
+        if (!['loginButton', 'page', 'table', 'speed', 'text', 'extraEffects'].includes(field)) {
           return `key khong duoc phep: ${key}`;
         }
         return validateLoadingField(field, value);
@@ -220,6 +249,7 @@ const SETTING_KEYS = Object.freeze([
   'ui.loading.table',
   'ui.loading.speed',
   'ui.loading.text',
+  'ui.loading.extraEffects',
   ...STYLE_REGISTRY.flatMap((s) => [
     `ui.styles.${s.id}.accent`,
     ...LOADING_FIELDS.map((f) => `ui.styles.${s.id}.loading.${f}`),
@@ -235,6 +265,17 @@ function getDefault(key) {
 
 function validEffectFor(v, location) {
   return typeof v === 'string' && EFFECTS[v] && EFFECTS[v].locations.includes(location);
+}
+
+/** Loc danh sach hieu ung them tay ve hop le: chi id them duoc, khong
+ * trung, toi da 6. Gia tri sai/thieu -> mang rong. */
+function normalizeExtraEffects(v) {
+  if (!Array.isArray(v)) return [];
+  const out = [];
+  for (const id of v) {
+    if (typeof id === 'string' && EXTRA_EFFECT_IDS.includes(id) && !out.includes(id)) out.push(id);
+  }
+  return out.slice(0, EXTRA_EFFECT_IDS.length);
 }
 
 /** Gop 1 khoi loading (co the thieu/sai) ve day du + hop le. */
@@ -256,6 +297,7 @@ function normalizeLoading(ld, defaults) {
         ? src.image
         : defaults.image,
     imageUrl: isHttpUrl(src.imageUrl) ? src.imageUrl : defaults.imageUrl,
+    extraEffects: normalizeExtraEffects(src.extraEffects),
   };
 }
 
@@ -307,6 +349,7 @@ function flattenSettings(doc) {
     'ui.loading.table': loading.table,
     'ui.loading.speed': loading.speed,
     'ui.loading.text': loading.text,
+    'ui.loading.extraEffects': loading.extraEffects,
   };
   const styles = ui.styles && typeof ui.styles === 'object' ? ui.styles : {};
   for (const s of STYLE_REGISTRY) {
@@ -341,6 +384,7 @@ function unflattenSettings(flat) {
         position: f['ui.loading.position'],
         image: f['ui.loading.image'],
         imageUrl: f['ui.loading.imageUrl'],
+        extraEffects: f['ui.loading.extraEffects'],
       },
       styles,
     },
@@ -358,6 +402,8 @@ module.exports = {
   DEFAULTS,
   EFFECTS,
   EFFECT_IDS,
+  EXTRA_EFFECT_IDS,
+  DEFAULT_EFFECT_IDS,
   LOADING_FIELDS,
   STYLE_REGISTRY,
   STYLE_IDS,

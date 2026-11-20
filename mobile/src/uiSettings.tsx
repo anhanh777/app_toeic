@@ -21,13 +21,26 @@ import {
 } from 'react';
 import { API_URL } from './api';
 
-export type LoadingEffectId = 'spinner' | 'dual-ring' | 'bouncing-dots' | 'skeleton' | 'progress-bar';
+export type LoadingEffectId =
+  | 'spinner'
+  | 'dual-ring'
+  | 'bouncing-dots'
+  | 'skeleton'
+  | 'progress-bar'
+  | 'ripple'
+  | 'equalizer'
+  | 'orbit'
+  | 'pulse'
+  | 'wave'
+  | 'flip';
 export type LoadingLocation = 'loginButton' | 'page' | 'table';
 export type LoadingPosition = 'center' | 'top';
 export type LoadingImage = 'none' | 'mascot' | 'custom';
 export type UiStyleId = 'pastel' | 'lively';
 
-/** 1 khối loading đầy đủ (8 trường): hiệu ứng từng chỗ + tốc độ + câu chờ + vị trí + ảnh động. */
+/** 1 khối loading đầy đủ (8 trường): hiệu ứng từng chỗ + tốc độ + câu chờ + vị trí + ảnh động.
+ * `extraEffects` (chỉ loading chung `ui.loading` mới dùng, global cho cả 2 kiểu):
+ * các hiệu ứng thêm tay đã thêm vào lưới chọn — mặc định rỗng. */
 export interface StyleLoading {
   loginButton: LoadingEffectId;
   page: LoadingEffectId;
@@ -37,6 +50,7 @@ export interface StyleLoading {
   position: LoadingPosition;
   image: LoadingImage;
   imageUrl: string;
+  extraEffects: LoadingEffectId[];
 }
 
 /** 1 kiểu giao diện: màu chủ đạo + loading riêng của kiểu đó. */
@@ -77,6 +91,7 @@ const DEFAULT_STYLE_LOADING: StyleLoading = {
   position: 'center',
   image: 'none',
   imageUrl: '',
+  extraEffects: [],
 };
 
 export const UI_SETTINGS_DEFAULTS: UiSettings = {
@@ -105,7 +120,25 @@ export const LOADING_EFFECTS: Record<LoadingEffectId, { label: string; locations
   'bouncing-dots': { label: 'Ba chấm nảy', locations: ['loginButton', 'page', 'table'] },
   skeleton: { label: 'Skeleton (khung mờ)', locations: ['loginButton', 'page', 'table'] },
   'progress-bar': { label: 'Thanh tiến trình', locations: ['loginButton', 'page', 'table'] },
+  ripple: { label: 'Vòng lan tỏa', locations: ['loginButton', 'page', 'table'] },
+  equalizer: { label: 'Thanh nhảy', locations: ['loginButton', 'page', 'table'] },
+  orbit: { label: 'Chấm xoay quanh', locations: ['loginButton', 'page', 'table'] },
+  pulse: { label: 'Chấm đập', locations: ['loginButton', 'page', 'table'] },
+  wave: { label: 'Sóng chấm', locations: ['loginButton', 'page', 'table'] },
+  flip: { label: 'Ô vuông lật', locations: ['loginButton', 'page', 'table'] },
 };
+
+/** 6 hiệu ứng thêm được — không có sẵn trong lưới, admin thêm tay qua nút "＋ Thêm hiệu ứng". */
+export const EXTRA_EFFECT_IDS: LoadingEffectId[] = ['ripple', 'equalizer', 'orbit', 'pulse', 'wave', 'flip'];
+
+/** 5 hiệu ứng mặc định, luôn có trong lưới chọn. */
+export const DEFAULT_EFFECT_IDS: LoadingEffectId[] = [
+  'spinner',
+  'dual-ring',
+  'bouncing-dots',
+  'skeleton',
+  'progress-bar',
+];
 
 export const ACCENT_PRESETS: { name: string; value: string }[] = [
   { name: 'Xanh sage (mặc định)', value: '#5FA8A0' },
@@ -134,6 +167,22 @@ function validEffect(v: unknown, location: LoadingLocation): v is LoadingEffectI
   );
 }
 
+/** Lọc danh sách hiệu ứng thêm tay về hợp lệ: chỉ id thêm được, không trùng, tối đa 6. */
+function normalizeExtraEffects(v: unknown): LoadingEffectId[] {
+  if (!Array.isArray(v)) return [];
+  const out: LoadingEffectId[] = [];
+  for (const id of v) {
+    if (
+      typeof id === 'string' &&
+      (EXTRA_EFFECT_IDS as string[]).includes(id) &&
+      !out.includes(id as LoadingEffectId)
+    ) {
+      out.push(id as LoadingEffectId);
+    }
+  }
+  return out.slice(0, EXTRA_EFFECT_IDS.length);
+}
+
 function normalizeLoading(input: unknown, defaults: StyleLoading): StyleLoading {
   const ld = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
   const text =
@@ -152,6 +201,7 @@ function normalizeLoading(input: unknown, defaults: StyleLoading): StyleLoading 
       (ld.imageUrl === '' || /^https?:\/\/\S+$/.test(ld.imageUrl))
         ? ld.imageUrl
         : defaults.imageUrl,
+    extraEffects: normalizeExtraEffects(ld.extraEffects),
   };
 }
 
