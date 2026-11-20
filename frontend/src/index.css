@@ -376,7 +376,7 @@ select + .card{margin-top:1rem}
 .screen p, .screen strong{color:var(--ink)}
 .screen .muted{color:var(--muted)}
 .screen .tag{color:var(--accent-dark)}
-.flashcard-face .big{font-size:1.05rem; word-break:break-word}
+.flashcard-face .big{font-size:1.7rem; font-weight:800; line-height:1.3; word-break:break-word}
 .passage{
   white-space:pre-wrap; background:var(--surface-soft); color:var(--ink); border:1px solid var(--border);
   padding:.65rem .85rem; border-radius:16px; margin-bottom:.55rem; line-height:1.6;
@@ -416,15 +416,17 @@ tbody tr:hover{background:var(--surface-soft)}
 .timer{font-weight:800; font-size:1.15rem; color:var(--ink); font-variant-numeric:tabular-nums}
 .timer.low{color:var(--red-ink)}
 
-/* Flashcards — mặt trước trắng, mặt sau lavender nhạt, lật mượt */
-.flashcard{perspective:800px; cursor:pointer; min-height:150px}
-.flashcard-inner{position:relative; width:100%; min-height:150px; transition:transform .45s ease; transform-style:preserve-3d}
+/* Flashcards — mặt trước trắng, mặt sau lavender nhạt, lật mượt có chiều sâu */
+.flashcard{perspective:1000px; cursor:pointer; min-height:190px}
+.flashcard-inner{position:relative; width:100%; min-height:190px; transition:transform .55s cubic-bezier(.3,.7,.3,1); transform-style:preserve-3d}
 .flashcard.flipped .flashcard-inner{transform:rotateY(180deg)}
 .flashcard-face{
   position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
-  background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:1rem;
+  background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:1.2rem 1rem 2.6rem;
   backface-visibility:hidden; text-align:center; box-shadow:0 2px 12px rgba(93,64,28,.06);
+  transition:box-shadow .2s ease, background-color .25s ease, border-color .25s ease, color .25s ease;
 }
+.flashcard:hover .flashcard-face{box-shadow:0 10px 26px rgba(93,64,28,.14)}
 .flashcard-face .big{color:var(--accent-dark)}
 .flashcard-face.back{transform:rotateY(180deg); background:var(--lavender); border-color:var(--lavender-border)}
 .flashcard-face.back, .flashcard-face.back .muted{color:var(--ink)}
@@ -1032,18 +1034,151 @@ tbody tr:hover{background:var(--surface-soft)}
 .wl-pop-head{display:flex; align-items:baseline; gap:.4rem}
 .wl-close{margin-left:auto}
 
-/* --- Tu vung: on tap ngat quang --- */
-.vocab-due-card{display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; background:var(--accent-soft); border:1px solid var(--accent); border-radius:20px; padding:.9rem 1.1rem; margin:.9rem 0}
+/* --- Tu vung: giao dien moi (on tap ngat quang + Tu chung) --- */
+
+/* Tabs dang segmented control + panel chuyen canh muot */
+.vocab-page h1{margin-bottom:.6rem}
+.vocab-tabs{display:inline-flex; gap:.25rem; background:var(--surface-soft); border:1px solid var(--border); border-radius:999px; padding:.3rem; margin-bottom:1rem}
+.vocab-tab{border:1px solid transparent; background:transparent; border-radius:999px; padding:.45rem 1.1rem; font-weight:700; color:var(--ink-soft); transition:background .2s, color .2s, box-shadow .2s}
+.vocab-tab:hover{color:var(--ink)}
+.vocab-tab--active{background:var(--accent); color:#fff; box-shadow:0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent)}
+.vocab-panel{animation:vocab-fade-up .3s ease both}
+
+/* Hero card on tap hom nay: so lon + 1 hanh dong chinh noi bat */
+.vocab-due-card{display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; background:linear-gradient(135deg, var(--accent-soft), var(--surface)); border:1px solid var(--accent); border-radius:20px; padding:1rem 1.2rem; margin:.9rem 0; animation:vocab-fade-up .35s ease both}
+.vocab-due-eyebrow{font-weight:700; font-size:.9rem; color:var(--accent-dark)}
+.vocab-due-num{font-size:1.9rem; font-weight:800; line-height:1.25; color:var(--ink); letter-spacing:-.01em}
+.vocab-due-num span{font-size:1rem; font-weight:700; color:var(--ink-soft)}
+.vocab-due-btn{font-size:1.02rem; padding:.7rem 1.3rem}
+.vocab-due-done{text-align:center; font-weight:600}
+.vocab-stats{margin:.9rem 0}
+
+/* Bo loc dang chip + nut them tu */
+.vocab-toolbar{display:flex; align-items:center; justify-content:space-between; gap:.8rem; flex-wrap:wrap; margin:.9rem 0}
+.vocab-filter{display:flex; gap:.4rem; flex-wrap:wrap}
+.vocab-chip{border:1px solid var(--border); background:var(--surface); border-radius:999px; padding:.4rem .9rem; font-weight:600; color:var(--ink-soft); transition:border-color .15s, background .15s, color .15s, transform .15s}
+.vocab-chip span{font-size:.8rem; color:var(--muted); font-weight:700; margin-left:.15rem}
+.vocab-chip:hover{border-color:var(--accent); transform:translateY(-1px)}
+.vocab-chip--active{background:var(--accent); border-color:var(--accent); color:#fff}
+.vocab-chip--active span{color:rgba(255,255,255,.85)}
+
+/* Form them/sua tu: 2 cot tren desktop */
+.vocab-form-grid{display:grid; gap:0 .9rem}
+@media(min-width:640px){.vocab-form-grid{grid-template-columns:1fr 1fr}}
+.vocab-anim-in{animation:vocab-fade-up .3s ease both}
+
+/* Flashcard: nghia mat sau lon, goi y lat dang pill, dieu huong ro rang */
+.vocab-flash-mean{font-size:1.35rem; font-weight:700; line-height:1.4}
+.vocab-flip-hint{position:absolute; bottom:.7rem; left:50%; transform:translateX(-50%); font-size:.78rem; font-weight:600; color:var(--muted); background:var(--surface-soft); border:1px solid var(--border); border-radius:999px; padding:.15rem .7rem; white-space:nowrap}
+.vocab-flash-nav{display:flex; align-items:center; justify-content:space-between; gap:.6rem; margin-top:.8rem}
+.vocab-flash-counter{font-weight:700; color:var(--ink-soft); font-variant-numeric:tabular-nums}
+.vocab-flash-actions{display:flex; gap:.6rem; margin-top:.6rem}
+.vocab-flash-actions .btn{flex:1}
+.vocab-flash-meta{display:flex; align-items:center; gap:.7rem; flex-wrap:wrap; margin-top:.8rem}
+
+/* Pill trang thai / ngay on */
+.vocab-pill{display:inline-flex; align-items:center; font-size:.8rem; font-weight:600; color:var(--ink-soft); background:var(--surface-soft); border:1px solid var(--border); border-radius:999px; padding:.15rem .6rem; white-space:nowrap}
+.vocab-pill--due{background:var(--amber-bg); border-color:var(--warn-border); color:var(--amber)}
+.vocab-pill--done{background:var(--green-bg); border-color:var(--green-border); color:var(--green-ink)}
+.vocab-pill--learned{background:var(--green-bg); border-color:var(--green-border); color:var(--green-ink)}
+.vocab-pill--wrong{background:var(--red-bg); border-color:var(--red-border); color:var(--red-ink)}
+.vocab-pill--learning{background:var(--sky); border-color:var(--audio-border); color:var(--ink-soft)}
+
+/* Thanh thanh thao: >=80% chuyen xanh la */
 .vocab-mastery{display:flex; align-items:center; gap:.4rem; min-width:110px}
 .vocab-mastery-track{flex:1; height:8px; background:var(--surface-soft); border:1px solid var(--border); border-radius:999px; overflow:hidden}
-.vocab-mastery-fill{height:100%; background:var(--accent); border-radius:999px; transition:width .2s}
-.vocab-mastery-num{font-size:.82rem; color:var(--muted); min-width:2.2rem; text-align:right}
-.vocab-progress{height:8px; background:var(--surface-soft); border:1px solid var(--border); border-radius:999px; overflow:hidden; margin:.5rem 0 .9rem}
-.vocab-progress-fill{height:100%; background:var(--accent); border-radius:999px; transition:width .2s}
-.vocab-quiz-q{font-size:1.15rem; font-weight:700; margin:.4rem 0 .8rem}
-.vocab-opt--correct{border-color:var(--green-border); background:var(--green-bg)}
-.vocab-opt--wrong{border-color:var(--red-border); background:var(--red-bg)}
-.vocab-cloze{font-size:1.05rem; line-height:1.7; background:var(--surface-soft); border:1px solid var(--border); border-radius:12px; padding:.7rem .9rem; margin:.5rem 0}
-/* --- Tu chung: nut Luu + phien am khong xuong dong trong bang --- */
+.vocab-mastery-fill{height:100%; background:var(--accent); border-radius:999px; transition:width .5s ease}
+.vocab-mastery--high .vocab-mastery-fill{background:var(--green)}
+.vocab-mastery-num{font-size:.82rem; color:var(--muted); min-width:2.2rem; text-align:right; font-variant-numeric:tabular-nums}
+
+/* Bang tu: quet nhanh, khong cat chu */
+.vocab-table td{vertical-align:top}
+.vocab-word-cell strong{font-size:1rem}
+.vocab-word-cell span{display:block; font-size:.85rem}
+.vocab-ex{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+.vocab-meaning-cell{font-weight:600}
+.vocab-table .vocab-pill{margin-top:.35rem}
+.vocab-status-sel{min-width:7.8rem; width:auto; padding:.45rem .6rem; font-size:.9rem}
+.vocab-row-actions{flex-wrap:nowrap; margin:0}
+.vocab-row-in{animation:vocab-fade-up .35s ease both}
+
+/* Phien on: cham tien do + thanh chay dong + cau hoi co nhan dang */
+.vocab-quiz-card{position:relative}
+.vocab-quiz-progress{display:flex; align-items:center; gap:.7rem; margin:.4rem 0 .5rem}
+.vocab-dots{display:flex; gap:.35rem}
+.vocab-dot{width:.6rem; height:.6rem; border-radius:50%; background:var(--track); border:1px solid var(--border); transition:background .2s, transform .2s}
+.vocab-dot--done{background:var(--accent); border-color:var(--accent)}
+.vocab-dot--wrong{background:var(--red); border-color:var(--red)}
+.vocab-dot--current{transform:scale(1.35); border-color:var(--accent); background:var(--surface)}
+.vocab-quiz-count{font-weight:700; font-size:.9rem; color:var(--ink-soft); font-variant-numeric:tabular-nums}
+.vocab-progress{height:10px; background:var(--surface-soft); border:1px solid var(--border); border-radius:999px; overflow:hidden; margin:.5rem 0 .9rem}
+.vocab-progress-fill{height:100%; background:linear-gradient(90deg, var(--accent), var(--accent-dark)); border-radius:999px; transition:width .5s ease}
+.vocab-quiz-qwrap{animation:vocab-fade-up .3s ease both}
+.vocab-quiz-meta{display:flex; align-items:center; justify-content:space-between; gap:.6rem; flex-wrap:wrap; margin-bottom:.2rem}
+.vocab-q-badge{font-size:.78rem; font-weight:700; color:var(--accent-dark); background:var(--accent-soft); border:1px solid var(--accent); border-radius:999px; padding:.15rem .65rem}
+.vocab-quiz-q{font-size:1.3rem; font-weight:700; margin:.5rem 0 .9rem; line-height:1.45}
+.vocab-q-word{color:var(--accent-dark)}
+.vocab-opt{transition:border-color .15s, background .15s, transform .15s, box-shadow .15s}
+.vocab-opt:hover:not(:disabled){transform:translateY(-1px); box-shadow:0 4px 12px rgba(93,64,28,.08)}
+.vocab-opt--correct{border-color:var(--green-border); background:var(--green-bg); animation:vocab-pop .3s ease}
+.vocab-opt--wrong{border-color:var(--red-border); background:var(--red-bg); animation:vocab-shake .35s ease}
+.vocab-cloze{font-size:1.1rem; line-height:1.7; background:var(--surface-soft); border:1px solid var(--border); border-radius:12px; padding:.8rem 1rem; margin:.5rem 0}
+.vocab-answer-row{flex-wrap:nowrap}
+.vocab-answer-row input{flex:1 1 auto; width:auto; min-width:0; font-size:1.05rem}
+.vocab-input--wrong{border-color:var(--red-border); background:var(--red-bg); animation:vocab-shake .35s ease}
+.vocab-feedback--ok{animation:vocab-pop .35s ease}
+.vocab-feedback--bad{animation:vocab-shake .35s ease}
+
+/* Man tong ket: vong diem chay dong + confetti nhe */
+.vocab-summary-card{position:relative; overflow:hidden; text-align:center}
+.vocab-summary-card h2{font-size:1.35rem}
+.vocab-confetti{position:absolute; inset:0; overflow:hidden; pointer-events:none}
+.vocab-confetti i{position:absolute; top:-14px; border-radius:2px; animation:vocab-confetti-fall 2.8s ease-in forwards}
+.vocab-ring-wrap{position:relative; width:132px; height:132px; margin:.6rem auto .4rem}
+.vocab-ring{width:100%; height:100%; transform:rotate(-90deg)}
+.vocab-ring-track{fill:none; stroke:var(--track); stroke-width:10}
+.vocab-ring-fill{fill:none; stroke:var(--accent); stroke-width:10; stroke-linecap:round; stroke-dasharray:327; animation:vocab-ring 1s ease-out forwards}
+.vocab-ring-text{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1.2}
+.vocab-ring-text b{font-size:1.5rem}
+.vocab-ring-text span{font-size:.82rem; color:var(--muted)}
+.vocab-xp-pill{display:inline-block; font-weight:800; color:var(--gold-ink); background:var(--cream); border:1px solid var(--gold); border-radius:999px; padding:.3rem 1rem; margin:.3rem 0 .6rem; animation:vocab-pop .4s ease .3s both}
+.vocab-summary-praise{font-size:1.05rem; font-weight:600; margin:.4rem 0}
+.vocab-wrong-list{margin:.7rem 0}
+.vocab-wrong-chips{display:flex; gap:.4rem; flex-wrap:wrap; justify-content:center}
+.vocab-wrong-chip{font-size:.85rem; font-weight:600; color:var(--red-ink); background:var(--red-bg); border:1px solid var(--red-border); border-radius:999px; padding:.2rem .7rem}
+.vocab-summary-card .btn-row{justify-content:center}
+
+/* Tu chung: box chu de noi khi hover + tien do da luu */
+.vocab-shared-intro{margin:.2rem 0 .8rem}
+.vocab-topic-box{transition:border-color .15s, background .15s, transform .15s, box-shadow .15s; animation:vocab-fade-up .35s ease both}
+.vocab-topic-box:hover{transform:translateY(-2px); box-shadow:0 6px 16px rgba(93,64,28,.09)}
+.vocab-topic-head{margin:.4rem 0 .9rem}
+.vocab-topic-head h2{margin-bottom:.3rem}
+.vocab-topic-meta{display:flex; align-items:center; gap:.8rem; flex-wrap:wrap}
+.vocab-topic-meta span{font-size:.88rem; font-weight:600; color:var(--ink-soft)}
+.vocab-topic-progress{flex:1 1 160px; max-width:280px; margin:0}
+/* Nut Luu + phien am khong xuong dong trong bang */
 .vocab-save-btn{white-space:nowrap}
 .vocab-phonetic{white-space:nowrap}
+
+/* Khoi on tu tren trang Hom nay: dong bo voi hero card */
+.vocab-today-card{background:var(--accent-soft); border-color:var(--accent)}
+.vocab-today-num{font-size:1.5rem; font-weight:800; color:var(--accent-dark)}
+
+/* Keyframes dung chung cho module Tu vung */
+@keyframes vocab-fade-up{from{opacity:0; transform:translateY(8px)}to{opacity:1; transform:translateY(0)}}
+@keyframes vocab-pop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes vocab-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes vocab-ring{from{stroke-dashoffset:327}to{stroke-dashoffset:var(--ring-off,0)}}
+@keyframes vocab-confetti-fall{0%{transform:translateY(0) rotate(0deg); opacity:1}100%{transform:translateY(340px) rotate(540deg); opacity:0}}
+
+/* Ton trong che do giam chuyen dong cua he thong */
+@media (prefers-reduced-motion: reduce){
+  .vocab-panel,.vocab-due-card,.vocab-row-in,.vocab-topic-box,.vocab-quiz-qwrap,.vocab-anim-in,
+  .vocab-feedback--ok,.vocab-feedback--bad,.vocab-opt--correct,.vocab-opt--wrong,
+  .vocab-input--wrong,.vocab-xp-pill{animation:none !important}
+  .vocab-confetti{display:none}
+  .vocab-ring-fill{animation:none; stroke-dashoffset:var(--ring-off,0)}
+  .flashcard-inner{transition:none}
+  .vocab-mastery-fill,.vocab-progress-fill{transition:none}
+}

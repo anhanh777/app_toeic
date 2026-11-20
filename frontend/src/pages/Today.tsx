@@ -199,11 +199,11 @@ export default function Today() {
           </div>
 
           {/* Ôn từ vựng đến hạn — không tính vào 3 khối chính, chỉ nhắc nhiệm vụ ngày */}
-          <div className="card">
+          <div className="card vocab-today-card">
             <h2>📖 Ôn từ vựng đến hạn</h2>
             {(vocab?.dueCount ?? 0) > 0 ? (
               <>
-                <p>Có <strong>{vocab?.dueCount}</strong> từ đến hạn ôn hôm nay — mỗi từ ôn đúng +2 XP.</p>
+                <p><span className="vocab-today-num">{vocab?.dueCount}</span> từ đến hạn ôn hôm nay — mỗi từ ôn đúng +2 XP.</p>
                 <div className="btn-row">
                   <Link className="btn" to="/vocabulary?review=due">Ôn ngay →</Link>
                 </div>
