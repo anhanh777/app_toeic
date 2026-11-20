@@ -82,7 +82,7 @@ export default function Login() {
           <p className="muted">Chưa cấu hình Google OAuth — xem README</p>
         </div>
       )}
-      <p className="muted"><Link to="/">← Về trang chủ</Link>{' • '}<Link to="/privacy">Chính sách bảo mật</Link></p>
+      <p className="muted"><Link className="btn secondary btn-sm" to="/">← Về trang chủ</Link>{' '}<Link className="btn secondary btn-sm" to="/privacy">Chính sách bảo mật</Link></p>
     </div>
     </>
   );

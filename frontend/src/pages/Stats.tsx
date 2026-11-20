@@ -128,7 +128,7 @@ export default function Stats() {
           <table><thead><tr><th>Ngày</th><th>Đề</th><th>Chế độ</th><th>{isIelts ? 'Band' : 'Điểm'}</th><th></th></tr></thead><tbody>
             {history.map(a => (
               <tr key={a.id}><td>{fmtDate(a.finishedAt || a.finished_at || a.startedAt || a.started_at)}</td><td>{a.testSetId ? (testSetTitleById.get(a.testSetId) ?? a.testSetId) : '—'}</td><td>{a.mode}{a.part ? ` — ${isIelts ? partLabel(a.part, ex) : `Part ${a.part}`}` : ''}</td><td>{isIelts ? (a.overallBand != null ? `Band ${a.overallBand}` : '—') : (a.total_score ?? '—')}</td>
-                <td>{a.mode !== 'practice' ? <Link to={`/result/${a.id}`}>Xem lại</Link> : ''}</td></tr>
+                <td>{a.mode !== 'practice' ? <Link className="btn secondary btn-sm" to={`/result/${a.id}`}>Xem lại</Link> : ''}</td></tr>
             ))}
           </tbody></table>
         )}

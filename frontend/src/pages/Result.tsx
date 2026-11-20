@@ -22,7 +22,7 @@ export default function Result() {
     if (id) api.testResult(Number(id)).then(setData).catch(setError);
   }, [id]);
 
-  if (error) return <div><ErrorBox error={error} /><Link to="/">Về trang chủ</Link></div>;
+  if (error) return <div><ErrorBox error={error} /><Link className="btn secondary btn-sm" to="/">Về trang chủ</Link></div>;
   if (!data) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải kết quả…" />;
 
   const isFull = data.mode === 'full';
@@ -125,7 +125,7 @@ export default function Result() {
           {byType.map(b => (
             <div key={b.questionType} style={{ marginBottom: '.6rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Link to={data.testSetId
+                <Link className="btn secondary btn-sm" to={data.testSetId
                   ? `/practice/session?part=all&testSetId=${data.testSetId}&exam=ielts&questionType=${b.questionType}`
                   : `/practice/part/${b.firstPart}?exam=ielts&questionType=${b.questionType}`}>{questionTypeName(b.questionType)}</Link>
                 <span>{b.correct}/{b.total} ({Math.round(b.accuracy * 100)}%)</span>

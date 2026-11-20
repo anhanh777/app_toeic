@@ -39,7 +39,7 @@ export default function TestSetDetail() {
   }, [modeDialog]);
 
   if (loading) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải đề thi…" />;
-  if (!ts) return <div><ErrorBox error={error} /><p>Không tìm thấy bộ đề. <Link to="/practice">Quay lại danh sách đề</Link></p></div>;
+  if (!ts) return <div><ErrorBox error={error} /><p>Không tìm thấy bộ đề. <Link className="btn secondary btn-sm" to="/practice">Quay lại danh sách đề</Link></p></div>;
 
   // Kỳ thi của đề (backend trả exam); fallback về kỳ thi đang chọn.
   const ex = (ts.exam === 'ielts' || ts.exam === 'toeic' ? ts.exam : ctxExam) ?? 'toeic';
@@ -83,7 +83,7 @@ export default function TestSetDetail() {
 
   return (
     <div>
-      <p><Link to="/practice">← Quay lại danh sách đề</Link></p>
+      <p><Link className="btn secondary btn-sm" to="/practice">← Quay lại danh sách đề</Link></p>
       <h1>{ts.title}</h1>
       {ts.description && <p className="muted">{ts.description}</p>}
       {isIelts && ts.title.includes('(Sample)') && (

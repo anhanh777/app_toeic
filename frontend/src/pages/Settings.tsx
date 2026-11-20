@@ -218,7 +218,7 @@ export default function Settings() {
               <div className="btn-row"><button className="btn">Lưu hồ sơ IELTS</button></div>
             </>
           ) : (
-            <p>Bạn chưa thiết lập hồ sơ IELTS. <Link to="/ielts/setup">Thiết lập ngay →</Link></p>
+            <p>Bạn chưa thiết lập hồ sơ IELTS. <Link className="btn secondary btn-sm" to="/ielts/setup">Thiết lập ngay →</Link></p>
           )}
         </form>
       )}
@@ -233,7 +233,7 @@ export default function Settings() {
         <div className="btn-row"><button className="btn">Đổi mật khẩu</button></div>
       </form>
 
-      <p><Link to="/stats">Xem thống kê học tập của bạn →</Link></p>
+      <p><Link className="btn secondary btn-sm" to="/stats">Xem thống kê học tập của bạn →</Link></p>
     </div>
   );
 }

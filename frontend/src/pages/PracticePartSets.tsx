@@ -68,7 +68,7 @@ export default function PracticePartSets() {
   if (!partValid) {
     return (
       <div>
-        <p><Link to="/practice">← Quay lại chọn Part</Link></p>
+        <p><Link className="btn secondary btn-sm" to="/practice">← Quay lại chọn Part</Link></p>
         <div className="card"><p>Part không hợp lệ.</p></div>
       </div>
     );
@@ -76,7 +76,7 @@ export default function PracticePartSets() {
 
   return (
     <div>
-      <p><Link to="/practice">← Quay lại chọn Part</Link></p>
+      <p><Link className="btn secondary btn-sm" to="/practice">← Quay lại chọn Part</Link></p>
       <h1>{title}</h1>
       <p className="muted">Chọn 1 đề để luyện {shortLabel} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.{questionType ? <> Đang luyện riêng dạng: <strong>{questionTypeName(questionType)}</strong>.</> : ''}</p>
       <ErrorBox error={error} />

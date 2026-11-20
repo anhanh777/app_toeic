@@ -46,7 +46,7 @@ export default function Privacy() {
         Mọi thắc mắc về chính sách này, vui lòng liên hệ: trananhhunter02@gmail.com.
       </p>
 
-      <p><Link to="/">← Về trang chủ</Link></p>
+      <p><Link className="btn secondary btn-sm" to="/">← Về trang chủ</Link></p>
     </div>
   );
 }

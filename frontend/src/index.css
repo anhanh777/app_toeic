@@ -602,6 +602,38 @@ tbody tr:hover{background:var(--surface-soft)}
   pointer-events:none;
 }
 .timer-chip.low{color:var(--red-ink); border-color:var(--red-border)}
+/* Menu ⋮ màn Thi thử (Phương án A): đồng hồ + icon ⋮ nằm trong thanh
+   tiêu đề dính để luôn thấy khi cuộn — thay cho chip đồng hồ nổi +
+   thanh dưới cũ. top:60px = vừa dưới topbar sticky (~54px); nền
+   surface để chữ câu hỏi không lộ qua khi cuộn. */
+.exam-head--mock{position:sticky; top:60px; z-index:15; background:var(--surface)}
+.exam-head--mock .exam-head-title{flex:1 1 auto; min-width:0}
+.exam-head-right{display:flex; align-items:center; gap:.5rem; flex:0 0 auto}
+.timer-chip--inline{position:static; pointer-events:auto; box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.mock-menu-wrap{position:relative; flex:0 0 auto}
+.mock-menu-btn{font-size:1.35rem; font-weight:800}
+.mock-menu{
+  position:absolute; right:0; top:calc(100% + .5rem); z-index:21;
+  width:min(22rem, calc(100vw - 1rem));
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18); padding:.6rem;
+}
+.mock-menu-head{margin:.15rem .5rem .5rem; font-weight:800; font-variant-numeric:tabular-nums}
+.mock-menu-item{
+  display:block; width:100%; text-align:left; background:none; border:none;
+  padding:.6rem .5rem; border-radius:10px; font:inherit; font-weight:600;
+  color:var(--ink); cursor:pointer;
+}
+.mock-menu-item:hover{background:var(--surface-soft)}
+.mock-menu-item--armed{background:var(--amber-bg)}
+.mock-menu-item--exit{color:var(--red-ink)}
+.mock-menu-item--close{color:var(--muted)}
+/* Dải số câu còn lại sau khi bỏ thanh dưới: chỉ còn bảng số câu +
+   nút chuyển Part (IELTS); màn rộng dùng cột phải nên dải này ẩn đi. */
+.mock-palette{display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; margin:.8rem 0}
+@media (min-width:1100px){
+  .exam-room--sidelayout .mock-palette{display:none}
+}
 .progress-badge{
   flex:0 0 auto; background:var(--exam-orange); color:#fff; font-weight:800;
   font-size:.95rem; padding:.4rem .9rem; border-radius:12px;
@@ -1497,6 +1529,10 @@ tbody tr:hover{background:var(--surface-soft)}
 [data-style="lively"] .wl-popover{border-radius:18px; border-width:2px; padding:1rem; box-shadow:0 4px 0 var(--border)}
 [data-style="lively"] .ielts-note-panel{border-radius:20px; border:2px solid var(--border); box-shadow:0 4px 0 var(--border)}
 [data-style="lively"] .timer-chip{border-radius:16px}
+[data-style="lively"] .mock-menu{border:2px solid var(--border); border-radius:20px; padding:.9rem; box-shadow:0 4px 0 var(--border)}
+[data-style="lively"] .mock-menu-item{border-radius:12px; font-weight:700}
+[data-style="lively"] .mock-menu-btn{border-width:2px; box-shadow:0 3px 0 var(--border)}
+[data-style="lively"] .exam-head--mock{border-bottom-width:2px}
 [data-style="lively"] .progress-badge{border-radius:14px; padding:.5rem 1rem; box-shadow:0 4px 0 #CC7800}
 [data-style="lively"] .pill{padding:.35rem .8rem; font-weight:800}
 /* --- G. Flashcard / bang xep hang / the ket qua --- */
@@ -1559,6 +1595,15 @@ tbody tr:hover{background:var(--surface-soft)}
 [data-style="lively"] .lively-task--done{box-shadow:0 3px 0 #58CC02}
 [data-style="lively"] .lively-result-mascot-wrap .lively-mascot,[data-style="lively"] .lively-login-mascot-wrap .lively-mascot{width:104px; height:104px}
 /* --- K. Dark + lively: cac cho vong 1 dung mau sang co dinh thi doi sang bien toi --- */
+/* Hero dark+lively: gradient sang co dinh (#DFF3C2/#FFF9DB/#DDF4FF) + chu
+   --ink sang (#F2F5E9) = chu tang hinh. Doi sang gradient xanh la dam
+   (bien toi dark+lively) + chu sang — sua ca 9 trang dung .hero. */
+[data-theme="dark"][data-style="lively"] .hero{
+  background:linear-gradient(135deg, var(--mint), var(--accent-soft-strong) 55%, var(--sky));
+  color:var(--ink);
+}
+[data-theme="dark"][data-style="lively"] .hero h1{color:var(--ink)}
+[data-theme="dark"][data-style="lively"] .hero .sub{color:var(--ink-soft)}
 [data-theme="dark"][data-style="lively"] .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
 [data-theme="dark"][data-style="lively"] .btn.secondary:hover{background:var(--surface-soft)}
 [data-theme="dark"][data-style="lively"] .btn.ghost{background:var(--surface); color:var(--accent-dark)}

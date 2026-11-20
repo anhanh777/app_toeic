@@ -86,7 +86,7 @@ export default function Today() {
         <p className="sub">{todayStr} — làm 3 khối nhỏ là đủ, đừng cố làm hết một lúc.</p>
       </div>
       <ErrorBox error={error} />
-      {!data && <div className="card"><p>Chưa tải được kế hoạch hôm nay. Bạn vẫn có thể <Link to="/practice">luyện tập</Link> bình thường.</p></div>}
+      {!data && <div className="card"><p>Chưa tải được kế hoạch hôm nay. Bạn vẫn có thể <Link className="btn secondary btn-sm" to="/practice">luyện tập</Link> bình thường.</p></div>}
       {data && (
         <>
           {settings.ui.style === 'lively' && (
@@ -156,7 +156,7 @@ export default function Today() {
                 <p>Có <strong>{review?.dueCount ?? 0}</strong> câu sai đến hạn ôn hôm nay.</p>
                 {review?.dueIds?.length ? (
                   <ul>{review.dueIds.slice(0, 10).map(id => (
-                    <li key={id}><Link to="/wrong">{id}</Link></li>
+                    <li key={id}><Link className="btn secondary btn-sm" to="/wrong">{id}</Link></li>
                   ))}</ul>
                 ) : null}
                 <div className="btn-row">
@@ -491,7 +491,7 @@ function BandCompassBlock() {
       {bands ? (
         <p>Listening <strong>Band {bands.listening ?? '—'}</strong> · Reading <strong>Band {bands.reading ?? '—'}</strong> · Tổng <strong>Band {bands.overall ?? '—'}</strong> {bands.overall != null && <span className="muted">({bandLevel(bands.overall)})</span>}</p>
       ) : (
-        <p className="muted">Chưa có chẩn đoán — làm chẩn đoán để xem Band Compass. <Link to="/ielts/diagnostic">Làm chẩn đoán →</Link></p>
+        <p className="muted">Chưa có chẩn đoán — làm chẩn đoán để xem Band Compass. <Link className="btn secondary btn-sm" to="/ielts/diagnostic">Làm chẩn đoán →</Link></p>
       )}
       <h3>Lỗi theo tuần</h3>
       {!weekly?.length && <p className="muted">Chưa có dữ liệu lỗi theo tuần.</p>}

@@ -11,6 +11,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
   FlatList,
+  Modal,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -18,6 +19,7 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type Question, type TestSet } from '../api';
 import { useExam, type ExamId } from '../exam';
@@ -136,6 +138,15 @@ export default function MockTestScreen() {
   const [part, setPart] = useState(5);
   const [attemptId, setAttemptId] = useState<number | null>(null);
   const [confirmExit, setConfirmExit] = useState(false);
+  // Menu ⋮ (Phương án A): Nộp/Thoát dời khỏi thanh dưới vào bottom-sheet
+  // mở từ icon ⋮ ở thanh tiêu đề. Nộp bài 1 lần bấm như cũ; chỉ Thoát
+  // giữ 2 lần bấm để xác nhận. Đóng sheet thì hủy trạng thái "bấm lại"
+  // của Thoát để lần mở sau phải xác nhận lại từ đầu.
+  const [menuOpen, setMenuOpen] = useState(false);
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    setConfirmExit(false);
+  }, []);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [secondsLeft, setSecondsLeft] = useState(0);
@@ -289,9 +300,17 @@ export default function MockTestScreen() {
     router.replace('/');
   }, [confirmExit, attemptId]);
 
+  // Nộp bài từ sheet ⋮: 1 lần bấm như cũ — nộp 1 lần duy nhất
+  // (submittedRef trong submit()); hết giờ vẫn tự nộp, không qua sheet.
+  const submitFromMenu = useCallback(() => {
+    closeMenu();
+    void submit();
+  }, [closeMenu, submit]);
+
   const blocks = useMemo(() => groupBlocks(questions, exam), [questions, exam]);
   const rows = useMemo(() => buildRows(blocks, columns, exam), [blocks, columns, exam]);
   const answeredCount = Object.keys(answers).length;
+  const unansweredCount = questions.length - answeredCount;
   const partAudioAvailable = useCallback((p: number) => p <= 4 && !!resolvedTestSetId && !!partMedia[p], [resolvedTestSetId, partMedia]);
 
   const renderQuestion = useCallback(
@@ -625,6 +644,8 @@ export default function MockTestScreen() {
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.container, { paddingHorizontal: pad }]}>
+        {/* Thanh tiêu đề (Phương án A): tiêu đề + đồng hồ + icon ⋮.
+            Số câu đã trả lời + Nộp/Thoát dời vào bottom-sheet của ⋮. */}
         <View style={styles.header}>
           <Text style={[styles.title, { color: colors.text, fontSize: scaled(18) }, styles.headerTitle]}>
             {testSet ? testSet.title : 'Thi thử'}
@@ -638,9 +659,14 @@ export default function MockTestScreen() {
           >
             ⏱ {fmt(secondsLeft)}
           </Text>
-          <Text style={[styles.badge, { color: colors.text, fontSize: scaled(14), borderColor: colors.border }, livelyChip(colors)]}>
-            Đã trả lời {answeredCount}/{questions.length}
-          </Text>
+          <Pressable
+            style={[styles.menuBtn, { borderColor: colors.border }, livelyChip(colors)]}
+            onPress={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
+            accessibilityLabel="Mở menu thi thử"
+            accessibilityRole="button"
+          >
+            <Ionicons name="ellipsis-vertical" size={22} color={colors.text} />
+          </Pressable>
         </View>
         {error ? <Text style={{ color: colors.danger, fontSize: scaled(14) }}>{error}</Text> : null}
         <FlatList
@@ -650,19 +676,51 @@ export default function MockTestScreen() {
           contentContainerStyle={styles.list}
           {...LIST_DEFAULTS_WITH_MEDIA}
         />
-        <View style={[styles.bottomBar, { backgroundColor: colors.surface, borderTopColor: colors.border }]}>
-          <Text style={[styles.progress, { color: colors.text, fontSize: scaled(14) }]}>
-            Đã trả lời {answeredCount}/{questions.length}
-          </Text>
-          <Pressable style={[styles.barButton, { borderColor: colors.border }]} onPress={() => void exitTest()}>
-            <Text style={{ color: colors.text, fontSize: scaled(15) }}>{confirmExit ? '⚠️ Bấm lại để thoát' : '🚪 Thoát'}</Text>
-          </Pressable>
-          <Pressable style={[styles.barButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => void submit()}>
-            <Text style={{ color: colors.onAccent, fontSize: scaled(15), fontWeight: '700' }}>Nộp bài</Text>
-          </Pressable>
-        </View>
         <Text style={[styles.line, { color: colors.muted, fontSize: scaled(13) }]}>Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</Text>
       </View>
+      <Modal visible={menuOpen} transparent animationType="slide" onRequestClose={closeMenu}>
+        <Pressable style={styles.sheetBackdrop} onPress={closeMenu}>
+          <Pressable
+            style={[
+              styles.sheet,
+              { backgroundColor: colors.surface, borderColor: colors.border },
+              colors.style === 'lively' && styles.sheetLively,
+            ]}
+            onPress={() => {
+              /* bấm trong sheet không đóng modal */
+            }}
+          >
+            <Text style={[styles.sheetHead, { color: colors.text, fontSize: scaled(16) }]}>
+              Đã trả lời {answeredCount}/{questions.length} câu
+            </Text>
+            <Pressable
+              style={[styles.sheetRow, { borderColor: colors.border }, livelyCard(colors, 'compact')]}
+              onPress={submitFromMenu}
+              accessibilityRole="button"
+            >
+              <Text style={[styles.sheetRowText, { color: colors.accent, fontSize: scaled(16) }]}>
+                {`✅ Nộp bài · ${answeredCount}/${questions.length} câu (còn ${unansweredCount} câu chưa làm)`}
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[styles.sheetRow, { borderColor: colors.border }, livelyCard(colors, 'compact')]}
+              onPress={() => void exitTest()}
+              accessibilityRole="button"
+            >
+              <Text style={[styles.sheetRowText, { color: colors.danger, fontSize: scaled(16) }]}>
+                {confirmExit ? '⚠️ Bấm lại để thoát (sẽ hủy bài thi này)' : '🚪 Thoát (sẽ hủy bài thi này)'}
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[styles.sheetRow, { borderColor: colors.border }, livelyCard(colors, 'compact')]}
+              onPress={closeMenu}
+              accessibilityRole="button"
+            >
+              <Text style={[styles.sheetRowText, { color: colors.muted, fontSize: scaled(16) }]}>Đóng</Text>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -676,10 +734,30 @@ const styles = StyleSheet.create({
   setupContent: { width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md, paddingBottom: SPACING.md },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md, paddingHorizontal: SPACING.lg },
   header: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, flexWrap: 'wrap', marginBottom: SPACING.sm },
-  headerTitle: { flexShrink: 1, flexWrap: 'wrap' },
+  headerTitle: { flex: 1, flexShrink: 1, flexWrap: 'wrap' },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   timer: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, fontWeight: '700', fontVariant: ['tabular-nums'] },
-  badge: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
+  // Nút ⋮ mở menu thi thử (Phương án A): tròn, viền 1px; lively thêm
+  // viền 2px + bóng cứng dưới qua livelyChip (đặt cuối mảng style).
+  menuBtn: { width: 40, height: 40, borderRadius: 20, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  // Bottom-sheet menu ⋮ — mẫu theo WordLookupModal: nền mờ bấm ngoài
+  // để đóng, sheet trượt từ dưới lên, bo góc trên.
+  sheetBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)', justifyContent: 'flex-end' },
+  sheet: {
+    width: '100%',
+    alignSelf: 'center',
+    maxWidth: MAX_CONTENT_WIDTH,
+    borderTopLeftRadius: RADIUS.card,
+    borderTopRightRadius: RADIUS.card,
+    borderWidth: 1,
+    borderBottomWidth: 0,
+    padding: SPACING.lg,
+    gap: SPACING.sm,
+  },
+  sheetLively: { borderWidth: 2, borderTopLeftRadius: 20, borderTopRightRadius: 20 },
+  sheetHead: { fontWeight: '700', flexWrap: 'wrap' },
+  sheetRow: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, minHeight: 48, justifyContent: 'center' },
+  sheetRowText: { fontWeight: '700', flexWrap: 'wrap' },
   list: { gap: SPACING.sm, paddingBottom: SPACING.md },
   cluster: { gap: SPACING.sm },
   passage: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING },
@@ -699,7 +777,4 @@ const styles = StyleSheet.create({
   button: { borderRadius: RADIUS.button, paddingVertical: SPACING.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },
   buttonText: { fontWeight: '700', textAlign: 'center' },
   disabled: { opacity: 0.6 },
-  bottomBar: { flexDirection: 'row', gap: SPACING.sm, alignItems: 'center', borderTopWidth: 1, paddingVertical: SPACING.sm, flexWrap: 'wrap' },
-  progress: { flexGrow: 1, flexShrink: 1, flexWrap: 'wrap' },
-  barButton: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, minHeight: 44, justifyContent: 'center' },
 });

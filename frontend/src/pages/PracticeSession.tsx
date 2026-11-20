@@ -314,7 +314,7 @@ export default function PracticeSession() {
   };
 
   if (loading || ((isListening || isFullPractice) && !!testSetId && !partMediaLoaded)) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải câu hỏi…" />;
-  if (!questions.length) return <div><ErrorBox error={error} /><p>{isFullPractice ? 'Chưa có câu hỏi trong đề này.' : <>Chưa có câu hỏi cho {isIelts ? partLabel(part, exam) : `Part ${part}`} này.</>} {testSetId ? <Link to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link to="/practice">Quay lại chọn Part</Link>}</p></div>;
+  if (!questions.length) return <div><ErrorBox error={error} /><p>{isFullPractice ? 'Chưa có câu hỏi trong đề này.' : <>Chưa có câu hỏi cho {isIelts ? partLabel(part, exam) : `Part ${part}`} này.</>} {testSetId ? <Link className="btn secondary btn-sm" to={`/practice/test-set/${testSetId}`}>Quay lại đề thi</Link> : <Link className="btn secondary btn-sm" to="/practice">Quay lại chọn Part</Link>}</p></div>;
   if (!visibleQuestions.length) return (
     <div>
       <ErrorBox error={error} />

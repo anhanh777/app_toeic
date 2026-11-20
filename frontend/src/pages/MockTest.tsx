@@ -33,6 +33,22 @@ export default function MockTest() {
   const [attemptId, setAttemptId] = useState<number | null>(null);
   // Nút Thoát: bấm lần 1 để xác nhận, lần 2 mới thoát thật.
   const [confirmExit, setConfirmExit] = useState(false);
+  // Menu ⋮ (Phương án A): Nộp/Thoát dời khỏi thanh dưới vào popup neo
+  // dưới icon ⋮ ở thanh tiêu đề. Nộp bài 1 lần bấm như cũ; chỉ Thoát
+  // giữ 2 lần bấm để xác nhận. Đóng menu thì hủy trạng thái "bấm lại"
+  // của Thoát để lần mở sau phải xác nhận lại từ đầu.
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const closeMenu = () => { setMenuOpen(false); setConfirmExit(false); };
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDown = (e: MouseEvent) => { if (menuRef.current && !menuRef.current.contains(e.target as Node)) closeMenu(); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu(); };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [menuOpen]);
   const [questions, setQuestions] = useState<Question[]>([]);
   // Đáp án lưu theo id câu (làm theo thứ tự bất kỳ, đổi thoải mái trước
   // khi nộp — thi thử KHÔNG chấm ngay từng câu).
@@ -88,6 +104,13 @@ export default function MockTest() {
     stopSpeak();
     try { await api.submitTest(attemptId); nav(`/result/${attemptId}`); }
     catch (e) { submittedRef.current = false; setError(e); }
+  };
+
+  // Nộp bài từ menu ⋮: 1 lần bấm như cũ — nộp 1 lần duy nhất
+  // (submittedRef trong submit()); hết giờ vẫn tự nộp, không qua menu.
+  const submitFromMenu = () => {
+    closeMenu();
+    void submit();
   };
 
   useEffect(() => {
@@ -261,6 +284,7 @@ export default function MockTest() {
 
   if (!questions.length) return <LoadingLine effect={settings.ui.loading.page} speed={settings.ui.loading.speed} text="Đang tải đề thi…" />;
   const answeredCount = Object.keys(answers).length;
+  const unansweredCount = questions.length - answeredCount;
 
   // Câu chỉ-nghe (Part 1/2 TOEIC): toàn bộ phương án đều rỗng nội dung
   // (chỉ có nhãn) — người học chỉ nghe audio rồi chọn chữ cái.
@@ -558,18 +582,41 @@ export default function MockTest() {
   return (
     <div className={`ts-${textLevel} exam-room exam-room--sidelayout`}>
       <div className="exam-main">
-        <div className="exam-head">
-          <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
+        {/* Thanh tiêu đề (Phương án A): tiêu đề + đồng hồ + icon ⋮. Đồng hồ
+            nằm trong thanh tiêu đề dính (xem .exam-head--mock) để luôn thấy
+            khi cuộn — thay cho chip đồng hồ nổi + thanh dưới cũ. */}
+        <div className="exam-head exam-head--mock">
+          <div className="exam-head-title">
+            <h2 className="exam-part">{testSet ? testSet.title : 'Thi thử'}</h2>
+          </div>
+          <div className="exam-head-right">
+            <span className={`timer-chip timer-chip--inline${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱️ {fmt(secondsLeft)}</span>
+            <div className="mock-menu-wrap" ref={menuRef}>
+              <button type="button" className="icon-btn mock-menu-btn" aria-label="Mở menu thi thử" aria-haspopup="menu" aria-expanded={menuOpen}
+                title="Mở menu thi thử" onClick={() => (menuOpen ? closeMenu() : setMenuOpen(true))}>⋮</button>
+              {menuOpen && (
+                <div className="mock-menu" role="menu" aria-label="Menu thi thử">
+                  <p className="mock-menu-head">Đã trả lời {answeredCount}/{questions.length} câu</p>
+                  <button type="button" className="mock-menu-item" role="menuitem" onClick={submitFromMenu}>
+                    {`✅ Nộp bài · ${answeredCount}/${questions.length} câu (còn ${unansweredCount} câu chưa làm)`}
+                  </button>
+                  <button type="button" className={`mock-menu-item mock-menu-item--exit${confirmExit ? ' mock-menu-item--armed' : ''}`} role="menuitem" onClick={() => void exitTest()}>
+                    {confirmExit ? '⚠️ Bấm lại để thoát (sẽ hủy bài thi này)' : '🚪 Thoát (sẽ hủy bài thi này)'}
+                  </button>
+                  <button type="button" className="mock-menu-item mock-menu-item--close" role="menuitem" onClick={closeMenu}>Đóng</button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        {/* Đồng hồ nổi (phương án 3): thanh đầu trang không dính nữa, đồng hồ
-            đếm ngược tách thành chip cố định góc phải, luôn thấy được khi
-            cuộn (hết giờ là tự nộp bài nên không được để mất đồng hồ). */}
-        <span className={`timer-chip${secondsLeft < 300 ? ' low' : ''}`} title="Thời gian còn lại">⏱️ {fmt(secondsLeft)}</span>
         <ErrorBox error={error} />
         <div className="paper">
           {renderPaper()}
         </div>
-        <div className="practice-bar">
+        {/* Chỉ còn bảng số câu + nút chuyển Part (IELTS) — thanh dưới cũ
+            (số câu đã trả lời + Thoát/Nộp) đã dời vào menu ⋮ trên thanh
+            tiêu đề. Màn rộng dùng cột phải nên dải này ẩn đi. */}
+        <div className="mock-palette">
           <QuestionPalette items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
           {isIelts && partOrder.length > 1 && (
             <span className="btn-row" style={{ margin: 0 }}>
@@ -579,39 +626,26 @@ export default function MockTest() {
                 onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
             </span>
           )}
-          <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
-          <span className="btn-row" style={{ margin: 0 }}>
-            <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
-              onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '← Thoát'}</button>
-            <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
-          </span>
         </div>
         <p className="muted" style={{ margin: '.45rem 0 0' }}>Nộp bài chỉ 1 lần. Hết giờ hệ thống tự nộp.</p>
       </div>
-      {/* Cot phai (phuong an A): man hinh rong (>=1100px) thi bang cau hoi
-          + tien do + nut bam nam o day, thanh duoi an di; man hinh hep
-          thi cot nay an, thanh duoi hien nhu cu. */}
+      {/* Cot phai: chi con bang cau hoi (+ chuyen Section/Passage) — tien
+          do + nut Thoat/Nop da dời vào menu ⋮ trên thanh tiêu đề. */}
       <aside className="room-side">
         <h3 className="room-side-title">Câu hỏi</h3>
         <div className="room-side-palette">
           <QuestionPalette variant="side" items={paletteItems} onJump={jumpToQuestion} currentId={currentId} />
         </div>
-        <div className="room-side-block room-side-actions">
-          {isIelts && partOrder.length > 1 && (
+        {isIelts && partOrder.length > 1 && (
+          <div className="room-side-controls">
             <span className="btn-row" style={{ margin: 0 }}>
               <button className="btn btn-sm secondary" disabled={currentPartIdx <= 0}
                 onClick={() => jumpToPart(partOrder[currentPartIdx - 1])}>← {currentPartIdx > 0 ? partLabel(partOrder[currentPartIdx - 1], exam) : ''}</button>
               <button className="btn btn-sm secondary" disabled={currentPartIdx < 0 || currentPartIdx >= partOrder.length - 1}
                 onClick={() => jumpToPart(partOrder[currentPartIdx + 1])}>{currentPartIdx < partOrder.length - 1 ? partLabel(partOrder[currentPartIdx + 1], exam) : ''} →</button>
             </span>
-          )}
-          <span className="progress">Đã trả lời {answeredCount}/{questions.length}</span>
-          <span className="btn-row" style={{ margin: 0 }}>
-            <button className="btn secondary btn-sm" title="Thoát khỏi bài thi — bài làm sẽ không được chấm và không lưu kết quả"
-              onClick={() => void exitTest()}>{confirmExit ? '⚠️ Bấm lại để thoát' : '← Thoát'}</button>
-            <button className="btn btn-sm" onClick={() => void submit()}>Nộp bài</button>
-          </span>
-        </div>
+          </div>
+        )}
       </aside>
     </div>
   );
