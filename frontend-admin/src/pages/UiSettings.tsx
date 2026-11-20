@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import { api, type MediaConfig } from '../api';
 import { ErrorBox, Modal } from '../components';
 import { uploadToCloudinary } from '../cloudinary';
@@ -77,6 +77,12 @@ export default function UiSettings() {
   const [configStyle, setConfigStyle] = useState<UiStyleId | null>(null);
   /** Bảng chọn "Thêm hiệu ứng" đang mở trong Modal cấu hình hay không. */
   const [addPanelOpen, setAddPanelOpen] = useState(false);
+  const addPanelRef = useRef<HTMLDivElement>(null);
+  /* Mở bảng chọn thì cuộn tới nó luôn — bảng nằm dưới 3 lưới nên không
+     cuộn sẽ tưởng nút ＋ bấm không được. */
+  useEffect(() => {
+    if (addPanelOpen) addPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, [addPanelOpen]);
   /** Cấu hình Cloudinary (để tải ảnh động lên) + trạng thái upload trong Modal. */
   const [mediaCfg, setMediaCfg] = useState<MediaConfig | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -428,7 +434,7 @@ export default function UiSettings() {
             </div>
           ))}
           {addPanelOpen && (
-            <div className="ld-add-panel">
+            <div className="ld-add-panel" ref={addPanelRef}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '.6rem' }}>
                 <b>Thêm hiệu ứng</b>
                 <button type="button" className="btn secondary btn-sm" onClick={() => setAddPanelOpen(false)}>Đóng</button>
@@ -440,13 +446,17 @@ export default function UiSettings() {
                 <p className="muted" style={{ margin: '.2rem 0' }}>Đã thêm hết 6 hiệu ứng.</p>
               ) : (
                 remainingExtras.map(id => (
-                  <div key={id} className="ld-add-row">
+                  <button
+                    type="button" key={id} className="ld-add-row"
+                    onClick={() => addExtraEffect(id)}
+                    title={`Thêm ${LOADING_EFFECTS[id].label} vào lưới chọn`}
+                  >
                     <span className="ld-add-anim">
                       <LoadingEffect effect={id} speed={cfg.loading.speed} size="md" />
                     </span>
                     <span className="ld-add-name">{LOADING_EFFECTS[id].label}</span>
-                    <button type="button" className="btn secondary btn-sm" onClick={() => addExtraEffect(id)}>＋ Thêm</button>
-                  </div>
+                    <span className="ld-add-hint" aria-hidden="true">＋ Thêm</span>
+                  </button>
                 ))
               )}
             </div>

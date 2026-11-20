@@ -899,10 +899,12 @@ tbody tr:hover{background:var(--surface-soft)}
 .ld-pick-add .ld-pick-plus{font-size:1.4rem; line-height:1; color:var(--accent)}
 /* Bang chon them hieu ung (hien ngay trong modal Cau hinh, duoi 3 luoi chon). */
 .ld-add-panel{border:1px dashed var(--border); border-radius:12px; padding:.8rem .9rem; margin:.35rem 0 .9rem; background:var(--surface-soft)}
-.ld-add-row{display:flex; align-items:center; gap:.7rem; padding:.5rem 0; border-top:1px solid var(--border)}
+.ld-add-row{display:flex; width:100%; align-items:center; gap:.7rem; padding:.5rem .4rem; border:none; border-top:1px solid var(--border); background:none; font:inherit; color:inherit; text-align:left; cursor:pointer; border-radius:8px}
 .ld-add-row:first-of-type{border-top:none}
+.ld-add-row:hover{background:var(--accent-soft)}
 .ld-add-anim{width:3.4rem; display:flex; align-items:center; justify-content:center}
 .ld-add-name{flex:1; font-weight:600}
+.ld-add-hint{color:var(--accent); font-weight:600; font-size:.9rem}
 /* Can chinh rieng noi dung modal Cau hinh giao dien: khoang cach cac muc deu tay. */
 .ui-config h3{margin:1.2rem 0 .5rem}
 .ui-config h3:first-child{margin-top:0}
