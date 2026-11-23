@@ -252,48 +252,10 @@
     "content": "unusual food"
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "People like the idea of trying something they can't get anywhere else. They also like seeing food prepared in front of them and which hasn't come straight out of a freezer",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T3-S2-012",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C21-L-T3-S2",
-  "passageTitle": "Section 2 — Starting a street food business",
-  "passageText": null,
-  "script": "Good evening everyone. My name's Jon and I run Veg Out, a street food business selling vegan food. Since 2012 I've been travelling all around the country cooking vegan food in my converted van and selling it at all kinds of outdoor events. I'm here to give you some advice based on my experience. The good news is that there's never been a better time to start your own street food business. Street food continues to grow in popularity. I think there are a couple of reasons for this. The first is that street food is a reaction against fast food. Street food ranges from high quality burgers to vegan curries and everything in between. But while fast food is cheap and easy to find, it's not particularly good for you. It's also the same everywhere. What you get with street food on the other hand is something different. People like the idea of trying something they can't get anywhere else. They also like seeing food prepared in front of them and which hasn't come straight out of a freezer. You need to think about the best place to sell your street food. People always think music festivals are an obvious place to start but the cost of renting a space can be huge. And there's always a lot of competition. Food markets, on the other hand, are great because customers are always really interested in food and give great feedback. And if you can get a spot in your local park – fantastic. Usually very relaxed but with lots of customers passing by. Once you get established you'll start getting asked to do parties – which can be really challenging but lots of fun. Having street food at weddings has become quite fashionable too – but you need to really know what you're doing as everything needs to be perfect. Setting up a street food business costs a lot less than opening a restaurant or café but you'll have to buy some basic equipment. I'd try to get things like hobs and fridges second hand if you can. You can replace them with better quality stuff if your business takes off. Renting is another option but you'll end up spending more money rather than saving it. You've probably got a good idea about the food you're planning to sell. I expect you've done some research to find out if anyone else is selling a similar product. And you'll have thought about any possible allergies to nuts or eggs etc. But there's one thing people don't always think about and that's how you're going to serve it. On a plate? In a bag? Will you provide a fork? Will it all be easily recyclable or reusable? It's got to be easy to eat and look attractive or customers won't come back. Once you get started, you should be prepared for things to go wrong. Every business faces problems and here are a few examples from street food businesses that I know. My friends who run Thai Basil started by juggling their street food business with their day jobs in a restaurant. Their work-life balance was non-existent as they were working til midnight in the restaurant all week and then took their food truck to markets on their days off. The owners of Basque found it was hard to make a profit because the price of fish – essential for some of their dishes – was so high. And it was hard to charge customers a lot more for those dishes. So they had to stop focussing on fish dishes and include more vegetarian food. The owners of Lou's kitchen were making salads to order from their van and some of their dishes were quite complicated. At one of their first events they ended up with people standing in a long queue for more than 15 minutes – and many of them lost patience. So make sure whatever you offer can be served quickly and efficiently. The owners of Chip Chop had found a perfect venue near a beach where there weren't any other street food trucks. But what they hadn't realised was that they'd need a special licence – which individual businesses don't need at markets or festivals. It was a complicated process and in the end they gave up. So I hope that's given you a flavour of ....",
-  "content": "Which TWO explanations for the popularity of street food are given?",
-  "options": [
-   {
-    "label": "A",
-    "content": "low price"
-   },
-   {
-    "label": "B",
-    "content": "locally sourced"
-   },
-   {
-    "label": "C",
-    "content": "freshly made"
-   },
-   {
-    "label": "D",
-    "content": "convenience"
-   },
-   {
-    "label": "E",
-    "content": "unusual food"
-   }
+  "correct": [
+   "C",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -301,7 +263,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T3-S2-013",
@@ -334,48 +296,10 @@
     "content": "parks"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "Food markets, on the other hand, are great because customers are always really interested in food and give great feedback. And if you can get a spot in your local park – fantastic. Usually very relaxed but with lots of customers passing by",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T3-S2-014",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C21-L-T3-S2",
-  "passageTitle": "Section 2 — Starting a street food business",
-  "passageText": null,
-  "script": "Good evening everyone. My name's Jon and I run Veg Out, a street food business selling vegan food. Since 2012 I've been travelling all around the country cooking vegan food in my converted van and selling it at all kinds of outdoor events. I'm here to give you some advice based on my experience. The good news is that there's never been a better time to start your own street food business. Street food continues to grow in popularity. I think there are a couple of reasons for this. The first is that street food is a reaction against fast food. Street food ranges from high quality burgers to vegan curries and everything in between. But while fast food is cheap and easy to find, it's not particularly good for you. It's also the same everywhere. What you get with street food on the other hand is something different. People like the idea of trying something they can't get anywhere else. They also like seeing food prepared in front of them and which hasn't come straight out of a freezer. You need to think about the best place to sell your street food. People always think music festivals are an obvious place to start but the cost of renting a space can be huge. And there's always a lot of competition. Food markets, on the other hand, are great because customers are always really interested in food and give great feedback. And if you can get a spot in your local park – fantastic. Usually very relaxed but with lots of customers passing by. Once you get established you'll start getting asked to do parties – which can be really challenging but lots of fun. Having street food at weddings has become quite fashionable too – but you need to really know what you're doing as everything needs to be perfect. Setting up a street food business costs a lot less than opening a restaurant or café but you'll have to buy some basic equipment. I'd try to get things like hobs and fridges second hand if you can. You can replace them with better quality stuff if your business takes off. Renting is another option but you'll end up spending more money rather than saving it. You've probably got a good idea about the food you're planning to sell. I expect you've done some research to find out if anyone else is selling a similar product. And you'll have thought about any possible allergies to nuts or eggs etc. But there's one thing people don't always think about and that's how you're going to serve it. On a plate? In a bag? Will you provide a fork? Will it all be easily recyclable or reusable? It's got to be easy to eat and look attractive or customers won't come back. Once you get started, you should be prepared for things to go wrong. Every business faces problems and here are a few examples from street food businesses that I know. My friends who run Thai Basil started by juggling their street food business with their day jobs in a restaurant. Their work-life balance was non-existent as they were working til midnight in the restaurant all week and then took their food truck to markets on their days off. The owners of Basque found it was hard to make a profit because the price of fish – essential for some of their dishes – was so high. And it was hard to charge customers a lot more for those dishes. So they had to stop focussing on fish dishes and include more vegetarian food. The owners of Lou's kitchen were making salads to order from their van and some of their dishes were quite complicated. At one of their first events they ended up with people standing in a long queue for more than 15 minutes – and many of them lost patience. So make sure whatever you offer can be served quickly and efficiently. The owners of Chip Chop had found a perfect venue near a beach where there weren't any other street food trucks. But what they hadn't realised was that they'd need a special licence – which individual businesses don't need at markets or festivals. It was a complicated process and in the end they gave up. So I hope that's given you a flavour of ....",
-  "content": "Which TWO places are recommended for new street food businesses?",
-  "options": [
-   {
-    "label": "A",
-    "content": "music festivals"
-   },
-   {
-    "label": "B",
-    "content": "food markets"
-   },
-   {
-    "label": "C",
-    "content": "weddings"
-   },
-   {
-    "label": "D",
-    "content": "parties"
-   },
-   {
-    "label": "E",
-    "content": "parks"
-   }
+  "correct": [
+   "B",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -383,7 +307,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T3-S2-015",
@@ -662,48 +586,10 @@
     "content": "Companies should avoid using them on clothing labels."
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "most people use these terms interchangeably They're often deliberately vague, I think, and don't provide enough information about how their products are made",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T3-S3-022",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C21-L-T3-S3",
-  "passageTitle": "Section 3 — Ethical and sustainable fashion",
-  "passageText": null,
-  "script": "MADDY: Shall we go through our research for our sustainable fashion project? RYAN: Good idea. I think I've done enough reading now. MADDY: Me too. I've learnt such a lot about what sustainability actually means. RYAN: Mmm, same for me with ethical fashion. I didn't really appreciate the difference between that and sustainable fashion before doing this research. MADDY: I know – most people use these terms interchangeably – but in fact the difference is quite distinct when you think about it. Sustainable relates to the environment and ethical relates more to the way workers or animals are treated. RYAN: I totally understand why people get confused, though. There are so many other terms used – like 'eco-friendly', which is actually quite meaningless. MADDY: And the way companies use these terms when describing their products doesn't help. They're often deliberately vague, I think, and don't provide enough information about how their products are made. RYAN: Yes. MADDY: It was interesting to read about the debates surrounding wool production and how ethical and sustainable that is. It's generally considered to be sustainable because it's a natural product. RYAN: And it also lasts a long time and can be recycled. All very positive. But I wasn't convinced by the argument that wool production is sustainable because it doesn't use many chemicals – what about all the fungicides and insecticides used in sheep farming? MADDY: Good point. And I couldn't find any evidence for the claim about sheep farming being better for the environment than cattle farming. RYAN: No – they're both really bad. I read different reports about how unethical it is to even shear sheep. Some people say it's cruel but as long as the sheep are kept in good condition I can't see anything wrong with it. MADDY: Me neither. RYAN: Shall we talk about some of the semi-synthetic new fabrics now? MADDY: OK, let's do that. RYAN: Let's start with Lyocell, I've been reading about that. MADDY: Yeah, that's the one produced from the pulp of eucalyptus trees, isn't it? RYAN: Yes, and what happens with that is really impressive. Over 99% of dissolving agents used in the manufacturing process are used again. MADDY: Yeah. Now, there are a few semi-synthetic fabrics that I'd never heard of. Like Cupro, for example. RYAN: Made from byproducts of the cotton industry to create a kind of vegan silk. But I'm not sure how sustainable this really is as there are so many reports of pollution caused by the manufacturing process. MADDY: Mmm. It doesn't compare favourably with all the other sustainable fabrics we've looked at, no. RYAN: Bamboo is one fabric we're all familiar with. But I didn't know that it was only organic bamboo that's truly sustainable. MADDY: Me neither. Apparently, the manufacturing process for a significant proportion of bamboo is chemically quite intensive – which obviously can be quite damaging. RYAN: EcoVero is an example of a semi-synthetic fabric which is becoming really popular. MADDY: Probably because manufacturing causes 50 percent fewer emissions and takes up half as much energy as conventional fabrics. That saves production costs as well as being better for the environment. RYAN: That's true. I think demand for cork will continue to grow. It works really well in vegan shoes and bags. MADDY: Mmm and it's the only fabric that's fundamentally sustainable – the cork trees it comes from are renewable and the product itself is both recyclable and biodegradable – which is unique. RYAN: And the harvesting process is actually good for the trees. There are no downsides to using this source at all. MADDY: Hemp is another really good sustainable fabric from a natural source. RYAN: Yes. Did you know that clothes made from hemp protect the wearer from the sun and it's also antibacterial? MADDY: No, I didn't. But I did read that it's quite hard to grow, so perhaps that's why it's not as common as you'd think. RYAN: I'm sure that'll change.",
-  "content": "Which TWO points do the speakers make about the terms 'ethical' and 'sustainable' fashion?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Their definitions keep changing."
-   },
-   {
-    "label": "B",
-    "content": "People think they mean the same thing."
-   },
-   {
-    "label": "C",
-    "content": "The term 'eco-friendly' is preferable."
-   },
-   {
-    "label": "D",
-    "content": "They are often used imprecisely."
-   },
-   {
-    "label": "E",
-    "content": "Companies should avoid using them on clothing labels."
-   }
+  "correct": [
+   "B",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -711,7 +597,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T3-S3-023",
@@ -744,48 +630,10 @@
     "content": "Sheep do less environmental damage than other livestock."
    }
   ],
-  "correct": "D",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "RYAN: And it also lasts a long time and can be recycled. All very positive. But I wasn't convinced by the argument that wool production is sustainable because it doesn't use many chemicals – what about all the fungicides and insecticides used in sheep farming? MADDY: Good point. And I couldn't find any evidence for the claim about sheep farming being better for the environment than cattle farming. RYAN: No – they're both really bad",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T3-S3-024",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C21-L-T3-S3",
-  "passageTitle": "Section 3 — Ethical and sustainable fashion",
-  "passageText": null,
-  "script": "MADDY: Shall we go through our research for our sustainable fashion project? RYAN: Good idea. I think I've done enough reading now. MADDY: Me too. I've learnt such a lot about what sustainability actually means. RYAN: Mmm, same for me with ethical fashion. I didn't really appreciate the difference between that and sustainable fashion before doing this research. MADDY: I know – most people use these terms interchangeably – but in fact the difference is quite distinct when you think about it. Sustainable relates to the environment and ethical relates more to the way workers or animals are treated. RYAN: I totally understand why people get confused, though. There are so many other terms used – like 'eco-friendly', which is actually quite meaningless. MADDY: And the way companies use these terms when describing their products doesn't help. They're often deliberately vague, I think, and don't provide enough information about how their products are made. RYAN: Yes. MADDY: It was interesting to read about the debates surrounding wool production and how ethical and sustainable that is. It's generally considered to be sustainable because it's a natural product. RYAN: And it also lasts a long time and can be recycled. All very positive. But I wasn't convinced by the argument that wool production is sustainable because it doesn't use many chemicals – what about all the fungicides and insecticides used in sheep farming? MADDY: Good point. And I couldn't find any evidence for the claim about sheep farming being better for the environment than cattle farming. RYAN: No – they're both really bad. I read different reports about how unethical it is to even shear sheep. Some people say it's cruel but as long as the sheep are kept in good condition I can't see anything wrong with it. MADDY: Me neither. RYAN: Shall we talk about some of the semi-synthetic new fabrics now? MADDY: OK, let's do that. RYAN: Let's start with Lyocell, I've been reading about that. MADDY: Yeah, that's the one produced from the pulp of eucalyptus trees, isn't it? RYAN: Yes, and what happens with that is really impressive. Over 99% of dissolving agents used in the manufacturing process are used again. MADDY: Yeah. Now, there are a few semi-synthetic fabrics that I'd never heard of. Like Cupro, for example. RYAN: Made from byproducts of the cotton industry to create a kind of vegan silk. But I'm not sure how sustainable this really is as there are so many reports of pollution caused by the manufacturing process. MADDY: Mmm. It doesn't compare favourably with all the other sustainable fabrics we've looked at, no. RYAN: Bamboo is one fabric we're all familiar with. But I didn't know that it was only organic bamboo that's truly sustainable. MADDY: Me neither. Apparently, the manufacturing process for a significant proportion of bamboo is chemically quite intensive – which obviously can be quite damaging. RYAN: EcoVero is an example of a semi-synthetic fabric which is becoming really popular. MADDY: Probably because manufacturing causes 50 percent fewer emissions and takes up half as much energy as conventional fabrics. That saves production costs as well as being better for the environment. RYAN: That's true. I think demand for cork will continue to grow. It works really well in vegan shoes and bags. MADDY: Mmm and it's the only fabric that's fundamentally sustainable – the cork trees it comes from are renewable and the product itself is both recyclable and biodegradable – which is unique. RYAN: And the harvesting process is actually good for the trees. There are no downsides to using this source at all. MADDY: Hemp is another really good sustainable fabric from a natural source. RYAN: Yes. Did you know that clothes made from hemp protect the wearer from the sun and it's also antibacterial? MADDY: No, I didn't. But I did read that it's quite hard to grow, so perhaps that's why it's not as common as you'd think. RYAN: I'm sure that'll change.",
-  "content": "Which TWO claims about wool production do the speakers disagree with?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Sheep are generally well-treated."
-   },
-   {
-    "label": "B",
-    "content": "Wool is easy to recycle."
-   },
-   {
-    "label": "C",
-    "content": "Wool is a long-lasting fabric."
-   },
-   {
-    "label": "D",
-    "content": "Wool production involves few chemicals."
-   },
-   {
-    "label": "E",
-    "content": "Sheep do less environmental damage than other livestock."
-   }
+  "correct": [
+   "D",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -793,7 +641,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T3-S3-025",

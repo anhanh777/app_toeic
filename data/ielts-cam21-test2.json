@@ -269,48 +269,10 @@
     "content": "Don't worry about getting lost."
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "As there are clear signposts all along the way, you don't even need to take a map with you. At one point, the route goes inland slightly and passes a castle built in the 1400s near to a now-vanished market town. The castle's now just a pile of stones but it's a great place to take photos, and fascinating information boards show what it once looked like.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T2-S2-012",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C21-L-T2-S2",
-  "passageTitle": "Section 2 — Marsden Coastal Walk and Melby Heritage Walk / Melby Coal Mine",
-  "passageText": null,
-  "script": "Here is some information about history and nature walks in the region. They can be completed in less than a day and also be combined with a visit to Melby, a former coal mine now open to the public. The Marsden Coastal Walk is suitable for all the family as there are no strenuous climbs. The route begins at Marsden harbour, where there are hourly ferries to and from the beautiful Hooker Island, a great place for fishing. The walk covers part of the coastal path trail. As there are clear signposts all along the way, you don't even need to take a map with you. At one point, the route goes inland slightly and passes a castle built in the 1400s near to a now-vanished market town. The castle's now just a pile of stones but it's a great place to take photos, and fascinating information boards show what it once looked like. If you set off early, you can be back in time for midday. The Melby Heritage Walk is a great place to take photos, especially of the night sky. At certain times of the year, people come here from far and wide. They climb to the top of the valley and take pictures of the stars. In the daytime, it's completely different. As you hike through the dense woods in the valley bottom, the only things you'll hear are the sound of your own footsteps. At the highest point, you can stop to take in the views, and those with lots of energy can climb the tower that's situated where there was once a seventeenth century hunting lodge. The route continues along the tops of the hills and brings you back down to the starting point - the car park at Melby Coal Mine.\n\nMelby Coal Mine has been open to the public for twenty years and has won awards for its visitor experience. Many of the buildings around the mine are still standing and have been converted into display areas. Firstly, there's an exhibition showing the history of the mine, with many original black and white photos. To see that, you go from the car park, via a covered walkway to the Main Visitor Centre. Go through the ticket office to an area where there are lockers to leave heavy bags in, and where you can borrow raincoats. Beyond that room is the exhibition. There's a small bathhouse where miners used to wash after their shift underground. You can see that in the building directly to the north of the engine house. The boiler has gone from there now, but there are lines of tin baths on the stone floor. There's a display of early mining tools from the days before mechanisation. You can find that in a small L-shaped building in the middle of the northern boundary of the site. It's incredible to think how miners were able to use hand implements to cut through rock. The vehicle shed, where you can find wagons of different sizes, along with some of the hi-tech cutting machines that were in use until the mine closed, is in the southwest corner of the site, and can be accessed via a covered walkway. There is a field with ponies, which are always popular with children, on the north-eastern boundary of the site, not approached via a covered walkway. The other building to mention is the education centre. This is where school groups go when they visit the mine, but it's also accessible to the public as it contains a library and small gift shop. The centre is connected to the ticket office via a short section of covered walkway.",
-  "content": "Which TWO pieces of advice are given about the Marsden Coastal Walk?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Stop for lunch in an ancient town."
-   },
-   {
-    "label": "B",
-    "content": "Don't miss the ruins of a certain building."
-   },
-   {
-    "label": "C",
-    "content": "Catch a boat to the start of this walk."
-   },
-   {
-    "label": "D",
-    "content": "Be careful of the steep and rocky paths."
-   },
-   {
-    "label": "E",
-    "content": "Don't worry about getting lost."
-   }
+  "correct": [
+   "B",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -318,7 +280,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T2-S2-013",
@@ -351,48 +313,10 @@
     "content": "There are far-reaching views the whole way."
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "At the highest point, you can stop to take in the views, and those with lots of energy can climb the tower that's situated where there was once a seventeenth century hunting lodge. The route continues along the tops of the hills and brings you back down to the starting point – the car park at Melby Coal Mine.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T2-S2-014",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C21-L-T2-S2",
-  "passageTitle": "Section 2 — Marsden Coastal Walk and Melby Heritage Walk / Melby Coal Mine",
-  "passageText": null,
-  "script": "Here is some information about history and nature walks in the region. They can be completed in less than a day and also be combined with a visit to Melby, a former coal mine now open to the public. The Marsden Coastal Walk is suitable for all the family as there are no strenuous climbs. The route begins at Marsden harbour, where there are hourly ferries to and from the beautiful Hooker Island, a great place for fishing. The walk covers part of the coastal path trail. As there are clear signposts all along the way, you don't even need to take a map with you. At one point, the route goes inland slightly and passes a castle built in the 1400s near to a now-vanished market town. The castle's now just a pile of stones but it's a great place to take photos, and fascinating information boards show what it once looked like. If you set off early, you can be back in time for midday. The Melby Heritage Walk is a great place to take photos, especially of the night sky. At certain times of the year, people come here from far and wide. They climb to the top of the valley and take pictures of the stars. In the daytime, it's completely different. As you hike through the dense woods in the valley bottom, the only things you'll hear are the sound of your own footsteps. At the highest point, you can stop to take in the views, and those with lots of energy can climb the tower that's situated where there was once a seventeenth century hunting lodge. The route continues along the tops of the hills and brings you back down to the starting point - the car park at Melby Coal Mine.\n\nMelby Coal Mine has been open to the public for twenty years and has won awards for its visitor experience. Many of the buildings around the mine are still standing and have been converted into display areas. Firstly, there's an exhibition showing the history of the mine, with many original black and white photos. To see that, you go from the car park, via a covered walkway to the Main Visitor Centre. Go through the ticket office to an area where there are lockers to leave heavy bags in, and where you can borrow raincoats. Beyond that room is the exhibition. There's a small bathhouse where miners used to wash after their shift underground. You can see that in the building directly to the north of the engine house. The boiler has gone from there now, but there are lines of tin baths on the stone floor. There's a display of early mining tools from the days before mechanisation. You can find that in a small L-shaped building in the middle of the northern boundary of the site. It's incredible to think how miners were able to use hand implements to cut through rock. The vehicle shed, where you can find wagons of different sizes, along with some of the hi-tech cutting machines that were in use until the mine closed, is in the southwest corner of the site, and can be accessed via a covered walkway. There is a field with ponies, which are always popular with children, on the north-eastern boundary of the site, not approached via a covered walkway. The other building to mention is the education centre. This is where school groups go when they visit the mine, but it's also accessible to the public as it contains a library and small gift shop. The centre is connected to the ticket office via a short section of covered walkway.",
-  "content": "Which TWO things are said about the Melby Heritage Walk?",
-  "options": [
-   {
-    "label": "A",
-    "content": "This walk is mostly downhill."
-   },
-   {
-    "label": "B",
-    "content": "The paths can get busy during the day."
-   },
-   {
-    "label": "C",
-    "content": "This is a circular walk."
-   },
-   {
-    "label": "D",
-    "content": "A tower stands on the site of an older structure."
-   },
-   {
-    "label": "E",
-    "content": "There are far-reaching views the whole way."
-   }
+  "correct": [
+   "C",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -400,7 +324,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T2-S2-015",
@@ -781,48 +705,10 @@
     "content": "the result of treating animals with antibiotics"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "FERGUS: Yeah, that's been in the news a lot. But I hadn't realised that unsafe food causes more than 200 different diseases. NADIA: No, I'd no idea it was that many. And speaking of diseases, I knew resistance to antibiotics is on the increase, but I didn't know why … FERGUS: … that it's partly because when animals are treated with antibiotics then consumed by humans, the antibiotics get into the food chain. I had no idea about that either.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T2-S3-022",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C21-L-T2-S3",
-  "passageTitle": "Section 3 — Food safety sessions / Developing a new food product",
-  "passageText": null,
-  "script": "TUTOR: Thanks for coming along, Nadia and Fergus. So this is a chance for you to give us some feedback about different aspects of your course. What would you like to begin with? NADIA: I've enjoyed the sessions on food safety. There was some information there that I found really surprising, although some was stuff I knew already, like the rise in rates of obesity. FERGUS: Yeah, that's been in the news a lot. But I hadn't realised that unsafe food causes more than 200 different diseases. NADIA: No, I'd no idea it was that many. And speaking of diseases, I knew resistance to antibiotics is on the increase, but I didn't know why ... FERGUS: ...that it's partly because when animals are treated with antibiotics then consumed by humans, the antibiotics get into the food chain. I had no idea about that either. NADIA: Then the sessions provided a lot of information about plastic pollution from food packaging in the ocean, but I think that most of us were already aware of that. FERGUS: Yeah. But I thought we could have done more on how much food is thrown away unnecessarily through fear of it being out of date, that was only mentioned in passing.\n\nTUTOR: OK, I'll bear that in mind. What did you think about the sessions from visiting lecturers, Fergus? FERGUS: For me the most interesting one was about that project to prevent companies giving incorrect information to consumers about food. TUTOR: Ah, food fraud, yes. FERGUS: I thought it was really good to address a problem that's faced by so many different groups people with special religious rules, as well as vegetarians and vegans. NADIA: And those with allergies. FERGUS: Yeah. And another thing, we've had effective ways of analysing DNA for some time now and these can easily be applied to analysing food. But what the researchers succeeded in doing was to ensure that these tests were carried out at different stages in the food's journey from the producer to the consumer. So they knew that the food actually came from the place it was supposed to, and had the ingredients it was meant to. NADIA: Exactly. So customers can be confident about what they buy. FERGUS: And the researchers had a good system for publicising their findings too. NADIA: Well, I thought there were some problems with that, actually. TUTOR: OK. And do you have any recommendations for new topics that we could include in the course? NADIA: Well, I'm interested in how crop yields can be increased without damaging the environment. FERGUS: But we've already done quite a bit on that - but not so much on the seafood industry, where stocks are in danger of being overexploited as a food source unless we can find ways of keeping stocks up. NADIA: Yes, that'd be a good topic. And I'm interested in the idea of a personalised approach to diet, now we have the technology to analyse exactly what individuals need. FERGUS: That sounds more like a medical topic than food science. NADIA: OK. What about sessions on the variety of food and eating habits around the world? That's very relevant nowadays. FERGUS: Yes, I think the whole class would be interested in that. NADIA: Then there's technological stuff, things like 3D printing of food and smart packaging. FERGUS: Mmm - maybe too specialist. TUTOR: Now, I'm particularly interested in your project - the one where you developed a new food product. So talk me through the stages... first you had to decide on your initial aim. FERGUS: We decided we wanted to create something people could eat on the go rather than in a restaurant. NADIA: Yeah so we chose falafel, which was originally a Middle Eastern snack.\n\nFERGUS: We made up our minds about that pretty quickly. I know some students found it a lot harder to choose, and wasted a lot of time. NADIA: Then we had to do the literature review. We hadn't done one of these before so, the handout with advice for the project was very useful here. FERGUS: Yes, especially the advice on how to present the information. Then product development, actually deciding what we'd use to make the falafel, and for me the interesting thing about that was that we wanted it to be something a bit different from an ordinary falafel. NADIA: We really made the right choice when we finally decided to use jackfruit, even though it wasn't something that either of us had ever tasted before. FERGUS: Yeah, like the name tells you, it's a fruit but actually it's really good in savoury dishes. The product production, working out how to make the falafel, was harder than I expected because I'd never made them before. NADIA: It was mostly trial and error. We started off with the basic recipe and then experimented and when it went wrong... FERGUS: ...which it did a lot of the time... NADIA: ...we just moved on and kept adapting it and in the end it turned out fine and we had a lot of fun. FERGUS: We did! TUTOR: Thank you. Well, your project was a very good ....",
-  "content": "Which TWO facts in the sessions on food safety were new information for Nadia and Fergus?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the amount of plastic in the ocean"
-   },
-   {
-    "label": "B",
-    "content": "the number of diseases caused by contaminated food"
-   },
-   {
-    "label": "C",
-    "content": "the amount of food that is wasted"
-   },
-   {
-    "label": "D",
-    "content": "the number of people who are obese"
-   },
-   {
-    "label": "E",
-    "content": "the result of treating animals with antibiotics"
-   }
+  "correct": [
+   "B",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -830,7 +716,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T2-S3-023",
@@ -863,48 +749,10 @@
     "content": "the way information was made widely accessible"
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "I thought it was really good to address a problem that's faced by so many different groups – people with special religious rules, as well as vegetarians and vegans. But what the researchers succeeded in doing was to ensure that these tests were carried out at different stages in the food's journey from the producer to the consumer.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T2-S3-024",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C21-L-T2-S3",
-  "passageTitle": "Section 3 — Food safety sessions / Developing a new food product",
-  "passageText": null,
-  "script": "TUTOR: Thanks for coming along, Nadia and Fergus. So this is a chance for you to give us some feedback about different aspects of your course. What would you like to begin with? NADIA: I've enjoyed the sessions on food safety. There was some information there that I found really surprising, although some was stuff I knew already, like the rise in rates of obesity. FERGUS: Yeah, that's been in the news a lot. But I hadn't realised that unsafe food causes more than 200 different diseases. NADIA: No, I'd no idea it was that many. And speaking of diseases, I knew resistance to antibiotics is on the increase, but I didn't know why ... FERGUS: ...that it's partly because when animals are treated with antibiotics then consumed by humans, the antibiotics get into the food chain. I had no idea about that either. NADIA: Then the sessions provided a lot of information about plastic pollution from food packaging in the ocean, but I think that most of us were already aware of that. FERGUS: Yeah. But I thought we could have done more on how much food is thrown away unnecessarily through fear of it being out of date, that was only mentioned in passing.\n\nTUTOR: OK, I'll bear that in mind. What did you think about the sessions from visiting lecturers, Fergus? FERGUS: For me the most interesting one was about that project to prevent companies giving incorrect information to consumers about food. TUTOR: Ah, food fraud, yes. FERGUS: I thought it was really good to address a problem that's faced by so many different groups people with special religious rules, as well as vegetarians and vegans. NADIA: And those with allergies. FERGUS: Yeah. And another thing, we've had effective ways of analysing DNA for some time now and these can easily be applied to analysing food. But what the researchers succeeded in doing was to ensure that these tests were carried out at different stages in the food's journey from the producer to the consumer. So they knew that the food actually came from the place it was supposed to, and had the ingredients it was meant to. NADIA: Exactly. So customers can be confident about what they buy. FERGUS: And the researchers had a good system for publicising their findings too. NADIA: Well, I thought there were some problems with that, actually. TUTOR: OK. And do you have any recommendations for new topics that we could include in the course? NADIA: Well, I'm interested in how crop yields can be increased without damaging the environment. FERGUS: But we've already done quite a bit on that - but not so much on the seafood industry, where stocks are in danger of being overexploited as a food source unless we can find ways of keeping stocks up. NADIA: Yes, that'd be a good topic. And I'm interested in the idea of a personalised approach to diet, now we have the technology to analyse exactly what individuals need. FERGUS: That sounds more like a medical topic than food science. NADIA: OK. What about sessions on the variety of food and eating habits around the world? That's very relevant nowadays. FERGUS: Yes, I think the whole class would be interested in that. NADIA: Then there's technological stuff, things like 3D printing of food and smart packaging. FERGUS: Mmm - maybe too specialist. TUTOR: Now, I'm particularly interested in your project - the one where you developed a new food product. So talk me through the stages... first you had to decide on your initial aim. FERGUS: We decided we wanted to create something people could eat on the go rather than in a restaurant. NADIA: Yeah so we chose falafel, which was originally a Middle Eastern snack.\n\nFERGUS: We made up our minds about that pretty quickly. I know some students found it a lot harder to choose, and wasted a lot of time. NADIA: Then we had to do the literature review. We hadn't done one of these before so, the handout with advice for the project was very useful here. FERGUS: Yes, especially the advice on how to present the information. Then product development, actually deciding what we'd use to make the falafel, and for me the interesting thing about that was that we wanted it to be something a bit different from an ordinary falafel. NADIA: We really made the right choice when we finally decided to use jackfruit, even though it wasn't something that either of us had ever tasted before. FERGUS: Yeah, like the name tells you, it's a fruit but actually it's really good in savoury dishes. The product production, working out how to make the falafel, was harder than I expected because I'd never made them before. NADIA: It was mostly trial and error. We started off with the basic recipe and then experimented and when it went wrong... FERGUS: ...which it did a lot of the time... NADIA: ...we just moved on and kept adapting it and in the end it turned out fine and we had a lot of fun. FERGUS: We did! TUTOR: Thank you. Well, your project was a very good ....",
-  "content": "Which TWO features of a project aiming to prevent food fraud impressed Fergus?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the new technology it used"
-   },
-   {
-    "label": "B",
-    "content": "the publicity it received"
-   },
-   {
-    "label": "C",
-    "content": "the use of multiple tests on food items"
-   },
-   {
-    "label": "D",
-    "content": "the variety of dietary requirements included"
-   },
-   {
-    "label": "E",
-    "content": "the way information was made widely accessible"
-   }
+  "correct": [
+   "C",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -912,7 +760,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T2-S3-025",
@@ -945,48 +793,10 @@
     "content": "digital technology and food"
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "FERGUS: But we've already done quite a bit on that – but not so much on the seafood industry, where stocks are in danger of being overexploited as a food source unless we can find ways of keeping stocks up. NADIA: Yes, that'd be a good topic. NADIA: OK. What about sessions on the variety of food and eating habits around the world? That's very relevant nowadays. FERGUS: Yes, I think the whole class would be interested in that.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T2-S3-026",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C21-L-T2-S3",
-  "passageTitle": "Section 3 — Food safety sessions / Developing a new food product",
-  "passageText": null,
-  "script": "TUTOR: Thanks for coming along, Nadia and Fergus. So this is a chance for you to give us some feedback about different aspects of your course. What would you like to begin with? NADIA: I've enjoyed the sessions on food safety. There was some information there that I found really surprising, although some was stuff I knew already, like the rise in rates of obesity. FERGUS: Yeah, that's been in the news a lot. But I hadn't realised that unsafe food causes more than 200 different diseases. NADIA: No, I'd no idea it was that many. And speaking of diseases, I knew resistance to antibiotics is on the increase, but I didn't know why ... FERGUS: ...that it's partly because when animals are treated with antibiotics then consumed by humans, the antibiotics get into the food chain. I had no idea about that either. NADIA: Then the sessions provided a lot of information about plastic pollution from food packaging in the ocean, but I think that most of us were already aware of that. FERGUS: Yeah. But I thought we could have done more on how much food is thrown away unnecessarily through fear of it being out of date, that was only mentioned in passing.\n\nTUTOR: OK, I'll bear that in mind. What did you think about the sessions from visiting lecturers, Fergus? FERGUS: For me the most interesting one was about that project to prevent companies giving incorrect information to consumers about food. TUTOR: Ah, food fraud, yes. FERGUS: I thought it was really good to address a problem that's faced by so many different groups people with special religious rules, as well as vegetarians and vegans. NADIA: And those with allergies. FERGUS: Yeah. And another thing, we've had effective ways of analysing DNA for some time now and these can easily be applied to analysing food. But what the researchers succeeded in doing was to ensure that these tests were carried out at different stages in the food's journey from the producer to the consumer. So they knew that the food actually came from the place it was supposed to, and had the ingredients it was meant to. NADIA: Exactly. So customers can be confident about what they buy. FERGUS: And the researchers had a good system for publicising their findings too. NADIA: Well, I thought there were some problems with that, actually. TUTOR: OK. And do you have any recommendations for new topics that we could include in the course? NADIA: Well, I'm interested in how crop yields can be increased without damaging the environment. FERGUS: But we've already done quite a bit on that - but not so much on the seafood industry, where stocks are in danger of being overexploited as a food source unless we can find ways of keeping stocks up. NADIA: Yes, that'd be a good topic. And I'm interested in the idea of a personalised approach to diet, now we have the technology to analyse exactly what individuals need. FERGUS: That sounds more like a medical topic than food science. NADIA: OK. What about sessions on the variety of food and eating habits around the world? That's very relevant nowadays. FERGUS: Yes, I think the whole class would be interested in that. NADIA: Then there's technological stuff, things like 3D printing of food and smart packaging. FERGUS: Mmm - maybe too specialist. TUTOR: Now, I'm particularly interested in your project - the one where you developed a new food product. So talk me through the stages... first you had to decide on your initial aim. FERGUS: We decided we wanted to create something people could eat on the go rather than in a restaurant. NADIA: Yeah so we chose falafel, which was originally a Middle Eastern snack.\n\nFERGUS: We made up our minds about that pretty quickly. I know some students found it a lot harder to choose, and wasted a lot of time. NADIA: Then we had to do the literature review. We hadn't done one of these before so, the handout with advice for the project was very useful here. FERGUS: Yes, especially the advice on how to present the information. Then product development, actually deciding what we'd use to make the falafel, and for me the interesting thing about that was that we wanted it to be something a bit different from an ordinary falafel. NADIA: We really made the right choice when we finally decided to use jackfruit, even though it wasn't something that either of us had ever tasted before. FERGUS: Yeah, like the name tells you, it's a fruit but actually it's really good in savoury dishes. The product production, working out how to make the falafel, was harder than I expected because I'd never made them before. NADIA: It was mostly trial and error. We started off with the basic recipe and then experimented and when it went wrong... FERGUS: ...which it did a lot of the time... NADIA: ...we just moved on and kept adapting it and in the end it turned out fine and we had a lot of fun. FERGUS: We did! TUTOR: Thank you. Well, your project was a very good ....",
-  "content": "Which TWO topics do both students recommend should be included in the course?",
-  "options": [
-   {
-    "label": "A",
-    "content": "sustainable fishing"
-   },
-   {
-    "label": "B",
-    "content": "targeted nutrition"
-   },
-   {
-    "label": "C",
-    "content": "global differences in consumption"
-   },
-   {
-    "label": "D",
-    "content": "sustainable agriculture"
-   },
-   {
-    "label": "E",
-    "content": "digital technology and food"
-   }
+  "correct": [
+   "A",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -994,7 +804,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T2-S3-027",
@@ -2107,48 +1917,10 @@
     "content": "Working with gold was a respected occupation in the Mapungubwe community."
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "A type of decoration, found nowhere else except Great Zimbabwe, involved the crafting of gold into small rectangular sheets and carving geometrical patterns into it. These objects were all found at the royal burial site and date to c. 1150.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-R-T2-P2-021",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C21-R-T2-P2",
-  "passageTitle": "Passage 2 — Mapungubwe",
-  "passageText": "Located in southern Africa just below the Limpopo River, the kingdom of Mapungubwe flourished between the 11th and 13th century CE\n\nA. Mapungubwe, which was one of the first states in southern Africa, was formed by Bantu-speaking peoples who were farmers. The area controlled by the rulers of Mapungubwe had at its heart a large sandstone plateau, which was easily defended due to its inaccessibility. As with other kingdoms in the region of southern Africa, cattle herding and other types of farming brought plenty of food and a surplus that could be traded for needed goods. Archaeology has revealed extensive layers of bones and manure, which indicate that from the 9th century CE there were large cattle herds, the traditional source of political power in southern African communities. The archaeological record for the 10th century shows a marked increase in the number of domesticated cattle in the area as well as cotton cultivation and weaving, as indicated by abundant finds of spindle whorls.\n\nB. The total population of Mapungubwe at its peak in the mid-13th century was around 5,000 people. The chief or king of Mapungubwe was likely the wealthiest individual in the society, and would have owned more cattle and precious materials than anyone else. The king and his advisers dwelt in a stone enclosure composed of stone walls and housing built on the highest level of the community's territory, a natural sandstone hill which is some 30 metres high and 100 metres in length. Occupation on the hill dates from the 11th century and the entire complex was surrounded by a wooden palisade*, as indicated by postholes made in the rock. The rest of the community lived in mud and thatch housing spread out below the hill, although there is one stone structure here. This settlement, known as Babandyanalo, covers around 5 hectares (12.3 acres) and predates the hilltop structures.\n\nC. The kings of Mapungubwe were buried at the top of the hill site in a demarcated area away from the dwellings, while other members of the community were buried at the surrounding valley level. A wooden staircase connected the two levels, the sockets for the steps being clearly visible in the sandstone cliff face. There were some grander residences dotted around the outskirts of Babandyanalo, and these probably belonged to male relatives of the king. There are many other smaller but still impressive sites across the Mapungubwe plateau, which are located anywhere from 15 to 100 kilometres from the major hill site. Containing stone residences and walls, they likely belonged to local chiefs who acted as servants to the king.\n\nD. The Mapungubwe plateau has a very high number of carnivore animal remains and ivory splinters, suggesting that the skins of these large animals and ivory elephant tusks were accumulated, probably for trade with coastal areas reached by the Limpopo River. The presence of glass beads, almost certainly from India, indicate there was trade of some sort with other states on the coast who, in turn, traded with merchants travelling from India by sea.\n\nMapungubwe also benefitted from locally-sourced copper and the gold trade as it passed from the kingdom of Great Zimbabwe (12-15th century), situated to the north of Mapungubwe, to the coastal city of Kosala. It is likely that trade links led to a strengthening of political authority in order to control and even monopolise these lucrative interregional connections.\n\nE. Archaeological discoveries reveal that pottery was produced on a scale large enough to suggest the presence of professional potters, and is another indicator of the prosperity of Mapungubwe society. Archaeological finds include spherical vessels with short necks, beakers, and bowls, many of which have decorative stamps. There are also ceramic discs, and whistles. In addition, cattle, sheep, and goat figurines, and small figures of highly stylised humans with elongated bodies and short limbs have been found. The figures may have been used in ceremonies as offerings to ancestors, but their precise function is not known. Other discoveries include small jewellery items made from locally sourced copper.\n\nF. Beautifully decorated artefacts made of gold have also been found at Mapungubwe. A type of decoration, found nowhere else except Great Zimbabwe, involved the crafting of gold into small rectangular sheets and carving geometrical patterns into it. These sheets were then used to cover wooden objects (which have not survived) using small tacks, also made of gold. One such object that has been discovered may have been a sceptre, while additional evidence of local gold-working is a rhinoceros figurine made from small hammered sheets, and thousands of small gold beads. These objects were all found at the royal burial site and date to c. 1150. They are the first known indicators that gold had an intrinsic value of its own (as opposed to that of a currency) in southern Africa.\n\nG. The kingdom of Mapungubwe was already in decline by the late 13th century, probably because overpopulation placed too much stress on local resources, a situation that may have been brought to a crisis point by a series of droughts. Trade routes may also have shifted northwards. Certainly, the areas that now prospered were to the north, such as Great Zimbabwe. * palisade: typically a row of closely placed, high vertical wooden or iron posts used as a means of defence",
-  "script": null,
-  "content": "The archaeological record reveals information about gold and the kingdom of Mapungubwe. Which TWO pieces of information are mentioned by the writer?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Not everyone in Mapungubwe used gold as a form of payment."
-   },
-   {
-    "label": "B",
-    "content": "Items of gold were placed close to where Mapungubwe kings were buried."
-   },
-   {
-    "label": "C",
-    "content": "The most valuable item discovered in Mapungubwe was a sceptre made of gold."
-   },
-   {
-    "label": "D",
-    "content": "The way gold was decorated in Mapungubwe was also practised in another kingdom."
-   },
-   {
-    "label": "E",
-    "content": "Working with gold was a respected occupation in the Mapungubwe community."
-   }
+  "correct": [
+   "B",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -2156,7 +1928,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-R-T2-P2-022",

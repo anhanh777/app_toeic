@@ -586,48 +586,10 @@
     "content": "the implications for government policy"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "LUCY: Yeah. I learned a lot from her about ocean biodiversity. I've already done some reading on it, and I did an assignment on some of the problems associated with it last year, but I especially liked the way her lecture focused on more long-term issues. PHIL: Yes, things that aren't currently receiving widespread attention but are likely to be important in the future. That impressed me too. PHIL: Mm. But that's just at a national level. The examples she gave were at a more global level, and they really made it clear to me just how wide-ranging the threats to ocean biodiversity are. LUCY: Yes, me too",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T1-S3-022",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C21-L-T1-S3",
-  "passageTitle": "Section 3 — Ocean biodiversity",
-  "passageText": null,
-  "script": "PHIL: That lecture from the visiting speaker yesterday was good, wasn't it? LUCY: Yeah. I learned a lot from her about ocean biodiversity. I've already done some reading on it, and I did an assignment on some of the problems associated with it last year, but I especially liked the way her lecture focused on more long-term issues. PHIL: Yes, things that aren't currently receiving widespread attention but are likely to be important in the future. That impressed me too. It wasn't exactly a feel-good conclusion because it's hard to see any real solution for a lot of the problems. LUCY: No, though she did point to where policy changes could be made to protect our marine and coastal environments. PHIL: Mm. But that's just at a national level. The examples she gave were at a more global level, and they really made it clear to me just how wide-ranging the threats to ocean biodiversity are. LUCY: Yes, me too. PHIL: The research project she described was impressive, wasn't it? I'd have thought it was quite unusual to have so many experts working together. LUCY: Yeah, and from such different backgrounds. Must have been a really exciting team to work with. I'd heard of a couple of them before - they were involved in research way back in 2009 warning about the dangers of ocean pollution. PHIL: But now people are much more aware of that, aren't they? LUCY: I suppose so. PHIL: Another thing about the research is that the team members came from all round the world. Though I suppose that's not unusual nowadays, now everyone can work remotely. LUCY: Right. I liked the way she didn't bombard us with figures - I mean, they were available, but she focused more on the general points they indicated. PHIL: Mm. And the description of improvements in systems used for tracking marine animals and things like robots were really interesting. LUCY: Yes, and her description of how robotics can be used to investigate threats to biodiversity. PHIL: Absolutely. PHIL: While you're here, can we talk about the list of resources we have to evaluate for the seminar tomorrow. I've had a look at them all, but it's been a bit of a rush. LUCY: Yeah. What did you think of that article on invasive lionfish? The one claiming they were expanding their habitat throughout the Mediterranean Sea. PHIL: Well, the writer went on about how dangerous they were in environmental terms, which is probably true, but he didn't really provide much information to explain why. LUCY: I know what you mean. PHIL: I watched the documentary on microplastics, at least I started to, but then I found it was made ten years ago so I gave up. LUCY: I watched to the end but you're right, it was showing its age. People had hardly heard of microplastics then, whereas now everyone knows about them and how dangerous they are. PHIL: Yeah. Did you listen to the podcast on ocean pollution? LUCY: Mm. I didn't get anything out of it though. Most of it was stating the obvious. PHIL: Yes, it mentioned pesticides and plastic and things, and it clearly made the point that they were a bad thing, but everybody knows that anyway. Did you read that book on coastal ecosystems? LUCY: The one by John Harper? Yes, I found it hard going at first, it went into a lot of detail about things like the effects of offshore windfarms and fish farms, but actually I ended up with a much better understanding of the issues. PHIL: Yes, I agree and I thought it was a well-written summary of those. And the diagrams helped a lot too. LUCY: The article on metal toxicity was way above my head, I didn't know anything about how metals from industrial emissions react in the ocean... and I still don't understand it. PHIL: I gave up reading after the first chapter - I just couldn't follow it. LUCY: That podcast on floating marine cities was interesting, though it presented a rather one-sided picture, I thought. PHIL: Yes, it focused on how this would benefit people and ignored the effects on the environment. LUCY: But anyway, shall we ...",
-  "content": "Which TWO features of the lecture on ocean biodiversity had the greatest impact on the students?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the references to local problems"
-   },
-   {
-    "label": "B",
-    "content": "the broad focus of the examples"
-   },
-   {
-    "label": "C",
-    "content": "the practical suggestions for solutions"
-   },
-   {
-    "label": "D",
-    "content": "the type of issues discussed"
-   },
-   {
-    "label": "E",
-    "content": "the implications for government policy"
-   }
+  "correct": [
+   "B",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -635,7 +597,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T1-S3-023",
@@ -668,48 +630,10 @@
     "content": "the large range of specialists involved"
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "PHIL: The research project she described was impressive, wasn't it? I'd have thought it was quite unusual to have so many experts working together. LUCY: Yeah, and from such different backgrounds. PHIL: Mm. And the description of improvements in systems used for tracking marine animals and things like robots were really interesting. LUCY: Yes, and her description of how robotics can be used to investigate threats to biodiversity",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T1-S3-024",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C21-L-T1-S3",
-  "passageTitle": "Section 3 — Ocean biodiversity",
-  "passageText": null,
-  "script": "PHIL: That lecture from the visiting speaker yesterday was good, wasn't it? LUCY: Yeah. I learned a lot from her about ocean biodiversity. I've already done some reading on it, and I did an assignment on some of the problems associated with it last year, but I especially liked the way her lecture focused on more long-term issues. PHIL: Yes, things that aren't currently receiving widespread attention but are likely to be important in the future. That impressed me too. It wasn't exactly a feel-good conclusion because it's hard to see any real solution for a lot of the problems. LUCY: No, though she did point to where policy changes could be made to protect our marine and coastal environments. PHIL: Mm. But that's just at a national level. The examples she gave were at a more global level, and they really made it clear to me just how wide-ranging the threats to ocean biodiversity are. LUCY: Yes, me too. PHIL: The research project she described was impressive, wasn't it? I'd have thought it was quite unusual to have so many experts working together. LUCY: Yeah, and from such different backgrounds. Must have been a really exciting team to work with. I'd heard of a couple of them before - they were involved in research way back in 2009 warning about the dangers of ocean pollution. PHIL: But now people are much more aware of that, aren't they? LUCY: I suppose so. PHIL: Another thing about the research is that the team members came from all round the world. Though I suppose that's not unusual nowadays, now everyone can work remotely. LUCY: Right. I liked the way she didn't bombard us with figures - I mean, they were available, but she focused more on the general points they indicated. PHIL: Mm. And the description of improvements in systems used for tracking marine animals and things like robots were really interesting. LUCY: Yes, and her description of how robotics can be used to investigate threats to biodiversity. PHIL: Absolutely. PHIL: While you're here, can we talk about the list of resources we have to evaluate for the seminar tomorrow. I've had a look at them all, but it's been a bit of a rush. LUCY: Yeah. What did you think of that article on invasive lionfish? The one claiming they were expanding their habitat throughout the Mediterranean Sea. PHIL: Well, the writer went on about how dangerous they were in environmental terms, which is probably true, but he didn't really provide much information to explain why. LUCY: I know what you mean. PHIL: I watched the documentary on microplastics, at least I started to, but then I found it was made ten years ago so I gave up. LUCY: I watched to the end but you're right, it was showing its age. People had hardly heard of microplastics then, whereas now everyone knows about them and how dangerous they are. PHIL: Yeah. Did you listen to the podcast on ocean pollution? LUCY: Mm. I didn't get anything out of it though. Most of it was stating the obvious. PHIL: Yes, it mentioned pesticides and plastic and things, and it clearly made the point that they were a bad thing, but everybody knows that anyway. Did you read that book on coastal ecosystems? LUCY: The one by John Harper? Yes, I found it hard going at first, it went into a lot of detail about things like the effects of offshore windfarms and fish farms, but actually I ended up with a much better understanding of the issues. PHIL: Yes, I agree and I thought it was a well-written summary of those. And the diagrams helped a lot too. LUCY: The article on metal toxicity was way above my head, I didn't know anything about how metals from industrial emissions react in the ocean... and I still don't understand it. PHIL: I gave up reading after the first chapter - I just couldn't follow it. LUCY: That podcast on floating marine cities was interesting, though it presented a rather one-sided picture, I thought. PHIL: Yes, it focused on how this would benefit people and ignored the effects on the environment. LUCY: But anyway, shall we ...",
-  "content": "Which TWO details about the research project particularly impressed the students?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the team's previous successes"
-   },
-   {
-    "label": "B",
-    "content": "its wide geographical scale"
-   },
-   {
-    "label": "C",
-    "content": "the use of new technology"
-   },
-   {
-    "label": "D",
-    "content": "the extensive statistical evidence"
-   },
-   {
-    "label": "E",
-    "content": "the large range of specialists involved"
-   }
+  "correct": [
+   "C",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -717,7 +641,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T1-S3-025",

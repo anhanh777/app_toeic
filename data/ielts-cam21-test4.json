@@ -230,48 +230,10 @@
     "content": "the Business Connections Zone"
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "We also used the Breakout area where people could sit down and relax, and try out our products, and due to popular request we used that again last year. Last year we also sponsored the innovative Business Connections Zone where people could leave their contact details on a board to contact other companies, and that also effectively raised our corporate profile",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T4-S2-012",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C21-L-T4-S2",
-  "passageTitle": "Section 2 — Annual Business Exhibition",
-  "passageText": null,
-  "script": "Hello and welcome to this podcast telling you about our annual business exhibition. This year, as always, it will be full of the very best speakers, features and innovations. Let me start by reading some feedback from James Craig, who's exhibited with us for the past two years. James says, 'I'm director of a company called TalkCon, which is an office phone system. The first year we exhibited, we had a stand in the Business Village, where we made a lot of useful contacts. We\n\nalso used the Breakout area where people could sit down and relax, and try out our products, and due to popular request we used that again last year. Last year we also sponsored the innovative Business Connections Zone where people could leave their contact details on a board to contact other companies, and that also effectively raised our corporate profile. We're hoping that in the coming exhibition we'll also have a presence in the Digital Marketing centre, which is clearly a key area for our company. And also maybe have our own Talkcon Zone, at some stage.' The exhibition's open from 8am to 11 pm and there's a range of special events for you to enjoy in the evening. As well as a unique chance to publicise your company, businesses who exhibit with us can claim discounts on a number of popular brands, including major high street fashion and jewellery outlets, as well as grocery chains. Discounts available range from 3.5% up to an amazing 15%, so you can save a lot of money. In fact, the average saving made by each exhibitor came to over £400! The scheme is available to every member of your organisation so this is a benefit that really does have something for you all. Now let me tell you about some of our keynote speakers for this year's exhibition. Jim Clowrie started off selling vegetables from a small plot, then opened a small café. Rather to his surprise this became a bit of a sensation, and in a remarkably short time he had opened an amazing 76 restaurants worldwide. He'll be telling you how it all happened, and how it changed his life. David France will be giving an inspirational talk about how as a business-minded teenager he managed to set up his own company, and even to be the first person under 18 to get a business bank account. David's company has gone from strength to strength but he isn't just interested in making money - he also makes regular donations to organisations helping those in need both in the UK and elsewhere in the world. Oliver Stanton was born and educated in the UK, and then went to Malaysia where he set up a rubberwood furniture business. He then built log houses in the mountains in Japan before moving to Hong Kong to set up a digital marketing business. After that he moved back to the UK with his wife Saiphin, and together they opened a Thai café. He'll be telling you about what he discovered during his travels around the world about business practices in different cultures. Francesca Heptonstall is a broadcaster and businesswoman who's known for her down-to-earth attitude. After winning a top job in a TV contest, she launched a number of online deal sites. Her main business interest is in technology, but she's also passionate about helping people gain employment and organises an annual jobs fair, so she'll be concentrating on this in her talk. Salman Khan is the Chief Executive of QBF Enterprises, and has turned around this business from a major publishing business to one of the UK's largest digital marketing service providers. He'll be talking about the need for flexibility to cope with new directions in today's business world. Finally, Annie Craven is a consultant and coach who works with people to create lasting changes in their business and life. Her session will offer an interactive look at different obstacles in people's own lives, not just in business. She also looks at how you can overcome them, whether you're starting out in business or at the top of your game. Now let me ...",
-  "content": "In which TWO areas of the business exhibition did James Craig promote his company last year?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the Digital Marketing Centre"
-   },
-   {
-    "label": "B",
-    "content": "the TalkCon Zone"
-   },
-   {
-    "label": "C",
-    "content": "the Breakout area"
-   },
-   {
-    "label": "D",
-    "content": "the Business Village"
-   },
-   {
-    "label": "E",
-    "content": "the Business Connections Zone"
-   }
+  "correct": [
+   "C",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -279,7 +241,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T4-S2-013",
@@ -312,48 +274,10 @@
     "content": "The percentage saved is always the same."
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "As well as a unique chance to publicise your company, businesses who exhibit with us can claim discounts on a number of popular brands, including major high street fashion and jewellery outlets, as well as grocery chains. Discounts available range from 3.5% up to an amazing 15%, so you can save a lot of money. In fact, the average saving made by each exhibitor came to over £400! The scheme is available to every member of your organisation so this is a benefit that really does have something for you all",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching"
- },
- {
-  "id": "C21-L-T4-S2-014",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C21-L-T4-S2",
-  "passageTitle": "Section 2 — Annual Business Exhibition",
-  "passageText": null,
-  "script": "Hello and welcome to this podcast telling you about our annual business exhibition. This year, as always, it will be full of the very best speakers, features and innovations. Let me start by reading some feedback from James Craig, who's exhibited with us for the past two years. James says, 'I'm director of a company called TalkCon, which is an office phone system. The first year we exhibited, we had a stand in the Business Village, where we made a lot of useful contacts. We\n\nalso used the Breakout area where people could sit down and relax, and try out our products, and due to popular request we used that again last year. Last year we also sponsored the innovative Business Connections Zone where people could leave their contact details on a board to contact other companies, and that also effectively raised our corporate profile. We're hoping that in the coming exhibition we'll also have a presence in the Digital Marketing centre, which is clearly a key area for our company. And also maybe have our own Talkcon Zone, at some stage.' The exhibition's open from 8am to 11 pm and there's a range of special events for you to enjoy in the evening. As well as a unique chance to publicise your company, businesses who exhibit with us can claim discounts on a number of popular brands, including major high street fashion and jewellery outlets, as well as grocery chains. Discounts available range from 3.5% up to an amazing 15%, so you can save a lot of money. In fact, the average saving made by each exhibitor came to over £400! The scheme is available to every member of your organisation so this is a benefit that really does have something for you all. Now let me tell you about some of our keynote speakers for this year's exhibition. Jim Clowrie started off selling vegetables from a small plot, then opened a small café. Rather to his surprise this became a bit of a sensation, and in a remarkably short time he had opened an amazing 76 restaurants worldwide. He'll be telling you how it all happened, and how it changed his life. David France will be giving an inspirational talk about how as a business-minded teenager he managed to set up his own company, and even to be the first person under 18 to get a business bank account. David's company has gone from strength to strength but he isn't just interested in making money - he also makes regular donations to organisations helping those in need both in the UK and elsewhere in the world. Oliver Stanton was born and educated in the UK, and then went to Malaysia where he set up a rubberwood furniture business. He then built log houses in the mountains in Japan before moving to Hong Kong to set up a digital marketing business. After that he moved back to the UK with his wife Saiphin, and together they opened a Thai café. He'll be telling you about what he discovered during his travels around the world about business practices in different cultures. Francesca Heptonstall is a broadcaster and businesswoman who's known for her down-to-earth attitude. After winning a top job in a TV contest, she launched a number of online deal sites. Her main business interest is in technology, but she's also passionate about helping people gain employment and organises an annual jobs fair, so she'll be concentrating on this in her talk. Salman Khan is the Chief Executive of QBF Enterprises, and has turned around this business from a major publishing business to one of the UK's largest digital marketing service providers. He'll be talking about the need for flexibility to cope with new directions in today's business world. Finally, Annie Craven is a consultant and coach who works with people to create lasting changes in their business and life. Her session will offer an interactive look at different obstacles in people's own lives, not just in business. She also looks at how you can overcome them, whether you're starting out in business or at the top of your game. Now let me ...",
-  "content": "Which TWO facts are given about discounts on popular brands available to exhibitors?",
-  "options": [
-   {
-    "label": "A",
-    "content": "They are available to all members of exhibiting companies."
-   },
-   {
-    "label": "B",
-    "content": "They can be used for both food and clothing."
-   },
-   {
-    "label": "C",
-    "content": "They only apply if people spend at least £400."
-   },
-   {
-    "label": "D",
-    "content": "They can be used by family members."
-   },
-   {
-    "label": "E",
-    "content": "The percentage saved is always the same."
-   }
+  "correct": [
+   "A",
+   "B"
   ],
-  "correct": "B",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -361,7 +285,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "list_selection"
  },
  {
   "id": "C21-L-T4-S2-015",
