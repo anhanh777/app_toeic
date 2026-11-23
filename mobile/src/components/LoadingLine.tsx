@@ -429,7 +429,7 @@ function LoadingImage({ image, imageUrl, size }: { image: string; imageUrl: stri
   if (image === 'mascot') {
     return (
       <Animated.View style={bob}>
-        <Image source={require('../assets/mascot.png')} style={{ width: s, height: s }} contentFit="contain" />
+        <Image source={require('../../assets/mascot.png')} style={{ width: s, height: s }} contentFit="contain" />
       </Animated.View>
     );
   }
