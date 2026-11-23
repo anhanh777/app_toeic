@@ -19,13 +19,13 @@ import { LoadingLine } from '../uiSettings';
 import { api, type Question } from '../api';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, confirmDialog, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
-import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
+import { isFillIn, isMultiAnswer, paperNumbersFor, parseSelectedLabels, partLabel, questionTypeName, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitGroupSegments } from '../ielts-ui';
 import { clearHighlights, getHighlightCount, highlightSelection, highlightSupported, IeltsNotePanel, IeltsToolsBar, useIeltsNotes } from '../ielts-tools';
 import { RootCausePicker, fmtClock, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
 
-type AnswerResult = { correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number };
+type AnswerResult = { correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number; marks?: number; maxMarks?: number };
 
 export default function PracticeSession() {
   const [params] = useSearchParams();
@@ -188,16 +188,13 @@ export default function PracticeSession() {
   const doneCount = submittedAll ? visibleQuestions.length : visibleQuestions.filter(q => resultById[q.id]).length;
   const correctCount = visibleQuestions.filter(q => resultById[q.id]?.correct).length;
   // Số thật trong đề của từng câu — tính trên TOÀN BỘ câu hỏi, không phải
-  // danh sách đã lọc (lọc theo dạng không được làm lệch số câu).
+  // danh sách đã lọc (lọc theo dạng không được làm lệch số câu). Câu gộp
+  // list_selection chiếm 2–3 số nên label hiển thị dạng khoảng "11–12",
+  // còn n (số bắt đầu) dùng cho stripLeadingNumber/thông báo lỗi.
+  const paperNumbers = paperNumbersFor(exam, questions);
   const trueNumberById: Record<string, number> = {};
-  {
-    const pc: Record<number, number> = {};
-    questions.forEach(q => {
-      const idx = (pc[q.part] ?? 0) + 1;
-      pc[q.part] = idx;
-      trueNumberById[q.id] = realQuestionNumber(exam, q.part, idx);
-    });
-  }
+  const trueLabelById: Record<string, string> = {};
+  paperNumbers.forEach((v, id) => { trueNumberById[id] = v.n; trueLabelById[id] = v.label; });
 
   // Luyện 1 Part: isListening theo Part đó. Luyện cả đề: nghe/đọc tính theo
   // từng câu (q.part) — xem usePartAudioFor + renderQuestion.
@@ -268,6 +265,7 @@ export default function PracticeSession() {
 
   // Số thật trong đề của 1 câu (để báo lỗi giới hạn từ đúng câu).
   const questionNumber = (target: Question) => trueNumberById[target.id] ?? realQuestionNumber(exam, target.part, 1);
+  const questionLabel = (target: Question) => trueLabelById[target.id] ?? `${questionNumber(target)}`;
 
   // Nộp tất cả (chế độ 'submit-all'): chấm lần lượt từng câu đã làm theo
   // thứ tự trong đề; câu chưa làm KHÔNG gọi API (backend trả 400 với đáp
@@ -285,7 +283,7 @@ export default function PracticeSession() {
     // khi nộp câu nào — vượt thì báo lỗi (ghi rõ số câu) và dừng hẳn.
     for (const q of answered) {
       if (isFillIn(q.questionType) && q.wordLimit != null && wordCount(selectedById[q.id]) > q.wordLimit) {
-        setError(new Error(`Câu ${questionNumber(q)} quá giới hạn số từ (tối đa ${q.wordLimit} từ). Hãy rút gọn đáp án rồi nộp lại.`));
+        setError(new Error(`Câu ${questionLabel(q)} quá giới hạn số từ (tối đa ${q.wordLimit} từ). Hãy rút gọn đáp án rồi nộp lại.`));
         return;
       }
     }
@@ -351,17 +349,18 @@ export default function PracticeSession() {
   // Số thứ tự n là SỐ THẬT trong đề (mốc đầu Part + vị trí trong Part),
   // không phải vị trí trong danh sách (luyện riêng Part 3 thì 1–39 sai,
   // số thật là 32–70).
-  type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number }[] };
+  type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number; label: string }[] };
   const blocks: Block[] = [];
   // Nhóm trên các câu ĐANG HIỆN; số câu n lấy từ trueNumberById (số thật
   // trong đề) để lọc theo dạng không làm lệch số.
   visibleQuestions.forEach((q) => {
     const n = trueNumberById[q.id] ?? realQuestionNumber(exam, q.part, 1);
+    const label = trueLabelById[q.id] ?? `${n}`;
     const last = blocks[blocks.length - 1];
     const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
     const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
-    if ((sameId || sameText) && last) last.questions.push({ q, n });
-    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n }] });
+    if ((sameId || sameText) && last) last.questions.push({ q, n, label });
+    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n, label }] });
   });
 
   // Hàng nộp đáp án + checkbox đoán mò của 1 câu — dùng chung cho câu
@@ -412,8 +411,12 @@ export default function PracticeSession() {
     return (
       <div className="exam-q-result">
         <p style={{ color: result.correct ? 'var(--green-ink)' : 'var(--red-ink)', fontWeight: 700 }}>
-          {/* list_selection: đáp án đúng là tập nhãn, hiển thị "A, C". */}
-          {result.correct ? '✅ Đúng rồi!' : `❌ Sai rồi. Đáp án đúng: ${isMultiAnswer(qType) ? (parseSelectedLabels(result.correctLabel).join(', ') || result.correctText || '') : (result.correctLabel ?? result.correctText ?? '')}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
+          {/* list_selection: đáp án đúng là tập nhãn, hiển thị "A, C".
+              Đúng 1 phần (VD 1/2 nhãn) vẫn được điểm nhưng tính là sai
+              khi ôn lại — hiện rõ để người học biết cần đủ cả 2–3 nhãn. */}
+          {result.correct ? '✅ Đúng rồi!' : isMultiAnswer(qType) && result.marks != null && result.maxMarks != null && result.marks > 0 && result.marks < result.maxMarks
+            ? `⚠️ Đúng ${result.marks}/${result.maxMarks} — cần đủ ${result.maxMarks} mới tính là đúng. Đáp án đúng: ${parseSelectedLabels(result.correctLabel).join(', ') || result.correctText || ''}`
+            : `❌ Sai rồi. Đáp án đúng: ${isMultiAnswer(qType) ? (parseSelectedLabels(result.correctLabel).join(', ') || result.correctText || '') : (result.correctLabel ?? result.correctText ?? '')}`} {result.xpAwarded ? `(+${result.xpAwarded} XP)` : ''}
         </p>
         {(() => {
           // IELTS-only: cổng giải thích — câu sai HOẶC đoán mò thì ẨN
@@ -436,11 +439,10 @@ export default function PracticeSession() {
           return (
             <>
               {result.explanation && <p><strong>Giải thích:</strong> {result.explanation}</p>}
-              {/* Transcript chỉ ở câu nghe (part 1–4): ở câu đọc
-                 "transcript" API trả về thực chất là đoạn văn dùng chung,
-                 đã hiện 1 lần phía trên rồi — sau khi nộp chỉ hiện giải
-                 thích, không in lại cả đoạn. Luyện cả đề: tính theo Part
-                 của từng câu. */}
+              {/* Transcript chỉ ở câu nghe (part 1–4) và CHỈ là script thật:
+                 API không còn trả đoạn văn/bảng minh họa dưới tên transcript
+                 (TOEIC P3/P4: bảng đó đã hiện 1 lần phía trên). Luyện cả đề:
+                 tính theo Part của từng câu. */}
               {q.part <= 4 && result.transcript && <p><strong>Transcript:</strong> {result.transcript}</p>}
             </>
           );
@@ -452,11 +454,11 @@ export default function PracticeSession() {
   // Dải chấm cho 1 khối nhóm (ghi chú inline / bảng matching): mỗi câu
   // 1 dòng gọn — số câu + hàng nộp đáp án + kết quả (nếu đã chấm). Ô
   // nhập đáp án nằm trong khối nhóm phía trên.
-  const renderGradingStrip = (items: { q: Question; n: number }[]) => (
+  const renderGradingStrip = (items: { q: Question; n: number; label: string }[]) => (
     <div className="ielts-strip">
-      {items.map(({ q, n }) => (
+      {items.map(({ q, label }) => (
         <div key={q.id} className="ielts-strip-row">
-          <span className="exam-q-num">{n}.</span>
+          <span className="exam-q-num">{label}.</span>
           <div className="ielts-strip-main">
             {renderSubmitRow(q)}
             {renderQuestionResult(q)}
@@ -493,7 +495,7 @@ export default function PracticeSession() {
     });
   };
 
-  const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
+  const renderQuestion = ({ q, n, label }: { q: Question; n: number; label: string }) => {
     const result = resultById[q.id];
     const selected = selectedById[q.id] ?? '';
     const listeningOnly = isListeningOnly(q);
@@ -553,15 +555,15 @@ export default function PracticeSession() {
               IELTS: chữ thường, chỉ chỗ trống in đậm (đỡ nặng mắt);
               TOEIC giữ in đậm như cũ. */}
           {showContent ? (
-            <p><span className="exam-q-num">{n}.</span>{isIelts ? <QuestionText text={stripLeadingNumber(q.content, n)} /> : <strong>{stripLeadingNumber(q.content, n)}</strong>}</p>
+            <p><span className="exam-q-num">{label}.</span>{isIelts ? <QuestionText text={stripLeadingNumber(q.content, n)} /> : <strong>{stripLeadingNumber(q.content, n)}</strong>}</p>
           ) : null}
         </div>
         <div className="exam-q-side">
           {/* IELTS-only: đánh dấu câu để xem lại sau (hiện trên thanh số câu). */}
-          {isIelts && <FlagButton flagged={!!flaggedById[q.id]} onToggle={() => toggleFlag(q)} label={`Đánh dấu câu ${n}`} />}
+          {isIelts && <FlagButton flagged={!!flaggedById[q.id]} onToggle={() => toggleFlag(q)} label={`Đánh dấu câu ${label}`} />}
           {/* Chỉ-nghe (P1/P2) và Part 6 không có chữ câu hỏi: số câu nằm
               trên phương án như phiếu trả lời. */}
-          {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{n}.</div>}
+          {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{label}.</div>}
           {isIeltsSpecial ? (
             <IeltsAnswerControl
               q={q}
@@ -628,7 +630,7 @@ export default function PracticeSession() {
   const isSplitBlock = (block: Block) => isIelts && block.part >= 5 && !!block.passageText;
   const renderPaper = () => {
     const out: React.ReactNode[] = [];
-    let duoRun: { q: Question; n: number }[] = [];
+    let duoRun: { q: Question; n: number; label: string }[] = [];
     const flushDuo = (key: string) => {
       if (!duoRun.length) return;
       out.push(<div className="exam-q-grid2" key={key}>{duoRun.map(item => renderQuestion(item))}</div>);

@@ -14,6 +14,9 @@ export interface AnswerResultLike {
   explanation?: string;
   transcript?: string;
   xpAwarded?: number;
+  /** Điểm từng phần của câu gộp (VD đúng 1/2 nhãn → marks=1, maxMarks=2). */
+  marks?: number | null;
+  maxMarks?: number | null;
 }
 
 interface Props {
@@ -84,9 +87,13 @@ export function IeltsAnswerControl({ q, value, onChange, onCommit, disabled, gra
   if (isMultiAnswer(type)) {
     const selected = parseSelectedLabels(value);
     const correctSet = graded?.correctLabel ? parseSelectedLabels(graded.correctLabel) : [];
+    // Số nhãn phải chọn = số câu trên đề mà row này gộp (2–3); dữ liệu cũ
+    // chưa có paperSpan thì giữ gợi ý chung "2–3".
+    const need = q.paperSpan && q.paperSpan > 1 ? q.paperSpan : null;
+    const isPartial = !!graded && !graded.correct && graded.marks != null && graded.maxMarks != null && graded.marks > 0 && graded.marks < graded.maxMarks;
     return (
       <div>
-        <p className="muted" style={{ marginTop: 0 }}>💡 Chọn 2–3 đáp án (đúng hết mới tính điểm).</p>
+        <p className="muted" style={{ marginTop: 0 }}>💡 {need ? `Chọn ${need} đáp án — mỗi đáp án đúng tính 1 điểm.` : 'Chọn 2–3 đáp án — mỗi đáp án đúng tính 1 điểm.'}</p>
         <div className="exam-opts ielts-multi">
           {q.options.map(o => {
             const isSel = selected.includes(o.label);
@@ -103,6 +110,8 @@ export function IeltsAnswerControl({ q, value, onChange, onCommit, disabled, gra
                   checked={isSel}
                   disabled={disabled || !!graded}
                   onChange={() => {
+                    // Chặn chọn quá số nhãn cần: đã đủ thì không bật thêm.
+                    if (!isSel && need && selected.length >= need) return;
                     const next = toggleSelectedLabel(value, o.label);
                     onChange(next);
                     onCommit?.(next);
@@ -115,7 +124,7 @@ export function IeltsAnswerControl({ q, value, onChange, onCommit, disabled, gra
           })}
         </div>
         {graded && graded.correctLabel && (
-          <p style={{ margin: '.4rem 0 0' }}>Đáp án đúng: <strong>{correctSet.join(', ') || graded.correctLabel}</strong></p>
+          <p style={{ margin: '.4rem 0 0' }}>Đáp án đúng: <strong>{correctSet.join(', ') || graded.correctLabel}</strong>{isPartial ? ` — bạn đúng ${graded.marks}/${graded.maxMarks}, tính ${graded.marks} điểm nhưng chưa đủ để tính là đúng.` : ''}</p>
         )}
       </div>
     );
@@ -222,7 +231,7 @@ export function matchInstructionFor(type: string): string {
   return MATCH_INSTRUCTIONS[type] ?? 'Choose the correct answer and move it into the gap.';
 }
 
-export type BlockItem = { q: Question; n: number };
+export type BlockItem = { q: Question; n: number; label: string };
 export type BlockSegment =
   | { kind: 'notes'; items: BlockItem[] }
   | { kind: 'matching'; items: BlockItem[] }

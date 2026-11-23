@@ -108,6 +108,9 @@ export interface Question {
   acceptedAnswers?: string[];
   /** Đáp án đúng dạng text — chỉ có sau khi chấm câu điền từ. */
   correctText?: string | null;
+  /** Số câu trên đề giấy mà row này chiếm (list_selection gộp 2–3 câu
+   * thì = 2–3; không có thì mặc định 1). */
+  paperSpan?: number;
 }
 export interface ExamInfo {
   id: string; title: string; subtitle: string; scale: string;
@@ -125,6 +128,10 @@ export interface TestResultDetail {
    * phương án, đoạn văn, ảnh câu hỏi. */
   options?: { label: string; content?: string; isCorrect?: boolean }[];
   passageId?: string | null; passageTitle?: string | null; imageUrl?: string | null;
+  /** Số câu trên đề giấy mà row này chiếm (list_selection gộp 2–3 câu). */
+  paperSpan?: number;
+  /** Điểm từng phần của câu gộp (VD đúng 1/2 nhãn → marks=1, maxMarks=2). */
+  marks?: number | null; maxMarks?: number | null;
 }
 export interface PartInfo { part: number; count: number; section?: string; listening?: boolean; reading?: boolean; }
 export interface Vocab { id: string; word: string; phonetic?: string; meaning: string; example?: string; topic?: string; }
@@ -323,7 +330,7 @@ export const api = {
   bandTable: () => req<IeltsBandTable>('/api/ielts/band-table'),
 
   practiceAnswer: (questionId: string, selected: string) =>
-    req<{ correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
+    req<{ correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number; marks?: number; maxMarks?: number }>(
       '/api/practice/answer', { method: 'POST', body: JSON.stringify({ questionId, selected }) }),
 
   createTest: (mode: 'mini' | 'full', part?: number, durationMinutes = 120, testSetId?: string, exam?: string) =>
@@ -348,7 +355,7 @@ export const api = {
     return req<(Question & { wrongCount?: number })[]>(`/api/wrong-questions${s ? `?${s}` : ''}`);
   },
   reviewWrong: (questionId: string, selected: string) =>
-    req<{ correct: boolean; correctLabel?: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number }>(
+    req<{ correct: boolean; correctLabel?: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number; marks?: number; maxMarks?: number }>(
       `/api/wrong-questions/${encodeURIComponent(questionId)}/review`, { method: 'POST', body: JSON.stringify({ selected }) }),
 
   vocabulary: async (topic = '', limit = 100, exam?: string) => {

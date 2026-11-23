@@ -17,6 +17,14 @@ function isListeningPart(part) {
   return part >= 1 && part <= 4;
 }
 
+/** So diem toi da cua 1 cau: list_selection (Choose TWO/THREE gop) = so nhan
+ * dung (2-3); dang khac = 1. q la row tu getQuestionRowById (co options). */
+function maxMarksForQuestion(q) {
+  if (!q || !isMultiAnswerType(q.question_type)) return 1;
+  const n = (q.options || []).filter((o) => o.is_correct === 1).length;
+  return n > 0 ? n : 1;
+}
+
 function buildSubmitResponse(attempt, answers) {
   const byPartMap = new Map();
   let listeningCorrect = 0;
@@ -28,21 +36,26 @@ function buildSubmitResponse(attempt, answers) {
     if (a.part == null) continue;
     if (!byPartMap.has(a.part)) byPartMap.set(a.part, { part: a.part, answered: 0, correct: 0, total: 0 });
     const row = byPartMap.get(a.part);
-    row.total += 1;
+    // Diem tung phan: total = so diem toi da (cau gop chiem 2-3 diem),
+    // correct = so diem thuc; hang cu (marks NULL) fallback ve boolean.
+    const maxMarks = a.maxMarks != null ? a.maxMarks : 1;
+    const marks = a.marks != null ? a.marks : a.isCorrect ? 1 : 0;
+    row.total += maxMarks;
     if (a.isCorrect != null) {
       row.answered += 1;
-      if (a.isCorrect) row.correct += 1;
-      else wrongQuestionIds.push(a.questionId);
+      row.correct += marks;
+      if (!a.isCorrect) wrongQuestionIds.push(a.questionId);
     }
     if (isListeningPart(a.part)) {
-      listeningTotal += 1;
-      if (a.isCorrect) listeningCorrect += 1;
+      listeningTotal += maxMarks;
+      listeningCorrect += marks;
     } else {
-      readingTotal += 1;
-      if (a.isCorrect) readingCorrect += 1;
+      readingTotal += maxMarks;
+      readingCorrect += marks;
     }
   }
-  // Cac cau trong de nhung chua tra loi cung tinh vao total cua tung Part.
+  // Cac cau trong de nhung chua tra loi cung tinh vao total cua tung Part
+  // (theo so diem toi da — cau gop chua tra loi tinh 2-3 diem).
   const unanswered = (attempt.questionIds || []).filter(
     (qid) => !answers.some((a) => a.questionId === qid)
   );
@@ -52,9 +65,10 @@ function buildSubmitResponse(attempt, answers) {
       .filter(Boolean);
     for (const q of qs) {
       if (!byPartMap.has(q.part)) byPartMap.set(q.part, { part: q.part, answered: 0, correct: 0, total: 0 });
-      byPartMap.get(q.part).total += 1;
-      if (isListeningPart(q.part)) listeningTotal += 1;
-      else readingTotal += 1;
+      const mm = maxMarksForQuestion(q);
+      byPartMap.get(q.part).total += mm;
+      if (isListeningPart(q.part)) listeningTotal += mm;
+      else readingTotal += mm;
     }
   }
   const byPart = [...byPartMap.values()].sort((a, b) => a.part - b.part);
@@ -241,7 +255,10 @@ router.post('/tests/:id/submit', authMiddleware, (req, res) => {
   const startedAt = new Date(attempt.startedAt);
   const durationSec = Math.max(0, Math.round((now - startedAt) / 1000));
 
-  // Cham: doi chieu tung dap an da luu voi dap an dung.
+  // Cham: doi chieu tung dap an da luu voi dap an dung. Diem tung phan:
+  // list_selection (Choose TWO/THREE gop) moi nhan dung = 1 diem, tong moi
+  // Section van 40 diem nhu de that; `correct` (dung HET) van quyet dinh
+  // cau sai / cổng ôn tập.
   let listeningCorrect = 0;
   let readingCorrect = 0;
   let listeningTotal = 0;
@@ -252,19 +269,27 @@ router.post('/tests/:id/submit', authMiddleware, (req, res) => {
     if (!q) continue;
     const ans = answers.find((a) => a.questionId === qid);
     let isCorrect;
+    let marks = 0;
+    let maxMarks = 1;
     if (isTypedType(q.question_type)) {
       // Cau dien tu IELTS: qua word_limit = sai (van ghi cau sai).
       const graded = gradeTypedAnswer(ans ? ans.selected : '', q.correct_text, q.acceptedAnswers, q.word_limit);
       isCorrect = !!(ans && ans.selected && graded.correct);
+      marks = isCorrect ? 1 : 0;
     } else if (isMultiAnswerType(q.question_type)) {
-      // list_selection: all-or-nothing theo tap nhan; moi cau van tinh 1 diem.
+      // list_selection: cham TUNG PHAN theo tap nhan; chon thua so nhan
+      // yeu cau hoac nhan la thi 0 diem ca cau; chua tra loi thi 0 diem
+      // nhung van tinh du so diem toi da vao tong.
       const correctLabels = q.options.filter((o) => o.is_correct === 1).map((o) => o.label);
+      const graded = gradeListSelection(ans ? ans.selected : '', correctLabels, q.options.map((o) => o.label));
       isCorrect = !!(
         ans &&
         ans.selected &&
         correctLabels.length &&
-        gradeListSelection(ans.selected, correctLabels).correct
+        graded.correct
       );
+      marks = graded.marks;
+      maxMarks = graded.maxMarks;
     } else {
       const correctOpt = q.options.find((o) => o.is_correct === 1);
       isCorrect = !!(
@@ -273,16 +298,17 @@ router.post('/tests/:id/submit', authMiddleware, (req, res) => {
         correctOpt &&
         ans.selected.toUpperCase() === correctOpt.label
       );
+      marks = isCorrect ? 1 : 0;
     }
     if (isListeningPart(q.part)) {
-      listeningTotal += 1;
-      if (isCorrect) listeningCorrect += 1;
+      listeningTotal += maxMarks;
+      listeningCorrect += marks;
     } else {
-      readingTotal += 1;
-      if (isCorrect) readingCorrect += 1;
+      readingTotal += maxMarks;
+      readingCorrect += marks;
     }
     if (ans) {
-      db.upsertAnswer(attempt.id, qid, ans.selected, isCorrect);
+      db.upsertAnswer(attempt.id, qid, ans.selected, isCorrect, marks, maxMarks);
       if (!isCorrect) {
         wrongQuestionIds.push(qid);
         db.upsertWrongQuestion(req.user.id, qid);
@@ -348,7 +374,7 @@ router.get('/tests/:id/result', authMiddleware, (req, res) => {
   const detail = attempt.questionIds.map((qid) => {
     const q = db.getQuestionById(qid, true);
     const ans = answers.find((a) => a.questionId === qid);
-    if (!q) return { questionId: qid, selected: ans ? ans.selected : null, correct: null };
+    if (!q) return { questionId: qid, selected: ans ? ans.selected : null, correct: null, marks: 0, maxMarks: 1, paperSpan: 1 };
     const typed = isTypedType(q.questionType);
     // list_selection: q.correct (mapQuestionAdmin) chi lay nhan dung DAU TIEN
     // nen phai ghep tat ca nhan is_correct; cac dang khac giu nguyen.
@@ -371,6 +397,12 @@ router.get('/tests/:id/result', authMiddleware, (req, res) => {
       options: q.options,
       selected: ans ? ans.selected : null,
       correct: ans ? ans.isCorrect : null,
+      // Diem tung phan (list_selection): marks/maxMarks de Result hien
+      // "Đúng 1/2"; correct boolean van all-or-nothing. paperSpan de
+      // frontend danh so de that ("11–12") + hien dung so nhan can chon.
+      marks: ans ? (ans.marks ?? (ans.isCorrect ? 1 : 0)) : 0,
+      maxMarks: q.paperSpan ?? 1,
+      paperSpan: q.paperSpan ?? 1,
       correctLabel,
       correctText: typed ? q.correctText : null,
       explanation: q.explanation,

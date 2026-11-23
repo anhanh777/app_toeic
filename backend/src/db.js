@@ -147,6 +147,8 @@ CREATE TABLE IF NOT EXISTS answers (
   question_id TEXT,
   selected TEXT,
   is_correct INTEGER,
+  marks INTEGER,
+  max_marks INTEGER,
   PRIMARY KEY (attempt_id, question_id)
 );
 CREATE TABLE IF NOT EXISTS wrong_questions (
@@ -379,6 +381,11 @@ function initDb() {
   ensureColumn('passages', 'test_set_id', 'TEXT');
   ensureColumn('passages', 'audio_url', 'TEXT');
   ensureColumn('attempts', 'test_set_id', 'TEXT');
+  // Cham tung phan cho list_selection (Choose TWO/THREE): moi cau gop co
+  // the dung 1 phan — marks = so diem thuc, max_marks = so diem toi da
+  // (2 hoac 3); DB cu (marks NULL) thi coi nhu is_correct ? 1 : 0 / 1.
+  ensureColumn('answers', 'marks', 'INTEGER');
+  ensureColumn('answers', 'max_marks', 'INTEGER');
   // Tu vung ca nhan: on tap ngat quang (them sau — DB cu chua co cac cot nay).
   ensureColumn('user_words', 'review_stage', 'INTEGER DEFAULT 0');
   ensureColumn('user_words', 'review_due', 'TEXT');
@@ -432,10 +439,18 @@ function mapUser(row) {
 }
 
 function mapQuestion(row, opts, passage) {
+  // paperSpan = so cau tren de that ma 1 row cau hoi chiem: 1 mac dinh;
+  // list_selection (Choose TWO/THREE gop) chiem 2-3 cau — bang so nhan dung.
+  // Chi lo so luong (2/3), khong lo nhan dung nao.
+  const paperSpan =
+    row.question_type === 'list_selection'
+      ? Math.max(1, (opts || []).filter((o) => o.is_correct === 1).length)
+      : 1;
   return {
     id: row.id,
     exam: row.exam || 'toeic',
     part: row.part,
+    paperSpan,
     passageId: row.passage_id || null,
     testSetId: row.test_set_id || null,
     passageTitle: (passage && passage.title) || null,
@@ -1456,18 +1471,28 @@ function countAttempts() {
   return db.prepare('SELECT COUNT(*) AS c FROM attempts').get().c;
 }
 
-function upsertAnswer(attemptId, questionId, selected, isCorrect) {
+/** Luu dap an 1 cau. marks/maxMarks (cham tung phan, list_selection) tuy
+ * chon — truyen null thi giu NULL (doc ra se fallback ve is_correct). */
+function upsertAnswer(attemptId, questionId, selected, isCorrect, marks, maxMarks) {
   db.prepare(
-    `INSERT INTO answers (attempt_id, question_id, selected, is_correct) VALUES (?, ?, ?, ?)
+    `INSERT INTO answers (attempt_id, question_id, selected, is_correct, marks, max_marks) VALUES (?, ?, ?, ?, ?, ?)
      ON CONFLICT(attempt_id, question_id) DO UPDATE SET selected = excluded.selected,
-       is_correct = excluded.is_correct`
-  ).run(attemptId, questionId, selected, isCorrect == null ? null : isCorrect ? 1 : 0);
+       is_correct = excluded.is_correct, marks = excluded.marks, max_marks = excluded.max_marks`
+  ).run(
+    attemptId,
+    questionId,
+    selected,
+    isCorrect == null ? null : isCorrect ? 1 : 0,
+    marks == null ? null : marks,
+    maxMarks == null ? null : maxMarks
+  );
 }
 
 function getAnswersByAttempt(attemptId) {
   return db
     .prepare(
       `SELECT a.question_id AS questionId, a.selected, a.is_correct AS isCorrect,
+              a.marks AS marks, a.max_marks AS maxMarks,
               q.part AS part
        FROM answers a LEFT JOIN questions q ON q.id = a.question_id
        WHERE a.attempt_id = ? ORDER BY q.part, a.question_id`
@@ -1477,6 +1502,9 @@ function getAnswersByAttempt(attemptId) {
       questionId: r.questionId,
       selected: r.selected,
       isCorrect: r.isCorrect == null ? null : r.isCorrect === 1,
+      // Hang cu (marks NULL): coi nhu 1 diem neu dung, 0 neu sai, toi da 1.
+      marks: r.marks == null ? (r.isCorrect == null ? null : r.isCorrect === 1 ? 1 : 0) : r.marks,
+      maxMarks: r.maxMarks == null ? 1 : r.maxMarks,
       part: r.part,
     }));
 }

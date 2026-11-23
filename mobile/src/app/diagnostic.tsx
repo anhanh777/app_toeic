@@ -9,7 +9,7 @@
 // thi thật" và "Chưa chấm AI — sẽ có ở Giai đoạn 2".
 import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { router } from 'expo-router';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   FlatList,
   Pressable,
@@ -23,7 +23,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type Attempt, type DiagnosticMap, type Question } from '../api';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, partNameFor, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
+import { bandLevel, isFillIn, isMultiAnswer, paperNumbersFor, parseSelectedLabels, partLabel, partNameFor, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
 import { livelyBarTrack, livelyCard, livelyChip, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
 import { BackButton } from '../components/BackButton';
@@ -79,17 +79,24 @@ const PaperAnswerControl = memo(function PaperAnswerControl({
   }
   if (isMultiAnswer(type)) {
     const selected = parseSelectedLabels(value);
+    // Số nhãn phải chọn = số câu trên đề mà row này gộp (2–3); dữ liệu cũ
+    // chưa có paperSpan thì giữ gợi ý chung "2–3".
+    const need = q.paperSpan && q.paperSpan > 1 ? q.paperSpan : null;
     return (
       <View style={styles.optList}>
         <Text style={[styles.hint, { color: colors.muted, fontSize: scaled(13) }]}>
-          💡 Chọn 2–3 đáp án (đúng hết mới tính điểm).
+          {need ? `💡 Chọn ${need} đáp án — mỗi đáp án đúng tính 1 điểm.` : '💡 Chọn 2–3 đáp án — mỗi đáp án đúng tính 1 điểm.'}
         </Text>
         {q.options.map((o) => {
           const isSel = selected.includes(o.label);
           return (
             <Pressable
               key={o.label}
-              onPress={() => onChange(toggleSelectedLabel(value, o.label))}
+              onPress={() => {
+                // Chặn chọn quá số nhãn cần: đã đủ thì không bật thêm.
+                if (!isSel && need && selected.length >= need) return;
+                onChange(toggleSelectedLabel(value, o.label));
+              }}
               style={[
                 styles.option,
                 {
@@ -399,10 +406,15 @@ export default function DiagnosticScreen() {
   }, []);
 
   const answeredCount = paperQuestions.filter((q) => paperAnswers[q.id]?.trim()).length;
+  // Số câu thật trên đề: câu gộp list_selection chiếm 2–3 số (label
+  // "11–12") nên các câu sau vẫn giữ đúng số, dù danh sách chỉ còn
+  // 77 row (TS-028 gộp 3 cặp) thay vì 80.
+  const paperNumbers = useMemo(() => paperNumbersFor('ielts', paperQuestions), [paperQuestions]);
   const keyExtractor = useCallback((q: Question) => q.id, []);
   const renderPaperItem = useCallback(
     ({ item: q, index }: { item: Question; index: number }) => {
       const prev = index > 0 ? paperQuestions[index - 1] : null;
+      const paperLabel = paperNumbers.get(q.id)?.label ?? `${index + 1}`;
       const showPassage = !!q.passageText && q.passageId !== prev?.passageId;
       const value = paperAnswers[q.id] ?? '';
       // Đầu mỗi Section Listening: 1 AudioPlayer cấp Section (mẫu
@@ -448,7 +460,7 @@ export default function DiagnosticScreen() {
           ) : null}
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
           <Text style={[styles.tag, { color: colors.muted, fontSize: scaled(13) }]}>
-            Câu {index + 1}/80 · {partLabel(q.part, 'ielts')}
+            Câu {paperLabel}/80 · {partLabel(q.part, 'ielts')}
             {q.questionType ? ` · ${questionTypeName(q.questionType)}` : ''}
           </Text>
           {showPassage && (
@@ -489,7 +501,7 @@ export default function DiagnosticScreen() {
         </>
       );
     },
-    [paperQuestions, paperAnswers, colors, scaled, playingQid, pausedQid, playedQids, playAudio, setAnswer, partMedia, playedSections, markPlayed, handleAudioError],
+    [paperQuestions, paperNumbers, paperAnswers, colors, scaled, playingQid, pausedQid, playedQids, playAudio, setAnswer, partMedia, playedSections, markPlayed, handleAudioError],
   );
 
   const pad = horizontalPadding(width);

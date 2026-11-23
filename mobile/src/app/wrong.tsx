@@ -81,10 +81,13 @@ const AnswerControl = memo(function AnswerControl({
   if (isMultiAnswer(type)) {
     const selected = parseSelectedLabels(value);
     const correctSet = graded?.correctLabel ? parseSelectedLabels(graded.correctLabel) : [];
+    // Số nhãn phải chọn = số câu trên đề mà row này gộp (2–3); dữ liệu cũ
+    // chưa có paperSpan thì giữ gợi ý chung "2–3".
+    const need = q.paperSpan && q.paperSpan > 1 ? q.paperSpan : null;
     return (
       <View style={styles.optList}>
         <Text style={[styles.hint, { color: colors.muted, fontSize: scaled(13) }]}>
-          💡 Chọn 2–3 đáp án (đúng hết mới tính điểm).
+          {need ? `💡 Chọn ${need} đáp án — mỗi đáp án đúng tính 1 điểm.` : '💡 Chọn 2–3 đáp án — mỗi đáp án đúng tính 1 điểm.'}
         </Text>
         {q.options.map((o) => {
           const isSel = selected.includes(o.label);
@@ -93,7 +96,11 @@ const AnswerControl = memo(function AnswerControl({
             <Pressable
               key={o.label}
               disabled={disabled}
-              onPress={() => onChange(toggleSelectedLabel(value, o.label))}
+              onPress={() => {
+                // Chặn chọn quá số nhãn cần: đã đủ thì không bật thêm.
+                if (!isSel && need && selected.length >= need) return;
+                onChange(toggleSelectedLabel(value, o.label));
+              }}
               style={[
                 styles.option,
                 {
@@ -209,11 +216,15 @@ export default function WrongQuestionsScreen() {
         const right = isMultiAnswer(q.questionType)
           ? parseSelectedLabels(r.correctLabel).join(', ') || r.correctText
           : (r.correctText ?? r.correctLabel);
+        // Đúng 1 phần vẫn được điểm nhưng chưa đủ để gỡ khỏi danh sách.
+        const partial = isMultiAnswer(q.questionType) && !r.correct && r.marks != null && r.maxMarks != null && r.marks > 0 && r.marks < r.maxMarks;
         setFeedback((f) => ({
           ...f,
           [q.id]: r.correct
             ? { ok: true, text: `✅ Đúng! Câu này đã được gỡ khỏi danh sách.${r.xpAwarded ? ` +${r.xpAwarded} XP` : ''}` }
-            : { ok: false, text: `❌ Sai. Đáp án đúng: ${right ?? '—'}. ${r.explanation || ''}` },
+            : partial
+              ? { ok: false, text: `⚠️ Đúng ${r.marks}/${r.maxMarks} — tính ${r.marks} điểm nhưng chưa đủ để gỡ khỏi danh sách. Đáp án đúng: ${right ?? '—'}. ${r.explanation || ''}` }
+              : { ok: false, text: `❌ Sai. Đáp án đúng: ${right ?? '—'}. ${r.explanation || ''}` },
         }));
         if (r.correct) setItems((list) => list.filter((x) => x.id !== q.id));
       } catch (e) {

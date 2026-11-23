@@ -50,7 +50,9 @@ export default function WrongQuestions() {
       const right = isMultiAnswer(q.questionType)
         ? (parseSelectedLabels(r.correctLabel).join(', ') || r.correctText)
         : (r.correctText ?? r.correctLabel);
-      setFeedback(f => ({ ...f, [q.id]: r.correct ? `✅ Đúng! Câu này đã được gỡ khỏi danh sách.${r.xpAwarded ? ` +${r.xpAwarded} XP` : ''}` : `❌ Sai. Đáp án đúng: ${right ?? '—'}. ${r.explanation || ''}` }));
+      // Đúng 1 phần vẫn được điểm nhưng chưa đủ để gỡ khỏi danh sách.
+      const partial = isMultiAnswer(q.questionType) && !r.correct && r.marks != null && r.maxMarks != null && r.marks > 0 && r.marks < r.maxMarks;
+      setFeedback(f => ({ ...f, [q.id]: r.correct ? `✅ Đúng! Câu này đã được gỡ khỏi danh sách.${r.xpAwarded ? ` +${r.xpAwarded} XP` : ''}` : partial ? `⚠️ Đúng ${r.marks}/${r.maxMarks} — tính ${r.marks} điểm nhưng chưa đủ để gỡ khỏi danh sách. Đáp án đúng: ${right ?? '—'}. ${r.explanation || ''}` : `❌ Sai. Đáp án đúng: ${right ?? '—'}. ${r.explanation || ''}` }));
       if (r.correct) setItems(list => list.filter(x => x.id !== q.id));
     } catch (e) { setError(e); }
   };

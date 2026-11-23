@@ -22,7 +22,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { api, scoreLevel, type Question, type TestResultDetail } from '../../api';
-import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, partNameFor, realQuestionNumber, stripLeadingNumber } from '../../lib';
+import { bandLevel, isFillIn, isMultiAnswer, paperNumbersFor, parseSelectedLabels, partLabel, partNameFor, realQuestionNumber, stripLeadingNumber } from '../../lib';
 import type { ExamId } from '../../exam';
 import { CARD_PADDING, columnsForWidth, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
 import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../../theme';
@@ -37,6 +37,8 @@ type Filter = 'all' | 'correct' | 'wrong';
 interface DetailRow {
   d: TestResultDetail;
   n: number;
+  /** Nhãn số để hiển thị: "11" hoặc "11–12" với câu gộp list_selection. */
+  label: string;
 }
 
 /** 1 câu trong chế độ "Xem trên đề": câu hỏi tổng hợp từ detail + detail gốc. */
@@ -44,6 +46,7 @@ interface PaperItem {
   q: Question;
   d: TestResultDetail;
   n: number;
+  label: string;
 }
 interface PaperBlock {
   key: string;
@@ -162,11 +165,12 @@ export default function ResultScreen() {
   const detailRows: DetailRow[] = useMemo(() => {
     if (!data) return [];
     const isIelts = data.exam === 'ielts' || data.overallBand != null;
-    const withinSeen: Record<number, number> = {};
+    // Số câu thật trên đề: câu gộp list_selection chiếm 2–3 số nên các
+    // câu sau vẫn giữ đúng số (label "11–12", n = số bắt đầu).
+    const paperNumbers = paperNumbersFor(isIelts ? 'ielts' : 'toeic', (data.detail ?? []).map((d) => ({ id: d.questionId, part: d.part ?? 0, paperSpan: d.paperSpan ?? 1 })));
     return (data.detail ?? []).map((d) => {
-      const p = d.part ?? 0;
-      withinSeen[p] = (withinSeen[p] ?? 0) + 1;
-      return { d, n: realQuestionNumber(isIelts ? 'ielts' : 'toeic', p, withinSeen[p]) };
+      const { n, label } = paperNumbers.get(d.questionId) ?? { n: realQuestionNumber(isIelts ? 'ielts' : 'toeic', d.part ?? 0, 1), label: `${realQuestionNumber(isIelts ? 'ielts' : 'toeic', d.part ?? 0, 1)}` };
+      return { d, n, label };
     });
   }, [data]);
 
@@ -181,7 +185,7 @@ export default function ResultScreen() {
   // passage / ảnh trong payload) rồi nhóm khối + hàng như màn luyện.
   const paperItems: PaperItem[] = useMemo(
     () =>
-      detailRows.map(({ d, n }) => ({
+      detailRows.map(({ d, n, label }) => ({
         q: {
           id: d.questionId,
           part: d.part ?? 0,
@@ -194,9 +198,11 @@ export default function ResultScreen() {
           wordLimit: d.wordLimit ?? undefined,
           imageUrl: d.imageUrl ?? null,
           exam: paperExam,
+          paperSpan: d.paperSpan ?? undefined,
         },
         d,
         n,
+        label,
       })),
     [detailRows, paperExam],
   );
@@ -238,18 +244,21 @@ export default function ResultScreen() {
   // sách) nên luôn tổng hợp 1 kết quả — correct: false khi chưa làm.
   const renderPaperQuestion = useCallback(
     (item: PaperItem) => {
-      const { q, d, n } = item;
+      const { q, d, n, label } = item;
       const result: AnswerResult = {
         correct: d.correct === true,
         correctLabel: d.correctLabel ?? '',
         correctText: d.correctText ?? undefined,
         explanation: d.explanation ?? undefined,
         transcript: d.script ?? undefined,
+        marks: d.marks ?? undefined,
+        maxMarks: d.maxMarks ?? undefined,
       };
       return (
         <QuestionView
           q={q}
           n={n}
+          label={label}
           exam={paperExam}
           selected={d.selected ?? ''}
           onSelect={noopSelect}
@@ -380,9 +389,11 @@ export default function ResultScreen() {
         : detailRows;
 
   const renderRow = ({ item }: { item: DetailRow }) => {
-    const { d, n } = item;
+    const { d, n, label } = item;
     const causeLogged = !!causeById[d.questionId];
-    const status = d.correct === true ? '✓ Đúng' : d.correct === false ? '✗ Sai' : '— Chưa trả lời';
+    // Đúng 1 phần của câu gộp vẫn được điểm nhưng tính là sai khi ôn lại.
+    const isPartial = isMultiAnswer(d.questionType) && d.correct !== true && d.marks != null && d.maxMarks != null && d.marks > 0 && d.marks < d.maxMarks;
+    const status = d.correct === true ? '✓ Đúng' : isPartial ? `⚠️ Đúng ${d.marks}/${d.maxMarks}` : d.correct === false ? '✗ Sai' : '— Chưa trả lời';
     const statusColor = d.correct === true ? colors.success : d.correct === false ? colors.danger : colors.muted;
     const isReadingPassage = isIelts ? (d.part ?? 0) >= 5 : (d.part ?? 0) >= 6;
     const showTranscript = expanded[`t-${d.questionId}`];
@@ -391,7 +402,7 @@ export default function ResultScreen() {
       <View style={[styles.rowCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
         <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
           <Text style={{ fontWeight: '700' }}>
-            Câu {n} · <Text style={{ color: statusColor }}>{status}</Text>
+            Câu {label} · <Text style={{ color: statusColor }}>{status}</Text>
           </Text>
           {d.content ? <> — {stripLeadingNumber(d.content, n)}</> : null}
         </Text>
@@ -424,6 +435,11 @@ export default function ResultScreen() {
                   ? parseSelectedLabels(d.correctLabel).join(', ') || d.correctText || '—'
                   : d.correctText ?? d.correctLabel ?? '—'}
               </Text>
+              {isPartial ? (
+                <Text style={{ color: colors.text }}>
+                  {' • '}Đúng <Text style={{ fontWeight: '700' }}>{d.marks}/{d.maxMarks}</Text> (tính {d.marks} điểm, chưa đủ để tính là đúng)
+                </Text>
+              ) : null}
             </Text>
             {d.explanation ? (
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>

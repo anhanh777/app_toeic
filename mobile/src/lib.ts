@@ -21,6 +21,34 @@ export function realQuestionNumber(
   return (offsets[part] ?? 1) + indexWithinPart - 1;
 }
 
+/** Số câu trên đề giấy mà 1 row chiếm: câu gộp list_selection ("Choose
+ * TWO/THREE") chiếm 2–3 số; mọi câu khác chiếm 1. Backend tính sẵn
+ * (mapQuestion: đếm số nhãn đúng của list_selection). */
+export function paperSpanOf(q: { questionType?: string | null; paperSpan?: number | null }): number {
+  return q.paperSpan != null && q.paperSpan > 0 ? q.paperSpan : 1;
+}
+
+/** Đánh số đề thật cho 1 danh sách câu đã xếp theo thứ tự đề: đếm tích
+ * lũy theo Part, câu gộp (paperSpan 2–3) chiếm 2–3 số nên các câu sau
+ * vẫn giữ đúng số trên đề giấy. Trả Map<id, { n, label }> với n = số
+ * bắt đầu (dùng cho stripLeadingNumber, thông báo lỗi) và label = "11"
+ * hoặc "11–12" (dùng để hiển thị). */
+export function paperNumbersFor(
+  exam: string | null | undefined,
+  questions: { id: string; part: number; questionType?: string | null; paperSpan?: number | null }[],
+): Map<string, { n: number; label: string }> {
+  const map = new Map<string, { n: number; label: string }>();
+  const nextInPart: Record<number, number> = {};
+  for (const q of questions) {
+    const start = nextInPart[q.part] ?? 1;
+    const span = paperSpanOf(q);
+    nextInPart[q.part] = start + span;
+    const n = realQuestionNumber(exam, q.part, start);
+    map.set(q.id, { n, label: span > 1 ? `${n}–${n + span - 1}` : `${n}` });
+  }
+  return map;
+}
+
 // Nội dung câu hỏi đôi khi đã chứa số câu ở đầu ("147. Where is...") do
 // dữ liệu gốc giữ lại số — khi hiển thị số inline thì bỏ số đó đi để khỏi
 // lặp "147. 147. ...". Chỉ bỏ khi số đầu câu đúng bằng số đang hiển thị.
@@ -82,7 +110,10 @@ export function isMatching(t?: string | null): boolean {
 }
 
 /** Dạng chọn nhiều đáp án: chỉ list_selection — đáp án là chuỗi các nhãn
- * đã chọn, sắp xếp rồi nối bằng dấu phẩy, VD "A,C". */
+ * đã chọn, sắp xếp rồi nối bằng dấu phẩy, VD "A,C". Chấm từng phần ở
+ * backend: mỗi nhãn đúng tính 1 điểm (câu gộp 2–3 nhãn = 2–3 điểm);
+ * đúng 1 phần vẫn được điểm nhưng tính là "sai" khi ôn lại (xem
+ * paperSpanOf/paperNumbersFor bên dưới). */
 export function isMultiAnswer(t?: string | null): boolean {
   return t === 'list_selection';
 }

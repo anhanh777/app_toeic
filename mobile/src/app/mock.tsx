@@ -32,7 +32,7 @@ import {
   RADIUS,
   SPACING,
 } from '../layout';
-import { partLabel, partNameFor, realQuestionNumber } from '../lib';
+import { paperNumbersFor, partLabel, partNameFor, realQuestionNumber } from '../lib';
 import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
@@ -42,11 +42,11 @@ import AudioPlayer from '../components/AudioPlayer';
 import PassageView, { type BlankState } from '../components/PassageView';
 import QuestionView, { isListeningOnly, partName } from '../components/QuestionView';
 
-type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number }[] };
+type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number; label: string }[] };
 type Row =
   | { key: string; kind: 'cluster'; block: Block; headerPart?: number }
-  | { key: string; kind: 'duo'; items: { q: Question; n: number }[]; headerPart?: number }
-  | { key: string; kind: 'single'; item: { q: Question; n: number }; headerPart?: number };
+  | { key: string; kind: 'duo'; items: { q: Question; n: number; label: string }[]; headerPart?: number }
+  | { key: string; kind: 'single'; item: { q: Question; n: number; label: string }; headerPart?: number };
 
 function fmt(s: number): string {
   const h = Math.floor(s / 3600);
@@ -78,16 +78,14 @@ function fmtDur(s?: number | null): string {
 
 function groupBlocks(questions: Question[], exam: ExamId): Block[] {
   const blocks: Block[] = [];
-  const partCount: Record<number, number> = {};
+  const paperNumbers = paperNumbersFor(exam, questions);
   questions.forEach((q) => {
-    const idx = (partCount[q.part] ?? 0) + 1;
-    partCount[q.part] = idx;
-    const n = realQuestionNumber(exam, q.part, idx);
+    const { n, label } = paperNumbers.get(q.id) ?? { n: realQuestionNumber(exam, q.part, 1), label: `${realQuestionNumber(exam, q.part, 1)}` };
     const last = blocks[blocks.length - 1];
     const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
     const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
-    if ((sameId || sameText) && last) last.questions.push({ q, n });
-    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n }] });
+    if ((sameId || sameText) && last) last.questions.push({ q, n, label });
+    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n, label }] });
   });
   return blocks;
 }
@@ -99,7 +97,7 @@ function isDuoQuestion(q: Question, exam: ExamId): boolean {
 
 function buildRows(blocks: Block[], columns: 1 | 2, exam: ExamId): Row[] {
   const rows: Row[] = [];
-  let duoRun: { q: Question; n: number }[] = [];
+  let duoRun: { q: Question; n: number; label: string }[] = [];
   let prevPart = -1;
   const headerFor = (p: number): number | undefined => {
     if (p === prevPart) return undefined;
@@ -367,7 +365,7 @@ export default function MockTestScreen() {
   const partAudioAvailable = useCallback((p: number) => p <= 4 && !!resolvedTestSetId && !!partMedia[p], [resolvedTestSetId, partMedia]);
 
   const renderQuestion = useCallback(
-    (q: Question, n: number) => {
+    (q: Question, n: number, label: string) => {
       // Part 1/2 TOEIC: trong bài thi chỉ hiện tranh + audio + nút
       // A/B/C/D, KHÔNG hiện chữ câu hỏi/phương án suốt bài thi.
       const hideText = exam === 'toeic' && (q.part === 1 || q.part === 2);
@@ -375,6 +373,7 @@ export default function MockTestScreen() {
         <QuestionView
           q={q}
           n={n}
+          label={label}
           exam={exam}
           selected={answers[q.id] ?? ''}
           onSelect={handleSelect}
@@ -460,7 +459,7 @@ export default function MockTestScreen() {
         }
         const allDuo = block.questions.every(({ q }) => isDuoQuestion(q, exam));
         const qs = block.questions;
-        const duoPairs: { q: Question; n: number }[][] = [];
+        const duoPairs: { q: Question; n: number; label: string }[][] = [];
         if (allDuo && columns === 2) {
           for (let i = 0; i < qs.length; i += 2) duoPairs.push(qs.slice(i, i + 2));
         }
@@ -475,16 +474,16 @@ export default function MockTestScreen() {
             {duoPairs.length ? (
               duoPairs.map((pair) => (
                 <View key={pair[0].q.id} style={styles.duoRow}>
-                  {pair.map(({ q, n }) => (
+                  {pair.map(({ q, n, label }) => (
                     <View key={q.id} style={styles.duoCell}>
-                      {renderQuestion(q, n)}
+                      {renderQuestion(q, n, label)}
                     </View>
                   ))}
                   {pair.length === 1 ? <View style={styles.duoCell} /> : null}
                 </View>
               ))
             ) : (
-              qs.map(({ q, n }) => <View key={q.id}>{renderQuestion(q, n)}</View>)
+              qs.map(({ q, n, label }) => <View key={q.id}>{renderQuestion(q, n, label)}</View>)
             )}
           </View>
         );
@@ -494,9 +493,9 @@ export default function MockTestScreen() {
           <View style={styles.cluster}>
             {header}
             <View style={styles.duoRow}>
-              {item.items.map(({ q, n }) => (
+              {item.items.map(({ q, n, label }) => (
                 <View key={q.id} style={styles.duoCell}>
-                  {renderQuestion(q, n)}
+                  {renderQuestion(q, n, label)}
                 </View>
               ))}
               {item.items.length === 1 ? <View style={styles.duoCell} /> : null}
@@ -507,7 +506,7 @@ export default function MockTestScreen() {
       return (
         <View style={styles.cluster}>
           {header}
-          {renderQuestion(item.item.q, item.item.n)}
+          {renderQuestion(item.item.q, item.item.n, item.item.label)}
         </View>
       );
     },

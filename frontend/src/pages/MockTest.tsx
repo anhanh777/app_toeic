@@ -5,7 +5,7 @@ import { useAuth } from '../auth';
 import { clearMockTest, isPageReload, readDraft, readPaper, writeDraft, writePaper, type MockDraft } from '../mockDraft';
 import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
-import { attemptStatsFor, partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
+import { attemptStatsFor, paperNumbersFor, partLabel, partNameFor, realQuestionNumber, stripLeadingNumber, useExam, useTextSize } from '../exam';
 import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitGroupSegments } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 import { LoadingLine } from '../uiSettings';
@@ -723,21 +723,21 @@ export default function MockTest() {
 
   // Nhóm các câu liên tiếp cùng 1 đoạn văn (Part 3/4/6/7) để đoạn chỉ hiện
   // 1 lần, các câu hỏi của đoạn nối tiếp ngay bên dưới — như tờ đề thi thật.
-  // Số thứ tự n là SỐ THẬT trong đề (mốc đầu Part + vị trí trong Part).
+  // Số thứ tự là SỐ THẬT trong đề: câu gộp list_selection chiếm 2–3 số
+  // nên label hiển thị dạng khoảng "11–12", còn n (số bắt đầu) dùng cho
+  // stripLeadingNumber/thanh số câu.
   // Mỗi khối cũng ghi lại Part để hiện tiêu đề Part khi chuyển sang Part
   // mới (thi full).
-  type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number }[] };
+  type Block = { key: string; part: number; passageText?: string; questions: { q: Question; n: number; label: string }[] };
   const blocks: Block[] = [];
-  const partCount: Record<number, number> = {};
+  const paperNumbers = paperNumbersFor(exam, questions);
   questions.forEach((q) => {
-    const idx = (partCount[q.part] ?? 0) + 1;
-    partCount[q.part] = idx;
-    const n = realQuestionNumber(exam, q.part, idx);
+    const { n, label } = paperNumbers.get(q.id) ?? { n: realQuestionNumber(exam, q.part, 1), label: `${realQuestionNumber(exam, q.part, 1)}` };
     const last = blocks[blocks.length - 1];
     const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
     const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
-    if ((sameId || sameText) && last) last.questions.push({ q, n });
-    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n }] });
+    if ((sameId || sameText) && last) last.questions.push({ q, n, label });
+    else blocks.push({ key: q.id, part: q.part, passageText: q.passageText, questions: [{ q, n, label }] });
   });
 
   // 1 nút nghe DUY NHẤT cho cả Part: khi có file audio cấp Part cho Part
@@ -808,7 +808,7 @@ export default function MockTest() {
     });
   };
 
-  const renderQuestion = ({ q, n }: { q: Question; n: number }) => {
+  const renderQuestion = ({ q, n, label }: { q: Question; n: number; label: string }) => {
     const listeningOnly = isListeningOnly(q);
     // Part 1/2 thi that (TOEIC): trong bai thi chi hien tranh (Part 1) +
     // audio + nut A/B/C/D, KHONG hien chu cau hoi/phuong an trong SUOT bai
@@ -868,15 +868,15 @@ export default function MockTest() {
               bỏ đi để khỏi lặp. IELTS: chữ thường, chỉ chỗ trống in đậm
               (đỡ nặng mắt); TOEIC giữ in đậm như cũ. */}
           {!hideListeningText && !isP6 && q.content ? (
-            <p><span className="exam-q-num">{n}.</span>{isIelts ? <QuestionText text={stripLeadingNumber(q.content, n)} /> : <strong>{stripLeadingNumber(q.content, n)}</strong>}</p>
+            <p><span className="exam-q-num">{label}.</span>{isIelts ? <QuestionText text={stripLeadingNumber(q.content, n)} /> : <strong>{stripLeadingNumber(q.content, n)}</strong>}</p>
           ) : null}
         </div>
         <div className="exam-q-side">
           {/* IELTS-only: đánh dấu câu để xem lại sau (hiện trên thanh số câu). */}
-          {isIelts && <FlagButton flagged={!!flaggedById[q.id]} onToggle={() => toggleFlag(q)} label={`Đánh dấu câu ${n}`} />}
+          {isIelts && <FlagButton flagged={!!flaggedById[q.id]} onToggle={() => toggleFlag(q)} label={`Đánh dấu câu ${label}`} />}
           {/* Chỉ-nghe (P1/P2) và Part 6 không có chữ câu hỏi: số câu nằm
               trên phương án như phiếu trả lời. */}
-          {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{n}.</div>}
+          {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{label}.</div>}
           {isIeltsSpecial ? (
             <IeltsAnswerControl
               q={q}
@@ -945,7 +945,7 @@ export default function MockTest() {
   // (đoạn văn trái, câu hỏi phải — xem .paper-cluster--split trong CSS).
   const renderPaper = () => {
     const out: React.ReactNode[] = [];
-    let duoRun: { q: Question; n: number }[] = [];
+    let duoRun: { q: Question; n: number; label: string }[] = [];
     const flushDuo = (key: string) => {
       if (!duoRun.length) return;
       out.push(<div className="exam-q-grid2" key={key}>{duoRun.map(item => renderQuestion(item))}</div>);

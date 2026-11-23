@@ -10,7 +10,8 @@
 //   nằm trong đoạn văn phía trên.
 // - Khối kết quả (Practice): đúng/sai + XP; IELTS sai/đoán mò thì cổng
 //   RootCausePicker trước khi hiện giải thích; transcript CHỈ ở Part nghe
-//   (P1–4) — Part đọc chỉ hiện giải thích (đoạn văn đã hiện phía trên).
+//   (P1–4) và CHỈ là script thật — Part đọc chỉ hiện giải thích (đoạn văn
+//   đã hiện phía trên).
 import { memo, useState } from 'react';
 import { Image } from 'expo-image';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -36,6 +37,9 @@ export interface AnswerResult {
   explanation?: string;
   transcript?: string;
   xpAwarded?: number;
+  /** Điểm từng phần của câu gộp (VD đúng 1/2 nhãn → marks=1, maxMarks=2). */
+  marks?: number;
+  maxMarks?: number;
 }
 
 /** Tên đầy đủ các Part TOEIC (từ components.tsx web). */
@@ -71,6 +75,9 @@ interface Props {
   q: Question;
   /** Số câu THẬT trong đề (mốc đầu Part + vị trí trong Part). */
   n: number;
+  /** Nhãn số để hiển thị: "11" hoặc "11–12" với câu gộp list_selection.
+   * Không có thì dùng n. */
+  label?: string;
   exam: ExamId;
   selected: string;
   onSelect: (questionId: string, value: string) => void;
@@ -109,7 +116,7 @@ interface Props {
 }
 
 function QuestionViewInner({
-  q, n, exam, selected, onSelect, onCommit, mode, result, onSubmit,
+  q, n, label, exam, selected, onSelect, onCommit, mode, result, onSubmit,
   hideSubmitButton, submittedAll,
   guessed, onGuessedChange, causeLogged, onCauseLogged,
   hideText, isListening, usePartAudio, audioUrl, playOnce, onFirstPlay,
@@ -117,6 +124,9 @@ function QuestionViewInner({
 }: Props) {
   const { colors, isLively } = useTheme();
   const { scaled } = useTextSize();
+  // Nhãn số hiển thị: "11–12" với câu gộp, còn n (số bắt đầu) dùng cho
+  // stripLeadingNumber.
+  const displayNum = label ?? `${n}`;
   const isIelts = exam === 'ielts';
   const listeningOnly = isListeningOnly(q, exam);
   const letterOnly = listeningOnly || hideText;
@@ -185,12 +195,12 @@ function QuestionViewInner({
             { color: colors.text, fontSize: scaled(16), fontWeight: exam === 'toeic' ? '700' : '400' },
           ]}
         >
-          <Text style={{ fontWeight: '700' }}>{n}. </Text>
+          <Text style={{ fontWeight: '700' }}>{displayNum}. </Text>
           {stripLeadingNumber(q.content, n)}
         </Text>
       ) : null}
       {!isIeltsSpecial && (letterOnly || isP6) ? (
-        <Text style={[styles.num, { color: colors.text, fontSize: scaled(16) }]}>{n}.</Text>
+        <Text style={[styles.num, { color: colors.text, fontSize: scaled(16) }]}>{displayNum}.</Text>
       ) : null}
       {isIeltsSpecial ? (
         <IeltsAnswerControl
@@ -290,7 +300,9 @@ function QuestionViewInner({
           >
             {result.correct
               ? '✅ Đúng rồi!'
-              : `❌ Sai rồi. Đáp án đúng: ${correctAnswerText}`}
+              : isMultiAnswer(qType) && result.marks != null && result.maxMarks != null && result.marks > 0 && result.marks < result.maxMarks
+                ? `⚠️ Đúng ${result.marks}/${result.maxMarks} — cần đủ ${result.maxMarks} mới tính là đúng. Đáp án đúng: ${correctAnswerText}`
+                : `❌ Sai rồi. Đáp án đúng: ${correctAnswerText}`}
             {result.xpAwarded ? ` (+${result.xpAwarded} XP)` : ''}
           </Text>
           {(() => {

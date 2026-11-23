@@ -4,7 +4,7 @@ const express = require('express');
 const db = require('../db');
 const { authMiddleware } = require('../auth');
 const { awardXp } = require('../xp');
-const { gradeTypedAnswer, isTypedType, gradeListSelection, isMultiAnswerType, parseSelectedLabels } = require('../ieltsGrading');
+const { gradeTypedAnswer, isTypedType, gradeListSelection, isMultiAnswerType } = require('../ieltsGrading');
 
 const router = express.Router();
 
@@ -32,6 +32,8 @@ router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) =>
   let correct;
   let correctLabel = null;
   let correctText = null;
+  let marks;
+  let maxMarks;
   const typed = isTypedType(q.question_type);
   if (typed) {
     const graded = gradeTypedAnswer(selected, q.correct_text, q.acceptedAnswers, q.word_limit);
@@ -41,14 +43,17 @@ router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) =>
     correct = graded.correct;
     correctText = q.correct_text || null;
   } else if (isMultiAnswerType(q.question_type)) {
-    // list_selection: nhu practice.js — nop sai dinh dang van cham sai, khong 400.
+    // list_selection: nhu practice.js — cham tung phan, khong 400 khi
+    // nop sai dinh dang. Chon it hon so nhan yeu cau van duoc diem tung
+    // phan (vd chon dung 1/2 nhan = 1 diem); chi chon thua so nhan yeu
+    // cau hoac nhan khong co trong options moi 0 diem (xem ieltsGrading.js).
     const correctLabels = q.options.filter((o) => o.is_correct === 1).map((o) => o.label);
     if (!correctLabels.length) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });
-    const picked = parseSelectedLabels(selected);
-    const validLabels = new Set(q.options.map((o) => o.label));
-    const validPick =
-      picked.length >= 2 && picked.length <= 3 && picked.every((l) => validLabels.has(l));
-    correct = validPick && gradeListSelection(selected, correctLabels).correct;
+    const validLabels = q.options.map((o) => o.label);
+    const graded = gradeListSelection(selected, correctLabels, validLabels);
+    correct = graded.correct;
+    marks = graded.marks;
+    maxMarks = graded.maxMarks;
     correctLabel = correctLabels.join(', ');
   } else {
     const correctOpt = q.options.find((o) => o.is_correct === 1);
@@ -69,6 +74,7 @@ router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) =>
     correct,
     correctLabel,
     ...(typed ? { correctText } : {}),
+    ...(marks != null ? { marks, maxMarks } : {}),
     explanation: q.explanation || null,
     transcript,
     xpAwarded,

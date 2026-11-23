@@ -29,6 +29,9 @@ export interface AnswerResultLike {
   explanation?: string;
   transcript?: string;
   xpAwarded?: number;
+  /** Điểm từng phần của câu gộp (VD đúng 1/2 nhãn → marks=1, maxMarks=2). */
+  marks?: number | null;
+  maxMarks?: number | null;
 }
 
 interface Props {
@@ -109,14 +112,18 @@ export default function IeltsAnswerControl({ q, value, onChange, onCommit, disab
     );
   }
 
-  // --- List Selection: chọn 2–3 đáp án, đúng hết mới tính điểm. ---
+  // --- List Selection: chọn đúng số nhãn (2–3), mỗi nhãn đúng tính 1 điểm. ---
   if (isMultiAnswer(type)) {
     const selected = parseSelectedLabels(value);
     const correctSet = graded?.correctLabel ? parseSelectedLabels(graded.correctLabel) : [];
+    // Số nhãn phải chọn = số câu trên đề mà row này gộp (2–3); dữ liệu cũ
+    // chưa có paperSpan thì giữ gợi ý chung "2–3".
+    const need = q.paperSpan && q.paperSpan > 1 ? q.paperSpan : null;
+    const isPartial = !!graded && !graded.correct && graded.marks != null && graded.maxMarks != null && graded.marks > 0 && graded.marks < graded.maxMarks;
     return (
       <View style={styles.wrap}>
         <Text style={[styles.hint, { color: colors.muted, fontSize: scaled(13) }]}>
-          💡 Chọn 2–3 đáp án (đúng hết mới tính điểm).
+          {need ? `💡 Chọn ${need} đáp án — mỗi đáp án đúng tính 1 điểm.` : '💡 Chọn 2–3 đáp án — mỗi đáp án đúng tính 1 điểm.'}
         </Text>
         {q.options.map((o) => {
           const isSel = selected.includes(o.label);
@@ -135,6 +142,8 @@ export default function IeltsAnswerControl({ q, value, onChange, onCommit, disab
               ]}
               disabled={disabled || !!graded}
               onPress={() => {
+                // Chặn chọn quá số nhãn cần: đã đủ thì không bật thêm.
+                if (!isSel && need && selected.length >= need) return;
                 const next = toggleSelectedLabel(value, o.label);
                 onChange(next);
                 onCommit?.(next);
@@ -152,6 +161,7 @@ export default function IeltsAnswerControl({ q, value, onChange, onCommit, disab
         {graded && graded.correctLabel ? (
           <Text style={[styles.answerLine, { color: colors.text, fontSize: scaled(14) }]}>
             Đáp án đúng: <Text style={{ fontWeight: '700' }}>{correctSet.join(', ') || graded.correctLabel}</Text>
+            {isPartial ? ` — bạn đúng ${graded.marks}/${graded.maxMarks}, tính ${graded.marks} điểm nhưng chưa đủ để tính là đúng.` : null}
           </Text>
         ) : null}
       </View>

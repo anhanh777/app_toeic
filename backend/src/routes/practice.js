@@ -23,6 +23,12 @@ router.post('/practice/answer', authMiddleware, (req, res) => {
   let correctLabel = null;
   let correctText = null;
   let storedSelected;
+  // Diem tung phan: list_selection (Choose TWO/THREE) marks = so nhan dung,
+  // maxMarks = so nhan yeu cau (2/3); dang khac marks = correct ? 1 : 0.
+  // `correct` (dung HET) van quyet dinh XP + cau sai — dung 1 phan thi
+  // van vao cau sai de on lai, nhung van duoc diem vao band.
+  let marks = null;
+  let maxMarks = 1;
   if (typed) {
     // Cau dien tu: selected la text tu do; kiem tra gioi han tu TRUOC khi
     // cham — qua gioi han thi 400, khong ghi attempt/cau sai.
@@ -31,21 +37,21 @@ router.post('/practice/answer', authMiddleware, (req, res) => {
       return res.status(400).json({ error: 'vuot_gioi_han_tu' });
     }
     correct = graded.correct;
+    marks = correct ? 1 : 0;
     correctText = q.correct_text || null;
     storedSelected = selected.trim();
   } else if (isMultiAnswerType(q.question_type)) {
-    // list_selection: chon 2-3 nhan, cham all-or-nothing theo tap nhan.
-    // Nop sai dinh dang (thieu/thua nhan, nhan khong co trong options) van
-    // tinh la 1 attempt sai, khong 400.
+    // list_selection: chon 2-3 nhan, cham TUNG PHAN theo tap nhan
+    // (gradeListSelection): chon thua so nhan yeu cau hoac nhan la thi 0
+    // diem; chon it hon thi moi nhan dung duoc 1 diem.
     const correctLabels = q.options.filter((o) => o.is_correct === 1).map((o) => o.label);
     if (!correctLabels.length) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });
-    const picked = parseSelectedLabels(selected);
-    const validLabels = new Set(q.options.map((o) => o.label));
-    const validPick =
-      picked.length >= 2 && picked.length <= 3 && picked.every((l) => validLabels.has(l));
-    correct = validPick && gradeListSelection(selected, correctLabels).correct;
+    const graded = gradeListSelection(selected, correctLabels, q.options.map((o) => o.label));
+    correct = graded.correct;
+    marks = graded.marks;
+    maxMarks = graded.maxMarks;
     correctLabel = correctLabels.join(', ');
-    storedSelected = picked.join(',');
+    storedSelected = parseSelectedLabels(selected).join(',');
   } else {
     const selectedUpper = selected.trim().toUpperCase();
     const correctOpt = q.options.find((o) => o.is_correct === 1);
@@ -54,6 +60,7 @@ router.post('/practice/answer', authMiddleware, (req, res) => {
       return res.status(400).json({ error: 'selected phai la A, B, C hoac D' });
     }
     correct = selectedUpper === correctOpt.label;
+    marks = correct ? 1 : 0;
     correctLabel = correctOpt.label;
     storedSelected = selectedUpper;
   }
@@ -68,13 +75,15 @@ router.post('/practice/answer', authMiddleware, (req, res) => {
     durationSec: 0,
     exam,
   });
-  db.upsertAnswer(attempt.id, questionId, storedSelected, correct);
+  db.upsertAnswer(attempt.id, questionId, storedSelected, correct, marks, maxMarks);
   const isListening = q.part >= 1 && q.part <= 4;
   db.finishAttempt(attempt.id, {
     finishedAt: new Date().toISOString(),
     durationSec: 0,
-    listeningCorrect: isListening ? (correct ? 1 : 0) : null,
-    readingCorrect: !isListening ? (correct ? 1 : 0) : null,
+    // Luyen 1 cau: diem dung = marks (list_selection dung 1 phan van duoc
+    // diem do; dang khac marks = correct ? 1 : 0).
+    listeningCorrect: isListening ? marks : null,
+    readingCorrect: !isListening ? marks : null,
     listeningScore: null,
     readingScore: null,
     totalScore: null,
@@ -104,6 +113,7 @@ router.post('/practice/answer', authMiddleware, (req, res) => {
     correct,
     correctLabel,
     ...(typed ? { correctText } : {}),
+    ...(isMultiAnswerType(q.question_type) ? { marks, maxMarks } : {}),
     explanation: q.explanation || null,
     transcript,
     xpAwarded,

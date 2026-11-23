@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api, scoreLevel, type Question, type TestResultDetail } from '../api';
 import { ErrorBox, LivelyMascot, PassageWithBlanks, partName, QuestionText, TierBadge, type BlankState } from '../components';
-import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, partNameFor, questionTypeName, realQuestionNumber, stripLeadingNumber } from '../exam';
+import { bandLevel, isFillIn, isMultiAnswer, paperNumbersFor, parseSelectedLabels, partLabel, partNameFor, questionTypeName, realQuestionNumber, stripLeadingNumber } from '../exam';
 import { IeltsAnswerControl } from '../ielts-ui';
 import { RootCausePicker, skillOfPart } from '../ielts-phase1';
 import { LoadingLine, useUiSettings } from '../uiSettings';
@@ -57,18 +57,17 @@ export default function Result() {
       .sort((a, b) => a.accuracy - b.accuracy || b.total - a.total);
   })() : [];
   // Số câu thật trên đề, tính theo thứ tự trong bài (chung hàm với phòng thi).
-  const withinSeen: Record<number, number> = {};
-  const detailNumbers = detailAll.map(d => {
-    const p = d.part ?? 0;
-    withinSeen[p] = (withinSeen[p] ?? 0) + 1;
-    return realQuestionNumber(isIelts ? 'ielts' : 'toeic', p, withinSeen[p]);
-  });
+  // Câu gộp list_selection chiếm 2–3 số: n = số bắt đầu (cho
+  // stripLeadingNumber), label = "11" hoặc "11–12" (để hiển thị).
+  const paperNumbers = paperNumbersFor(isIelts ? 'ielts' : 'toeic', detailAll.map(d => ({ id: d.questionId, part: d.part ?? 0, paperSpan: d.paperSpan ?? 1 })));
+  const detailNumbers = detailAll.map(d => paperNumbers.get(d.questionId)?.n ?? realQuestionNumber(isIelts ? 'ielts' : 'toeic', d.part ?? 0, 1));
+  const detailLabels = detailAll.map((d, i) => paperNumbers.get(d.questionId)?.label ?? `${detailNumbers[i]}`);
 
   // Thân bài xem lại của 1 câu — dùng chung cho cả 2 chế độ xem: cổng
   // nguyên nhân gốc của IELTS (câu sai/chưa trả lời), hoặc đáp án đúng +
   // giải thích (+ transcript/đoạn văn). Chế độ "Xem trên đề" không lặp
   // lại đoạn văn (đã hiện 1 lần ở đầu khối) và chỉ hiện transcript ở
-  // câu nghe (câu đọc thì "transcript" thực chất là đoạn văn).
+  // câu nghe (d.script chỉ là script thật nên câu đọc không có transcript).
   const renderAnswerReview = (d: TestResultDetail, opts: { showPassage: boolean; showScript: boolean }) => {
     const causeLogged = !!causeById[d.questionId];
     const isReadingPassage = isIelts ? (d.part ?? 0) >= 5 : (d.part ?? 0) >= 6;
@@ -100,6 +99,7 @@ export default function Result() {
           {' • '}Đáp án đúng: <strong>{isMultiAnswer(d.questionType)
             ? (parseSelectedLabels(d.correctLabel).join(', ') || d.correctText || '—')
             : (d.correctText ?? d.correctLabel ?? '—')}</strong>
+          {isMultiAnswer(d.questionType) && d.correct !== true && d.marks != null && d.maxMarks != null && d.marks > 0 ? <> • Đúng <strong>{d.marks}/{d.maxMarks}</strong> (tính {d.marks} điểm, chưa đủ để tính là đúng)</> : null}
         </p>
         {d.explanation ? (
           <p style={{ margin: '.2rem 0' }}><strong>Giải thích:</strong> {d.explanation}</p>
@@ -125,14 +125,14 @@ export default function Result() {
   // "Xem trên đề": nhóm các câu liên tiếp cùng 1 đoạn văn (cùng mẫu
   // PracticeSession — cùng passageId hoặc cùng passageText) để đoạn chỉ
   // hiện 1 lần, các câu hỏi nối tiếp ngay bên dưới như tờ đề thi thật.
-  type PaperBlock = { key: string; part: number; passageText?: string | null; items: { d: TestResultDetail; n: number }[] };
+  type PaperBlock = { key: string; part: number; passageText?: string | null; items: { d: TestResultDetail; n: number; label: string }[] };
   const paperBlocks: PaperBlock[] = [];
   detailAll.forEach((d, i) => {
     const last = paperBlocks[paperBlocks.length - 1];
     const sameId = !!d.passageId && !!last && last.items[0]?.d.passageId === d.passageId;
     const sameText = !!d.passageText && !!last && last.passageText === d.passageText;
-    if ((sameId || sameText) && last) last.items.push({ d, n: detailNumbers[i] });
-    else paperBlocks.push({ key: d.questionId, part: d.part ?? 0, passageText: d.passageText, items: [{ d, n: detailNumbers[i] }] });
+    if ((sameId || sameText) && last) last.items.push({ d, n: detailNumbers[i], label: detailLabels[i] });
+    else paperBlocks.push({ key: d.questionId, part: d.part ?? 0, passageText: d.passageText, items: [{ d, n: detailNumbers[i], label: detailLabels[i] }] });
   });
   // Câu Reading trắc nghiệm: xếp 2 câu 1 hàng (cùng mẫu PracticeSession).
   const isDuoPaperQuestion = (d: TestResultDetail) => {
@@ -170,7 +170,7 @@ export default function Result() {
   // tô màu theo đáp án đã chọn/đáp án đúng, dạng IELTS đặc biệt dùng lại
   // IeltsAnswerControl ở trạng thái đã chấm, dưới câu là trạng thái +
   // đáp án + giải thích (cùng mẫu "Làm xong mới chấm" ở PracticeSession).
-  const renderPaperQuestion = (d: TestResultDetail, n: number) => {
+  const renderPaperQuestion = (d: TestResultDetail, n: number, label: string) => {
     const qType = d.questionType || 'multiple_choice';
     const isIeltsSpecial = isIelts && qType !== 'multiple_choice' && qType !== 'choosing_title';
     const isP6 = !isIelts && (d.part ?? 0) === 6;
@@ -179,7 +179,9 @@ export default function Result() {
     const listeningOnly = !isIelts && ((d.part ?? 0) === 1 || (d.part ?? 0) === 2)
       && (d.options ?? []).length > 0 && (d.options ?? []).every(o => !o.content || !o.content.trim());
     const letterOnly = listeningOnly;
-    const status = d.correct === true ? '✓ Đúng' : d.correct === false ? '✗ Sai' : '— Chưa trả lời';
+    // Đúng 1 phần của câu gộp vẫn được điểm nhưng tính là sai khi ôn lại.
+    const isPartial = isMultiAnswer(qType) && d.correct !== true && d.marks != null && d.maxMarks != null && d.marks > 0 && d.marks < d.maxMarks;
+    const status = d.correct === true ? '✓ Đúng' : isPartial ? `⚠️ Đúng ${d.marks}/${d.maxMarks}` : d.correct === false ? '✗ Sai' : '— Chưa trả lời';
     const statusColor = d.correct === true ? 'var(--green-ink)' : d.correct === false ? 'var(--red-ink)' : 'var(--muted)';
     // Câu hỏi tổng hợp từ detail để dùng lại IeltsAnswerControl.
     const qForControl: Question = {
@@ -187,8 +189,9 @@ export default function Result() {
       passageText: d.passageText ?? undefined, script: d.script ?? undefined,
       content: d.content ?? '', options: (d.options ?? []).map(o => ({ label: o.label, content: o.content ?? '' })),
       questionType: d.questionType, wordLimit: d.wordLimit ?? undefined, imageUrl: d.imageUrl ?? null,
+      paperSpan: d.paperSpan ?? undefined,
     };
-    const graded = { correct: d.correct === true, correctLabel: d.correctLabel ?? null, correctText: d.correctText ?? null, explanation: d.explanation ?? undefined };
+    const graded = { correct: d.correct === true, correctLabel: d.correctLabel ?? null, correctText: d.correctText ?? null, explanation: d.explanation ?? undefined, marks: d.marks ?? null, maxMarks: d.maxMarks ?? null };
     const selectedLabels = isMultiAnswer(qType) ? parseSelectedLabels(d.selected) : [d.selected ?? ''];
     const correctLabels = isMultiAnswer(qType) ? parseSelectedLabels(d.correctLabel) : [d.correctLabel ?? ''];
     return (
@@ -201,13 +204,13 @@ export default function Result() {
             <p className="muted">🖼 Chưa có ảnh minh họa cho câu này.</p>
           )}
           {showContent ? (
-            <p><span className="exam-q-num">{n}.</span>{isIelts ? <QuestionText text={stripLeadingNumber(d.content!, n)} /> : <strong>{stripLeadingNumber(d.content!, n)}</strong>}</p>
+            <p><span className="exam-q-num">{label}.</span>{isIelts ? <QuestionText text={stripLeadingNumber(d.content!, n)} /> : <strong>{stripLeadingNumber(d.content!, n)}</strong>}</p>
           ) : null}
         </div>
         <div className="exam-q-side">
           {/* Chỉ-nghe (P1/P2) và Part 6 không có chữ câu hỏi: số câu nằm
               trên phương án như phiếu trả lời. */}
-          {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{n}.</div>}
+          {!isIeltsSpecial && (letterOnly || isP6) && <div className="exam-q-num">{label}.</div>}
           {isIeltsSpecial ? (
             <IeltsAnswerControl q={qForControl} value={d.selected ?? ''} onChange={() => {}} disabled graded={graded} />
           ) : (
@@ -236,10 +239,10 @@ export default function Result() {
   // khối có đoạn văn).
   const renderPaper = () => {
     const out: React.ReactNode[] = [];
-    let duoRun: { d: TestResultDetail; n: number }[] = [];
+    let duoRun: { d: TestResultDetail; n: number; label: string }[] = [];
     const flushDuo = (key: string) => {
       if (!duoRun.length) return;
-      out.push(<div className="exam-q-grid2" key={key}>{duoRun.map(item => renderPaperQuestion(item.d, item.n))}</div>);
+      out.push(<div className="exam-q-grid2" key={key}>{duoRun.map(item => renderPaperQuestion(item.d, item.n, item.label))}</div>);
       duoRun = [];
     };
     let prevPart = -1;
@@ -261,15 +264,15 @@ export default function Result() {
         <div className={`paper-cluster${split ? ' paper-cluster--split' : ''}`} key={block.key}>
           {renderPaperPassage(block)}
           {split ? (
-            <div>{block.items.map(item => renderPaperQuestion(item.d, item.n))}</div>
+            <div>{block.items.map(item => renderPaperQuestion(item.d, item.n, item.label))}</div>
           ) : block.items.every(({ d }) => isDuoPaperQuestion(d)) ? (
-            <div className="exam-q-grid2">{block.items.map(item => renderPaperQuestion(item.d, item.n))}</div>
+            <div className="exam-q-grid2">{block.items.map(item => renderPaperQuestion(item.d, item.n, item.label))}</div>
           ) : (
-            block.items.map(item => renderPaperQuestion(item.d, item.n))
+            block.items.map(item => renderPaperQuestion(item.d, item.n, item.label))
           )}
         </div>
       ) : (
-        <div key={block.key}>{block.items.map(item => renderPaperQuestion(item.d, item.n))}</div>
+        <div key={block.key}>{block.items.map(item => renderPaperQuestion(item.d, item.n, item.label))}</div>
       ));
     }
     flushDuo('duo-last');
@@ -373,10 +376,12 @@ export default function Result() {
                 if (detailFilter === 'correct' && d.correct !== true) return null;
                 if (detailFilter === 'wrong' && d.correct === true) return null;
                 const n = detailNumbers[i];
-                const status = d.correct === true ? '✓ Đúng' : d.correct === false ? '✗ Sai' : '— Chưa trả lời';
+                const label = detailLabels[i];
+                const isPartial = isMultiAnswer(d.questionType) && d.correct !== true && d.marks != null && d.maxMarks != null && d.marks > 0 && d.marks < d.maxMarks;
+                const status = d.correct === true ? '✓ Đúng' : isPartial ? `⚠️ Đúng ${d.marks}/${d.maxMarks}` : d.correct === false ? '✗ Sai' : '— Chưa trả lời';
                 return (
                   <div key={d.questionId} style={{ borderBottom: '1px solid var(--border-soft)', padding: '.5rem 0' }}>
-                    <p style={{ margin: '.2rem 0' }}><strong>Câu {n} · {status}</strong>{d.content ? <> — {stripLeadingNumber(d.content, n)}</> : null}</p>
+                    <p style={{ margin: '.2rem 0' }}><strong>Câu {label} · {status}</strong>{d.content ? <> — {stripLeadingNumber(d.content, n)}</> : null}</p>
                     {renderAnswerReview(d, { showPassage: true, showScript: true })}
                   </div>
                 );

@@ -29,6 +29,7 @@ import {
 } from '../layout';
 import {
   isFillIn,
+  paperNumbersFor,
   partLabel,
   realQuestionNumber,
   wordCount,
@@ -40,26 +41,26 @@ import { LoadingLine } from '../components/LoadingLine';
 import PassageView, { type BlankState } from '../components/PassageView';
 import QuestionView, { isListeningOnly, partName, type AnswerResult } from '../components/QuestionView';
 
-type Block = { key: string; passageText?: string; questions: { q: Question; n: number }[] };
+type Block = { key: string; passageText?: string; questions: { q: Question; n: number; label: string }[] };
 type Row =
   | { key: string; kind: 'cluster'; block: Block }
-  | { key: string; kind: 'duo'; items: { q: Question; n: number }[] }
-  | { key: string; kind: 'single'; item: { q: Question; n: number } };
+  | { key: string; kind: 'duo'; items: { q: Question; n: number; label: string }[] }
+  | { key: string; kind: 'single'; item: { q: Question; n: number; label: string } };
 
 /** Nhóm các câu liên tiếp cùng 1 đoạn văn (như web: cùng passageId hoặc
- * cùng passageText) — đoạn chỉ hiện 1 lần. Số n là SỐ THẬT trong đề. */
+ * cùng passageText) — đoạn chỉ hiện 1 lần. Số n là SỐ THẬT trong đề;
+ * câu gộp list_selection chiếm 2–3 số nên label hiển thị dạng khoảng
+ * "11–12". */
 function groupBlocks(questions: Question[], exam: ExamId): Block[] {
   const blocks: Block[] = [];
-  const partCount: Record<number, number> = {};
+  const paperNumbers = paperNumbersFor(exam, questions);
   questions.forEach((q) => {
-    const idx = (partCount[q.part] ?? 0) + 1;
-    partCount[q.part] = idx;
-    const n = realQuestionNumber(exam, q.part, idx);
+    const { n, label } = paperNumbers.get(q.id) ?? { n: realQuestionNumber(exam, q.part, 1), label: `${realQuestionNumber(exam, q.part, 1)}` };
     const last = blocks[blocks.length - 1];
     const sameId = !!q.passageId && !!last && last.questions[0]?.q.passageId === q.passageId;
     const sameText = !!q.passageText && !!last && last.passageText === q.passageText;
-    if ((sameId || sameText) && last) last.questions.push({ q, n });
-    else blocks.push({ key: q.id, passageText: q.passageText, questions: [{ q, n }] });
+    if ((sameId || sameText) && last) last.questions.push({ q, n, label });
+    else blocks.push({ key: q.id, passageText: q.passageText, questions: [{ q, n, label }] });
   });
   return blocks;
 }
@@ -75,7 +76,7 @@ function isDuoQuestion(q: Question, exam: ExamId): boolean {
 function buildRows(blocks: Block[], columns: 1 | 2, exam: ExamId): { rows: Row[]; rowByQuestionId: Map<string, number> } {
   const rows: Row[] = [];
   const rowByQuestionId = new Map<string, number>();
-  let duoRun: { q: Question; n: number }[] = [];
+  let duoRun: { q: Question; n: number; label: string }[] = [];
   const flushDuo = (key: string) => {
     if (!duoRun.length) return;
     const idx = rows.length;
@@ -371,7 +372,7 @@ export default function PracticeSessionScreen() {
   }, [testSetId]);
 
   const renderQuestion = useCallback(
-    (q: Question, n: number) => {
+    (q: Question, n: number, label: string) => {
       const result = resultById[q.id] ?? null;
       // Part 1/2 TOEIC: ẩn chữ trước khi trả lời từng câu, trả lời xong
       // mới hiện lại đầy đủ.
@@ -380,6 +381,7 @@ export default function PracticeSessionScreen() {
         <QuestionView
           q={q}
           n={n}
+          label={label}
           exam={exam}
           selected={selectedById[q.id] ?? ''}
           onSelect={handleSelect}
@@ -430,7 +432,7 @@ export default function PracticeSessionScreen() {
         }
         const allDuo = block.questions.every(({ q }) => isDuoQuestion(q, exam));
         const qs = block.questions;
-        const duoPairs: { q: Question; n: number }[][] = [];
+        const duoPairs: { q: Question; n: number; label: string }[][] = [];
         if (allDuo && columns === 2) {
           for (let i = 0; i < qs.length; i += 2) duoPairs.push(qs.slice(i, i + 2));
         }
@@ -450,16 +452,16 @@ export default function PracticeSessionScreen() {
             {duoPairs.length ? (
               duoPairs.map((pair) => (
                 <View key={pair[0].q.id} style={styles.duoRow}>
-                  {pair.map(({ q, n }) => (
+                  {pair.map(({ q, n, label }) => (
                     <View key={q.id} style={styles.duoCell}>
-                      {renderQuestion(q, n)}
+                      {renderQuestion(q, n, label)}
                     </View>
                   ))}
                   {pair.length === 1 ? <View style={styles.duoCell} /> : null}
                 </View>
               ))
             ) : (
-              qs.map(({ q, n }) => <View key={q.id}>{renderQuestion(q, n)}</View>)
+              qs.map(({ q, n, label }) => <View key={q.id}>{renderQuestion(q, n, label)}</View>)
             )}
           </View>
         );
@@ -467,16 +469,16 @@ export default function PracticeSessionScreen() {
       if (item.kind === 'duo') {
         return (
           <View style={styles.duoRow}>
-            {item.items.map(({ q, n }) => (
+            {item.items.map(({ q, n, label }) => (
               <View key={q.id} style={styles.duoCell}>
-                {renderQuestion(q, n)}
+                {renderQuestion(q, n, label)}
               </View>
             ))}
             {item.items.length === 1 ? <View style={styles.duoCell} /> : null}
           </View>
         );
       }
-      return renderQuestion(item.item.q, item.item.n);
+      return renderQuestion(item.item.q, item.item.n, item.item.label);
     },
     [colors, columns, exam, renderQuestion, resultById, scrollToQuestion, selectedById],
   );

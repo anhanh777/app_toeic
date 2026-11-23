@@ -67,19 +67,38 @@ function parseSelectedLabels(selected) {
 }
 
 /**
- * Cham cau list_selection: all-or-nothing — tap nhan da chon phai bang tap
- * nhan dung (khong phan biet thu tu / hoa-thuong). selected co the la chuoi
- * "A,C" (dang luu trong answers.selected) hoac mang nhan.
- * @returns {{correct:boolean}}
+ * Cham cau list_selection THEO TUNG PHAN (cham tung chu — giong de that:
+ * moi chu dung = 1 diem, moi cau trong cap/bo ba la 1 cau rieng tren de).
+ * selected co the la chuoi "A,C" (dang luu trong answers.selected) hoac mang nhan.
+ * - Chon THUA so nhan yeu cau, hoac nhan khong co trong options -> toan bo
+ *   cau 0 diem (chon thua la sai luat de thi).
+ * - Chon it hon so nhan yeu cau: moi nhan dung duoc 1 diem, nhan chua chon = 0.
+ * @param {string|string[]} selected - nhan da chon
+ * @param {string[]|string} correctLabels - nhan dung
+ * @param {string[]|null} [validLabels] - cac nhan co trong options (de loai
+ *   nhan la); bo qua thi chi kiem tra so luong.
+ * @returns {{correct:boolean, marks:number, maxMarks:number,
+ *   correctCount:number, totalCount:number}}
+ *   correct = dung HET (all-or-nothing, dung cho cau sai / cổng ôn tập / XP);
+ *   marks = so diem thuc (0..maxMarks) dung cho band/diem tong.
  */
-function gradeListSelection(selected, correctLabels) {
+function gradeListSelection(selected, correctLabels, validLabels) {
   const picked = parseSelectedLabels(selected);
   const correct = parseSelectedLabels(correctLabels);
+  const maxMarks = correct.length;
+  const correctSet = new Set(correct);
+  const allValid = !Array.isArray(validLabels) || picked.every((l) => validLabels.includes(l));
+  // Chon thua so nhan yeu cau, hoac co nhan la -> 0 diem ca cau.
+  const marks =
+    !allValid || picked.length > maxMarks
+      ? 0
+      : picked.filter((l) => correctSet.has(l)).length;
   return {
-    correct:
-      picked.length > 0 &&
-      picked.length === correct.length &&
-      picked.every((label, i) => label === correct[i]),
+    correct: picked.length > 0 && picked.length === maxMarks && marks === maxMarks,
+    marks,
+    maxMarks,
+    correctCount: marks,
+    totalCount: maxMarks,
   };
 }
 

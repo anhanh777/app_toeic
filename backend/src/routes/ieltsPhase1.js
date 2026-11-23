@@ -22,6 +22,7 @@ const db = require('../db');
 const { authMiddleware } = require('../auth');
 const { awardXp, computeStreakDays } = require('../xp');
 const { ieltsBandForSkill, ieltsOverallBand } = require('../scoring');
+const { isMultiAnswerType } = require('../ieltsGrading');
 
 const router = express.Router();
 
@@ -368,22 +369,36 @@ router.post('/ielts/diagnostic/complete', authMiddleware, (req, res) => {
   const typeMap = new Map();
   let listeningCorrect = 0;
   let readingCorrect = 0;
+  let totalMarks = 0; // tong so diem toi da tren de that (80 cho bai full)
   for (const qid of attempt.questionIds || []) {
     const q = db.getQuestionRowById(qid);
     if (!q) continue;
     const ans = ansMap.get(qid);
     const correct = ans && ans.isCorrect === true;
     const answered = !!ans && ans.isCorrect != null;
+    // Diem tung phan (da luu luc nop bai): list_selection dung 1 phan van
+    // duoc diem do; hang cu (marks NULL) fallback ve boolean; cau chua tra
+    // loi tinh du so diem toi da vao tong. byType giu boolean (ti le cau
+    // dung HET) de xac dinh dang yeu nhat can on lai.
+    const marks = ans ? (ans.marks ?? (correct ? 1 : 0)) : 0;
+    const maxMarks = ans
+      ? (ans.maxMarks ?? 1)
+      : (isMultiAnswerType(q.question_type)
+        ? Math.max(1, (q.options || []).filter((o) => o.is_correct === 1).length)
+        : 1);
+    totalMarks += maxMarks;
     const type = q.question_type || 'multiple_choice';
     if (q.part >= 1 && q.part <= 4) {
-      bySection[q.part - 1].total += 1;
-      if (correct) { bySection[q.part - 1].correct += 1; listeningCorrect += 1; }
+      bySection[q.part - 1].total += maxMarks;
+      bySection[q.part - 1].correct += marks;
+      listeningCorrect += marks;
     } else if (q.part >= 5 && q.part <= 7) {
       const pid = q.passage_id || 'no-passage';
       if (!passageMap.has(pid)) passageMap.set(pid, { passageId: pid, correct: 0, total: 0 });
       const p = passageMap.get(pid);
-      p.total += 1;
-      if (correct) { p.correct += 1; readingCorrect += 1; }
+      p.total += maxMarks;
+      p.correct += marks;
+      readingCorrect += marks;
     }
     if (!typeMap.has(type)) typeMap.set(type, { questionType: type, correct: 0, total: 0, answered: 0 });
     const t = typeMap.get(type);
@@ -443,7 +458,9 @@ router.post('/ielts/diagnostic/complete', authMiddleware, (req, res) => {
       topErrorGroups,
       bands: { listening: listeningBand, reading: readingBand, overall: overallBand },
       totalCorrect,
-      totalQuestions: (attempt.questionIds || []).length,
+      // Tong so cau tren de that (tinh theo diem toi da — cau gop chiem
+      // 2-3 cau), KHONG phai so row cau hoi.
+      totalQuestions: totalMarks,
     },
   });
   return res.json(stored);
