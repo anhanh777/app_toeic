@@ -250,50 +250,10 @@
     "content": "childcare"
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "They might even do some painting or wallpapering Or even do some babysitting so that parents can go out for a while.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C14-L-T3-S2-012",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C14-L-T3-S2",
-  "passageTitle": "Section 2 — Volunteering",
-  "passageText": null,
-  "script": "Good morning. My name’s Lucy Crittenden, and I’m the Director of Operations for an organisation that arranges volunteering in this part of the country. I’m hoping I can persuade one or two of you to become volunteers yourselves. Let me start by briefly explaining what we mean by volunteering. Volunteers are teenagers and adults who choose to spend some time, unpaid, helping other people in some way. Most volunteers devote two or three hours to this every week, while a few do much more. The people they help may have physical or behavioural difficulties, for example. Volunteers can do all sorts of things, depending on their own abilities and interests. If they’re supporting a family that’s struggling, for example, they may be able to give them tips on cooking, or recommend how to plan their budget or how to shop sensibly on their income. They might even do some painting or wallpapering, perhaps alongside any members of the family who are able to do it. Or even do some babysitting so that parents can go out for a while. The benefit from volunteering isn’t only for the people being helped. Volunteers also gain from it: they’re using their skills to cope with somebody’s mental or physical ill health, and volunteering may be a valuable element of their CV when they’re applying for jobs: employers usually look favourably on someone who’s given up time to help others. Significantly, most volunteers feel that what they’re doing gives them a purpose in their lives. And in my opinion, they’re lucky in that respect, as many people don’t have that feeling. Now I’d like to tell you what some of our volunteers have said about what they do, to give you an idea of the range of ways in which they can help people. Habib supports an elderly lady who’s beginning to show signs of dementia. Once a week they, along with other elderly people, go to the local community centre, where a group of people come in and sing. The songs take the listeners back to their youth, and for a little while they can forget the difficulties that they face now. Our volunteer Consuela is an amazing woman. She has difficulty walking herself, but she doesn’t let that stop her. She helps a couple of people with similar difficulties, who had almost stopped walking altogether. By using herself as an example, Consuela encourages them to walk more and more. Minh visits a young man who lives alone and can’t leave his home on his own, so he hardly ever saw anyone. But together they go out to the cinema, or to see friends the young man hadn’t been able to visit for a long time. Tanya visits an elderly woman once a week. When the woman found out that Tanya is a professional dressmaker, she got interested. Tanya showed her some soft toys she’d made, and the woman decided to try it herself. And now she really enjoys it, and spends hours making toys. They’re not perhaps up to Tanya’s standard yet, but she gains a lot of pleasure from doing it. Alexei is a volunteer with a family that faces a number of difficulties. By calmly talking over possible solutions with family members, he’s helping them to realise that they aren’t helpless, and that they can do something themselves to improve their situation. This has been great for their self-esteem. And the last volunteer I’ll mention, though there are plenty more, is Juba. She volunteers with a teenage girl with learning difficulties, who wasn’t very good at talking to other people. Juba’s worked very patiently with her, and now the girl is far better at expressing herself, and at understanding other people. OK, I hope that’s given you an idea of what volunteering is all about. Now I’d like …",
-  "content": "Which TWO activities that volunteers do are mentioned?",
-  "options": [
-   {
-    "label": "A",
-    "content": "decorating"
-   },
-   {
-    "label": "B",
-    "content": "cleaning"
-   },
-   {
-    "label": "C",
-    "content": "delivering meals"
-   },
-   {
-    "label": "D",
-    "content": "shopping"
-   },
-   {
-    "label": "E",
-    "content": "childcare"
-   }
+  "correct": [
+   "A",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -301,7 +261,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -336,50 +296,10 @@
     "content": "boosting their employment prospects"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "volunteering may be a valuable element of their CV when they’re applying for jobs Significantly, most volunteers feel that what they’re doing gives them a purpose in their lives.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C14-L-T3-S2-014",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C14-L-T3-S2",
-  "passageTitle": "Section 2 — Volunteering",
-  "passageText": null,
-  "script": "Good morning. My name’s Lucy Crittenden, and I’m the Director of Operations for an organisation that arranges volunteering in this part of the country. I’m hoping I can persuade one or two of you to become volunteers yourselves. Let me start by briefly explaining what we mean by volunteering. Volunteers are teenagers and adults who choose to spend some time, unpaid, helping other people in some way. Most volunteers devote two or three hours to this every week, while a few do much more. The people they help may have physical or behavioural difficulties, for example. Volunteers can do all sorts of things, depending on their own abilities and interests. If they’re supporting a family that’s struggling, for example, they may be able to give them tips on cooking, or recommend how to plan their budget or how to shop sensibly on their income. They might even do some painting or wallpapering, perhaps alongside any members of the family who are able to do it. Or even do some babysitting so that parents can go out for a while. The benefit from volunteering isn’t only for the people being helped. Volunteers also gain from it: they’re using their skills to cope with somebody’s mental or physical ill health, and volunteering may be a valuable element of their CV when they’re applying for jobs: employers usually look favourably on someone who’s given up time to help others. Significantly, most volunteers feel that what they’re doing gives them a purpose in their lives. And in my opinion, they’re lucky in that respect, as many people don’t have that feeling. Now I’d like to tell you what some of our volunteers have said about what they do, to give you an idea of the range of ways in which they can help people. Habib supports an elderly lady who’s beginning to show signs of dementia. Once a week they, along with other elderly people, go to the local community centre, where a group of people come in and sing. The songs take the listeners back to their youth, and for a little while they can forget the difficulties that they face now. Our volunteer Consuela is an amazing woman. She has difficulty walking herself, but she doesn’t let that stop her. She helps a couple of people with similar difficulties, who had almost stopped walking altogether. By using herself as an example, Consuela encourages them to walk more and more. Minh visits a young man who lives alone and can’t leave his home on his own, so he hardly ever saw anyone. But together they go out to the cinema, or to see friends the young man hadn’t been able to visit for a long time. Tanya visits an elderly woman once a week. When the woman found out that Tanya is a professional dressmaker, she got interested. Tanya showed her some soft toys she’d made, and the woman decided to try it herself. And now she really enjoys it, and spends hours making toys. They’re not perhaps up to Tanya’s standard yet, but she gains a lot of pleasure from doing it. Alexei is a volunteer with a family that faces a number of difficulties. By calmly talking over possible solutions with family members, he’s helping them to realise that they aren’t helpless, and that they can do something themselves to improve their situation. This has been great for their self-esteem. And the last volunteer I’ll mention, though there are plenty more, is Juba. She volunteers with a teenage girl with learning difficulties, who wasn’t very good at talking to other people. Juba’s worked very patiently with her, and now the girl is far better at expressing herself, and at understanding other people. OK, I hope that’s given you an idea of what volunteering is all about. Now I’d like …",
-  "content": "Which TWO ways that volunteers can benefit from volunteering are mentioned?",
-  "options": [
-   {
-    "label": "A",
-    "content": "learning how to be part of a team"
-   },
-   {
-    "label": "B",
-    "content": "having a sense of purpose"
-   },
-   {
-    "label": "C",
-    "content": "realising how lucky they are"
-   },
-   {
-    "label": "D",
-    "content": "improved ability at time management"
-   },
-   {
-    "label": "E",
-    "content": "boosting their employment prospects"
-   }
+  "correct": [
+   "B",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -387,7 +307,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -2220,50 +2140,10 @@
     "content": "the manageable size of most insects"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "they have a bewildering array of interactions with other organisms, something which has driven the evolution of an enormous range of very interesting compounds for defensive and offensive purposes their potential as sources of therapeutic compounds is yet to be realised",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C14-R-T3-P2-022",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C14-R-T3-P2",
-  "passageTitle": "Passage 2 — Saving bugs to find new drugs",
-  "passageText": "A. More drugs than you might think are derived from, or inspired by, compounds found in living things. Looking to nature for the soothing and curing of our ailments is nothing new – we have been doing it for tens of thousands of years. You only have to look at other primates – such as the capuchin monkeys who rub themselves with toxin-oozing millipedes to deter mosquitoes, or the chimpanzees who use noxious forest plants to rid themselves of intestinal parasites – to realise that our ancient ancestors too probably had a basic grasp of medicine.\n\nB. Pharmaceutical science and chemistry built on these ancient foundations and perfected the extraction, characterization, modification and testing of these natural products. Then, for a while, modern pharmaceutical science moved its focus away from nature and into the laboratory, designing chemical compounds from scratch. The main cause of this shift is that although there are plenty of promising chemical compounds in nature, finding them is far from easy. Securing sufficient numbers of the organism in question, isolating and characterizing the compounds of interest, and producing large quantities of these compounds are all significant hurdles.\n\nC. Laboratory-based drug discovery has achieved varying levels of success, something which has now prompted the development of new approaches focusing once again on natural products. With the ability to mine genomes for useful compounds, it is now evident that we have barely scratched the surface of nature’s molecular diversity. This realization, together with several looming health crises, such as antibiotic resistance, has put bioprospecting – the search for useful compounds in nature – firmly back on the map.\n\nD. Insects are the undisputed masters of the terrestrial domain, where they occupy every possible niche. Consequently, they have a bewildering array of interactions with other organisms, something which has driven the evolution of an enormous range of very interesting compounds for defensive and offensive purposes. Their remarkable diversity exceeds that of every other group of animals on the planet combined. Yet even though insects are far and away the most diverse animals in existence, their potential as sources of therapeutic compounds is yet to be realised.\n\nE. From the tiny proportion of insects that have been investigated, several promising compounds have been identified. For example, alloferon, an antimicrobial compound produced by blow fly larvae, is used as an antiviral and antitumor agent in South Korea and Russia. The larvae of a few other insect species are being investigated for the potent antimicrobial compounds they produce. Meanwhile, a compound from the venom of the wasp Polybia paulista has potential in cancer treatment.\n\nF. Why is it that insects have received relatively little attention in bioprospecting? Firstly, there are so many insects that, without some manner of targeted approach, investigating this huge variety of species is a daunting task. Secondly, insects are generally very small, and the glands inside them that secrete potentially useful compounds are smaller still. This can make it difficult to obtain sufficient quantities of the compound for subsequent testing. Thirdly, although we consider insects to be everywhere, the reality of this ubiquity is vast numbers of a few extremely common species. Many insect species are infrequently encountered and very difficult to rear in captivity, which, again, can leave us with insufficient material to work with.\n\nG. My colleagues and I at Aberystwyth University in the UK have developed an approach in which we use our knowledge of ecology as a guide to target our efforts. The creatures that particularly interest us are the many insects that secrete powerful poison for subduing prey and keeping it fresh for future consumption. There are even more insects that are masters of exploiting filthy habitats, such as faeces and carcasses, where they are regularly challenged by thousands of micro-organisms. These insects have many antimicrobial compounds for dealing with pathogenic bacteria and fungi, suggesting that there is certainly potential to find many compounds that can serve as or inspire new antibiotics.\n\nH. Although natural history knowledge points us in the right direction, it doesn’t solve the problems associated with obtaining useful compounds from insects. Fortunately, it is now possible to snip out the stretches of the insect’s DNA that carry the codes for the interesting compounds and insert them into cell lines that allow larger quantities to be produced. And although the road from isolating and characterizing compounds with desirable qualities to developing a commercial product is very long and full of pitfalls, the variety of successful animal-derived pharmaceuticals on the market demonstrates there is a precedent here that is worth exploring.\n\nI. With every bit of wilderness that disappears, we deprive ourselves of potential medicines. As much as I’d love to help develop a groundbreaking insect-derived medicine, my main motivation for looking at insects in this way is conservation. I sincerely believe that all species, however small and seemingly insignificant, have a right to exist for their own sake. If we can shine a light on the darker recesses of nature’s medicine cabinet, exploring the useful chemistry of the most diverse animals on the planet, I believe we can make people think differently about the value of nature.",
-  "script": null,
-  "content": "Which TWO of the following make insects interesting for drug research?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the huge number of individual insects in the world"
-   },
-   {
-    "label": "B",
-    "content": "the variety of substances insects have developed to protect themselves"
-   },
-   {
-    "label": "C",
-    "content": "the potential to extract and make use of insects’ genetic codes"
-   },
-   {
-    "label": "D",
-    "content": "the similarities between different species of insect"
-   },
-   {
-    "label": "E",
-    "content": "the manageable size of most insects"
-   }
+  "correct": [
+   "B",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -2271,7 +2151,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
