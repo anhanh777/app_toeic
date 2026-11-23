@@ -1525,6 +1525,41 @@ function seedIeltsCam14Test2() {
   return inserted;
 }
 
+function seedIeltsCam14Test3() {
+  const list = readJsonArray('ielts-cam14-test3.json').filter(validSeedIeltsQuestion);
+  if (!list.length) {
+    console.log('[seed] khong co cau IELTS Cam 14 Test 3 hop le — bo qua TS-064.');
+    return 0;
+  }
+  if (!db.getTestSet('TS-064')) {
+    db.createTestSet({
+      id: 'TS-064',
+      title: 'Cambridge IELTS 14 — Test 03',
+      description:
+        'Cambridge IELTS 14 Academic, Test 03: Listening 4 Section + Reading 3 Passage (80 câu). Đề thi thật.',
+      isPublished: 1,
+      exam: 'ielts',
+    });
+    console.log('[seed] da tao Cambridge IELTS 14 Test 03 TS-064.');
+  }
+  const existing = db.listQuestions({ testSetId: 'TS-064', limit: 1, offset: 0 });
+  if (existing.total > 0) {
+    console.log(`[seed] TS-064 da co ${existing.total} cau — bo qua seed Cam 14 Test 3.`);
+    return 0;
+  }
+  let inserted = 0;
+  for (const q of list) {
+    try {
+      db.insertQuestion({ ...q, exam: 'ielts', testSetId: 'TS-064' });
+      inserted += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua cau Cam 14 Test 3 ${q.id}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${inserted}/${list.length} cau Cam 14 Test 3 (TS-064).`);
+  return inserted;
+}
+
 function seedVocabulary() {
   // Seed tang dan theo id (nhu seedQuestions): chi chen tu CHUA CO.
   const list = readJsonArray('vocabulary.json').filter(
@@ -1744,6 +1779,7 @@ function seedAll() {
   seedIeltsCam15Test4();
   seedIeltsCam14Test1();
   seedIeltsCam14Test2();
+  seedIeltsCam14Test3();
   seedPartMedia();
   seedVocabulary();
   seedIeltsWritingTasks();
@@ -1779,6 +1815,7 @@ function seedAll() {
   if (db.getTestSet('TS-061')) db.refreshTestSetTotal('TS-061');
   if (db.getTestSet('TS-062')) db.refreshTestSetTotal('TS-062');
   if (db.getTestSet('TS-063')) db.refreshTestSetTotal('TS-063');
+  if (db.getTestSet('TS-064')) db.refreshTestSetTotal('TS-064');
   console.log(
     `[seed] xong: ${db.countQuestions()} cau hoi, ${db.countVocabulary()} tu vung, ${db.countUsers()} user.`
   );
