@@ -905,6 +905,46 @@ function seedIeltsCam18Test1() {
   return inserted;
 }
 
+/**
+ * Cam 18 Test 2 — TS-047. Mirror seedIeltsCam18Test1(): neu file
+ * data/ielts-cam18-test2.json chua co thi chi warn, khong tao de rong;
+ * chi seed khi TS-047 chua co cau nao.
+ */
+function seedIeltsCam18Test2() {
+  const list = readJsonArray('ielts-cam18-test2.json').filter(validSeedIeltsQuestion);
+  if (!list.length) {
+    console.log('[seed] khong co cau IELTS Cam 18 Test 2 hop le — bo qua TS-047.');
+    return 0;
+  }
+  if (!db.getTestSet('TS-047')) {
+    db.createTestSet({
+      id: 'TS-047',
+      title: 'Cambridge IELTS 18 — Test 02',
+      description:
+        'Cambridge IELTS 18 Academic, Test 02: Listening 4 Section + Reading 3 Passage (80 câu). Đề thi thật.',
+      isPublished: 1,
+      exam: 'ielts',
+    });
+    console.log('[seed] da tao Cambridge IELTS 18 Test 02 TS-047.');
+  }
+  const existing = db.listQuestions({ testSetId: 'TS-047', limit: 1, offset: 0 });
+  if (existing.total > 0) {
+    console.log(`[seed] TS-047 da co ${existing.total} cau — bo qua seed Cam 18 Test 2.`);
+    return 0;
+  }
+  let inserted = 0;
+  for (const q of list) {
+    try {
+      db.insertQuestion({ ...q, exam: 'ielts', testSetId: 'TS-047' });
+      inserted += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua cau Cam 18 Test 2 ${q.id}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${inserted}/${list.length} cau Cam 18 Test 2 (TS-047).`);
+  return inserted;
+}
+
 function seedVocabulary() {
   // Seed tang dan theo id (nhu seedQuestions): chi chen tu CHUA CO.
   const list = readJsonArray('vocabulary.json').filter(
@@ -1107,6 +1147,7 @@ function seedAll() {
   seedIeltsCam19Test3();
   seedIeltsCam19Test4();
   seedIeltsCam18Test1();
+  seedIeltsCam18Test2();
   seedPartMedia();
   seedVocabulary();
   seedIeltsWritingTasks();
@@ -1125,6 +1166,7 @@ function seedAll() {
   if (db.getTestSet('TS-038')) db.refreshTestSetTotal('TS-038');
   if (db.getTestSet('TS-039')) db.refreshTestSetTotal('TS-039');
   if (db.getTestSet('TS-046')) db.refreshTestSetTotal('TS-046');
+  if (db.getTestSet('TS-047')) db.refreshTestSetTotal('TS-047');
   console.log(
     `[seed] xong: ${db.countQuestions()} cau hoi, ${db.countVocabulary()} tu vung, ${db.countUsers()} user.`
   );
@@ -1134,4 +1176,4 @@ if (require.main === module) {
   seedAll();
 }
 
-module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedUiSettings, seedBrandSettings, seedMenuIcons, seedIeltsCam21Test1, seedIeltsCam21Test2, seedIeltsCam21Test3, seedIeltsCam21Test4, seedIeltsCam20Test1, seedIeltsCam20Test2, seedIeltsCam20Test3, seedIeltsCam20Test4, seedIeltsCam19Test1, seedIeltsCam19Test2, seedIeltsCam19Test3, seedIeltsCam19Test4, seedIeltsCam18Test1, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };
+module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedUiSettings, seedBrandSettings, seedMenuIcons, seedIeltsCam21Test1, seedIeltsCam21Test2, seedIeltsCam21Test3, seedIeltsCam21Test4, seedIeltsCam20Test1, seedIeltsCam20Test2, seedIeltsCam20Test3, seedIeltsCam20Test4, seedIeltsCam19Test1, seedIeltsCam19Test2, seedIeltsCam19Test3, seedIeltsCam19Test4, seedIeltsCam18Test1, seedIeltsCam18Test2, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };

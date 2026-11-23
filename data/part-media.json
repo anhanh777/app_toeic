@@ -663,5 +663,25 @@
   "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795398932/ielts/audio/cam18-t1-p4.mp3",
   "part": 4,
   "testSetId": "TS-046"
+ },
+ {
+  "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795398831/ielts/audio/cam18-t2-p1.mp3",
+  "part": 1,
+  "testSetId": "TS-047"
+ },
+ {
+  "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795398836/ielts/audio/cam18-t2-p2.mp3",
+  "part": 2,
+  "testSetId": "TS-047"
+ },
+ {
+  "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795398839/ielts/audio/cam18-t2-p3.mp3",
+  "part": 3,
+  "testSetId": "TS-047"
+ },
+ {
+  "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795398844/ielts/audio/cam18-t2-p4.mp3",
+  "part": 4,
+  "testSetId": "TS-047"
  }
 ]
