@@ -61,12 +61,10 @@ router.post('/wrong-questions/:questionId/review', authMiddleware, (req, res) =>
     db.deleteWrongQuestion(req.user.id, questionId);
     xpAwarded = awardXp(req.user.id, 5, 'wrong_review_correct').xpAwarded;
   }
-  let transcript = q.script || null;
-  if (!transcript && q.passage_id) {
-    const passage = db.getPassage(q.passage_id);
-    transcript = (passage && (passage.script || passage.content)) || q.passage_text || null;
-  }
-  if (!transcript) transcript = q.passage_text || null;
+  // Transcript CHI la script that (audio) — khong lay passage.content /
+  // passage_text (TOEIC P3/P4 do la bang/hinh minh hoa, khong phai loi
+  // thoai); cung quy tac nhu practice.js.
+  const transcript = q.script || (q.passage_id ? (db.getPassage(q.passage_id)?.script || null) : null);
   return res.json({
     correct,
     correctLabel,

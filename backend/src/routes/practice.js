@@ -87,13 +87,18 @@ router.post('/practice/answer', authMiddleware, (req, res) => {
   }
   const { xpAwarded } = awardXp(req.user.id, correct ? 10 : 0, 'practice_correct');
 
-  // Transcript: script cua cau (Part 1/2) hoac script/passage cua doan (Part 3/4/6/7).
+  // Transcript: CHI script that (ban thu am) cua cau (Part 1/2) hoac
+  // script cua doan (Part 3/4/6/7). KHONG fallback ve passage.content /
+  // passage_text: o TOEIC Part 3/4 do la bang/hinh minh hoa kem theo
+  // (danh sach dien vien, gio tau...) chu KHONG phai loi thoai — gan nhan
+  // "Transcript:" cho no la sai (audit 19/11). Bang do van hien san o dau
+  // khoi cau hoi nen khong mat thong tin khi bo fallback. IELTS Listening:
+  // script la audioscript that cua ca Section nen nhan giu nguyen.
   let transcript = q.script || null;
   if (!transcript && q.passage_id) {
     const passage = db.getPassage(q.passage_id);
-    transcript = (passage && (passage.script || passage.content)) || q.passage_text || null;
+    transcript = (passage && passage.script) || null;
   }
-  if (!transcript) transcript = q.passage_text || null;
 
   return res.json({
     correct,
