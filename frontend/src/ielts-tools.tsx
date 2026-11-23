@@ -157,7 +157,7 @@ export function IeltsNotePanel({ current, sessionNotes, onSave, onJump, onClose 
           <ul style={{ margin: 0, paddingLeft: '1.1rem' }}>
             {sessionNotes.map(sn => (
               <li key={sn.id} style={{ marginBottom: '.3rem' }}>
-                <button type="button" className="linklike" onClick={() => onJump(sn.id)}>Câu {sn.n}</button>
+                <button type="button" className="btn secondary btn-sm" onClick={() => onJump(sn.id)}>Câu {sn.n}</button>
                 {': '}{sn.text}
               </li>
             ))}

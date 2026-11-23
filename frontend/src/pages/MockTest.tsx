@@ -555,7 +555,7 @@ export default function MockTest() {
             {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
           </div>
           <div className="btn-row">
-            <button className="btn ghost" onClick={() => nav(`/mock?exam=${exam}`)}>← Đổi đề thi</button>
+            <button className="btn secondary btn-sm" onClick={() => nav(`/mock?exam=${exam}`)}>← Đổi đề thi</button>
             <button className="btn gold" disabled={busy || !testSet || !testSet.totalQuestions} onClick={start}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</button>
           </div>
         </div>

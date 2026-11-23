@@ -321,7 +321,7 @@ function Layout() {
             <Route path="/leaderboard" element={<RequireAuth><Leaderboard /></RequireAuth>} />
             <Route path="/settings" element={<RequireAuth><Settings /></RequireAuth>} />
             <Route path="/profile" element={<RequireAuth><Settings /></RequireAuth>} />
-            <Route path="*" element={<p>Không tìm thấy trang. <Link to="/">Về trang chủ</Link></p>} />
+            <Route path="*" element={<p>Không tìm thấy trang. <Link className="btn secondary btn-sm" to="/">Về trang chủ</Link></p>} />
           </Routes>
           </ErrorBoundary>
         )}
