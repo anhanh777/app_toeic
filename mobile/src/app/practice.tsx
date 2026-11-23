@@ -1,6 +1,6 @@
 // Luyện tập — port của frontend/src/pages/Practice.tsx.
 // 2 tab: luyện theo Bộ đề / luyện theo Part (Section/Passage với IELTS).
-import { useCallback, useEffect, useRef, useState, type ElementRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ElementRef } from 'react';
 import { router } from 'expo-router';
 import {
   FlatList,
@@ -20,7 +20,7 @@ import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
 import { LoadingLine } from '../components/LoadingLine';
 import { partLabel, partNameFor } from '../lib';
-import { partName, sectionOf } from '../components/QuestionView';
+import { partName } from '../components/QuestionView';
 
 export default function PracticeScreen() {
   const { exam } = useExam();
@@ -38,6 +38,13 @@ export default function PracticeScreen() {
     if (!exam) router.replace({ pathname: '/', params: { next: '/practice' } });
   }, [exam]);
   const [testSets, setTestSets] = useState<TestSet[]>([]);
+  // TOEIC: API tra de theo ID nhung ID khong khop so de (TS-006 la Test 05,
+  // TS-007 la Test 04; ETS 2025 con lon hon) nen sap xep theo ten o day.
+  // IELTS giu nguyen thu tu API (trong moi sach, Test 1-4 dung thu tu theo ID).
+  const sortedSets = useMemo(
+    () => (isIelts ? testSets : [...testSets].sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true }))),
+    [testSets, isIelts],
+  );
   const [setsError, setSetsError] = useState<string | null>(null);
   const [setsLoading, setSetsLoading] = useState(true);
   const [parts, setParts] = useState<PartInfo[]>([]);
@@ -124,12 +131,7 @@ export default function PracticeScreen() {
           </View>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
             <Text style={{ fontWeight: '700' }}>{total}</Text> câu
-            {ts.parts.length ? (
-              <Text style={{ color: colors.muted, fontSize: scaled(14) }}>
-                {' • '}
-                {ts.parts.map((p) => `${partLabel(p.part, ex)} ${p.count}`).join(' · ')}
-              </Text>
-            ) : (
+            {ts.parts.length ? null : (
               <Text style={{ color: colors.muted, fontSize: scaled(14) }}> • Chưa có câu hỏi</Text>
             )}
           </Text>
@@ -183,14 +185,12 @@ export default function PracticeScreen() {
           ]}
         >
           <Pressable onPress={() => setPart(p.part)} accessibilityRole="button">
-            <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
-              {p.part <= 4 ? '🎧' : '📖'} {partLabel(p.part, ex)}
-              {p.count ? ` · ${p.count} câu` : ' · Chưa rõ số câu'}
-            </Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(16), fontWeight: '700' }]}>
-              {isIelts ? partNameFor(p.part, ex) : partName(p.part)}
+              {p.part <= 4 ? '🎧' : '📖'} {isIelts ? partNameFor(p.part, ex) : partName(p.part)}
+              <Text style={{ color: colors.muted, fontSize: scaled(14), fontWeight: '400' }}>
+                {p.count ? ` · ${p.count} câu` : ' · Chưa rõ số câu'}
+              </Text>
             </Text>
-            <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }]}>{sectionOf(p.part)}</Text>
             {a ? (
               <>
                 <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
@@ -254,7 +254,7 @@ export default function PracticeScreen() {
             </View>
           ) : (
             <FlatList
-              data={testSets}
+              data={sortedSets}
               key={`sets-${columns}`}
               keyExtractor={(ts) => ts.id}
               renderItem={renderSet}

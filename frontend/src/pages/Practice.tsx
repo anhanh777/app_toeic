@@ -161,7 +161,10 @@ export default function Practice() {
             ))
           ) : (
             <div className="grid grid3 sets-grid">
-              {testSets.map(renderSetCard)}
+              {/* TOEIC: API trả đề theo ID nhưng ID không khớp số đề (TS-006 là
+                  Test 05, TS-007 là Test 04; ETS 2025 còn lộn hơn) nên sắp
+                  xếp theo tên ở đây — cùng mẫu với màn chọn đề thi thử. */}
+              {[...testSets].sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true })).map(renderSetCard)}
             </div>
           )}
         </div>

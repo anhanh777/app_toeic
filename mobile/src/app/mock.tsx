@@ -339,6 +339,13 @@ export default function MockTestScreen() {
   // dung de + dung che do, KHONG tu bat dau thi. Mini khong kem de nen chi
   // can chon dung Part; full toan ngan hang thi chi can chon che do full.
   const testSetTitleById = useMemo(() => new Map(testSets.map((t) => [t.id, t.title])), [testSets]);
+  // TOEIC: API tra de theo ID nhung ID khong khop so de (TS-006 la Test 05,
+  // TS-007 la Test 04; ETS 2025 con lon hon) nen sap xep theo ten o day.
+  // IELTS giu nguyen thu tu API (trong moi sach, Test 1-4 dung thu tu theo ID).
+  const sortedTestSets = useMemo(
+    () => (isIelts ? testSets : [...testSets].sort((a, b) => a.title.localeCompare(b.title, undefined, { numeric: true }))),
+    [testSets, isIelts],
+  );
   const submittedHistory = useMemo(
     () => mockHistory.filter((a) => a.finishedAt || a.finished_at),
     [mockHistory],
@@ -639,7 +646,7 @@ export default function MockTestScreen() {
                     >
                       <Text style={{ color: colors.text, fontSize: scaled(15) }}>Toàn bộ ngân hàng</Text>
                     </Pressable>
-                    {testSets.map((s) => (
+                    {sortedTestSets.map((s) => (
                       <Pressable
                         key={s.id}
                         style={[styles.setRow, { borderColor: selectedTestSetId === s.id ? colors.accent : colors.border, backgroundColor: selectedTestSetId === s.id ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}
