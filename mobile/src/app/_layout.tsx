@@ -25,21 +25,38 @@ function RootLayoutNav() {
   const router = useRouter();
   const { colors } = useTheme();
 
+  // Chi chan man hinh loading o LAN TAI DAU TIEN: khi auth + settings da
+  // tai xong 1 lan thi khong bao gio hien lai. Neu khong, refreshSettings()
+  // o Trang chu (goi moi khi ve focus) se dat uiLoading=true -> go ca Stack
+  // xuong -> Trang chu unmount -> focus effect chay lai -> refresh nua ->
+  // Trang chu reload vo han (loi that 2026-11-23 sau commit bao tri 3b68569:
+  // truoc do gate chi doi auth loading nen refresh settings vo hinh).
+  // Sau khi boot xong, cai dat moi chi cap nhat ngam; bao tri bat/tat van
+  // doi ngay vi gate ben duoi doc settings truc tiep.
+  const [booted, setBooted] = useState(false);
+  // Dieu chinh state trong luc render (mau React khuyen dung thay cho
+  // setState trong effect): lan dau auth + settings deu xong thi bat co
+  // booted, React render lai ngay truoc khi commit — khong loop vi co
+  // dieu kien !booted.
+  if (!loading && !uiLoading && !booted) {
+    setBooted(true);
+  }
+
   useEffect(() => {
-    if (loading || uiLoading) return;
+    if (!booted) return;
     // Bao tri: khong chuyen man hinh khi dang bao tri — man hinh bao tri
     // thay the toan bo Stack ben duoi.
     if (settings.maintenance.enabled) return;
     const inLogin = segments[0] === 'login';
     if (!user && !inLogin) router.replace('/login');
     else if (user && inLogin) router.replace('/');
-  }, [user, loading, uiLoading, settings, segments, router]);
+  }, [user, booted, settings, segments, router]);
 
   useEffect(() => {
-    if (!loading && !uiLoading) SplashScreen.hideAsync().catch(() => {});
-  }, [loading, uiLoading]);
+    if (booted) SplashScreen.hideAsync().catch(() => {});
+  }, [booted]);
 
-  if (loading || uiLoading) {
+  if (!booted) {
     return (
       <View style={[styles.loading, { backgroundColor: colors.background }]}>
         <LoadingLine location="page" />
