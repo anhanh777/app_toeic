@@ -393,50 +393,10 @@
     "content": "what it was built with"
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "It was built in 1838 to protect sailors as a number of shipwrecks had led to significant loss of life These workers were mainly prison convicts until the middle of that century when ordinary families willing to live in such circumstances took over.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C17-L-T1-S2-016",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C17-L-T1-S2",
-  "passageTitle": "Section 2 — Boat trip round Tasmania",
-  "passageText": null,
-  "script": "So, hello everyone. My name’s Lou Miller and I’m going to be your tour guide today as we take this fantastic boat trip around the Tasmanian coast. Before we set off, I just want to tell you a few things about our journey. Our boats aren’t huge as you can see. We already have three staff members on board and on top of that, we can transport a further fifteen people – that’s you – around the coastline. But please note if there are more than nine people on either side of the boat, we’ll move some of you over, otherwise all eighteen of us will end up in the sea! We’ve recently upgraded all our boats. They used to be jet black, but our new ones now have these comfortable dark red seats and a light-green exterior in order to stand out from others and help promote our company. This gives our boats a rather unique appearance, don’t you think? We offer you a free lunchbox during the trip and we have three types. Lunchbox 1 contains ham and tomato sandwiches. Lunchbox 2 contains a cheddar cheese roll and Lunchbox 3 is salad-based and also contains eggs and tuna. All three lunchboxes also have a packet of crisps and chocolate bar inside. Please let staff know which lunchbox you prefer. I’m sure I don’t have to ask you not to throw anything into the sea. We don’t have any bins to put litter in, but Jess, myself or Ray, our other guide, will collect it from you after lunch and put it all in a large plastic sack. The engine on the boat makes quite a lot of noise so before we head off, let me tell you a few things about what you’re going to see. This area is famous for its ancient lighthouse, which you’ll see from the boat as we turn past the first little island. It was built in 1838 to protect sailors as a number of shipwrecks had led to significant loss of life. The construction itself was complicated as some of the original drawings kept by the local council show. It sits right on top of the cliffs in a very isolated spot. In the nineteenth century there were many jobs there, such as polishing the brass lamps, chopping firewood and cleaning windows, that kept lighthouse keepers busy. These workers were mainly prison convicts until the middle of that century when ordinary families willing to live in such circumstances took over. Some of you have asked me what creatures we can expect to see. I know everyone loves the penguins, but they’re very shy and, unfortunately, tend to hide from passing boats, but you might see birds in the distance, such as sea eagles, flying around the cliff edges where they nest. When we get to the rocky area inhabited by fur seals, we’ll stop and watch them swimming around the coast. They’re inquisitive creatures so don’t be surprised if one pops up right in front of you. Their predators, orca whales, hunt along the coastline too, but spotting one of these is rare. Dolphins, on the other hand, can sometimes approach on their own or in groups as they ride the waves beside us. Lastly, I want to mention the caves. Tasmania is famous for its caves and the ones we’ll pass by are so amazing that people are lost for words when they see them. They can only be approached by sea, but if you feel that you want to see more than we’re able to show you, then you can take a kayak into the area on another day and one of our staff will give you more information on that. What we’ll do is to go through a narrow channel, past some incredible rock formations and from there we’ll be able to see the openings to the caves, and at that point we’ll talk to you about what lies beyond.",
-  "content": "Which TWO features of the lighthouse does Lou mention?",
-  "options": [
-   {
-    "label": "A",
-    "content": "why it was built"
-   },
-   {
-    "label": "B",
-    "content": "who built it"
-   },
-   {
-    "label": "C",
-    "content": "how long it took to build"
-   },
-   {
-    "label": "D",
-    "content": "who staffed it"
-   },
-   {
-    "label": "E",
-    "content": "what it was built with"
-   }
+  "correct": [
+   "A",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -444,7 +404,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -479,50 +439,10 @@
     "content": "penguins"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "When we get to the rocky area inhabited by fur seals, we’ll stop and watch them swimming around the coast. They’re inquisitive creatures so don’t be surprised if one pops up right in front of you. Dolphins, on the other hand, can sometimes approach on their own or in groups as they ride the waves beside us.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C17-L-T1-S2-018",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C17-L-T1-S2",
-  "passageTitle": "Section 2 — Boat trip round Tasmania",
-  "passageText": null,
-  "script": "So, hello everyone. My name’s Lou Miller and I’m going to be your tour guide today as we take this fantastic boat trip around the Tasmanian coast. Before we set off, I just want to tell you a few things about our journey. Our boats aren’t huge as you can see. We already have three staff members on board and on top of that, we can transport a further fifteen people – that’s you – around the coastline. But please note if there are more than nine people on either side of the boat, we’ll move some of you over, otherwise all eighteen of us will end up in the sea! We’ve recently upgraded all our boats. They used to be jet black, but our new ones now have these comfortable dark red seats and a light-green exterior in order to stand out from others and help promote our company. This gives our boats a rather unique appearance, don’t you think? We offer you a free lunchbox during the trip and we have three types. Lunchbox 1 contains ham and tomato sandwiches. Lunchbox 2 contains a cheddar cheese roll and Lunchbox 3 is salad-based and also contains eggs and tuna. All three lunchboxes also have a packet of crisps and chocolate bar inside. Please let staff know which lunchbox you prefer. I’m sure I don’t have to ask you not to throw anything into the sea. We don’t have any bins to put litter in, but Jess, myself or Ray, our other guide, will collect it from you after lunch and put it all in a large plastic sack. The engine on the boat makes quite a lot of noise so before we head off, let me tell you a few things about what you’re going to see. This area is famous for its ancient lighthouse, which you’ll see from the boat as we turn past the first little island. It was built in 1838 to protect sailors as a number of shipwrecks had led to significant loss of life. The construction itself was complicated as some of the original drawings kept by the local council show. It sits right on top of the cliffs in a very isolated spot. In the nineteenth century there were many jobs there, such as polishing the brass lamps, chopping firewood and cleaning windows, that kept lighthouse keepers busy. These workers were mainly prison convicts until the middle of that century when ordinary families willing to live in such circumstances took over. Some of you have asked me what creatures we can expect to see. I know everyone loves the penguins, but they’re very shy and, unfortunately, tend to hide from passing boats, but you might see birds in the distance, such as sea eagles, flying around the cliff edges where they nest. When we get to the rocky area inhabited by fur seals, we’ll stop and watch them swimming around the coast. They’re inquisitive creatures so don’t be surprised if one pops up right in front of you. Their predators, orca whales, hunt along the coastline too, but spotting one of these is rare. Dolphins, on the other hand, can sometimes approach on their own or in groups as they ride the waves beside us. Lastly, I want to mention the caves. Tasmania is famous for its caves and the ones we’ll pass by are so amazing that people are lost for words when they see them. They can only be approached by sea, but if you feel that you want to see more than we’re able to show you, then you can take a kayak into the area on another day and one of our staff will give you more information on that. What we’ll do is to go through a narrow channel, past some incredible rock formations and from there we’ll be able to see the openings to the caves, and at that point we’ll talk to you about what lies beyond.",
-  "content": "Which TWO types of creature might come close to the boat?",
-  "options": [
-   {
-    "label": "A",
-    "content": "sea eagles"
-   },
-   {
-    "label": "B",
-    "content": "fur seals"
-   },
-   {
-    "label": "C",
-    "content": "dolphins"
-   },
-   {
-    "label": "D",
-    "content": "whales"
-   },
-   {
-    "label": "E",
-    "content": "penguins"
-   }
+  "correct": [
+   "B",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -530,7 +450,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -565,50 +485,10 @@
     "content": "They cannot be reached on foot."
    }
   ],
-  "correct": "D",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "They can only be approached by sea past some incredible rock formations and from there we’ll be able to see the openings to the caves, and at that point we’ll talk to you about what lies beyond.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C17-L-T1-S2-020",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C17-L-T1-S2",
-  "passageTitle": "Section 2 — Boat trip round Tasmania",
-  "passageText": null,
-  "script": "So, hello everyone. My name’s Lou Miller and I’m going to be your tour guide today as we take this fantastic boat trip around the Tasmanian coast. Before we set off, I just want to tell you a few things about our journey. Our boats aren’t huge as you can see. We already have three staff members on board and on top of that, we can transport a further fifteen people – that’s you – around the coastline. But please note if there are more than nine people on either side of the boat, we’ll move some of you over, otherwise all eighteen of us will end up in the sea! We’ve recently upgraded all our boats. They used to be jet black, but our new ones now have these comfortable dark red seats and a light-green exterior in order to stand out from others and help promote our company. This gives our boats a rather unique appearance, don’t you think? We offer you a free lunchbox during the trip and we have three types. Lunchbox 1 contains ham and tomato sandwiches. Lunchbox 2 contains a cheddar cheese roll and Lunchbox 3 is salad-based and also contains eggs and tuna. All three lunchboxes also have a packet of crisps and chocolate bar inside. Please let staff know which lunchbox you prefer. I’m sure I don’t have to ask you not to throw anything into the sea. We don’t have any bins to put litter in, but Jess, myself or Ray, our other guide, will collect it from you after lunch and put it all in a large plastic sack. The engine on the boat makes quite a lot of noise so before we head off, let me tell you a few things about what you’re going to see. This area is famous for its ancient lighthouse, which you’ll see from the boat as we turn past the first little island. It was built in 1838 to protect sailors as a number of shipwrecks had led to significant loss of life. The construction itself was complicated as some of the original drawings kept by the local council show. It sits right on top of the cliffs in a very isolated spot. In the nineteenth century there were many jobs there, such as polishing the brass lamps, chopping firewood and cleaning windows, that kept lighthouse keepers busy. These workers were mainly prison convicts until the middle of that century when ordinary families willing to live in such circumstances took over. Some of you have asked me what creatures we can expect to see. I know everyone loves the penguins, but they’re very shy and, unfortunately, tend to hide from passing boats, but you might see birds in the distance, such as sea eagles, flying around the cliff edges where they nest. When we get to the rocky area inhabited by fur seals, we’ll stop and watch them swimming around the coast. They’re inquisitive creatures so don’t be surprised if one pops up right in front of you. Their predators, orca whales, hunt along the coastline too, but spotting one of these is rare. Dolphins, on the other hand, can sometimes approach on their own or in groups as they ride the waves beside us. Lastly, I want to mention the caves. Tasmania is famous for its caves and the ones we’ll pass by are so amazing that people are lost for words when they see them. They can only be approached by sea, but if you feel that you want to see more than we’re able to show you, then you can take a kayak into the area on another day and one of our staff will give you more information on that. What we’ll do is to go through a narrow channel, past some incredible rock formations and from there we’ll be able to see the openings to the caves, and at that point we’ll talk to you about what lies beyond.",
-  "content": "Which TWO points does Lou make about the caves?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Only large tourist boats can visit them."
-   },
-   {
-    "label": "B",
-    "content": "The entrances to them are often blocked."
-   },
-   {
-    "label": "C",
-    "content": "It is too dangerous for individuals to go near them."
-   },
-   {
-    "label": "D",
-    "content": "Someone will explain what is inside them."
-   },
-   {
-    "label": "E",
-    "content": "They cannot be reached on foot."
-   }
+  "correct": [
+   "D",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -616,7 +496,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -1960,50 +1840,10 @@
     "content": "They are made of less durable materials"
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "These factors mean that they may not be as accessible to the general public, require more energy to run and contribute to urban heat. But some of the flexibility was lost at the beginning of the 20th century, as stadiums were developed using new products such as steel and reinforced concrete, and made use of bright lights for night-time matches.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C17-R-T1-P2-024",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C17-R-T1-P2",
-  "passageTitle": "Passage 2 — Stadiums: past, present and future",
-  "passageText": "A. Stadiums are among the oldest forms of urban architecture: vast stadiums where the public could watch sporting events were at the centre of western city life as far back as the ancient Greek and Roman Empires, well before the construction of the great medieval cathedrals and the grand 19th- and 20th-century railway stations which dominated urban skylines in later eras. Today, however, stadiums are regarded with growing scepticism. Construction costs can soar above £1 billion, and stadiums finished for major events such as the Olympic Games or the FIFA World Cup have notably fallen into disuse and disrepair. But this need not be the case. History shows that stadiums can drive urban development and adapt to the culture of every age. Even today, architects and planners are finding new ways to adapt the mono-functional sports arenas which became emblematic of modernisation during the 20th century.\n\nB. The amphitheatre* of Arles in southwest France, with a capacity of 25,000 spectators, is perhaps the best example of just how versatile stadiums can be. Built by the Romans in 90 AD, it became a fortress with four towers after the fifth century, and was then transformed into a village containing more than 200 houses. With the growing interest in conservation during the 19th century, it was converted back into an arena for the staging of bullfights, thereby returning the structure to its original use as a venue for public spectacles. Another example is the imposing arena of Verona in northern Italy, with space for 30,000 spectators, which was built 60 years before the Arles amphitheatre and 40 years before Rome’s famous Colosseum. It has endured the centuries and is currently considered one of the world’s prime sites for opera, thanks to its outstanding acoustics.\n\nC. The area in the centre of the Italian town of Lucca, known as the Piazza dell’Anfiteatro, is yet another impressive example of an amphitheatre becoming absorbed into the fabric of the city. The site evolved in a similar way to Arles and was progressively filled with buildings from the Middle Ages until the 19th century, variously used as houses, a salt depot and a prison. But rather than reverting to an arena, it became a market square, designed by Romanticist architect Lorenzo Nottolini. Today, the ruins of the amphitheatre remain embedded in the various shops and residences surrounding the public square.\n\nD. There are many similarities between modern stadiums and the ancient amphitheatres intended for games. But some of the flexibility was lost at the beginning of the 20th century, as stadiums were developed using new products such as steel and reinforced concrete, and made use of bright lights for night-time matches. Many such stadiums are situated in suburban areas, designed for sporting use only and surrounded by parking lots. These factors mean that they may not be as accessible to the general public, require more energy to run and contribute to urban heat.\n\nE. But many of today’s most innovative architects see scope for the stadium to help improve the city. Among the current strategies, two seem to be having particular success: the stadium as an urban hub, and as a power plant. There’s a growing trend for stadiums to be equipped with public spaces and services that serve a function beyond sport, such as hotels, retail outlets, conference centres, restaurants and bars, children’s playgrounds and green space. Creating mixed-use developments such as this reinforces compactness and multi-functionality, making more efficient use of land and helping to regenerate urban spaces. This opens the space up to families and a wider cross-section of society, instead of catering only to sportspeople and supporters. There have been many examples of this in the UK: the mixed-use facilities at Wembley and Old Trafford have become a blueprint for many other stadiums in the world.\n\nF. The phenomenon of stadiums as power stations has arisen from the idea that energy problems can be overcome by integrating interconnected buildings by means of a smart grid, which is an electricity supply network that uses digital communications technology to detect and react to local changes in usage, without significant energy losses. Stadiums are ideal for these purposes, because their canopies have a large surface area for fitting photovoltaic panels and rise high enough (more than 40 metres) to make use of micro wind turbines. Freiburg Mage Solar Stadium in Germany is the first of a new wave of stadiums as power plants, which also includes the Amsterdam Arena and the Kaohsiung Stadium. The latter, inaugurated in 2009, has 8,844 photovoltaic panels producing up to 1.14 GWh of electricity annually. This reduces the annual output of carbon dioxide by 660 tons and supplies up to 80 percent of the surrounding area when the stadium is not in use. This is proof that a stadium can serve its city, and have a decidedly positive impact in terms of reduction of CO2 emissions.\n\nG. Sporting arenas have always been central to the life and culture of cities. In every era, the stadium has acquired new value and uses: from military fortress to residential village, public space to theatre and most recently a field for experimentation in advanced engineering. The stadium of today now brings together multiple functions, thus helping cities to create a sustainable future.",
-  "script": null,
-  "content": "When comparing twentieth-century stadiums to ancient amphitheatres in Section D, which TWO negative features does the writer mention?",
-  "options": [
-   {
-    "label": "A",
-    "content": "They are less imaginatively designed."
-   },
-   {
-    "label": "B",
-    "content": "They are less spacious."
-   },
-   {
-    "label": "C",
-    "content": "They are in less convenient locations."
-   },
-   {
-    "label": "D",
-    "content": "They are less versatile."
-   },
-   {
-    "label": "E",
-    "content": "They are made of less durable materials"
-   }
+  "correct": [
+   "C",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -2011,7 +1851,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -2046,50 +1886,10 @@
     "content": "providing a suitable site for the installation of renewable power generators"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "This opens the space up to families and a wider cross-section of society, instead of catering only to sportspeople and supporters. The phenomenon of stadium as power stations has arisen from the idea that energy problems can be overcome by integrating interconnected buildings by means of a smart grid, which is an electricity supply network that uses digital communications technology to detect and react to local changes in usage, without significant energy losses.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C17-R-T1-P2-026",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C17-R-T1-P2",
-  "passageTitle": "Passage 2 — Stadiums: past, present and future",
-  "passageText": "A. Stadiums are among the oldest forms of urban architecture: vast stadiums where the public could watch sporting events were at the centre of western city life as far back as the ancient Greek and Roman Empires, well before the construction of the great medieval cathedrals and the grand 19th- and 20th-century railway stations which dominated urban skylines in later eras. Today, however, stadiums are regarded with growing scepticism. Construction costs can soar above £1 billion, and stadiums finished for major events such as the Olympic Games or the FIFA World Cup have notably fallen into disuse and disrepair. But this need not be the case. History shows that stadiums can drive urban development and adapt to the culture of every age. Even today, architects and planners are finding new ways to adapt the mono-functional sports arenas which became emblematic of modernisation during the 20th century.\n\nB. The amphitheatre* of Arles in southwest France, with a capacity of 25,000 spectators, is perhaps the best example of just how versatile stadiums can be. Built by the Romans in 90 AD, it became a fortress with four towers after the fifth century, and was then transformed into a village containing more than 200 houses. With the growing interest in conservation during the 19th century, it was converted back into an arena for the staging of bullfights, thereby returning the structure to its original use as a venue for public spectacles. Another example is the imposing arena of Verona in northern Italy, with space for 30,000 spectators, which was built 60 years before the Arles amphitheatre and 40 years before Rome’s famous Colosseum. It has endured the centuries and is currently considered one of the world’s prime sites for opera, thanks to its outstanding acoustics.\n\nC. The area in the centre of the Italian town of Lucca, known as the Piazza dell’Anfiteatro, is yet another impressive example of an amphitheatre becoming absorbed into the fabric of the city. The site evolved in a similar way to Arles and was progressively filled with buildings from the Middle Ages until the 19th century, variously used as houses, a salt depot and a prison. But rather than reverting to an arena, it became a market square, designed by Romanticist architect Lorenzo Nottolini. Today, the ruins of the amphitheatre remain embedded in the various shops and residences surrounding the public square.\n\nD. There are many similarities between modern stadiums and the ancient amphitheatres intended for games. But some of the flexibility was lost at the beginning of the 20th century, as stadiums were developed using new products such as steel and reinforced concrete, and made use of bright lights for night-time matches. Many such stadiums are situated in suburban areas, designed for sporting use only and surrounded by parking lots. These factors mean that they may not be as accessible to the general public, require more energy to run and contribute to urban heat.\n\nE. But many of today’s most innovative architects see scope for the stadium to help improve the city. Among the current strategies, two seem to be having particular success: the stadium as an urban hub, and as a power plant. There’s a growing trend for stadiums to be equipped with public spaces and services that serve a function beyond sport, such as hotels, retail outlets, conference centres, restaurants and bars, children’s playgrounds and green space. Creating mixed-use developments such as this reinforces compactness and multi-functionality, making more efficient use of land and helping to regenerate urban spaces. This opens the space up to families and a wider cross-section of society, instead of catering only to sportspeople and supporters. There have been many examples of this in the UK: the mixed-use facilities at Wembley and Old Trafford have become a blueprint for many other stadiums in the world.\n\nF. The phenomenon of stadiums as power stations has arisen from the idea that energy problems can be overcome by integrating interconnected buildings by means of a smart grid, which is an electricity supply network that uses digital communications technology to detect and react to local changes in usage, without significant energy losses. Stadiums are ideal for these purposes, because their canopies have a large surface area for fitting photovoltaic panels and rise high enough (more than 40 metres) to make use of micro wind turbines. Freiburg Mage Solar Stadium in Germany is the first of a new wave of stadiums as power plants, which also includes the Amsterdam Arena and the Kaohsiung Stadium. The latter, inaugurated in 2009, has 8,844 photovoltaic panels producing up to 1.14 GWh of electricity annually. This reduces the annual output of carbon dioxide by 660 tons and supplies up to 80 percent of the surrounding area when the stadium is not in use. This is proof that a stadium can serve its city, and have a decidedly positive impact in terms of reduction of CO2 emissions.\n\nG. Sporting arenas have always been central to the life and culture of cities. In every era, the stadium has acquired new value and uses: from military fortress to residential village, public space to theatre and most recently a field for experimentation in advanced engineering. The stadium of today now brings together multiple functions, thus helping cities to create a sustainable future.",
-  "script": null,
-  "content": "Which TWO advantages of modern stadium design does the writer mention?",
-  "options": [
-   {
-    "label": "A",
-    "content": "offering improved amenities for the enjoyment of sports events"
-   },
-   {
-    "label": "B",
-    "content": "bringing community life back into the city environment"
-   },
-   {
-    "label": "C",
-    "content": "facilitating research into solar and wind energy solutions"
-   },
-   {
-    "label": "D",
-    "content": "enabling local residents to reduce their consumption of electricity"
-   },
-   {
-    "label": "E",
-    "content": "providing a suitable site for the installation of renewable power generators"
-   }
+  "correct": [
+   "B",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -2097,7 +1897,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },

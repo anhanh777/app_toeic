@@ -254,50 +254,10 @@
     "content": "The maximum number of children who can attend is 70."
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "We are insured to provide care for up to 70 children I think we generally expect around 50-60 children for the afternoon sessions and about half that number for the breakfast sessions.",
-  "topic": "ielts-listening",
-  "difficulty": "easy",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C17-L-T3-S2-012",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C17-L-T3-S2",
-  "passageTitle": "Section 2 — Extended hours childcare service",
-  "passageText": null,
-  "script": "Good afternoon. My name’s Mrs Carter and I run the before and after school extended hours childcare service. I hope you’ve had a chance to have a good look around the school and talk to staff and pupils. I know that many of you are interested in using our childcare service when your child joins the school, and perhaps you already know something about it, but for those that don’t, I’ll go through the main details now. We offer childcare for children from the ages of four to eleven both before and after school. I know that many parents who work find this service invaluable. You can leave your child with us safe in the knowledge that they will be extremely well cared for. We are insured to provide care for up to 70 children, although we rarely have this many attending at any one session. I think we generally expect around 50-60 children for the afternoon sessions and about half that number for the breakfast sessions. Although we currently do have 70 children registered with us, not all of these attend every day. It’s ten years since we began offering an extended hours service and we’ve come a long way during that time. When we first opened, we only had about 20 children attending regularly. We try to keep our costs as low as we can and we think we provide very good value for money. For the afternoon sessions, which run from 3.30 until 6 p.m., it’s £7.20. But if you prefer, you can pay for one hour only, which costs £3.50, or two hours which costs £5.70. The cost of the childcare includes food and snacks. They’ll be given breakfast in the morning and in the afternoon, a healthy snack as soon as they finish school. At 5 p.m. children are given something more substantial, such as pasta or a casserole. Please inform us of any allergies that your child might have and we’ll make sure they’re offered a suitable alternative. As you may know, the childcare service runs through the school holidays from 8 a.m. to 6 p.m. We offer a really varied and exciting programme to keep the children entertained – we don’t want them to feel as if they are still at school! It will also feel different because they’ll get the chance to make new friends with children from other schools – spaces are available for them because a lot of our term-time children don’t always attend during the holiday. In the past, parents have asked if children over the age of 11 are allowed to come with their younger brothers and sisters – but I’m afraid we’re unable to do this because of the type of insurance we have. So now let me tell you about some of the activities that your child can do during the after-school sessions. As well as being able to use the playground equipment, computers and the library, there is usually at least one ‘special’ activity that children can do each day. For example, Spanish. We have a specialist teacher coming in every Thursday to give a basic introduction to the language through games and songs. She does two sessions: one for the over 8s and one for the younger children. This is the only activity which we have to make an extra charge for – but it’s well worth it. Once a week the children have the opportunity to do some music. We’re very lucky that one of our staff is a member of a folk band. On Mondays, she teaches singing and percussion to groups of children. We do rely on parental support for this, so if any of you sing or play an instrument and would be prepared to help out at these sessions, we’d be delighted. Painting continues to be one of the most popular activities. To begin with we weren’t keen on offering this because of the extra mess involved, but children kept asking if they could do some art and so we finally gave in. Art is great for helping the children to relax after working hard at school all day. Yoga is something that we’ve been meaning to introduce for some time but haven’t been able to find anyone available to teach it – until now that is. So we’ll see how this goes. Hopefully, children will benefit in all sorts of ways from this. Cooking is another popular activity. They make a different sort of cake, or pizza or bread each week. Although the younger children love doing it, we found that the mess was just too much, so we’ve decided to restrict this to the over 8s, as they are better able to clean up after themselves.",
-  "content": "Which TWO facts are given about the school’s extended hours childcare service?",
-  "options": [
-   {
-    "label": "A",
-    "content": "It started recently."
-   },
-   {
-    "label": "B",
-    "content": "More children attend after school than before school."
-   },
-   {
-    "label": "C",
-    "content": "An average of 50 children attend in the mornings."
-   },
-   {
-    "label": "D",
-    "content": "A child cannot attend both the before and after school sessions."
-   },
-   {
-    "label": "E",
-    "content": "The maximum number of children who can attend is 70."
-   }
+  "correct": [
+   "B",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -305,7 +265,7 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -2165,50 +2125,10 @@
     "content": "It was formed at the request of environmentalists concerned about the loss of virgin forests."
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "Over the past decade or so The RSPO insists upon no virgin forest clearing, transparency",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C17-R-T3-P2-022",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C17-R-T3-P2",
-  "passageTitle": "Passage 2 — Palm oil",
-  "passageText": "A. Palm oil is an edible oil derived from the fruit of the African oil palm tree, and is currently the most consumed vegetable oil in the world. It’s almost certainly in the soap we wash with in the morning, the sandwich we have for lunch, and the biscuits we snack on during the day. Why is palm oil so attractive for manufacturers? Primarily because its unique properties - such as remaining solid at room temperature - make it an ideal ingredient for long-term preservation, allowing many packaged foods on supermarket shelves to have ‘best before’ dates of months, even years, into the future.\n\nB. Many farmers have seized the opportunity to maximise the planting of oil palm trees. Between 1990 and 2012, the global land area devoted to growing oil palm trees grew from 6 to 17 million hectares, now accounting for around ten percent of total cropland in the entire world. From a mere two million tonnes of palm oil being produced annually globally 50 years ago, there are now around 60 million tonnes produced every single year, a figure looking likely to double or even triple by the middle of the century.\n\nC. However, there are multiple reasons why conservationists cite the rapid spread of oil palm plantations as a major concern. There are countless news stories of deforestation, habitat destruction and dwindling species populations, all as a direct result of land clearing to establish oil palm tree monoculture on an industrial scale, particularly in Malaysia and Indonesia. Endangered species - most famously the Sumatran orangutan, but also rhinos, elephants, tigers, and numerous other fauna - have suffered from the unstoppable spread of oil palm plantations. ‘\n\nD. Palm oil is surely one of the greatest threats to global biodiversity,’ declares Dr Farnon Ellwood of the University of the West of England, Bristol. ‘Palm oil is replacing rainforest, and rainforest is where all the species are. That’s a problem.’ This has led to some radical questions among environmentalists, such as whether consumers should try to boycott palm oil entirely. Meanwhile Bhavani Shankar, Professor at London’s School of Oriental and African Studies, argues, ‘It’s easy to say that palm oil is the enemy and we should be against it. It makes for a more dramatic story, and it’s very intuitive. But given the complexity of the argument, I think a much more nuanced story is closer to the truth.’\n\nE. One response to the boycott movement has been the argument for the vital role palm oil plays in lifting many millions of people in the developing world out of poverty. Is it desirable to have palm oil boycotted, replaced, eliminated from the global supply chain, given how many low- income people in developing countries depend on it for their livelihoods? How best to strike a utilitarian balance between these competing factors has become a serious bone of contention.\n\nF. Even the deforestation argument isn’t as straightforward as it seems. Oil palm plantations produce at least four and potentially up to ten times more oil per hectare than soybean, rapeseed, sunflower or other competing oils. That immensely high yield - which is predominantly what makes it so profitable - is potentially also an ecological benefit. If ten times more palm oil can be produced from a patch of land than any competing oil, then ten times more land would need to be cleared in order to produce the same volume of oil from that competitor. As for the question of carbon emissions, the issue really depends on what oil palm trees are replacing. Crops vary in the degree to which they sequester carbon - in other words, the amount of carbon they capture from the atmosphere and store within the plant. The more carbon a plant sequesters, the more it reduces the effect of climate change. As Shankar explains: ‘[Palm oil production] actually sequesters more carbon in some ways than other alternatives. [...] Of course, if you’re cutting down virgin forest it’s terrible - that’s what’s happening in Indonesia and Malaysia, it’s been allowed to get out of hand. But if it’s replacing rice, for example, it might actually sequester more carbon.’\n\nG. The industry is now regulated by a group called the Roundtable on Sustainable Palm Oil (RSPO), consisting of palm growers, retailers, product manufacturers, and other interested parties. Over the past decade or so, an agreement has gradually been reached regarding standards that producers of palm oil have to meet in order for their product to be regarded as officially ‘sustainable’. The RSPO insists upon no virgin forest clearing, transparency and regular assessment of carbon stocks, among other criteria. Only once these requirements are fully satisfied is the oil allowed to be sold as certified sustainable palm oil (CSPO). Recent figures show that the RSPO now certifies around 12 million tonnes of palm oil annually, equivalent to roughly 21 percent of the world’s total palm oil production.\n\nH. There is even hope that oil palm plantations might not need to be such sterile monocultures, or ‘green deserts’, as Ellwood describes them. New research at Ellwood’s lab hints at one plant which might make all the difference. The bird’s nest fern (Asplenium nidus) grows on trees in an epiphytic fashion (meaning it’s dependent on the tree only for support, not for nutrients), and is native to many tropical regions, where as a keystone species it performs a vital ecological role. Ellwood believes that reintroducing the bird’s nest fern into oil palm plantations could potentially allow these areas to recover their biodiversity, providing a home for all manner of species, from fungi and bacteria, to invertebrates such as insects, amphibians, reptiles and even mammals.",
-  "script": null,
-  "content": "Which TWO statements are made about the Roundtable on Sustainable Palm Oil (RSPO)?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Its membership has grown steadily over the course of the last decade."
-   },
-   {
-    "label": "B",
-    "content": "It demands that certified producers be open and honest about their practices."
-   },
-   {
-    "label": "C",
-    "content": "It took several years to establish its set of criteria for sustainable palm oil certification."
-   },
-   {
-    "label": "D",
-    "content": "Its regulations regarding sustainability are stricter than those governing other industries."
-   },
-   {
-    "label": "E",
-    "content": "It was formed at the request of environmentalists concerned about the loss of virgin forests."
-   }
+  "correct": [
+   "B",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -2216,7 +2136,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },

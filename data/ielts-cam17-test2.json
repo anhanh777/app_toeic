@@ -720,50 +720,10 @@
     "content": "a reference to particular scenes"
    }
   ],
-  "correct": "D",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "And part of that means talking about the emotional impact the performance had on us. And we should definitely mention how well the director handled important bits of the play – like when Romeo climbs onto Juliet’s balcony.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C17-L-T2-S3-022",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C17-L-T2-S3",
-  "passageTitle": "Section 3 — Romeo and Juliet review",
-  "passageText": null,
-  "script": "ED: Did you make notes while you were watching the performances of Romeo and Juliet, Gemma? GEMMA: Yes, I did. I found it quite hard though. I kept getting too involved in the play. ED: Me too. I ended up not taking notes. I wrote down my impressions when I got home. Do you mind if I check a few things with you? In case I’ve missed anything. And I’ve also got some questions about our assignment. GEMMA: No, it’s good to talk things through. I may have missed things too. ED: OK great. So first of all, I’m not sure how much information we should include in our reviews. GEMMA: Right. Well, I don’t think we need to describe what happens. Especially as Romeo and Juliet is one of Shakespeare’s most well-known plays. ED: Yeah, everyone knows the story. In an essay we’d focus on the poetry and Shakespeare’s use of imagery etc., but that isn’t really relevant in a review. We’re supposed to focus on how effective this particular production is. GEMMA: Mmm. We should say what made it a success or a failure. ED: And part of that means talking about the emotional impact the performance had on us. I think that’s important. GEMMA: Yes. And we should definitely mention how well the director handled important bits of the play – like when Romeo climbs onto Juliet’s balcony. ED: And the fight between Mercutio and Tybalt. GEMMA: Yes. It would also be interesting to mention the theatre space and how the director used it but I don’t think we’ll have space in 800 words. ED: No. OK. That all sounds quite straightforward. ED: So what about The Emporium Theatre’s production of the play? GEMMA: I thought some things worked really well but there were some problems too. ED: Yeah. What about the set, for example? GEMMA: I think it was visually really stunning. I’d say that was probably the most memorable thing about this production. ED: You’re right. The set design was really amazing, but actually I have seen similar ideas used in other productions. GEMMA: What about the lighting? Some of the scenes were so dimly lit it was quite hard to see. ED: I didn’t dislike it. It helped to change the mood of the quieter scenes. GEMMA: That’s a good point. ED: What did you think of the costumes? GEMMA: I was a bit surprised by the contemporary dress, I must say. ED: Yeah – I think it worked well, but I had assumed it would be more conventional. GEMMA: Me too. I liked the music at the beginning and I thought the musicians were brilliant, but I thought they were wasted because the music didn’t have much impact in Acts 2 and 3. ED: Yes – that was a shame. GEMMA: One problem with this production was that the actors didn’t deliver the lines that well. They were speaking too fast. ED: It was a problem I agree, but I thought it was because they weren’t speaking loudly enough – especially at key points in the play. GEMMA: I actually didn’t have a problem with that. ED: It’s been an interesting experience watching different versions of Romeo and Juliet, hasn’t it? GEMMA: Definitely. It’s made me realise how relevant the play still is. ED: Right. I mean a lot’s changed since Shakespeare’s time, but in many ways nothing’s changed. There are always disagreements and tension between teenagers and their parents. GEMMA: Yes, that’s something all young people can relate to – more than the violence and the extreme emotions in the play. ED: How did you find watching it in translation? GEMMA: Really interesting. I expected to find it more challenging, but I could follow the story pretty well. ED: I stopped worrying about not being able to understand all the words and focused on the actors’ expressions. The ending was pretty powerful. GEMMA: Yes. That somehow intensified the emotion for me. ED: Did you know Shakespeare’s been translated into more languages than any other writer? GEMMA: What’s the reason for his international appeal, do you think? ED: I was reading that it’s because his plays are about basic themes that people everywhere are familiar with. GEMMA: Yeah, and they can also be understood on different levels. The characters have such depth. ED: Right – which allows directors to experiment and find new angles. GEMMA: That’s really important because …",
-  "content": "Which TWO things do the students agree they need to include in their review of Romeo and Juliet?",
-  "options": [
-   {
-    "label": "A",
-    "content": "analysis of the text"
-   },
-   {
-    "label": "B",
-    "content": "a summary of the plot"
-   },
-   {
-    "label": "C",
-    "content": "a description of the theatre"
-   },
-   {
-    "label": "D",
-    "content": "a personal reaction"
-   },
-   {
-    "label": "E",
-    "content": "a reference to particular scenes"
-   }
+  "correct": [
+   "D",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -771,7 +731,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
