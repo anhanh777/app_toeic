@@ -234,8 +234,13 @@ export interface WeeklyError { week: string; code: string; count: number; }
 export interface TestSetPartCount { part: number; count: number; }
 export interface TestSetMissing { part: number; missing: number; }
 export interface TestSetProgress {
-  byPart: { part: number; answered: number; correct: number }[];
+  /** byPart[].total (chi co o de IELTS): tong so ROW cau hoi cua Part do —
+   * mau so dung cho tien do (answered dem theo row), trong khi parts[].count
+   * cua de IELTS la so cau tren de that (paper span). */
+  byPart: { part: number; answered: number; correct: number; total?: number }[];
   answeredTotal: number; correctTotal: number;
+  /** Tong so row cau hoi cua de (row-based) — backend luon tra truong nay. */
+  total: number;
 }
 export interface TestSet {
   id: string; title: string; description?: string; totalQuestions: number;

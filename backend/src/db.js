@@ -1107,6 +1107,25 @@ function countByPartForTestSet(testSetId) {
   return rows.map((r) => ({ part: r.part, count: r.c }));
 }
 
+/** Tong so cau TREN DE THAT theo Part (paper span) cua 1 bo de — dung cho
+ * chi bao "Thieu" cua IELTS. Mirror dung logic paperSpan trong mapQuestion:
+ * list_selection (Choose TWO/THREE gop) chiem so cau bang so nhan dung
+ * (toi thieu 1), moi cau khac chiem 1. De TOEIC khong co list_selection
+ * nen ham nay tra giong het countByPartForTestSet. */
+function paperSpanCountsByTestSet(testSetId) {
+  const rows = db
+    .prepare(
+      `SELECT q.part AS part,
+              SUM(CASE WHEN q.question_type = 'list_selection'
+                       THEN MAX(1, (SELECT COUNT(*) FROM options o
+                                    WHERE o.question_id = q.id AND o.is_correct = 1))
+                       ELSE 1 END) AS c
+       FROM questions q WHERE q.test_set_id = ? GROUP BY q.part ORDER BY q.part`
+    )
+    .all(testSetId);
+  return rows.map((r) => ({ part: r.part, count: r.c }));
+}
+
 // Dem cau hoi theo dang cau hoi (question_type) trong 1 bo de — dung cho
 // the de IELTS (hien cac dang cau co trong de). Cau khong co dang thi bo qua.
 function countByTypeForTestSet(testSetId) {
@@ -3148,6 +3167,7 @@ module.exports = {
   deleteTestSet,
   nextTestSetId,
   countByPartForTestSet,
+  paperSpanCountsByTestSet,
   countByTypeForTestSet,
   getUserProgressByTestSet,
   validateImportQuestion,

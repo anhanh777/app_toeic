@@ -56,6 +56,9 @@ export default function TestSetDetail() {
     const info = ts.parts.find(x => x.part === p);
     const n = info?.count || 0;
     const prog = partProgress(p);
+    // Mau so tien do la so ROW (answered dem theo row); n la so cau tren
+    // de that (de IELTS co cau gop) — chi dung n de hien thi.
+    const rowTotal = prog?.total ?? n;
     return (
       <div key={p} className="card part-card">
         <div className="part-ico" aria-hidden>{p <= 4 ? '🎧' : '📖'}</div>
@@ -64,9 +67,9 @@ export default function TestSetDetail() {
           <span className="muted">{n} câu trong đề này</span>
         </p>
         {prog
-          ? <p className="muted" style={{ margin: 0 }}>Đã làm {prog.answered}/{n} câu · đúng {prog.correct}</p>
+          ? <p className="muted" style={{ margin: 0 }}>Đã làm {prog.answered}/{rowTotal} câu · đúng {prog.correct}</p>
           : <p className="muted" style={{ margin: 0 }}>Chưa làm câu nào ở {partLabel(p, ex)} này</p>}
-        {prog && n > 0 && <div className="bar"><i style={{ width: `${Math.round((prog.answered / n) * 100)}%` }} /></div>}
+        {prog && rowTotal > 0 && <div className="bar"><i style={{ width: `${Math.round((prog.answered / rowTotal) * 100)}%` }} /></div>}
         <div className="btn-row">
           <button
             className="btn btn-sm"
