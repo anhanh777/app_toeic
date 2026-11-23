@@ -6,7 +6,7 @@
 // reanimated, rồi xóa trong useEffect khi đã mount xong. Màn tab luôn
 // mount mới sau mỗi lần replace nên không sợ đọc nhầm lần sau.
 import { router } from 'expo-router';
-export const TAB_ORDER = ['/', '/today', '/practice', '/mock', '/settings'] as const;
+export const TAB_ORDER = ['/', '/vocabulary', '/practice', '/mock', '/settings'] as const;
 
 export type TabHref = (typeof TAB_ORDER)[number];
 export type TabDirection = 'forward' | 'back' | 'none';
@@ -65,7 +65,8 @@ export function getLastTab(): TabHref {
 }
 
 // Các tab cần chọn kỳ thi trước mới vào được (giống BottomNav).
-const NEEDS_EXAM = new Set(['/today', '/practice', '/mock']);
+// Từ vựng không cần: màn /vocabulary tự xử lý exam bằng `exam ?? 'toeic'`.
+const NEEDS_EXAM = new Set(['/practice', '/mock']);
 
 /**
  * Chuyển sang 1 tab chính: tự tính hướng (theo thứ tự TAB_ORDER), đặt

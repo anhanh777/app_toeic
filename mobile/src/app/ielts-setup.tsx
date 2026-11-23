@@ -107,11 +107,11 @@ export default function IeltsSetupScreen() {
       await api.saveIeltsProfile(profile);
     } catch (e) {
       // Bản web: backend lỗi vẫn cho đi tiếp bằng bản local.
-      setError(e instanceof ApiError ? e.message : 'Không lưu được lên máy chủ — đã lưu trên máy, vào Hôm nay nhé.');
+      setError(e instanceof ApiError ? e.message : 'Không lưu được lên máy chủ — đã lưu trên máy, vào Trang chủ nhé.');
     } finally {
       setSaving(false);
     }
-    router.replace('/today');
+    router.replace('/');
   };
 
   const pad = horizontalPadding(width);

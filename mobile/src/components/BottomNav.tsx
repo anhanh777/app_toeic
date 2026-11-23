@@ -1,6 +1,7 @@
 // Thanh điều hướng dưới đáy — 5 mục chính, nút giữa (Luyện tập) nhô cao.
-// Chỉ gắn ở 5 màn chính (Trang chủ, Hôm nay, Luyện tập, Thi thử, Cá nhân);
+// Chỉ gắn ở 5 màn chính (Trang chủ, Từ vựng, Luyện tập, Thi thử, Cá nhân);
 // các màn con (buổi luyện, bài thi, chi tiết...) không có thanh này.
+// (Màn Hôm nay đã gộp vào Trang chủ nên không còn tab riêng.)
 // Chuyển tab bằng router.replace để không xếp chồng route lên stack.
 //
 // Hiệu ứng (Phương án B):
@@ -39,7 +40,7 @@ const TABS: {
   center?: boolean;
 }[] = [
   { label: 'Trang chủ', href: '/', icon: 'home-outline', iconActive: 'home' },
-  { label: 'Hôm nay', href: '/today', icon: 'calendar-outline', iconActive: 'calendar' },
+  { label: 'Từ vựng', href: '/vocabulary', icon: 'book-outline', iconActive: 'book' },
   { label: 'Luyện tập', href: '/practice', icon: 'pencil', iconActive: 'pencil', center: true },
   { label: 'Thi thử', href: '/mock', icon: 'timer-outline', iconActive: 'timer' },
   { label: 'Cá nhân', href: '/settings', icon: 'person-outline', iconActive: 'person' },

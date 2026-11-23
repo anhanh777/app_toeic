@@ -8,7 +8,6 @@ import { BrandProvider, useBrand } from './brand';
 import { MenuIconsProvider, useMenuIcons, type MenuIconKey } from './menuIcons';
 import Login from './pages/Login';
 import Home from './pages/Home';
-import Today from './pages/Today';
 import IeltsSetup from './pages/IeltsSetup';
 import Diagnostic from './pages/Diagnostic';
 import ErrorLog from './pages/ErrorLog';
@@ -127,7 +126,6 @@ function ThemeToggle() {
 type NavItem = { path: string; label: string; icon: string; end?: boolean; ieltsOnly?: boolean; menuKey?: MenuIconKey };
 const NAV_ITEMS: NavItem[] = [
   { path: '/', label: 'Trang chủ', icon: '🏠', end: true, menuKey: 'home' },
-  { path: '/today', label: 'Hôm nay', icon: '📅', menuKey: 'today' },
   { path: '/practice', label: 'Luyện tập', icon: '✏️', menuKey: 'practice' },
   { path: '/mock', label: 'Thi thử', icon: '⏱️', menuKey: 'mock' },
   { path: '/wrong', label: 'Câu sai', icon: '❌', menuKey: 'wrong' },
@@ -142,7 +140,7 @@ const NAV_ITEMS: NavItem[] = [
 ];
 const NAV_PINS_KEY = 'app_nav_pins';
 const MAX_PINS = 4;
-const DEFAULT_PINS = ['/', '/today', '/practice', '/mock'];
+const DEFAULT_PINS = ['/', '/practice', '/mock'];
 
 function useNavPins() {
   const [pins, setPins] = useState<string[]>(() => {
@@ -302,8 +300,8 @@ function Layout() {
             <Route path="/login" element={<Login />} />
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/" element={<RequireAuth><Home /></RequireAuth>} />
-            {/* "Hôm nay" dùng chung cho cả 2 kỳ thi. Các route IELTS còn lại chỉ hiện khi exam==='ielts'. */}
-            <Route path="/today" element={<RequireAuth><Today /></RequireAuth>} />
+            {/* "Hôm nay" đã gộp vào Trang chủ — /today cũ chuyển về "/". */}
+            <Route path="/today" element={<Navigate to="/" replace />} />
             <Route path="/ielts/setup" element={<RequireAuth><IeltsSetup /></RequireAuth>} />
             <Route path="/ielts/diagnostic" element={<RequireAuth><Diagnostic /></RequireAuth>} />
             <Route path="/ielts/errors" element={<RequireAuth><ErrorLog /></RequireAuth>} />

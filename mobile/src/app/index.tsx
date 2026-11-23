@@ -1,8 +1,9 @@
 // Màn hình chính Phase 0: chọn kỳ thi (2 thẻ lớn TOEIC / IELTS Academic)
-// rồi màn Home placeholder hiển thị kỳ thi đã chọn + nút đăng xuất.
+// rồi màn Home — Trang chủ + Hôm nay gộp thành 1 trang duy nhất
+// (trước đây Hôm nay là màn riêng /today, giờ redirect về đây).
 // Layout flex thuần: màn hẹp xếp dọc, màn rộng (≥600dp) xếp ngang 2 cột.
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type ElementRef } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -16,12 +17,13 @@ import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
-import { api, targetScoreOf, type ExamInfo, type StatsOverview, type TodayData } from '../api';
+import { ApiError, api, targetScoreOf, type BadDayTask, type ExamInfo, type StatsOverview, type TodayData } from '../api';
 import { useAuth } from '../auth';
 import { useExam, type ExamId } from '../exam';
-import { bandLevel, partNameFor, questionTypeName } from '../lib';
+import { bandLevel, partLabel, partNameFor, questionTypeName } from '../lib';
 import {
   BREAKPOINTS,
+  CARD_PADDING,
   horizontalPadding,
   MAX_CONTENT_WIDTH,
   RADIUS,
@@ -33,6 +35,7 @@ import { useUiSettings } from '../uiSettings';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { TierBadge, XpBar } from '../components/TierBadge';
+import { BandCompassBlock, IeltsActiveBlock, IeltsDrillBlock, IeltsReviewBlock } from '../components/TodayBlocks';
 
 const FALLBACK_EXAMS: ExamInfo[] = [
   { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990', testSetCount: 28, questionCount: 5600 },
@@ -49,7 +52,6 @@ const EXAM_META: Record<ExamId, { detail: string }> = {
 // Icon lấy từ MenuIconsProvider (admin chỉnh được, GET /api/menu-icons);
 // key -> emoji trong MENU_ICON_DEFAULTS khi fetch chưa về / lỗi.
 const MENU_COMMON: { icon: MenuIconKey; label: string; href: string }[] = [
-  { icon: 'today', label: 'Hôm nay', href: '/today' },
   { icon: 'practice', label: 'Luyện tập', href: '/practice' },
   { icon: 'mock', label: 'Thi thử', href: '/mock' },
   { icon: 'wrong', label: 'Ôn câu sai', href: '/wrong' },
@@ -66,12 +68,14 @@ const MENU_IELTS: { icon: MenuIconKey; label: string; href: string }[] = [
 ];
 
 // Nhãn nhiệm vụ hằng ngày theo id block của GET /api/today (không có
-// title trong API nên map cố định theo id — khớp màn Hôm nay).
+// title trong API nên map cố định theo id — khớp khối Hôm nay đã gộp).
 const TODAY_TASK_LABEL: Record<string, string> = {
   review: 'Ôn câu sai đến hạn',
   drill: 'Luyện dạng yếu nhất',
   active: 'Luyện chủ động',
 };
+
+const TOPICS = ['du lịch', 'công nghệ', 'y học', 'môi trường'];
 
 export default function HomeScreen() {
   const { user, logout } = useAuth();
@@ -84,17 +88,26 @@ export default function HomeScreen() {
   const [loadingExams, setLoadingExams] = useState(true);
   // Thống kê tổng quan cho khối stat-card (port Home.tsx:37-51).
   const [stats, setStats] = useState<StatsOverview | null>(null);
-  // Sống động: kế hoạch hôm nay (thật, GET /api/today) + số khối đã xong
-  // (cùng key AsyncStorage `today_done_<date>` màn Hôm nay ghi).
+  // Kế hoạch hôm nay (thật, GET /api/today) + số khối đã xong
+  // (cùng key AsyncStorage `today_done_<date>` màn Hôm nay cũ ghi).
   const [todayData, setTodayData] = useState<TodayData | null>(null);
   const [todayDone, setTodayDone] = useState<string[]>([]);
+  const [todayError, setTodayError] = useState('');
+  const [todayLoading, setTodayLoading] = useState(false);
+  const [badDay, setBadDay] = useState<BadDayTask | null>(null);
+  const [badDayBusy, setBadDayBusy] = useState(false);
+  const [badDayDone, setBadDayDone] = useState(false);
+  const [topics, setTopics] = useState<string[]>([]);
+  // "▶ Bắt đầu hôm nay": cuộn tới khối 1 (ôn lỗi đến hạn).
+  const scrollRef = useRef<ElementRef<typeof ScrollView>>(null);
+  const reviewY = useRef(0);
 
   // Đích đến đang chờ: bấm tab cần kỳ thi khi chưa chọn → về đây chọn,
-  // chọn xong tự mở đúng tab đó. Chỉ nhận 3 tab cần kỳ thi.
+  // chọn xong tự mở đúng tab đó. Chỉ nhận 2 tab cần kỳ thi.
   const { next } = useLocalSearchParams<{ next?: string }>();
   const nextRoute =
-    next === '/today' || next === '/practice' || next === '/mock' ? next : undefined;
-  const nextLabel = nextRoute === '/today' ? 'Hôm nay' : nextRoute === '/practice' ? 'Luyện tập' : 'Thi thử';
+    next === '/practice' || next === '/mock' ? next : undefined;
+  const nextLabel = nextRoute === '/practice' ? 'Luyện tập' : 'Thi thử';
 
   const { refresh: refreshSettings } = useUiSettings();
   // Số đề/câu lấy ĐỘNG từ GET /api/exams (28 đề / 5600 câu) — trước đây
@@ -137,11 +150,20 @@ export default function HomeScreen() {
       });
   }, [exam]);
 
+  // Kế hoạch hôm nay: tải khi đã chọn kỳ thi, ở CẢ 2 kiểu giao diện
+  // (không chỉ lively) — cả 2 kiểu đều cần 3 khối + trạng thái xong.
+  // Không tải được thì chỉ ẩn các khối Hôm nay, vẫn hiện streak/XP.
   useEffect(() => {
-    if (!exam || !isLively) return;
-    api
-      .today(exam)
-      .then((d) => {
+    if (!exam) return;
+    const ex = exam;
+    // Fetch trong async IIFE (không setState đồng bộ trong thân effect).
+    void (async () => {
+      setTodayLoading(true);
+      setTodayError('');
+      try {
+        const d = await api
+          .today(ex)
+          .catch(() => (ex === 'ielts' ? api.ieltsToday() : Promise.reject(new Error('Không tải được dữ liệu hôm nay.'))));
         setTodayData(d);
         AsyncStorage.getItem(`today_done_${d.date}`)
           .then((v) => {
@@ -152,11 +174,60 @@ export default function HomeScreen() {
             }
           })
           .catch(() => undefined);
+      } catch (e) {
+        setTodayError(e instanceof ApiError ? e.message : 'Không tải được kế hoạch hôm nay.');
+      } finally {
+        setTodayLoading(false);
+      }
+    })();
+    AsyncStorage.getItem('ielts_topics')
+      .then((v) => {
+        try {
+          setTopics(v ? (JSON.parse(v) as string[]) : []);
+        } catch {
+          setTopics([]);
+        }
       })
-      .catch(() => {
-        /* không tải được thì chỉ ẩn thẻ nhiệm vụ, vẫn hiện streak/XP */
+      .catch(() => undefined);
+  }, [exam]);
+
+  const markDone = useCallback(
+    async (blockId: string, minutes: number) => {
+      if (!todayData || !exam) return;
+      setTodayDone((prev) => {
+        const next = prev.includes(blockId) ? prev : [...prev, blockId];
+        AsyncStorage.setItem(`today_done_${todayData.date}`, JSON.stringify(next)).catch(() => undefined);
+        return next;
       });
-  }, [exam, isLively]);
+      try {
+        await api.completeTodayBlock(blockId, minutes, exam);
+      } catch {
+        /* bản local đã ghi, không chặn */
+      }
+    },
+    [todayData, exam],
+  );
+
+  const callBadDay = useCallback(async () => {
+    if (!exam) return;
+    setBadDayBusy(true);
+    setTodayError('');
+    try {
+      setBadDay(await api.todayBadDay(exam));
+    } catch (e) {
+      setTodayError(e instanceof ApiError ? e.message : 'Không lấy được bài ngày nhẹ.');
+    } finally {
+      setBadDayBusy(false);
+    }
+  }, [exam]);
+
+  const toggleTopic = useCallback((t: string) => {
+    setTopics((prev) => {
+      const next = prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t];
+      AsyncStorage.setItem('ielts_topics', JSON.stringify(next)).catch(() => undefined);
+      return next;
+    });
+  }, []);
 
   const pick = useCallback(
     (id: string) => {
@@ -186,10 +257,20 @@ export default function HomeScreen() {
     : null;
   const hearts = '❤️'.repeat(Math.min(7, Math.max(0, stats?.streakDays ?? 0))) || '♡';
 
+  // Các khối của GET /api/today.
+  const review = todayData?.blocks.find((b) => b.id === 'review');
+  const drill = todayData?.blocks.find((b) => b.id === 'drill');
+  const vocabBlock = todayData?.blocks.find((b) => b.id === 'vocab');
+  const quitReason = todayData?.profile?.quitReason;
+
+  const scrollToReview = () => {
+    scrollRef.current?.scrollTo({ y: reviewY.current, animated: true });
+  };
+
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
       <TabScreen href="/">
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
+      <ScrollView ref={scrollRef} style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.header}>
           <Text style={[styles.hello, { color: colors.text, fontSize: scaled(20) }]}>
             Xin chào, {user?.name || user?.email || 'bạn'} 👋
@@ -339,8 +420,9 @@ export default function HomeScreen() {
               </View>
             ) : null}
 
-            {/* Hàng nút hành động nhanh: Luyện tiếp / Thi thử — 2 nút to
-                nổi bật ngay dưới thẻ thống kê (menu lưới bên dưới vẫn giữ). */}
+            {/* Hàng nút hành động nhanh 2x2: Luyện tiếp / Thi thử /
+                Ôn câu sai / Từ vựng — 4 nút to ngay dưới thẻ thống kê
+                (menu lưới bên dưới vẫn giữ). */}
             <View style={styles.quickRow}>
               <Pressable
                 style={[styles.quickBtn, { backgroundColor: colors.accent }, raisedButton(colors)]}
@@ -354,12 +436,24 @@ export default function HomeScreen() {
               >
                 <Text style={[styles.quickBtnText, { color: colors.goldInk, fontSize: scaled(16) }]}>⏱ Thi thử</Text>
               </Pressable>
+              <Pressable
+                style={[styles.quickBtn, styles.quickBtnOutline, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={() => router.push('/wrong')}
+              >
+                <Text style={[styles.quickBtnText, { color: colors.text, fontSize: scaled(16) }]}>❌ Ôn câu sai</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.quickBtn, styles.quickBtnOutline, { backgroundColor: colors.surface, borderColor: colors.border }]}
+                onPress={() => router.push('/vocabulary')}
+              >
+                <Text style={[styles.quickBtnText, { color: colors.text, fontSize: scaled(16) }]}>📚 Từ vựng</Text>
+              </Pressable>
             </View>
 
             {/* Sống động: hàng streak/XP + mascot + nhiệm vụ hằng ngày.
                 Chỉ hiện khi lively. Số liệu thật: streak/XP từ statsOverview,
-                nhiệm vụ từ GET /api/today, trạng thái xong từ AsyncStorage
-                (màn Hôm nay ghi). Không tải được today thì ẩn thẻ nhiệm vụ. */}
+                nhiệm vụ từ GET /api/today, trạng thái xong từ AsyncStorage.
+                Bấm thẻ nhiệm vụ thì cuộn tới khối 1 (không còn màn /today). */}
             {isLively ? (
               <View style={[styles.livelyHero, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
                 <Image
@@ -389,7 +483,7 @@ export default function HomeScreen() {
             {isLively && todayData ? (
               <Pressable
                 style={[styles.card, styles.livelyTasks, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}
-                onPress={() => router.push('/today')}
+                onPress={scrollToReview}
               >
                 <Text style={[styles.livelyTasksTitle, { color: colors.text, fontSize: scaled(16) }]}>
                   🎯 Nhiệm vụ hôm nay · {todayDone.length}/{todayData.blocks.length} xong
@@ -410,9 +504,249 @@ export default function HomeScreen() {
                   );
                 })}
                 <Text style={[styles.livelyTasksMore, { color: colors.accent, fontSize: scaled(14) }]}>
-                  Mở màn Hôm nay →
+                  Bắt đầu hôm nay →
                 </Text>
               </Pressable>
+            ) : null}
+
+            {/* ===== Khối Hôm nay (gộp từ màn /today cũ) ===== */}
+            {todayLoading && !todayData ? <ActivityIndicator color={colors.accent} /> : null}
+            {todayError ? (
+              <Text style={[styles.error, { color: colors.danger, fontSize: scaled(14) }]}>{todayError}</Text>
+            ) : null}
+            {todayData ? (
+              <>
+                {/* Hàng 2 thẻ: Đã xong hôm nay + Ngày mệt? (thẻ Streak
+                    không vẽ lại ở đây vì đã có ở stat-card phía trên). */}
+                <View style={styles.statRow}>
+                  <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                    <Text style={[styles.statEmoji, { fontSize: scaled(isLively ? 26 : 20) }]}>📅</Text>
+                    <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Đã xong hôm nay</Text>
+                    <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(16) }]}>{todayDone.length}/3 khối</Text>
+                    <Text style={[styles.statNote, { color: colors.muted, fontSize: scaled(12) }]}>
+                      {todayDone.length >= 3 ? '🎉 Xong hết rồi — nghỉ thôi!' : 'Cứ từ từ, từng khối một.'}
+                    </Text>
+                  </View>
+                  <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                    <Text style={[styles.statEmoji, { fontSize: scaled(isLively ? 26 : 20) }]}>🌧️</Text>
+                    <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Ngày mệt?</Text>
+                    <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(15) }]}>
+                      {todayData.badDayAvailable ? 'Có chế độ ngày nhẹ' : 'Hôm nay đã dùng ngày nhẹ'}
+                    </Text>
+                    <Pressable
+                      style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, opacity: !todayData.badDayAvailable || badDayBusy ? 0.6 : 1 }]}
+                      disabled={!todayData.badDayAvailable || badDayBusy}
+                      onPress={() => void callBadDay()}
+                    >
+                      <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(13) }]}>
+                        {badDayBusy ? 'Đang lấy bài…' : 'Hôm nay mình mệt 😮‍💨'}
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+
+                {badDay && (
+                  <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                    <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>🌧️ Bài ngày nhẹ (5–10 phút)</Text>
+                    <Text style={[styles.todayCardText, { color: colors.text, fontSize: scaled(15) }]}>{badDay.title}</Text>
+                    <Text style={[styles.todayCardText, { color: colors.muted, fontSize: scaled(15) }]}>{badDay.detail}</Text>
+                    {!isIelts && (
+                      <Pressable onPress={() => router.push('/practice')}>
+                        <Text style={[styles.link, { color: colors.accent, fontSize: scaled(15) }]}>Mở luyện tập TOEIC →</Text>
+                      </Pressable>
+                    )}
+                    <Pressable
+                      style={[styles.button, { backgroundColor: colors.accent, opacity: badDayDone ? 0.6 : 1 }, raisedButton(colors)]}
+                      disabled={badDayDone}
+                      onPress={() => {
+                        setBadDayDone(true);
+                        void markDone('bad-day', 10);
+                      }}
+                    >
+                      <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+                        {badDayDone ? '✓ Đã xong — nghỉ thôi' : 'Xong bài ngày nhẹ'}
+                      </Text>
+                    </Pressable>
+                  </View>
+                )}
+
+                {/* Chuẩn web Today.tsx — nút cuộn tới khối 1. */}
+                <Pressable
+                  style={[styles.button, { backgroundColor: colors.gold }, raisedButton(colors, '#D9A400')]}
+                  onPress={scrollToReview}
+                >
+                  <Text style={[styles.buttonText, { color: colors.goldInk, fontSize: scaled(15) }]}>▶ Bắt đầu hôm nay</Text>
+                </Pressable>
+
+                {todayData.carriedOver?.length > 0 && (
+                  <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
+                    📌 Khối dồn từ hôm qua (tối đa 1): {todayData.carriedOver.join(', ')}
+                  </Text>
+                )}
+
+                <View
+                  style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}
+                  onLayout={(e) => {
+                    reviewY.current = e.nativeEvent.layout.y;
+                  }}
+                >
+                  <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                    1️⃣ Ôn lỗi đến hạn {todayDone.includes('review') ? '✓' : ''}
+                  </Text>
+                  {isIelts ? (
+                    <IeltsReviewBlock dueCount={review?.dueCount ?? 0} onDone={() => void markDone('review', 15)} />
+                  ) : (
+                    <>
+                      <Text style={[styles.todayCardText, { color: colors.text, fontSize: scaled(15) }]}>
+                        Có <Text style={{ fontWeight: '700' }}>{review?.dueCount ?? 0}</Text> câu sai đến hạn ôn hôm nay.
+                      </Text>
+                      {review?.dueIds?.length ? (
+                        <View style={styles.dueList}>
+                          {review.dueIds.slice(0, 10).map((qid) => (
+                            <Pressable key={qid} onPress={() => router.push('/wrong')}>
+                              <Text style={[styles.dueId, { color: colors.accent, fontSize: scaled(15) }]}>{qid}</Text>
+                            </Pressable>
+                          ))}
+                        </View>
+                      ) : null}
+                      <View style={styles.row}>
+                        <Pressable
+                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+                          onPress={() => router.push('/wrong')}
+                        >
+                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn ngay →</Text>
+                        </Pressable>
+                        <Pressable
+                          style={[styles.button, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
+                          onPress={() => void markDone('review', 15)}
+                        >
+                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Đánh dấu đã ôn</Text>
+                        </Pressable>
+                      </View>
+                    </>
+                  )}
+                </View>
+
+                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                  <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                    2️⃣ Luyện dạng yếu nhất {todayDone.includes('drill') ? '✓' : ''}
+                  </Text>
+                  {isIelts ? (
+                    <IeltsDrillBlock
+                      diagnosticDone={todayData.diagnosticDone}
+                      weakestType={drill?.weakestType ?? null}
+                      questionCount={drill?.questionCount ?? 0}
+                      onDone={() => void markDone('drill', 20)}
+                    />
+                  ) : (
+                    <>
+                      <Text style={[styles.todayCardText, { color: colors.text, fontSize: scaled(15) }]}>
+                        {drill?.weakestPart
+                          ? `Part yếu nhất: ${partLabel(drill.weakestPart, 'toeic')}${drill.questionCount ? ` — ${drill.questionCount} câu` : ''}`
+                          : 'Chưa đủ dữ liệu để xác định Part yếu nhất — luyện 1 Part bất kỳ nhé.'}
+                      </Text>
+                      <Text style={[styles.todayCardText, { color: colors.muted, fontSize: scaled(14) }]}>
+                        Trang Luyện tập hiện chưa nhận sẵn Part từ link, bạn chọn Part ở đó nhé.
+                      </Text>
+                      <View style={styles.row}>
+                        <Pressable
+                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+                          onPress={() => router.push('/practice')}
+                        >
+                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở luyện tập →</Text>
+                        </Pressable>
+                        <Pressable
+                          style={[styles.button, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
+                          onPress={() => void markDone('drill', 20)}
+                        >
+                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Đánh dấu đã luyện</Text>
+                        </Pressable>
+                      </View>
+                    </>
+                  )}
+                </View>
+
+                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                  <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                    3️⃣ Luyện chủ động {todayDone.includes('active') ? '✓' : ''}
+                  </Text>
+                  {isIelts ? (
+                    <IeltsActiveBlock onDone={() => void markDone('active', 15)} />
+                  ) : (
+                    <>
+                      <Text style={[styles.todayCardText, { color: colors.text, fontSize: scaled(15) }]}>
+                        Luyện chủ động: mở 1 Part bất kỳ và làm liền mạch như tờ đề thi thật.
+                      </Text>
+                      <View style={styles.row}>
+                        <Pressable
+                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+                          onPress={() => router.push('/practice')}
+                        >
+                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở luyện tập →</Text>
+                        </Pressable>
+                        <Pressable
+                          style={[styles.button, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
+                          onPress={() => void markDone('active', 15)}
+                        >
+                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Đánh dấu đã luyện</Text>
+                        </Pressable>
+                      </View>
+                    </>
+                  )}
+                </View>
+
+                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                  <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>📚 Ôn từ vựng đến hạn</Text>
+                  {(vocabBlock?.dueCount ?? 0) > 0 ? (
+                    <>
+                      <Text style={[styles.todayCardText, { color: colors.text, fontSize: scaled(15) }]}>
+                        Có <Text style={{ fontWeight: '700' }}>{vocabBlock?.dueCount}</Text> từ đến hạn ôn hôm nay — mỗi từ ôn đúng +2 XP.
+                      </Text>
+                      <Pressable
+                        style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
+                        onPress={() => router.push('/vocabulary')}
+                      >
+                        <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn ngay →</Text>
+                      </Pressable>
+                    </>
+                  ) : (
+                    <Text style={[styles.todayCardText, { color: colors.muted, fontSize: scaled(15) }]}>🎉 Hôm nay không có từ đến hạn ôn.</Text>
+                  )}
+                </View>
+
+                {isIelts && quitReason === 'chan' && (
+                  <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                    <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>🎲 Đổi gió theo chủ đề bạn thích</Text>
+                    <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
+                      Chọn chủ đề — app sẽ ưu tiên bài đọc/nghe cùng chủ đề khi có.
+                    </Text>
+                    <View style={styles.chipRow}>
+                      {TOPICS.map((t) => {
+                        const selected = topics.includes(t);
+                        return (
+                          <Pressable
+                            key={t}
+                            style={[styles.chip, { borderColor: colors.border, backgroundColor: selected ? colors.accent : colors.surface }, livelyChip(colors)]}
+                            onPress={() => toggleTopic(t)}
+                          >
+                            <Text style={{ color: selected ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
+                              {selected ? '✓ ' : ''}{t}
+                            </Text>
+                          </Pressable>
+                        );
+                      })}
+                    </View>
+                    <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+                      <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>👹 Boss cuối tuần</Text>
+                      <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
+                        Mini test 20–30 phút, đánh 1 con quái to — sẽ mở ở Giai đoạn 6. Cứ luyện đều mỗi ngày
+                        là tới lúc gặp boss thôi.
+                      </Text>
+                    </View>
+                  </View>
+                )}
+                {isIelts && quitReason === 'khong_thay_tien_bo' && <BandCompassBlock />}
+              </>
             ) : null}
 
             <View style={styles.menu}>
@@ -556,16 +890,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom: 2,
   },
-  // Hàng nút hành động nhanh (Luyện tiếp / Thi thử) dưới thẻ thống kê.
-  quickRow: { flexDirection: 'row', gap: SPACING.sm, width: '100%' },
+  // Hàng nút hành động nhanh 2x2 dưới thẻ thống kê.
+  quickRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
   quickBtn: {
-    flex: 1,
+    width: '48%',
+    flexGrow: 1,
+    maxWidth: '48%',
     borderRadius: RADIUS.button,
     paddingVertical: 14,
     minHeight: 52,
     alignItems: 'center',
     justifyContent: 'center',
   },
+  quickBtnOutline: { borderWidth: 1 },
   quickBtnText: { fontWeight: '800', textAlign: 'center' },
   statLabel: {},
   statBig: { fontWeight: '700', flexWrap: 'wrap' },
@@ -592,4 +929,58 @@ const styles = StyleSheet.create({
   menuEmoji: { textAlign: 'center' },
   menuLabel: { fontWeight: '600', textAlign: 'center', flexWrap: 'wrap' },
   note: { textAlign: 'center', flexWrap: 'wrap', marginTop: SPACING.sm },
+  // --- Khối Hôm nay gộp từ màn /today cũ (kiểu của today.tsx) ---
+  error: { flexWrap: 'wrap' },
+  muted: { flexWrap: 'wrap' },
+  link: { fontWeight: '700', flexWrap: 'wrap' },
+  todayCard: {
+    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    padding: SPACING.md,
+    gap: SPACING.xs,
+    width: '100%',
+  },
+  todayCardTitle: { fontWeight: '700', flexWrap: 'wrap' },
+  todayCardText: { flexWrap: 'wrap' },
+  dueList: { gap: 2, width: '100%' },
+  dueId: { fontWeight: '600', flexWrap: 'wrap' },
+  statRow: { flexDirection: 'row', gap: SPACING.sm, width: '100%' },
+  stat: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: RADIUS.card,
+    padding: CARD_PADDING,
+    gap: 2,
+    alignItems: 'center',
+  },
+  statEmoji: { textAlign: 'center' },
+  statNote: { textAlign: 'center', flexWrap: 'wrap' },
+  row: { flexDirection: 'row', gap: SPACING.sm, width: '100%' },
+  chipRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, width: '100%' },
+  panel: {
+    borderWidth: 1,
+    borderRadius: RADIUS.button,
+    padding: CARD_PADDING,
+    gap: SPACING.xs,
+    width: '100%',
+  },
+  panelTitle: { fontWeight: '700', flexWrap: 'wrap' },
+  smallButton: {
+    borderRadius: RADIUS.button,
+    paddingVertical: SPACING.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 44,
+    paddingHorizontal: SPACING.md,
+  },
+  outlineButton: { borderWidth: 1, backgroundColor: 'transparent' },
+  smallButtonText: { fontWeight: '700', textAlign: 'center' },
+  button: {
+    borderRadius: RADIUS.button,
+    paddingVertical: SPACING.sm,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: 44,
+  },
+  buttonText: { fontWeight: '700', textAlign: 'center' },
 });

@@ -41,7 +41,7 @@ export default function IeltsSetup() {
     saveSetupLocal(profile);
     try { await api.saveIeltsProfile(profile); } catch (e) { setError(e); /* vẫn đi tiếp bằng bản local */ }
     setSaving(false);
-    nav('/today');
+    nav('/');
   };
 
   return (
