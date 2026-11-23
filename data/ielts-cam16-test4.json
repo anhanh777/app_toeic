@@ -750,50 +750,10 @@
     "content": "making cycling affordable"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "I mean, doesn’t the impact of reduced emissions on air pollution have a more significant effect on people’s health? Certainly, in some cities bike-sharing had made a big contribution to that. And also helped to cut the number of cars on the road significantly.",
-  "topic": "ielts-listening",
-  "difficulty": "easy",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C16-L-T4-S3-022",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C16-L-T4-S3",
-  "passageTitle": "Section 3 — Bike-sharing schemes",
-  "passageText": null,
-  "script": "JAKE: Now that we’ve done all the research into bike-sharing schemes in cities around the world, we need to think about how we’re going to organise our report. AMY: Right. I think we should start by talking about the benefits. I mean it’s great that so many cities have introduced these schemes where anyone can pick up a bike from dozens of different locations and hire it for a few hours. It makes riding a bike very convenient for people. JAKE: Yes, but the costs can add up and that puts people on low incomes off in some places. AMY: I suppose so, but if it means more people in general are cycling rather than driving, then because they’re increasing the amount of physical activity they do, it’s good for their health JAKE: OK. But isn’t that of less importance? I mean, doesn’t the impact of reduced emissions on air pollution have a more significant effect on people’s health? AMY: Certainly, in some cities bike-sharing had made a big contribution to that. And also helped to cut the number of cars on the road significantly. JAKE: Which is the main point. AMY: Exactly. But I’d say it’s had less of an impact on noise pollution because there are still loads of buses and lorries around. JAKE: Right. AMY: Shall we quickly discuss the recommendations we’re going to make? JAKE: In order to ensure bike-sharing schemes are successful? AMY: Yes. JAKE: OK. Well, while I think it’s nice to have really state-of-the-art bikes with things like GPS, I wouldn’t say they’re absolutely necessary. AMY: But some technical things are really important – like a fully functional app – so people can make payments and book bikes easily. Places which haven’t invested in that have really struggled. JAKE: Good point … Some people say there shouldn’t be competing companies offering separate bike-sharing schemes, but in some really big cities, competition’s beneficial and anyway one company might not be able to manage the whole thing. AMY: Right. Deciding how much to invest is a big question. Cities which have opened loads of new bike lanes at the same time as introducing bike-sharing schemes have generally been more successful – but there are examples of successful schemes where this hasn’t happened … What does matter though – is having a big publicity campaign. JAKE: Definitely. If people don’t know how to use the scheme or don’t understand its benefits, they won’t use it. People need a lot of persuasion to stop using their cars. AMY: Shall we look at some examples now? And say what we think is good or bad about them. JAKE: I suppose we should start with Amsterdam as this was one of the first cities to have a bike-sharing scheme. AMY: Yes. There was already a strong culture of cycling here. In a way it’s strange that there was such a demand for bike-sharing because you’d have thought most people would have used their own bikes. JAKE: And yet it’s one of the best-used schemes … Dublin’s an interesting example of a success story. AMY: It must be because the public transport system’s quite limited. JAKE: Not really – there’s no underground, but there are trams and a good bus network. I’d say price has a lot to do with it. It’s one of the cheapest schemes in Europe to join. AMY: But the buses are really slow – anyway the weather certainly can’t be a factor! JAKE: No – definitely not. The London scheme’s been quite successful AMY: Yes – it’s been a really good thing for the city. The bikes are popular and the whole system is well maintained but it isn’t expanding quickly enough. JAKE: Basically, not enough’s been spent on increasing the number of cycle lanes. Hopefully that’ll change. AMY: Yes. Now what about outside Europe? JAKE: Well bike-sharing schemes have taken off in places like Buenos Aires. AMY: Mmm. They built a huge network of cycle lanes to support the introduction of the scheme there, didn’t they? It attracted huge numbers of cyclists where previously there were hardly any. JAKE: An example of good planning. AMY: Absolutely. New York is a good example of how not to introduce a scheme. When they launched it, it was more than ten times the price of most other schemes. JAKE: More than it costs to take a taxi, Crazy. I think the organisers lacked vision and ambition there. AMY: I think so too. Sydney would be a good example to use. I would have expected it to have grown pretty quickly here. JAKE: Yes. I can’t quite work out why it hasn’t been an instant success like some of the others. It’s a shame really. AMY: I know. OK so now we’ve thought about …",
-  "content": "Which TWO benefits of city bike-sharing schemes do the students agree are the most important?",
-  "options": [
-   {
-    "label": "A",
-    "content": "reducing noise pollution"
-   },
-   {
-    "label": "B",
-    "content": "reducing traffic congestion"
-   },
-   {
-    "label": "C",
-    "content": "improving air quality"
-   },
-   {
-    "label": "D",
-    "content": "encouraging health and fitness"
-   },
-   {
-    "label": "E",
-    "content": "making cycling affordable"
-   }
+  "correct": [
+   "B",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -801,7 +761,7 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -836,50 +796,10 @@
     "content": "There should be a large network of cycle lanes."
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "But some technical things are really important – like a fully functional app – so people can make payments and book bikes easily What does matter though – is having a big publicity campaign.",
-  "topic": "ielts-listening",
-  "difficulty": "easy",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C16-L-T4-S3-024",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C16-L-T4-S3",
-  "passageTitle": "Section 3 — Bike-sharing schemes",
-  "passageText": null,
-  "script": "JAKE: Now that we’ve done all the research into bike-sharing schemes in cities around the world, we need to think about how we’re going to organise our report. AMY: Right. I think we should start by talking about the benefits. I mean it’s great that so many cities have introduced these schemes where anyone can pick up a bike from dozens of different locations and hire it for a few hours. It makes riding a bike very convenient for people. JAKE: Yes, but the costs can add up and that puts people on low incomes off in some places. AMY: I suppose so, but if it means more people in general are cycling rather than driving, then because they’re increasing the amount of physical activity they do, it’s good for their health JAKE: OK. But isn’t that of less importance? I mean, doesn’t the impact of reduced emissions on air pollution have a more significant effect on people’s health? AMY: Certainly, in some cities bike-sharing had made a big contribution to that. And also helped to cut the number of cars on the road significantly. JAKE: Which is the main point. AMY: Exactly. But I’d say it’s had less of an impact on noise pollution because there are still loads of buses and lorries around. JAKE: Right. AMY: Shall we quickly discuss the recommendations we’re going to make? JAKE: In order to ensure bike-sharing schemes are successful? AMY: Yes. JAKE: OK. Well, while I think it’s nice to have really state-of-the-art bikes with things like GPS, I wouldn’t say they’re absolutely necessary. AMY: But some technical things are really important – like a fully functional app – so people can make payments and book bikes easily. Places which haven’t invested in that have really struggled. JAKE: Good point … Some people say there shouldn’t be competing companies offering separate bike-sharing schemes, but in some really big cities, competition’s beneficial and anyway one company might not be able to manage the whole thing. AMY: Right. Deciding how much to invest is a big question. Cities which have opened loads of new bike lanes at the same time as introducing bike-sharing schemes have generally been more successful – but there are examples of successful schemes where this hasn’t happened … What does matter though – is having a big publicity campaign. JAKE: Definitely. If people don’t know how to use the scheme or don’t understand its benefits, they won’t use it. People need a lot of persuasion to stop using their cars. AMY: Shall we look at some examples now? And say what we think is good or bad about them. JAKE: I suppose we should start with Amsterdam as this was one of the first cities to have a bike-sharing scheme. AMY: Yes. There was already a strong culture of cycling here. In a way it’s strange that there was such a demand for bike-sharing because you’d have thought most people would have used their own bikes. JAKE: And yet it’s one of the best-used schemes … Dublin’s an interesting example of a success story. AMY: It must be because the public transport system’s quite limited. JAKE: Not really – there’s no underground, but there are trams and a good bus network. I’d say price has a lot to do with it. It’s one of the cheapest schemes in Europe to join. AMY: But the buses are really slow – anyway the weather certainly can’t be a factor! JAKE: No – definitely not. The London scheme’s been quite successful AMY: Yes – it’s been a really good thing for the city. The bikes are popular and the whole system is well maintained but it isn’t expanding quickly enough. JAKE: Basically, not enough’s been spent on increasing the number of cycle lanes. Hopefully that’ll change. AMY: Yes. Now what about outside Europe? JAKE: Well bike-sharing schemes have taken off in places like Buenos Aires. AMY: Mmm. They built a huge network of cycle lanes to support the introduction of the scheme there, didn’t they? It attracted huge numbers of cyclists where previously there were hardly any. JAKE: An example of good planning. AMY: Absolutely. New York is a good example of how not to introduce a scheme. When they launched it, it was more than ten times the price of most other schemes. JAKE: More than it costs to take a taxi, Crazy. I think the organisers lacked vision and ambition there. AMY: I think so too. Sydney would be a good example to use. I would have expected it to have grown pretty quickly here. JAKE: Yes. I can’t quite work out why it hasn’t been an instant success like some of the others. It’s a shame really. AMY: I know. OK so now we’ve thought about …",
-  "content": "Which TWO things do the students think are necessary for successful bike-sharing schemes?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Bikes should have a GPS system."
-   },
-   {
-    "label": "B",
-    "content": "The app should be easy to use."
-   },
-   {
-    "label": "C",
-    "content": "Public awareness should be raised."
-   },
-   {
-    "label": "D",
-    "content": "Only one scheme should be available."
-   },
-   {
-    "label": "E",
-    "content": "There should be a large network of cycle lanes."
-   }
+  "correct": [
+   "B",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -887,7 +807,7 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },

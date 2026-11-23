@@ -250,50 +250,10 @@
     "content": "the chance to be in a natural environment"
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "For a start, they often offer opportunities for those who don’t want to be stuck with a 40-hour week, but need to juggle work with other responsibilities such as child care But there are certainly health benefits, especially in jobs where you’re not sitting all day looking at a screen",
-  "topic": "ielts-listening",
-  "difficulty": "easy",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C16-L-T3-S2-012",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C16-L-T3-S2",
-  "passageTitle": "Section 2 — Agriculture and horticulture jobs",
-  "passageText": null,
-  "script": "Hello everyone. My name’s Megan Baker and I’m a recruitment consultant at AVT Recruitment specialists. Now, our company specialises in positions that involve working in the agriculture and horticulture sectors, so that’s fresh food production, garden and park maintenance and so on. And these sectors do provide some very special career opportunities. For a start, they often offer opportunities for those who don’t want to be stuck with a 40-hour week, but need to juggle work with other responsibilities such as child care – and this is very important for many of our recruits. Some people like working in a rural setting, surrounded by plants and trees instead of buildings, although we can’t guarantee that. But there are certainly health benefits, especially in jobs where you’re not sitting all day looking at a screen – a big plus for many people. Salaries can sometimes be good too, although there’s a lot of variety here. And you may have the opportunity in some types of jobs for travel overseas, although that obviously depends on the job, and not everyone is keen to do it. Of course, working outdoors does have its challenges. It’s fine in summer, but can be extremely unpleasant when it’s cold and windy. You may need to be pretty fit for some jobs, though with modern technology that’s not as important as it once was. And standards of health and safety are much higher now than they used to be, so there are fewer work-related accidents. But if you like a lively city environment surrounded by lots of people, these jobs are probably not for you – they’re often in pretty remote areas. And some people worry about finding a suitable place to live, but in our experience, this usually turns out fine. Now let me tell you about some of the exciting jobs that we have on our books right now. One is for a fresh food commercial manager. Our client here is a very large fresh food producer supplying a range of top supermarkets. They operate in a very fast-paced environment with low profit margins – the staff there work hard, but they play hard as well, so if you’ve a sociable personality this may be for you. We have an exciting post as an agronomist advising farmers on issues such as crop nutrition, protection against pests, and the latest legislation on farming and agricultural practices. There are good opportunities for the right person to quickly make their way up the career ladder, but a deep knowledge of the agricultural sector is expected of applicants. A leading supermarket is looking for a fresh produce buyer who is available for a 12-month maternity cover contract. You need to have experience in administration, planning and buying in the fresh produce industry, and in return will receive a very competitive salary. We have also received a request for a sales manager for a chain of garden centres. You will be visiting centres in the region to ensure their high levels of customer service are maintained. This post is only suitable for someone who is prepared to live in the region. There is also a vacancy for a tree technician to carry out tree cutting, forestry and conservation work. Candidates must have a clean driving licence and have training in safety procedures. A year’s experience would be preferred but the company might be prepared to consider someone who has just completed an appropriate training course. Finally, we have a position for a farm worker. This will involve a wide range of farm duties including crop sowing and harvesting, machine maintenance and animal care. Perks of the job include the possibility of renting a small cottage on the estate, and the chance to earn a competitive salary. A driving licence and tractor driving experience are essential.",
-  "content": "According to Megan, what are the TWO main advantages of working in the agriculture and horticulture sectors?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the active lifestyle"
-   },
-   {
-    "label": "B",
-    "content": "the above-average salaries"
-   },
-   {
-    "label": "C",
-    "content": "the flexible working opportunities"
-   },
-   {
-    "label": "D",
-    "content": "the opportunities for overseas travel"
-   },
-   {
-    "label": "E",
-    "content": "the chance to be in a natural environment"
-   }
+  "correct": [
+   "A",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -301,7 +261,7 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -336,50 +296,10 @@
     "content": "the level of physical fitness required"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "but can be extremely unpleasant when it’s cold and windy But if you like a lively city environment surrounded by lots of people, these jobs are probably not for you – they’re often in pretty remote areas.",
-  "topic": "ielts-listening",
-  "difficulty": "easy",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C16-L-T3-S2-014",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C16-L-T3-S2",
-  "passageTitle": "Section 2 — Agriculture and horticulture jobs",
-  "passageText": null,
-  "script": "Hello everyone. My name’s Megan Baker and I’m a recruitment consultant at AVT Recruitment specialists. Now, our company specialises in positions that involve working in the agriculture and horticulture sectors, so that’s fresh food production, garden and park maintenance and so on. And these sectors do provide some very special career opportunities. For a start, they often offer opportunities for those who don’t want to be stuck with a 40-hour week, but need to juggle work with other responsibilities such as child care – and this is very important for many of our recruits. Some people like working in a rural setting, surrounded by plants and trees instead of buildings, although we can’t guarantee that. But there are certainly health benefits, especially in jobs where you’re not sitting all day looking at a screen – a big plus for many people. Salaries can sometimes be good too, although there’s a lot of variety here. And you may have the opportunity in some types of jobs for travel overseas, although that obviously depends on the job, and not everyone is keen to do it. Of course, working outdoors does have its challenges. It’s fine in summer, but can be extremely unpleasant when it’s cold and windy. You may need to be pretty fit for some jobs, though with modern technology that’s not as important as it once was. And standards of health and safety are much higher now than they used to be, so there are fewer work-related accidents. But if you like a lively city environment surrounded by lots of people, these jobs are probably not for you – they’re often in pretty remote areas. And some people worry about finding a suitable place to live, but in our experience, this usually turns out fine. Now let me tell you about some of the exciting jobs that we have on our books right now. One is for a fresh food commercial manager. Our client here is a very large fresh food producer supplying a range of top supermarkets. They operate in a very fast-paced environment with low profit margins – the staff there work hard, but they play hard as well, so if you’ve a sociable personality this may be for you. We have an exciting post as an agronomist advising farmers on issues such as crop nutrition, protection against pests, and the latest legislation on farming and agricultural practices. There are good opportunities for the right person to quickly make their way up the career ladder, but a deep knowledge of the agricultural sector is expected of applicants. A leading supermarket is looking for a fresh produce buyer who is available for a 12-month maternity cover contract. You need to have experience in administration, planning and buying in the fresh produce industry, and in return will receive a very competitive salary. We have also received a request for a sales manager for a chain of garden centres. You will be visiting centres in the region to ensure their high levels of customer service are maintained. This post is only suitable for someone who is prepared to live in the region. There is also a vacancy for a tree technician to carry out tree cutting, forestry and conservation work. Candidates must have a clean driving licence and have training in safety procedures. A year’s experience would be preferred but the company might be prepared to consider someone who has just completed an appropriate training course. Finally, we have a position for a farm worker. This will involve a wide range of farm duties including crop sowing and harvesting, machine maintenance and animal care. Perks of the job include the possibility of renting a small cottage on the estate, and the chance to earn a competitive salary. A driving licence and tractor driving experience are essential.",
-  "content": "Which TWO of the following are likely to be disadvantages for people working outdoors?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the increasing risk of accidents"
-   },
-   {
-    "label": "B",
-    "content": "being in a very quiet location"
-   },
-   {
-    "label": "C",
-    "content": "difficult weather conditions at times"
-   },
-   {
-    "label": "D",
-    "content": "the cost of housing"
-   },
-   {
-    "label": "E",
-    "content": "the level of physical fitness required"
-   }
+  "correct": [
+   "B",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -387,7 +307,7 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -752,50 +672,10 @@
     "content": "The test was repeated several times for each person."
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "It took me ages to decide exactly how I’d organise it, especially how I could make sure that people didn’t know which drink I was giving them. It was hard to keep track of it all, especially as I had so many people doing it",
-  "topic": "ielts-listening",
-  "difficulty": "easy",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C16-L-T3-S3-022",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C16-L-T3-S3",
-  "passageTitle": "Section 3 — Diet and obesity",
-  "passageText": null,
-  "script": "ADAM: OK Rosie, shall we try to get some ideas together for our presentation on diet and obesity? ROSIE: Sure. ADAM: I can talk about the experiment I did to see if people can tell the difference between real sugar and artificial sweeteners. ROSIE: Where you gave people drinks with either sugar or artificial sweeteners and they had to say which they thought it was? ADAM: Yeah. It took me ages to decide exactly how I’d organise it, especially how I could make sure that people didn’t know which drink I was giving them. It was hard to keep track of it all, especially as I had so many people doing it – I had to make sure I kept a proper record of what each person had had. ROSIE: So could most people tell the difference? ADAM: Yeah – I hadn’t thought they would be able to, but most people could. ROSIE: Then there’s that experiment I did measuring the fat content of nuts, to see if the nutritional information given on the packet was accurate. ADAM: The one where you ground up the nuts and mixed them with a chemical to absorb the fat? ROSIE: Yes. My results were a bit problematic – the fat content for that type of nut seemed much lower than it said on the package. But I reckon the package information was right. I think I should probably have ground up the nuts more than I did. It’s possible that the scales for weighing the fat weren’t accurate enough, too. I’d really like to try the experiment again some time. ADAM: So what can we say about helping people to lose weight? There’s a lot we could say about what restaurants could do to reduce obesity. I read that the items at the start of a menu and the items at the end of a menu are much more likely to be chosen than the items in the middle. So, if you put the low- calorie items at the beginning and end of the menu, people will probably go for the food with fewer calories, without even realising what they’re doing. ROSIE: I think food manufacturers could do more to encourage healthy eating. ADAM: How? ROSIE: Well, when manufacturers put calorie counts of a food on the label, they’re sometimes really confusing and I suspect they do it on purpose. Because food that’s high in calories tastes better, and so they’ll sell more. ADAM: Yeah, so if you look at the amount of calories in a pizza, they’ll give you the calories per quarter pizza and you think, oh that’s not too bad. But who’s going to eat a quarter pizza? ROSIE: Exactly. ADAM: I suppose another approach to this problem is to get people to exercise more. ROSIE: Right. In England, the current guidelines are for at least 30 minutes of brisk walking, five days a week. Now when you ask them, about 40% of men and 30% of women say they do this, but when you objectively measure the amount of walking they do with motion sensors, you find that only 6% of men and 4% of women do the recommended amount of exercise. ADAM: Mm, so you can see why obesity is growing. ROSIE: So how can people be encouraged to take more exercise? ADAM: Well, for example, think of the location of stairs in a train station. If people reach the stairs before they reach the escalator when they’re leaving the station, they’re more likely to take the stairs. And if you increase the width of the stairs, you’ll get more people using them at the same time. It’s an unconscious process and influenced by minor modifications in their environment. ROSIE: Right. And it might not be a big change, but if it happens every day, it all adds up. ADAM: Yes. But actually, I’m not sure if we should be talking about exercise in our presentation. ROSIE: Well, we’ve done quite a bit of reading about it. ADAM: I know, but it’s going to mean we have a very wide focus, and our tutor did say that we need to focus on causes and solutions in terms of nutrition. ROSIE: I suppose so. And we’ve got plenty of information about that. OK, well that will be simpler. ADAM: So what shall we do now? We’ve still got half an hour before our next lecture. ROSIE: Let’s think about what we’re going to include and what will go where. Then we can decide what slides we need. ADAM: OK, fine.",
-  "content": "Which TWO points does Adam make about his experiment on artificial sweeteners?",
-  "options": [
-   {
-    "label": "A",
-    "content": "The results were what he had predicted."
-   },
-   {
-    "label": "B",
-    "content": "The experiment was simple to set up"
-   },
-   {
-    "label": "C",
-    "content": "A large sample of people was tested."
-   },
-   {
-    "label": "D",
-    "content": "The subjects were unaware of what they were drinking."
-   },
-   {
-    "label": "E",
-    "content": "The test was repeated several times for each person."
-   }
+  "correct": [
+   "C",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -803,7 +683,7 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -838,50 +718,10 @@
     "content": "The weighing scales may have been unsuitable."
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "I think I should probably have ground up the nuts more than I did. It’s possible that the scales for weighing the fat weren’t accurate enough, too.",
-  "topic": "ielts-listening",
-  "difficulty": "easy",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C16-L-T3-S3-024",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C16-L-T3-S3",
-  "passageTitle": "Section 3 — Diet and obesity",
-  "passageText": null,
-  "script": "ADAM: OK Rosie, shall we try to get some ideas together for our presentation on diet and obesity? ROSIE: Sure. ADAM: I can talk about the experiment I did to see if people can tell the difference between real sugar and artificial sweeteners. ROSIE: Where you gave people drinks with either sugar or artificial sweeteners and they had to say which they thought it was? ADAM: Yeah. It took me ages to decide exactly how I’d organise it, especially how I could make sure that people didn’t know which drink I was giving them. It was hard to keep track of it all, especially as I had so many people doing it – I had to make sure I kept a proper record of what each person had had. ROSIE: So could most people tell the difference? ADAM: Yeah – I hadn’t thought they would be able to, but most people could. ROSIE: Then there’s that experiment I did measuring the fat content of nuts, to see if the nutritional information given on the packet was accurate. ADAM: The one where you ground up the nuts and mixed them with a chemical to absorb the fat? ROSIE: Yes. My results were a bit problematic – the fat content for that type of nut seemed much lower than it said on the package. But I reckon the package information was right. I think I should probably have ground up the nuts more than I did. It’s possible that the scales for weighing the fat weren’t accurate enough, too. I’d really like to try the experiment again some time. ADAM: So what can we say about helping people to lose weight? There’s a lot we could say about what restaurants could do to reduce obesity. I read that the items at the start of a menu and the items at the end of a menu are much more likely to be chosen than the items in the middle. So, if you put the low- calorie items at the beginning and end of the menu, people will probably go for the food with fewer calories, without even realising what they’re doing. ROSIE: I think food manufacturers could do more to encourage healthy eating. ADAM: How? ROSIE: Well, when manufacturers put calorie counts of a food on the label, they’re sometimes really confusing and I suspect they do it on purpose. Because food that’s high in calories tastes better, and so they’ll sell more. ADAM: Yeah, so if you look at the amount of calories in a pizza, they’ll give you the calories per quarter pizza and you think, oh that’s not too bad. But who’s going to eat a quarter pizza? ROSIE: Exactly. ADAM: I suppose another approach to this problem is to get people to exercise more. ROSIE: Right. In England, the current guidelines are for at least 30 minutes of brisk walking, five days a week. Now when you ask them, about 40% of men and 30% of women say they do this, but when you objectively measure the amount of walking they do with motion sensors, you find that only 6% of men and 4% of women do the recommended amount of exercise. ADAM: Mm, so you can see why obesity is growing. ROSIE: So how can people be encouraged to take more exercise? ADAM: Well, for example, think of the location of stairs in a train station. If people reach the stairs before they reach the escalator when they’re leaving the station, they’re more likely to take the stairs. And if you increase the width of the stairs, you’ll get more people using them at the same time. It’s an unconscious process and influenced by minor modifications in their environment. ROSIE: Right. And it might not be a big change, but if it happens every day, it all adds up. ADAM: Yes. But actually, I’m not sure if we should be talking about exercise in our presentation. ROSIE: Well, we’ve done quite a bit of reading about it. ADAM: I know, but it’s going to mean we have a very wide focus, and our tutor did say that we need to focus on causes and solutions in terms of nutrition. ROSIE: I suppose so. And we’ve got plenty of information about that. OK, well that will be simpler. ADAM: So what shall we do now? We’ve still got half an hour before our next lecture. ROSIE: Let’s think about what we’re going to include and what will go where. Then we can decide what slides we need. ADAM: OK, fine.",
-  "content": "Which TWO problems did Rosie have when measuring the fat content of nuts?",
-  "options": [
-   {
-    "label": "A",
-    "content": "She used the wrong sort of nuts."
-   },
-   {
-    "label": "B",
-    "content": "She used an unsuitable chemical."
-   },
-   {
-    "label": "C",
-    "content": "She did not grind the nuts finely enough."
-   },
-   {
-    "label": "D",
-    "content": "The information on the nut package was incorrect."
-   },
-   {
-    "label": "E",
-    "content": "The weighing scales may have been unsuitable."
-   }
+  "correct": [
+   "C",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -889,7 +729,7 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -2103,50 +1943,10 @@
     "content": "More artefacts were found in Oppland than at any other mountain site."
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "But it turned out that hunters kept regularly venturing into the mountains even when the climate turned cold, based on the amount of stuff they had apparently dropped there. But there were few or no signs of activity during other periods.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C16-R-T3-P2-024",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C16-R-T3-P2",
-  "passageTitle": "Passage 2 — Climate change reveals ancient artefacts in Norway’s glaciers",
-  "passageText": "A. Well above the treeline in Norway’s highest mountains, ancient fields of ice are shrinking as Earth’s climate warms. As the ice has vanished, it has been giving up the treasures it has preserved in cold storage for the last 6,000 years — items such as ancient arrows and skis from Viking Age traders. And those artefacts have provided archaeologists with some surprising insights into how ancient Norwegians made their livings.\n\nB. Organic materials like textiles and hides are relatively rare finds at archaeological sites. This is because unless they’re protected from the microorganisms that cause decay, they tend not to last long. Extreme cold is one reliable way to keep artefacts relatively fresh for a few thousand years, but once thawed out, these materials experience degradation relatively swiftly. With climate change shrinking ice cover around the world, glacial archaeologists need to race the clock to find newly revealed artefacts, preserve them, and study them. If something fragile dries and is windblown it might very soon be lost to science, or an arrow might be exposed and then covered again by the next snow and remain well-preserved. The unpredictability means that glacial archaeologists have to be systematic in their approach to fieldwork.\n\nC. Over a nine-year period, a team of archaeologists, which included Lars Pilo of Oppland County Council, Norway, and James Barrett of the McDonald Institute for Archaeological Research, surveyed patches of ice in Oppland, an area of south-central Norway that is home to some of the country’s highest mountains. Reindeer once congregated on these icy patches in the later summer months to escape biting insects, and from the late Stone Age, hunters followed. In addition, trade routes threaded through the mountain passes of Oppland, linking settlements in Norway to the rest of Europe. The slow but steady movement of glaciers tends to destroy anything at their bases, so the team focused on stationary patches of ice, mostly above 1,400 metres. That ice is found amid fields of frost-weathered boulders, fallen rocks, and exposed bedrock that for nine months of the year is buried beneath snow. ‘Fieldwork is hard work — hiking with all our equipment, often camping on permafrost — but very rewarding. You’re rescuing the archaeology, bringing the melting ice to wider attention, discovering a unique environmental history and really connecting with the natural environment,’ says Barrett.\n\nD. At the edges of the contracting ice patches, archaeologists found more than 2,000 artefacts, which formed a material record that ran from 4,000 BCE to the beginnings of the Renaissance in the 14th century. Many of the artefacts are associated with hunting. Hunters would have easily misplaced arrows and they often discarded broken bows rather than take them all the way home. Other items could have been used by hunters traversing the high mountain passes of Oppland: all-purpose items like tools, skis, and horse tack.\n\nE. Barrett’s team radiocarbon-dated 153 of the artefacts and compared those dates to the timing of major environmental changes in the region — such as periods of cooling or warming — and major social and economic shifts — such as the growth of farming settlements and the spread of international trade networks leading up to the Viking Age. They found that some periods had produced lots of artefacts, which indicates that people had been pretty active in the mountains during those times. But there were few or no signs of activity during other periods.\n\nF. What was surprising, according to Barrett, was the timing of these periods. Oppland’s mountains present daunting terrain and in periods of extreme cold, glaciers could block the higher mountain passes and make travel in the upper reaches of the mountains extremely difficult. Archaeologists assumed people would stick to lower elevations during a time like the Late Antique Little Ice Age, a short period of deeper-than-usual cold from about 536-600 CE. But it turned out that hunters kept regularly venturing into the mountains even when the climate turned cold, based on the amount of stuff they had apparently dropped there. ‘Remarkably, though, the finds from the ice may have continued through this period, perhaps suggesting that the importance of mountain hunting increased to supplement failing agricultural harvests in times of low temperatures,’ says Barrett. A colder turn in the Scandinavian climate would likely have meant widespread crop failures, so more people would have depended on hunting to make up for those losses.\n\nG. Many of the artefacts Barrett’s team recovered date from the beginning of the Viking Age, the 700s through to the 900s CE. Trade networks connecting Scandinavia with Europe and the Middle East were expanding around this time. Although we usually think of ships when we think of Scandinavian expansion, these recent discoveries show that plenty of goods travelled on overland routes, like the mountain passes of Oppland. And growing Norwegian towns, along with export markets, would have created a booming demand for hides to fight off the cold, as well as antlers to make useful things like combs. Business must have been good for hunters.\n\nH. Norway’s mountains are probably still hiding a lot of history — and prehistory — in remote ice patches. When Barrett’s team looked at the dates for their sample of 153 artefacts, they noticed a gap with almost no artefacts from about 3,800 to 2,200 BCE. In fact, archaeological finds from that period are rare all over Norway. The researchers say that could be because many of those artefacts have already disintegrated or are still frozen in the ice. That means archaeologists could be extracting some of those artefacts from retreating ice in years to come.",
-  "script": null,
-  "content": "Which TWO of the following statements does the writer make about the discoveries of Barrett’s team?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Artefacts found in the higher mountain passes were limited to skiing equipment."
-   },
-   {
-    "label": "B",
-    "content": "Hunters went into the mountains even during periods of extreme cold."
-   },
-   {
-    "label": "C",
-    "content": "The number of artefacts from certain time periods was relatively low."
-   },
-   {
-    "label": "D",
-    "content": "Radiocarbon dating of artefacts produced some unreliable results."
-   },
-   {
-    "label": "E",
-    "content": "More artefacts were found in Oppland than at any other mountain site."
-   }
+  "correct": [
+   "B",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -2154,7 +1954,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -2189,50 +1989,10 @@
     "content": "Vikings were primarily interested in their trading links with the Middle East."
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "Business must have been good for hunters. these recent discoveries show that plenty of goods travelled on overland routes, like the mountain passes of Oppland",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C16-R-T3-P2-026",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C16-R-T3-P2",
-  "passageTitle": "Passage 2 — Climate change reveals ancient artefacts in Norway’s glaciers",
-  "passageText": "A. Well above the treeline in Norway’s highest mountains, ancient fields of ice are shrinking as Earth’s climate warms. As the ice has vanished, it has been giving up the treasures it has preserved in cold storage for the last 6,000 years — items such as ancient arrows and skis from Viking Age traders. And those artefacts have provided archaeologists with some surprising insights into how ancient Norwegians made their livings.\n\nB. Organic materials like textiles and hides are relatively rare finds at archaeological sites. This is because unless they’re protected from the microorganisms that cause decay, they tend not to last long. Extreme cold is one reliable way to keep artefacts relatively fresh for a few thousand years, but once thawed out, these materials experience degradation relatively swiftly. With climate change shrinking ice cover around the world, glacial archaeologists need to race the clock to find newly revealed artefacts, preserve them, and study them. If something fragile dries and is windblown it might very soon be lost to science, or an arrow might be exposed and then covered again by the next snow and remain well-preserved. The unpredictability means that glacial archaeologists have to be systematic in their approach to fieldwork.\n\nC. Over a nine-year period, a team of archaeologists, which included Lars Pilo of Oppland County Council, Norway, and James Barrett of the McDonald Institute for Archaeological Research, surveyed patches of ice in Oppland, an area of south-central Norway that is home to some of the country’s highest mountains. Reindeer once congregated on these icy patches in the later summer months to escape biting insects, and from the late Stone Age, hunters followed. In addition, trade routes threaded through the mountain passes of Oppland, linking settlements in Norway to the rest of Europe. The slow but steady movement of glaciers tends to destroy anything at their bases, so the team focused on stationary patches of ice, mostly above 1,400 metres. That ice is found amid fields of frost-weathered boulders, fallen rocks, and exposed bedrock that for nine months of the year is buried beneath snow. ‘Fieldwork is hard work — hiking with all our equipment, often camping on permafrost — but very rewarding. You’re rescuing the archaeology, bringing the melting ice to wider attention, discovering a unique environmental history and really connecting with the natural environment,’ says Barrett.\n\nD. At the edges of the contracting ice patches, archaeologists found more than 2,000 artefacts, which formed a material record that ran from 4,000 BCE to the beginnings of the Renaissance in the 14th century. Many of the artefacts are associated with hunting. Hunters would have easily misplaced arrows and they often discarded broken bows rather than take them all the way home. Other items could have been used by hunters traversing the high mountain passes of Oppland: all-purpose items like tools, skis, and horse tack.\n\nE. Barrett’s team radiocarbon-dated 153 of the artefacts and compared those dates to the timing of major environmental changes in the region — such as periods of cooling or warming — and major social and economic shifts — such as the growth of farming settlements and the spread of international trade networks leading up to the Viking Age. They found that some periods had produced lots of artefacts, which indicates that people had been pretty active in the mountains during those times. But there were few or no signs of activity during other periods.\n\nF. What was surprising, according to Barrett, was the timing of these periods. Oppland’s mountains present daunting terrain and in periods of extreme cold, glaciers could block the higher mountain passes and make travel in the upper reaches of the mountains extremely difficult. Archaeologists assumed people would stick to lower elevations during a time like the Late Antique Little Ice Age, a short period of deeper-than-usual cold from about 536-600 CE. But it turned out that hunters kept regularly venturing into the mountains even when the climate turned cold, based on the amount of stuff they had apparently dropped there. ‘Remarkably, though, the finds from the ice may have continued through this period, perhaps suggesting that the importance of mountain hunting increased to supplement failing agricultural harvests in times of low temperatures,’ says Barrett. A colder turn in the Scandinavian climate would likely have meant widespread crop failures, so more people would have depended on hunting to make up for those losses.\n\nG. Many of the artefacts Barrett’s team recovered date from the beginning of the Viking Age, the 700s through to the 900s CE. Trade networks connecting Scandinavia with Europe and the Middle East were expanding around this time. Although we usually think of ships when we think of Scandinavian expansion, these recent discoveries show that plenty of goods travelled on overland routes, like the mountain passes of Oppland. And growing Norwegian towns, along with export markets, would have created a booming demand for hides to fight off the cold, as well as antlers to make useful things like combs. Business must have been good for hunters.\n\nH. Norway’s mountains are probably still hiding a lot of history — and prehistory — in remote ice patches. When Barrett’s team looked at the dates for their sample of 153 artefacts, they noticed a gap with almost no artefacts from about 3,800 to 2,200 BCE. In fact, archaeological finds from that period are rare all over Norway. The researchers say that could be because many of those artefacts have already disintegrated or are still frozen in the ice. That means archaeologists could be extracting some of those artefacts from retreating ice in years to come.",
-  "script": null,
-  "content": "Which TWO of the following statements does the writer make about the Viking Age?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Hunters at this time benefited from an increased demand for goods."
-   },
-   {
-    "label": "B",
-    "content": "The beginning of the period saw the greatest growth in the wealth of Vikings."
-   },
-   {
-    "label": "C",
-    "content": "Vikings did not rely on ships alone to transport goods."
-   },
-   {
-    "label": "D",
-    "content": "Norwegian towns at this time attracted traders from around the world."
-   },
-   {
-    "label": "E",
-    "content": "Vikings were primarily interested in their trading links with the Middle East."
-   }
+  "correct": [
+   "A",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -2240,7 +2000,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
