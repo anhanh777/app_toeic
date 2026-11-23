@@ -9,6 +9,7 @@ import { attemptStatsFor, paperNumbersFor, partLabel, partNameFor, realQuestionN
 import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitGroupSegments } from '../ielts-ui';
 import { stopSpeak, ttsTextFor } from '../tts';
 import { LoadingLine } from '../uiSettings';
+import { recordExposureForText } from '../vocabExposure';
 
 function fmt(s: number) {
   const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
@@ -256,6 +257,19 @@ export default function MockTest() {
   useEffect(() => {
     if (testSetId) api.testSet(testSetId).then(setTestSet).catch(setError);
   }, [testSetId]);
+
+  // Exposure (phuong phap 4b): ghi nhan cac tu trong "Tu cua toi" xuat
+  // hien trong de vua tai — 1 lan moi attempt (bao gom ca tiep tuc bai
+  // do / khoi phuc sau tai lai trang), chay ngam, khong doi giao dien
+  // hay hanh vi phong thi.
+  const exposureAttemptRef = useRef<number | null>(null);
+  useEffect(() => {
+    if (!attemptId || !questions.length) return;
+    if (exposureAttemptRef.current === attemptId) return;
+    exposureAttemptRef.current = attemptId;
+    const text = questions.map((q) => [q.passageText, q.content].filter(Boolean).join('\n')).join('\n');
+    void recordExposureForText(text);
+  }, [attemptId, questions]);
 
   // Danh sách đề để chọn ở màn hình Thi thử (khi mở /mock trực tiếp,
   // chưa có testSetId trên URL).

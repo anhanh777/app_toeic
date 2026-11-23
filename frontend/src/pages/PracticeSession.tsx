@@ -24,6 +24,7 @@ import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, sp
 import { clearHighlights, getHighlightCount, highlightSelection, highlightSupported, IeltsNotePanel, IeltsToolsBar, useIeltsNotes } from '../ielts-tools';
 import { RootCausePicker, fmtClock, skillOfPart } from '../ielts-phase1';
 import { stopSpeak, ttsTextFor } from '../tts';
+import { recordExposureForText } from '../vocabExposure';
 
 type AnswerResult = { correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number; marks?: number; maxMarks?: number };
 
@@ -110,6 +111,19 @@ export default function PracticeSession() {
     return () => stopSpeak();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [part, testSetId, exam]);
+
+  // Exposure (phuong phap 4b): ghi nhan cac tu trong "Tu cua toi" xuat
+  // hien trong de vua tai — 1 lan moi luot vao phong (key theo
+  // part/de/exam), chay ngam, khong doi giao dien hay hanh vi phong thi.
+  const exposureKeyRef = useRef('');
+  useEffect(() => {
+    if (loading || !questions.length) return;
+    const key = `${exam}|${testSetId ?? ''}|${part}`;
+    if (exposureKeyRef.current === key) return;
+    exposureKeyRef.current = key;
+    const text = questions.map((q) => [q.passageText, q.content].filter(Boolean).join('\n')).join('\n');
+    void recordExposureForText(text);
+  }, [loading, questions, exam, testSetId, part]);
 
   // Ý 2 (IELTS-only): luyện theo dạng câu hỏi — ?questionType=... trên URL
   // (nối từ gợi ý luyện tiếp ở trang Thống kê, đợt 3) hoặc chọn trong
