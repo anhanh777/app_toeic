@@ -73,6 +73,41 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: unknown 
   }
 }
 
+/* Man hinh bao tri: hien thay cho toan bo app hoc vien khi
+   maintenance.enabled — tranh hien du lieu trong/sai trong luc backend
+   nap lai sau khi bi xoa. Nut "Thu lai" tai lai cai dat; neu bao tri da
+   tat thi app mo lai binh thuong. */
+function MaintenanceScreen() {
+  const { settings, refresh } = useUiSettings();
+  const [checking, setChecking] = useState(false);
+  const waitLoading = activeStyle(settings).loading;
+  const retry = () => {
+    setChecking(true);
+    refresh();
+    window.setTimeout(() => setChecking(false), 2000);
+  };
+  return (
+    <div className="app">
+      <main className="container">
+        <div className="card" style={{ marginTop: '18vh', textAlign: 'center', padding: '2rem 1rem' }}>
+          <div style={{ fontSize: '2.6rem' }} aria-hidden>🔧</div>
+          <h1 style={{ margin: '.4rem 0' }}>App đang bảo trì</h1>
+          <p style={{ fontWeight: 700, margin: '.4rem 0' }}>{settings.maintenance.message}</p>
+          <p className="muted" style={{ margin: '.4rem 0 1rem' }}>Dữ liệu đang được nạp lại — quay lại sau ít phút nhé.</p>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <LoadingEffect effect={waitLoading.page} speed={waitLoading.speed} size="lg" />
+          </div>
+          <div className="btn-row" style={{ justifyContent: 'center', marginTop: '1rem' }}>
+            <button type="button" className="btn" onClick={retry} disabled={checking}>
+              {checking ? 'Đang kiểm tra…' : 'Thử lại'}
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
 /* Nút cỡ chữ trên thanh nav: chỉ bấm mới mở/đóng bảng kéo chọn cỡ chữ
    (A- / thanh kéo / A+). KHÔNG mở bằng hover nữa — rê chuột qua khe hở
    giữa nút và bảng sẽ làm bảng tự đóng mất. Bấm ra ngoài hoặc Esc thì đóng. */
@@ -163,6 +198,7 @@ function useNavPins() {
 
 function Layout() {
   const { user, logout } = useAuth();
+  const { settings, loading: uiLoading } = useUiSettings();
   const { exam, clearExam } = useExam();
   const nav = useNavigate();
   const loc = useLocation();
@@ -198,6 +234,28 @@ function Layout() {
     setPinMsg(null);
     savePins([...pins, path]);
   };
+  // Bao tri: cho tai xong cai dat roi moi hien app — neu dang bao tri thi
+  // hien man hinh bao tri thay vi login/trang chu (tranh hien du lieu
+  // trong/sai trong luc backend nap lai sau khi bi xoa). Tai loi thi dung
+  // mac dinh (bao tri tat) nen app van mo nhu cu.
+  if (uiLoading) {
+    const waitLoading = activeStyle(settings).loading;
+    return (
+      <div className="app">
+        <main className="container">
+          <div className="card" style={{ marginTop: waitLoading.position === 'center' ? '18vh' : '1rem', textAlign: 'center', padding: '2rem 1rem' }}>
+            <LoadingImage image={waitLoading.image} imageUrl={waitLoading.imageUrl} />
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <LoadingEffect effect={waitLoading.page} speed={waitLoading.speed} size="lg" />
+            </div>
+            <p style={{ fontWeight: 700, margin: '.4rem 0' }}>Đang mở app…</p>
+            <p className="muted" style={{ margin: 0 }}>{waitLoading.text}</p>
+          </div>
+        </main>
+      </div>
+    );
+  }
+  if (settings.maintenance.enabled) return <MaintenanceScreen />;
   return (
     <div className="app">
       <header className="topbar">

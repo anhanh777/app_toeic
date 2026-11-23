@@ -1780,6 +1780,13 @@ function seedMenuIcons() {
 
 function seedAll() {
   db.initDb();
+  // DB trong (vua bi Render xoa) -> seed tuoi: bat bao tri de app hoc vien
+  // khong hien du lieu trong/sai trong luc nap lai; restore-watch tat sau
+  // khi khoi phuc xong. Chi bat khi DB trong han — khoi dong binh thuong
+  // (DB con du lieu) khong dung toi bao tri. Luu y: lan chay dau tien tren
+  // 1 deploy moi cung la "DB trong" nen bao tri se bat va can admin tat
+  // tay 1 lan (hoac doi chu ky backup/restore dau tien tat ho).
+  const freshDb = db.countQuestions() === 0 && db.countUsers() === 0;
   seedUiSettings();
   seedBrandSettings();
   seedMenuIcons();
@@ -1853,6 +1860,11 @@ function seedAll() {
   if (db.getTestSet('TS-063')) db.refreshTestSetTotal('TS-063');
   if (db.getTestSet('TS-064')) db.refreshTestSetTotal('TS-064');
   if (db.getTestSet('TS-065')) db.refreshTestSetTotal('TS-065');
+  if (freshDb) {
+    db.setSetting('maintenance.enabled', true);
+    db.setSetting('maintenance.auto', true);
+    console.log('[seed] DB trong -> bat bao tri (maintenance.enabled=true, auto=true).');
+  }
   console.log(
     `[seed] xong: ${db.countQuestions()} cau hoi, ${db.countVocabulary()} tu vung, ${db.countUsers()} user.`
   );

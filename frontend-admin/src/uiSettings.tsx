@@ -59,6 +59,17 @@ export interface StyleSettings {
   loading: StyleLoading;
 }
 
+/** Tin nhắn mặc định khi app bảo trì (admin sửa được ở trang Cài đặt giao diện). */
+export const MAINTENANCE_DEFAULT_MESSAGE = 'App đang bảo trì, quay lại sau ít phút nhé!';
+
+/** Trạng thái bảo trì: app học viên hiện màn hình bảo trì thay vì dữ liệu khi bật.
+ * `auto` = true khi hệ thống tự bật sau khi DB bị xóa và đang nạp lại. */
+export interface MaintenanceSettings {
+  enabled: boolean;
+  message: string;
+  auto: boolean;
+}
+
 export interface UiSettings {
   ui: {
     /** Màu chủ đạo cũ (fallback cho client cũ chưa biết `styles`). */
@@ -70,6 +81,7 @@ export interface UiSettings {
     /** Loading cũ (fallback); app mới dùng `styles[<kiểu đang chọn>].loading`. */
     loading: StyleLoading;
   };
+  maintenance: MaintenanceSettings;
 }
 
 /**
@@ -105,6 +117,7 @@ export const UI_SETTINGS_DEFAULTS: UiSettings = {
     },
     loading: { ...DEFAULT_STYLE_LOADING },
   },
+  maintenance: { enabled: false, message: MAINTENANCE_DEFAULT_MESSAGE, auto: false },
 };
 
 /** Cài đặt của kiểu đang chọn (màu + loading riêng); thiếu thì rơi về legacy. */
@@ -207,6 +220,19 @@ function normalizeLoading(input: unknown, defaults: StyleLoading): StyleLoading 
   };
 }
 
+/** Gộp khối bảo trì (có thể thiếu/sai) về đầy đủ + hợp lệ. */
+function normalizeMaintenance(input: unknown): MaintenanceSettings {
+  const src = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
+  return {
+    enabled: src.enabled === true,
+    message:
+      typeof src.message === 'string' && src.message.trim() && src.message.length <= 200
+        ? src.message
+        : MAINTENANCE_DEFAULT_MESSAGE,
+    auto: src.auto === true,
+  };
+}
+
 /** Gop tai lieu (co the thieu/sai) ve day du + hop le, sai cho nao ve mac dinh cho do. */
 export function normalizeSettings(input: unknown): UiSettings {
   const src = (input && typeof input === 'object' ? input : {}) as Record<string, unknown>;
@@ -232,6 +258,7 @@ export function normalizeSettings(input: unknown): UiSettings {
       styles,
       loading: normalizeLoading(ui.loading, d.loading),
     },
+    maintenance: normalizeMaintenance(src.maintenance),
   };
 }
 

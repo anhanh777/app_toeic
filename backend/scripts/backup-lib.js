@@ -214,6 +214,33 @@ async function apiPostRestoreAuto(backupDoc) {
   }
 }
 
+async function apiPutSetting(token, key, value) {
+  const res = await fetch(`${API_BASE}/api/admin/settings`, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key, value }),
+    signal: AbortSignal.timeout(60000),
+  });
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(`PUT /api/admin/settings -> HTTP ${res.status}: ${body.error || 'loi khong ro'}`);
+  }
+  return body;
+}
+
+/** PUT /api/admin/settings {key, value}, tu cap lai token khi gap 401 roi thu lai 1 lan. */
+async function apiPutSettingAuto(key, value) {
+  let token = getTokenOrNull();
+  if (!token) token = await loginAdmin();
+  try {
+    return await apiPutSetting(token, key, value);
+  } catch (err) {
+    if (!isAuthError(err)) throw err;
+    log('PUT /api/admin/settings -> 401, thu lai voi token moi...');
+    return apiPutSetting(await loginAdmin(), key, value);
+  }
+}
+
 /* ---------------- Google Drive (qua hatch_gws_cli) ---------------- */
 
 function drive(args) {
@@ -329,6 +356,7 @@ module.exports = {
   loginAdmin,
   apiGetBackupAuto,
   apiPostRestoreAuto,
+  apiPutSettingAuto,
   countUserRows,
   findMissingAccounts,
   isPartialWipe,

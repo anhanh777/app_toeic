@@ -170,6 +170,18 @@ async function doRestore(backupDoc, fileName, why) {
   if (mismatches.length) {
     throw new Error(`khoi phuc xong nhung so lieu lech: ${mismatches.join('; ')}`);
   }
+  // Khoi phuc xong (so lieu khop): tat bao tri de app mo lai binh thuong.
+  // Chi tat khi khoi phuc THANH CONG — that bai thi cu de bao tri bat (an
+  // toan hon hien du lieu trong), admin tat tay o trang Cai dat giao dien.
+  // Tat khong duoc (loi API) thi bao loi de cron bao cao, du lieu thi van
+  // da khoi phuc xong.
+  try {
+    await lib.apiPutSettingAuto('maintenance.enabled', false);
+    await lib.apiPutSettingAuto('maintenance.auto', false);
+    lib.log('da tat bao tri (maintenance.enabled=false).');
+  } catch (err) {
+    throw new Error(`khoi phuc xong nhung khong tat duoc bao tri: ${err.message}`);
+  }
   lib.log(`khoi phuc XONG tu ${fileName}: ${JSON.stringify(result.restored)}.`);
 }
 

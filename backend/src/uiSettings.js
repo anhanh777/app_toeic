@@ -119,6 +119,9 @@ const STYLE_REGISTRY = Object.freeze([
 
 const STYLE_IDS = Object.freeze(STYLE_REGISTRY.map((s) => s.id));
 
+/** Tin nhan mac dinh khi app bao tri (admin sua duoc o trang Cai dat giao dien). */
+const DEFAULT_MAINTENANCE_MESSAGE = 'App đang bảo trì, quay lại sau ít phút nhé!';
+
 const DEFAULTS = Object.freeze({
   ui: Object.freeze({
     style: 'pastel',
@@ -132,6 +135,15 @@ const DEFAULTS = Object.freeze({
         ),
       ),
     ),
+  }),
+  /** Bao tri: app hoc vien hien man hinh bao tri thay vi du lieu khi bat.
+   * `enabled` — bat/tat; `message` — cau hien cho nguoi hoc; `auto` —
+   * true khi he thong tu bat sau khi DB bi xoa va dang nap lai (de phan
+   * biet voi admin bat tay). Mac dinh tat. */
+  maintenance: Object.freeze({
+    enabled: false,
+    message: DEFAULT_MAINTENANCE_MESSAGE,
+    auto: false,
   }),
 });
 
@@ -203,6 +215,17 @@ function validateLoadingField(field, value) {
 /** Validate 1 key rieng le. Tra ve null neu hop le, neu khong tra ly do. */
 function validateSetting(key, value) {
   switch (key) {
+    case 'maintenance.enabled':
+      if (typeof value !== 'boolean') return 'maintenance.enabled phai la boolean';
+      return null;
+    case 'maintenance.auto':
+      if (typeof value !== 'boolean') return 'maintenance.auto phai la boolean';
+      return null;
+    case 'maintenance.message':
+      if (typeof value !== 'string' || !value.trim() || value.length > 200) {
+        return 'maintenance.message phai la chuoi 1-200 ky tu';
+      }
+      return null;
     case 'ui.style':
       if (!STYLE_IDS.includes(value)) return `ui.style phai la mot trong: ${STYLE_IDS.join(', ')}`;
       return null;
@@ -252,6 +275,9 @@ const SETTING_KEYS = Object.freeze([
   'ui.loading.speed',
   'ui.loading.text',
   'ui.loading.extraEffects',
+  'maintenance.enabled',
+  'maintenance.message',
+  'maintenance.auto',
   ...STYLE_REGISTRY.flatMap((s) => [
     `ui.styles.${s.id}.accent`,
     ...LOADING_FIELDS.map((f) => `ui.styles.${s.id}.loading.${f}`),
@@ -303,6 +329,20 @@ function normalizeLoading(ld, defaults) {
   };
 }
 
+/** Gop 1 khoi bao tri (co the thieu/sai) ve day du + hop le. */
+function normalizeMaintenance(input) {
+  const src = input && typeof input === 'object' ? input : {};
+  const message =
+    typeof src.message === 'string' && src.message.trim() && src.message.length <= 200
+      ? src.message
+      : DEFAULT_MAINTENANCE_MESSAGE;
+  return {
+    enabled: src.enabled === true,
+    message,
+    auto: src.auto === true,
+  };
+}
+
 /** Gop 1 tai lieu (co the thieu/sai) ve day du + hop le, sai cho nao ve mac dinh cho do. */
 function normalizeSettings(input) {
   const src = input && typeof input === 'object' ? input : {};
@@ -325,6 +365,7 @@ function normalizeSettings(input) {
       loading: normalizeLoading(loading, DEFAULT_LOADING),
       styles,
     },
+    maintenance: normalizeMaintenance(src.maintenance),
   };
   const flat = flattenSettings(doc);
   for (const key of SETTING_KEYS) {
@@ -361,6 +402,14 @@ function flattenSettings(doc) {
     const ld = st.loading && typeof st.loading === 'object' ? st.loading : {};
     for (const f of LOADING_FIELDS) flat[`ui.styles.${s.id}.loading.${f}`] = ld[f];
   }
+  // Bao tri: chi ghi key khi doc co khoi maintenance — doc cu (khong co
+  // maintenance) PUT len thi khong dong den maintenance trong DB.
+  const mt = d.maintenance && typeof d.maintenance === 'object' ? d.maintenance : null;
+  if (mt) {
+    flat['maintenance.enabled'] = mt.enabled;
+    flat['maintenance.message'] = mt.message;
+    flat['maintenance.auto'] = mt.auto;
+  }
   return flat;
 }
 
@@ -390,6 +439,11 @@ function unflattenSettings(flat) {
       },
       styles,
     },
+    maintenance: {
+      enabled: f['maintenance.enabled'],
+      message: f['maintenance.message'],
+      auto: f['maintenance.auto'],
+    },
   };
 }
 
@@ -402,6 +456,7 @@ function defaultFlatSettings() {
 
 module.exports = {
   DEFAULTS,
+  DEFAULT_MAINTENANCE_MESSAGE,
   EFFECTS,
   EFFECT_IDS,
   EXTRA_EFFECT_IDS,

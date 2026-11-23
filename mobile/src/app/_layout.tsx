@@ -3,8 +3,8 @@
 // tự cộng padding notch/gesture bar bằng số cố định.
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../auth';
@@ -14,33 +14,43 @@ import { LoadingLine } from '../components/LoadingLine';
 import { ExamProvider } from '../exam';
 import { MenuIconsProvider } from '../menuIcons';
 import { TextSizeProvider, ThemeProvider, useTheme } from '../theme';
-import { UiSettingsProvider } from '../uiSettings';
+import { UiSettingsProvider, useUiSettings } from '../uiSettings';
 
 SplashScreen.preventAutoHideAsync();
 
 function RootLayoutNav() {
   const { user, loading } = useAuth();
+  const { settings, loading: uiLoading } = useUiSettings();
   const segments = useSegments();
   const router = useRouter();
   const { colors } = useTheme();
 
   useEffect(() => {
-    if (loading) return;
+    if (loading || uiLoading) return;
+    // Bao tri: khong chuyen man hinh khi dang bao tri — man hinh bao tri
+    // thay the toan bo Stack ben duoi.
+    if (settings.maintenance.enabled) return;
     const inLogin = segments[0] === 'login';
     if (!user && !inLogin) router.replace('/login');
     else if (user && inLogin) router.replace('/');
-  }, [user, loading, segments, router]);
+  }, [user, loading, uiLoading, settings, segments, router]);
 
   useEffect(() => {
-    if (!loading) SplashScreen.hideAsync().catch(() => {});
-  }, [loading]);
+    if (!loading && !uiLoading) SplashScreen.hideAsync().catch(() => {});
+  }, [loading, uiLoading]);
 
-  if (loading) {
+  if (loading || uiLoading) {
     return (
       <View style={[styles.loading, { backgroundColor: colors.background }]}>
         <LoadingLine location="page" />
       </View>
     );
+  }
+
+  // Bao tri: hien man hinh bao tri thay vi Stack (login/trang chu) —
+  // tranh hien du lieu trong/sai trong luc backend nap lai sau khi bi xoa.
+  if (settings.maintenance.enabled) {
+    return <MaintenanceScreen />;
   }
 
   // Lớp nền theme bao quanh Stack: container của navigator trong suốt,
@@ -85,6 +95,38 @@ function RootLayoutNav() {
   );
 }
 
+/* Man hinh bao tri: hien thay cho toan bo Stack khi maintenance.enabled.
+   Nut "Thu lai" tai lai cai dat; neu bao tri da tat thi app mo lai binh thuong. */
+function MaintenanceScreen() {
+  const { settings, refresh } = useUiSettings();
+  const { colors } = useTheme();
+  const [checking, setChecking] = useState(false);
+  const retry = () => {
+    setChecking(true);
+    refresh();
+    setTimeout(() => setChecking(false), 2000);
+  };
+  return (
+    <View style={[styles.maintenance, { backgroundColor: colors.background }]}>
+      <Text style={styles.maintenanceEmoji}>🔧</Text>
+      <Text style={[styles.maintenanceTitle, { color: colors.text }]}>App đang bảo trì</Text>
+      <Text style={[styles.maintenanceMsg, { color: colors.text }]}>{settings.maintenance.message}</Text>
+      <Text style={[styles.maintenanceSub, { color: colors.muted }]}>
+        Dữ liệu đang được nạp lại — quay lại sau ít phút nhé.
+      </Text>
+      <Pressable
+        style={[styles.maintenanceButton, { backgroundColor: colors.accent, opacity: checking ? 0.7 : 1 }]}
+        onPress={retry}
+        disabled={checking}
+      >
+        <Text style={[styles.maintenanceButtonText, { color: colors.onAccent }]}>
+          {checking ? 'Đang kiểm tra…' : 'Thử lại'}
+        </Text>
+      </Pressable>
+    </View>
+  );
+}
+
 export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -116,4 +158,11 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  maintenance: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
+  maintenanceEmoji: { fontSize: 56, marginBottom: 12 },
+  maintenanceTitle: { fontSize: 24, fontWeight: '800', marginBottom: 8, textAlign: 'center' },
+  maintenanceMsg: { fontSize: 16, fontWeight: '700', textAlign: 'center', marginBottom: 8 },
+  maintenanceSub: { fontSize: 14, textAlign: 'center', marginBottom: 24 },
+  maintenanceButton: { paddingHorizontal: 28, paddingVertical: 12, borderRadius: 12 },
+  maintenanceButtonText: { fontSize: 16, fontWeight: '700' },
 });

@@ -15,6 +15,7 @@ import {
   type LoadingImage,
   type LoadingLocation,
   type LoadingPosition,
+  type MaintenanceSettings,
   type StyleLoading,
   type StyleSettings,
   type UiSettings,
@@ -100,7 +101,7 @@ export default function UiSettings() {
   }, []);
 
   const update = (patch: Partial<UiSettings['ui']>) => {
-    setDoc(prev => (prev ? { ui: { ...prev.ui, ...patch } } : prev));
+    setDoc(prev => (prev ? { ...prev, ui: { ...prev.ui, ...patch } } : prev));
     setMsg('');
   };
 
@@ -114,7 +115,7 @@ export default function UiSettings() {
   const updateStyleConfig = (id: UiStyleId, patch: Partial<StyleSettings>) => {
     setDoc(prev =>
       prev
-        ? { ui: { ...prev.ui, styles: { ...prev.ui.styles, [id]: { ...prev.ui.styles[id], ...patch } } } }
+        ? { ...prev, ui: { ...prev.ui, styles: { ...prev.ui.styles, [id]: { ...prev.ui.styles[id], ...patch } } } }
         : prev,
     );
     setMsg('');
@@ -123,6 +124,7 @@ export default function UiSettings() {
     setDoc(prev =>
       prev
         ? {
+            ...prev,
             ui: {
               ...prev.ui,
               styles: {
@@ -132,6 +134,14 @@ export default function UiSettings() {
             },
           }
         : prev,
+    );
+    setMsg('');
+  };
+
+  /** Bật/tắt bảo trì + sửa câu thông báo — chỉ nằm ở doc tạm cho tới khi bấm "Lưu cài đặt". */
+  const updateMaintenance = (patch: Partial<MaintenanceSettings>) => {
+    setDoc(prev =>
+      prev ? { ...prev, maintenance: { ...prev.maintenance, ...patch } } : prev,
     );
     setMsg('');
   };
@@ -315,6 +325,39 @@ export default function UiSettings() {
             </div>
           );
         })}
+      </div>
+
+      <div className="card" style={{ marginTop: '1rem' }}>
+        <h2>🔧 Bảo trì</h2>
+        <p className="muted">
+          Khi bật, app học viên (web + app) sẽ hiện màn hình "App đang bảo trì" thay vì dữ liệu — dùng lúc
+          máy chủ đang nạp lại dữ liệu sau khi bị xóa. Hệ thống tự bật khi seed lại DB trống và tự tắt sau
+          khi khôi phục xong; admin cũng bật/tắt tay được ở đây.
+        </p>
+        <label style={{ display: 'flex', alignItems: 'center', gap: '.5rem', fontWeight: 700 }}>
+          <input
+            type="checkbox"
+            checked={doc.maintenance.enabled}
+            onChange={e => updateMaintenance({ enabled: e.target.checked, auto: false })}
+          />
+          Bật chế độ bảo trì
+        </label>
+        {doc.maintenance.auto && (
+          <p className="muted" style={{ margin: '.4rem 0 0' }}>
+            ⚠️ Đang bật tự động do hệ thống (DB vừa bị xóa, đang nạp lại dữ liệu). Tắt tay ở đây nếu cần mở app lại ngay.
+          </p>
+        )}
+        <label style={{ display: 'block', marginTop: '.8rem' }}>Thông báo hiện cho người học</label>
+        <input
+          type="text"
+          value={doc.maintenance.message}
+          maxLength={200}
+          onChange={e => updateMaintenance({ message: e.target.value })}
+          placeholder="App đang bảo trì, quay lại sau ít phút nhé!"
+        />
+        <p className="muted" style={{ margin: '.4rem 0 0' }}>
+          Nhớ bấm "Lưu cài đặt" ở dưới để lưu hẳn.
+        </p>
       </div>
 
       <div className="split-even" style={{ marginTop: '1rem' }}>
