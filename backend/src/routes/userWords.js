@@ -57,6 +57,17 @@ router.get('/user-words/due', authMiddleware, (req, res) => {
   });
 });
 
+/** Dot A — exposure: client goi nen khi user gap lai cac tu trong bai
+ * luyen. Moi tu +2 mastery, toi da 1 lan/ngay. Body sai/rong tra ket
+ * qua rong (khong loi) vi day la cuoc goi nen. */
+router.post('/user-words/exposure', authMiddleware, (req, res) => {
+  const wordIds = req.body && req.body.wordIds;
+  if (!Array.isArray(wordIds) || wordIds.length === 0) {
+    return res.json({ updated: [], skipped: [] });
+  }
+  return res.json(db.applyExposure(req.user.id, wordIds));
+});
+
 router.post('/user-words', authMiddleware, (req, res) => {
   const body = req.body || {};
   const word = normalizeWordInput(body.word);
@@ -149,6 +160,68 @@ router.post('/user-words/:id/review', authMiddleware, (req, res) => {
     }
   }
   return res.json({ word: updated, xpAwarded, xpCapped });
+});
+
+/* ---------------- Dot A: cau tu dat (user_word_sentences) ---------------- */
+
+/** Lay cau tu dat cua 1 tu, moi nhat truoc. */
+router.get('/user-words/:id/sentences', authMiddleware, (req, res) => {
+  const row = loadOwned(req, res);
+  if (!row) return;
+  return res.json({ items: db.listWordSentences(row.id) });
+});
+
+/** Viet 1 cau dung tu do. Cau phai chua tu (kiem tra long: chuoi con,
+ * khong phan biet hoa/thuong), toi da 1000 ky tu. */
+router.post('/user-words/:id/sentences', authMiddleware, (req, res) => {
+  const row = loadOwned(req, res);
+  if (!row) return;
+  const sentence = typeof (req.body && req.body.sentence) === 'string' ? req.body.sentence.trim() : '';
+  if (!sentence || sentence.length > 1000) {
+    return res.status(400).json({ error: 'cau_khong_hop_le', message: 'Câu không được để trống và tối đa 1000 ký tự.' });
+  }
+  if (!sentence.toLowerCase().includes(row.word.toLowerCase())) {
+    return res.status(400).json({ error: 'cau_chua_co_tu', message: `Câu của bạn chưa có từ "${row.word}".` });
+  }
+  return res.status(201).json(db.insertWordSentence(req.user.id, row.id, sentence));
+});
+
+/** Lay 1 cau cua chinh user nay va thuoc ve tu :id (404 neu khong dung). */
+function loadOwnedSentence(req, res, wordId) {
+  const sentenceId = parseInt(req.params.sentenceId, 10);
+  if (!Number.isInteger(sentenceId)) {
+    res.status(404).json({ error: 'khong tim thay cau' });
+    return null;
+  }
+  const sentence = db.getWordSentenceByIdAndUser(sentenceId, req.user.id);
+  if (!sentence || sentence.wordId !== wordId) {
+    res.status(404).json({ error: 'khong tim thay cau' });
+    return null;
+  }
+  return sentence;
+}
+
+/** Tu danh gia cau: 'good' cong +5 mastery cho tu (chi 1 lan/cau),
+ * 'not_yet' chi doi nhan. */
+router.post('/user-words/:id/sentences/:sentenceId/mark', authMiddleware, (req, res) => {
+  const row = loadOwned(req, res);
+  if (!row) return;
+  const sentence = loadOwnedSentence(req, res, row.id);
+  if (!sentence) return;
+  const mark = req.body && req.body.mark;
+  if (mark !== 'good' && mark !== 'not_yet') {
+    return res.status(400).json({ error: 'mark phai la good hoac not_yet' });
+  }
+  return res.json(db.markWordSentence(sentence.id, mark));
+});
+
+router.delete('/user-words/:id/sentences/:sentenceId', authMiddleware, (req, res) => {
+  const row = loadOwned(req, res);
+  if (!row) return;
+  const sentence = loadOwnedSentence(req, res, row.id);
+  if (!sentence) return;
+  db.deleteWordSentence(sentence.id);
+  return res.json({ ok: true });
 });
 
 module.exports = router;

@@ -11,6 +11,15 @@ router.get('/vocabulary/topics', authMiddleware, (req, res) => {
   const exam = req.query.exam === 'ielts' ? 'ielts' : req.query.exam === 'toeic' ? 'toeic' : undefined;
   return res.json({ topics: db.countVocabularyByTopic(exam) });
 });
+/** Dot A — tim 1 cum trong "Tu chung" theo dung tu/cum (khong phan biet
+ * hoa/thuong). Dat truoc cac route /vocabulary/:id... */
+router.get('/vocabulary/by-word', authMiddleware, (req, res) => {
+  const word = typeof req.query.word === 'string' ? req.query.word.trim() : '';
+  if (!word) return res.status(400).json({ error: 'thieu word', message: 'Thiếu tham số word.' });
+  const vocab = db.getVocabularyByWord(word);
+  if (!vocab) return res.status(404).json({ error: 'khong tim thay tu vung' });
+  return res.json(vocab);
+});
 router.get('/vocabulary', authMiddleware, (req, res) => {
   const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 100, 1), 1000);
   const offset = Math.max(parseInt(req.query.offset, 10) || 0, 0);

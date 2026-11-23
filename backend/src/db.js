@@ -187,6 +187,21 @@ CREATE TABLE IF NOT EXISTS user_words (
   updated_at TEXT,
   UNIQUE(user_id, word)
 );
+/* Cau tu dat cho tu vung ca nhan (Dot A): moi cau do user tu viet de
+   luyen dung tu; self_mark do user tu danh gia ('good' = dung tot,
+   'not_yet' = chua on); mastery_awarded = 1 neu cau nay da cong +5
+   mastery cho tu (chi cong 1 lan duy nhat cho moi cau). */
+CREATE TABLE IF NOT EXISTS user_word_sentences (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  word_id INTEGER NOT NULL,
+  sentence TEXT NOT NULL,
+  self_mark TEXT,
+  mastery_awarded INTEGER DEFAULT 0,
+  created_at TEXT,
+  updated_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_user_word_sentences_word ON user_word_sentences(user_id, word_id);
 /* Cache ket qua tra tu dien (Gemini): moi tu chi tra 1 lan. */
 CREATE TABLE IF NOT EXISTS dictionary_cache (
   word TEXT PRIMARY KEY COLLATE NOCASE,
@@ -392,6 +407,7 @@ function initDb() {
   ensureColumn('user_words', 'mastery', 'INTEGER DEFAULT 0');
   ensureColumn('user_words', 'wrong_count', 'INTEGER DEFAULT 0');
   ensureColumn('user_words', 'last_review_correct', 'INTEGER');
+  ensureColumn('user_words', 'last_exposure_at', 'TEXT');
   db.exec('CREATE INDEX IF NOT EXISTS idx_user_words_due ON user_words(user_id, review_due)');
   db.exec('CREATE INDEX IF NOT EXISTS idx_questions_testset_part ON questions(test_set_id, part)');
 }
@@ -1709,6 +1725,11 @@ function getVocabularyById(id) {
   return db.prepare('SELECT * FROM vocabulary WHERE id = ?').get(id) || null;
 }
 
+/** Tim 1 cum trong "Tu chung" theo dung tu/cum (khong phan biet hoa/thuong). */
+function getVocabularyByWord(word) {
+  return db.prepare('SELECT * FROM vocabulary WHERE word = ? COLLATE NOCASE LIMIT 1').get(word) || null;
+}
+
 /** Dem so cum theo chu de (cho luoi box chu de). Xep theo so luong giam dan. */
 function countVocabularyByTopic(exam) {
   const where = exam ? 'WHERE exam = ?' : '';
@@ -1813,6 +1834,7 @@ function mapUserWord(row) {
     mastery: row.mastery != null ? row.mastery : 0,
     wrongCount: row.wrong_count != null ? row.wrong_count : 0,
     lastReviewCorrect: row.last_review_correct == null ? null : row.last_review_correct === 1,
+    lastExposureAt: row.last_exposure_at || null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
   };
@@ -1966,6 +1988,117 @@ function countDueUserWords(userId) {
 
 function getAllUserWordsForBackup() {
   return db.prepare('SELECT * FROM user_words ORDER BY user_id, word').all();
+}
+
+/* --- Dot A: exposure (gap tu trong qua trinh luyen tap) + cau tu dat --- */
+
+/** Moi tu chi nhan +2 mastery toi da 1 lan/ngay khi gap lai trong bai
+ * luyen (client goi nen). Chi xu li tu cua chinh user nay. */
+function applyExposure(userId, wordIds) {
+  const today = todayStr();
+  const ids = (Array.isArray(wordIds) ? wordIds : [])
+    .filter((v) => Number.isInteger(v))
+    .slice(0, 100);
+  const updated = [];
+  const skipped = [];
+  transaction(() => {
+    for (const id of ids) {
+      const cur = db
+        .prepare('SELECT id, mastery, last_exposure_at FROM user_words WHERE id = ? AND user_id = ?')
+        .get(id, userId);
+      if (!cur || (cur.last_exposure_at != null && cur.last_exposure_at >= today)) {
+        skipped.push(id);
+        continue;
+      }
+      const mastery = Math.min(WORD_MASTERY_MAX, (cur.mastery != null ? cur.mastery : 0) + 2);
+      db.prepare('UPDATE user_words SET mastery = ?, last_exposure_at = ?, updated_at = ? WHERE id = ?').run(
+        mastery,
+        today,
+        nowIso(),
+        id
+      );
+      updated.push({ id, mastery });
+    }
+  });
+  return { updated, skipped };
+}
+
+function mapWordSentence(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    wordId: row.word_id,
+    sentence: row.sentence,
+    selfMark: row.self_mark || null,
+    masteryAwarded: row.mastery_awarded === 1,
+    createdAt: row.created_at,
+  };
+}
+
+/** Cac cau tu dat cua 1 tu, moi nhat truoc. */
+function listWordSentences(wordId) {
+  return db
+    .prepare(
+      'SELECT * FROM user_word_sentences WHERE word_id = ? ORDER BY created_at DESC, id DESC'
+    )
+    .all(wordId)
+    .map(mapWordSentence);
+}
+
+function insertWordSentence(userId, wordId, sentence) {
+  const now = nowIso();
+  const info = db
+    .prepare(
+      `INSERT INTO user_word_sentences (user_id, word_id, sentence, self_mark, mastery_awarded, created_at, updated_at)
+       VALUES (?, ?, ?, NULL, 0, ?, ?)`
+    )
+    .run(userId, wordId, sentence, now, now);
+  return mapWordSentence(
+    db.prepare('SELECT * FROM user_word_sentences WHERE id = ?').get(Number(info.lastInsertRowid))
+  );
+}
+
+/** Lay 1 cau chi khi thuoc ve user nay (404 neu khac chu). */
+function getWordSentenceByIdAndUser(sentenceId, userId) {
+  return mapWordSentence(
+    db.prepare('SELECT * FROM user_word_sentences WHERE id = ? AND user_id = ?').get(sentenceId, userId)
+  );
+}
+
+/** Tu danh gia 1 cau: 'good' cong +5 mastery cho tu (chi 1 lan/cau),
+ * 'not_yet' chi doi nhan, khong cong diem. Tra cau + tu sau cap nhat. */
+function markWordSentence(sentenceId, mark) {
+  return transaction(() => {
+    const cur = db.prepare('SELECT * FROM user_word_sentences WHERE id = ?').get(sentenceId);
+    if (!cur) return null;
+    let awarded = cur.mastery_awarded === 1;
+    if (mark === 'good' && !awarded) {
+      const word = db.prepare('SELECT mastery FROM user_words WHERE id = ?').get(cur.word_id);
+      if (word) {
+        const mastery = Math.min(
+          WORD_MASTERY_MAX,
+          (word.mastery != null ? word.mastery : 0) + WORD_REVIEW_CORRECT_POINTS
+        );
+        db.prepare('UPDATE user_words SET mastery = ?, updated_at = ? WHERE id = ?').run(
+          mastery,
+          nowIso(),
+          cur.word_id
+        );
+      }
+      awarded = true;
+    }
+    db.prepare(
+      'UPDATE user_word_sentences SET self_mark = ?, mastery_awarded = ?, updated_at = ? WHERE id = ?'
+    ).run(mark, awarded ? 1 : 0, nowIso(), sentenceId);
+    const sentence = mapWordSentence(
+      db.prepare('SELECT * FROM user_word_sentences WHERE id = ?').get(sentenceId)
+    );
+    return { sentence, word: getUserWordById(cur.word_id) };
+  });
+}
+
+function deleteWordSentence(sentenceId) {
+  return db.prepare('DELETE FROM user_word_sentences WHERE id = ?').run(sentenceId).changes > 0;
 }
 
 /* ---------------- XP & leaderboard ---------------- */
@@ -3048,6 +3181,7 @@ module.exports = {
   countVocabulary,
   listVocabulary,
   getVocabularyById,
+  getVocabularyByWord,
   countVocabularyByTopic,
   insertVocabulary,
   updateVocabulary,
@@ -3070,6 +3204,13 @@ module.exports = {
   listDueUserWords,
   countDueUserWords,
   getAllUserWordsForBackup,
+  // Dot A: exposure + cau tu dat
+  applyExposure,
+  listWordSentences,
+  insertWordSentence,
+  getWordSentenceByIdAndUser,
+  markWordSentence,
+  deleteWordSentence,
   // xp & leaderboard
   addXpEvent,
   sumXp,
