@@ -252,50 +252,10 @@
     "content": "It will be convenient for workers."
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "But because of the new industrial centre in Nunston, there’s a lot of demand for housing for employees in the region, as many employees are having to commute long distances at present. We were more interested in the fact that there’s an excellent hospital just 15 kilometres away, and a large secondary school even closer than that.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C18-L-T2-S2-012",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C18-L-T2-S2",
-  "passageTitle": "Section 2 — Planned housing development",
-  "passageText": null,
-  "script": "Hello everyone. It’s good to see that so many members of the public have shown up for our presentation on the new housing development planned on the outskirts of Nunston. I’m Mark Reynolds and I’m Communications Manager at the development. I’ll start by giving you a brief overview of our plans for the development. So one thing I’m sure you’ll want to know is why we’ve selected this particular site for a housing development. At present it’s being used for farming, like much of the land around Nunston. But because of the new industrial centre in Nunston, there’s a lot of demand for housing for employees in the region, as many employees are having to commute long distances at present. Of course, there’s also the fact that we have an international airport just 20 minutes’ drive away, but although that’s certainly convenient, it wasn’t one of our major criteria for choosing the site. We were more interested in the fact that there’s an excellent hospital just 15 kilometres away, and a large secondary school even closer than that. One drawback to the site is that it’s on quite a steep slope, but we’ve taken account of that in our planning so it shouldn’t be a major problem. We’ve had a lot of positive feedback about the plans. People like the wide variety of accommodation types and prices, and the fact that it’s only a short drive to get out into the countryside from the development. We were particularly pleased that so many people liked the designs for the layout of the development, with the majority of people saying it generally made a good impression and blended in well with the natural features of the landscape, with provision made for protecting trees and wildlife on the site. Some people have mentioned that they’d like to see more facilities for cyclists, and we’ll look at that, but the overall feedback has been that the design and facilities of the development make it seem a place where people of all ages can live together happily.\n\nOk, so I’ll put a map of the proposed development up on the screen. You’ll see it’s bounded on the south side by the main road, which then goes on to Nunston. Another boundary is formed by London Road, on the western side of the development. Inside the development there’ll be about 400 houses and 3 apartment blocks. There’ll also be a school for children up to 11 years old. If you look at the South Entrance at the bottom of the map, there’s a road from there that goes right up through the development. The school will be on that road, at the corner of the second turning to the left. A large sports centre is planned with facilities for indoor and outdoor activities. This will be on the western side of the development, just below the road that branches off from London Road. There’ll be a clinic where residents can go if they have any health problems. Can you see the lake towards the top of the map? The clinic will be just below this, to the right of a street of houses.\n\nThere’ll also be a community centre for people of all ages. On the northeast side of the development, there’ll be a row of specially designed houses specifically for residents over 65, and the community centre will be adjoining this. We haven’t forgotten about shopping. There’ll be a supermarket between the two entrances to the development. We’re planning to leave the three large trees near London Road, and it’ll be just to the south of these. It’s planned to have a playground for younger children. If you look at the road that goes up from the South Entrance, you’ll see it curves round to the left at the top, and the playground will be in that curve, with nice views of the lake. OK, so now does anyone …",
-  "content": "What are the TWO main reasons why this site has been chosen for the housing development?",
-  "options": [
-   {
-    "label": "A",
-    "content": "It has suitable geographical features."
-   },
-   {
-    "label": "B",
-    "content": "There is easy access to local facilities."
-   },
-   {
-    "label": "C",
-    "content": "It has good connections with the airport."
-   },
-   {
-    "label": "D",
-    "content": "The land is of little agricultural value."
-   },
-   {
-    "label": "E",
-    "content": "It will be convenient for workers."
-   }
+  "correct": [
+   "B",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -303,7 +263,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -338,50 +298,10 @@
     "content": "the rural location"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "blended in well with the natural features of the landscape, with provision made for protecting trees and wildlife on the site. the design and facilities of the development make it seem a place where people of all ages can live together happily.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C18-L-T2-S2-014",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C18-L-T2-S2",
-  "passageTitle": "Section 2 — Planned housing development",
-  "passageText": null,
-  "script": "Hello everyone. It’s good to see that so many members of the public have shown up for our presentation on the new housing development planned on the outskirts of Nunston. I’m Mark Reynolds and I’m Communications Manager at the development. I’ll start by giving you a brief overview of our plans for the development. So one thing I’m sure you’ll want to know is why we’ve selected this particular site for a housing development. At present it’s being used for farming, like much of the land around Nunston. But because of the new industrial centre in Nunston, there’s a lot of demand for housing for employees in the region, as many employees are having to commute long distances at present. Of course, there’s also the fact that we have an international airport just 20 minutes’ drive away, but although that’s certainly convenient, it wasn’t one of our major criteria for choosing the site. We were more interested in the fact that there’s an excellent hospital just 15 kilometres away, and a large secondary school even closer than that. One drawback to the site is that it’s on quite a steep slope, but we’ve taken account of that in our planning so it shouldn’t be a major problem. We’ve had a lot of positive feedback about the plans. People like the wide variety of accommodation types and prices, and the fact that it’s only a short drive to get out into the countryside from the development. We were particularly pleased that so many people liked the designs for the layout of the development, with the majority of people saying it generally made a good impression and blended in well with the natural features of the landscape, with provision made for protecting trees and wildlife on the site. Some people have mentioned that they’d like to see more facilities for cyclists, and we’ll look at that, but the overall feedback has been that the design and facilities of the development make it seem a place where people of all ages can live together happily.\n\nOk, so I’ll put a map of the proposed development up on the screen. You’ll see it’s bounded on the south side by the main road, which then goes on to Nunston. Another boundary is formed by London Road, on the western side of the development. Inside the development there’ll be about 400 houses and 3 apartment blocks. There’ll also be a school for children up to 11 years old. If you look at the South Entrance at the bottom of the map, there’s a road from there that goes right up through the development. The school will be on that road, at the corner of the second turning to the left. A large sports centre is planned with facilities for indoor and outdoor activities. This will be on the western side of the development, just below the road that branches off from London Road. There’ll be a clinic where residents can go if they have any health problems. Can you see the lake towards the top of the map? The clinic will be just below this, to the right of a street of houses.\n\nThere’ll also be a community centre for people of all ages. On the northeast side of the development, there’ll be a row of specially designed houses specifically for residents over 65, and the community centre will be adjoining this. We haven’t forgotten about shopping. There’ll be a supermarket between the two entrances to the development. We’re planning to leave the three large trees near London Road, and it’ll be just to the south of these. It’s planned to have a playground for younger children. If you look at the road that goes up from the South Entrance, you’ll see it curves round to the left at the top, and the playground will be in that curve, with nice views of the lake. OK, so now does anyone …",
-  "content": "Which TWO aspects of the planned housing development have people given positive feedback about?",
-  "options": [
-   {
-    "label": "A",
-    "content": "the facilities for cyclists"
-   },
-   {
-    "label": "B",
-    "content": "the impact on the environment"
-   },
-   {
-    "label": "C",
-    "content": "the encouragement of good relations between residents"
-   },
-   {
-    "label": "D",
-    "content": "the low cost of all the accommodation"
-   },
-   {
-    "label": "E",
-    "content": "the rural location"
-   }
+  "correct": [
+   "B",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -389,7 +309,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -924,50 +844,10 @@
     "content": "how people ignored the warning signs"
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "not that the effects would go on for so long. Or that two years after the eruption, strange weather events were being reported as far away as North America and North Africa.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C18-L-T2-S3-026",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C18-L-T2-S3",
-  "passageTitle": "Section 3 — The Laki eruption of 1783",
-  "passageText": null,
-  "script": "ADAM: So, Michelle, shall we make a start on our presentation? We haven’t got that much time left. MICHELLE: No, Adam. But at least we’ve done all the background reading. I found it really interesting – I’d never even heard of the Laki eruption before this. ADAM: Me neither. I suppose 1783 is a long time ago. MICHELLE: But it was a huge eruption and it had such devastating consequences. ADAM: I know. It was great there were so many primary sources to look at. It really gives you a sense of how catastrophic the volcano was. People were really trying to make sense of the science for the first time. MICHELLE: That’s right. But what I found more significant was how it impacted directly and indirectly on political events, as well as having massive social and economic consequences. ADAM: I know. That should be the main focus of our presentation. MICHELLE: The observations made by people at the time were interesting, weren’t they? I mean, they all gave a pretty consistent account of what happened, even if they didn’t always use the same terminology. ADAM: Yeah. I was surprised there were so many weather stations established by that time – so, you know, you can see how the weather changed, often by the hour. MICHELLE: Right. Writers at the time talked about the Laki haze to describe the volcanic fog that spread across Europe. They all realised that this wasn’t the sort of fog they were used to – and of course this was in pre-industrial times- so they hadn’t experienced sulphur-smelling fog before. ADAM: No, that’s true. MICHELLE: Reports from the period blamed the haze for an increase in headaches, respiratory issues and asthma attacks. And they all describe how it covered the sun and made it look a strange red colour. ADAM: Must have been very weird.\n\nMICHELLE: It’s interesting that Benjamin Franklin wrote about the haze. Did you read that? He was the American ambassador in Paris at the time. ADAM: Yeah. At first no one realised that the haze was caused by the volcanic eruption in Iceland. MICHELLE: It was Benjamin Franklin who realised that before anyone else. ADAM: He’s often credited with that, apparently. But a French naturalist beat him to it – I can’t remember his name. I’d have to look it up. Then other naturalists had the same idea – all independently of each other. MICHELLE: Oh right. We should talk about the immediate impact of the eruption, which was obviously enormous- especially in Iceland, where so many people died. ADAM: Mmm. You’d expect that- and the fact that the volcanic ash drifted so swiftly – but not that the effects would go on for so long. Or that two years after the eruption, strange weather events were being reported as far away as North America and North Africa. MICHELLE: No. I found all that hard to believe too. It must have been terrible- and there was nothing anyone could do about it, even if they knew the ash cloud was coming in their direction.\n\nMICHELLE: We should run through some of the terrible consequences of the eruption experienced in different countries. There’s quite a varied range. ADAM: Starting with Iceland, where the impact on farming was devastating. MICHELLE: Mmm. One of the most dramatic things there was the effect on livestock as they grazed in the fields. They were poisoned because they ate vegetation that had been contaminated with fluorine as a result of the volcanic fallout. ADAM: That was horrible. In Egypt, the bizarre weather patterns led to a severe drought and as a result the Nile didn’t flood, which meant the crops all failed. MICHELLE: It’s so far from where the eruption happened and yet the famine there led to more people dying than any other country. It was worse than the plague. ADAM: OK. Then in the UK the mortality rate went up a lot- presumably from respiratory illnesses. According to one report it was about double the usual number and included an unusually high percentage of people under the age of 25. MICHELLE: Mmm. I think people will be surprised to hear that the weather in the USA was badly affected too. George Washington even makes a note in his diary that they were snowbound until March in Virginia. That was before he became president. ADAM: Yes, and there was ice floating down the Mississippi, which was unprecedented. MICHELLE: Astonishing, really. Anyway, what do you think …",
-  "content": "Which TWO issues following the Laki eruption surprised the students?",
-  "options": [
-   {
-    "label": "A",
-    "content": "how widespread the effects were"
-   },
-   {
-    "label": "B",
-    "content": "how long-lasting the effects were"
-   },
-   {
-    "label": "C",
-    "content": "the number of deaths it caused"
-   },
-   {
-    "label": "D",
-    "content": "the speed at which the volcanic ash cloud spread"
-   },
-   {
-    "label": "E",
-    "content": "how people ignored the warning signs"
-   }
+  "correct": [
+   "A",
+   "B"
   ],
-  "correct": "B",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -975,7 +855,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
