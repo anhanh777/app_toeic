@@ -5,7 +5,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useRef, useState, type ElementRef } from 'react';
 import {
-  ActivityIndicator,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -36,6 +35,7 @@ import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { TierBadge, XpBar } from '../components/TierBadge';
 import { BandCompassBlock, IeltsActiveBlock, IeltsDrillBlock, IeltsReviewBlock } from '../components/TodayBlocks';
+import { LoadingLine } from '../components/LoadingLine';
 
 const FALLBACK_EXAMS: ExamInfo[] = [
   { id: 'toeic', title: 'TOEIC', subtitle: 'Listening + Reading', scale: '10–990', testSetCount: 28, questionCount: 5600 },
@@ -296,7 +296,7 @@ export default function HomeScreen() {
                 Chọn kỳ thi trước để vào {nextLabel} nhé.
               </Text>
             ) : null}
-            {loadingExams ? <ActivityIndicator color={colors.accent} /> : null}
+            {loadingExams ? <LoadingLine location="table" text="Đang tải kỳ thi…" /> : null}
             <View style={[styles.cards, wide && styles.cardsRow]}>
               {list.map((e) => (
                 <Pressable
@@ -510,7 +510,7 @@ export default function HomeScreen() {
             ) : null}
 
             {/* ===== Khối Hôm nay (gộp từ màn /today cũ) ===== */}
-            {todayLoading && !todayData ? <ActivityIndicator color={colors.accent} /> : null}
+            {todayLoading && !todayData ? <LoadingLine location="table" text="Đang tải kế hoạch hôm nay…" /> : null}
             {todayError ? (
               <Text style={[styles.error, { color: colors.danger, fontSize: scaled(14) }]}>{todayError}</Text>
             ) : null}

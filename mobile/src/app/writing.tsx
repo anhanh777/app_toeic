@@ -4,7 +4,6 @@
 // có ở Giai đoạn 2.
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   ScrollView,
@@ -21,6 +20,7 @@ import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADI
 import { wordCount } from '../lib';
 import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 
 export function fmtClock(sec: number): string {
   const s = Math.max(0, sec);
@@ -202,7 +202,7 @@ export default function WritingScreen() {
           <Text style={[styles.error, { color: colors.danger, fontSize: scaled(14) }]}>{error}</Text>
         ) : null}
         {loading ? (
-          <ActivityIndicator color={colors.accent} />
+          <LoadingLine location="table" />
         ) : (
           <>
             <Text style={[styles.section, { color: colors.text, fontSize: scaled(18) }]}>Chọn đề</Text>

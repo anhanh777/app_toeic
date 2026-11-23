@@ -8,7 +8,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   StatusBar,
@@ -37,6 +36,7 @@ import {
 import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
 import { useConfirm } from '../components/ConfirmDialog';
+import { LoadingLine } from '../components/LoadingLine';
 import PassageView, { type BlankState } from '../components/PassageView';
 import QuestionView, { isListeningOnly, partName, type AnswerResult } from '../components/QuestionView';
 
@@ -491,10 +491,7 @@ export default function PracticeSessionScreen() {
   if (loading || (isListening && !!testSetId && !partMediaLoaded)) {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-        <View style={styles.center}>
-          <ActivityIndicator size="large" color={colors.accent} />
-          <Text style={{ color: colors.muted, fontSize: scaled(15) }}>Đang tải câu hỏi…</Text>
-        </View>
+        <LoadingLine location="page" text="Đang tải câu hỏi…" />
       </SafeAreaView>
     );
   }

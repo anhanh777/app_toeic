@@ -20,6 +20,7 @@ import { ApiError, api, type QuitReason } from '../api';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 
 const REASONS: { id: QuitReason; label: string; note: string }[] = [
   { id: 'chan', label: 'Chán', note: 'App sẽ ưu tiên đổi chủ đề thường xuyên và thêm thử thách ngắn.' },
@@ -126,7 +127,7 @@ export default function IeltsSetupScreen() {
           Mất chưa tới 1 phút — app sẽ cá nhân hoá lộ trình theo mục tiêu và lý do bạn hay bỏ cuộc.
         </Text>
         {loading ? (
-          <ActivityIndicator color={colors.accent} />
+          <LoadingLine location="table" />
         ) : (
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Ngày thi dự kiến</Text>

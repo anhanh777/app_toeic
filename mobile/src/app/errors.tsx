@@ -5,7 +5,6 @@
 // Luật quái (v3): HP 3 mỗi mã lỗi, ôn đúng liên tiếp 3 lần là diệt.
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  ActivityIndicator,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -21,6 +20,7 @@ import { questionTypeName } from '../lib';
 import { maybeScheduleDueReminder } from '../notifications';
 import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 
 // 33 mã lỗi (IELTS v3) — giống frontend/src/ielts-phase1.tsx; dùng làm
 // fallback khi GET /api/ielts/error-codes lỗi, và để lấy tên mã.
@@ -284,7 +284,7 @@ export default function ErrorLogScreen() {
           <Text style={[styles.note, { color: colors.success, fontSize: scaled(14) }]}>{xpNote}</Text>
         ) : null}
         {loading ? (
-          <ActivityIndicator color={colors.accent} />
+          <LoadingLine location="table" />
         ) : (
           <>
             <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>

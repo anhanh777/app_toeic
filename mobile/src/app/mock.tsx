@@ -9,7 +9,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
-  ActivityIndicator,
   FlatList,
   Modal,
   Pressable,
@@ -38,6 +37,7 @@ import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 import AudioPlayer from '../components/AudioPlayer';
 import PassageView, { type BlankState } from '../components/PassageView';
 import QuestionView, { isListeningOnly, partName } from '../components/QuestionView';
@@ -511,7 +511,7 @@ export default function MockTestScreen() {
                   ) : null}
                 </>
               ) : (
-                <ActivityIndicator color={colors.accent} />
+                <LoadingLine location="table" />
               )}
               <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
                 Làm đủ {testSet?.totalQuestions || ''} câu, hết giờ tự nộp. Đáp án được lưu tự động sau mỗi câu.{' '}
@@ -640,11 +640,10 @@ export default function MockTestScreen() {
   if (!questions.length || loadingQuestions) {
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-        <View style={styles.center}>
-          <ActivityIndicator size="large" color={colors.accent} />
-          <Text style={{ color: colors.muted, fontSize: scaled(15) }}>Đang tải đề thi…</Text>
-          {error ? <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text> : null}
-        </View>
+        <LoadingLine location="page" text="Đang tải đề thi…" />
+        {error ? (
+          <Text style={{ color: colors.danger, fontSize: scaled(15), textAlign: 'center', padding: 16 }}>{error}</Text>
+        ) : null}
       </SafeAreaView>
     );
   }

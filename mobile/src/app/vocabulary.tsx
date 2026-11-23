@@ -6,7 +6,6 @@
 //   đánh dấu đã thuộc/chưa thuộc.
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   ScrollView,
@@ -23,6 +22,7 @@ import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADI
 import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 import { useConfirm } from '../components/ConfirmDialog';
+import { LoadingLine } from '../components/LoadingLine';
 
 type WordStatus = 'learning' | 'learned' | 'wrong';
 const STATUS_LABEL: Record<WordStatus, string> = {
@@ -507,7 +507,7 @@ function MyWords() {
         </View>
       )}
 
-      {loading ? <ActivityIndicator color={colors.accent} style={styles.loader} /> : null}
+      {loading ? <LoadingLine location="table" /> : null}
       <Text style={[styles.section, { color: colors.text, fontSize: scaled(18) }]}>
         Danh sách từ ({filtered.length})
       </Text>
@@ -611,7 +611,13 @@ function SharedWords({ exam }: { exam: string }) {
     [colors, scaled, mark],
   );
 
-  if (loading) return <ActivityIndicator color={colors.accent} style={styles.loader} />;
+  if (loading) {
+    return (
+      <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+        <LoadingLine location="page" />
+      </SafeAreaView>
+    );
+  }
   const header = (
     <>
       {error ? (

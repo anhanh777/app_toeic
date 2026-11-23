@@ -4,7 +4,6 @@
 import { Image } from 'expo-image';
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
@@ -18,6 +17,7 @@ import { useExam } from '../exam';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { livelyCard, livelyChip, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 
 type Metric = 'score' | 'xp' | 'band';
 type Tab = 'week' | 'month' | 'all';
@@ -173,7 +173,7 @@ export default function LeaderboardScreen() {
           <Text style={[styles.error, { color: colors.danger, fontSize: scaled(14) }]}>{error}</Text>
         ) : null}
         {loading ? (
-          <ActivityIndicator color={colors.accent} style={styles.loader} />
+          <LoadingLine location="table" text="Đang tải bảng xếp hạng…" />
         ) : (
           <>
             {top3.length >= 3 && (

@@ -5,7 +5,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
@@ -20,6 +19,7 @@ import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADI
 import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 import { partLabel, partNameFor } from '../lib';
 import { partName, sectionOf } from '../components/QuestionView';
 
@@ -153,10 +153,7 @@ export default function PartSetsScreen() {
           Chọn 1 đề để luyện {partTitle} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.
         </Text>
         {loading ? (
-          <View style={styles.center}>
-            <ActivityIndicator color={colors.accent} />
-            <Text style={{ color: colors.muted, fontSize: scaled(15) }}>Đang tải danh sách bộ đề…</Text>
-          </View>
+          <LoadingLine location="page" text="Đang tải danh sách bộ đề…" />
         ) : error ? (
           <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text>
         ) : sortedSets.length === 0 ? (

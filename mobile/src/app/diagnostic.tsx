@@ -11,7 +11,6 @@ import { useAudioPlayer, useAudioPlayerStatus } from 'expo-audio';
 import { router } from 'expo-router';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   ScrollView,
@@ -29,6 +28,7 @@ import { livelyBarTrack, livelyCard, livelyChip, livelyOption, raisedButton, use
 import AudioPlayer from '../components/AudioPlayer';
 import { BackButton } from '../components/BackButton';
 import { useConfirm } from '../components/ConfirmDialog';
+import { LoadingLine } from '../components/LoadingLine';
 import { fmtClock } from './writing';
 
 const SAMPLE_NOTE = 'Bài mẫu — nội dung tự soạn, chưa phải đề thi thật.';
@@ -609,7 +609,7 @@ export default function DiagnosticScreen() {
         <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
           <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>(b) Bản đồ năng lực</Text>
           {loading ? (
-            <ActivityIndicator color={colors.accent} />
+            <LoadingLine location="table" />
           ) : !diag ? (
             <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>
               Chưa có chẩn đoán. Làm bài thi thử full rồi lưu làm chẩn đoán để xem bản đồ năng lực.

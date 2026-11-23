@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState, type ElementRef } from 'react';
 import { router } from 'expo-router';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
@@ -19,6 +18,7 @@ import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useT
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 import { partLabel, partNameFor } from '../lib';
 import { partName, sectionOf } from '../components/QuestionView';
 
@@ -242,10 +242,7 @@ export default function PracticeScreen() {
 
         {tab === 'sets' ? (
           setsLoading ? (
-            <View style={styles.center}>
-              <ActivityIndicator color={colors.accent} />
-              <Text style={{ color: colors.muted, fontSize: scaled(15) }}>Đang tải danh sách bộ đề…</Text>
-            </View>
+            <LoadingLine location="page" text="Đang tải danh sách bộ đề…" />
           ) : setsError ? (
             <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{setsError}</Text>
           ) : testSets.length === 0 ? (

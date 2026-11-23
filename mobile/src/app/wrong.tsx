@@ -3,7 +3,6 @@
 import { Image } from 'expo-image';
 import { memo, useCallback, useEffect, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
@@ -25,6 +24,7 @@ import {
 import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
 import { livelyCard, livelyChip, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 
 type Item = Question & { wrongCount?: number };
 
@@ -309,7 +309,7 @@ export default function WrongQuestionsScreen() {
           <Text style={[styles.error, { color: colors.danger, fontSize: scaled(14) }]}>{error}</Text>
         ) : null}
         {loading ? (
-          <ActivityIndicator color={colors.accent} style={styles.loader} />
+          <LoadingLine location="table" />
         ) : (
           <FlatList
             data={items}

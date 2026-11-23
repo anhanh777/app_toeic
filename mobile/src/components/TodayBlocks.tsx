@@ -3,7 +3,6 @@
 // Không duplicate code: app/index.tsx import các block này từ đây.
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   Pressable,
   StyleSheet,
   Text,
@@ -17,6 +16,7 @@ import { CARD_PADDING, RADIUS, SPACING } from '../layout';
 import { livelyBarTrack, livelyCard, livelyChip, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
 import { errorCodeName } from '../app/errors';
 import { fmtClock } from '../app/writing';
+import { LoadingLine } from './LoadingLine';
 
 const TFNG_LABELS = ['TRUE', 'FALSE', 'NOT GIVEN'];
 const YNNG_LABELS = ['YES', 'NO', 'NOT GIVEN'];
@@ -170,7 +170,7 @@ export function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDon
     }
   }, []);
 
-  if (!items) return <ActivityIndicator color={colors.accent} />;
+  if (!items) return <LoadingLine location="table" />;
   return (
     <View style={styles.blockGap}>
       {error ? (
@@ -307,7 +307,7 @@ export function IeltsDrillBlock({
       {error ? (
         <Text style={[styles.error, { color: colors.danger, fontSize: scaled(14) }]}>{error}</Text>
       ) : null}
-      {started && !qs && <ActivityIndicator color={colors.accent} />}
+      {started && !qs && <LoadingLine location="table" />}
       {qs?.map((q, i) => {
         const a = answers[q.id];
         const qType = q.questionType || 'multiple_choice';

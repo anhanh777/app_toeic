@@ -4,16 +4,17 @@
 import { Stack, useRouter, useSegments } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../auth';
 import { BrandProvider } from '../brand';
 import { ConfirmProvider } from '../components/ConfirmDialog';
+import { LoadingLine } from '../components/LoadingLine';
 import { ExamProvider } from '../exam';
 import { MenuIconsProvider } from '../menuIcons';
 import { TextSizeProvider, ThemeProvider, useTheme } from '../theme';
-import { UiSettingsProvider, activeStyle, useUiSettingsOptional } from '../uiSettings';
+import { UiSettingsProvider } from '../uiSettings';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,9 +23,6 @@ function RootLayoutNav() {
   const segments = useSegments();
   const router = useRouter();
   const { colors } = useTheme();
-  const uiCtx = useUiSettingsOptional();
-  // Cau cho luc mo app theo cau hinh loading cua kieu dang chon.
-  const waitText = uiCtx ? activeStyle(uiCtx.settings).loading.text : null;
 
   useEffect(() => {
     if (loading) return;
@@ -40,8 +38,7 @@ function RootLayoutNav() {
   if (loading) {
     return (
       <View style={[styles.loading, { backgroundColor: colors.background }]}>
-        <ActivityIndicator size="large" color={colors.accent} />
-        {waitText ? <Text style={{ color: colors.muted, marginTop: 12 }}>{waitText}</Text> : null}
+        <LoadingLine location="page" />
       </View>
     );
   }

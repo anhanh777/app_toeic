@@ -14,7 +14,6 @@ import {
 import * as FileSystem from 'expo-file-system';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   Pressable,
   StyleSheet,
@@ -28,6 +27,7 @@ import { ApiError, api, type SpeakingPrompt, type SpeakingRecording } from '../a
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
+import { LoadingLine } from '../components/LoadingLine';
 import { fmtClock } from './writing';
 
 function arrayBufferToBase64(buf: ArrayBuffer): string {
@@ -380,7 +380,7 @@ export default function SpeakingScreen() {
         )}
 
         {loading ? (
-          <ActivityIndicator color={colors.accent} style={styles.loader} />
+          <LoadingLine location="table" />
         ) : (
           <FlatList
             data={rows}

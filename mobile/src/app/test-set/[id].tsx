@@ -3,7 +3,7 @@
 // nút "Thi thử cả đề" → màn thi thử của đề đó.
 import { useCallback, useEffect, useMemo, useRef, useState, type ElementRef } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
-import { ActivityIndicator, Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type TestSet } from '../../api';
@@ -13,6 +13,7 @@ import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } f
 import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../../theme';
 import { BackButton } from '../../components/BackButton';
 import { HeroFlight, type HeroRect } from '../../components/HeroFlight';
+import { LoadingLine } from '../../components/LoadingLine';
 import { partName, sectionOf } from '../../components/QuestionView';
 
 export default function TestSetDetailScreen() {
@@ -143,10 +144,7 @@ export default function TestSetDetailScreen() {
           ) : null}
         </View>
         {loading ? (
-          <View style={styles.center}>
-            <ActivityIndicator color={colors.accent} />
-            <Text style={{ color: colors.muted, fontSize: scaled(15) }}>Đang tải đề thi…</Text>
-          </View>
+          <LoadingLine location="page" text="Đang tải đề thi…" />
         ) : !ts ? (
           <View>
             {error ? <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text> : null}
