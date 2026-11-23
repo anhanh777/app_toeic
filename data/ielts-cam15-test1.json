@@ -924,50 +924,10 @@
     "content": "learning to say sorry"
    }
   ],
-  "correct": "B",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "I know how to defend myself. we had to put up with each other and most of the time we co-existed amicably enough.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C15-L-T1-S3-030",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C15-L-T1-S3",
-  "passageTitle": "Section 3 — Birth order and personality",
-  "passageText": null,
-  "script": "RUTH: Ed, how are you getting on with the reading for our presentation next week? ED: Well, OK, Ruth – but there’s so much of it. RUTH: I know, I hadn’t realised birth order was such a popular area of research. ED: But the stuff on birth order and personality is mostly unreliable. From what I’ve been reading a lot of claims about how your position in the family determines certain personality traits are just stereotypes, with no robust evidence to support them. RUTH: OK, but that’s an interesting point – we could start by outlining what previous research has shown. There are studies going back over a hundred years. ED: Yeah – so we could just run through some of the typical traits. Like the consensus seems to be that oldest children are generally less well-adjusted because they never get over the arrival of a younger sibling. RUTH: Right, but on a positive note, some studies claimed that they were thought to be good a nurturing – certainly in the past when people had large families they would have been expected to look after the younger ones. ED: There isn’t such a clear picture for middle children – but one trait that a lot of the studies mention is that they are easier to get on with than older or younger siblings. RUTH: Generally eager to please and helpful – although that’s certainly not accurate as far as my family goes – my middle brother was a nightmare – always causing fights and envious of whatever I had. ED: As I said – none of this seems to relate to my own experience. I’m the youngest in my family and I don’t recognise myself in any of the studies I’ve read about. I’m supposed to have been a sociable and confident child who made friends easily – but I was actually terribly shy. RUTH: Really? That’s funny. There have been hundreds of studies on twins but mostly about nurture versus nature… ED: There was one on personality, which said that a twin is likely to be quite shy in social situations because they always have their twin around to depend on for support. RUTH: My cousins were like that when they were small – they were only interested in each other and found it hard to engage with other kids. They’re fine now though. ED: Only children have had a really bad press – a lot of studies have branded them as loners who think the world revolves around them because they’ve never had to fight for their parents’ attention. RUTH: That does seem a bit harsh. One category I hadn’t considered before was children with much older siblings – a couple of studies mentioned that these children grow up more quickly and are expected to do basic things for themselves – like getting dressed. ED: I can see how that might be true – although I expect they’re sometimes the exact opposite – playing the baby role and clamouring for special treatment. RUTH: What was the problem with most of these studies, do you think? ED: I think it was because in a lot of cases data was collected from only one sibling per family, who rated him or herself and his or her siblings at the same time. RUTH: Mmm. Some of the old research into the relationship between birth order and academic achievement has been proved to be accurate though. Performances in intelligence tests decline slightly from the eldest child to his or her younger siblings. This has been proved in lots of recent studies. ED: Yes. Although what many of them didn’t take into consideration was family size. The more siblings there are, the likelier the family is to have a low socioeconomic status – which can also account for differences between siblings in academic performance. RUTH: The oldest boy might be given more opportunities than his younger sisters, for example. ED: Exactly. RUTH: But the main reason for the marginally higher academic performance of oldest children is quite surprising, I think. It’s not only that they benefit intellectually from extra attention at a young age – which is what I would have expected. It’s that they benefit from being teachers for their younger siblings, by verbalising processes. ED: Right, and this gives them status and confidence, which again contribute, in a small way, to better performance. So would you say sibling rivalry has been a useful thing for you? RUTH: I think so – my younger brother was incredibly annoying and we found a lot but I think this has made me a stronger person. I know how to defend myself. We had some terrible arguments and I would have died rather than apologise to him – but we had to put up with each other and most of the time we co-existed amicably enough. ED: Yes, my situation was pretty similar. But I don’t think having two older brothers made me any less selfish – I was never prepared to let me brothers use any of my stuff … RUTH: That’s perfectly normal, whereas …",
-  "content": "Which TWO experiences of sibling rivalry do the speakers agree has been valuable for them?",
-  "options": [
-   {
-    "label": "A",
-    "content": "learning to share"
-   },
-   {
-    "label": "B",
-    "content": "learning to stand up for oneself"
-   },
-   {
-    "label": "C",
-    "content": "learning to be a good loser"
-   },
-   {
-    "label": "D",
-    "content": "learning to be tolerant"
-   },
-   {
-    "label": "E",
-    "content": "learning to say sorry"
-   }
+  "correct": [
+   "B",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -975,7 +935,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -1904,50 +1864,10 @@
     "content": "A reduction in the number of cars would mean a reduction in pollution."
    }
   ],
-  "correct": "C",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "If the vehicle can do some or all of the driving, it may be possible to be productive, to socialise or simply to relax while automation systems have responsibility for safe control of the vehicle those who are challenged by existing mobility models – such as older or disabled travellers – may be able to enjoy significantly greater travel autonomy.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C15-R-T1-P2-024",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C15-R-T1-P2",
-  "passageTitle": "Passage 2 — Driverless cars",
-  "passageText": "A. The automotive sector is well used to adapting to automation in manufacturing. The implementation of robotic car manufacture from the 1970s onwards led to significant cost savings and improvements in the reliability and flexibility of vehicle mass production. A new challenge to vehicle production is now on the horizon and, again, it comes from automation. However, this time it is not to do with the manufacturing process, but with the vehicles themselves. Research projects on vehicle automation are not new. Vehicles with limited self-driving capabilities have been around for more than 50 years, resulting in significant contributions towards driver assistance systems. But since Google announced in 2010 that it had been trialling self-driving cars on the streets of California, progress in this field has quickly gathered pace.\n\nB. There are many reasons why technology is advancing so fast. One frequently cited motive is safety; indeed, research at the UK’s Transport Research Laboratory has demonstrated that more than 90 percent of road collisions involve human error as a contributory factor, and it is the primary cause in the vast majority. Automation may help to reduce the incidence of this. Another aim is to free the time people spend driving for other purposes. If the vehicle can do some or all of the driving, it may be possible to be productive, to socialise or simply to relax while automation systems have responsibility for safe control of the vehicle. If the vehicle can do the driving, those who are challenged by existing mobility models – such as older or disabled travellers – may be able to enjoy significantly greater travel autonomy.\n\nC. Beyond these direct benefits, we can consider the wider implications for transport and society, and how manufacturing processes might need to respond as a result. At present, the average car spends more than 90 percent of its life parked. Automation means that initiatives for car- sharing become much more viable, particularly in urban areas with significant travel demand. If a significant proportion of the population choose to use shared automated vehicles, mobility demand can be met by far fewer vehicles.\n\nD. The Massachusetts Institute of Technology investigated automated mobility in Singapore, finding that fewer than 30 percent of the vehicles currently used would be required if fully automated car sharing could be implemented. If this is the case, it might mean that we need to manufacture far fewer vehicles to meet demand. However, the number of trips being taken would probably increase, partly because empty vehicles would have to be moved from one customer to the next. Modelling work by the University of Michigan Transportation Research Institute suggests automated vehicles might reduce vehicle ownership by 43 percent, but that vehicles’ average annual mileage double as a result. As a consequence, each vehicle would be used more intensively, and might need replacing sooner. This faster rate of turnover may mean that vehicle production will not necessarily decrease.\n\nE. Automation may prompt other changes in vehicle manufacture. If we move to a model where consumers are tending not to own a single vehicle but to purchase access to a range of vehicle through a mobility provider, drivers will have the freedom to select one that best suits their needs for a particular journey, rather than making a compromise across all their requirements. Since, for most of the time, most of the seats in most cars are unoccupied, this may boost production of a smaller, more efficient range of vehicles that suit the needs of individuals. Specialised vehicles may then be available for exceptional journeys, such as going on a family camping trip or helping a son or daughter move to university.\n\nF. There are a number of hurdles to overcome in delivering automated vehicles to our roads. These include the technical difficulties in ensuring that the vehicle works reliably in the infinite range of traffic, weather and road situations it might encounter; the regulatory challenges in understanding how liability and enforcement might change when drivers are no longer essential for vehicle operation; and the societal changes that may be required for communities to trust and accept automated vehicles as being a valuable part of the mobility landscape.\n\nG. It’s clear that there are many challenges that need to be addressed but, through robust and targeted research, these can most probably be conquered within the next 10 years. Mobility will change in such potentially significant ways and in association with so many other technological developments, such as telepresence and virtual reality, that it is hard to make concrete predictions about the future. However, one thing is certain: change is coming, and the need to be flexible in response to this will be vital for those involved in manufacturing the vehicles that will deliver future mobility.",
-  "script": null,
-  "content": "Which TWO benefits of automated vehicles does the writer mention?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Car travellers could enjoy considerable cost savings."
-   },
-   {
-    "label": "B",
-    "content": "It would be easier to find parking spaces in urban areas."
-   },
-   {
-    "label": "C",
-    "content": "Travellers could spend journeys doing something other than driving."
-   },
-   {
-    "label": "D",
-    "content": "People who find driving physically difficult could travel independently."
-   },
-   {
-    "label": "E",
-    "content": "A reduction in the number of cars would mean a reduction in pollution."
-   }
+  "correct": [
+   "C",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -1955,7 +1875,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -1990,50 +1910,10 @@
     "content": "getting automated vehicles to adapt to various different driving conditions"
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "the societal changes that may be required for communities to trust and accept automated vehicles as being a valuable part of the mobility landscape These include the technical difficulties in ensuring that the vehicle works reliably in the infinite range of traffic, weather and road situations it might encounter",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C15-R-T1-P2-026",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C15-R-T1-P2",
-  "passageTitle": "Passage 2 — Driverless cars",
-  "passageText": "A. The automotive sector is well used to adapting to automation in manufacturing. The implementation of robotic car manufacture from the 1970s onwards led to significant cost savings and improvements in the reliability and flexibility of vehicle mass production. A new challenge to vehicle production is now on the horizon and, again, it comes from automation. However, this time it is not to do with the manufacturing process, but with the vehicles themselves. Research projects on vehicle automation are not new. Vehicles with limited self-driving capabilities have been around for more than 50 years, resulting in significant contributions towards driver assistance systems. But since Google announced in 2010 that it had been trialling self-driving cars on the streets of California, progress in this field has quickly gathered pace.\n\nB. There are many reasons why technology is advancing so fast. One frequently cited motive is safety; indeed, research at the UK’s Transport Research Laboratory has demonstrated that more than 90 percent of road collisions involve human error as a contributory factor, and it is the primary cause in the vast majority. Automation may help to reduce the incidence of this. Another aim is to free the time people spend driving for other purposes. If the vehicle can do some or all of the driving, it may be possible to be productive, to socialise or simply to relax while automation systems have responsibility for safe control of the vehicle. If the vehicle can do the driving, those who are challenged by existing mobility models – such as older or disabled travellers – may be able to enjoy significantly greater travel autonomy.\n\nC. Beyond these direct benefits, we can consider the wider implications for transport and society, and how manufacturing processes might need to respond as a result. At present, the average car spends more than 90 percent of its life parked. Automation means that initiatives for car- sharing become much more viable, particularly in urban areas with significant travel demand. If a significant proportion of the population choose to use shared automated vehicles, mobility demand can be met by far fewer vehicles.\n\nD. The Massachusetts Institute of Technology investigated automated mobility in Singapore, finding that fewer than 30 percent of the vehicles currently used would be required if fully automated car sharing could be implemented. If this is the case, it might mean that we need to manufacture far fewer vehicles to meet demand. However, the number of trips being taken would probably increase, partly because empty vehicles would have to be moved from one customer to the next. Modelling work by the University of Michigan Transportation Research Institute suggests automated vehicles might reduce vehicle ownership by 43 percent, but that vehicles’ average annual mileage double as a result. As a consequence, each vehicle would be used more intensively, and might need replacing sooner. This faster rate of turnover may mean that vehicle production will not necessarily decrease.\n\nE. Automation may prompt other changes in vehicle manufacture. If we move to a model where consumers are tending not to own a single vehicle but to purchase access to a range of vehicle through a mobility provider, drivers will have the freedom to select one that best suits their needs for a particular journey, rather than making a compromise across all their requirements. Since, for most of the time, most of the seats in most cars are unoccupied, this may boost production of a smaller, more efficient range of vehicles that suit the needs of individuals. Specialised vehicles may then be available for exceptional journeys, such as going on a family camping trip or helping a son or daughter move to university.\n\nF. There are a number of hurdles to overcome in delivering automated vehicles to our roads. These include the technical difficulties in ensuring that the vehicle works reliably in the infinite range of traffic, weather and road situations it might encounter; the regulatory challenges in understanding how liability and enforcement might change when drivers are no longer essential for vehicle operation; and the societal changes that may be required for communities to trust and accept automated vehicles as being a valuable part of the mobility landscape.\n\nG. It’s clear that there are many challenges that need to be addressed but, through robust and targeted research, these can most probably be conquered within the next 10 years. Mobility will change in such potentially significant ways and in association with so many other technological developments, such as telepresence and virtual reality, that it is hard to make concrete predictions about the future. However, one thing is certain: change is coming, and the need to be flexible in response to this will be vital for those involved in manufacturing the vehicles that will deliver future mobility.",
-  "script": null,
-  "content": "Which TWO challenges to automated vehicle development does the writer mention?",
-  "options": [
-   {
-    "label": "A",
-    "content": "making sure the general public has confidence in automated vehicles"
-   },
-   {
-    "label": "B",
-    "content": "managing the pace of transition from conventional to automated vehicles"
-   },
-   {
-    "label": "C",
-    "content": "deciding how to compensate professional drivers who become redundant"
-   },
-   {
-    "label": "D",
-    "content": "setting up the infrastructure to make roads suitable for automated vehicles"
-   },
-   {
-    "label": "E",
-    "content": "getting automated vehicles to adapt to various different driving conditions"
-   }
+  "correct": [
+   "A",
+   "E"
   ],
-  "correct": "E",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -2041,7 +1921,7 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },

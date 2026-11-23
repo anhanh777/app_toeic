@@ -588,50 +588,10 @@
     "content": "It was recently expanded."
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "entrance is completely free. we do ask adults not to leave them on their own there.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C15-L-T4-S2-018",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C15-L-T4-S2",
-  "passageTitle": "Section 2 — Croft Valley Park",
-  "passageText": null,
-  "script": "As chair of the town council subcommittee on park facilities, I’d like to bring you up to date on some of the changes that have been made recently to the Croft Valley Park. So if you could just take a look at the map I handed out, let’s begin with a general overview. So the basic arrangement of the park hasn’t changed – it still has two gates, north and south, and a lake in the middle. The café continues to serve an assortment of drinks and snacks and is still in the same place, looking out over the lake and next to the old museum. We’re hoping to change the location of the toilets, and bring them nearer to the centre of the park as they’re a bit out of the way at present, near the adventure playground, in the corner of your map. The formal gardens have been replanted and should be at their best in a month or two. They used to be behind the old museum, but we’ve now used the space near the south gate – between the park boundary and the path that goes past the lake towards the old museum. We have a new outdoor gym for adults and children, which is already proving very popular. It’s by the glass houses, just to the right of the path from the south gate. You have to look for it as it’s a bit hidden in the trees. One very successful introduction has been our skateboard ramp. It’s in constant use during the evenings and holidays. It’s near the old museum, at the end of a little path that leads off from the main path between the lake and the museum. We’ve also introduced a new area for wild flowers, to attract bees and butterflies. It’s on a bend in the path that goes round the east side of the lake, just south of the adventure playground. Now let me tell you a bit more about some of the changes to Croft Valley Park. One of our most exciting developments has been the adventure playground. We were aware that we had nowhere for children to let off steam, and decided to use our available funds to set up a completely new facility in a large space to the north of the park. It’s open year-round, though it closes early in the winter months, and entrance is completely free. Children can choose whatever activities they want to do, irrespective of their age, but we do ask adults not to leave them on their own there. There are plenty of seats where parents can relax and keep an eye on their children at the same time. Lastly, the glass houses. A huge amount of work has been done on them to repair the damage following the disastrous fire that recently destroyed their western side. Over £80,000 was spent on replacing the glass walls and the metal supports, as well as the plants that had been destroyed, although unfortunately the collection of tropical palm trees has proved too expensive to replace up to now. At present the glass houses are open from 10am to 3pm Mondays to Thursdays, and it’s hoped to extend this to the weekend soon. We’re grateful to all those who helped us by contributing their time and money to this achievement. The gardens have …",
-  "content": "What does the speaker say about the adventure playground?",
-  "options": [
-   {
-    "label": "A",
-    "content": "Children must be supervised."
-   },
-   {
-    "label": "B",
-    "content": "It costs more in winter."
-   },
-   {
-    "label": "C",
-    "content": "Some activities are only for younger children."
-   },
-   {
-    "label": "D",
-    "content": "No payment is required."
-   },
-   {
-    "label": "E",
-    "content": "It was recently expanded."
-   }
+  "correct": [
+   "A",
+   "D"
   ],
-  "correct": "D",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -639,7 +599,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
@@ -674,50 +634,10 @@
     "content": "Visitors can see palm trees from tropical regions."
    }
   ],
-  "correct": "A",
-  "correctText": null,
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "explanation": "A huge amount of work has been done on them to repair the damage following the disastrous fire that recently destroyed their western side. At present the glass houses are open from 10am to 3pm Mondays to Thursdays, and it’s hoped to extend this to the weekend soon.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "testSetId": null,
-  "questionType": "matching",
-  "typeFlagged": false,
-  "typeNote": null
- },
- {
-  "id": "C15-L-T4-S2-020",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C15-L-T4-S2",
-  "passageTitle": "Section 2 — Croft Valley Park",
-  "passageText": null,
-  "script": "As chair of the town council subcommittee on park facilities, I’d like to bring you up to date on some of the changes that have been made recently to the Croft Valley Park. So if you could just take a look at the map I handed out, let’s begin with a general overview. So the basic arrangement of the park hasn’t changed – it still has two gates, north and south, and a lake in the middle. The café continues to serve an assortment of drinks and snacks and is still in the same place, looking out over the lake and next to the old museum. We’re hoping to change the location of the toilets, and bring them nearer to the centre of the park as they’re a bit out of the way at present, near the adventure playground, in the corner of your map. The formal gardens have been replanted and should be at their best in a month or two. They used to be behind the old museum, but we’ve now used the space near the south gate – between the park boundary and the path that goes past the lake towards the old museum. We have a new outdoor gym for adults and children, which is already proving very popular. It’s by the glass houses, just to the right of the path from the south gate. You have to look for it as it’s a bit hidden in the trees. One very successful introduction has been our skateboard ramp. It’s in constant use during the evenings and holidays. It’s near the old museum, at the end of a little path that leads off from the main path between the lake and the museum. We’ve also introduced a new area for wild flowers, to attract bees and butterflies. It’s on a bend in the path that goes round the east side of the lake, just south of the adventure playground. Now let me tell you a bit more about some of the changes to Croft Valley Park. One of our most exciting developments has been the adventure playground. We were aware that we had nowhere for children to let off steam, and decided to use our available funds to set up a completely new facility in a large space to the north of the park. It’s open year-round, though it closes early in the winter months, and entrance is completely free. Children can choose whatever activities they want to do, irrespective of their age, but we do ask adults not to leave them on their own there. There are plenty of seats where parents can relax and keep an eye on their children at the same time. Lastly, the glass houses. A huge amount of work has been done on them to repair the damage following the disastrous fire that recently destroyed their western side. Over £80,000 was spent on replacing the glass walls and the metal supports, as well as the plants that had been destroyed, although unfortunately the collection of tropical palm trees has proved too expensive to replace up to now. At present the glass houses are open from 10am to 3pm Mondays to Thursdays, and it’s hoped to extend this to the weekend soon. We’re grateful to all those who helped us by contributing their time and money to this achievement. The gardens have …",
-  "content": "What does the speaker say about the glass houses?",
-  "options": [
-   {
-    "label": "A",
-    "content": "They are closed at weekends."
-   },
-   {
-    "label": "B",
-    "content": "Volunteers are needed to work there."
-   },
-   {
-    "label": "C",
-    "content": "They were badly damaged by fire."
-   },
-   {
-    "label": "D",
-    "content": "More money is needed to repair some of the glass."
-   },
-   {
-    "label": "E",
-    "content": "Visitors can see palm trees from tropical regions."
-   }
+  "correct": [
+   "A",
+   "C"
   ],
-  "correct": "C",
   "correctText": null,
   "wordLimit": null,
   "acceptedAnswers": [],
@@ -725,7 +645,7 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching",
+  "questionType": "list_selection",
   "typeFlagged": false,
   "typeNote": null
  },
