@@ -1175,6 +1175,41 @@ function seedIeltsCam17Test4() {
   return inserted;
 }
 
+function seedIeltsCam16Test1() {
+  const list = readJsonArray('ielts-cam16-test1.json').filter(validSeedIeltsQuestion);
+  if (!list.length) {
+    console.log('[seed] khong co cau IELTS Cam 16 Test 1 hop le — bo qua TS-054.');
+    return 0;
+  }
+  if (!db.getTestSet('TS-054')) {
+    db.createTestSet({
+      id: 'TS-054',
+      title: 'Cambridge IELTS 16 — Test 01',
+      description:
+        'Cambridge IELTS 16 Academic, Test 01: Listening 4 Section + Reading 3 Passage (80 câu). Đề thi thật.',
+      isPublished: 1,
+      exam: 'ielts',
+    });
+    console.log('[seed] da tao Cambridge IELTS 16 Test 01 TS-054.');
+  }
+  const existing = db.listQuestions({ testSetId: 'TS-054', limit: 1, offset: 0 });
+  if (existing.total > 0) {
+    console.log(`[seed] TS-054 da co ${existing.total} cau — bo qua seed Cam 16 Test 1.`);
+    return 0;
+  }
+  let inserted = 0;
+  for (const q of list) {
+    try {
+      db.insertQuestion({ ...q, exam: 'ielts', testSetId: 'TS-054' });
+      inserted += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua cau Cam 16 Test 1 ${q.id}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${inserted}/${list.length} cau Cam 16 Test 1 (TS-054).`);
+  return inserted;
+}
+
 function seedVocabulary() {
   // Seed tang dan theo id (nhu seedQuestions): chi chen tu CHUA CO.
   const list = readJsonArray('vocabulary.json').filter(
@@ -1384,6 +1419,7 @@ function seedAll() {
   seedIeltsCam17Test2();
   seedIeltsCam17Test3();
   seedIeltsCam17Test4();
+  seedIeltsCam16Test1();
   seedPartMedia();
   seedVocabulary();
   seedIeltsWritingTasks();
@@ -1409,6 +1445,7 @@ function seedAll() {
   if (db.getTestSet('TS-051')) db.refreshTestSetTotal('TS-051');
   if (db.getTestSet('TS-052')) db.refreshTestSetTotal('TS-052');
   if (db.getTestSet('TS-053')) db.refreshTestSetTotal('TS-053');
+  if (db.getTestSet('TS-054')) db.refreshTestSetTotal('TS-054');
   console.log(
     `[seed] xong: ${db.countQuestions()} cau hoi, ${db.countVocabulary()} tu vung, ${db.countUsers()} user.`
   );
@@ -1418,4 +1455,4 @@ if (require.main === module) {
   seedAll();
 }
 
-module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedUiSettings, seedBrandSettings, seedMenuIcons, seedIeltsCam21Test1, seedIeltsCam21Test2, seedIeltsCam21Test3, seedIeltsCam21Test4, seedIeltsCam20Test1, seedIeltsCam20Test2, seedIeltsCam20Test3, seedIeltsCam20Test4, seedIeltsCam19Test1, seedIeltsCam19Test2, seedIeltsCam19Test3, seedIeltsCam19Test4, seedIeltsCam18Test1, seedIeltsCam18Test2, seedIeltsCam18Test3, seedIeltsCam18Test4, seedIeltsCam17Test1, seedIeltsCam17Test2, seedIeltsCam17Test3, seedIeltsCam17Test4, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };
+module.exports = { seedAll, seedQuestions, seedVocabulary, seedDemoUsers, seedPartMedia, seedUiSettings, seedBrandSettings, seedMenuIcons, seedIeltsCam21Test1, seedIeltsCam21Test2, seedIeltsCam21Test3, seedIeltsCam21Test4, seedIeltsCam20Test1, seedIeltsCam20Test2, seedIeltsCam20Test3, seedIeltsCam20Test4, seedIeltsCam19Test1, seedIeltsCam19Test2, seedIeltsCam19Test3, seedIeltsCam19Test4, seedIeltsCam18Test1, seedIeltsCam18Test2, seedIeltsCam18Test3, seedIeltsCam18Test4, seedIeltsCam17Test1, seedIeltsCam17Test2, seedIeltsCam17Test3, seedIeltsCam17Test4, seedIeltsCam16Test1, seedIeltsWritingTasks, seedIeltsSpeakingPrompts, validSeedIeltsQuestion };
