@@ -781,7 +781,7 @@ function SharedWords() {
     if (!topic) return;
     setLoading(true);
     setMsg('');
-    Promise.all([api.vocabulary(topic, 500, ex), api.userWords('', 500)])
+    Promise.all([api.vocabulary(topic, 1000, ex), api.userWords('', 500)])
       .then(([ws, mine]) => {
         setWords(ws);
         setIdx(0);
@@ -843,7 +843,7 @@ function SharedWords() {
         </div>
       ) : topic === null ? (
         <>
-          <p className="muted vocab-shared-intro">Cụm từ và collocations trích từ đề thi trong app, chia theo chủ đề — xếp theo tần suất gặp trong đề. Bấm vào một chủ đề để xem danh sách cụm và lưu vào "Từ của tôi" kèm lịch ôn.</p>
+          <p className="muted vocab-shared-intro">Từ và cụm từ trích từ đề thi trong app và sách 600 từ vựng TOEIC, chia theo chủ đề. Bấm vào một chủ đề để xem danh sách từ và lưu vào "Từ của tôi" kèm lịch ôn.</p>
           <div className="pick-grid">
             {topics.map((t, i) => (
               <button key={t.topic} type="button" className="pick-box vocab-topic-box" style={{ animationDelay: `${Math.min(i, 9) * 50}ms` }} onClick={() => setTopic(t.topic)}>

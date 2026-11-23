@@ -542,7 +542,7 @@ function SharedWords({ exam }: { exam: string }) {
 
   useEffect(() => {
     api
-      .vocabulary(topic, 100, exam)
+      .vocabulary(topic, 1000, exam)
       .then((w) => {
         setWords(w);
         setIdx(0);

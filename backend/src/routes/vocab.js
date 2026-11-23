@@ -12,7 +12,7 @@ router.get('/vocabulary/topics', authMiddleware, (req, res) => {
   return res.json({ topics: db.countVocabularyByTopic(exam) });
 });
 router.get('/vocabulary', authMiddleware, (req, res) => {
-  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 100, 1), 500);
+  const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 100, 1), 1000);
   const offset = Math.max(parseInt(req.query.offset, 10) || 0, 0);
   const topic = typeof req.query.topic === 'string' && req.query.topic.trim()
     ? req.query.topic.trim()
