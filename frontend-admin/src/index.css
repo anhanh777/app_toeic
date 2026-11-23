@@ -883,7 +883,12 @@ tbody tr:hover{background:var(--surface-soft)}
 }
 .ld-pick-card:hover{border-color:var(--accent)}
 .ld-pick-card--on{border:2px solid var(--accent); box-shadow:0 0 0 2px var(--accent-soft-strong)}
-.ld-pick-anim{min-height:1.9rem; display:flex; align-items:center; justify-content:center}
+.ld-pick-anim{min-height:1.9rem; display:flex; align-items:center; justify-content:center; width:100%}
+/* .ld-pick-anim phai co width co dinh (100%): neu khong, card dang
+   flex-direction:column + align-items:center nen anim co lai theo
+   noi dung; .ld-progress/.ld-skeleton dung width:100% se tinh vong
+   (percentage tren khoi chua co rong phu thuoc noi dung) -> ve 0 va
+   bien mat — dung 2 hieu ung bi trong trong anh chup cua co ay. */
 .ld-pick-card .ld-skeleton{min-width:0; width:100%; gap:.3em}
 .ld-pick-card .ld-skeleton i{height:.6em}
 .ld-pick-card .ld-progress{max-width:100%}
