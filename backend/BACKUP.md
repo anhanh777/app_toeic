@@ -17,12 +17,13 @@ Litestream + R2 đã bỏ ngày 2026-11-17).
 
 ## Backup những gì
 
-**Chỉ các bảng dữ liệu người dùng** (17 bảng):
+**Chỉ các bảng dữ liệu người dùng** (20 bảng):
 
 `users`, `user_words`, `user_vocabulary`, `attempts`, `answers`,
 `wrong_questions`, `xp_events`, `ielts_profiles`, `error_log`,
-`monster_state`, `sessions`, `mock_tests`, `plan`, `writing_submissions`,
-`speaking_recordings`, `dictionary_cache`, `app_settings`.
+`monster_state`, `sessions`, `checkins`, `mock_tests`, `plan`, `writing_submissions`,
+`speaking_recordings`, `dictionary_cache`, `app_settings`, `brand_settings`,
+`menu_icons`.
 
 **Không backup** các bảng nội dung (`test_sets`, `questions`, `options`,
 `passages`, `part_media`, `vocabulary`, `writing_tasks`,

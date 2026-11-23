@@ -28,19 +28,43 @@ export async function ensureReminderPermission(): Promise<boolean> {
   return status === 'granted';
 }
 
-/** Lên lịch nhắc ôn tập hằng ngày lúc `hour` giờ (mặc định 20:00). Ghi đè lịch cũ. */
-export async function scheduleDailyReminder(hour = 20): Promise<boolean> {
+/** Lên lịch nhắc ôn tập hằng ngày lúc `hour` giờ (mặc định 20:00). Ghi đè lịch cũ.
+ *  `checkinPending` = true: thêm dòng nhắc điểm danh hôm nay vào nội dung. */
+export async function scheduleDailyReminder(hour = 20, checkinPending = false): Promise<boolean> {
   if (!(await ensureReminderPermission())) return false;
   await Notifications.cancelScheduledNotificationAsync(DAILY_ID);
   await Notifications.scheduleNotificationAsync({
     identifier: DAILY_ID,
     content: {
       title: 'Đến giờ luyện thi rồi 📚',
-      body: 'Mở app làm vài câu hôm nay nhé — giữ chuỗi ngày luyện tập của bạn.',
+      body: checkinPending
+        ? 'Mở app làm vài câu hôm nay nhé — nhớ điểm danh hôm nay nữa 📅.'
+        : 'Mở app làm vài câu hôm nay nhé — giữ chuỗi ngày luyện tập của bạn.',
     },
     trigger: { type: Notifications.SchedulableTriggerInputTypes.DAILY, hour, minute: 0 },
   });
   return true;
+}
+
+const CHECKIN_STAMP_KEY = 'notif_checkin_pending_date';
+
+/**
+ * Nhắc 20:00 thêm dòng điểm danh nếu hôm nay chưa điểm danh.
+ * Chỉ lên lịch lại khi trạng thái đổi (ghi dấu theo ngày) và chỉ khi nhắc
+ * hằng ngày đang bật (reminder_daily_on = '1' trong Settings).
+ */
+export async function maybeRescheduleCheckinReminder(checkedInToday: boolean): Promise<void> {
+  try {
+    if ((await AsyncStorage.getItem('reminder_daily_on')) !== '1') return;
+    const today = new Date().toDateString();
+    const stamp = await AsyncStorage.getItem(CHECKIN_STAMP_KEY);
+    const pending = !checkedInToday;
+    if (stamp === `${today}:${pending ? '1' : '0'}`) return;
+    await scheduleDailyReminder(20, pending);
+    await AsyncStorage.setItem(CHECKIN_STAMP_KEY, `${today}:${pending ? '1' : '0'}`);
+  } catch {
+    /* nhắc điểm danh là phụ — không chặn màn chính */
+  }
 }
 
 /** Hủy nhắc ôn tập hằng ngày. */

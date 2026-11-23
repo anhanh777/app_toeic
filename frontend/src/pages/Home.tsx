@@ -18,6 +18,7 @@ import { useMenuIcons } from '../menuIcons';
 import { LoadingLine, useUiSettings } from '../uiSettings';
 import { errorCodeName, fmtClock, useCountdown } from '../ielts-phase1';
 import { IeltsAnswerControl } from '../ielts-ui';
+import CheckinSection from '../checkin';
 import { speak, stopSpeak, ttsSupported } from '../tts';
 
 const TOPICS = ['du lịch', 'công nghệ', 'y học', 'môi trường'];
@@ -51,6 +52,11 @@ export default function Home() {
   useEffect(() => {
     api.statsOverview(ex).then(setStats).catch(setError);
   }, [ex]);
+
+  // Điểm danh xong thì streak/XP trên thẻ tổng quan phải cập nhật ngay.
+  const refreshStats = () => {
+    api.statsOverview(ex).then(setStats).catch(() => undefined);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -135,6 +141,7 @@ export default function Home() {
         <Link className="btn secondary" to="/wrong">Ôn câu sai</Link>
         <Link className="btn secondary" to="/vocabulary">Từ vựng</Link>
       </div>
+      <CheckinSection onCheckedIn={refreshStats} />
       {!data && <div className="card"><p>Chưa tải được kế hoạch hôm nay. Bạn vẫn có thể <Link className="btn secondary btn-sm" to="/practice">luyện tập</Link> bình thường.</p></div>}
       {data && (
         <>

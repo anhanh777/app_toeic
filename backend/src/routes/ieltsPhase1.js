@@ -323,6 +323,10 @@ function badDayTaskIelts() {
 function badDayHandler(defaultExam) {
   return (req, res) => {
     const exam = resolveExam(req, defaultExam);
+    // Ghi ngay nghi vao checkins (kind = 'rest'): lich hien 😴, streak
+    // duoc bac cau toi da 1 ngay/tuan ISO (xp.js). INSERT OR IGNORE nen
+    // khong ghi de neu hom nay da diem danh.
+    db.addCheckin(req.user.id, db.saigonTodayStr(), 'rest');
     if (exam === 'toeic') {
       return res.json({
         kind: 'toeic-drill',

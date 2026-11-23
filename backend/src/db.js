@@ -251,6 +251,14 @@ CREATE TABLE IF NOT EXISTS sessions (
   exam TEXT,
   created_at TEXT
 );
+CREATE TABLE IF NOT EXISTS checkins (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  date TEXT,
+  kind TEXT DEFAULT 'checkin',
+  created_at TEXT,
+  UNIQUE(user_id, date)
+);
 CREATE TABLE IF NOT EXISTS mock_tests (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   user_id INTEGER,
@@ -661,6 +669,7 @@ function deleteUser(id) {
       'error_log',
       'monster_state',
       'sessions',
+      'checkins',
       'mock_tests',
       'plan',
       'writing_submissions',
@@ -2273,6 +2282,60 @@ function listSessionsByDateRange(userId, from, to) {
   ).all(userId, from, to).map(mapSession);
 }
 
+/* ---------------- checkins (diem danh hang ngay) ---------------- */
+
+/** Ngay hien tai theo Asia/Saigon (+07) — dung cho diem danh: 00:30 +07
+ *  la ngay moi, khong phai ngay hom qua UTC (server chay UTC). */
+function saigonTodayStr() {
+  return new Date(Date.now() + 7 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+
+function mapCheckin(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    userId: row.user_id,
+    date: row.date,
+    kind: row.kind || 'checkin',
+    createdAt: row.created_at || null,
+  };
+}
+
+/** Ghi 1 ngay diem danh ('checkin') hoac ngay nghi ('rest'). Tra ve true
+ *  neu chen moi, false neu ngay do da co dong — KHONG ghi de (diem danh
+ *  thang ngay nghi, bam lai khong cong XP lan 2). */
+function addCheckin(userId, date, kind) {
+  const k = kind === 'rest' ? 'rest' : 'checkin';
+  const info = db.prepare(
+    "INSERT OR IGNORE INTO checkins (user_id, date, kind, created_at) VALUES (?, ?, ?, ?)"
+  ).run(userId, date, k, nowIso());
+  return info.changes > 0;
+}
+
+/** Doi loai cua 1 dong checkin (chi dung de nang ngay nghi -> diem danh). */
+function updateCheckinKind(userId, date, kind) {
+  const k = kind === 'rest' ? 'rest' : 'checkin';
+  const info = db.prepare('UPDATE checkins SET kind = ? WHERE user_id = ? AND date = ?').run(k, userId, date);
+  return info.changes > 0;
+}
+
+function getCheckin(userId, date) {
+  return mapCheckin(db.prepare('SELECT * FROM checkins WHERE user_id = ? AND date = ?').get(userId, date));
+}
+
+/** Tat ca dong checkin cua user (tang dan theo ngay); gioi han [from, to] neu co. */
+function listCheckins(userId, from, to) {
+  const rows = (from && to)
+    ? db.prepare('SELECT * FROM checkins WHERE user_id = ? AND date >= ? AND date <= ? ORDER BY date ASC').all(userId, from, to)
+    : db.prepare('SELECT * FROM checkins WHERE user_id = ? ORDER BY date ASC').all(userId);
+  return rows.map(mapCheckin);
+}
+
+/** Tong so ngay da diem danh (kind = 'checkin', khong tinh ngay nghi). */
+function countCheckins(userId) {
+  return db.prepare("SELECT COUNT(*) AS c FROM checkins WHERE user_id = ? AND kind = 'checkin'").get(userId).c;
+}
+
 /* ---------------- mock_tests (diagnostic + mock IELTS) ---------------- */
 
 function mapMockTest(row) {
@@ -2729,6 +2792,7 @@ const USER_DATA_TABLES = [
   'error_log',
   'monster_state',
   'sessions',
+  'checkins',
   'mock_tests',
   'plan',
   'writing_submissions',
@@ -2748,6 +2812,7 @@ const AUTOINCREMENT_TABLES = [
   'error_log',
   'xp_events',
   'sessions',
+  'checkins',
   'mock_tests',
   'plan',
   'writing_submissions',
@@ -2768,6 +2833,7 @@ const USER_DATA_REQUIRED_COLUMNS = {
   error_log: ['id', 'user_id', 'error_code'],
   monster_state: ['user_id', 'error_code'],
   sessions: ['id', 'user_id'],
+  checkins: ['id', 'user_id', 'date'],
   mock_tests: ['id', 'user_id'],
   plan: ['id', 'user_id'],
   writing_submissions: ['id', 'user_id'],
@@ -2986,6 +3052,7 @@ module.exports = {
   getXpTotals,
   // IELTS Phase 1 (moi)
   todayStr,
+  saigonTodayStr,
   addDaysStr,
   REVIEW_DAYS,
   getIeltsProfile,
@@ -3001,6 +3068,12 @@ module.exports = {
   listMonsterStates,
   createSession,
   listSessionsByDateRange,
+  // checkins (diem danh hang ngay)
+  addCheckin,
+  updateCheckinKind,
+  getCheckin,
+  listCheckins,
+  countCheckins,
   invalidateMockTests,
   createMockTest,
   getLatestMockTest,

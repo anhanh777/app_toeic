@@ -1685,3 +1685,21 @@ tbody tr:hover{background:var(--surface-soft)}
 .confirm-card p{margin:.2rem 0}
 .confirm-card .btn-row{justify-content:flex-end; margin-top:1rem}
 [data-style="lively"] .confirm-card{border-radius:20px; border-width:2px; box-shadow:0 4px 0 var(--border)}
+
+/* Điểm danh hằng ngày (lịch + quà theo mốc + lịch sử) */
+.checkin-stats{display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:.7rem}
+.checkin-stats > div{min-width:7rem}
+.checkin-cal-head{display:flex; align-items:center; justify-content:space-between; gap:.5rem; margin:.9rem 0 .5rem}
+.checkin-cal{display:grid; grid-template-columns:repeat(7, 1fr); gap:.3rem}
+.checkin-cal-h{text-align:center; font-size:.8rem; color:var(--muted); font-weight:700; padding:.2rem 0}
+.checkin-day{border:1px solid var(--border); border-radius:10px; min-height:2.6rem; display:flex; flex-direction:column; align-items:center; justify-content:center; background:var(--surface)}
+.checkin-day--dim{opacity:.35; border-style:dashed}
+.checkin-day--today{border:2px solid var(--accent); font-weight:700}
+.checkin-day--checkin{background:var(--green-bg)}
+.checkin-day--active{background:var(--accent-soft)}
+.checkin-day--rest{background:var(--surface-soft)}
+.checkin-day-num{font-size:.9rem; line-height:1.1}
+.checkin-day-ico{font-size:.8rem; line-height:1.1}
+.checkin-history{list-style:none; margin:.5rem 0; padding:0}
+.checkin-history li{display:flex; justify-content:space-between; gap:.5rem; padding:.45rem .1rem; border-bottom:1px solid var(--border-soft)}
+.checkin-history li:last-child{border-bottom:none}

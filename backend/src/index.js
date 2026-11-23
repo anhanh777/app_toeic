@@ -70,6 +70,7 @@ app.use('/api', require('./routes/userWords'));
 app.use('/api', require('./routes/stats'));
 app.use('/api', require('./routes/ielts'));
 app.use('/api', require('./routes/ieltsPhase1'));
+app.use('/api', require('./routes/checkin'));
 app.use('/api', require('./routes/leaderboard'));
 app.use('/api', require('./routes/settings'));
 app.use('/api', require('./routes/brand'));

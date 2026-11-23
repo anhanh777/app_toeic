@@ -35,6 +35,7 @@ import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { TierBadge, XpBar } from '../components/TierBadge';
 import { BandCompassBlock, IeltsActiveBlock, IeltsDrillBlock, IeltsReviewBlock } from '../components/TodayBlocks';
+import { CheckinSection } from '../components/CheckinSection';
 import { LoadingLine } from '../components/LoadingLine';
 
 const FALLBACK_EXAMS: ExamInfo[] = [
@@ -140,7 +141,8 @@ export default function HomeScreen() {
     }, [refreshSettings, loadExams]),
   );
 
-  useEffect(() => {
+  // Điểm danh xong thì streak/XP trên thẻ tổng quan phải cập nhật ngay.
+  const loadStats = useCallback(() => {
     if (!exam) return;
     api
       .statsOverview(exam)
@@ -149,6 +151,10 @@ export default function HomeScreen() {
         /* không có thống kê thì ẩn khối stat, vẫn hiện menu */
       });
   }, [exam]);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
 
   // Kế hoạch hôm nay: tải khi đã chọn kỳ thi, ở CẢ 2 kiểu giao diện
   // (không chỉ lively) — cả 2 kiểu đều cần 3 khối + trạng thái xong.
@@ -449,6 +455,10 @@ export default function HomeScreen() {
                 <Text style={[styles.quickBtnText, { color: colors.text, fontSize: scaled(16) }]}>📚 Từ vựng</Text>
               </Pressable>
             </View>
+
+            {/* Điểm danh hằng ngày (lịch + quà theo mốc + lịch sử) — chung
+                cho cả 2 kỳ thi, hiện ở cả 2 kiểu giao diện. */}
+            <CheckinSection onCheckedIn={loadStats} />
 
             {/* Sống động: hàng streak/XP + mascot + nhiệm vụ hằng ngày.
                 Chỉ hiện khi lively. Số liệu thật: streak/XP từ statsOverview,
