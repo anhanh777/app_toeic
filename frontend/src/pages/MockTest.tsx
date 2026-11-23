@@ -633,7 +633,7 @@ export default function MockTest() {
                 </button>
               ))}
             </div>
-            <p className="muted">Thi mini lấy đúng đủ số câu của phần đó ở một đề ngẫu nhiên.</p>
+            <p className="muted">Thi mini lấy đủ số câu của phần đó ở một đề ngẫu nhiên.</p>
           </>
         )}
         {mode === 'full' && (

@@ -132,7 +132,7 @@ export default function Home() {
         ) : (
           <div className="card stat-card"><div className="ico">🎯</div><div className="muted">Mục tiêu điểm</div><div className="big">{target}</div><div className="card-foot"><p className="muted">{best != null ? `Điểm thi thử cao nhất: ${best} (điểm ước lượng)` : 'Chưa có bài thi thử nào.'}</p>{best != null && <p><TierBadge total={best} /></p>}</div></div>
         )}
-        <div className="card stat-card"><div className="ico">📊</div><div className="muted">{isIelts ? 'Section/Passage yếu nhất' : 'Part yếu nhất'}</div><div className="big" style={{ fontSize: '1rem' }}>{stats?.weakestPart ? partNameFor(stats.weakestPart, ex) : '—'}</div><div className="card-foot"><p className="muted">Tỉ lệ đúng chung: {stats ? `${Math.round(stats.accuracy * 100)}%` : '—'}</p>{isIelts && stats?.weakestType && <p className="muted">Dạng yếu nhất: {questionTypeName(stats.weakestType)}</p>}</div></div>
+        <div className="card stat-card"><div className="ico">📊</div><div className="muted">{isIelts ? 'Section/Passage yếu nhất' : 'Part yếu nhất'}</div><div className="big" style={{ fontSize: '1rem' }}>{stats?.weakestPart ? partNameFor(stats.weakestPart, ex) : '—'}</div><div className="card-foot"><p className="muted">Tỉ lệ đúng chung: {stats?.accuracy != null ? `${Math.round(stats.accuracy * 10) / 10}%` : '—'}</p>{isIelts && stats?.weakestType && <p className="muted">Dạng yếu nhất: {questionTypeName(stats.weakestType)}</p>}</div></div>
         <div className="card stat-card"><div className="ico">🔥</div><div className="muted">Streak</div><div className="big">{stats?.streakDays ?? 0} ngày</div><div className="card-foot"><div className="hearts" aria-label="streak hearts">{hearts}</div><p className="muted">Tổng XP: {stats?.totalXp ?? 0}</p><XpBar xp={stats?.totalXp ?? 0} /></div></div>
       </div>
       <div className="btn-row">
@@ -221,7 +221,7 @@ export default function Home() {
                     ? <>Part yếu nhất: <strong>{partNameFor(drill.weakestPart, 'toeic')}</strong>{drill.questionCount ? ` — ${drill.questionCount} câu` : ''}</>
                     : 'Chưa đủ dữ liệu để xác định Part yếu nhất — luyện 1 Part bất kỳ nhé.'}
                 </p>
-                <p className="muted">Trang Luyện tập hiện chưa nhận sẵn Part từ link, bạn chọn Part ở đó nhé.</p>
+                <p className="muted">Bạn chọn Part ở trang Luyện tập nhé.</p>
                 <div className="btn-row">
                   <Link className="btn" to="/practice">Mở luyện tập →</Link>
                   <button className="btn secondary btn-sm" onClick={() => void markDone('drill', 20)}>Đánh dấu đã luyện</button>
@@ -275,7 +275,7 @@ export default function Home() {
               </div>
               <div className="panel" style={{ marginTop: '.8rem' }}>
                 <strong>👹 Boss cuối tuần</strong>
-                <p className="muted" style={{ margin: '.3rem 0 0' }}>Mini test 20–30 phút, đánh 1 con quái to — sẽ mở ở Giai đoạn 6. Cứ luyện đều mỗi ngày là tới lúc gặp boss thôi.</p>
+                <p className="muted" style={{ margin: '.3rem 0 0' }}>Mini test 20–30 phút, đánh 1 con quái to — sẽ mở sau. Cứ luyện đều mỗi ngày là tới lúc gặp boss thôi.</p>
               </div>
             </div>
           )}
@@ -287,13 +287,13 @@ export default function Home() {
           <>
             <h2>Chọn IELTS Academic</h2>
             <p>Luyện Listening 4 Section + Reading 3 Passage, thang band 0–9. Band hiển thị trong app là <strong>band ước lượng để tham khảo</strong> theo bảng quy đổi tham khảo công khai, không phải band chính thức.</p>
-            <p className="muted">Âm thanh nghe trong app được đọc bằng giọng máy (TTS) khi chưa có file audio: “Âm thanh đọc bằng giọng máy (TTS)”.</p>
+            <p className="muted">Âm thanh nghe trong app được đọc bằng giọng máy (TTS) khi chưa có file audio.</p>
           </>
         ) : (
           <>
             <h2>Chọn TOEIC</h2>
-            <p>Giai đoạn 1 chỉ luyện TOEIC (7 Part, thang điểm ước lượng 10–990). Điểm hiển thị trong app là <strong>điểm ước lượng</strong> theo bảng quy đổi tham khảo công khai, không phải điểm chính thức của ETS.</p>
-            <p className="muted">Âm thanh nghe trong app được đọc bằng giọng máy (TTS): “Âm thanh đọc bằng giọng máy (TTS)”.</p>
+            <p>Luyện TOEIC (7 Part, thang điểm ước lượng 10–990). Điểm hiển thị trong app là <strong>điểm ước lượng</strong> theo bảng quy đổi tham khảo công khai, không phải điểm chính thức của ETS.</p>
+            <p className="muted">Âm thanh nghe trong app được đọc bằng giọng máy (TTS).</p>
           </>
         )}
       </div>

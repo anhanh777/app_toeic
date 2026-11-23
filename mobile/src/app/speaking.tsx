@@ -373,7 +373,7 @@ export default function SpeakingScreen() {
             )}
             {saved && (
               <Text style={[styles.note, { color: colors.success, fontSize: scaled(15) }]}>
-                ✅ Đã lưu bản ghi. Chưa chấm AI — sẽ có ở Giai đoạn 2.
+                ✅ Đã lưu bản ghi. Chưa chấm AI — tính năng này sẽ có sau.
               </Text>
             )}
           </View>

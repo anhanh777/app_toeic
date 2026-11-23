@@ -171,7 +171,7 @@ export default function Practice() {
       {tab === 'parts' && (
         <div>
           <h2>{isIelts ? 'Luyện theo Section/Passage' : 'Luyện theo Part'}</h2>
-          <p className="muted">Chọn {isIelts ? 'Section/Passage' : 'Part'} rồi chọn đề để luyện — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.</p>
+          <p className="muted">Chọn {isIelts ? 'Section/Passage' : 'Part'} rồi chọn đề để luyện — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề.</p>
           <ErrorBox error={error} />
           <h2>🎧 Listening — {isIelts ? 'Section 1–4' : 'Part 1–4'}</h2>
           <div className="grid parts-grid">

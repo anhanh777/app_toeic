@@ -32,7 +32,7 @@ import { LoadingLine } from '../components/LoadingLine';
 import { fmtClock } from './writing';
 
 const SAMPLE_NOTE = 'Bài mẫu — nội dung tự soạn, chưa phải đề thi thật.';
-const NO_AI_NOTE = 'Chưa chấm AI — sẽ có ở Giai đoạn 2.';
+const NO_AI_NOTE = 'Chưa chấm AI — tính năng này sẽ có sau.';
 const DIAGNOSTIC_SET = 'TS-028';
 const DIAGNOSTIC_MINUTES = 90;
 

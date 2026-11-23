@@ -401,7 +401,7 @@ export default function HomeScreen() {
                     {stats.weakestPart != null ? partNameFor(stats.weakestPart, exam) : '—'}
                   </Text>
                   <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
-                    Tỉ lệ đúng chung: {`${Math.round(stats.accuracy * 100)}%`}
+                    Tỉ lệ đúng chung: {stats.accuracy != null ? `${Math.round(stats.accuracy * 10) / 10}%` : '—'}
                   </Text>
                   {isIelts && stats.weakestType ? (
                     <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
@@ -656,7 +656,7 @@ export default function HomeScreen() {
                           : 'Chưa đủ dữ liệu để xác định Part yếu nhất — luyện 1 Part bất kỳ nhé.'}
                       </Text>
                       <Text style={[styles.todayCardText, { color: colors.muted, fontSize: scaled(14) }]}>
-                        Trang Luyện tập hiện chưa nhận sẵn Part từ link, bạn chọn Part ở đó nhé.
+                        Bạn chọn Part ở trang Luyện tập nhé.
                       </Text>
                       <View style={styles.row}>
                         <Pressable
@@ -749,7 +749,7 @@ export default function HomeScreen() {
                     <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
                       <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>👹 Boss cuối tuần</Text>
                       <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
-                        Mini test 20–30 phút, đánh 1 con quái to — sẽ mở ở Giai đoạn 6. Cứ luyện đều mỗi ngày
+                        Mini test 20–30 phút, đánh 1 con quái to — sẽ mở sau. Cứ luyện đều mỗi ngày
                         là tới lúc gặp boss thôi.
                       </Text>
                     </View>

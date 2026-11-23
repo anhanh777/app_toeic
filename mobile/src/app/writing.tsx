@@ -283,7 +283,7 @@ export default function WritingScreen() {
                 </Pressable>
                 {submitted && (
                   <Text style={[styles.note, { color: colors.success, fontSize: scaled(15) }]}>
-                    ✅ Đã nộp bài. Chưa chấm AI — sẽ có ở Giai đoạn 2.
+                    ✅ Đã nộp bài. Chưa chấm AI — tính năng này sẽ có sau.
                   </Text>
                 )}
               </View>
@@ -308,7 +308,7 @@ export default function WritingScreen() {
                       {s.isBaseline ? ' · Bài mẫu chẩn đoán' : ''}
                     </Text>
                     <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
-                      Chưa chấm AI — sẽ có ở Giai đoạn 2. {expanded ? '▲ Ẩn bài viết' : '▼ Xem bài viết'}
+                      Chưa chấm AI — tính năng này sẽ có sau. {expanded ? '▲ Ẩn bài viết' : '▼ Xem bài viết'}
                     </Text>
                     {s.selfScores ? (
                       <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>

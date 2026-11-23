@@ -84,7 +84,7 @@ export default function IeltsSetup() {
           </button>
           <button className="btn secondary" disabled={saving} onClick={() => void submit(true)}>Bỏ qua</button>
         </div>
-        <p className="muted">Đổi được bất cứ lúc nào ở trang Cài đặt (sẽ bổ sung ở giai đoạn sau).</p>
+        <p className="muted">Đổi được bất cứ lúc nào ở trang Cài đặt.</p>
       </div>
     </div>
   );

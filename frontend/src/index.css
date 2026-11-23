@@ -1378,6 +1378,15 @@ tbody tr:hover{background:var(--surface-soft)}
 [data-style="lively"] .hp-bar i{background:#FF4B4B}
 [data-style="lively"] .vocab-progress,[data-style="lively"] .vocab-mastery-track{border:2px solid var(--border)}
 [data-style="lively"] .vocab-progress-fill,[data-style="lively"] .vocab-mastery-fill{background:var(--accent)}
+/* --- Sống động + nền tối: nút/track dùng màu sáng cố định sẽ chìm/chói --- */
+[data-theme="dark"][data-style="lively"] .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+[data-theme="dark"][data-style="lively"] .btn.secondary:hover{background:var(--surface-soft); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+[data-theme="dark"][data-style="lively"] .btn.secondary:active{box-shadow:0 2px 0 var(--border)}
+[data-theme="dark"][data-style="lively"] .btn.ghost{background:var(--surface); box-shadow:0 4px 0 var(--accent-soft-strong)}
+[data-theme="dark"][data-style="lively"] .btn.ghost:hover{background:var(--accent-soft)}
+[data-theme="dark"][data-style="lively"] .btn.danger{background:var(--surface); box-shadow:0 4px 0 var(--border)}
+[data-theme="dark"][data-style="lively"] .btn.danger:hover{background:var(--surface-soft)}
+[data-theme="dark"][data-style="lively"] .xpbar,[data-theme="dark"][data-style="lively"] .bar{background:var(--track)}
 /* --- Lua chon dap an: chon thi vien xanh + nen xanh nhat --- */
 [data-style="lively"] .option{border:2px solid var(--border); border-radius:14px; font-weight:600}
 [data-style="lively"] .option:hover{border-color:var(--accent)}

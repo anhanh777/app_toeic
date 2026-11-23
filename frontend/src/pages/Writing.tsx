@@ -83,7 +83,7 @@ export default function Writing() {
               {saving ? 'Đang nộp…' : 'Nộp bài'}
             </button>
           </div>
-          {submitted && <p style={{ color: 'var(--green-ink)' }}>✅ Đã nộp bài. Chưa chấm AI — sẽ có ở Giai đoạn 2.</p>}
+          {submitted && <p style={{ color: 'var(--green-ink)' }}>✅ Đã nộp bài. Chưa chấm AI — tính năng này sẽ có sau.</p>}
         </div>
       )}
 
@@ -97,7 +97,7 @@ export default function Writing() {
               {s.createdAt ? ` · ${new Date(s.createdAt).toLocaleDateString('vi-VN')}` : ''}
               {s.isBaseline ? ' · Bài mẫu chẩn đoán' : ''}
             </p>
-            <p className="muted" style={{ margin: '.1rem 0' }}>Chưa chấm AI — sẽ có ở Giai đoạn 2.</p>
+            <p className="muted" style={{ margin: '.1rem 0' }}>Chưa chấm AI — tính năng này sẽ có sau.</p>
             <details><summary>Xem bài viết</summary><p style={{ whiteSpace: 'pre-wrap' }}>{s.content}</p></details>
           </div>
         ))}

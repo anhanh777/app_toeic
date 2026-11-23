@@ -43,7 +43,7 @@ export default function Stats() {
         <>
           <div className="grid grid3">
             <div className="card"><div className="muted">Tổng câu đã làm</div><div className="stat-num">{stats.totalAnswered}</div></div>
-            <div className="card"><div className="muted">Tỉ lệ đúng</div><div className="stat-num">{Math.round(stats.accuracy * 100)}%</div></div>
+            <div className="card"><div className="muted">Tỉ lệ đúng</div><div className="stat-num">{stats.accuracy != null ? `${Math.round(stats.accuracy * 10) / 10}%` : '—'}</div></div>
             <div className="card"><div className="muted">Streak</div><div className="stat-num">{stats.streakDays} ngày 🔥</div></div>
             <div className="card stat-card"><div className="ico">⭐</div><div className="muted">Tổng XP</div><div className="stat-num">{stats.totalXp}</div><div className="card-foot"><XpBar xp={stats.totalXp} gold /></div></div>
             {isIelts ? (
@@ -80,8 +80,8 @@ export default function Stats() {
           <div className="card"><h2>{isIelts ? 'Tỉ lệ đúng theo Section/Passage' : 'Tỉ lệ đúng theo Part'}</h2>
             {stats.byPart.map(b => (
               <div key={b.part} style={{ marginBottom: '.6rem' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>{isIelts ? partNameFor(b.part, ex) : partName(b.part)}</span><span>{Math.round(b.accuracy * 100)}% ({b.correct}/{b.answered})</span></div>
-                <div className="bar"><i style={{ width: `${b.accuracy * 100}%` }} /></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>{isIelts ? partNameFor(b.part, ex) : partName(b.part)}</span><span>{b.accuracy != null ? `${Math.round(b.accuracy * 10) / 10}%` : '—'} ({b.correct}/{b.answered})</span></div>
+                <div className="bar"><i style={{ width: `${Math.min(100, Math.max(0, b.accuracy ?? 0))}%` }} /></div>
               </div>
             ))}
           </div>
@@ -89,8 +89,8 @@ export default function Stats() {
             <div className="card"><h2>Tỉ lệ đúng theo dạng câu hỏi</h2>
               {stats.byType.map(b => (
                 <div key={b.questionType} style={{ marginBottom: '.6rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>{questionTypeName(b.questionType)}</span><span>{Math.round(b.accuracy * 100)}% ({b.correct}/{b.answered})</span></div>
-                  <div className="bar"><i style={{ width: `${b.accuracy * 100}%` }} /></div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>{questionTypeName(b.questionType)}</span><span>{b.accuracy != null ? `${Math.round(b.accuracy * 10) / 10}%` : '—'} ({b.correct}/{b.answered})</span></div>
+                  <div className="bar"><i style={{ width: `${Math.min(100, Math.max(0, b.accuracy ?? 0))}%` }} /></div>
                 </div>
               ))}
             </div>

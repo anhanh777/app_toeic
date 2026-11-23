@@ -12,7 +12,7 @@ import { bandLevel, questionTypeName, wordCount } from '../exam';
 import { fmtClock, useCountdown, ChartTable } from '../ielts-phase1';
 
 const SAMPLE_NOTE = 'Bài mẫu — nội dung tự soạn, chưa phải đề thi thật.';
-const NO_AI_NOTE = 'Chưa chấm AI — sẽ có ở Giai đoạn 2.';
+const NO_AI_NOTE = 'Chưa chấm AI — tính năng này sẽ có sau.';
 
 export default function Diagnostic() {
   const [diag, setDiag] = useState<DiagnosticMap | null>(null);

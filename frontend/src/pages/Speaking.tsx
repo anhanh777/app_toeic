@@ -158,7 +158,7 @@ export default function Speaking() {
               </div>
             </>
           )}
-          {saved && <p style={{ color: 'var(--green-ink)' }}>✅ Đã lưu bản ghi. Chưa chấm AI — sẽ có ở Giai đoạn 2.</p>}
+          {saved && <p style={{ color: 'var(--green-ink)' }}>✅ Đã lưu bản ghi. Chưa chấm AI — tính năng này sẽ có sau.</p>}
         </div>
       )}
 
