@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { api, type TestSet } from '../api';
 import { ErrorBox, partName, sectionOf } from '../components';
-import { groupTestSetsByBook, partLabel, partNameFor, questionTypeName, useExam } from '../exam';
+import { groupTestSetsByBook, partLabel, questionTypeName, useExam } from '../exam';
 import { LoadingLine } from '../uiSettings';
 
 export default function PracticePartSets() {
@@ -42,7 +42,6 @@ export default function PracticePartSets() {
   const title = isIelts
     ? `${partLabel(part, exam)} — ${sectionOf(part)}`
     : partName(part);
-  const shortLabel = isIelts ? partNameFor(part, exam) : partName(part);
   // Ý 2 (IELTS-only): gom nhóm đề theo sách Cambridge (như tab Bộ đề).
   const bookGroups = isIelts ? groupTestSetsByBook(sorted) : [];
 
@@ -59,7 +58,7 @@ export default function PracticePartSets() {
         onClick={go}
       >
         <b>{ts.title}{!ts.isPublished && <> <span className="pill">NHÁP</span></>}</b>
-        <span>{disabled ? 'Chưa có câu' : `${partCount} câu ${shortLabel}`}</span>
+        <span>{disabled ? 'Chưa có câu' : `${partCount} câu`}</span>
       </button>
     );
   };
@@ -77,7 +76,7 @@ export default function PracticePartSets() {
     <div>
       <p><Link className="btn secondary btn-sm" to="/practice">← Quay lại chọn Part</Link></p>
       <h1>{title}</h1>
-      <p className="muted">Chọn 1 đề để luyện {shortLabel} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề.{questionType ? <> Đang luyện riêng dạng: <strong>{questionTypeName(questionType)}</strong>.</> : ''}</p>
+      <p className="muted">Mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề.{questionType ? <> Đang luyện riêng dạng: <strong>{questionTypeName(questionType)}</strong>.</> : ''}</p>
       <ErrorBox error={error} />
       {loading && <LoadingLine location="table" text="Đang tải danh sách bộ đề…" />}
       {!loading && !testSets.length && !error && (

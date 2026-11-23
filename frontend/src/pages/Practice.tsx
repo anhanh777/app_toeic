@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api, type Attempt, type PartInfo, type StatsOverview, type TestSet } from '../api';
-import { ErrorBox, partName, sectionOf } from '../components';
+import { ErrorBox, partName } from '../components';
 import { attemptStatsFor, groupTestSetsByBook, listeningReadingProgress, partLabel, partNameFor, questionTypeName, testSetStatus, useExam, type SetStatus } from '../exam';
 import { LoadingLine } from '../uiSettings';
 
@@ -48,14 +48,11 @@ export default function Practice() {
     return (
       <div key={ts.id} className="card part-card" onClick={() => nav(`/practice/test-set/${ts.id}`)}>
         <div style={{ display: 'flex', justifyContent: 'space-between', gap: '.5rem', flexWrap: 'wrap' }}>
-          <strong>{ts.title} <span className="muted" style={{ fontWeight: 500 }}>· {total} câu</span></strong>
+          <strong>{ts.title} <span className="muted" style={{ fontWeight: 500, whiteSpace: 'nowrap' }}>· {total} câu</span></strong>
           {!ts.isPublished && <span className="pill">NHÁP</span>}
         </div>
-        <p className="muted parts-line">
-          {ts.parts.map(p => `${partLabel(p.part, ex)} ${p.count}`).join(' · ') || 'Chưa có câu hỏi'}
-        </p>
         {isIelts && lr && (
-          <p className="muted" style={{ margin: 0 }}>🎧 {lr.listening.answered}/{lr.listening.total} · 📖 {lr.reading.answered}/{lr.reading.total} · ⏱️ 90 phút thi thử</p>
+          <p className="muted" style={{ margin: 0 }}>🎧 {lr.listening.answered}/{lr.listening.total} · 📖 {lr.reading.answered}/{lr.reading.total}</p>
         )}
         {isIelts && ts.byType && ts.byType.length > 0 && (
           <p className="muted" style={{ margin: 0 }}>
@@ -101,12 +98,11 @@ export default function Practice() {
     const pct = a && a.answered > 0 ? Math.round((a.correct / a.answered) * 100) : 0;
     return (
       <div key={p.part} className={`card part-card${part === p.part ? ' selected' : ''}`} onClick={() => setPart(p.part)}>
-        <div className="part-ico">{p.part <= 4 ? '🎧' : '📖'} {partLabel(p.part, ex)}</div>
         <p style={{ margin: 0 }}>
-          <strong>{isIelts ? partNameFor(p.part, ex) : partName(p.part)}</strong> <span className="pill">{sectionOf(p.part)}</span>{' '}
-          <span className="muted">{p.count ? `${p.count} câu` : 'Chưa rõ số câu'}</span>
+          <strong>{p.part <= 4 ? '🎧' : '📖'} {isIelts ? partNameFor(p.part, ex) : partName(p.part)}</strong>{' '}
+          <span className="muted" style={{ whiteSpace: 'nowrap' }}>{p.count ? `${p.count} câu` : 'Chưa rõ số câu'}</span>
         </p>
-        {a && <p className="muted" style={{ margin: 0 }}>Tỉ lệ đúng: {pct}% ({a.correct}/{a.answered} câu)</p>}
+        {a && <p className="muted" style={{ margin: 0 }}>Tỉ lệ đúng: {pct}% <span style={{ whiteSpace: 'nowrap' }}>({a.correct}/{a.answered} câu)</span></p>}
         {a && <div className="bar"><i style={{ width: `${Math.min(100, Math.max(0, pct))}%` }} /></div>}
         <div className="btn-row">
           <button className="btn btn-sm" onClick={e => { e.stopPropagation(); nav(`/practice/part/${p.part}?exam=${ex}`); }}>
@@ -158,13 +154,13 @@ export default function Practice() {
             bookGroups.map(g => (
               <details className="book-group" key={g.label} open>
                 <summary>{g.label} <span className="muted">({g.sets.length} đề)</span></summary>
-                <div className="grid" style={{ marginTop: '.5rem' }}>
+                <div className="grid grid3 sets-grid" style={{ marginTop: '.5rem' }}>
                   {g.sets.map(renderSetCard)}
                 </div>
               </details>
             ))
           ) : (
-            <div className="grid">
+            <div className="grid grid3 sets-grid">
               {testSets.map(renderSetCard)}
             </div>
           )}
@@ -173,7 +169,6 @@ export default function Practice() {
 
       {tab === 'parts' && (
         <div>
-          <h2>{isIelts ? 'Luyện theo Section/Passage' : 'Luyện theo Part'}</h2>
           <p className="muted">Chọn {isIelts ? 'Section/Passage' : 'Part'} rồi chọn đề để luyện — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề.</p>
           <ErrorBox error={error} />
           <h2>🎧 Listening — {isIelts ? 'Section 1–4' : 'Part 1–4'}</h2>

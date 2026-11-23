@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api, type Attempt, type TestSet } from '../api';
-import { ErrorBox, partName, sectionOf } from '../components';
+import { ErrorBox, partName } from '../components';
 import { attemptStatsFor, listeningReadingProgress, partLabel, partNameFor, questionTypeName, useExam } from '../exam';
 import { LoadingLine } from '../uiSettings';
 
@@ -64,10 +64,9 @@ export default function TestSetDetail() {
     const rowTotal = prog?.total ?? n;
     return (
       <div key={p} className="card part-card">
-        <div className="part-ico" aria-hidden>{p <= 4 ? '🎧' : '📖'}</div>
         <p style={{ margin: 0 }}>
-          <strong>{isIelts ? partNameFor(p, ex) : partName(p)}</strong> <span className="pill">{sectionOf(p)}</span>{' '}
-          <span className="muted">{n} câu trong đề này</span>
+          <strong>{p <= 4 ? '🎧' : '📖'} {isIelts ? partNameFor(p, ex) : partName(p)}</strong>{' '}
+          <span className="muted" style={{ whiteSpace: 'nowrap' }}>{n} câu</span>
         </p>
         {prog
           ? <p className="muted" style={{ margin: 0 }}>Đã làm {prog.answered}/{rowTotal} câu · đúng {prog.correct}</p>
@@ -79,7 +78,7 @@ export default function TestSetDetail() {
             disabled={!n}
             onClick={() => nav(`/practice/session?testSetId=${ts.id}&part=${p}&exam=${ex}`)}
           >
-            Luyện {partLabel(p, ex)} này ({n} câu)
+            Luyện {partLabel(p, ex)} này
           </button>
         </div>
       </div>

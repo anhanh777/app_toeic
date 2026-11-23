@@ -228,6 +228,7 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 .pick-box:disabled{opacity:.55; cursor:not-allowed}
 .pick-box:disabled:hover{border-color:var(--border)}
 .stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin:.9rem 0}
+.stat-grid--2{grid-template-columns:repeat(2,1fr)}
 .stat-box{background:var(--surface-soft); border:1px solid var(--border); border-radius:16px; padding:.7rem .9rem}
 .stat-box b{display:block; font-size:1.35rem; line-height:1.2; color:var(--accent-dark)}
 .stat-box span{font-size:.82rem; color:var(--muted)}
@@ -258,8 +259,9 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 }
 .grid > .card > *{margin-top:0; margin-bottom:0}
 .grid > .card p{margin:.25rem 0}
-/* Dòng liệt kê Part 1–7 trong thẻ bộ đề: nhỏ hơn một nấc cho gọn 1 dòng */
-.parts-line{font-size:.85rem; line-height:1.45}
+/* Lưới bộ đề (trang Luyện tập): 3 cột đã bỏ dòng liệt kê Part giống nhau
+   ở mọi đề nên thẻ ngắn lại — siết nhẹ padding cho xếp dày hơn mà vẫn dễ đọc */
+.sets-grid > .card{padding:.7rem .9rem}
 /* Nút và chân card trong lưới luôn thẳng hàng ở đáy, dù nội dung dài ngắn khác nhau */
 .grid > .card .btn-row:last-child{margin-top:auto; padding-top:.35rem}
 .card-foot{
@@ -274,10 +276,15 @@ hr{border:none; border-top:1px solid var(--border); margin:1.2rem 0}
 @media(min-width:640px) and (max-width:959px){
   .grid3 > :last-child:nth-child(odd){grid-column:1 / -1}
 }
-/* Lưới Part (7 thẻ, chia nhóm Nghe/Đọc): thẻ lẻ cuối nhóm luôn span full-width */
-@media(min-width:640px){
+/* Lưới Part (7 thẻ, chia nhóm Nghe/Đọc): 2 cột từ 640px, 4 cột từ 960px
+   (đủ chỗ cho 4 thẻ Listening trên 1 hàng). Ở 2 cột, thẻ lẻ cuối nhóm span
+   full-width; ở 4 cột thì không — nhóm Reading 3 thẻ chỉ để trống 1 ô. */
+@media(min-width:640px) and (max-width:959px){
   .parts-grid > :last-child:nth-child(odd){grid-column:1 / -1}
 }
+@media(min-width:960px){.parts-grid{grid-template-columns:repeat(4,1fr)}}
+/* Thẻ Part gọn như thẻ bộ đề (cùng trang Luyện tập / chi tiết đề) */
+.parts-grid > .card{padding:.7rem .9rem}
 /* Select đứng trước card (lọc chủ đề từ vựng, lọc câu sai): chừa 1 nhịp cách */
 select + .card{margin-top:1rem}
 /* Ô chọn số câu đặt trong card thông tin đề: label + select nằm 1 hàng */
@@ -367,7 +374,6 @@ select + .card{margin-top:1rem}
 .book-group{margin-bottom:1rem}
 .book-group summary{cursor:pointer; font-weight:700; font-size:1.1rem; padding:.4rem 0; list-style-position:outside}
 .book-group summary:hover{color:var(--accent-dark)}
-.part-ico{font-weight:700; font-size:.95rem; color:var(--accent-dark)}
 
 /* Khung làm bài — nền trắng sạch, chữ xám đen đậm */
 .screen{
@@ -1605,7 +1611,6 @@ tbody tr:hover{background:var(--surface-soft)}
 [data-style="lively"] .part-card{border-radius:20px; border-width:2px}
 [data-style="lively"] .part-card:hover{box-shadow:0 4px 0 var(--accent-soft-strong)}
 [data-style="lively"] .part-card.selected{border-color:var(--accent-dark); box-shadow:0 0 0 3px var(--accent-soft), 0 4px 0 var(--accent-dark)}
-[data-style="lively"] .part-ico{font-size:1.5rem; font-weight:800}
 [data-style="lively"] .exam-pick{gap:1.25rem}
 [data-style="lively"] .exam-pick .card{padding:1.6rem 1.3rem; border-radius:20px; box-shadow:0 4px 0 var(--border)}
 [data-style="lively"] .exam-pick .card > div:first-child{font-size:2.4rem !important; line-height:1.2}

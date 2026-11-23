@@ -587,10 +587,9 @@ export default function MockTest() {
             <div>
               <h2 style={{ margin: '.2rem 0 .3rem' }}>{testSet.title}</h2>
               {testSet.description && <p className="muted">{testSet.description}</p>}
-              <div className="stat-grid">
+              <div className="stat-grid stat-grid--2">
                 <div className="stat-box"><b>{testSet.totalQuestions}</b><span>câu hỏi</span></div>
                 <div className="stat-box"><b>{fullMinutes}</b><span>phút làm bài</span></div>
-                <div className="stat-box"><b>{testSet.parts.length}</b><span>{isIelts ? 'Section/Passage' : 'Part'}</span></div>
               </div>
               <span className="mock-label">Cấu trúc đề</span>
               <div className="pick-grid pick-grid--parts">
@@ -639,7 +638,7 @@ export default function MockTest() {
         {mode === 'mini' && (
           <>
             <span className="mock-label">{isIelts ? 'Chọn Section/Passage' : 'Chọn Part'}</span>
-            <div className="pick-grid pick-grid--parts" role="group" aria-label="Chọn phần thi">
+            <div className="pick-grid" role="group" aria-label="Chọn phần thi">
               {[1, 2, 3, 4, 5, 6, 7].map(p => (
                 <button key={p} type="button" className={`pick-box${part === p ? ' pick-box--selected' : ''}`} aria-pressed={part === p} onClick={() => setPart(p)}>
                   <b>{isIelts ? partNameFor(p, exam) : partName(p)}</b>
@@ -663,7 +662,7 @@ export default function MockTest() {
                 return (
                   <button key={s.id} type="button" className="pick-box" onClick={() => nav(`/mock?testSetId=${s.id}&exam=${exam}`)}>
                     <b>{s.title}</b>
-                    <span>{s.totalQuestions} câu • {fullMinutes} phút</span>
+                    <span>{s.totalQuestions} câu</span>
                     {doneCount > 0 && <span className="pick-box-attempts">{doneCount} lần</span>}
                   </button>
                 );
