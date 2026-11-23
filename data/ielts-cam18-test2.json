@@ -17,7 +17,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-002",
@@ -37,7 +39,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-003",
@@ -57,7 +61,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-004",
@@ -77,7 +83,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-005",
@@ -97,7 +105,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-006",
@@ -117,7 +127,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "table_completion"
+  "questionType": "table_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-007",
@@ -137,7 +149,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "table_completion"
+  "questionType": "table_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-008",
@@ -159,7 +173,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "table_completion"
+  "questionType": "table_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-009",
@@ -179,7 +195,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "table_completion"
+  "questionType": "table_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S1-010",
@@ -199,7 +217,9 @@
   "topic": "ielts-listening",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "table_completion"
+  "questionType": "table_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-011",
@@ -240,7 +260,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-012",
@@ -281,7 +303,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-013",
@@ -322,7 +346,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-014",
@@ -363,7 +389,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-015",
@@ -421,7 +449,9 @@
   "difficulty": "medium",
   "testSetId": null,
   "questionType": "labelling",
-  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png"
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-016",
@@ -479,7 +509,9 @@
   "difficulty": "medium",
   "testSetId": null,
   "questionType": "labelling",
-  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png"
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-017",
@@ -537,7 +569,9 @@
   "difficulty": "medium",
   "testSetId": null,
   "questionType": "labelling",
-  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png"
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-018",
@@ -595,7 +629,9 @@
   "difficulty": "medium",
   "testSetId": null,
   "questionType": "labelling",
-  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png"
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-019",
@@ -653,7 +689,9 @@
   "difficulty": "medium",
   "testSetId": null,
   "questionType": "labelling",
-  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png"
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S2-020",
@@ -711,7 +749,9 @@
   "difficulty": "medium",
   "testSetId": null,
   "questionType": "labelling",
-  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png"
+  "imageUrl": "https://res.cloudinary.com/b8ay1qzz/image/upload/v1795399182/ielts/cam18/test2/cam18-t2-map.png",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-021",
@@ -744,7 +784,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-022",
@@ -777,7 +819,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-023",
@@ -810,7 +854,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-024",
@@ -843,7 +889,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-025",
@@ -884,7 +932,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-026",
@@ -925,7 +975,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-027",
@@ -970,7 +1022,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-028",
@@ -1015,7 +1069,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-029",
@@ -1060,7 +1116,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S3-030",
@@ -1105,7 +1163,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-031",
@@ -1125,7 +1185,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-032",
@@ -1145,7 +1207,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-033",
@@ -1165,7 +1229,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-034",
@@ -1185,7 +1251,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-035",
@@ -1205,7 +1273,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-036",
@@ -1227,7 +1297,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-037",
@@ -1249,7 +1321,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-038",
@@ -1269,7 +1343,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-039",
@@ -1289,7 +1365,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-L-T2-S4-040",
@@ -1309,7 +1387,9 @@
   "topic": "ielts-listening",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-001",
@@ -1331,7 +1411,9 @@
   "topic": "ielts-reading",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-002",
@@ -1353,7 +1435,9 @@
   "topic": "ielts-reading",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-003",
@@ -1373,7 +1457,9 @@
   "topic": "ielts-reading",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-004",
@@ -1393,7 +1479,9 @@
   "topic": "ielts-reading",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-005",
@@ -1413,7 +1501,9 @@
   "topic": "ielts-reading",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-006",
@@ -1433,7 +1523,9 @@
   "topic": "ielts-reading",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-007",
@@ -1453,7 +1545,9 @@
   "topic": "ielts-reading",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-008",
@@ -1473,7 +1567,9 @@
   "topic": "ielts-reading",
   "difficulty": "easy",
   "testSetId": null,
-  "questionType": "note_completion"
+  "questionType": "note_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-009",
@@ -1506,7 +1602,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-010",
@@ -1539,7 +1637,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-011",
@@ -1572,7 +1672,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-012",
@@ -1605,7 +1707,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P1-013",
@@ -1638,7 +1742,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-014",
@@ -1675,7 +1781,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-015",
@@ -1712,7 +1820,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-016",
@@ -1749,7 +1859,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-017",
@@ -1786,7 +1898,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-018",
@@ -1823,7 +1937,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-019",
@@ -1860,7 +1976,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "multiple_choice"
+  "questionType": "multiple_choice",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-020",
@@ -1893,7 +2011,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "yes_no_not_given"
+  "questionType": "yes_no_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-021",
@@ -1926,7 +2046,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "yes_no_not_given"
+  "questionType": "yes_no_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-022",
@@ -1959,7 +2081,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "yes_no_not_given"
+  "questionType": "yes_no_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-023",
@@ -1992,7 +2116,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "yes_no_not_given"
+  "questionType": "yes_no_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-024",
@@ -2037,7 +2163,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-025",
@@ -2082,7 +2210,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P2-026",
@@ -2127,7 +2257,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "matching"
+  "questionType": "matching",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-027",
@@ -2160,7 +2292,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-028",
@@ -2193,7 +2327,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-029",
@@ -2226,7 +2362,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-030",
@@ -2259,7 +2397,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-031",
@@ -2292,7 +2432,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-032",
@@ -2325,7 +2467,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-033",
@@ -2358,7 +2502,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "true_false_not_given"
+  "questionType": "true_false_not_given",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-034",
@@ -2378,7 +2524,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "summary_completion"
+  "questionType": "summary_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-035",
@@ -2398,7 +2546,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "summary_completion"
+  "questionType": "summary_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-036",
@@ -2418,7 +2568,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "summary_completion"
+  "questionType": "summary_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-037",
@@ -2438,7 +2590,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "summary_completion"
+  "questionType": "summary_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-038",
@@ -2458,7 +2612,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "summary_completion"
+  "questionType": "summary_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-039",
@@ -2478,7 +2634,9 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "summary_completion"
+  "questionType": "summary_completion",
+  "typeFlagged": false,
+  "typeNote": null
  },
  {
   "id": "C18-R-T2-P3-040",
@@ -2498,6 +2656,8 @@
   "topic": "ielts-reading",
   "difficulty": "medium",
   "testSetId": null,
-  "questionType": "summary_completion"
+  "questionType": "summary_completion",
+  "typeFlagged": false,
+  "typeNote": null
  }
 ]
