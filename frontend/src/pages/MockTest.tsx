@@ -15,6 +15,23 @@ function fmt(s: number) {
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 }
 
+// Ngay nop bai (vi-VN, kem gio) + thoi gian lam (mm:ss, hoac hh:mm:ss
+// neu tren 1 gio) — dung cho khoi "Lich su thi thu".
+function fmtMockDate(iso?: string | null): string {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso.slice(0, 10);
+  return `${d.toLocaleDateString('vi-VN')} ${d.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })}`;
+}
+
+function fmtDur(s?: number | null): string {
+  if (s == null) return '—';
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  return h > 0
+    ? `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
+    : `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+}
+
 export default function MockTest() {
   const nav = useNavigate();
   const [params] = useSearchParams();
@@ -245,10 +262,15 @@ export default function MockTest() {
   const [testSets, setTestSets] = useState<TestSet[]>([]);
   // Lich su thi thu (de dem so lan da lam moi de o luoi chon de).
   const [history, setHistory] = useState<Attempt[]>([]);
+  // Lich su thi thu DA NOP (GET /api/tests/history: chi mini/full, toi
+  // da 50) — hien o khoi "Lich su thi thu" duoi form chon de. API tra ca
+  // bai dang lam do (chua co finishedAt) nen loc lai o render.
+  const [mockHistory, setMockHistory] = useState<Attempt[]>([]);
   useEffect(() => {
     if (!testSetId) {
       api.testSets(exam).then(setTestSets).catch(() => undefined);
       api.statsHistory(exam).then(setHistory).catch(() => undefined);
+      api.testHistory(exam).then(setMockHistory).catch(() => undefined);
     }
   }, [exam, testSetId]);
 
@@ -516,6 +538,26 @@ export default function MockTest() {
     );
   };
 
+  // ---- Khoi "Lich su thi thu" (man chon de): chi bai DA NOP (co
+  // finishedAt); bai dang lam do khong hien o day (da co the resume
+  // rieng). "Lam lai" chi chon san dung de + dung che do, KHONG tu bat
+  // dau thi — user tu bam "Bat dau thi". Mini khong kem de (backend chon
+  // ngau nhien) nen chi can chon dung Part; full toan ngan hang thi chi
+  // can chon che do full.
+  const testSetTitleById = new Map(testSets.map(t => [t.id, t.title]));
+  const submittedHistory = mockHistory.filter(a => a.finishedAt || a.finished_at);
+  const redoAttempt = (a: Attempt) => {
+    if (a.mode === 'mini') {
+      setMode('mini');
+      if (a.part) setPart(a.part);
+    } else if (a.testSetId) {
+      nav(`/mock?testSetId=${a.testSetId}&exam=${exam}`);
+    } else {
+      setMode('full');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   if (restoring) {
     return <LoadingLine location="page" text="Đang khôi phục bài thi đang làm dở…" />;
   }
@@ -622,6 +664,41 @@ export default function MockTest() {
           {isIelts && <p className="muted">🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.</p>}
         </div>
         <div className="btn-row"><button className="btn" disabled={busy} onClick={start}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</button></div>
+        <div className="mock-history">
+          <h2>📜 Lịch sử thi thử</h2>
+          {submittedHistory.length === 0 ? (
+            <p className="muted">Chưa có bài thi thử nào — làm 1 bài để xem lịch sử nhé.</p>
+          ) : (
+            <table>
+              <thead><tr><th>Ngày</th><th>Đề</th><th>Chế độ</th><th>{isIelts ? 'Band' : 'Điểm'}</th><th>Thời gian</th><th>Đúng</th><th></th></tr></thead>
+              <tbody>
+                {submittedHistory.map(a => {
+                  const correct = (a.listeningCorrect ?? a.listening_correct ?? 0) + (a.readingCorrect ?? a.reading_correct ?? 0);
+                  const total = a.questionCount ?? 0;
+                  const score = isIelts
+                    ? (a.overallBand != null ? `Band ${a.overallBand}` : '—')
+                    : ((a.totalScore ?? a.total_score) != null ? `${a.totalScore ?? a.total_score}` : '—');
+                  return (
+                    <tr key={a.id}>
+                      <td>{fmtMockDate(a.finishedAt || a.finished_at)}</td>
+                      <td>{a.testSetId ? (testSetTitleById.get(a.testSetId) ?? a.testSetId) : 'Toàn bộ ngân hàng'}</td>
+                      <td>{a.mode === 'mini' ? (a.part ? `Mini — ${partLabel(a.part, exam)}` : 'Mini') : 'Full'}</td>
+                      <td>{score}{isIelts && a.overallBand != null ? <span className="muted"> (L {a.listeningBand ?? '—'} • R {a.readingBand ?? '—'})</span> : ''}</td>
+                      <td>{fmtDur(a.durationSec ?? a.duration_sec)}</td>
+                      <td>{total ? `${correct}/${total}` : `${correct}`}</td>
+                      <td>
+                        <div className="btn-row" style={{ margin: 0 }}>
+                          <button className="btn secondary btn-sm" onClick={() => nav(`/result/${a.id}`)}>Xem lại</button>
+                          <button className="btn secondary btn-sm" onClick={() => redoAttempt(a)}>Làm lại</button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
     );
   }

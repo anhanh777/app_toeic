@@ -120,6 +120,11 @@ export interface Attempt {
    * nay (camelCase): de thi cua bai lam + moc thoi gian — dung de tinh
    * so lan thi / band cao nhat / band gan nhat theo tung de. */
   testSetId?: string; startedAt?: string; finishedAt?: string;
+  /** GET /api/tests/history tra them: so cau, thoi gian lam, so cau dung. */
+  questionCount?: number; durationSec?: number;
+  listeningCorrect?: number; readingCorrect?: number;
+  totalScore?: number; listeningScore?: number; readingScore?: number;
+  xpEarned?: number;
 }
 
 /** Bai thi thu chua nop (GET /api/tests/in-progress) — de tiep tuc bai do. */
@@ -154,6 +159,27 @@ export interface TodayData {
   badDayAvailable: boolean; carriedOver: string[];
 }
 export interface BadDayTask { kind: 'dictation' | 'writing' | 'speaking' | string; title: string; detail: string; }
+
+// Điểm danh hằng ngày (lịch + quà theo mốc): 'checkin' = đã điểm danh,
+// 'rest' = ngày nghỉ (bad-day), 'active' = có hoạt động nhưng chưa điểm danh.
+export type CheckinDayKind = 'checkin' | 'rest' | 'active';
+export interface CheckinMilestone { days: number; title: string; xp: number; achieved: boolean; }
+export interface CheckinHistoryItem { date: string; kind: 'checkin' | 'rest'; weekday: string; streakDay: number | null; }
+export interface CheckinData {
+  today: string; checkedInToday: boolean; restToday: boolean; month: string;
+  days: Record<string, CheckinDayKind>;
+  streak: { current: number; longest: number };
+  totalCheckins: number;
+  milestones: CheckinMilestone[];
+  nextMilestone: (CheckinMilestone & { remaining: number }) | null;
+  history: CheckinHistoryItem[];
+  historyHasMore: boolean;
+}
+export interface CheckinResult {
+  ok: boolean; already: boolean; date: string; checkedInToday: boolean;
+  xpAwarded: number; streakDays: number; totalCheckins: number;
+  milestoneAwarded: (CheckinMilestone & { xpAwarded: number }) | null;
+}
 export interface DiagnosticMap {
   bySection?: Record<string, { correct: number; total: number }>;
   byPassage?: Record<string, { correct: number; total: number }>;
@@ -404,6 +430,18 @@ export const api = {
     req<{ ok: boolean }>(exam ? `/api/today/complete?exam=${encodeURIComponent(exam)}` : '/api/today/complete', { method: 'POST', body: JSON.stringify({ blockId, minutes }) }),
   todayBadDay: (exam?: string) =>
     req<BadDayTask>(exam ? `/api/today/bad-day?exam=${encodeURIComponent(exam)}` : '/api/today/bad-day', { method: 'POST' }),
+
+  // Điểm danh hằng ngày (lịch + quà theo mốc).
+  checkin: (month?: string, before?: string, limit?: number) => {
+    const q = new URLSearchParams();
+    if (month) q.set('month', month);
+    if (before) q.set('before', before);
+    if (limit) q.set('limit', String(limit));
+    const s = q.toString();
+    return req<CheckinData>(s ? `/api/checkin?${s}` : '/api/checkin');
+  },
+  doCheckin: (date?: string) =>
+    req<CheckinResult>('/api/checkin', { method: 'POST', body: JSON.stringify(date ? { date } : {}) }),
 
   completeDiagnostic: (attemptId: number) =>
     req<DiagnosticMap>('/api/ielts/diagnostic/complete', { method: 'POST', body: JSON.stringify({ attemptId }) }),

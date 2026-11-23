@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { api, type Question, type TestSet } from '../api';
+import { api, type Attempt, type Question, type TestSet } from '../api';
 import { useExam, type ExamId } from '../exam';
 import {
   CARD_PADDING,
@@ -53,6 +53,27 @@ function fmt(s: number): string {
   const m = Math.floor((s % 3600) / 60);
   const sec = s % 60;
   return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
+}
+
+// Ngay nop bai (dd/mm/yyyy HH:mm) + thoi gian lam (mm:ss, hoac hh:mm:ss
+// neu tren 1 gio) — dung cho khoi "Lich su thi thu". Dinh dang tay thay
+// vi toLocaleDateString('vi-VN') (Hermes khong chac co du lieu locale).
+function fmtMockDate(iso?: string | null): string {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso.slice(0, 10);
+  const p = (n: number) => String(n).padStart(2, '0');
+  return `${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
+function fmtDur(s?: number | null): string {
+  if (s == null) return '—';
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  return h > 0
+    ? `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
+    : `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`;
 }
 
 function groupBlocks(questions: Question[], exam: ExamId): Block[] {
@@ -170,6 +191,10 @@ export default function MockTestScreen() {
 
   const [testSets, setTestSets] = useState<TestSet[]>([]);
   const [selectedTestSetId, setSelectedTestSetId] = useState('');
+  // Lich su thi thu DA NOP (GET /api/tests/history: chi mini/full, toi
+  // da 50) — hien o khoi "Lich su thi thu" duoi form chon de. API tra ca
+  // bai dang lam do (chua co finishedAt) nen loc lai khi render.
+  const [mockHistory, setMockHistory] = useState<Attempt[]>([]);
 
   // Chưa chọn kỳ thi thì không vào được — về màn chọn, nhớ đích đến.
   // (Không áp khi đang thi, hoặc khi link mang sẵn ?exam=.)
@@ -184,7 +209,10 @@ export default function MockTestScreen() {
   }, [paramTestSetId]);
 
   useEffect(() => {
-    if (!paramTestSetId) api.testSets(exam).then(setTestSets).catch(() => undefined);
+    if (!paramTestSetId) {
+      api.testSets(exam).then(setTestSets).catch(() => undefined);
+      api.testHistory(exam).then(setMockHistory).catch(() => undefined);
+    }
   }, [exam, paramTestSetId]);
 
   const markPlayed = useCallback((p: number) => {
@@ -307,6 +335,30 @@ export default function MockTestScreen() {
     closeMenu();
     void submit();
   }, [closeMenu, submit]);
+
+  // ---- Khoi "Lich su thi thu" (man chon de): chi bai DA NOP (co
+  // finishedAt); bai dang lam do khong hien o day. "Lam lai" chi chon san
+  // dung de + dung che do, KHONG tu bat dau thi. Mini khong kem de nen chi
+  // can chon dung Part; full toan ngan hang thi chi can chon che do full.
+  const testSetTitleById = useMemo(() => new Map(testSets.map((t) => [t.id, t.title])), [testSets]);
+  const submittedHistory = useMemo(
+    () => mockHistory.filter((a) => a.finishedAt || a.finished_at),
+    [mockHistory],
+  );
+  const redoAttempt = useCallback(
+    (a: Attempt) => {
+      if (a.mode === 'mini') {
+        setMode('mini');
+        if (a.part) setPart(a.part);
+      } else if (a.testSetId) {
+        router.push({ pathname: '/mock', params: { testSetId: a.testSetId, exam } });
+      } else {
+        setMode('full');
+        setSelectedTestSetId('');
+      }
+    },
+    [exam],
+  );
 
   const blocks = useMemo(() => groupBlocks(questions, exam), [questions, exam]);
   const rows = useMemo(() => buildRows(blocks, columns, exam), [blocks, columns, exam]);
@@ -629,6 +681,59 @@ export default function MockTestScreen() {
               </Pressable>
             </View>
           )}
+          {!paramTestSetId ? (
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+              <Text style={[styles.label, { color: colors.text, fontSize: scaled(16) }]}>📜 Lịch sử thi thử</Text>
+              {submittedHistory.length === 0 ? (
+                <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có bài thi thử nào — làm 1 bài để xem lịch sử nhé.</Text>
+              ) : (
+                submittedHistory.map((a) => {
+                  const correct = (a.listeningCorrect ?? a.listening_correct ?? 0) + (a.readingCorrect ?? a.reading_correct ?? 0);
+                  const total = a.questionCount ?? 0;
+                  const score = isIelts
+                    ? a.overallBand != null
+                      ? `Band ${a.overallBand} (L ${a.listeningBand ?? '—'} • R ${a.readingBand ?? '—'})`
+                      : '—'
+                    : (a.totalScore ?? a.total_score) != null
+                      ? `${a.totalScore ?? a.total_score} điểm`
+                      : '—';
+                  return (
+                    <View
+                      key={a.id}
+                      style={[styles.histRow, { borderColor: colors.border, backgroundColor: colors.surfaceMuted }, livelyCard(colors, 'compact')]}
+                    >
+                      <Text style={[styles.line, { color: colors.text, fontSize: scaled(15), fontWeight: '700' }]}>
+                        {a.testSetId ? (testSetTitleById.get(a.testSetId) ?? a.testSetId) : 'Toàn bộ ngân hàng'}
+                      </Text>
+                      <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
+                        {fmtMockDate(a.finishedAt || a.finished_at)} •{' '}
+                        {a.mode === 'mini' ? (a.part ? `Mini — ${partLabel(a.part, exam)}` : 'Mini') : 'Full'}
+                      </Text>
+                      <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
+                        {score} • {fmtDur(a.durationSec ?? a.duration_sec)} • Đúng {total ? `${correct}/${total}` : `${correct}`} câu
+                      </Text>
+                      <View style={styles.histBtns}>
+                        <Pressable
+                          style={[styles.histBtn, { borderColor: colors.border }, livelyChip(colors)]}
+                          onPress={() => router.push({ pathname: '/result/[id]', params: { id: String(a.id) } })}
+                          accessibilityRole="button"
+                        >
+                          <Text style={{ color: colors.accent, fontSize: scaled(14), fontWeight: '700' }}>Xem lại</Text>
+                        </Pressable>
+                        <Pressable
+                          style={[styles.histBtn, { borderColor: colors.border }, livelyChip(colors)]}
+                          onPress={() => redoAttempt(a)}
+                          accessibilityRole="button"
+                        >
+                          <Text style={{ color: colors.text, fontSize: scaled(14), fontWeight: '700' }}>Làm lại</Text>
+                        </Pressable>
+                      </View>
+                    </View>
+                  );
+                })
+              )}
+            </View>
+          ) : null}
         </ScrollView>
         </TabScreen>
         <BottomNav />
@@ -784,6 +889,11 @@ const styles = StyleSheet.create({
   partChip: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, flexGrow: 1, flexBasis: '45%', maxWidth: '48%', justifyContent: 'center' },
   setList: { gap: SPACING.sm },
   setRow: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md },
+  // Khoi "Lich su thi thu": 1 dong / 1 lan thi (tieu de + ngay/che do +
+  // diem/thoi gian/cau dung + 2 nut Xem lai / Lam lai).
+  histRow: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: SPACING.sm, paddingHorizontal: SPACING.md, gap: 2 },
+  histBtns: { flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.sm },
+  histBtn: { borderWidth: 1, borderRadius: RADIUS.button, paddingVertical: 6, paddingHorizontal: SPACING.md, alignItems: 'center' },
   button: { borderRadius: RADIUS.button, paddingVertical: SPACING.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },
   buttonText: { fontWeight: '700', textAlign: 'center' },
   disabled: { opacity: 0.6 },
