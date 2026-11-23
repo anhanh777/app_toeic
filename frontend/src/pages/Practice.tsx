@@ -38,7 +38,10 @@ export default function Practice() {
   const renderSetCard = (ts: TestSet) => {
     const total = ts.totalQuestions || 0;
     const answered = ts.progress?.answeredTotal || 0;
-    const pct = total ? Math.round((answered / total) * 100) : 0;
+    // Mau so tien do la so ROW (progress.total); total la so cau tren de
+    // that (IELTS: 80) — dung total lam mau so thi % khong bao gio dat 100%.
+    const rowTotal = ts.progress?.total ?? total;
+    const pct = rowTotal ? Math.round((answered / rowTotal) * 100) : 0;
     // IELTS-only: tien do tach Listening/Reading + thong ke thi thu.
     const lr = isIelts ? listeningReadingProgress(ts) : null;
     const att = isIelts ? attemptStatsFor(history, ts.id) : null;
@@ -68,7 +71,7 @@ export default function Practice() {
         )}
         {ts.progress ? (
           <div>
-            <p className="muted">Đã làm {answered}/{total} câu ({pct}%)</p>
+            <p className="muted">Đã làm {answered}/{rowTotal} câu ({pct}%)</p>
             <div className="bar green"><i style={{ width: `${pct}%` }} /></div>
           </div>
         ) : (

@@ -58,7 +58,11 @@ function progressFor(user, testSet) {
   const answered = byPart.reduce((s, p) => s + p.answered, 0);
   const correct = byPart.reduce((s, p) => s + p.correct, 0);
   // total = so row luu san (row-based, khong doi theo paper span).
-  return { byPart, answered, correct, total: testSet.totalQuestions };
+  // Alias answeredTotal/correctTotal: ca 3 client (web/admin/mobile) deu
+  // doc 2 ten nay (interface TestSetProgress) — truoc day backend chi tra
+  // `answered`/`correct` nen tien do "Da lam x/y cau" luon hien 0 o moi
+  // client. Giu ca 2 ten de tuong thich.
+  return { byPart, answered, correct, answeredTotal: answered, correctTotal: correct, total: testSet.totalQuestions };
 }
 
 function serializeTestSet(testSet, user) {

@@ -239,6 +239,8 @@ export interface TestSetProgress {
    * cua de IELTS la so cau tren de that (paper span). */
   byPart: { part: number; answered: number; correct: number; total?: number }[];
   answeredTotal: number; correctTotal: number;
+  /** Ten goc backend tra (gia tri = answeredTotal/correctTotal) — giu de tuong thich. */
+  answered?: number; correct?: number;
   /** Tong so row cau hoi cua de (row-based) — backend luon tra truong nay. */
   total: number;
 }

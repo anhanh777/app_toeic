@@ -290,7 +290,11 @@ export function groupTestSetsByBook(testSets: TestSet[]): BookGroup[] {
 // nào, 'doing' = làm dở, 'done' = đã làm hết số câu của đề.
 export type SetStatus = 'todo' | 'doing' | 'done';
 export function testSetStatus(ts: TestSet): SetStatus {
-  const total = ts.totalQuestions || 0;
+  // Mau so la so ROW (progress.total) vi answered dem theo row;
+  // totalQuestions cua de IELTS la so cau tren de that (80) nen dung no
+  // thi de lam het 74 row van chi 'doing', khong bao gio 'done'. TOEIC:
+  // progress.total == totalQuestions nen hanh vi khong doi.
+  const total = ts.progress?.total ?? ts.totalQuestions ?? 0;
   const answered = ts.progress?.answeredTotal || 0;
   if (answered <= 0) return 'todo';
   if (total > 0 && answered >= total) return 'done';
