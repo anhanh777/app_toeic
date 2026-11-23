@@ -510,3 +510,68 @@ export function QuestionPalette({ items, onJump, currentId, variant = 'bar' }: {
     </div>
   );
 }
+
+/* ---- Hộp thoại xác nhận theo kiểu giao diện của app (thay window.confirm) ---- */
+export interface ConfirmOptions {
+  title: string;
+  message?: string;
+  confirmText?: string;
+  cancelText?: string;
+  /** Nút chính màu đỏ (Xóa/Thoát). */
+  danger?: boolean;
+}
+
+type PendingConfirm = ConfirmOptions & { resolve: (ok: boolean) => void };
+
+let pendingConfirm: PendingConfirm | null = null;
+let confirmListener: ((req: PendingConfirm | null) => void) | null = null;
+
+/** Mở hộp thoại xác nhận của app, trả về true khi người dùng bấm nút chính. */
+export function confirmDialog(opts: ConfirmOptions): Promise<boolean> {
+  return new Promise<boolean>((resolve) => {
+    // Không bao giờ để hộp thoại cũ treo: đang mở mà gọi thêm thì coi như hủy cái cũ.
+    pendingConfirm?.resolve(false);
+    const req: PendingConfirm = { ...opts, resolve };
+    pendingConfirm = req;
+    confirmListener?.(req);
+  });
+}
+
+/** Gắn 1 lần ở gốc app (App.tsx) — vẽ hộp thoại khi có yêu cầu chờ. */
+export function ConfirmDialogHost() {
+  const [req, setReq] = useState<PendingConfirm | null>(null);
+  const close = (ok: boolean) => {
+    const r = req;
+    pendingConfirm = null;
+    setReq(null);
+    r?.resolve(ok);
+  };
+  useEffect(() => {
+    confirmListener = setReq;
+    return () => {
+      confirmListener = null;
+    };
+  }, []);
+  useEffect(() => {
+    if (!req) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') close(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [req]);
+  if (!req) return null;
+  return (
+    <div className="confirm-overlay" role="alertdialog" aria-modal="true" aria-label={req.title} onClick={() => close(false)}>
+      <div className="card confirm-card" onClick={(e) => e.stopPropagation()}>
+        <h2>{req.title}</h2>
+        {req.message ? <p className="muted">{req.message}</p> : null}
+        <div className="btn-row">
+          <button type="button" className="btn secondary" onClick={() => close(false)} autoFocus>{req.cancelText ?? 'Hủy'}</button>
+          <button type="button" className={`btn${req.danger ? ' danger' : ''}`} onClick={() => close(true)}>{req.confirmText ?? 'Đồng ý'}</button>
+        </div>
+      </div>
+    </div>
+  );
+}

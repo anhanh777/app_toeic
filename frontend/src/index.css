@@ -1677,3 +1677,11 @@ tbody tr:hover{background:var(--surface-soft)}
   [data-style="lively"] .lively-strip{padding:1rem}
   [data-style="lively"] .lively-strip-mascot .lively-mascot{width:88px; height:88px}
 }
+
+/* --- Hộp thoại xác nhận của app (thay window.confirm) --- */
+.confirm-overlay{position:fixed; inset:0; z-index:200; display:flex; align-items:center; justify-content:center; padding:1rem; background:rgba(0,0,0,.45)}
+.confirm-card{width:min(26rem, 100%); padding:1.2rem 1.3rem}
+.confirm-card h2{margin:.1rem 0 .5rem; font-size:1.15rem}
+.confirm-card p{margin:.2rem 0}
+.confirm-card .btn-row{justify-content:flex-end; margin-top:1rem}
+[data-style="lively"] .confirm-card{border-radius:20px; border-width:2px; box-shadow:0 4px 0 var(--border)}

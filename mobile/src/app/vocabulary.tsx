@@ -7,7 +7,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Pressable,
   ScrollView,
@@ -23,6 +22,7 @@ import { useExam } from '../exam';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
+import { useConfirm } from '../components/ConfirmDialog';
 
 type WordStatus = 'learning' | 'learned' | 'wrong';
 const STATUS_LABEL: Record<WordStatus, string> = {
@@ -137,6 +137,7 @@ export default function VocabularyScreen() {
 function MyWords() {
   const { colors } = useTheme();
   const { scaled } = useTextSize();
+  const askConfirm = useConfirm();
   const [words, setWords] = useState<UserWord[]>([]);
   const [error, setError] = useState('');
   const [msg, setMsg] = useState('');
@@ -183,24 +184,23 @@ function MyWords() {
     }
   }, []);
 
-  const removeWord = useCallback((word: UserWord) => {
-    Alert.alert(`Xóa từ "${word.word}"?`, 'Từ sẽ bị xóa khỏi Từ của tôi.', [
-      { text: 'Hủy', style: 'cancel' },
-      {
-        text: 'Xóa',
-        style: 'destructive',
-        onPress: () => {
-          api
-            .deleteUserWord(word.id)
-            .then(() => {
-              setWords((list) => list.filter((x) => x.id !== word.id));
-              setMsg(`Đã xóa từ "${word.word}".`);
-            })
-            .catch((e) => setError(e instanceof ApiError ? e.message : 'Không xóa được từ.'));
-        },
-      },
-    ]);
-  }, []);
+  const removeWord = useCallback(async (word: UserWord) => {
+    const ok = await askConfirm({
+      title: `Xóa từ "${word.word}"?`,
+      message: 'Từ sẽ bị xóa khỏi Từ của tôi.',
+      confirmText: 'Xóa',
+      cancelText: 'Hủy',
+      danger: true,
+    });
+    if (!ok) return;
+    api
+      .deleteUserWord(word.id)
+      .then(() => {
+        setWords((list) => list.filter((x) => x.id !== word.id));
+        setMsg(`Đã xóa từ "${word.word}".`);
+      })
+      .catch((e) => setError(e instanceof ApiError ? e.message : 'Không xóa được từ.'));
+  }, [askConfirm]);
 
   const startEdit = useCallback((word: UserWord) => {
     setEditing(word);

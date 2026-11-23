@@ -6,6 +6,7 @@ import { applyTheme, resolveTheme, type Theme } from './theme';
 import { LoadingEffect, LoadingImage, UiSettingsProvider, activeStyle, useUiSettings } from './uiSettings';
 import { BrandProvider, useBrand } from './brand';
 import { MenuIconsProvider, useMenuIcons, type MenuIconKey } from './menuIcons';
+import { ConfirmDialogHost } from './components';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import IeltsSetup from './pages/IeltsSetup';
@@ -324,6 +325,7 @@ function Layout() {
           </ErrorBoundary>
         )}
       </main>
+      <ConfirmDialogHost />
     </div>
   );
 }

@@ -9,6 +9,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider, useAuth } from '../auth';
 import { BrandProvider } from '../brand';
+import { ConfirmProvider } from '../components/ConfirmDialog';
 import { ExamProvider } from '../exam';
 import { MenuIconsProvider } from '../menuIcons';
 import { TextSizeProvider, ThemeProvider, useTheme } from '../theme';
@@ -101,7 +102,9 @@ export default function RootLayout() {
                 <ExamProvider>
                   <BrandProvider>
                     <MenuIconsProvider>
-                      <RootLayoutNav />
+                      <ConfirmProvider>
+                        <RootLayoutNav />
+                      </ConfirmProvider>
                     </MenuIconsProvider>
                   </BrandProvider>
                 </ExamProvider>

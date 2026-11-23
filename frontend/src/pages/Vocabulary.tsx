@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { api, type UserWord, type Vocab } from '../api';
-import { ErrorBox } from '../components';
+import { ErrorBox, confirmDialog } from '../components';
 import { useExam } from '../exam';
 
 type WordStatus = 'learning' | 'learned' | 'wrong';
@@ -481,7 +481,7 @@ function MyWords() {
   };
 
   const removeWord = async (word: UserWord) => {
-    if (!window.confirm(`Xóa từ "${word.word}" khỏi Từ của tôi?`)) return;
+    if (!(await confirmDialog({ title: `Xóa từ "${word.word}" khỏi Từ của tôi?`, confirmText: 'Xóa', cancelText: 'Hủy', danger: true }))) return;
     const wasDue = dueItems.some((x) => x.id === word.id);
     try {
       await api.deleteUserWord(word.id);

@@ -9,7 +9,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Pressable,
   StatusBar,
@@ -37,6 +36,7 @@ import {
 } from '../lib';
 import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
+import { useConfirm } from '../components/ConfirmDialog';
 import PassageView, { type BlankState } from '../components/PassageView';
 import QuestionView, { isListeningOnly, partName, type AnswerResult } from '../components/QuestionView';
 
@@ -118,6 +118,7 @@ export default function PracticeSessionScreen() {
   const { exam: ctxExam } = useExam();
   const { colors } = useTheme();
   const { scaled } = useTextSize();
+  const confirm = useConfirm();
   const { width } = useWindowDimensions();
   const columns = columnsForWidth(width);
 
@@ -286,7 +287,7 @@ export default function PracticeSessionScreen() {
   // tự trong đề. Câu chưa làm KHÔNG gọi API (backend 400 với đáp án
   // rỗng) — tính là sai. Lỗi giữa chừng thì dừng; câu đã chấm giữ
   // nguyên kết quả.
-  const handleSubmitAll = useCallback(() => {
+  const handleSubmitAll = useCallback(async () => {
     const doSubmit = async () => {
       const { selectedById: sel, resultById: res, questions: qs, nById: nums } = stateRef.current;
       // (a) Kiểm tra giới hạn từ cho MỌI câu điền từ đã làm — lỗi thì
@@ -335,14 +336,15 @@ export default function PracticeSessionScreen() {
     if (!answered) return;
     const unanswered = qs.length - answered;
     if (unanswered > 0) {
-      Alert.alert(`Còn ${unanswered} câu chưa làm, vẫn nộp?`, undefined, [
-        { text: 'Để sau', style: 'cancel' },
-        { text: 'Nộp', onPress: () => void doSubmit() },
-      ]);
-    } else {
-      void doSubmit();
+      const ok = await confirm({
+        title: `Còn ${unanswered} câu chưa làm, vẫn nộp?`,
+        confirmText: 'Nộp',
+        cancelText: 'Để sau',
+      });
+      if (!ok) return;
     }
-  }, []);
+    void doSubmit();
+  }, [confirm]);
 
   const scrollToQuestion = useCallback(
     (num: number) => {

@@ -12,7 +12,6 @@ import { router } from 'expo-router';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Pressable,
   ScrollView,
@@ -29,6 +28,7 @@ import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, par
 import { livelyBarTrack, livelyCard, livelyChip, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
 import { BackButton } from '../components/BackButton';
+import { useConfirm } from '../components/ConfirmDialog';
 import { fmtClock } from './writing';
 
 const SAMPLE_NOTE = 'Bài mẫu — nội dung tự soạn, chưa phải đề thi thật.';
@@ -190,6 +190,7 @@ function ScoreTable({
 export default function DiagnosticScreen() {
   const { colors } = useTheme();
   const { scaled } = useTextSize();
+  const confirm = useConfirm();
   const { width } = useWindowDimensions();
   const [diag, setDiag] = useState<DiagnosticMap | null>(null);
   const [attempts, setAttempts] = useState<Attempt[]>([]);
@@ -341,23 +342,22 @@ export default function DiagnosticScreen() {
     }
   }, [paperActive, paperLeft, submitPaper]);
 
-  const abandonPaper = useCallback(() => {
-    Alert.alert('Thoát bài chẩn đoán?', 'Bài làm chưa nộp sẽ bị hủy.', [
-      { text: 'Ở lại', style: 'cancel' },
-      {
-        text: 'Thoát',
-        style: 'destructive',
-        onPress: () => {
-          if (attemptId) void api.abandonTest(attemptId).catch(() => undefined);
-          diagPlayer.pause();
-          setPlayingQid(null);
-          setPausedQid(null);
-          setPaperActive(false);
-          setAttemptId(null);
-        },
-      },
-    ]);
-  }, [attemptId, diagPlayer]);
+  const abandonPaper = useCallback(async () => {
+    const ok = await confirm({
+      title: 'Thoát bài chẩn đoán?',
+      message: 'Bài làm chưa nộp sẽ bị hủy.',
+      confirmText: 'Thoát',
+      cancelText: 'Ở lại',
+      danger: true,
+    });
+    if (!ok) return;
+    if (attemptId) void api.abandonTest(attemptId).catch(() => undefined);
+    diagPlayer.pause();
+    setPlayingQid(null);
+    setPausedQid(null);
+    setPaperActive(false);
+    setAttemptId(null);
+  }, [attemptId, diagPlayer, confirm]);
 
   const markPlayed = useCallback((p: number) => {
     setPlayedSections((m) => ({ ...m, [p]: true }));
@@ -528,14 +528,15 @@ export default function DiagnosticScreen() {
             <Pressable
               style={[styles.button, { backgroundColor: colors.accent, flex: 2, opacity: submitting ? 0.6 : 1 }, raisedButton(colors)]}
               onPress={() => {
-                Alert.alert(
-                  'Nộp bài chẩn đoán?',
-                  `Bạn đã trả lời ${answeredCount}/${paperQuestions.length} câu. Nộp xong sẽ lưu làm chẩn đoán.`,
-                  [
-                    { text: 'Chưa', style: 'cancel' },
-                    { text: 'Nộp bài', onPress: () => void submitPaper() },
-                  ],
-                );
+                void (async () => {
+                  const ok = await confirm({
+                    title: 'Nộp bài chẩn đoán?',
+                    message: `Bạn đã trả lời ${answeredCount}/${paperQuestions.length} câu. Nộp xong sẽ lưu làm chẩn đoán.`,
+                    confirmText: 'Nộp bài',
+                    cancelText: 'Chưa',
+                  });
+                  if (ok) void submitPaper();
+                })();
               }}
               disabled={submitting}
             >

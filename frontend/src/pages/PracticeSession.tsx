@@ -17,7 +17,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { LoadingLine } from '../uiSettings';
 import { api, type Question } from '../api';
-import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, partName, type BlankState, type PaletteItemState } from '../components';
+import { ErrorBox, ListeningAudio, PassageWithBlanks, QuestionPalette, QuestionText, confirmDialog, partName, type BlankState, type PaletteItemState } from '../components';
 import { WordText } from '../wordLookup';
 import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, realQuestionNumber, stripLeadingNumber, useExam, useTextSize, wordCount } from '../exam';
 import { IeltsAnswerControl, IeltsMatchingBoard, IeltsNotesBlock, FlagButton, splitGroupSegments } from '../ielts-ui';
@@ -280,7 +280,7 @@ export default function PracticeSession() {
     const answered = visibleQuestions.filter(q => selectedById[q.id]);
     if (!answered.length) return;
     const unanswered = visibleQuestions.length - answered.length;
-    if (unanswered > 0 && !window.confirm(`Còn ${unanswered} câu chưa làm, vẫn nộp?`)) return;
+    if (unanswered > 0 && !(await confirmDialog({ title: `Còn ${unanswered} câu chưa làm, vẫn nộp?`, confirmText: 'Nộp', cancelText: 'Để sau' }))) return;
     // (a) Kiểm tra giới hạn số từ cho TẤT CẢ câu điền từ đã làm TRƯỚC
     // khi nộp câu nào — vượt thì báo lỗi (ghi rõ số câu) và dừng hẳn.
     for (const q of answered) {
