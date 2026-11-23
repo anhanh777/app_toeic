@@ -15,8 +15,14 @@ const STANDARD = { 1: 6, 2: 25, 3: 39, 4: 30, 5: 30, 6: 16, 7: 54 };
 const IELTS_STANDARD = { 1: 10, 2: 10, 3: 10, 4: 10, 5: 13, 6: 13, 7: 14 };
 const PARTS = [1, 2, 3, 4, 5, 6, 7];
 
-function partsWithCounts(testSetId) {
-  const counts = db.countByPartForTestSet(testSetId);
+/** So cau theo Part cua 1 bo de. IELTS dem theo SO CAU TREN DE THAT
+ * (paper span: 1 row list_selection gop chiem 2–3 cau) vi chuan
+ * IELTS_STANDARD va moi noi hien thi deu noi theo so cau tren de that;
+ * TOEIC dem so row nhu cu (TOEIC khong co cau gop). */
+function partsWithCounts(testSetId, exam) {
+  const counts = exam === 'ielts'
+    ? db.paperSpanCountsByTestSet(testSetId)
+    : db.countByPartForTestSet(testSetId);
   const byPart = new Map(counts.map((c) => [c.part, c.count]));
   return PARTS.map((part) => ({ part, count: byPart.get(part) || 0 }));
 }
@@ -36,32 +42,53 @@ function progressFor(user, testSet) {
   if (!user) return null;
   const byPartRows = db.getUserProgressByTestSet(user.id, testSet.id);
   const byPartMap = new Map(byPartRows.map((r) => [r.part, r]));
+  // Tien do dem theo ROW (answered = so row cau hoi da tra loi) nen mau so
+  // cung phai la so row — lay tu countByPartForTestSet. Chi them truong
+  // `total` cho de IELTS (de TOEIC: parts van la so row nen frontend dung
+  // parts lam mau so nhu cu, response TOEIC giu nguyen byte-for-byte).
+  const rowTotals = testSet.exam === 'ielts'
+    ? new Map(db.countByPartForTestSet(testSet.id).map((c) => [c.part, c.count]))
+    : null;
   const byPart = PARTS.map((part) => ({
     part,
     answered: byPartMap.get(part)?.answered || 0,
     correct: byPartMap.get(part)?.correct || 0,
+    ...(rowTotals ? { total: rowTotals.get(part) || 0 } : {}),
   }));
   const answered = byPart.reduce((s, p) => s + p.answered, 0);
   const correct = byPart.reduce((s, p) => s + p.correct, 0);
-  return { byPart, answered, correct, total: testSet.totalQuestions };
+  // total = so row luu san (row-based, khong doi theo paper span).
+  // Alias answeredTotal/correctTotal: ca 3 client (web/admin/mobile) deu
+  // doc 2 ten nay (interface TestSetProgress) — truoc day backend chi tra
+  // `answered`/`correct` nen tien do "Da lam x/y cau" luon hien 0 o moi
+  // client. Giu ca 2 ten de tuong thich.
+  return { byPart, answered, correct, answeredTotal: answered, correctTotal: correct, total: testSet.totalQuestions };
 }
 
 function serializeTestSet(testSet, user) {
-  const parts = partsWithCounts(testSet.id);
+  const isIelts = testSet.exam === 'ielts';
+  // Tien do tinh tu testSet GOC (total luu san = so row) truoc khi override.
+  const progress = progressFor(user, testSet);
+  const parts = partsWithCounts(testSet.id, testSet.exam);
+  // IELTS: tong so cau tren de that = tong span (80 khi de du); TOEIC:
+  // giu nguyen total_questions luu san.
+  const totalQuestions = isIelts
+    ? parts.reduce((s, p) => s + p.count, 0)
+    : testSet.totalQuestions;
   return {
     id: testSet.id,
     title: testSet.title,
     description: testSet.description,
-    totalQuestions: testSet.totalQuestions,
+    totalQuestions,
     isPublished: testSet.isPublished,
     exam: testSet.exam || 'toeic',
     createdAt: testSet.createdAt,
     parts,
     missing: missingParts(parts, testSet.exam),
-    progress: progressFor(user, testSet),
+    progress,
     // IELTS-only: cac dang cau hoi co trong de (kem so cau) — dung cho the
     // de. De TOEIC khong co truong nay (response TOEIC giu nguyen nhu cu).
-    ...(testSet.exam === 'ielts' ? { byType: typesWithCounts(testSet.id) } : {}),
+    ...(isIelts ? { byType: typesWithCounts(testSet.id) } : {}),
   };
 }
 

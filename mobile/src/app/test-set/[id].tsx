@@ -64,10 +64,18 @@ export default function TestSetDetailScreen() {
   const fullMinutes = isIelts ? 90 : 120;
   // IELTS-only: tiến độ tách Listening/Reading (như web
   // listeningReadingProgress — tính từ progress.byPart + parts).
+  // Mẫu số theo Part lấy từ byPart[].total (số row) khi có; fallback về
+  // parts sums (TOEIC: parts vốn là số row). Dùng parts sums cho IELTS
+  // thì tổng là số câu trên đề thật (40) trong khi answered đếm theo row.
   const lr = useMemo(() => {
     if (!isIelts || !ts) return null;
-    const totalFor = (pred: (p: number) => boolean) =>
-      ts.parts.filter((p) => pred(p.part)).reduce((s, p) => s + p.count, 0);
+    const totalFor = (pred: (p: number) => boolean) => {
+      const rowTotal = (ts.progress?.byPart ?? [])
+        .filter((b) => pred(b.part))
+        .reduce((s, b) => s + (b.total ?? 0), 0);
+      if (rowTotal > 0) return rowTotal;
+      return ts.parts.filter((p) => pred(p.part)).reduce((s, p) => s + p.count, 0);
+    };
     const answeredFor = (pred: (p: number) => boolean) =>
       (ts.progress?.byPart ?? []).filter((b) => pred(b.part)).reduce((s, b) => s + b.answered, 0);
     return {
@@ -75,6 +83,13 @@ export default function TestSetDetailScreen() {
       reading: { answered: answeredFor((p) => p >= 5), total: totalFor((p) => p >= 5) },
     };
   }, [isIelts, ts]);
+  // Tiến độ tổng: tử số là số ROW đã trả lời nên mẫu số cũng phải là số
+  // ROW (progress.total); totalQuestions của đề IELTS là số câu trên đề
+  // thật (80). Số câu hiển thị đầu dòng vẫn dùng totalQuestions.
+  const rowTotal = ts?.progress?.total ?? ts?.totalQuestions ?? 0;
+  const answeredTotal = ts?.progress?.answeredTotal || 0;
+  const correctTotal = ts?.progress?.correctTotal || 0;
+  const pctTotal = rowTotal ? Math.round((answeredTotal / rowTotal) * 100) : 0;
   const pad = horizontalPadding(width);
 
   const goPractice = useCallback(
@@ -95,6 +110,9 @@ export default function TestSetDetailScreen() {
       const info = ts.parts.find((x) => x.part === p);
       const n = info?.count || 0;
       const prog = ts.progress?.byPart.find((b) => b.part === p);
+      // Mẫu số tiến độ là số ROW (prog.total); n là số câu trên đề thật
+      // (đề IELTS có câu gộp) — chỉ dùng n để hiển thị.
+      const rowTotal = prog?.total ?? n;
       return (
         <View key={p} style={[styles.card, styles.partCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
@@ -107,11 +125,11 @@ export default function TestSetDetailScreen() {
           {prog ? (
             <>
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
-                Đã làm {prog.answered}/{n} câu · đúng {prog.correct}
+                Đã làm {prog.answered}/{rowTotal} câu · đúng {prog.correct}
               </Text>
-              {n > 0 ? (
+              {rowTotal > 0 ? (
                 <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
-                  <View style={[styles.barFill, { width: `${Math.round((prog.answered / n) * 100)}%`, backgroundColor: colors.accent }]} />
+                  <View style={[styles.barFill, { width: `${Math.round((prog.answered / rowTotal) * 100)}%`, backgroundColor: colors.accent }]} />
                 </View>
               ) : null}
             </>
@@ -180,16 +198,15 @@ export default function TestSetDetailScreen() {
             >
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
                 <Text style={{ fontWeight: '700', fontSize: scaled(18) }}>{ts.totalQuestions || 0}</Text> câu • Đã làm{' '}
-                {ts.progress?.answeredTotal || 0}/{ts.totalQuestions || 0} câu (
-                {ts.totalQuestions ? Math.round(((ts.progress?.answeredTotal || 0) / ts.totalQuestions) * 100) : 0}%) • Đúng{' '}
-                {ts.progress?.correctTotal || 0} câu
+                {answeredTotal}/{rowTotal} câu ({pctTotal}%) • Đúng{' '}
+                {correctTotal} câu
               </Text>
               <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
                 <View
                   style={[
                     styles.barFill,
                     {
-                      width: `${ts.totalQuestions ? Math.round(((ts.progress?.answeredTotal || 0) / ts.totalQuestions) * 100) : 0}%`,
+                      width: `${pctTotal}%`,
                       backgroundColor: colors.success,
                     },
                   ]}

@@ -106,7 +106,9 @@ export interface Vocab { id: string; word: string; phonetic?: string; meaning: s
 /** Ket qua tra tu dien: nghia tieng Viet + loai tu + phien am + vi du. */
 export interface DictionaryEntry { word: string; phonetic?: string | null; pos?: string | null; meaning_vi: string; example?: string | null; cached?: boolean; saved?: boolean; id?: number; status?: 'learning' | 'learned' | 'wrong'; }
 /** 1 tu trong kho ca nhan "Tu cua toi" (luu theo user). */
-export interface UserWord { id: number; word: string; phonetic?: string | null; pos?: string | null; meaning: string; example?: string | null; context?: string | null; topic?: string | null; status: 'learning' | 'learned' | 'wrong'; reviewStage?: number; reviewDue?: string | null; mastery?: number; wrongCount?: number; lastReviewCorrect?: boolean | null; createdAt?: string; updatedAt?: string; }
+export interface UserWord { id: number; word: string; phonetic?: string | null; pos?: string | null; meaning: string; example?: string | null; context?: string | null; topic?: string | null; status: 'learning' | 'learned' | 'wrong'; reviewStage?: number; reviewDue?: string | null; mastery?: number; wrongCount?: number; lastReviewCorrect?: boolean | null; lastExposureAt?: string | null; createdAt?: string; updatedAt?: string; }
+/** 1 cau do user tu viet voi 1 tu (phuong phap 5, ban tu doi chieu). */
+export interface WordSentence { id: number; wordId: number; sentence: string; selfMark: 'good' | 'not_yet' | null; masteryAwarded: boolean; createdAt: string; }
 export interface StatsOverview {
   totalAnswered: number; totalCorrect: number; accuracy: number;
   byPart: { part: number; answered: number; correct: number; accuracy: number }[];
@@ -232,8 +234,15 @@ export interface WeeklyError { week: string; code: string; count: number; }
 export interface TestSetPartCount { part: number; count: number; }
 export interface TestSetMissing { part: number; missing: number; }
 export interface TestSetProgress {
-  byPart: { part: number; answered: number; correct: number }[];
+  /** byPart[].total (chi co o de IELTS): tong so ROW cau hoi cua Part do —
+   * mau so dung cho tien do (answered dem theo row), trong khi parts[].count
+   * cua de IELTS la so cau tren de that (paper span). */
+  byPart: { part: number; answered: number; correct: number; total?: number }[];
   answeredTotal: number; correctTotal: number;
+  /** Ten goc backend tra (gia tri = answeredTotal/correctTotal) — giu de tuong thich. */
+  answered?: number; correct?: number;
+  /** Tong so row cau hoi cua de (row-based) — backend luon tra truong nay. */
+  total: number;
 }
 export interface TestSet {
   id: string; title: string; description?: string; totalQuestions: number;
@@ -410,6 +419,23 @@ export const api = {
   },
   reviewUserWord: (id: number, correct: boolean) =>
     req<{ word: UserWord; xpAwarded: number; xpCapped: boolean }>(`/api/user-words/${id}/review`, { method: 'POST', body: JSON.stringify({ correct }) }),
+  // Ghi nhan "gap tu" khi tu trong "Tu cua toi" xuat hien trong de thi
+  // dang luyen (phuong phap 4b) — chay ngam tu phong thi, loi thi bo qua.
+  recordExposure: (wordIds: number[]) =>
+    req<{ updated: { id: number; mastery: number }[]; skipped: number[] }>('/api/user-words/exposure', { method: 'POST', body: JSON.stringify({ wordIds }) }),
+  // Cau do user tu viet voi 1 tu (phuong phap 5, ban tu doi chieu).
+  listWordSentences: (wordId: number) =>
+    req<{ items: WordSentence[] }>(`/api/user-words/${wordId}/sentences`),
+  createWordSentence: (wordId: number, sentence: string) =>
+    req<WordSentence>(`/api/user-words/${wordId}/sentences`, { method: 'POST', body: JSON.stringify({ sentence }) }),
+  markWordSentence: (wordId: number, sentenceId: number, mark: 'good' | 'not_yet') =>
+    req<{ sentence: WordSentence; word: UserWord }>(`/api/user-words/${wordId}/sentences/${sentenceId}/mark`, { method: 'POST', body: JSON.stringify({ mark }) }),
+  deleteWordSentence: (wordId: number, sentenceId: number) =>
+    req<{ ok: boolean }>(`/api/user-words/${wordId}/sentences/${sentenceId}`, { method: 'DELETE' }),
+  // Tra 1 tu trong kho "Tu chung" theo dung tu (404 neu khong co —
+  // caller catch nhu binh thuong).
+  vocabularyByWord: (word: string) =>
+    req<Vocab>(`/api/vocabulary/by-word?word=${encodeURIComponent(word)}`),
 
   statsOverview: (exam?: string) => req<StatsOverview>(exam ? `/api/stats/overview?exam=${encodeURIComponent(exam)}` : '/api/stats/overview'),
   statsHistory: (exam?: string) => req<Attempt[]>(exam ? `/api/stats/history?exam=${encodeURIComponent(exam)}` : '/api/stats/history'),

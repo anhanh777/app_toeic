@@ -47,7 +47,10 @@ export default function TestSetDetail() {
   const total = ts.totalQuestions || 0;
   const answered = ts.progress?.answeredTotal || 0;
   const correct = ts.progress?.correctTotal || 0;
-  const pct = total ? Math.round((answered / total) * 100) : 0;
+  // Mau so tien do la so ROW (progress.total); total la so cau tren de
+  // that (IELTS: 80) — dung total lam mau so thi % khong bao gio dat 100%.
+  const rowTotal = ts.progress?.total ?? total;
+  const pct = rowTotal ? Math.round((answered / rowTotal) * 100) : 0;
   const partProgress = (p: number) => ts.progress?.byPart.find(b => b.part === p);
   // IELTS-only: tien do tach Listening/Reading + thong ke thi thu cua de.
   const lr = isIelts ? listeningReadingProgress(ts) : null;
@@ -56,6 +59,9 @@ export default function TestSetDetail() {
     const info = ts.parts.find(x => x.part === p);
     const n = info?.count || 0;
     const prog = partProgress(p);
+    // Mau so tien do la so ROW (answered dem theo row); n la so cau tren
+    // de that (de IELTS co cau gop) — chi dung n de hien thi.
+    const rowTotal = prog?.total ?? n;
     return (
       <div key={p} className="card part-card">
         <div className="part-ico" aria-hidden>{p <= 4 ? '🎧' : '📖'}</div>
@@ -64,9 +70,9 @@ export default function TestSetDetail() {
           <span className="muted">{n} câu trong đề này</span>
         </p>
         {prog
-          ? <p className="muted" style={{ margin: 0 }}>Đã làm {prog.answered}/{n} câu · đúng {prog.correct}</p>
+          ? <p className="muted" style={{ margin: 0 }}>Đã làm {prog.answered}/{rowTotal} câu · đúng {prog.correct}</p>
           : <p className="muted" style={{ margin: 0 }}>Chưa làm câu nào ở {partLabel(p, ex)} này</p>}
-        {prog && n > 0 && <div className="bar"><i style={{ width: `${Math.round((prog.answered / n) * 100)}%` }} /></div>}
+        {prog && rowTotal > 0 && <div className="bar"><i style={{ width: `${Math.round((prog.answered / rowTotal) * 100)}%` }} /></div>}
         <div className="btn-row">
           <button
             className="btn btn-sm"
@@ -90,7 +96,7 @@ export default function TestSetDetail() {
       )}
       <ErrorBox error={error} />
       <div className="card">
-        <p><span className="stat-num">{total}</span> câu • Đã làm {answered}/{total} câu ({pct}%) • Đúng {correct} câu</p>
+        <p><span className="stat-num">{total}</span> câu • Đã làm {answered}/{rowTotal} câu ({pct}%) • Đúng {correct} câu</p>
         <div className="bar green"><i style={{ width: `${pct}%` }} /></div>
         {isIelts && lr && (
           <p className="muted" style={{ marginTop: '.6rem' }}>🎧 Listening {lr.listening.answered}/{lr.listening.total} câu · 📖 Reading {lr.reading.answered}/{lr.reading.total} câu</p>

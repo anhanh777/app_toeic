@@ -238,12 +238,21 @@ export function attemptStatsFor(attempts: Attempt[], testSetId: string): { count
 }
 
 /** Tiến độ tách Listening / Reading của 1 bộ đề: số câu đã làm / tổng số
- * câu mỗi kỹ năng (tính từ progress.byPart + parts). */
+ * câu mỗi kỹ năng. answered đếm theo ROW nên mẫu số cũng phải là số row:
+ * dùng progress.byPart[].total (backend chỉ gửi cho đề IELTS); khi không
+ * có (đề TOEIC, hoặc backend cũ) thì parts[].count chính là số row nên
+ * dùng tổng parts như trước. */
 export function listeningReadingProgress(ts: TestSet): { listening: { answered: number; total: number }; reading: { answered: number; total: number } } {
-  const totalFor = (pred: (p: number) => boolean) =>
-    ts.parts.filter(p => pred(p.part)).reduce((s, p) => s + p.count, 0);
+  const byPart = ts.progress?.byPart || [];
+  const rowTotalFor = (pred: (p: number) => boolean) =>
+    byPart.filter(b => pred(b.part)).reduce((s, b) => s + (b.total ?? 0), 0);
+  const totalFor = (pred: (p: number) => boolean) => {
+    const rowTotal = rowTotalFor(pred);
+    if (rowTotal > 0) return rowTotal;
+    return ts.parts.filter(p => pred(p.part)).reduce((s, p) => s + p.count, 0);
+  };
   const answeredFor = (pred: (p: number) => boolean) =>
-    (ts.progress?.byPart || []).filter(b => pred(b.part)).reduce((s, b) => s + b.answered, 0);
+    byPart.filter(b => pred(b.part)).reduce((s, b) => s + b.answered, 0);
   return {
     listening: { answered: answeredFor(p => p <= 4), total: totalFor(p => p <= 4) },
     reading: { answered: answeredFor(p => p >= 5), total: totalFor(p => p >= 5) },
@@ -281,7 +290,11 @@ export function groupTestSetsByBook(testSets: TestSet[]): BookGroup[] {
 // nào, 'doing' = làm dở, 'done' = đã làm hết số câu của đề.
 export type SetStatus = 'todo' | 'doing' | 'done';
 export function testSetStatus(ts: TestSet): SetStatus {
-  const total = ts.totalQuestions || 0;
+  // Mau so la so ROW (progress.total) vi answered dem theo row;
+  // totalQuestions cua de IELTS la so cau tren de that (80) nen dung no
+  // thi de lam het 74 row van chi 'doing', khong bao gio 'done'. TOEIC:
+  // progress.total == totalQuestions nen hanh vi khong doi.
+  const total = ts.progress?.total ?? ts.totalQuestions ?? 0;
   const answered = ts.progress?.answeredTotal || 0;
   if (answered <= 0) return 'todo';
   if (total > 0 && answered >= total) return 'done';
