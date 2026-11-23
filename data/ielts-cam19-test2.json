@@ -413,7 +413,7 @@
   "explanation": "The training we get is a continuous process, focusing on technical competence and safe handling techniques, and it's given me the confidence to deal with extreme situations without panicking. There's a wave-tank where we could experience an overturned lifeboat scenario — so we could get experience at what to do if the boat turned over in a storm at night, for example.",
   "topic": "ielts-listening",
   "difficulty": "medium",
-  "questionType": "matching",
+  "questionType": "list_selection",
   "wordLimit": null,
   "acceptedAnswers": [],
   "correctText": null,
@@ -439,48 +439,10 @@
     "content": "The wave tank activities provided practice in survival techniques."
    }
   ],
-  "correct": "C",
-  "testSetId": null
- },
- {
-  "id": "C19-L-T2-S2-018",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C19-L-T2-S2",
-  "passageTitle": "Section 2 — Working as a lifeboat volunteer",
-  "passageText": null,
-  "script": "I never really planned to be a lifeboat volunteer when I came to live in Northsea. I’d been working in London as a website designer, but although that was interesting, I didn’t like city life. I’d been really keen on boats as a teenager, and I thought if I went to live by the sea, I might be able to pursue that interest a bit more in my free time. Then I found that the Lifeboat Institution was looking for volunteers, so I decided to apply. The Lifeboat Institution building here in Northsea’s hard to miss; it’s one of the largest in the country. It was built 15 years ago with funds provided by a generous member of the public, who’d lived here all her life. As the Lifeboat Institution is a charity that relies on that kind of donation, rather than funding provided by the government, that kind of help is much needed. When I applied, I had to have a health assessment. The doctors were particularly interested in my vision. I used to be short-sighted, so I’d had to wear glasses, but I’d had laser eye surgery two years earlier so that was OK. They gave me tests for colour blindness and they thought I might have a problem there, but it turned out I was OK. When the coastguard gets an alert, all the volunteers are contacted and rush to the lifeboat station. Our target’s to get there in five minutes, then we try to get the boat off the dock and out to sea in another six to eight minutes. Our team’s proud that we usually achieve that – the average time across the country’s eight and a half minutes. I’ve recently qualified as what’s called a ’helmsman’, which means I have the ultimate responsibility for the lifeboat. I have to check that the equipment we use is in working order – the crew have special life jackets that can support up to four people in the water. And it’s ultimately my decision whether it’s safe to launch the boat. But it’s very rare not to launch it, even in the worst weather. As well as going out on the lifeboat, my work involves other things too. A lot of people underestimate how windy conditions can change at sea, so I speak to youth groups and sailing clubs in the area about the sorts of problems that sailors and swimmers can have if the weather suddenly gets bad. We also have a lot of volunteers who organise activities to raise money for us, and we couldn’t manage without them. The training we get is a continuous process, focusing on technical competence and safe handling techniques, and it’s given me the confidence to deal with extreme situations without panicking. We had to do a fire and sea survival test first, and that’s a big help with the casualty care activities we do. We’ve done a lot on how to deal with ropes and tie knots – that’s an essential skill. After a year, I did a one- week residential course, led by specialists. There’s a wave-tank where we could experience an overturned lifeboat scenario-so we could get experience at what to do if the boat turned over in a storm at night, for example. Since I started, I’ve had to deal with a range of emergency situations. But the work’s hugely motivating. It’s not just about saving lives-I’ve learned a lot about the technology involved. My background in IT’s been useful here, and I can use my expertise to help other volunteers. They’re a great group-we’re like a family really, which helps when you’re dragging yourself out of bed on a cold stormy night. But actually, it’s the colder months that can be the most rewarding time. That’s when the incidents tend to be more serious, and you realise that you can make a huge difference to the outcome. So if any of you listeners are interested…",
-  "content": "Which TWO things does David say about the lifeboat volunteer training?",
-  "explanation": "The training we get is a continuous process, focusing on technical competence and safe handling techniques, and it's given me the confidence to deal with extreme situations without panicking. There's a wave-tank where we could experience an overturned lifeboat scenario — so we could get experience at what to do if the boat turned over in a storm at night, for example.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "questionType": "matching",
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "correctText": null,
-  "options": [
-   {
-    "label": "A",
-    "content": "The residential course developed his leadership skills."
-   },
-   {
-    "label": "B",
-    "content": "The training in use of ropes and knots was quite brief."
-   },
-   {
-    "label": "C",
-    "content": "The training exercises have built up his mental strength."
-   },
-   {
-    "label": "D",
-    "content": "The casualty care activities were particularly challenging for him."
-   },
-   {
-    "label": "E",
-    "content": "The wave tank activities provided practice in survival techniques."
-   }
+  "correct": [
+   "C",
+   "E"
   ],
-  "correct": "E",
   "testSetId": null
  },
  {
@@ -495,7 +457,7 @@
   "explanation": "But the work's hugely motivating. It's not just about saving lives — I've learned a lot about the technology involved. My background in IT's been useful here, and I can use my expertise to help other volunteers. They're a great group — we're like a family really, which helps when you're dragging yourself out of bed on a cold stormy night. But actually, it's the colder months that can be the most rewarding time. That's when the incidents tend to be more serious, and you realise that you can make a huge difference to the outcome.",
   "topic": "ielts-listening",
   "difficulty": "medium",
-  "questionType": "matching",
+  "questionType": "list_selection",
   "wordLimit": null,
   "acceptedAnswers": [],
   "correctText": null,
@@ -521,48 +483,10 @@
     "content": "the chance to develop new equipment"
    }
   ],
-  "correct": "A",
-  "testSetId": null
- },
- {
-  "id": "C19-L-T2-S2-020",
-  "exam": "ielts",
-  "part": 2,
-  "passageId": "C19-L-T2-S2",
-  "passageTitle": "Section 2 — Working as a lifeboat volunteer",
-  "passageText": null,
-  "script": "I never really planned to be a lifeboat volunteer when I came to live in Northsea. I’d been working in London as a website designer, but although that was interesting, I didn’t like city life. I’d been really keen on boats as a teenager, and I thought if I went to live by the sea, I might be able to pursue that interest a bit more in my free time. Then I found that the Lifeboat Institution was looking for volunteers, so I decided to apply. The Lifeboat Institution building here in Northsea’s hard to miss; it’s one of the largest in the country. It was built 15 years ago with funds provided by a generous member of the public, who’d lived here all her life. As the Lifeboat Institution is a charity that relies on that kind of donation, rather than funding provided by the government, that kind of help is much needed. When I applied, I had to have a health assessment. The doctors were particularly interested in my vision. I used to be short-sighted, so I’d had to wear glasses, but I’d had laser eye surgery two years earlier so that was OK. They gave me tests for colour blindness and they thought I might have a problem there, but it turned out I was OK. When the coastguard gets an alert, all the volunteers are contacted and rush to the lifeboat station. Our target’s to get there in five minutes, then we try to get the boat off the dock and out to sea in another six to eight minutes. Our team’s proud that we usually achieve that – the average time across the country’s eight and a half minutes. I’ve recently qualified as what’s called a ’helmsman’, which means I have the ultimate responsibility for the lifeboat. I have to check that the equipment we use is in working order – the crew have special life jackets that can support up to four people in the water. And it’s ultimately my decision whether it’s safe to launch the boat. But it’s very rare not to launch it, even in the worst weather. As well as going out on the lifeboat, my work involves other things too. A lot of people underestimate how windy conditions can change at sea, so I speak to youth groups and sailing clubs in the area about the sorts of problems that sailors and swimmers can have if the weather suddenly gets bad. We also have a lot of volunteers who organise activities to raise money for us, and we couldn’t manage without them. The training we get is a continuous process, focusing on technical competence and safe handling techniques, and it’s given me the confidence to deal with extreme situations without panicking. We had to do a fire and sea survival test first, and that’s a big help with the casualty care activities we do. We’ve done a lot on how to deal with ropes and tie knots – that’s an essential skill. After a year, I did a one- week residential course, led by specialists. There’s a wave-tank where we could experience an overturned lifeboat scenario-so we could get experience at what to do if the boat turned over in a storm at night, for example. Since I started, I’ve had to deal with a range of emergency situations. But the work’s hugely motivating. It’s not just about saving lives-I’ve learned a lot about the technology involved. My background in IT’s been useful here, and I can use my expertise to help other volunteers. They’re a great group-we’re like a family really, which helps when you’re dragging yourself out of bed on a cold stormy night. But actually, it’s the colder months that can be the most rewarding time. That’s when the incidents tend to be more serious, and you realise that you can make a huge difference to the outcome. So if any of you listeners are interested…",
-  "content": "Which TWO things does David find most motivating about the work he does?",
-  "explanation": "But the work's hugely motivating. It's not just about saving lives — I've learned a lot about the technology involved. My background in IT's been useful here, and I can use my expertise to help other volunteers. They're a great group — we're like a family really, which helps when you're dragging yourself out of bed on a cold stormy night. But actually, it's the colder months that can be the most rewarding time. That's when the incidents tend to be more serious, and you realise that you can make a huge difference to the outcome.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "questionType": "matching",
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "correctText": null,
-  "options": [
-   {
-    "label": "A",
-    "content": "working as part of a team"
-   },
-   {
-    "label": "B",
-    "content": "experiences when working in winter"
-   },
-   {
-    "label": "C",
-    "content": "being thanked by those he has helped"
-   },
-   {
-    "label": "D",
-    "content": "the fact that it keeps him fit"
-   },
-   {
-    "label": "E",
-    "content": "the chance to develop new equipment"
-   }
+  "correct": [
+   "A",
+   "B"
   ],
-  "correct": "B",
   "testSetId": null
  },
  {
@@ -1806,7 +1730,7 @@
   "explanation": "This is something that British tennis player Emma Raducanu wrote about on social media following her withdrawal from the 2021 Wimbledon tournament. Though the young player had been doing well in the tournament, she began having difficulty regulating her breathing and heart rate during a match, which she later attributed to ’the accumulation of the excitement and the buzz’. So, in Emma Raducanu’s case, a much larger audience, higher expectations and facing a more skilful opponent, may all have led her to feel there were greater demands being placed on her at Wimbledon -but she didn’t have the resources to tackle them.",
   "topic": "ielts-reading",
   "difficulty": "medium",
-  "questionType": "matching",
+  "questionType": "list_selection",
   "wordLimit": null,
   "acceptedAnswers": [],
   "correctText": null,
@@ -1832,48 +1756,10 @@
     "content": "reactions to her social media posts about her experience at Wimbledon"
    }
   ],
-  "correct": "B",
-  "testSetId": null
- },
- {
-  "id": "C19-R-T2-P2-024",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C19-R-T2-P2",
-  "passageTitle": "Passage 2 — Athletes and stress",
-  "passageText": "A. It isn’t easy being a professional athlete. Not only are the physical demands greater than most people could handle, athletes also face intense psychological pressure during competition. This is something that British tennis player Emma Raducanu wrote about on social media following her withdrawal from the 2021 Wimbledon tournament. Though the young player had been doing well in the tournament, she began having difficulty regulating her breathing and heart rate during a match, which she later attributed to ’the accumulation of the excitement and the buzz’.\n\nB. For athletes, some level of performance stress is almost unavoidable. But there are many different factors that dictate just how people’s minds and bodies respond to stressful events. Typically, stress is the result of an exchange between two factors: demands and resources. An athlete may feel stressed about an event if they feel the demands on them are greater than they can handle. These demands include the high level of physical and mental effort required to succeed, and also the athlete’s concerns about the difficulty of the event, their chance of succeeding, and any potential dangers such as injury. Resources, on the other hand, are a person’s ability to cope with these demands. These include factors such as the competitor’s degree of confidence, how much they believe they can control the situation’s outcome, and whether they’re looking forward to the event or not.\n\nC. Each new demand or change in circumstances affects whether a person responds positively or negatively to stress. Typically, the more resources a person feels they have in handling the situation, the more positive their stress response. This positive stress response is called a challenge state. But should the person feel there are too many demands placed on them, the more likely they are to experience a negative stress response – known as a threat state. Research shows that the challenge states lead to good performance, while threat states lead to poorer performance. So, in Emma Raducanu’s case, a much larger audience, higher expectations and facing a more skilful opponent, may all have led her to feel there were greater demands being placed on her at Wimbledon -but she didn’t have the resources to tackle them. This led to her experiencing a threat response.\n\nD. Our challenge and threat responses essentially influence how our body responds to stressful situations, as both affect the production of adrenaline and cortisol – also known as ‘stress hormones’. During a challenge state, adrenaline increases the amount of blood pumped from the heart and expands the blood vessels, which allows more energy to be delivered to the muscles and brain. This increase of blood and decrease of pressure in the blood vessels has been consistently related to superior sport performance in everything from cricket batting, to golf putting and football penalty taking. But during a threat state, cortisol inhibits the positive effect of adrenaline, resulting in tighter blood vessels, higher blood pressure, slower psychological responses, and a faster heart rate. In short, a threat state makes people more anxious – they make worse decisions and perform more poorly. In tennis players, cortisol has been associated with more unsuccessful serves and greater anxiety.\n\nE. That said, anxiety is also a common experience for athletes when they’re under pressure. Anxiety can increase heart rate and perspiration, cause heart palpitations, muscle tremors and shortness of breath, as well as headaches, nausea, stomach pain, weakness and a desire to escape in more extreme cases. Anxiety can also reduce concentration and self-control and cause overthinking. The intensity with which a person experiences anxiety depends on the demands and resources they have. Anxiety may also manifest itself in the form of excitement or nervousness depending on the stress response. Negative stress responses can be damaging to both physical and mental health - and repeated episodes of anxiety coupled with negative responses can increase risk of heart disease and depression.\n\nF. But there are many ways athletes can ensure they respond positively under pressure. Positive stress responses can be promoted through the language that they and others – such as coaches or parents – use. Psychologists can also help athletes change how they see their physiological responses – such as helping them see a higher heart rate as excitement, rather than nerves. Developing psychological skills, such as visualisation, can also help decrease physiological responses to threat. Visualisation may involve the athlete recreating a mental picture of a time when they performed well, or picturing themselves doing well in the future. This can help create a feeling of control over the stressful event. Recreating competitive pressure during training can also help athletes learn how to deal with stress. An example of this might be scoring athletes against their peers to create a sense of competition. This would increase the demands which players experience compared to a normal training session, while still allowing them to practise coping with stress.",
-  "script": null,
-  "content": "Which TWO facts about Emma Raducanu’s withdrawal from the Wimbledon tournament are mentioned in the text?",
-  "explanation": "This is something that British tennis player Emma Raducanu wrote about on social media following her withdrawal from the 2021 Wimbledon tournament. Though the young player had been doing well in the tournament, she began having difficulty regulating her breathing and heart rate during a match, which she later attributed to ’the accumulation of the excitement and the buzz’. So, in Emma Raducanu’s case, a much larger audience, higher expectations and facing a more skilful opponent, may all have led her to feel there were greater demands being placed on her at Wimbledon -but she didn’t have the resources to tackle them.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "questionType": "matching",
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "correctText": null,
-  "options": [
-   {
-    "label": "A",
-    "content": "the stage at which she dropped out of the tournament"
-   },
-   {
-    "label": "B",
-    "content": "symptoms of her performance stress at the tournament"
-   },
-   {
-    "label": "C",
-    "content": "measures which she had taken to manage her stress levels"
-   },
-   {
-    "label": "D",
-    "content": "aspects of the Wimbledon tournament which increased her stress levels"
-   },
-   {
-    "label": "E",
-    "content": "reactions to her social media posts about her experience at Wimbledon"
-   }
+  "correct": [
+   "B",
+   "D"
   ],
-  "correct": "D",
   "testSetId": null
  },
  {
@@ -1888,7 +1774,7 @@
   "explanation": "The intensity with which a person experiences anxiety depends on the demands and resources they have. Negative stress responses can be damaging to both physical and mental health – and repeated episodes of anxiety coupled with negative responses can increase risk of heart disease and depression.",
   "topic": "ielts-reading",
   "difficulty": "medium",
-  "questionType": "matching",
+  "questionType": "list_selection",
   "wordLimit": null,
   "acceptedAnswers": [],
   "correctText": null,
@@ -1914,48 +1800,10 @@
     "content": "the harm that can result if athletes experience it too often"
    }
   ],
-  "correct": "A",
-  "testSetId": null
- },
- {
-  "id": "C19-R-T2-P2-026",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C19-R-T2-P2",
-  "passageTitle": "Passage 2 — Athletes and stress",
-  "passageText": "A. It isn’t easy being a professional athlete. Not only are the physical demands greater than most people could handle, athletes also face intense psychological pressure during competition. This is something that British tennis player Emma Raducanu wrote about on social media following her withdrawal from the 2021 Wimbledon tournament. Though the young player had been doing well in the tournament, she began having difficulty regulating her breathing and heart rate during a match, which she later attributed to ’the accumulation of the excitement and the buzz’.\n\nB. For athletes, some level of performance stress is almost unavoidable. But there are many different factors that dictate just how people’s minds and bodies respond to stressful events. Typically, stress is the result of an exchange between two factors: demands and resources. An athlete may feel stressed about an event if they feel the demands on them are greater than they can handle. These demands include the high level of physical and mental effort required to succeed, and also the athlete’s concerns about the difficulty of the event, their chance of succeeding, and any potential dangers such as injury. Resources, on the other hand, are a person’s ability to cope with these demands. These include factors such as the competitor’s degree of confidence, how much they believe they can control the situation’s outcome, and whether they’re looking forward to the event or not.\n\nC. Each new demand or change in circumstances affects whether a person responds positively or negatively to stress. Typically, the more resources a person feels they have in handling the situation, the more positive their stress response. This positive stress response is called a challenge state. But should the person feel there are too many demands placed on them, the more likely they are to experience a negative stress response – known as a threat state. Research shows that the challenge states lead to good performance, while threat states lead to poorer performance. So, in Emma Raducanu’s case, a much larger audience, higher expectations and facing a more skilful opponent, may all have led her to feel there were greater demands being placed on her at Wimbledon -but she didn’t have the resources to tackle them. This led to her experiencing a threat response.\n\nD. Our challenge and threat responses essentially influence how our body responds to stressful situations, as both affect the production of adrenaline and cortisol – also known as ‘stress hormones’. During a challenge state, adrenaline increases the amount of blood pumped from the heart and expands the blood vessels, which allows more energy to be delivered to the muscles and brain. This increase of blood and decrease of pressure in the blood vessels has been consistently related to superior sport performance in everything from cricket batting, to golf putting and football penalty taking. But during a threat state, cortisol inhibits the positive effect of adrenaline, resulting in tighter blood vessels, higher blood pressure, slower psychological responses, and a faster heart rate. In short, a threat state makes people more anxious – they make worse decisions and perform more poorly. In tennis players, cortisol has been associated with more unsuccessful serves and greater anxiety.\n\nE. That said, anxiety is also a common experience for athletes when they’re under pressure. Anxiety can increase heart rate and perspiration, cause heart palpitations, muscle tremors and shortness of breath, as well as headaches, nausea, stomach pain, weakness and a desire to escape in more extreme cases. Anxiety can also reduce concentration and self-control and cause overthinking. The intensity with which a person experiences anxiety depends on the demands and resources they have. Anxiety may also manifest itself in the form of excitement or nervousness depending on the stress response. Negative stress responses can be damaging to both physical and mental health - and repeated episodes of anxiety coupled with negative responses can increase risk of heart disease and depression.\n\nF. But there are many ways athletes can ensure they respond positively under pressure. Positive stress responses can be promoted through the language that they and others – such as coaches or parents – use. Psychologists can also help athletes change how they see their physiological responses – such as helping them see a higher heart rate as excitement, rather than nerves. Developing psychological skills, such as visualisation, can also help decrease physiological responses to threat. Visualisation may involve the athlete recreating a mental picture of a time when they performed well, or picturing themselves doing well in the future. This can help create a feeling of control over the stressful event. Recreating competitive pressure during training can also help athletes learn how to deal with stress. An example of this might be scoring athletes against their peers to create a sense of competition. This would increase the demands which players experience compared to a normal training session, while still allowing them to practise coping with stress.",
-  "script": null,
-  "content": "Which TWO facts about anxiety are mentioned in Paragraph E of the text?",
-  "explanation": "The intensity with which a person experiences anxiety depends on the demands and resources they have. Negative stress responses can be damaging to both physical and mental health – and repeated episodes of anxiety coupled with negative responses can increase risk of heart disease and depression.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "questionType": "matching",
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "correctText": null,
-  "options": [
-   {
-    "label": "A",
-    "content": "the factors which determine how severe it may be"
-   },
-   {
-    "label": "B",
-    "content": "how long it takes for its effects to become apparent"
-   },
-   {
-    "label": "C",
-    "content": "which of its symptoms is most frequently encountered"
-   },
-   {
-    "label": "D",
-    "content": "the types of athletes who are most likely to suffer from it"
-   },
-   {
-    "label": "E",
-    "content": "the harm that can result if athletes experience it too often"
-   }
+  "correct": [
+   "A",
+   "E"
   ],
-  "correct": "E",
   "testSetId": null
  },
  {

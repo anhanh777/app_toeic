@@ -648,7 +648,7 @@
   "explanation": "It must've been a great feeling to make something appetising out of bits of old bread that would've been thrown away otherwise. In this project, I had time to play around with different patterns for the biscuits and finding how I could add fruit and vegetables to make them a more appetising colour, and I was really pleased with what I managed to produce.",
   "topic": "ielts-listening",
   "difficulty": "medium",
-  "questionType": "matching",
+  "questionType": "list_selection",
   "wordLimit": null,
   "acceptedAnswers": [],
   "correctText": null,
@@ -674,48 +674,10 @@
     "content": "learning how to apply 3-D printing"
    }
   ],
-  "correct": "B",
-  "testSetId": null
- },
- {
-  "id": "C19-L-T1-S3-022",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C19-L-T1-S3",
-  "passageTitle": "Section 3 — Bread reuse project / Food trends",
-  "passageText": null,
-  "script": "COLIN: I haven’t seen you for a bit, Marie. MARIE: No. I’ve been busy with my project. COLIN: You’re making a vegan alternative to eggs, aren’t you? Something that doesn’t use animal products? MARIE: Yes. I’m using chickpeas. I had two main aims when I first started looking for an alternative to eggs, but actually I’ve found chickpeas have got more advantages. COLIN: Right. MARIE: But how about your project on reusing waste food – you were looking at bread, weren’t you? COLIN: Yes. It’s been hard work, but I’ve enjoyed it. The basic process was quite straightforward - breaking the stale bread down to a paste then reforming it. MARIE: But you were using 3-D printing, weren’t you, to make the paste into biscuits? COLIN: Yeah, I’d used that before, but in this project, I had time to play around with different patterns for the biscuits and finding how I could add fruit and vegetables to make them a more appetising colour, and I was really pleased with what I managed to produce. MARIE: It must’ve been a great feeling to make something appetising out of bits of old bread that would’ve been thrown away otherwise. COLIN: It was. And I’m hoping that some of the restaurants in town will be interested in the biscuits. I’m going to send them some samples. MARIE: I came across something on the internet yesterday that might interest you. It was a company that’s developed touch-sensitive sensors for food labels. COLIN: Mmm? MARIE: It’s a special sort of label on the food package. When the label’s smooth, the food is fresh and then when you can feel bumps on the label, that means the food’s gone bad. It started off as a project to help visually impaired people know whether food was fit to eat or not. COLIN: Interesting. So just solid food? MARIE: No, things like milk and juice as well. But actually, I thought it might be really good for drug storage in hospitals and pharmacies. COLIN: Right. And coming back to food, maybe it’d be possible to use it for other things besides freshness. Like how many kilograms a joint of meat is, for example. MARIE: Yes, there’s all sorts of possibilities. COLIN: I was reading an article about food trends predicting how eating habits might change in the next few years. MARIE: Oh things like more focus on local products? That seems so obvious, but the shops are still full of imported foods. COLIN: Yes, they need to be more proactive to address that. MARIE: And somehow motivate consumers to change, yes. COLIN: One thing everyone’s aware of is the need for a reduction in unnecessary packaging-but just about everything you buy in supermarkets is still covered in plastic. The government needs to do something about it. MARIE: Absolutely. It’s got to change. COLIN: Do you think there’ll be more interest in gluten and lactose-free food? MARIE: For people with allergies or food intolerances? I don’t know. Lots of people I know have been buying that type of food for years now. COLIN: Yes, even if they haven’t been diagnosed with an allergy. MARIE: That’s right. One thing I ’ve noticed is the number of branded products related to celebrity chefs – people watch them cooking on TV and then buy things like spice mixes or frozen foods with the chef’s name on. I bought something like that once, but I won’t again. COLIN: Yeah – I bought a ready-made spice mix for chicken which was supposed to be used by a chef I’d seen on television, and it didn’t actually taste of anything. MARIE: Mm. Did the article mention ‘ghost kitchens’ used to produce takeaway food? COLIN: No. What are they? MARIE: Well, they might have the name of a restaurant, but actually they’re a cooking facility just for delivery meals – the public don’t ever go there. But people aren’t aware of that – it’s all kept very quiet. COLIN: So people don’t realise the food’s not actually from the restaurant? MARIE: Right. COLIN: Did you know more and more people are using all sorts of different mushrooms now, to treat different health concerns? Things like heart problems? MARIE: Hmm. They might be taking a big risk there. COLIN: Yes, it’s hard to know which varieties are safe to eat. Anyway maybe now…",
-  "content": "Which TWO things did Colin find most satisfying about his bread reuse project?",
-  "explanation": "It must've been a great feeling to make something appetising out of bits of old bread that would've been thrown away otherwise. In this project, I had time to play around with different patterns for the biscuits and finding how I could add fruit and vegetables to make them a more appetising colour, and I was really pleased with what I managed to produce.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "questionType": "matching",
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "correctText": null,
-  "options": [
-   {
-    "label": "A",
-    "content": "receiving support from local restaurants"
-   },
-   {
-    "label": "B",
-    "content": "finding a good way to prevent waste"
-   },
-   {
-    "label": "C",
-    "content": "overcoming problems in a basic process"
-   },
-   {
-    "label": "D",
-    "content": "experimenting with designs and colours"
-   },
-   {
-    "label": "E",
-    "content": "learning how to apply 3-D printing"
-   }
+  "correct": [
+   "B",
+   "D"
   ],
-  "correct": "D",
   "testSetId": null
  },
  {
@@ -730,7 +692,7 @@
   "explanation": "But actually, I thought it might be really good for drug storage in hospitals and pharmacies. Coming back to food, maybe it'd be possible to use it for other things besides freshness. Like how many kilograms a joint of meat is, for example.",
   "topic": "ielts-listening",
   "difficulty": "medium",
-  "questionType": "matching",
+  "questionType": "list_selection",
   "wordLimit": null,
   "acceptedAnswers": [],
   "correctText": null,
@@ -756,48 +718,10 @@
     "content": "to indicate the weight of certain foods"
    }
   ],
-  "correct": "A",
-  "testSetId": null
- },
- {
-  "id": "C19-L-T1-S3-024",
-  "exam": "ielts",
-  "part": 3,
-  "passageId": "C19-L-T1-S3",
-  "passageTitle": "Section 3 — Bread reuse project / Food trends",
-  "passageText": null,
-  "script": "COLIN: I haven’t seen you for a bit, Marie. MARIE: No. I’ve been busy with my project. COLIN: You’re making a vegan alternative to eggs, aren’t you? Something that doesn’t use animal products? MARIE: Yes. I’m using chickpeas. I had two main aims when I first started looking for an alternative to eggs, but actually I’ve found chickpeas have got more advantages. COLIN: Right. MARIE: But how about your project on reusing waste food – you were looking at bread, weren’t you? COLIN: Yes. It’s been hard work, but I’ve enjoyed it. The basic process was quite straightforward - breaking the stale bread down to a paste then reforming it. MARIE: But you were using 3-D printing, weren’t you, to make the paste into biscuits? COLIN: Yeah, I’d used that before, but in this project, I had time to play around with different patterns for the biscuits and finding how I could add fruit and vegetables to make them a more appetising colour, and I was really pleased with what I managed to produce. MARIE: It must’ve been a great feeling to make something appetising out of bits of old bread that would’ve been thrown away otherwise. COLIN: It was. And I’m hoping that some of the restaurants in town will be interested in the biscuits. I’m going to send them some samples. MARIE: I came across something on the internet yesterday that might interest you. It was a company that’s developed touch-sensitive sensors for food labels. COLIN: Mmm? MARIE: It’s a special sort of label on the food package. When the label’s smooth, the food is fresh and then when you can feel bumps on the label, that means the food’s gone bad. It started off as a project to help visually impaired people know whether food was fit to eat or not. COLIN: Interesting. So just solid food? MARIE: No, things like milk and juice as well. But actually, I thought it might be really good for drug storage in hospitals and pharmacies. COLIN: Right. And coming back to food, maybe it’d be possible to use it for other things besides freshness. Like how many kilograms a joint of meat is, for example. MARIE: Yes, there’s all sorts of possibilities. COLIN: I was reading an article about food trends predicting how eating habits might change in the next few years. MARIE: Oh things like more focus on local products? That seems so obvious, but the shops are still full of imported foods. COLIN: Yes, they need to be more proactive to address that. MARIE: And somehow motivate consumers to change, yes. COLIN: One thing everyone’s aware of is the need for a reduction in unnecessary packaging-but just about everything you buy in supermarkets is still covered in plastic. The government needs to do something about it. MARIE: Absolutely. It’s got to change. COLIN: Do you think there’ll be more interest in gluten and lactose-free food? MARIE: For people with allergies or food intolerances? I don’t know. Lots of people I know have been buying that type of food for years now. COLIN: Yes, even if they haven’t been diagnosed with an allergy. MARIE: That’s right. One thing I ’ve noticed is the number of branded products related to celebrity chefs – people watch them cooking on TV and then buy things like spice mixes or frozen foods with the chef’s name on. I bought something like that once, but I won’t again. COLIN: Yeah – I bought a ready-made spice mix for chicken which was supposed to be used by a chef I’d seen on television, and it didn’t actually taste of anything. MARIE: Mm. Did the article mention ‘ghost kitchens’ used to produce takeaway food? COLIN: No. What are they? MARIE: Well, they might have the name of a restaurant, but actually they’re a cooking facility just for delivery meals – the public don’t ever go there. But people aren’t aware of that – it’s all kept very quiet. COLIN: So people don’t realise the food’s not actually from the restaurant? MARIE: Right. COLIN: Did you know more and more people are using all sorts of different mushrooms now, to treat different health concerns? Things like heart problems? MARIE: Hmm. They might be taking a big risk there. COLIN: Yes, it’s hard to know which varieties are safe to eat. Anyway maybe now…",
-  "content": "Which TWO ways do the students agree that touch-sensitive sensors for food labels could be developed in future?",
-  "explanation": "But actually, I thought it might be really good for drug storage in hospitals and pharmacies. Coming back to food, maybe it'd be possible to use it for other things besides freshness. Like how many kilograms a joint of meat is, for example.",
-  "topic": "ielts-listening",
-  "difficulty": "medium",
-  "questionType": "matching",
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "correctText": null,
-  "options": [
-   {
-    "label": "A",
-    "content": "for use on medical products"
-   },
-   {
-    "label": "B",
-    "content": "to show that food is no longer fit to eat"
-   },
-   {
-    "label": "C",
-    "content": "for use with drinks as well as foods"
-   },
-   {
-    "label": "D",
-    "content": "to provide applications for blind people"
-   },
-   {
-    "label": "E",
-    "content": "to indicate the weight of certain foods"
-   }
+  "correct": [
+   "A",
+   "E"
   ],
-  "correct": "E",
   "testSetId": null
  },
  {
@@ -1977,7 +1901,7 @@
   "explanation": "Although piracy in the Mediterranean is first recorded in ancient Egypt during the reign of Pharaoh Amenhotep III (c 1390-1353 BCE), it is reasonable to assume it predated this powerful civilisation. While the Mediterranean region is predominantly fertile, some parts are rugged and hilly, even mountainous. In the ancient times, the inhabitants of these areas relied heavily on marine resources, including fish and salt.",
   "topic": "ielts-reading",
   "difficulty": "medium",
-  "questionType": "matching",
+  "questionType": "list_selection",
   "wordLimit": null,
   "acceptedAnswers": [],
   "correctText": null,
@@ -2003,48 +1927,10 @@
     "content": "They stored many of the goods taken in pirate attacks in coves along the coastline."
    }
   ],
-  "correct": "B",
-  "testSetId": null
- },
- {
-  "id": "C19-R-T1-P2-021",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C19-R-T1-P2",
-  "passageTitle": "Passage 2 — The pirates of the ancient Mediterranean",
-  "passageText": "In the first and second millennia BCE, pirates sailed around the Mediterranean, attacking ships and avoiding pursuers\n\nA. When one mentions pirates, an image springs to most people’s minds of a crew of misfits, daredevils and adventurers in command of a tall sailing ship in the Caribbean Sea. Yet from the first to the third millennium BCE, thousands of years before these swashbucklers began spreading fear across the Caribbean, pirates prowled the Mediterranean, raiding merchant ships and threatening vital trade routes. However, despite all efforts and the might of various ancient states, piracy could not be stopped. The situation remained unchanged for thousands of years. Only when the pirates directly threatened the interests of ancient Rome did the Roman Republic organise a massive fleet to eliminate piracy. Under the command of the Roman general Pompey, Rome eradicated piracy, transforming the Mediterranean into ‘Mare Nostrum’ (Our Sea).\n\nB. Although piracy in the Mediterranean is first recorded in ancient Egypt during the reign of Pharaoh Amenhotep III (c 1390-1353 BCE), it is reasonable to assume it predated this powerful civilisation. This is partly due to the great importance the Mediterranean held at this time, and partly due to its geography. While the Mediterranean region is predominantly fertile, some parts are rugged and hilly, even mountainous. In the ancient times, the inhabitants of these areas relied heavily on marine resources, including fish and salt. Most had their own boats, possessed good seafaring skills, and unsurpassed knowledge of the local coastline and sailing routes. Thus, it is not surprising that during hardships, these men turned to piracy. Geography itself further benefited the pirates, with the numerous coves along the coast providing places for them to hide their boats and strike undetected. Before the invention of ocean-going caravels in the 15th century, ships could not easily cross long distances over open water. Thus, in the ancient world most were restricted to a few well-known navigable routes that followed the coastline. Caught in a trap, a slow merchant ship laden with goods had no other option but to surrender. In addition, knowledge of the local area helped the pirates to avoid retaliation once a state fleet arrived.\n\nC. One should also add that it was not unknown in the first and second millennia BCE for governments to resort to pirates’ services, especially during wartime, employing their skills and numbers against their opponents. A pirate fleet would serve in the first wave of attack, preparing the way for the navy. Some of the regions were known for providing safe harbours to pirates, who, in return, boosted the local economy.\n\nD. The first known record of a named group of Mediterranean pirates, made during the rule of ancient Egyptian Pharaoh Akhenaten (c 1353-1336 BCE), was in the Amarna Letters. These were extracts of diplomatic correspondence between the pharaoh and his allies, and covered many pressing issues, including piracy. It seems the pharaoh was troubled by two distinct pirate groups, the Lukka and the Sherden. Despite the Egyptian fleet’s best efforts, the pirates continued to cause substantial disruption to regional commerce. In the letters, the king of Alashiya (modern Cyprus) rejected Akhenaten’s claims of a connection with the Lukka (based in modern-day Turkey). The king assured Akhenaten he was prepared to punish any of his subjects involved in piracy.\n\nE. The ancient Greek world’s experience of piracy was different from that of Egyptian rulers. While Egypt’s power was land-based, the ancient Greeks relied on the Mediterranean in almost all aspects of life, from trade to warfare. Interestingly, in his works the Iliad and the Odyssey, the ancient Greek writer Homer not only condones, but praises the lifestyle and actions of pirates. The opinion remained unchanged in the following centuries. The ancient Greek historian Thucydides, for instance, glorified pirates’ daring attacks on ships or even cities. For Greeks, piracy was a part of everyday life. Even high-ranking members of the state were not beyond engaging in such activities. According to the Greek orator Demosthenes, in 355 BCE, Athenian ambassadors made a detour from their official travel to capture a ship sailing from Egypt, taking the wealth found onboard for themselves! The Greeks’ liberal approach towards piracy does not mean they always tolerated it, but attempts to curtail piracy were hampered by the large number of pirates operating in the Mediterranean.\n\nF. The rising power of ancient Rome required the Roman Republic to deal with piracy in the Mediterranean. While piracy was a serious issue for the Republic, Rome profited greatly from its existence. Pirate raids provided a steady source of slaves, essential for Rome’s agriculture and mining industries. But this arrangement could work only while the pirates left Roman interests alone. Pirate attacks on grain ships, which were essential to Roman citizens, led to angry voices in the Senate, demanding punishment of the culprits. Rome, however, did nothing, further encouraging piracy. By the 1st century BCE, emboldened pirates kidnapped prominent Roman dignitaries, asking for a large ransom to be paid. Their most famous hostage was none other than Julius Caesar, captured in 75 BCE.\n\nG. By now, Rome was well aware that pirates had outlived their usefulness. The time had come for concerted action. In 67 BCE, a new law granted Pompey vast funds to combat the Mediterranean menace. Taking personal command, Pompey divided the entire Mediterranean into 13 districts, assigning a fleet and commander to each. After cleansing one district of pirates, the fleet would join another in the next district. The process continued until the entire Mediterranean was free of pirates. Although thousands of pirates died at the hands of Pompey’s troops, as a long-term solution to the problem, many more were offered land in fertile areas located far from the sea. Instead of a maritime menace, Rome got productive farmers that further boosted its economy.",
-  "script": null,
-  "content": "Which TWO of the following statements does the writer make about inhabitants of the Mediterranean region in the ancient world?",
-  "explanation": "Although piracy in the Mediterranean is first recorded in ancient Egypt during the reign of Pharaoh Amenhotep III (c 1390-1353 BCE), it is reasonable to assume it predated this powerful civilisation. While the Mediterranean region is predominantly fertile, some parts are rugged and hilly, even mountainous. In the ancient times, the inhabitants of these areas relied heavily on marine resources, including fish and salt.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "questionType": "matching",
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "correctText": null,
-  "options": [
-   {
-    "label": "A",
-    "content": "They often used stolen vessels to carry out pirate attacks."
-   },
-   {
-    "label": "B",
-    "content": "They managed to escape capture by the authorities because they knew the area so well."
-   },
-   {
-    "label": "C",
-    "content": "They paid for information about the routes merchant ships would take."
-   },
-   {
-    "label": "D",
-    "content": "They depended more on the sea for their livelihood than on farming."
-   },
-   {
-    "label": "E",
-    "content": "They stored many of the goods taken in pirate attacks in coves along the coastline."
-   }
+  "correct": [
+   "B",
+   "D"
   ],
-  "correct": "D",
   "testSetId": null
  },
  {
@@ -2059,7 +1945,7 @@
   "explanation": "Even high-ranking members of the state were not beyond engaging in such activities. Interestingly, in his works the Iliad and the Odyssey, the ancient Greek writer Homer not only condones, but praises the lifestyle and actions of pirates.",
   "topic": "ielts-reading",
   "difficulty": "medium",
-  "questionType": "matching",
+  "questionType": "list_selection",
   "wordLimit": null,
   "acceptedAnswers": [],
   "correctText": null,
@@ -2085,48 +1971,10 @@
     "content": "A favourable view of piracy is evident in certain ancient Greek texts."
    }
   ],
-  "correct": "C",
-  "testSetId": null
- },
- {
-  "id": "C19-R-T1-P2-023",
-  "exam": "ielts",
-  "part": 6,
-  "passageId": "C19-R-T1-P2",
-  "passageTitle": "Passage 2 — The pirates of the ancient Mediterranean",
-  "passageText": "In the first and second millennia BCE, pirates sailed around the Mediterranean, attacking ships and avoiding pursuers\n\nA. When one mentions pirates, an image springs to most people’s minds of a crew of misfits, daredevils and adventurers in command of a tall sailing ship in the Caribbean Sea. Yet from the first to the third millennium BCE, thousands of years before these swashbucklers began spreading fear across the Caribbean, pirates prowled the Mediterranean, raiding merchant ships and threatening vital trade routes. However, despite all efforts and the might of various ancient states, piracy could not be stopped. The situation remained unchanged for thousands of years. Only when the pirates directly threatened the interests of ancient Rome did the Roman Republic organise a massive fleet to eliminate piracy. Under the command of the Roman general Pompey, Rome eradicated piracy, transforming the Mediterranean into ‘Mare Nostrum’ (Our Sea).\n\nB. Although piracy in the Mediterranean is first recorded in ancient Egypt during the reign of Pharaoh Amenhotep III (c 1390-1353 BCE), it is reasonable to assume it predated this powerful civilisation. This is partly due to the great importance the Mediterranean held at this time, and partly due to its geography. While the Mediterranean region is predominantly fertile, some parts are rugged and hilly, even mountainous. In the ancient times, the inhabitants of these areas relied heavily on marine resources, including fish and salt. Most had their own boats, possessed good seafaring skills, and unsurpassed knowledge of the local coastline and sailing routes. Thus, it is not surprising that during hardships, these men turned to piracy. Geography itself further benefited the pirates, with the numerous coves along the coast providing places for them to hide their boats and strike undetected. Before the invention of ocean-going caravels in the 15th century, ships could not easily cross long distances over open water. Thus, in the ancient world most were restricted to a few well-known navigable routes that followed the coastline. Caught in a trap, a slow merchant ship laden with goods had no other option but to surrender. In addition, knowledge of the local area helped the pirates to avoid retaliation once a state fleet arrived.\n\nC. One should also add that it was not unknown in the first and second millennia BCE for governments to resort to pirates’ services, especially during wartime, employing their skills and numbers against their opponents. A pirate fleet would serve in the first wave of attack, preparing the way for the navy. Some of the regions were known for providing safe harbours to pirates, who, in return, boosted the local economy.\n\nD. The first known record of a named group of Mediterranean pirates, made during the rule of ancient Egyptian Pharaoh Akhenaten (c 1353-1336 BCE), was in the Amarna Letters. These were extracts of diplomatic correspondence between the pharaoh and his allies, and covered many pressing issues, including piracy. It seems the pharaoh was troubled by two distinct pirate groups, the Lukka and the Sherden. Despite the Egyptian fleet’s best efforts, the pirates continued to cause substantial disruption to regional commerce. In the letters, the king of Alashiya (modern Cyprus) rejected Akhenaten’s claims of a connection with the Lukka (based in modern-day Turkey). The king assured Akhenaten he was prepared to punish any of his subjects involved in piracy.\n\nE. The ancient Greek world’s experience of piracy was different from that of Egyptian rulers. While Egypt’s power was land-based, the ancient Greeks relied on the Mediterranean in almost all aspects of life, from trade to warfare. Interestingly, in his works the Iliad and the Odyssey, the ancient Greek writer Homer not only condones, but praises the lifestyle and actions of pirates. The opinion remained unchanged in the following centuries. The ancient Greek historian Thucydides, for instance, glorified pirates’ daring attacks on ships or even cities. For Greeks, piracy was a part of everyday life. Even high-ranking members of the state were not beyond engaging in such activities. According to the Greek orator Demosthenes, in 355 BCE, Athenian ambassadors made a detour from their official travel to capture a ship sailing from Egypt, taking the wealth found onboard for themselves! The Greeks’ liberal approach towards piracy does not mean they always tolerated it, but attempts to curtail piracy were hampered by the large number of pirates operating in the Mediterranean.\n\nF. The rising power of ancient Rome required the Roman Republic to deal with piracy in the Mediterranean. While piracy was a serious issue for the Republic, Rome profited greatly from its existence. Pirate raids provided a steady source of slaves, essential for Rome’s agriculture and mining industries. But this arrangement could work only while the pirates left Roman interests alone. Pirate attacks on grain ships, which were essential to Roman citizens, led to angry voices in the Senate, demanding punishment of the culprits. Rome, however, did nothing, further encouraging piracy. By the 1st century BCE, emboldened pirates kidnapped prominent Roman dignitaries, asking for a large ransom to be paid. Their most famous hostage was none other than Julius Caesar, captured in 75 BCE.\n\nG. By now, Rome was well aware that pirates had outlived their usefulness. The time had come for concerted action. In 67 BCE, a new law granted Pompey vast funds to combat the Mediterranean menace. Taking personal command, Pompey divided the entire Mediterranean into 13 districts, assigning a fleet and commander to each. After cleansing one district of pirates, the fleet would join another in the next district. The process continued until the entire Mediterranean was free of pirates. Although thousands of pirates died at the hands of Pompey’s troops, as a long-term solution to the problem, many more were offered land in fertile areas located far from the sea. Instead of a maritime menace, Rome got productive farmers that further boosted its economy.",
-  "script": null,
-  "content": "Which TWO of the following statements does the writer make about piracy and ancient Greece?",
-  "explanation": "Even high-ranking members of the state were not beyond engaging in such activities. Interestingly, in his works the Iliad and the Odyssey, the ancient Greek writer Homer not only condones, but praises the lifestyle and actions of pirates.",
-  "topic": "ielts-reading",
-  "difficulty": "medium",
-  "questionType": "matching",
-  "wordLimit": null,
-  "acceptedAnswers": [],
-  "correctText": null,
-  "options": [
-   {
-    "label": "A",
-    "content": "The state estimated that very few people were involved in piracy."
-   },
-   {
-    "label": "B",
-    "content": "Attitudes towards piracy changed shortly after the Iliad and the Odyssey were written."
-   },
-   {
-    "label": "C",
-    "content": "Important officials were known to occasionally take part in piracy."
-   },
-   {
-    "label": "D",
-    "content": "Every citizen regarded pirate attacks on cities as unacceptable."
-   },
-   {
-    "label": "E",
-    "content": "A favourable view of piracy is evident in certain ancient Greek texts."
-   }
+  "correct": [
+   "C",
+   "E"
   ],
-  "correct": "E",
   "testSetId": null
  },
  {
