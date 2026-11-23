@@ -21,6 +21,7 @@ import { API_URL } from './api';
  */
 
 export type LoadingEffectId =
+  | 'none'
   | 'spinner'
   | 'dual-ring'
   | 'bouncing-dots'
@@ -114,6 +115,7 @@ export function activeStyle(settings: UiSettings): StyleSettings {
 }
 
 export const LOADING_EFFECTS: Record<LoadingEffectId, { label: string; locations: LoadingLocation[] }> = {
+  none: { label: 'Trống', locations: ['loginButton', 'page', 'table'] },
   spinner: { label: 'Vòng xoay', locations: ['loginButton', 'page', 'table'] },
   'dual-ring': { label: 'Vòng kép', locations: ['loginButton', 'page', 'table'] },
   'bouncing-dots': { label: 'Ba chấm nảy', locations: ['loginButton', 'page', 'table'] },
@@ -130,8 +132,9 @@ export const LOADING_EFFECTS: Record<LoadingEffectId, { label: string; locations
 /** 6 hiệu ứng thêm được — không có sẵn trong lưới, admin thêm tay qua nút "＋ Thêm hiệu ứng". */
 export const EXTRA_EFFECT_IDS: LoadingEffectId[] = ['ripple', 'equalizer', 'orbit', 'pulse', 'wave', 'flip'];
 
-/** 5 hiệu ứng mặc định, luôn có trong lưới chọn. */
+/** 6 hiệu ứng mặc định, luôn có trong lưới chọn. */
 export const DEFAULT_EFFECT_IDS: LoadingEffectId[] = [
+  'none',
   'spinner',
   'dual-ring',
   'bouncing-dots',
@@ -409,6 +412,8 @@ export function LoadingEffect({
   size?: 'sm' | 'md' | 'lg';
   label?: string;
 }) {
+  // 'none' = trong: khong hien hieu ung gi (ke ca khi co label).
+  if (effect === 'none') return null;
   // Toc do lon hon = chay nhanh hon = thoi gian animation ngan hon.
   const style = {
     '--ld-speed': String(1 / Math.max(0.5, Math.min(2, speed || 1))),
@@ -487,6 +492,8 @@ function LoadingEffectInner({ effect, style }: { effect: LoadingEffectId; style:
       );
     case 'flip':
       return <span className="ld-flip" style={style} aria-hidden="true" />;
+    case 'none':
+      return null;
     case 'spinner':
     default:
       return <span className="ld-spinner" style={style} aria-hidden="true" />;
@@ -508,11 +515,14 @@ export function LoadingImage({ image, imageUrl }: { image: LoadingImage; imageUr
  * dien dang chon; `text` la cau theo tung trang (vd. "Dang tai de thi…").
  * Vi tri chi ap cho cho `page`: 'center' = khoi cho giua man hinh,
  * 'top' = khoi cho o tren; `table` luon la 1 dong nhu cu.
+ * Hieu ung 'none' = trong: ca dong/khoi bien mat hoan toan (khong hieu
+ * ung, khong chu, khong anh) — dung khi admin muon cho do khong hien gi.
  */
 export function LoadingLine({ location, text }: { location: LoadingLocation; text: string }) {
   const { settings } = useUiSettings();
   const ld = activeStyle(settings).loading;
   const effect = ld[location];
+  if (effect === 'none') return null;
   if (location === 'page') {
     return (
       <div className={ld.position === 'center' ? 'ld-page-center' : 'ld-page-top'}>

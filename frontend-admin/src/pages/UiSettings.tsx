@@ -403,7 +403,11 @@ export default function UiSettings() {
                         onClick={() => updateStyleLoading(configStyle, { [loc]: id })}
                       >
                         <span className="ld-pick-anim">
-                          <LoadingEffect effect={id} speed={cfg.loading.speed} size="md" />
+                          {id === 'none' ? (
+                            <span className="ld-pick-none" aria-hidden="true">∅</span>
+                          ) : (
+                            <LoadingEffect effect={id} speed={cfg.loading.speed} size="md" />
+                          )}
                         </span>
                         <span className="ld-pick-label">{LOADING_EFFECTS[id].label}</span>
                       </button>

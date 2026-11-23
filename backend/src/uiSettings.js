@@ -42,9 +42,11 @@
  */
 
 /** Hieu ung loading da cai san trong ca 2 app (CSS o index.css moi app).
- * 5 hieu ung dau luon co san trong luoi chon; 6 hieu ung sau (EXTRA) chi
- * hien khi admin bam "+ Them hieu ung" (luu trong `ui.loading.extraEffects`). */
+ * 6 hieu ung dau luon co san trong luoi chon; 6 hieu ung sau (EXTRA) chi
+ * hien khi admin bam "+ Them hieu ung" (luu trong `ui.loading.extraEffects`).
+ * 'none' = trong: khong hien hieu ung gi (LoadingLine tra ve null). */
 const EFFECTS = Object.freeze({
+  none: Object.freeze({ label: 'Trống', locations: ['loginButton', 'page', 'table'] }),
   spinner: Object.freeze({ label: 'Vòng xoay', locations: ['loginButton', 'page', 'table'] }),
   'dual-ring': Object.freeze({ label: 'Vòng kép', locations: ['loginButton', 'page', 'table'] }),
   'bouncing-dots': Object.freeze({ label: 'Ba chấm nảy', locations: ['loginButton', 'page', 'table'] }),
@@ -63,8 +65,8 @@ const EFFECT_IDS = Object.keys(EFFECTS);
 /** 6 hieu ung them duoc (khong co san trong luoi — admin them tay). */
 const EXTRA_EFFECT_IDS = Object.freeze(['ripple', 'equalizer', 'orbit', 'pulse', 'wave', 'flip']);
 
-/** 5 hieu ung mac dinh, luon co trong luoi chon. */
-const DEFAULT_EFFECT_IDS = Object.freeze(['spinner', 'dual-ring', 'bouncing-dots', 'skeleton', 'progress-bar']);
+/** 6 hieu ung mac dinh, luon co trong luoi chon. */
+const DEFAULT_EFFECT_IDS = Object.freeze(['none', 'spinner', 'dual-ring', 'bouncing-dots', 'skeleton', 'progress-bar']);
 
 /** Cac truong cua 1 khoi loading (chung + rieng tung kieu). */
 const LOADING_FIELDS = Object.freeze([

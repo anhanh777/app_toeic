@@ -22,6 +22,7 @@ import {
 import { API_URL } from './api';
 
 export type LoadingEffectId =
+  | 'none'
   | 'spinner'
   | 'dual-ring'
   | 'bouncing-dots'
@@ -115,6 +116,7 @@ export function activeStyle(settings: UiSettings): StyleSettings {
 }
 
 export const LOADING_EFFECTS: Record<LoadingEffectId, { label: string; locations: LoadingLocation[] }> = {
+  none: { label: 'Trống', locations: ['loginButton', 'page', 'table'] },
   spinner: { label: 'Vòng xoay', locations: ['loginButton', 'page', 'table'] },
   'dual-ring': { label: 'Vòng kép', locations: ['loginButton', 'page', 'table'] },
   'bouncing-dots': { label: 'Ba chấm nảy', locations: ['loginButton', 'page', 'table'] },
@@ -131,8 +133,9 @@ export const LOADING_EFFECTS: Record<LoadingEffectId, { label: string; locations
 /** 6 hiệu ứng thêm được — không có sẵn trong lưới, admin thêm tay qua nút "＋ Thêm hiệu ứng". */
 export const EXTRA_EFFECT_IDS: LoadingEffectId[] = ['ripple', 'equalizer', 'orbit', 'pulse', 'wave', 'flip'];
 
-/** 5 hiệu ứng mặc định, luôn có trong lưới chọn. */
+/** 6 hiệu ứng mặc định, luôn có trong lưới chọn. */
 export const DEFAULT_EFFECT_IDS: LoadingEffectId[] = [
+  'none',
   'spinner',
   'dual-ring',
   'bouncing-dots',

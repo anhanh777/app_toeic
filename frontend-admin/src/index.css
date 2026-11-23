@@ -884,6 +884,8 @@ tbody tr:hover{background:var(--surface-soft)}
 .ld-pick-card:hover{border-color:var(--accent)}
 .ld-pick-card--on{border:2px solid var(--accent); box-shadow:0 0 0 2px var(--accent-soft-strong)}
 .ld-pick-anim{min-height:1.9rem; display:flex; align-items:center; justify-content:center; width:100%}
+/* O xem truoc cua hieu ung "Trong": vong tron dut net + ky hieu rong. */
+.ld-pick-none{display:inline-flex; align-items:center; justify-content:center; width:1.9rem; height:1.9rem; border:1.5px dashed var(--muted); border-radius:50%; color:var(--muted); font-size:1.1rem; font-weight:700}
 /* .ld-pick-anim phai co width co dinh (100%): neu khong, card dang
    flex-direction:column + align-items:center nen anim co lai theo
    noi dung; .ld-progress/.ld-skeleton dung width:100% se tinh vong
