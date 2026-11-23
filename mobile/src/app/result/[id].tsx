@@ -7,7 +7,7 @@
 // + điểm theo Part + bộ lọc + chi tiết từng câu + nút cuối trang cuộn
 // cùng nhau trong 1 FlatList (header/footer) — không còn FlatList con
 // cuộn riêng trong View cố định như trước.
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import {
   ActivityIndicator,
@@ -21,20 +21,112 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
-import { api, scoreLevel, type TestResultDetail } from '../../api';
-import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partNameFor, realQuestionNumber, stripLeadingNumber } from '../../lib';
-import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
+import { api, scoreLevel, type Question, type TestResultDetail } from '../../api';
+import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, partNameFor, realQuestionNumber, stripLeadingNumber } from '../../lib';
+import type { ExamId } from '../../exam';
+import { CARD_PADDING, columnsForWidth, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
 import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../../theme';
 import RootCausePicker, { skillOfPart } from '../../components/RootCausePicker';
 import { TierBadge } from '../../components/TierBadge';
 import { WordText } from '../../components/WordLookup';
-import { partName } from '../../components/QuestionView';
+import PassageView, { type BlankState } from '../../components/PassageView';
+import QuestionView, { isListeningOnly, partName, type AnswerResult } from '../../components/QuestionView';
 
 type Filter = 'all' | 'correct' | 'wrong';
 
 interface DetailRow {
   d: TestResultDetail;
   n: number;
+}
+
+/** 1 câu trong chế độ "Xem trên đề": câu hỏi tổng hợp từ detail + detail gốc. */
+interface PaperItem {
+  q: Question;
+  d: TestResultDetail;
+  n: number;
+}
+interface PaperBlock {
+  key: string;
+  part: number;
+  passageText?: string | null;
+  items: PaperItem[];
+}
+type PaperRow =
+  | { key: string; kind: 'part'; part: number }
+  | { key: string; kind: 'cluster'; block: PaperBlock }
+  | { key: string; kind: 'duo'; items: PaperItem[] }
+  | { key: string; kind: 'single'; item: PaperItem };
+
+/** Nhóm các câu liên tiếp cùng 1 đoạn văn (như màn luyện: cùng passageId
+ * hoặc cùng passageText) — đoạn chỉ hiện 1 lần. */
+function groupPaperBlocks(items: PaperItem[]): PaperBlock[] {
+  const blocks: PaperBlock[] = [];
+  for (const item of items) {
+    const last = blocks[blocks.length - 1];
+    const sameId = !!item.q.passageId && !!last && last.items[0]?.q.passageId === item.q.passageId;
+    const sameText = !!item.q.passageText && !!last && last.passageText === item.q.passageText;
+    if ((sameId || sameText) && last) last.items.push(item);
+    else blocks.push({ key: item.q.id, part: item.q.part, passageText: item.q.passageText, items: [item] });
+  }
+  return blocks;
+}
+
+function isDuoPaperQuestion(q: Question, exam: ExamId): boolean {
+  const t = q.questionType || 'multiple_choice';
+  return q.part >= 5 && (t === 'multiple_choice' || t === 'choosing_title') && !isListeningOnly(q, exam);
+}
+
+/** Chuyển blocks thành các hàng FlatList (như màn luyện) + 1 hàng tiêu đề
+ * mỗi khi chuyển Part/Section. */
+function buildPaperRows(
+  blocks: PaperBlock[],
+  columns: 1 | 2,
+  exam: ExamId,
+): { rows: PaperRow[]; rowByQuestionId: Map<string, number> } {
+  const rows: PaperRow[] = [];
+  const rowByQuestionId = new Map<string, number>();
+  let duoRun: PaperItem[] = [];
+  const flushDuo = (key: string) => {
+    if (!duoRun.length) return;
+    const idx = rows.length;
+    duoRun.forEach(({ q }) => rowByQuestionId.set(q.id, idx));
+    rows.push({ key, kind: 'duo', items: duoRun });
+    duoRun = [];
+  };
+  let prevPart = -1;
+  for (const block of blocks) {
+    if (block.part !== prevPart) {
+      flushDuo(`duo-before-part-${block.part}`);
+      rows.push({ key: `part-${block.part}`, kind: 'part', part: block.part });
+      prevPart = block.part;
+    }
+    const duoBlock = !block.passageText && block.items.every(({ q }) => isDuoPaperQuestion(q, exam));
+    if (duoBlock && columns === 2) {
+      duoRun.push(...block.items);
+      if (duoRun.length >= 2) {
+        const pair = duoRun.slice(0, 2);
+        duoRun = duoRun.slice(2);
+        const idx = rows.length;
+        pair.forEach(({ q }) => rowByQuestionId.set(q.id, idx));
+        rows.push({ key: `duo-${pair[0].q.id}`, kind: 'duo', items: pair });
+      }
+      continue;
+    }
+    flushDuo(`duo-${block.key}`);
+    if (block.passageText) {
+      const idx = rows.length;
+      block.items.forEach(({ q }) => rowByQuestionId.set(q.id, idx));
+      rows.push({ key: block.key, kind: 'cluster', block });
+    } else {
+      for (const item of block.items) {
+        const idx = rows.length;
+        rowByQuestionId.set(item.q.id, idx);
+        rows.push({ key: item.q.id, kind: 'single', item });
+      }
+    }
+  }
+  flushDuo('duo-last');
+  return { rows, rowByQuestionId };
 }
 
 export default function ResultScreen() {
@@ -77,6 +169,178 @@ export default function ResultScreen() {
       return { d, n: realQuestionNumber(isIelts ? 'ielts' : 'toeic', p, withinSeen[p]) };
     });
   }, [data]);
+
+  // Chế độ xem chi tiết: "Xem trên đề" (mặc định — đáp án + giải thích
+  // hiện ngay trên tờ đề) hoặc "Danh sách" (kiểu liệt kê cũ, giữ nguyên).
+  const [view, setView] = useState<'paper' | 'list'>('paper');
+  const columns = columnsForWidth(width);
+  const listRef = useRef<FlatList>(null);
+  const paperExam: ExamId = data?.exam === 'ielts' || data?.overallBand != null ? 'ielts' : 'toeic';
+
+  // "Xem trên đề": tổng hợp Question đầy đủ từ detail (đã có options /
+  // passage / ảnh trong payload) rồi nhóm khối + hàng như màn luyện.
+  const paperItems: PaperItem[] = useMemo(
+    () =>
+      detailRows.map(({ d, n }) => ({
+        q: {
+          id: d.questionId,
+          part: d.part ?? 0,
+          passageId: d.passageId ?? null,
+          passageText: d.passageText ?? undefined,
+          script: d.script ?? undefined,
+          content: d.content ?? '',
+          options: (d.options ?? []).map((o) => ({ label: o.label, content: o.content ?? '' })),
+          questionType: d.questionType,
+          wordLimit: d.wordLimit ?? undefined,
+          imageUrl: d.imageUrl ?? null,
+          exam: paperExam,
+        },
+        d,
+        n,
+      })),
+    [detailRows, paperExam],
+  );
+  const paperBlocks = useMemo(() => groupPaperBlocks(paperItems), [paperItems]);
+  const { rows: paperRows, rowByQuestionId: paperRowByQuestionId } = useMemo(
+    () => buildPaperRows(paperBlocks, columns, paperExam),
+    [paperBlocks, columns, paperExam],
+  );
+  const idByNum = useMemo(() => {
+    const m: Record<number, string> = {};
+    detailRows.forEach(({ d, n }) => {
+      m[n] = d.questionId;
+    });
+    return m;
+  }, [detailRows]);
+
+  const scrollToPaperQuestion = useCallback(
+    (num: number) => {
+      const qid = idByNum[num];
+      if (!qid) return;
+      const idx = paperRowByQuestionId.get(qid);
+      if (idx == null) return;
+      try {
+        listRef.current?.scrollToIndex({ index: idx, viewPosition: 0.5 });
+      } catch {
+        /* FlatList chưa render tới hàng đó — bỏ qua */
+      }
+    },
+    [idByNum, paperRowByQuestionId],
+  );
+
+  const noopSelect = useCallback(() => {}, []);
+
+  // 1 câu ở chế độ "Xem trên đề": dùng lại QuestionView ở trạng thái đã
+  // chấm (như "Làm xong mới chấm" ở phòng luyện) — phương án tô màu theo
+  // đáp án đã chọn/đáp án đúng, dưới câu là trạng thái + đáp án + giải
+  // thích, IELTS sai/chưa trả lời vẫn bị cổng sau RootCausePicker.
+  // Câu chưa làm vẫn hiện đáp án đúng + giải thích (như chế độ Danh
+  // sách) nên luôn tổng hợp 1 kết quả — correct: false khi chưa làm.
+  const renderPaperQuestion = useCallback(
+    (item: PaperItem) => {
+      const { q, d, n } = item;
+      const result: AnswerResult = {
+        correct: d.correct === true,
+        correctLabel: d.correctLabel ?? '',
+        correctText: d.correctText ?? undefined,
+        explanation: d.explanation ?? undefined,
+        transcript: d.script ?? undefined,
+      };
+      return (
+        <QuestionView
+          q={q}
+          n={n}
+          exam={paperExam}
+          selected={d.selected ?? ''}
+          onSelect={noopSelect}
+          mode="practice"
+          result={result}
+          submittedAll
+          guessed={!!guessedById[d.questionId]}
+          causeLogged={!!causeById[d.questionId]}
+          onCauseLogged={handleCauseLogged}
+          hideText={false}
+          isListening={(d.part ?? 0) <= 4}
+          usePartAudio
+        />
+      );
+    },
+    [paperExam, guessedById, causeById, handleCauseLogged, noopSelect],
+  );
+
+  const renderPaperRow = useCallback(
+    ({ item }: { item: PaperRow }) => {
+      if (item.kind === 'part') {
+        return (
+          <Text style={[styles.partHead, { color: colors.accent, fontSize: scaled(17) }]}>
+            {paperExam === 'ielts'
+              ? `${partLabel(item.part, 'ielts')} — ${item.part <= 4 ? 'Listening' : 'Reading'}`
+              : `Part ${item.part}`}
+          </Text>
+        );
+      }
+      if (item.kind === 'cluster') {
+        const block = item.block;
+        const bPart = block.items[0]?.q.part ?? 0;
+        const isReading = paperExam === 'toeic' ? bPart >= 6 : bPart >= 5;
+        const isP6Block = paperExam === 'toeic' && bPart === 6;
+        const blanks: Record<number, BlankState> = {};
+        if (isP6Block) {
+          for (const { d, n } of block.items) {
+            if (d.selected || d.correct != null) blanks[n] = { selected: d.selected || undefined, graded: d.correct ?? null };
+          }
+        }
+        const allDuo = block.items.every(({ q }) => isDuoPaperQuestion(q, paperExam));
+        const duoPairs: PaperItem[][] = [];
+        if (allDuo && columns === 2) {
+          for (let i = 0; i < block.items.length; i += 2) duoPairs.push(block.items.slice(i, i + 2));
+        }
+        return (
+          <View style={styles.cluster}>
+            {block.passageText ? (
+              <View style={[styles.passage, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                <PassageView
+                  text={block.passageText}
+                  isP6={isP6Block}
+                  blanks={blanks}
+                  onBlankClick={scrollToPaperQuestion}
+                  wordLookup={isReading}
+                />
+              </View>
+            ) : null}
+            {duoPairs.length ? (
+              duoPairs.map((pair) => (
+                <View key={pair[0].q.id} style={styles.duoRow}>
+                  {pair.map((it) => (
+                    <View key={it.q.id} style={styles.duoCell}>
+                      {renderPaperQuestion(it)}
+                    </View>
+                  ))}
+                  {pair.length === 1 ? <View style={styles.duoCell} /> : null}
+                </View>
+              ))
+            ) : (
+              block.items.map((it) => <View key={it.q.id}>{renderPaperQuestion(it)}</View>)
+            )}
+          </View>
+        );
+      }
+      if (item.kind === 'duo') {
+        return (
+          <View style={styles.duoRow}>
+            {item.items.map((it) => (
+              <View key={it.q.id} style={styles.duoCell}>
+                {renderPaperQuestion(it)}
+              </View>
+            ))}
+            {item.items.length === 1 ? <View style={styles.duoCell} /> : null}
+          </View>
+        );
+      }
+      return renderPaperQuestion(item.item);
+    },
+    [colors, columns, paperExam, renderPaperQuestion, scaled, scrollToPaperQuestion],
+  );
 
   if (error) {
     return (
@@ -320,39 +584,67 @@ export default function ResultScreen() {
 
   // Có chi tiết từng câu: 1 FlatList duy nhất — header + từng câu +
   // footer (nút Ôn lại câu sai + Thi thử lại/Về trang chủ) cuộn cùng nhau.
+  // Chế độ "Xem trên đề" (mặc định) vẽ lại tờ đề; "Danh sách" giữ kiểu
+  // liệt kê cũ.
   if (detailAll.length) {
+    const paper = view === 'paper';
     return (
       <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
         <FlatList
-          data={filtered}
-          keyExtractor={(r) => r.d.questionId}
-          renderItem={renderRow}
+          ref={listRef}
+          data={paper ? paperRows : filtered}
+          keyExtractor={(item) => ('kind' in item ? item.key : item.d.questionId)}
+          renderItem={({ item }) => ('kind' in item ? renderPaperRow({ item }) : renderRow({ item }))}
           ListHeaderComponent={
             <View style={styles.headerWrap}>
               {headerContent}
-              <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
-                Chi tiết từng câu ({correctCount}/{detailAll.length} đúng)
-              </Text>
-              {wrongCount === 0 ? (
-                <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>🎉 Không có câu sai!</Text>
-              ) : null}
               <View style={styles.tabs}>
                 {(
                   [
-                    ['all', `Tất cả (${detailAll.length})`],
-                    ['correct', `✓ Đúng (${correctCount})`],
-                    ['wrong', `✗ Sai (${wrongCount})`],
-                  ] as [Filter, string][]
-                ).map(([f, label]) => (
+                    ['paper', '📄 Xem trên đề'],
+                    ['list', '📋 Danh sách'],
+                  ] as const
+                ).map(([v, label]) => (
                   <Pressable
-                    key={f}
-                    style={[styles.tab, { borderColor: colors.border }, filter === f && { backgroundColor: colors.accent }, livelyChip(colors)]}
-                    onPress={() => setFilter(f)}
+                    key={v}
+                    style={[styles.tab, { borderColor: colors.border }, view === v && { backgroundColor: colors.accent }, livelyChip(colors)]}
+                    onPress={() => setView(v)}
                   >
-                    <Text style={{ color: filter === f ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>{label}</Text>
+                    <Text style={{ color: view === v ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>{label}</Text>
                   </Pressable>
                 ))}
               </View>
+              {paper ? (
+                <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                  Xem trên đề ({correctCount}/{detailAll.length} đúng)
+                </Text>
+              ) : (
+                <>
+                  <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                    Chi tiết từng câu ({correctCount}/{detailAll.length} đúng)
+                  </Text>
+                  {wrongCount === 0 ? (
+                    <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>🎉 Không có câu sai!</Text>
+                  ) : null}
+                  <View style={styles.tabs}>
+                    {(
+                      [
+                        ['all', `Tất cả (${detailAll.length})`],
+                        ['correct', `✓ Đúng (${correctCount})`],
+                        ['wrong', `✗ Sai (${wrongCount})`],
+                      ] as [Filter, string][]
+                    ).map(([f, label]) => (
+                      <Pressable
+                        key={f}
+                        style={[styles.tab, { borderColor: colors.border }, filter === f && { backgroundColor: colors.accent }, livelyChip(colors)]}
+                        onPress={() => setFilter(f)}
+                      >
+                        <Text style={{ color: filter === f ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>{label}</Text>
+                      </Pressable>
+                    ))}
+                  </View>
+                </>
+              )}
             </View>
           }
           ListFooterComponent={
@@ -437,6 +729,13 @@ const styles = StyleSheet.create({
   rowCard: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },
   gate: { gap: SPACING.sm },
   detailBlock: { gap: SPACING.xs },
+  // "Xem trên đề": tiêu đề Part/Section + khối đoạn văn + hàng 2 câu
+  // (cùng mẫu màn luyện).
+  partHead: { fontWeight: '700', flexWrap: 'wrap' },
+  cluster: { gap: SPACING.md },
+  passage: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING },
+  duoRow: { flexDirection: 'row', gap: SPACING.md, width: '100%' },
+  duoCell: { flex: 1, minWidth: 0 },
   btnRow: { flexDirection: 'row', gap: SPACING.md, width: '100%', paddingBottom: SPACING.sm },
   button: { borderRadius: RADIUS.button, paddingVertical: SPACING.sm, alignItems: 'center', minHeight: 44, justifyContent: 'center' },
   flexButton: { flex: 1 },

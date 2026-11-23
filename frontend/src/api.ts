@@ -88,6 +88,10 @@ export interface TestResultDetail {
   correctText?: string | null; correctLabel?: string | null;
   selected?: string; correct?: boolean; content?: string;
   explanation?: string | null; script?: string | null; passageText?: string | null;
+  /** Đã có sẵn trong payload /api/tests/:id/result (để vẽ "Xem trên đề"):
+   * phương án, đoạn văn, ảnh câu hỏi. */
+  options?: { label: string; content?: string; isCorrect?: boolean }[];
+  passageId?: string | null; passageTitle?: string | null; imageUrl?: string | null;
 }
 export interface PartInfo { part: number; count: number; section?: string; listening?: boolean; reading?: boolean; }
 export interface Vocab { id: string; word: string; phonetic?: string; meaning: string; example?: string; topic?: string; }

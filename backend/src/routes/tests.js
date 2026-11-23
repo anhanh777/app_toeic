@@ -367,6 +367,7 @@ router.get('/tests/:id/result', authMiddleware, (req, res) => {
       passageTitle: q.passageTitle,
       passageText: q.passageText,
       script: q.script,
+      imageUrl: q.imageUrl,
       options: q.options,
       selected: ans ? ans.selected : null,
       correct: ans ? ans.isCorrect : null,
