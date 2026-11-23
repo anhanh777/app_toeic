@@ -26,6 +26,7 @@ import { bandLevel, isFillIn, isMultiAnswer, paperNumbersFor, parseSelectedLabel
 import type { ExamId } from '../../exam';
 import { CARD_PADDING, columnsForWidth, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
 import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../../theme';
+import { BackButton } from '../../components/BackButton';
 import RootCausePicker, { skillOfPart } from '../../components/RootCausePicker';
 import { TierBadge } from '../../components/TierBadge';
 import { WordText } from '../../components/WordLookup';
@@ -486,7 +487,10 @@ export default function ResultScreen() {
   // đầu ScrollView (không có chi tiết câu).
   const headerContent = (
     <View style={styles.headerWrap}>
-      <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Kết quả thi thử</Text>
+      <View style={styles.headerRow}>
+        <BackButton />
+        <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(22) }]}>Kết quả thi thử</Text>
+      </View>
       {isLively ? (
         <View style={styles.mascotRow}>
           <Image
@@ -724,6 +728,7 @@ const styles = StyleSheet.create({
     gap: SPACING.sm,
   },
   headerWrap: { gap: SPACING.sm },
+  headerRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
   footerWrap: { gap: SPACING.sm },
   title: { fontWeight: '700', flexWrap: 'wrap' },
   // Sống động (chỉ render khi lively): mascot nhỏ cạnh lời động viên.

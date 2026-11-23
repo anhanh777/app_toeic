@@ -271,7 +271,7 @@ export default function PracticeScreen() {
                   <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{partsError}</Text>
                 ) : null}
                 <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-                  Chọn {isIelts ? 'Section/Passage' : 'Part'} rồi chọn đề để luyện — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.
+                  Chọn {isIelts ? 'Section/Passage' : 'Part'} rồi chọn đề để luyện — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề.
                 </Text>
                 <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
                   🎧 Listening — {isIelts ? 'Section 1–4' : 'Part 1–4'}

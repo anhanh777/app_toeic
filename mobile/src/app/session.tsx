@@ -36,6 +36,7 @@ import {
 } from '../lib';
 import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from '../components/AudioPlayer';
+import { BackButton } from '../components/BackButton';
 import { useConfirm } from '../components/ConfirmDialog';
 import { LoadingLine } from '../components/LoadingLine';
 import PassageView, { type BlankState } from '../components/PassageView';
@@ -560,20 +561,23 @@ export default function PracticeSessionScreen() {
     <SafeAreaView edges={['left', 'right', 'bottom']} style={[styles.safe, { backgroundColor: colors.background }]}>
       <View style={[styles.container, { paddingHorizontal: pad, paddingTop: topPad }]}>
         <View style={styles.header}>
-          <View style={styles.headerText}>
-            {testSetTitle ? (
-              <Text style={[styles.tag, { color: colors.muted, fontSize: scaled(13) }]}>📚 {testSetTitle}</Text>
-            ) : null}
-            <Text
-              style={[
-                styles.title,
-                { color: colors.examBlue, fontSize: scaled(20), textTransform: 'uppercase' },
-              ]}
-            >
-              {isIelts
-                ? `${partLabel(part, exam)} — ${part <= 4 ? 'Listening' : 'Reading'}`
-                : partName(part)}
-            </Text>
+          <View style={styles.headerLeft}>
+            <BackButton onPress={exit} />
+            <View style={styles.headerText}>
+              {testSetTitle ? (
+                <Text style={[styles.tag, { color: colors.muted, fontSize: scaled(13) }]}>📚 {testSetTitle}</Text>
+              ) : null}
+              <Text
+                style={[
+                  styles.title,
+                  { color: colors.examBlue, fontSize: scaled(20), textTransform: 'uppercase' },
+                ]}
+              >
+                {isIelts
+                  ? `${partLabel(part, exam)} — ${part <= 4 ? 'Listening' : 'Reading'}`
+                  : partName(part)}
+              </Text>
+            </View>
           </View>
           <Text style={[styles.badge, { color: colors.text, fontSize: scaled(14), borderColor: colors.border }, livelyChip(colors)]}>
             Đã làm {score.done}/{questions.length}
@@ -707,6 +711,7 @@ const styles = StyleSheet.create({
   container: { flex: 1, width: '100%', maxWidth: MAX_CONTENT_WIDTH, alignSelf: 'center', paddingTop: SPACING.md },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md },
   header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: SPACING.sm, flexWrap: 'wrap', marginBottom: SPACING.sm },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, flex: 1, flexShrink: 1 },
   headerText: { flexShrink: 1, gap: 2 },
   tag: { flexWrap: 'wrap' },
   title: { fontWeight: '700', flexWrap: 'wrap' },

@@ -77,7 +77,7 @@ export default function PracticePartSets() {
     <div>
       <p><Link className="btn secondary btn-sm" to="/practice">← Quay lại chọn Part</Link></p>
       <h1>{title}</h1>
-      <p className="muted">Chọn 1 đề để luyện {shortLabel} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.{questionType ? <> Đang luyện riêng dạng: <strong>{questionTypeName(questionType)}</strong>.</> : ''}</p>
+      <p className="muted">Chọn 1 đề để luyện {shortLabel} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề.{questionType ? <> Đang luyện riêng dạng: <strong>{questionTypeName(questionType)}</strong>.</> : ''}</p>
       <ErrorBox error={error} />
       {loading && <LoadingLine location="table" text="Đang tải danh sách bộ đề…" />}
       {!loading && !testSets.length && !error && (

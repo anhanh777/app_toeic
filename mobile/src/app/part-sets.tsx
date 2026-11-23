@@ -150,7 +150,7 @@ export default function PartSetsScreen() {
           <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>{partTitle}</Text>
         </View>
         <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
-          Chọn 1 đề để luyện {partTitle} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề, có đủ audio.
+          Chọn 1 đề để luyện {partTitle} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề.
         </Text>
         {loading ? (
           <LoadingLine location="page" text="Đang tải danh sách bộ đề…" />
