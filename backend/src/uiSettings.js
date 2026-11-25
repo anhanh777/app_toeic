@@ -115,6 +115,40 @@ const STYLE_REGISTRY = Object.freeze([
     defaultAccent: '#58CC02',
     defaultLoading: DEFAULT_LOADING,
   }),
+  Object.freeze({
+    id: 'sunset',
+    name: 'Hoàng hôn',
+    desc: 'Cam đào tím ấm áp, học buổi tối chill.',
+    defaultAccent: '#E8632C',
+    defaultLoading: Object.freeze({
+      ...DEFAULT_LOADING,
+      page: 'wave',
+      text: 'Hoàng hôn đang buông, chờ chút nhé…',
+    }),
+  }),
+  Object.freeze({
+    id: 'forest',
+    name: 'Rừng xanh',
+    desc: 'Xanh lá đậm + kem, tự nhiên, bình tĩnh.',
+    defaultAccent: '#2F7D4F',
+    defaultLoading: Object.freeze({
+      ...DEFAULT_LOADING,
+      page: 'ripple',
+      text: 'Lá đang rơi, chờ chút nhé…',
+    }),
+  }),
+  Object.freeze({
+    id: 'sakura',
+    name: 'Sakura',
+    desc: 'Hồng anh đào dịu dàng, hợp với cú hồng.',
+    defaultAccent: '#E85D8A',
+    defaultLoading: Object.freeze({
+      ...DEFAULT_LOADING,
+      page: 'bouncing-dots',
+      text: 'Hoa anh đào đang rơi, chờ chút nhé…',
+      image: 'mascot',
+    }),
+  }),
 ]);
 
 const STYLE_IDS = Object.freeze(STYLE_REGISTRY.map((s) => s.id));

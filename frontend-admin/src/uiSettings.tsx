@@ -36,7 +36,7 @@ export type LoadingEffectId =
 export type LoadingLocation = 'loginButton' | 'page' | 'table';
 export type LoadingPosition = 'center' | 'top';
 export type LoadingImage = 'none' | 'mascot' | 'custom';
-export type UiStyleId = 'pastel' | 'lively';
+export type UiStyleId = 'pastel' | 'lively' | 'sunset' | 'forest' | 'sakura';
 
 /** 1 khối loading đầy đủ (8 trường): hiệu ứng từng chỗ + tốc độ + câu chờ + vị trí + ảnh động.
  * `extraEffects` (chỉ loading chung `ui.loading` mới dùng, global cho cả 2 kiểu):
@@ -92,6 +92,9 @@ export interface UiSettings {
 export const STYLE_REGISTRY: { id: UiStyleId; name: string; desc: string }[] = [
   { id: 'pastel', name: 'Pastel nhẹ nhàng', desc: 'Giao diện hiện tại: nền kem ấm, thẻ trắng, màu sage dịu.' },
   { id: 'lively', name: 'Sống động', desc: 'Kiểu Duolingo: xanh lá tươi, nút nổi, gamified (streak, xu, nhiệm vụ).' },
+  { id: 'sunset', name: 'Hoàng hôn', desc: 'Cam đào tím ấm áp, học buổi tối chill.' },
+  { id: 'forest', name: 'Rừng xanh', desc: 'Xanh lá đậm + kem, tự nhiên, bình tĩnh.' },
+  { id: 'sakura', name: 'Sakura', desc: 'Hồng anh đào dịu dàng, hợp với cú hồng.' },
 ];
 
 const DEFAULT_STYLE_LOADING: StyleLoading = {
@@ -106,6 +109,26 @@ const DEFAULT_STYLE_LOADING: StyleLoading = {
   extraEffects: [],
 };
 
+/** Loading mặc định riêng từng kiểu mới (khác DEFAULT_STYLE_LOADING). */
+const SUNSET_STYLE_LOADING: StyleLoading = {
+  ...DEFAULT_STYLE_LOADING,
+  page: 'wave',
+  text: 'Hoàng hôn đang buông, chờ chút nhé…',
+};
+
+const FOREST_STYLE_LOADING: StyleLoading = {
+  ...DEFAULT_STYLE_LOADING,
+  page: 'ripple',
+  text: 'Lá đang rơi, chờ chút nhé…',
+};
+
+const SAKURA_STYLE_LOADING: StyleLoading = {
+  ...DEFAULT_STYLE_LOADING,
+  page: 'bouncing-dots',
+  text: 'Hoa anh đào đang rơi, chờ chút nhé…',
+  image: 'mascot',
+};
+
 export const UI_SETTINGS_DEFAULTS: UiSettings = {
   ui: {
     accent: '#5FA8A0',
@@ -114,6 +137,9 @@ export const UI_SETTINGS_DEFAULTS: UiSettings = {
     styles: {
       pastel: { accent: '#5FA8A0', loading: { ...DEFAULT_STYLE_LOADING } },
       lively: { accent: '#58CC02', loading: { ...DEFAULT_STYLE_LOADING } },
+      sunset: { accent: '#E8632C', loading: { ...SUNSET_STYLE_LOADING } },
+      forest: { accent: '#2F7D4F', loading: { ...FOREST_STYLE_LOADING } },
+      sakura: { accent: '#E85D8A', loading: { ...SAKURA_STYLE_LOADING } },
     },
     loading: { ...DEFAULT_STYLE_LOADING },
   },
@@ -254,7 +280,7 @@ export function normalizeSettings(input: unknown): UiSettings {
     ui: {
       accent: isHexColor(ui.accent) ? ui.accent : d.accent,
       fontScale: isNumberIn(ui.fontScale, 0.9, 1.15) ? ui.fontScale : d.fontScale,
-      style: ui.style === 'pastel' || ui.style === 'lively' ? ui.style : d.style,
+      style: STYLE_REGISTRY.some((s) => s.id === ui.style) ? (ui.style as UiStyleId) : d.style,
       styles,
       loading: normalizeLoading(ui.loading, d.loading),
     },

@@ -1354,6 +1354,118 @@ tbody tr:hover{background:var(--surface-soft)}
   --track:#33402A; --input-bg:#28331F; --audio-border:#2E5A66;
   --warn-bg:#3A2F18; --warn-border:#8A6D2B;
 }
+/* ================================================================
+   PHONG CACH "HOANG HON" — cam dao tim am ap. Chi co hieu luc khi
+   <html data-style="sunset">. Token mirror danh sach bien cua lively.
+   ================================================================ */
+[data-style="sunset"]{
+  --bg:#FFF6EE; --surface:#FFFFFF; --surface-soft:#FFF1E3;
+  --ink:#3D2B20; --ink-soft:#5C4A3C; --muted:#8A7A6C;
+  --border:#F0E0CF; --border-soft:#F7EBDB;
+  --accent:#E8632C; --accent-dark:#C24E1F; --accent-soft:#FFE8D6; --accent-soft-strong:#FFD9BC;
+  --mint:#FFE8D6; --pink:#FFD9C2; --cream:#FFE9B8; --cream-strong:#FFD88A; --sky:#DCE9FB; --lavender:#E8DEF8; --lavender-border:#DCCDF5;
+  --green:#5E9E6E; --green-bg:#E4F3E6; --green-ink:#3E6B4A; --green-soft:#CFE6D4; --green-border:#B9D9C0;
+  --red:#D96C6C; --red-bg:#FBEAEA; --red-ink:#A84A4A; --red-soft:#F0D3D3; --red-border:#EFC5C5;
+  --amber:#E8632C; --amber-bg:#FFE8D6;
+  --gold:#FFC800; --gold-ink:#7A5C00;
+  --exam-blue:#1CB0F6; --exam-orange:#E8632C;
+  --track:#F7E8D8; --input-bg:#FFFFFF; --audio-border:#F5B98A;
+  --warn-bg:#FFF3D6; --warn-border:#E8632C;
+}
+[data-theme="dark"][data-style="sunset"]{
+  --bg:#2A1D15; --surface:#33241A; --surface-soft:#3D2C1F;
+  --ink:#F7E9DB; --ink-soft:#E0CDB9; --muted:#B59D89;
+  --border:#4A3627; --border-soft:#3D2C1F;
+  --accent:#FF8A4C; --accent-dark:#FFB37A; --accent-soft:#4A2A18; --accent-soft-strong:#5C3620;
+  --mint:#4A2A18; --pink:#4A2A32; --cream:#3A3220; --cream-strong:#453A24; --sky:#22334A; --lavender:#2E2842; --lavender-border:#453D63;
+  --green:#7FBF8E; --green-bg:#1E3325; --green-ink:#9AD6A8; --green-soft:#2A4A32; --green-border:#33573D;
+  --red:#E88F8F; --red-bg:#3A2323; --red-ink:#F2A8A8; --red-soft:#4A2A2A; --red-border:#5A3434;
+  --amber:#FF8A4C; --amber-bg:#3A2F18;
+  --gold:#FFC800; --gold-ink:#E8C86A;
+  --exam-blue:#5CC8F8; --exam-orange:#FF8A4C;
+  --track:#3D2C1F; --input-bg:#33241A; --audio-border:#5C4632;
+  --warn-bg:#3A2F18; --warn-border:#8A6D2B;
+}
+[data-style="sunset"] .hero{
+  border:2px solid var(--border); border-radius:16px;
+  background:linear-gradient(135deg, var(--accent-soft), #FFE9B8 55%, #F3D1F5);
+  box-shadow:0 4px 0 var(--border);
+}
+[data-style="sunset"] .topbar .brand{color:var(--accent-dark)}
+/* ================================================================
+   PHONG CACH "RUNG XANH" — xanh la dam + kem, tu nhien, binh tinh.
+   ================================================================ */
+[data-style="forest"]{
+  --bg:#F4F7EF; --surface:#FFFFFF; --surface-soft:#EDF3E6;
+  --ink:#2E3A2C; --ink-soft:#4A5844; --muted:#7A8A76;
+  --border:#DFE8D6; --border-soft:#EAF0E2;
+  --accent:#2F7D4F; --accent-dark:#23603C; --accent-soft:#DDF0E2; --accent-soft-strong:#C4E4CC;
+  --mint:#DDF0E2; --pink:#FBDCE2; --cream:#FCEFC7; --cream-strong:#F8E7AC; --sky:#DCE9FB; --lavender:#E8DEF8; --lavender-border:#DCCDF5;
+  --green:#2F7D4F; --green-bg:#DDF0E2; --green-ink:#23603C; --green-soft:#C4E4CC; --green-border:#A9D6B4;
+  --red:#D96C6C; --red-bg:#FBEAEA; --red-ink:#A84A4A; --red-soft:#F0D3D3; --red-border:#EFC5C5;
+  --amber:#B98A1D; --amber-bg:#FCF3D9;
+  --gold:#E9B949; --gold-ink:#8A6D1F;
+  --exam-blue:#0B5CAD; --exam-orange:#F5821F;
+  --track:#E8F0DF; --input-bg:#FFFFFF; --audio-border:#9CC8A8;
+  --warn-bg:#FFF7E6; --warn-border:#D8A24A;
+}
+[data-theme="dark"][data-style="forest"]{
+  --bg:#1B251A; --surface:#24301F; --surface-soft:#2C3A26;
+  --ink:#EDF3E6; --ink-soft:#C9D6C2; --muted:#9AAB92;
+  --border:#3A4A34; --border-soft:#2C3A26;
+  --accent:#5CB87F; --accent-dark:#8FD0A8; --accent-soft:#1E3A26; --accent-soft-strong:#28492F;
+  --mint:#1E3A26; --pink:#3D2A30; --cream:#3A3220; --cream-strong:#453A24; --sky:#22334A; --lavender:#2E2842; --lavender-border:#453D63;
+  --green:#5CB87F; --green-bg:#1E3A26; --green-ink:#8FD0A8; --green-soft:#28492F; --green-border:#33573D;
+  --red:#E88F8F; --red-bg:#3A2323; --red-ink:#F2A8A8; --red-soft:#4A2A2A; --red-border:#5A3434;
+  --amber:#E3B93E; --amber-bg:#3A2F18;
+  --gold:#E9B949; --gold-ink:#E8C86A;
+  --exam-blue:#6FB3F2; --exam-orange:#F59A4D;
+  --track:#2C3A26; --input-bg:#24301F; --audio-border:#33573D;
+  --warn-bg:#3A2F18; --warn-border:#8A6D2B;
+}
+[data-style="forest"] .hero{
+  border:2px solid var(--border); border-radius:16px;
+  background:linear-gradient(135deg, var(--accent-soft), #F4F7EF 55%, #DCE9FB);
+  box-shadow:0 4px 0 var(--border);
+}
+[data-style="forest"] .topbar .brand{color:var(--accent-dark)}
+/* ================================================================
+   PHONG CACH "SAKURA" — hong anh dao diu dang, hop voi cu hong.
+   ================================================================ */
+[data-style="sakura"]{
+  --bg:#FFF7F9; --surface:#FFFFFF; --surface-soft:#FDEEF2;
+  --ink:#4A3438; --ink-soft:#6B4A50; --muted:#9A7F85;
+  --border:#F2DDE2; --border-soft:#F8E9EC;
+  --accent:#E85D8A; --accent-dark:#C7436E; --accent-soft:#FDE8EF; --accent-soft-strong:#FAD3DE;
+  --mint:#D9F2E6; --pink:#FDE8EF; --cream:#FCEFC7; --cream-strong:#F8E7AC; --sky:#DCE9FB; --lavender:#EFE6FB; --lavender-border:#DCCDF5;
+  --green:#5E9E6E; --green-bg:#E4F3E6; --green-ink:#3E6B4A; --green-soft:#CFE6D4; --green-border:#B9D9C0;
+  --red:#D96C6C; --red-bg:#FBEAEA; --red-ink:#A84A4A; --red-soft:#F0D3D3; --red-border:#EFC5C5;
+  --amber:#B98A1D; --amber-bg:#FCF3D9;
+  --gold:#E9B949; --gold-ink:#8A6D1F;
+  --exam-blue:#0B5CAD; --exam-orange:#F5821F;
+  --track:#F8E4EA; --input-bg:#FFFFFF; --audio-border:#F2B8C8;
+  --warn-bg:#FFF7E6; --warn-border:#D8A24A;
+}
+[data-theme="dark"][data-style="sakura"]{
+  --bg:#2B1E22; --surface:#36242A; --surface-soft:#402C33;
+  --ink:#F9EDEF; --ink-soft:#E3C9CE; --muted:#B59AA0;
+  --border:#4E3540; --border-soft:#402C33;
+  --accent:#F27DA3; --accent-dark:#F7A8C4; --accent-soft:#4A2530; --accent-soft-strong:#5C2F3D;
+  --mint:#1E3A2C; --pink:#4A2530; --cream:#3A3220; --cream-strong:#453A24; --sky:#22334A; --lavender:#2E2842; --lavender-border:#453D63;
+  --green:#7FBF8E; --green-bg:#1E3325; --green-ink:#9AD6A8; --green-soft:#2A4A32; --green-border:#33573D;
+  --red:#E88F8F; --red-bg:#3A2323; --red-ink:#F2A8A8; --red-soft:#4A2A2A; --red-border:#5A3434;
+  --amber:#E3B93E; --amber-bg:#3A2F18;
+  --gold:#E9B949; --gold-ink:#E8C86A;
+  --exam-blue:#6FB3F2; --exam-orange:#F59A4D;
+  --track:#402C33; --input-bg:#36242A; --audio-border:#5C3A46;
+  --warn-bg:#3A2F18; --warn-border:#8A6D2B;
+}
+[data-style="sakura"] .hero{
+  border:2px solid var(--border); border-radius:16px;
+  background:linear-gradient(135deg, var(--accent-soft), #FFF7F9 55%, #F3E4F7);
+  box-shadow:0 4px 0 var(--border);
+}
+[data-style="sakura"] .topbar .brand{color:var(--accent-dark)}
 [data-style="lively"] h1{font-size:1.55rem; font-weight:800}
 [data-style="lively"] h2{font-size:1.2rem; font-weight:800}
 [data-style="lively"] h3{font-weight:800}

@@ -65,6 +65,18 @@ const IMAGE_OPTIONS: { id: LoadingImage; name: string; desc: string }[] = [
 const PREVIEW_BG: Record<UiStyleId, string> = {
   pastel: '#FDF8F3',
   lively: '#F8FDF0',
+  sunset: '#FFF6EE',
+  forest: '#F4F7EF',
+  sakura: '#FFF7F9',
+};
+
+/** Emoji riêng từng kiểu (pastel đổi 🌸 → 🎨 để khỏi trùng Sakura). */
+const STYLE_EMOJI: Record<UiStyleId, string> = {
+  pastel: '🎨',
+  lively: '🚀',
+  sunset: '🌇',
+  forest: '🌲',
+  sakura: '🌸',
 };
 
 export default function UiSettings() {
@@ -259,7 +271,7 @@ export default function UiSettings() {
     <div>
       <h1>🎨 Cài đặt giao diện</h1>
       <p className="muted">
-        2 giao diện — mỗi kiểu có màu chủ đạo và hiệu ứng loading riêng. Bấm vào box để chọn kiểu đang dùng,
+        5 giao diện — mỗi kiểu có màu chủ đạo và hiệu ứng loading riêng. Bấm vào box để chọn kiểu đang dùng,
         bấm "⚙️ Cấu hình" để chỉnh sâu từng kiểu. Trong cửa sổ Cấu hình, nút "＋ Thêm hiệu ứng" ở cuối mỗi lưới
         sẽ thêm hiệu ứng mới vào lưới chọn ở cả 3 mục. Lưu vào backend nên đổi là có hiệu lực ngay, không cần deploy lại code.
         Cỡ chữ ở đây chỉ là cỡ cơ sở — người học vẫn giữ nút 🔠 chọn cỡ chữ riêng của mình.
@@ -287,7 +299,7 @@ export default function UiSettings() {
                   )}
                   <div>
                     <h2 style={{ margin: 0 }}>
-                      {meta.id === 'pastel' ? '🌸' : '🚀'} {meta.name}{' '}
+                      {STYLE_EMOJI[meta.id]} {meta.name}{' '}
                       {active && <span style={{ fontSize: '.8rem', color: 'var(--green-ink)' }}>✓ Đang dùng</span>}
                     </h2>
                     <p className="muted" style={{ margin: '.2rem 0 0' }}>{meta.desc}</p>
@@ -395,15 +407,15 @@ export default function UiSettings() {
         <Modal
           title={`Cấu hình giao diện ${cfgMeta.name}`}
           subtitle={
-            configStyle === 'pastel'
-              ? 'Màu chủ đạo + hiệu ứng loading riêng của kiểu này. Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng.'
-              : 'Hiệu ứng loading riêng của kiểu này (màu xanh Duolingo cố định). Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng.'
+            configStyle === 'lively'
+              ? 'Hiệu ứng loading riêng của kiểu này (màu xanh Duolingo cố định). Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng.'
+              : 'Màu chủ đạo + hiệu ứng loading riêng của kiểu này. Đóng cửa sổ rồi bấm Lưu ở trang chính để áp dụng.'
           }
           onClose={closeConfig}
           lg
         >
           <div className="ui-config">
-          {configStyle === 'pastel' && (
+          {configStyle !== 'lively' && (
             <>
               <h3 style={{ marginTop: 0 }}>Màu chủ đạo</h3>
               <div className="btn-row" style={{ alignItems: 'center' }}>

@@ -23,8 +23,9 @@ import { deriveAccent, deriveLivelyAccent, useUiSettingsOptional } from './uiSet
 export type Theme = 'light' | 'dark';
 
 export interface Palette {
-  /** Phong cách giao diện đang áp: 'pastel' mặc định, 'lively' = Sống động (Duolingo). */
-  style: 'pastel' | 'lively';
+  /** Phong cách giao diện đang áp: 'pastel' mặc định, 'lively' = Sống động (Duolingo),
+   * 'sunset' = Hoàng hôn, 'forest' = Rừng xanh, 'sakura' = Sakura. */
+  style: 'pastel' | 'lively' | 'sunset' | 'forest' | 'sakura';
   /** Cam streak 🔥 + vàng xu 🪙 + xanh dương Duolingo (lively dùng #FF9600/#FFC800/#1CB0F6). */
   streak: string;
   coin: string;
@@ -297,13 +298,323 @@ export const LIVELY_DARK: Palette = {
   lavenderBorder: '#453D63',
 };
 
+// ---- Phong cách "Hoàng hôn" — cam đào tím ấm áp. Token khớp bản web
+// [data-style="sunset"] trong frontend/src/index.css. ----
+export const SUNSET_LIGHT: Palette = {
+  style: 'sunset',
+  streak: '#FF7A1A',
+  coin: '#FFC800',
+  duoBlue: '#1CB0F6',
+  background: '#FFF6EE',
+  surface: '#FFFFFF',
+  surfaceMuted: '#FFF1E3',
+  text: '#3D2B20',
+  muted: '#8A7A6C',
+  border: '#F0E0CF',
+  borderHard: '#E0CDB4',
+  accent: '#E8632C',
+  onAccent: '#FFFFFF',
+  danger: '#D96C6C',
+  success: '#5E9E6E',
+  inkSoft: '#5C4A3C',
+  borderSoft: '#F7EBDB',
+  accentDark: '#C24E1F',
+  accentSoft: '#FFE8D6',
+  accentSoftStrong: '#FFD9BC',
+  green: '#5E9E6E',
+  greenBg: '#E4F3E6',
+  greenInk: '#3E6B4A',
+  greenSoft: '#CFE6D4',
+  greenBorder: '#B9D9C0',
+  red: '#D96C6C',
+  redBg: '#FBEAEA',
+  redInk: '#A84A4A',
+  redSoft: '#F0D3D3',
+  redBorder: '#EFC5C5',
+  amber: '#E8632C',
+  amberBg: '#FFE8D6',
+  gold: '#FFC800',
+  goldInk: '#7A5C00',
+  silver: '#B9C2D4',
+  bronze: '#D89B6A',
+  examBlue: '#1CB0F6',
+  examOrange: '#E8632C',
+  track: '#F7E8D8',
+  warnBg: '#FFF3D6',
+  warnBorder: '#E8632C',
+  mint: '#FFE8D6',
+  pink: '#FFD9C2',
+  cream: '#FFE9B8',
+  creamStrong: '#FFD88A',
+  sky: '#DCE9FB',
+  lavender: '#E8DEF8',
+  lavenderBorder: '#DCCDF5',
+};
+
+export const SUNSET_DARK: Palette = {
+  style: 'sunset',
+  streak: '#FF7A1A',
+  coin: '#FFC800',
+  duoBlue: '#5CC8F8',
+  background: '#2A1D15',
+  surface: '#33241A',
+  surfaceMuted: '#3D2C1F',
+  text: '#F7E9DB',
+  muted: '#B59D89',
+  border: '#4A3627',
+  borderHard: '#33241A',
+  accent: '#FF8A4C',
+  onAccent: '#FFFFFF',
+  danger: '#E88F8F',
+  success: '#7FBF8E',
+  inkSoft: '#E0CDB9',
+  borderSoft: '#3D2C1F',
+  accentDark: '#FFB37A',
+  accentSoft: '#4A2A18',
+  accentSoftStrong: '#5C3620',
+  green: '#7FBF8E',
+  greenBg: '#1E3325',
+  greenInk: '#9AD6A8',
+  greenSoft: '#2A4A32',
+  greenBorder: '#33573D',
+  red: '#E88F8F',
+  redBg: '#3A2323',
+  redInk: '#F2A8A8',
+  redSoft: '#4A2A2A',
+  redBorder: '#5A3434',
+  amber: '#FF8A4C',
+  amberBg: '#3A2F18',
+  gold: '#FFC800',
+  goldInk: '#E8C86A',
+  silver: '#9AA3B8',
+  bronze: '#D89B6A',
+  examBlue: '#5CC8F8',
+  examOrange: '#FF8A4C',
+  track: '#3D2C1F',
+  warnBg: '#3A2F18',
+  warnBorder: '#8A6D2B',
+  mint: '#4A2A18',
+  pink: '#4A2A32',
+  cream: '#3A3220',
+  creamStrong: '#453A24',
+  sky: '#22334A',
+  lavender: '#2E2842',
+  lavenderBorder: '#453D63',
+};
+
+// ---- Phong cách "Rừng xanh" — xanh lá đậm + kem, tự nhiên, bình tĩnh. ----
+export const FOREST_LIGHT: Palette = {
+  style: 'forest',
+  streak: '#FF9600',
+  coin: '#E9B949',
+  duoBlue: '#0B5CAD',
+  background: '#F4F7EF',
+  surface: '#FFFFFF',
+  surfaceMuted: '#EDF3E6',
+  text: '#2E3A2C',
+  muted: '#7A8A76',
+  border: '#DFE8D6',
+  borderHard: '#C9D6BC',
+  accent: '#2F7D4F',
+  onAccent: '#FFFFFF',
+  danger: '#D96C6C',
+  success: '#2F7D4F',
+  inkSoft: '#4A5844',
+  borderSoft: '#EAF0E2',
+  accentDark: '#23603C',
+  accentSoft: '#DDF0E2',
+  accentSoftStrong: '#C4E4CC',
+  green: '#2F7D4F',
+  greenBg: '#DDF0E2',
+  greenInk: '#23603C',
+  greenSoft: '#C4E4CC',
+  greenBorder: '#A9D6B4',
+  red: '#D96C6C',
+  redBg: '#FBEAEA',
+  redInk: '#A84A4A',
+  redSoft: '#F0D3D3',
+  redBorder: '#EFC5C5',
+  amber: '#B98A1D',
+  amberBg: '#FCF3D9',
+  gold: '#E9B949',
+  goldInk: '#8A6D1F',
+  silver: '#B9C2D4',
+  bronze: '#D89B6A',
+  examBlue: '#0B5CAD',
+  examOrange: '#F5821F',
+  track: '#E8F0DF',
+  warnBg: '#FFF7E6',
+  warnBorder: '#D8A24A',
+  mint: '#DDF0E2',
+  pink: '#FBDCE2',
+  cream: '#FCEFC7',
+  creamStrong: '#F8E7AC',
+  sky: '#DCE9FB',
+  lavender: '#E8DEF8',
+  lavenderBorder: '#DCCDF5',
+};
+
+export const FOREST_DARK: Palette = {
+  style: 'forest',
+  streak: '#FF9600',
+  coin: '#E9B949',
+  duoBlue: '#6FB3F2',
+  background: '#1B251A',
+  surface: '#24301F',
+  surfaceMuted: '#2C3A26',
+  text: '#EDF3E6',
+  muted: '#9AAB92',
+  border: '#3A4A34',
+  borderHard: '#22301F',
+  accent: '#5CB87F',
+  onAccent: '#FFFFFF',
+  danger: '#E88F8F',
+  success: '#5CB87F',
+  inkSoft: '#C9D6C2',
+  borderSoft: '#2C3A26',
+  accentDark: '#8FD0A8',
+  accentSoft: '#1E3A26',
+  accentSoftStrong: '#28492F',
+  green: '#5CB87F',
+  greenBg: '#1E3A26',
+  greenInk: '#8FD0A8',
+  greenSoft: '#28492F',
+  greenBorder: '#33573D',
+  red: '#E88F8F',
+  redBg: '#3A2323',
+  redInk: '#F2A8A8',
+  redSoft: '#4A2A2A',
+  redBorder: '#5A3434',
+  amber: '#E3B93E',
+  amberBg: '#3A2F18',
+  gold: '#E9B949',
+  goldInk: '#E8C86A',
+  silver: '#9AA3B8',
+  bronze: '#D89B6A',
+  examBlue: '#6FB3F2',
+  examOrange: '#F59A4D',
+  track: '#2C3A26',
+  warnBg: '#3A2F18',
+  warnBorder: '#8A6D2B',
+  mint: '#1E3A26',
+  pink: '#3D2A30',
+  cream: '#3A3220',
+  creamStrong: '#453A24',
+  sky: '#22334A',
+  lavender: '#2E2842',
+  lavenderBorder: '#453D63',
+};
+
+// ---- Phong cách "Sakura" — hồng anh đào dịu dàng, hợp với cú hồng. ----
+export const SAKURA_LIGHT: Palette = {
+  style: 'sakura',
+  streak: '#FF7A59',
+  coin: '#FFC800',
+  duoBlue: '#0B5CAD',
+  background: '#FFF7F9',
+  surface: '#FFFFFF',
+  surfaceMuted: '#FDEEF2',
+  text: '#4A3438',
+  muted: '#9A7F85',
+  border: '#F2DDE2',
+  borderHard: '#EBC9D2',
+  accent: '#E85D8A',
+  onAccent: '#FFFFFF',
+  danger: '#D96C6C',
+  success: '#5E9E6E',
+  inkSoft: '#6B4A50',
+  borderSoft: '#F8E9EC',
+  accentDark: '#C7436E',
+  accentSoft: '#FDE8EF',
+  accentSoftStrong: '#FAD3DE',
+  green: '#5E9E6E',
+  greenBg: '#E4F3E6',
+  greenInk: '#3E6B4A',
+  greenSoft: '#CFE6D4',
+  greenBorder: '#B9D9C0',
+  red: '#D96C6C',
+  redBg: '#FBEAEA',
+  redInk: '#A84A4A',
+  redSoft: '#F0D3D3',
+  redBorder: '#EFC5C5',
+  amber: '#B98A1D',
+  amberBg: '#FCF3D9',
+  gold: '#E9B949',
+  goldInk: '#8A6D1F',
+  silver: '#B9C2D4',
+  bronze: '#D89B6A',
+  examBlue: '#0B5CAD',
+  examOrange: '#F5821F',
+  track: '#F8E4EA',
+  warnBg: '#FFF7E6',
+  warnBorder: '#D8A24A',
+  mint: '#D9F2E6',
+  pink: '#FDE8EF',
+  cream: '#FCEFC7',
+  creamStrong: '#F8E7AC',
+  sky: '#DCE9FB',
+  lavender: '#EFE6FB',
+  lavenderBorder: '#DCCDF5',
+};
+
+export const SAKURA_DARK: Palette = {
+  style: 'sakura',
+  streak: '#FF7A59',
+  coin: '#FFC800',
+  duoBlue: '#6FB3F2',
+  background: '#2B1E22',
+  surface: '#36242A',
+  surfaceMuted: '#402C33',
+  text: '#F9EDEF',
+  muted: '#B59AA0',
+  border: '#4E3540',
+  borderHard: '#2E1F26',
+  accent: '#F27DA3',
+  onAccent: '#FFFFFF',
+  danger: '#E88F8F',
+  success: '#7FBF8E',
+  inkSoft: '#E3C9CE',
+  borderSoft: '#402C33',
+  accentDark: '#F7A8C4',
+  accentSoft: '#4A2530',
+  accentSoftStrong: '#5C2F3D',
+  green: '#7FBF8E',
+  greenBg: '#1E3325',
+  greenInk: '#9AD6A8',
+  greenSoft: '#2A4A32',
+  greenBorder: '#33573D',
+  red: '#E88F8F',
+  redBg: '#3A2323',
+  redInk: '#F2A8A8',
+  redSoft: '#4A2A2A',
+  redBorder: '#5A3434',
+  amber: '#E3B93E',
+  amberBg: '#3A2F18',
+  gold: '#E9B949',
+  goldInk: '#E8C86A',
+  silver: '#9AA3B8',
+  bronze: '#D89B6A',
+  examBlue: '#6FB3F2',
+  examOrange: '#F59A4D',
+  track: '#402C33',
+  warnBg: '#3A2F18',
+  warnBorder: '#8A6D2B',
+  mint: '#1E3A2C',
+  pink: '#4A2530',
+  cream: '#3A3220',
+  creamStrong: '#453A24',
+  sky: '#22334A',
+  lavender: '#2E2842',
+  lavenderBorder: '#453D63',
+};
+
 const THEME_KEY = 'toeic_theme';
 
 interface ThemeCtx {
   theme: Theme;
   colors: Palette;
   /** Phong cách giao diện từ settings (mặc định 'pastel'). */
-  style: 'pastel' | 'lively';
+  style: 'pastel' | 'lively' | 'sunset' | 'forest' | 'sakura';
   /** true khi style === 'lively' — các màn chỉ thêm điểm nhấn khi này. */
   isLively: boolean;
   /** 'system' = theo hệ thống; đặt 'light'/'dark' để khóa. */
@@ -392,8 +703,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     ui?.settings.ui.styles?.[ui.settings.ui.style]?.accent ?? ui?.settings.ui.accent;
   // Phong cach tu settings (mac dinh 'pastel'). Khi lively: dung bang
   // LIVELY_* lam nen, nhung ho mau accent dan xuat tu mau lively da luu
-  // (deriveLivelyAccent) thay vi co dinh #58CC02 nhu truoc; khi pastel:
-  // giu nguyen hanh vi cu (deriveAccent tu mau Pastel da luu).
+  // (deriveLivelyAccent) thay vi co dinh #58CC02 nhu truoc; khi pastel
+  // hoac sunset/forest/sakura: dung bang cua kieu do lam nen + dan xuat
+  // ho mau accent tu mau kieu do da luu (deriveAccent).
 
   useEffect(() => {
     AsyncStorage.getItem(THEME_KEY)
@@ -436,7 +748,25 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
         greenInk: t.accentDark,
       };
     }
-    const base = theme === 'dark' ? DARK : LIGHT;
+    // Cac kieu con lai (pastel + sunset/forest/sakura): chon bang co
+    // theo style, roi dan xuat ho mau accent tu mau kieu do da luu
+    // (deriveAccent) nhu nhanh pastel hien tai.
+    const base =
+      style === 'sunset'
+        ? theme === 'dark'
+          ? SUNSET_DARK
+          : SUNSET_LIGHT
+        : style === 'forest'
+          ? theme === 'dark'
+            ? FOREST_DARK
+            : FOREST_LIGHT
+          : style === 'sakura'
+            ? theme === 'dark'
+              ? SAKURA_DARK
+              : SAKURA_LIGHT
+            : theme === 'dark'
+              ? DARK
+              : LIGHT;
     if (!styleAccent) return base;
     const d = deriveAccent(styleAccent, theme);
     return {
@@ -446,7 +776,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       accentSoft: d.accentSoft,
       accentSoftStrong: d.accentSoftStrong,
     };
-  }, [theme, styleAccent, isLively]);
+  }, [theme, styleAccent, style, isLively]);
 
   // Nền native (root view) theo theme: mỗi lần chuyển tab bằng
   // router.replace, màn cũ unmount rồi màn mới mới paint frame đầu —
