@@ -192,9 +192,9 @@ export default function WritingScreen() {
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>✍️ Luyện Writing IELTS</Text>
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(20) }]}>✍️ Luyện Writing IELTS</Text>
         </View>
-        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
+        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(14) }]}>
           Task 1 (20 phút, tối thiểu 150 từ) · Task 2 (40 phút, tối thiểu 250 từ). Đề mẫu — nội dung tự
           soạn, chưa phải đề thi thật.
         </Text>
@@ -225,7 +225,7 @@ export default function WritingScreen() {
                 </Text>
                 <Text style={[styles.prompt, { color: colors.text, fontSize: scaled(15) }]}>{task.prompt}</Text>
                 {task.chartData ? <ChartText data={task.chartData} /> : null}
-                <Text style={[styles.timer, { color: colors.text, fontSize: scaled(15) }]}>
+                <Text style={[styles.timer, { color: colors.text, fontSize: scaled(14) }]}>
                   ⏱ Còn lại: <Text style={{ fontWeight: '700' }}>{fmtClock(left)}</Text> · {words} từ (tối thiểu {minWords})
                 </Text>
                 <Pressable
@@ -233,7 +233,7 @@ export default function WritingScreen() {
                   onPress={startTimer}
                   disabled={running}
                 >
-                  <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+                  <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
                     {running ? 'Đang làm bài…' : 'Bắt đầu làm bài'}
                   </Text>
                 </Pressable>
@@ -256,7 +256,8 @@ export default function WritingScreen() {
                 <View style={styles.scoreGrid}>
                   {SELF_SCORE_KEYS.map(([k, label]) => (
                     <View key={k} style={styles.scoreCell}>
-                      <Text style={[styles.scoreLabel, { color: colors.muted, fontSize: scaled(13) }]} numberOfLines={1}>
+                      {/* Nhãn tự chấm dài ("Task Achievement") — cho xuống 2 dòng thay vì cắt đuôi ở cỡ chữ lớn. */}
+                      <Text style={[styles.scoreLabel, { color: colors.muted, fontSize: scaled(13), lineHeight: scaled(18) }]}>
                         {label}
                       </Text>
                       <TextInput
@@ -277,12 +278,12 @@ export default function WritingScreen() {
                   onPress={() => void submit()}
                   disabled={!content.trim() || saving}
                 >
-                  <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+                  <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                     {saving ? 'Đang nộp…' : 'Nộp bài'}
                   </Text>
                 </Pressable>
                 {submitted && (
-                  <Text style={[styles.note, { color: colors.success, fontSize: scaled(15) }]}>
+                  <Text style={[styles.note, { color: colors.success, fontSize: scaled(14) }]}>
                     ✅ Đã nộp bài. Chưa chấm AI — tính năng này sẽ có sau.
                   </Text>
                 )}
@@ -302,7 +303,7 @@ export default function WritingScreen() {
                     style={[styles.subItem, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}
                     onPress={() => setExpandedSub(expanded ? null : s.id)}
                   >
-                    <Text style={[styles.subTitle, { color: colors.text, fontSize: scaled(15) }]}>
+                    <Text style={[styles.subTitle, { color: colors.text, fontSize: scaled(14) }]}>
                       {s.taskId} · {s.wordCount ?? wordCount(s.content)} từ
                       {s.createdAt ? ` · ${new Date(s.createdAt).toLocaleDateString('vi-VN')}` : ''}
                       {s.isBaseline ? ' · Bài mẫu chẩn đoán' : ''}
@@ -341,6 +342,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.sm,
   },
+  // Tiêu đề màn hình: chữ 24 vỡ 2 dòng trên màn hẹp nên giảm còn 20.
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

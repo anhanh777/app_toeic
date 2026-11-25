@@ -471,7 +471,7 @@ export function LoadingLine({ location, text }: { location: LoadingLocation; tex
         <LoadingImage image={ld.image} imageUrl={ld.imageUrl} size="lg" />
         <LoadingEffect effect={effect} speed={ld.speed} size="lg" />
         {showText ? (
-          <Text style={{ color: colors.muted, fontSize: scaled(15), textAlign: 'center' }}>{label}</Text>
+          <Text style={{ color: colors.muted, fontSize: scaled(14), textAlign: 'center', flexShrink: 1 }}>{label}</Text>
         ) : null}
       </View>
     );
@@ -480,7 +480,7 @@ export function LoadingLine({ location, text }: { location: LoadingLocation; tex
     <View style={styles.line}>
       <LoadingEffect effect={effect} speed={ld.speed} size="md" />
       {showText ? (
-        <Text style={{ color: colors.muted, fontSize: scaled(15) }}>{label}</Text>
+        <Text style={{ color: colors.muted, fontSize: scaled(14), flexShrink: 1, flexWrap: 'wrap' }}>{label}</Text>
       ) : null}
     </View>
   );

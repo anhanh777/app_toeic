@@ -175,7 +175,7 @@ export function CheckinSection({ onCheckedIn }: { onCheckedIn?: () => void }) {
               raisedButton(colors),
             ]}
           >
-            <Text style={[styles.checkinBtnText, { color: data.checkedInToday ? colors.text : colors.onAccent, fontSize: scaled(15) }]}>
+            <Text style={[styles.checkinBtnText, { color: data.checkedInToday ? colors.text : colors.onAccent, fontSize: scaled(14) }]}>
               {busy ? 'Đang điểm danh…' : data.checkedInToday ? '✓ Đã điểm danh hôm nay' : '📅 Điểm danh hôm nay (+10 XP)'}
             </Text>
           </Pressable>
@@ -226,11 +226,11 @@ export function CheckinSection({ onCheckedIn }: { onCheckedIn?: () => void }) {
 
           <View style={styles.calHead}>
             <Pressable onPress={() => goMonth(-1)} style={[styles.navBtn, { borderColor: colors.border }]}>
-              <Text style={{ color: colors.text, fontSize: scaled(14) }}>‹ Tháng trước</Text>
+              <Text style={{ color: colors.text, fontSize: scaled(13) }}>‹ Tháng trước</Text>
             </Pressable>
-            <Text style={[styles.calTitle, { color: colors.text, fontSize: scaled(15) }]}>{monthLabel(viewMonth)}</Text>
+            <Text style={[styles.calTitle, { color: colors.text, fontSize: scaled(14) }]}>{monthLabel(viewMonth)}</Text>
             <Pressable onPress={() => goMonth(1)} style={[styles.navBtn, { borderColor: colors.border }]}>
-              <Text style={{ color: colors.text, fontSize: scaled(14) }}>Tháng sau ›</Text>
+              <Text style={{ color: colors.text, fontSize: scaled(13) }}>Tháng sau ›</Text>
             </Pressable>
           </View>
           <View style={styles.calGrid}>
@@ -276,10 +276,10 @@ export function CheckinSection({ onCheckedIn }: { onCheckedIn?: () => void }) {
           ) : (
             history.map((h) => (
               <View key={`${h.date}-${h.kind}`} style={[styles.historyRow, { borderBottomColor: colors.border }]}>
-                <Text style={[styles.historyDate, { color: colors.text, fontSize: scaled(14) }]}>
+                <Text style={[styles.historyDate, { color: colors.text, fontSize: scaled(13) }]}>
                   <Text style={{ fontWeight: '700' }}>{fmtCheckinDate(h.date)}</Text> · {h.weekday}
                 </Text>
-                <Text style={[styles.historyStatus, { color: colors.muted, fontSize: scaled(14) }]}>
+                <Text style={[styles.historyStatus, { color: colors.muted, fontSize: scaled(13) }]}>
                   {h.kind === 'checkin' ? '✓ Đã điểm danh' : '😴 Ngày nghỉ'}
                   {h.kind === 'checkin' && h.streakDay ? ` · ngày thứ ${h.streakDay} liên tiếp` : ''}
                 </Text>
@@ -319,8 +319,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-  checkinBtnText: { fontWeight: '700' },
-  note: { marginTop: 4, lineHeight: 20 },
+  checkinBtnText: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
+  note: { marginTop: 4, lineHeight: 22 }, // Chữ 14 ở Rất lớn (~17.5) bị chật với lineHeight 20
   statsRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 16, marginTop: 12 },
   stat: { minWidth: 100 },
   statLabel: { marginBottom: 2 },
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   barFill: { height: '100%', borderRadius: 999 },
   calHead: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 14, marginBottom: 6 },
   navBtn: { borderWidth: 1, borderRadius: 8, paddingVertical: 6, paddingHorizontal: 10 },
-  calTitle: { fontWeight: '700' },
+  calTitle: { fontWeight: '700', flexShrink: 1, textAlign: 'center' }, // Hàng tháng: 2 nút + tiêu đề tràn ở Rất lớn nếu tiêu đề không co lại
   calGrid: { flexDirection: 'row', flexWrap: 'wrap' },
   calCell: { width: '14.28%', alignItems: 'center', justifyContent: 'center', paddingVertical: 2 },
   calHeadText: { fontWeight: '700' },

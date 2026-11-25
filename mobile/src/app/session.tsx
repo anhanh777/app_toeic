@@ -521,7 +521,7 @@ export default function PracticeSessionScreen() {
             Chưa có câu hỏi cho {isIelts ? partLabel(part, exam) : `Part ${part}`} này.
           </Text>
           <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={exit}>
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Quay lại</Text>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Quay lại</Text>
           </Pressable>
         </View>
       </SafeAreaView>
@@ -537,7 +537,8 @@ export default function PracticeSessionScreen() {
             {testSetTitle ? (
               <Text style={[styles.line, { color: colors.muted, fontSize: scaled(15) }]}>📚 {testSetTitle}</Text>
             ) : null}
-            <Text style={[styles.big, { color: colors.text, fontSize: scaled(28) }]}>
+            {/* Chữ 24 thay vì 28: "12/40 câu đúng" ở 28 vỡ 2 dòng trên màn 360dp, 35 ở mức Rất lớn càng vỡ */}
+            <Text style={[styles.big, { color: colors.text, fontSize: scaled(24) }]}>
               {score.correct}/{score.done} câu đúng
             </Text>
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(15) }]}>
@@ -545,7 +546,7 @@ export default function PracticeSessionScreen() {
             </Text>
             <View style={styles.btnRow}>
               <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={exit}>
-                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
                   {testSetId ? 'Quay lại đề thi' : 'Luyện Part khác'}
                 </Text>
               </Pressable>
@@ -554,14 +555,14 @@ export default function PracticeSessionScreen() {
                   style={[styles.button, styles.flexButton, { backgroundColor: colors.surfaceMuted }]}
                   onPress={() => router.push('/wrong')}
                 >
-                  <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Ôn câu sai</Text>
+                  <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(14) }]}>Ôn câu sai</Text>
                 </Pressable>
               ) : null}
               <Pressable
                 style={[styles.button, styles.flexButton, { backgroundColor: colors.surfaceMuted }]}
                 onPress={() => router.push('/')}
               >
-                <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Về trang chủ</Text>
+                <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(14) }]}>Về trang chủ</Text>
               </Pressable>
             </View>
           </View>
@@ -583,7 +584,8 @@ export default function PracticeSessionScreen() {
               <Text
                 style={[
                   styles.title,
-                  { color: colors.examBlue, fontSize: scaled(20), textTransform: 'uppercase' },
+                  // Chữ 18 thay vì 20: tiêu đề viết hoa ("SECTION 2 — LISTENING") dài, 20 vỡ 2 dòng xấu ở màn hẹp và 25 ở mức Rất lớn
+                  { color: colors.examBlue, fontSize: scaled(18), textTransform: 'uppercase' },
                 ]}
               >
                 {isIelts
@@ -696,7 +698,7 @@ export default function PracticeSessionScreen() {
             Đã làm {score.done}/{questions.length} • Đúng {score.correct}
           </Text>
           <Pressable style={[styles.barButton, { borderColor: colors.border }]} onPress={exit}>
-            <Text style={{ color: colors.text, fontSize: scaled(15) }}>← Thoát</Text>
+            <Text style={{ color: colors.text, fontSize: scaled(14) }}>← Thoát</Text>
           </Pressable>
           {gradingMode === 'submit-all' && !submittedAll ? (
             <Pressable
@@ -704,13 +706,13 @@ export default function PracticeSessionScreen() {
               disabled={answeredCount === 0}
               onPress={handleSubmitAll}
             >
-              <Text style={{ color: colors.onAccent, fontSize: scaled(15), fontWeight: '700' }}>
+              <Text style={{ color: colors.onAccent, fontSize: scaled(14), fontWeight: '700' }}>
                 Nộp tất cả · {answeredCount}/{questions.length} câu
               </Text>
             </Pressable>
           ) : (
             <Pressable style={[styles.barButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => setFinished(true)}>
-              <Text style={{ color: colors.onAccent, fontSize: scaled(15), fontWeight: '700' }}>Xem kết quả</Text>
+              <Text style={{ color: colors.onAccent, fontSize: scaled(14), fontWeight: '700' }}>Xem kết quả</Text>
             </Pressable>
           )}
         </View>

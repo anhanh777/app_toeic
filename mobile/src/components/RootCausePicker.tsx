@@ -141,6 +141,8 @@ export default function RootCausePicker({
                   color: selected ? colors.onAccent : colors.text,
                   fontSize: scaled(14),
                   fontWeight: selected ? '700' : '400',
+                  flexShrink: 1,
+                  flexWrap: 'wrap',
                 }}
               >
                 {c.code} · {c.name}
@@ -154,7 +156,7 @@ export default function RootCausePicker({
         disabled={!code || saving}
         onPress={() => void save()}
       >
-        <Text style={[styles.saveText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+        <Text style={[styles.saveText, { color: colors.onAccent, fontSize: scaled(14) }]}>
           {saving ? 'Đang ghi…' : 'Ghi nguyên nhân & xem giải thích'}
         </Text>
       </Pressable>
@@ -182,6 +184,10 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.pill,
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.md,
+    // Chip tên dài (VD "L8 · Sai giới hạn số từ…") co/xuống dòng trong
+    // hàng thay vì tràn màn hình hẹp khi chữ phóng to.
+    flexShrink: 1,
+    maxWidth: '100%',
   },
   saveButton: {
     borderRadius: RADIUS.button,

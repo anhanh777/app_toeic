@@ -535,7 +535,7 @@ export default function DiagnosticScreen() {
               onPress={abandonPaper}
               disabled={submitting}
             >
-              <Text style={[styles.buttonText, { color: colors.danger, fontSize: scaled(15) }]}>Thoát (hủy bài)</Text>
+              <Text style={[styles.buttonText, { color: colors.danger, fontSize: scaled(14) }]}>Thoát (hủy bài)</Text>
             </Pressable>
             <Pressable
               style={[styles.button, { backgroundColor: colors.accent, flex: 2, opacity: submitting ? 0.6 : 1 }, raisedButton(colors)]}
@@ -552,7 +552,8 @@ export default function DiagnosticScreen() {
               }}
               disabled={submitting}
             >
-              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+              {/* Nút chính 16 ở cỡ Rất lớn chạm mép nên giảm còn 15. */}
+              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                 {submitting ? 'Đang nộp…' : 'Nộp bài'}
               </Text>
             </Pressable>
@@ -568,7 +569,8 @@ export default function DiagnosticScreen() {
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>🧭 Chẩn đoán IELTS</Text>
+          {/* Tiêu đề 24 quá to trên màn hẹp nên giảm còn 21. */}
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(21) }]}>🧭 Chẩn đoán IELTS</Text>
         </View>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Biết mình đang ở đâu trước khi luyện — gồm Listening + Reading và bài mẫu Writing/Speaking.
@@ -590,7 +592,8 @@ export default function DiagnosticScreen() {
             onPress={() => void startPaper()}
             disabled={paperLoading}
           >
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+            {/* Nút chính 16 ở cỡ Rất lớn vỡ 2 dòng nên giảm còn 15. */}
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
               {paperLoading ? 'Đang chuẩn bị đề…' : '▶ Làm bài chẩn đoán (TS-028)'}
             </Text>
           </Pressable>
@@ -679,7 +682,7 @@ export default function DiagnosticScreen() {
             style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
             onPress={() => router.push({ pathname: '/writing', params: { baseline: '1' } })}
           >
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở màn Writing để nộp bài mẫu →</Text>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Mở màn Writing để nộp bài mẫu →</Text>
           </Pressable>
         </View>
 
@@ -695,7 +698,7 @@ export default function DiagnosticScreen() {
             style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
             onPress={() => router.push({ pathname: '/speaking', params: { baseline: '1' } })}
           >
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở màn Speaking để ghi âm bài mẫu →</Text>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Mở màn Speaking để ghi âm bài mẫu →</Text>
           </Pressable>
         </View>
       </ScrollView>

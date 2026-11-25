@@ -278,7 +278,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
     return (
       <View style={[styles.box, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
         <View style={[styles.button, styles.buttonDisabled, { backgroundColor: colors.surfaceMuted }]}>
-          <Text style={[styles.buttonText, { color: colors.muted, fontSize: scaled(15) }]}>🔊 Nghe</Text>
+          <Text style={[styles.buttonText, { color: colors.muted, fontSize: scaled(14) }]}>🔊 Nghe</Text>
         </View>
         <Text style={[styles.note, { color: colors.muted, fontSize: scaled(14) }]}>
           <Text style={{ fontWeight: '700' }}>Chưa có file audio cho Part này.</Text>
@@ -298,7 +298,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
           {uiStatus === 'loading' ? (
             <ActivityIndicator color={colors.onAccent} />
           ) : (
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>{label}</Text>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>{label}</Text>
           )}
         </Pressable>
         <Pressable
@@ -318,7 +318,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
         >
           <View style={[styles.fill, { width: `${Math.round(progress * 100)}%`, backgroundColor: colors.accent }]} />
         </Pressable>
-        <Text style={[styles.time, { color: colors.muted, fontSize: scaled(13) }]}>
+        <Text style={[styles.time, { color: colors.muted, fontSize: scaled(13) }]} numberOfLines={1}>
           {fmtTime(positionMs)} / {fmtTime(durationMs)}
         </Text>
       </View>
@@ -349,7 +349,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
           >
             <View style={[styles.fill, { width: `${Math.round(volume * 100)}%`, backgroundColor: colors.accent }]} />
           </Pressable>
-          <Text style={[styles.time, { color: colors.muted, fontSize: scaled(13) }]}>{Math.round(volume * 100)}%</Text>
+          <Text style={[styles.time, { color: colors.muted, fontSize: scaled(13) }]} numberOfLines={1}>{Math.round(volume * 100)}%</Text>
         </View>
       </View>
     </View>
@@ -373,6 +373,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     minHeight: 48,
     flexGrow: 1,
+    // Nút phát co lại được để nút tốc độ không bị đẩy tràn hàng khi chữ to.
+    flexShrink: 1,
   },
   buttonDisabled: { opacity: 0.6 },
   buttonText: { fontWeight: '700', textAlign: 'center' },

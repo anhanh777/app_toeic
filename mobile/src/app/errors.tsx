@@ -93,7 +93,7 @@ const ErrorItem = memo(function ErrorItem({
   const { scaled } = useTextSize();
   return (
     <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
-      <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>
+      <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(14) }]}>
         {errorCodeName(it.errorCode, codes)} · {SKILL_EMOJI[it.skill] ?? ''} {SKILL_LABEL[it.skill] ?? it.skill}
         {it.questionType ? ` · ${questionTypeName(it.questionType)}` : ''}
         {it.guessed ? ' · 🤔 đoán mò' : ''}
@@ -272,9 +272,9 @@ export default function ErrorLogScreen() {
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>📓 Sổ lỗi IELTS</Text>
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(20) }]}>📓 Sổ lỗi IELTS</Text>
         </View>
-        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
+        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(14) }]}>
           Mỗi lỗi là 1 con quái — ôn đúng thì quái mất máu, ôn đủ 3 lần thì quái bị diệt.
         </Text>
         {error ? (
@@ -292,7 +292,7 @@ export default function ErrorLogScreen() {
                 (a) Ôn lỗi đến hạn ({due.length})
               </Text>
               {!due.length && (
-                <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>
+                <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
                   🎉 Không có lỗi nào đến hạn hôm nay.
                 </Text>
               )}
@@ -362,7 +362,7 @@ export default function ErrorLogScreen() {
                 (c) Lỗi theo tuần (6 tuần gần nhất)
               </Text>
               {!weekGroups.length && (
-                <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>Chưa có dữ liệu lỗi theo tuần.</Text>
+                <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có dữ liệu lỗi theo tuần.</Text>
               )}
               {weekGroups.map(([week, count]) => (
                 <View key={week} style={styles.barRow}>
@@ -380,7 +380,7 @@ export default function ErrorLogScreen() {
                 (d) Quái — đã diệt {killed.length}/{monsters.length} 👹
               </Text>
               {!monsters.length && (
-                <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>
+                <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
                   Chưa có quái nào — làm sai 1 câu và ghi nguyên nhân là quái xuất hiện.
                 </Text>
               )}
@@ -482,6 +482,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.sm,
   },
+  // Tiêu đề màn hình 24 to quá trên màn hẹp nên giảm còn 20.
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

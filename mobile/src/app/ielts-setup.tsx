@@ -121,9 +121,9 @@ export default function IeltsSetupScreen() {
       <ScrollView contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>🎓 Thiết lập IELTS của bạn</Text>
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(20) }]}>🎓 Thiết lập IELTS của bạn</Text>
         </View>
-        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
+        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(14) }]}>
           Mất chưa tới 1 phút — app sẽ cá nhân hoá lộ trình theo mục tiêu và lý do bạn hay bỏ cuộc.
         </Text>
         {loading ? (
@@ -175,7 +175,7 @@ export default function IeltsSetupScreen() {
                   <Text style={[styles.reasonLabel, { color: colors.text, fontSize: scaled(15) }]}>
                     {selected ? '✓ ' : ''}{r.label}
                   </Text>
-                  <Text style={[styles.reasonNote, { color: colors.muted, fontSize: scaled(14) }]}>{r.note}</Text>
+                  <Text style={[styles.reasonNote, { color: colors.muted, fontSize: scaled(13) }]}>{r.note}</Text>
                 </Pressable>
               );
             })}
@@ -191,7 +191,7 @@ export default function IeltsSetupScreen() {
                 {saving ? (
                   <ActivityIndicator color={colors.onAccent} />
                 ) : (
-                  <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>Lưu và bắt đầu</Text>
+                  <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Lưu và bắt đầu</Text>
                 )}
               </Pressable>
               <Pressable
@@ -199,7 +199,7 @@ export default function IeltsSetupScreen() {
                 onPress={() => void submit(true)}
                 disabled={saving}
               >
-                <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(16) }]}>Bỏ qua</Text>
+                <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Bỏ qua</Text>
               </Pressable>
             </View>
             <Text style={[styles.note, { color: colors.muted, fontSize: scaled(13) }]}>
@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.md,
   },
+  // Tiêu đề màn hình 24 to quá trên màn hẹp nên giảm còn 20.
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   card: {

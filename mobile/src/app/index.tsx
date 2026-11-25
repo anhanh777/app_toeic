@@ -290,7 +290,7 @@ export default function HomeScreen() {
 
         {!exam ? (
           <View style={styles.pickerWrap}>
-            <Text style={[styles.title, { color: colors.text, fontSize: scaled(24) }]}>
+            <Text style={[styles.title, { color: colors.text, fontSize: scaled(20) }]}>
               Chọn kỳ thi
             </Text>
             <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
@@ -298,7 +298,7 @@ export default function HomeScreen() {
               Đổi được bất cứ lúc nào bằng nút “Đổi bài thi”.
             </Text>
             {nextRoute ? (
-              <Text style={[styles.hint, { color: colors.accent, fontSize: scaled(15) }]}>
+              <Text style={[styles.hint, { color: colors.accent, fontSize: scaled(14) }]}>
                 Chọn kỳ thi trước để vào {nextLabel} nhé.
               </Text>
             ) : null}
@@ -318,17 +318,17 @@ export default function HomeScreen() {
                   <Text style={[styles.emoji, { fontSize: scaled(isLively ? 36 : 28) }]}>
                     {e.id === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}
                   </Text>
-                  <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(20) }]}>
+                  <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                     {e.title}
                   </Text>
                   <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(14) }]}>
                     {EXAM_META[e.id as ExamId]?.detail ?? e.subtitle}
                   </Text>
-                  <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>
+                  <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(14) }]}>
                     {e.testSetCount} đề • {e.questionCount} câu • Thang điểm: {e.scale}
                   </Text>
                   <View style={[styles.pickButton, { backgroundColor: colors.accent }, raisedButton(colors)]}>
-                    <Text style={[styles.pickButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+                    <Text style={[styles.pickButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
                       Chọn {e.title}
                     </Text>
                   </View>
@@ -345,10 +345,10 @@ export default function HomeScreen() {
               <Text style={[styles.emoji, { fontSize: scaled(isLively ? 36 : 28) }]}>
                 {exam === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}
               </Text>
-              <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(20) }]}>
+              <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                 {chosen?.title ?? exam.toUpperCase()}
               </Text>
-              <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(15) }]}>
+              <Text style={[styles.cardText, { color: colors.muted, fontSize: scaled(14) }]}>
                 {chosen?.subtitle ?? ''} • {chosen?.testSetCount ?? '—'} đề • {chosen?.questionCount ?? '—'} câu • Thang điểm: {chosen?.scale ?? ''}
               </Text>
             </Animated.View>
@@ -363,7 +363,7 @@ export default function HomeScreen() {
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>
                     {isIelts ? 'Band tổng cao nhất' : 'Mục tiêu điểm'}
                   </Text>
-                  <Text style={[styles.statBig, { color: colors.green, fontSize: scaled(22) }]}>
+                  <Text style={[styles.statBig, { color: colors.green, fontSize: scaled(20) }]}>
                     {isIelts ? (bestBand != null ? `Band ${bestBand}` : '—') : target}
                   </Text>
                   {isIelts ? (
@@ -397,7 +397,7 @@ export default function HomeScreen() {
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>
                     {isIelts ? 'Section/Passage yếu nhất' : 'Part yếu nhất'}
                   </Text>
-                  <Text style={[styles.statBig, { color: colors.duoBlue, fontSize: scaled(20) }]}>
+                  <Text style={[styles.statBig, { color: colors.duoBlue, fontSize: scaled(18) }]}>
                     {stats.weakestPart != null ? partNameFor(stats.weakestPart, exam) : '—'}
                   </Text>
                   <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>
@@ -414,7 +414,7 @@ export default function HomeScreen() {
                     <Text style={{ fontSize: scaled(isLively ? 30 : 26) }}>🔥</Text>
                   </View>
                   <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Streak</Text>
-                  <Text style={[styles.statBig, { color: colors.streak, fontSize: scaled(22) }]}>
+                  <Text style={[styles.statBig, { color: colors.streak, fontSize: scaled(20) }]}>
                     {stats.streakDays ?? 0} ngày
                   </Text>
                   <Text style={[styles.statFoot, { color: colors.muted, fontSize: scaled(13) }]}>{hearts}</Text>
@@ -434,25 +434,25 @@ export default function HomeScreen() {
                 style={[styles.quickBtn, { backgroundColor: colors.accent }, raisedButton(colors)]}
                 onPress={() => router.push('/practice')}
               >
-                <Text style={[styles.quickBtnText, { color: colors.onAccent, fontSize: scaled(16) }]}>▶ Luyện tiếp</Text>
+                <Text style={[styles.quickBtnText, { color: colors.onAccent, fontSize: scaled(14) }]}>▶ Luyện tiếp</Text>
               </Pressable>
               <Pressable
                 style={[styles.quickBtn, { backgroundColor: colors.gold }, raisedButton(colors, colors.goldInk)]}
                 onPress={() => router.push('/mock')}
               >
-                <Text style={[styles.quickBtnText, { color: colors.goldInk, fontSize: scaled(16) }]}>⏱ Thi thử</Text>
+                <Text style={[styles.quickBtnText, { color: colors.goldInk, fontSize: scaled(14) }]}>⏱ Thi thử</Text>
               </Pressable>
               <Pressable
                 style={[styles.quickBtn, styles.quickBtnOutline, { backgroundColor: colors.surface, borderColor: colors.border }]}
                 onPress={() => router.push('/wrong')}
               >
-                <Text style={[styles.quickBtnText, { color: colors.text, fontSize: scaled(16) }]}>❌ Ôn câu sai</Text>
+                <Text style={[styles.quickBtnText, { color: colors.text, fontSize: scaled(14) }]}>❌ Ôn câu sai</Text>
               </Pressable>
               <Pressable
                 style={[styles.quickBtn, styles.quickBtnOutline, { backgroundColor: colors.surface, borderColor: colors.border }]}
                 onPress={() => router.push('/vocabulary')}
               >
-                <Text style={[styles.quickBtnText, { color: colors.text, fontSize: scaled(16) }]}>📚 Từ vựng</Text>
+                <Text style={[styles.quickBtnText, { color: colors.text, fontSize: scaled(14) }]}>📚 Từ vựng</Text>
               </Pressable>
             </View>
 
@@ -477,12 +477,12 @@ export default function HomeScreen() {
                   </Text>
                   <View style={styles.livelyChips}>
                     <View style={[styles.livelyChip, { backgroundColor: colors.accentSoft }]}>
-                      <Text style={[styles.livelyChipText, { color: colors.streak, fontSize: scaled(15) }]}>
+                      <Text style={[styles.livelyChipText, { color: colors.streak, fontSize: scaled(14) }]}>
                         🔥 {stats?.streakDays ?? todayData?.streak.current ?? 0} ngày
                       </Text>
                     </View>
                     <View style={[styles.livelyChip, { backgroundColor: colors.accentSoft }]}>
-                      <Text style={[styles.livelyChipText, { color: colors.coin, fontSize: scaled(15) }]}>
+                      <Text style={[styles.livelyChipText, { color: colors.coin, fontSize: scaled(14) }]}>
                         🪙 {stats?.totalXp ?? 0} XP
                       </Text>
                     </View>
@@ -506,7 +506,7 @@ export default function HomeScreen() {
                       <Text style={[styles.livelyTaskCheck, { color: done ? colors.success : colors.muted, fontSize: scaled(16) }]}>
                         {done ? '✅' : '⭕'}
                       </Text>
-                      <Text style={[styles.livelyTaskLabel, { color: colors.text, fontSize: scaled(15) }]}>
+                      <Text style={[styles.livelyTaskLabel, { color: colors.text, fontSize: scaled(14) }]}>
                         {TODAY_TASK_LABEL[b.id] ?? b.id}
                         {count != null ? ` · ${count} câu` : ''}
                       </Text>
@@ -540,7 +540,7 @@ export default function HomeScreen() {
                   <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
                     <Text style={[styles.statEmoji, { fontSize: scaled(isLively ? 26 : 20) }]}>🌧️</Text>
                     <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Ngày mệt?</Text>
-                    <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(15) }]}>
+                    <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(14) }]}>
                       {todayData.badDayAvailable ? 'Có chế độ ngày nhẹ' : 'Hôm nay đã dùng ngày nhẹ'}
                     </Text>
                     <Pressable
@@ -562,7 +562,7 @@ export default function HomeScreen() {
                     <Text style={[styles.todayCardText, { color: colors.muted, fontSize: scaled(15) }]}>{badDay.detail}</Text>
                     {!isIelts && (
                       <Pressable onPress={() => router.push('/practice')}>
-                        <Text style={[styles.link, { color: colors.accent, fontSize: scaled(15) }]}>Mở luyện tập TOEIC →</Text>
+                        <Text style={[styles.link, { color: colors.accent, fontSize: scaled(14) }]}>Mở luyện tập TOEIC →</Text>
                       </Pressable>
                     )}
                     <Pressable
@@ -573,7 +573,7 @@ export default function HomeScreen() {
                         void markDone('bad-day', 10);
                       }}
                     >
-                      <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+                      <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
                         {badDayDone ? '✓ Đã xong — nghỉ thôi' : 'Xong bài ngày nhẹ'}
                       </Text>
                     </Pressable>
@@ -585,7 +585,7 @@ export default function HomeScreen() {
                   style={[styles.button, { backgroundColor: colors.gold }, raisedButton(colors, '#D9A400')]}
                   onPress={scrollToReview}
                 >
-                  <Text style={[styles.buttonText, { color: colors.goldInk, fontSize: scaled(15) }]}>▶ Bắt đầu hôm nay</Text>
+                  <Text style={[styles.buttonText, { color: colors.goldInk, fontSize: scaled(14) }]}>▶ Bắt đầu hôm nay</Text>
                 </Pressable>
 
                 {todayData.carriedOver?.length > 0 && (
@@ -624,13 +624,13 @@ export default function HomeScreen() {
                           style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
                           onPress={() => router.push('/wrong')}
                         >
-                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn ngay →</Text>
+                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Ôn ngay →</Text>
                         </Pressable>
                         <Pressable
                           style={[styles.button, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
                           onPress={() => void markDone('review', 15)}
                         >
-                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Đánh dấu đã ôn</Text>
+                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(14) }]}>Đánh dấu đã ôn</Text>
                         </Pressable>
                       </View>
                     </>
@@ -663,13 +663,13 @@ export default function HomeScreen() {
                           style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
                           onPress={() => router.push('/practice')}
                         >
-                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở luyện tập →</Text>
+                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Mở luyện tập →</Text>
                         </Pressable>
                         <Pressable
                           style={[styles.button, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
                           onPress={() => void markDone('drill', 20)}
                         >
-                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Đánh dấu đã luyện</Text>
+                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(14) }]}>Đánh dấu đã luyện</Text>
                         </Pressable>
                       </View>
                     </>
@@ -692,13 +692,13 @@ export default function HomeScreen() {
                           style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
                           onPress={() => router.push('/practice')}
                         >
-                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Mở luyện tập →</Text>
+                          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Mở luyện tập →</Text>
                         </Pressable>
                         <Pressable
                           style={[styles.button, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
                           onPress={() => void markDone('active', 15)}
                         >
-                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Đánh dấu đã luyện</Text>
+                          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(14) }]}>Đánh dấu đã luyện</Text>
                         </Pressable>
                       </View>
                     </>
@@ -716,7 +716,7 @@ export default function HomeScreen() {
                         style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
                         onPress={() => router.push('/vocabulary')}
                       >
-                        <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn ngay →</Text>
+                        <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Ôn ngay →</Text>
                       </Pressable>
                     </>
                   ) : (
@@ -771,7 +771,7 @@ export default function HomeScreen() {
                   onPress={() => router.push(m.href as never)}
                 >
                   <Text style={[styles.menuEmoji, { fontSize: scaled(isLively ? 28 : 24) }]}>{icons[m.icon]}</Text>
-                  <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
+                  <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(14) }]}>
                     {m.label}
                   </Text>
                 </Pressable>
@@ -784,7 +784,7 @@ export default function HomeScreen() {
                 onPress={clearExam}
               >
                 <Text style={[styles.menuEmoji, { fontSize: scaled(isLively ? 28 : 24) }]}>{icons['switch-exam']}</Text>
-                <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
+                <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(14) }]}>
                   Đổi bài thi
                 </Text>
               </Pressable>
@@ -793,7 +793,7 @@ export default function HomeScreen() {
                 onPress={logout}
               >
                 <Text style={[styles.menuEmoji, { fontSize: scaled(isLively ? 28 : 24) }]}>🚪</Text>
-                <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(15) }]}>
+                <Text style={[styles.menuLabel, { color: colors.text, fontSize: scaled(14) }]}>
                   Đăng xuất
                 </Text>
               </Pressable>
@@ -984,7 +984,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.md,
   },
   outlineButton: { borderWidth: 1, backgroundColor: 'transparent' },
-  smallButtonText: { fontWeight: '700', textAlign: 'center' },
+  smallButtonText: { fontWeight: '700', textAlign: 'center', flexShrink: 1 },
   button: {
     borderRadius: RADIUS.button,
     paddingVertical: SPACING.sm,

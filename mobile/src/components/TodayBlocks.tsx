@@ -181,11 +181,11 @@ export function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDon
         Đã ôn: {reviewed}.
       </Text>
       {!items.length && (
-        <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>🎉 Hết lỗi đến hạn rồi!</Text>
+        <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>🎉 Hết lỗi đến hạn rồi!</Text>
       )}
       {items.map((it) => (
         <View key={it.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
-          <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>
+          <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(14) }]}>
             {errorCodeName(it.errorCode)} ·{' '}
             {it.skill === 'listening' ? '🎧 Listening' : it.skill === 'reading' ? '📖 Reading' : it.skill === 'writing' ? '✍️ Writing' : '🎤 Speaking'}
             {it.questionType ? ` · ${questionTypeName(it.questionType)}` : ''}
@@ -260,7 +260,7 @@ export function IeltsDrillBlock({
           style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
           onPress={() => router.push('/diagnostic')}
         >
-          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Làm chẩn đoán trước →</Text>
+          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Làm chẩn đoán trước →</Text>
         </Pressable>
       </View>
     );
@@ -300,7 +300,7 @@ export function IeltsDrillBlock({
       {!started && (
         <View style={styles.row}>
           <Pressable style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]} onPress={() => void start()}>
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Luyện 10 câu dạng này →</Text>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Luyện 10 câu dạng này →</Text>
           </Pressable>
         </View>
       )}
@@ -355,7 +355,7 @@ export function IeltsDrillBlock({
       })}
       {qs && (
         <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={onDone}>
-          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Xong khối luyện dạng yếu</Text>
+          <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Xong khối luyện dạng yếu</Text>
         </Pressable>
       )}
     </View>
@@ -495,7 +495,7 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
         </>
       )}
       <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={onDone}>
-        <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Xong khối luyện chủ động</Text>
+        <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Xong khối luyện chủ động</Text>
       </Pressable>
     </View>
   );
@@ -525,7 +525,7 @@ export function BandCompassBlock() {
           {bands.overall != null && <Text style={{ color: colors.muted }}> ({bandLevel(bands.overall)})</Text>}
         </Text>
       ) : (
-        <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>
+        <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
           Chưa có chẩn đoán — làm chẩn đoán để xem Band Compass.
         </Text>
       )}
@@ -537,7 +537,7 @@ export function BandCompassBlock() {
       </Pressable>
       <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(16) }]}>Lỗi theo tuần</Text>
       {!weekly?.length && (
-        <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>Chưa có dữ liệu lỗi theo tuần.</Text>
+        <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có dữ liệu lỗi theo tuần.</Text>
       )}
       {weekly?.slice(0, 12).map((w, i) => (
         <View key={`${w.week}-${w.code}-${i}`} style={styles.barRow}>
@@ -635,12 +635,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: RADIUS.button,
     padding: SPACING.md,
-    maxHeight: 220,
+    maxHeight: 280, // Đoạn văn dài bị cắt ở 220 khi chữ to — nới ra, đoạn rất dài vẫn cần ScrollView (xem báo cáo)
     width: '100%',
   },
   passageText: { flexWrap: 'wrap' },
   barRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, width: '100%' },
-  barLabel: { minWidth: 96 },
+  barLabel: { minWidth: 96, flexShrink: 1 },
   barTrack: { flex: 1, height: 10, borderRadius: 5, overflow: 'hidden' },
   barFill: { height: '100%', borderRadius: 5 },
   barCount: { minWidth: 24, textAlign: 'right', fontWeight: '700' },

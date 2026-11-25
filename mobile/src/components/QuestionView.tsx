@@ -159,7 +159,7 @@ function QuestionViewInner({
   return (
     <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
       {hideText && q.part === 2 && listeningOnly ? (
-        <Text style={[styles.line, { color: colors.text, fontSize: scaled(15), fontWeight: '700' }]}>
+        <Text style={[styles.line, { color: colors.text, fontSize: scaled(14), fontWeight: '700' }]}>
           🎧 Nghe và chọn đáp án đúng
         </Text>
       ) : null}
@@ -192,7 +192,7 @@ function QuestionViewInner({
         <Text
           style={[
             styles.content,
-            { color: colors.text, fontSize: scaled(16), fontWeight: exam === 'toeic' ? '700' : '400' },
+            { color: colors.text, fontSize: scaled(16), lineHeight: scaled(24), fontWeight: exam === 'toeic' ? '700' : '400' },
           ]}
         >
           <Text style={{ fontWeight: '700' }}>{displayNum}. </Text>
@@ -269,7 +269,7 @@ function QuestionViewInner({
               disabled={!selected || overLimit}
               onPress={() => onSubmit?.(q.id)}
             >
-              <Text style={[styles.submitText, { color: colors.onAccent, fontSize: scaled(15) }]}>Nộp đáp án</Text>
+              <Text style={[styles.submitText, { color: colors.onAccent, fontSize: scaled(14) }]}>Nộp đáp án</Text>
             </Pressable>
           ) : null}
           {isIelts ? (
@@ -278,13 +278,13 @@ function QuestionViewInner({
               onPress={() => onGuessedChange?.(q.id, !guessed)}
               accessibilityLabel="Đánh dấu đoán mò"
             >
-              <Text style={{ color: colors.text, fontSize: scaled(15) }}>{guessed ? '☑' : '☐'} Đoán mò 🤔</Text>
+              <Text style={{ color: colors.text, fontSize: scaled(14) }}>{guessed ? '☑' : '☐'} Đoán mò 🤔</Text>
             </Pressable>
           ) : null}
         </View>
       ) : null}
       {mode === 'practice' && !result && submittedAll ? (
-        <Text style={{ color: colors.danger, fontSize: scaled(15), fontWeight: '700', flexWrap: 'wrap' }}>
+        <Text style={{ color: colors.danger, fontSize: scaled(14), fontWeight: '700', flexWrap: 'wrap' }}>
           ❌ Chưa làm — tính là sai
         </Text>
       ) : null}
@@ -356,7 +356,8 @@ const styles = StyleSheet.create({
   },
   line: { flexWrap: 'wrap' },
   image: { width: '100%', height: 220, borderRadius: 12 },
-  content: { flexWrap: 'wrap', lineHeight: 24 },
+  // lineHeight cũ là số cố định 24 — ở cỡ Rất lớn (chữ 20) bị chật nên chuyển sang scaled(24).
+  content: { flexWrap: 'wrap' },
   num: { fontWeight: '700' },
   options: { gap: SPACING.sm, width: '100%' },
   option: {

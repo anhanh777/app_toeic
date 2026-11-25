@@ -306,9 +306,9 @@ export default function SettingsScreen() {
       <ScrollView style={{ flex: 1 }} contentContainerStyle={[styles.scroll, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>Hồ sơ cá nhân</Text>
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(20) }]}>Hồ sơ cá nhân</Text>
         </View>
-        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
+        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(14) }]}>
           Xem và cập nhật thông tin tài khoản của bạn.
         </Text>
         {error ? (
@@ -400,7 +400,7 @@ export default function SettingsScreen() {
             onPress={() => void saveProfile()}
             disabled={savingProfile}
           >
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
               {savingProfile ? 'Đang lưu…' : 'Lưu hồ sơ'}
             </Text>
           </Pressable>
@@ -411,7 +411,7 @@ export default function SettingsScreen() {
             <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>Hồ sơ IELTS</Text>
             {!hasIelts ? (
               <View style={styles.row}>
-                <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>
+                <Text style={[styles.muted, { flex: 1, color: colors.muted, fontSize: scaled(14) }]}>
                   Bạn chưa thiết lập hồ sơ IELTS.
                 </Text>
                 <Pressable
@@ -474,7 +474,7 @@ export default function SettingsScreen() {
                   onPress={() => void saveIelts()}
                   disabled={savingIelts}
                 >
-                  <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+                  <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                     {savingIelts ? 'Đang lưu…' : 'Lưu hồ sơ IELTS'}
                   </Text>
                 </Pressable>
@@ -511,7 +511,7 @@ export default function SettingsScreen() {
             onPress={() => void changePw()}
             disabled={changingPw}
           >
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
               {changingPw ? 'Đang đổi…' : 'Đổi mật khẩu'}
             </Text>
           </Pressable>
@@ -524,7 +524,7 @@ export default function SettingsScreen() {
               style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
               onPress={toggleTheme}
             >
-              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(15) }]}>
+              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>
                 {theme === 'dark' ? '☀️ Chế độ sáng' : '🌙 Chế độ tối'}
               </Text>
             </Pressable>
@@ -532,7 +532,7 @@ export default function SettingsScreen() {
               style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
               onPress={() => setTextSizeLevel(textSizeLevel >= 3 ? 0 : textSizeLevel + 1)}
             >
-              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(15) }]}>
+              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>
                 🔠 Cỡ chữ: {textSizeLabel}
               </Text>
             </Pressable>
@@ -548,7 +548,7 @@ export default function SettingsScreen() {
             style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
             onPress={() => void toggleReminder()}
           >
-            <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(15) }]}>
+            <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>
               {reminderOn ? '🔔 Đang nhắc ôn tập lúc 20:00 — bấm để tắt' : '🔕 Nhắc ôn tập hằng ngày (20:00)'}
             </Text>
           </Pressable>
@@ -564,7 +564,7 @@ export default function SettingsScreen() {
           style={[styles.button, styles.outlineButton, { borderColor: colors.danger }]}
           onPress={logout}
         >
-          <Text style={[styles.buttonText, { color: colors.danger, fontSize: scaled(16) }]}>Đăng xuất</Text>
+          <Text style={[styles.buttonText, { color: colors.danger, fontSize: scaled(15) }]}>Đăng xuất</Text>
         </Pressable>
         <Text style={[styles.version, { color: colors.muted, fontSize: scaled(13) }]}>
           {brand.name} — Luyện TOEIC IELTS (mobile)
@@ -588,6 +588,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.sm,
   },
+  // Tiêu đề màn hình 24 to quá trên màn hẹp nên giảm còn 20.
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

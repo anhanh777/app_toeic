@@ -100,6 +100,7 @@ export default function IeltsAnswerControl({ q, value, onChange, onCommit, disab
                     fontSize: scaled(13),
                     fontWeight: '700',
                     textAlign: 'center',
+                    flexShrink: 1,
                   }}
                 >
                   {o.label}

@@ -277,7 +277,7 @@ export default function WrongQuestionsScreen() {
             onPress={() => void review(q)}
             disabled={!sel || overLimit || busyId === q.id}
           >
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
               {busyId === q.id ? 'Đang chấm…' : 'Kiểm tra'}
             </Text>
           </Pressable>
@@ -293,7 +293,8 @@ export default function WrongQuestionsScreen() {
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>Câu đã làm sai</Text>
+          {/* Tiêu đề 24 quá to trên màn hẹp nên giảm còn 21. */}
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(21) }]}>Câu đã làm sai</Text>
         </View>
         <View style={styles.chipRow}>
           <Pressable

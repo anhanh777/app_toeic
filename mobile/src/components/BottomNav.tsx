@@ -164,6 +164,7 @@ export function BottomNav() {
                   { color: active ? colors.accent : colors.muted },
                   active && styles.labelActive,
                 ]}
+                numberOfLines={1}
               >
                 {t.label}
               </Text>
@@ -190,6 +191,7 @@ export function BottomNav() {
                 { color: active ? colors.accent : colors.muted },
                 active && styles.labelActive,
               ]}
+              numberOfLines={1}
             >
               {t.label}
             </Text>

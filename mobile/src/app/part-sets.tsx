@@ -112,7 +112,7 @@ export default function PartSetsScreen() {
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có câu</Text>
           ) : (
             <View style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}>
-              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
                 ▶ Luyện {isIelts ? partNameFor(partNum, ex) : partName(partNum)}
               </Text>
             </View>
@@ -131,7 +131,7 @@ export default function PartSetsScreen() {
         <View style={[styles.container, { paddingHorizontal: pad }]}>
           <View style={styles.header}>
             <BackButton />
-            <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>Part không hợp lệ</Text>
+            <Text style={[styles.title, { color: colors.text, fontSize: scaled(20) }]}>Part không hợp lệ</Text>
           </View>
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
             <Text style={{ color: colors.text, fontSize: scaled(15) }}>Part không hợp lệ.</Text>
@@ -147,7 +147,8 @@ export default function PartSetsScreen() {
       <View style={[styles.container, { paddingHorizontal: pad }]}>
         <View style={styles.header}>
           <BackButton />
-          <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>{partTitle}</Text>
+          {/* Tiêu đề 22 vỡ thành 2 dòng với tên Part dài (vd "Part 5: Incomplete Sentences") nên giảm còn 20. */}
+          <Text style={[styles.title, { color: colors.text, fontSize: scaled(20) }]}>{partTitle}</Text>
         </View>
         <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>
           Chọn 1 đề để luyện {partTitle} — mỗi buổi là 1 {isIelts ? 'Section/Passage' : 'Part'} của 1 đề.

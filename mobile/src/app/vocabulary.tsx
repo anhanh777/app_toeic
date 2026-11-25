@@ -114,7 +114,7 @@ export default function VocabularyScreen() {
         <View style={[styles.wrap, { paddingHorizontal: pad }]}>
           <View style={styles.headerRow}>
             <BackButton />
-            <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>Từ vựng</Text>
+            <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(20) }]}>Từ vựng</Text>
           </View>
           {/* 2 tab dạng segmented control — 2 nửa bằng nhau, không còn 2 pill lệch. */}
           <View style={[styles.segmented, { borderColor: colors.border, backgroundColor: colors.surface }, livelyCard(colors, 'compact')]}>
@@ -122,7 +122,7 @@ export default function VocabularyScreen() {
               style={[styles.segment, tab === 'mine' && { backgroundColor: colors.accent }]}
               onPress={() => setTab('mine')}
             >
-              <Text style={{ color: tab === 'mine' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
+              <Text style={{ color: tab === 'mine' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>
                 Từ của tôi
               </Text>
             </Pressable>
@@ -130,7 +130,7 @@ export default function VocabularyScreen() {
               style={[styles.segment, tab === 'shared' && { backgroundColor: colors.accent }]}
               onPress={() => setTab('shared')}
             >
-              <Text style={{ color: tab === 'shared' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
+              <Text style={{ color: tab === 'shared' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>
                 Từ chung
               </Text>
             </Pressable>
@@ -335,7 +335,7 @@ function MyWords() {
         style={[styles.addButton, { backgroundColor: colors.accent }, raisedButton(colors)]}
         onPress={() => setShowAdd((v) => !v)}
       >
-        <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>＋ Thêm từ mới</Text>
+        <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>＋ Thêm từ mới</Text>
       </Pressable>
 
       {showAdd && (
@@ -392,13 +392,13 @@ function MyWords() {
               style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
               onPress={() => void saveAdd()}
             >
-              <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Lưu từ</Text>
+              <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Lưu từ</Text>
             </Pressable>
             <Pressable
               style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
               onPress={() => setShowAdd(false)}
             >
-              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(15) }]}>Đóng</Text>
+              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>Đóng</Text>
             </Pressable>
           </View>
         </View>
@@ -411,7 +411,8 @@ function MyWords() {
           <Pressable style={styles.flashFlip} onPress={() => setFlipped((f) => !f)}>
             {!flipped ? (
               <>
-                <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(24) }]}>{w.word}</Text>
+                {/* Chữ mặt trước thẻ 24 vỡ với từ dài trên màn hẹp nên giảm còn 22. */}
+                <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(22) }]}>{w.word}</Text>
                 <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>
                   {[w.phonetic, w.pos].filter(Boolean).join(' · ')}
                 </Text>
@@ -504,13 +505,13 @@ function MyWords() {
               style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
               onPress={() => void saveEdit()}
             >
-              <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Lưu sửa đổi</Text>
+              <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Lưu sửa đổi</Text>
             </Pressable>
             <Pressable
               style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border, flex: 1 }]}
               onPress={() => setEditing(null)}
             >
-              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(15) }]}>Hủy</Text>
+              <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>Hủy</Text>
             </Pressable>
           </View>
         </View>
@@ -660,7 +661,8 @@ function SharedWords({ exam }: { exam: string }) {
           <Pressable style={styles.flashFlip} onPress={() => setFlipped((f) => !f)}>
             {!flipped ? (
               <>
-                <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(24) }]}>{w.word}</Text>
+                {/* Chữ mặt trước thẻ 24 vỡ với từ dài trên màn hẹp nên giảm còn 22. */}
+                <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(22) }]}>{w.word}</Text>
                 <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>{w.phonetic || ''}</Text>
                 <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(14) }]}>Chạm để lật thẻ</Text>
               </>

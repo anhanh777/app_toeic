@@ -303,9 +303,9 @@ export default function SpeakingScreen() {
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>🎤 Luyện Speaking IELTS</Text>
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(20) }]}>🎤 Luyện Speaking IELTS</Text>
         </View>
-        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
+        <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(14) }]}>
           Part 1 hỏi đáp · Part 2 nói 1:30–2:00 · Part 3 thảo luận. Đề mẫu — nội dung tự soạn, chưa phải đề
           thi thật.
         </Text>
@@ -346,7 +346,7 @@ export default function SpeakingScreen() {
               style={[styles.button, { backgroundColor: recording ? colors.danger : colors.accent }, raisedButton(colors, recording ? colors.redInk : undefined)]}
               onPress={() => void (recording ? stopRec() : startRec())}
             >
-              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                 {recording ? '■ Dừng ghi âm' : '● Bắt đầu ghi âm'}
               </Text>
             </Pressable>
@@ -356,7 +356,7 @@ export default function SpeakingScreen() {
                   style={[styles.smallButton, styles.outlineButton, { borderColor: colors.border }]}
                   onPress={() => void playUri(audioUri)}
                 >
-                  <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(15) }]}>
+                  <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>
                     {playingUri === audioUri ? '⏸ Dừng nghe lại' : '▶ Nghe lại bản ghi'}
                   </Text>
                 </Pressable>
@@ -365,14 +365,14 @@ export default function SpeakingScreen() {
                   onPress={() => void saveRec()}
                   disabled={saving}
                 >
-                  <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+                  <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                     {saving ? 'Đang lưu…' : 'Lưu bản ghi'}
                   </Text>
                 </Pressable>
               </>
             )}
             {saved && (
-              <Text style={[styles.note, { color: colors.success, fontSize: scaled(15) }]}>
+              <Text style={[styles.note, { color: colors.success, fontSize: scaled(14) }]}>
                 ✅ Đã lưu bản ghi. Chưa chấm AI — tính năng này sẽ có sau.
               </Text>
             )}
@@ -388,7 +388,7 @@ export default function SpeakingScreen() {
             renderItem={renderItem}
             {...LIST_DEFAULTS}
             ListEmptyComponent={
-              <Text style={[styles.empty, { color: colors.muted, fontSize: scaled(15) }]}>Chưa có đề Speaking mẫu.</Text>
+              <Text style={[styles.empty, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có đề Speaking mẫu.</Text>
             }
             ListFooterComponent={
               <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
@@ -400,7 +400,7 @@ export default function SpeakingScreen() {
                 )}
                 {recs.map((r) => (
                   <View key={r.id} style={[styles.recItem, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }]}>
-                    <Text style={[styles.recText, { color: colors.text, fontSize: scaled(15) }]}>
+                    <Text style={[styles.recText, { color: colors.text, fontSize: scaled(14) }]}>
                       Part {r.part} · {r.promptId}
                       {r.durationSec != null ? ` · ${fmtClock(r.durationSec)}` : ''}
                       {r.createdAt ? ` · ${new Date(r.createdAt).toLocaleDateString('vi-VN')}` : ''}
@@ -442,6 +442,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     gap: SPACING.sm,
   },
+  // Tiêu đề màn hình: chữ 24 vỡ 2 dòng trên màn hẹp nên giảm còn 20.
   title: { fontWeight: '700', flexWrap: 'wrap' },
   sub: { flexWrap: 'wrap' },
   error: { flexWrap: 'wrap' },

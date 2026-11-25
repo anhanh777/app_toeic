@@ -593,7 +593,7 @@ export default function MockTestScreen() {
                 disabled={busy || !testSet || !testSet.totalQuestions}
                 onPress={() => void start()}
               >
-                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</Text>
+                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</Text>
               </Pressable>
             </View>
           ) : (
@@ -604,7 +604,7 @@ export default function MockTestScreen() {
                   style={[styles.tab, { borderColor: colors.border }, mode === 'mini' && { backgroundColor: colors.accent }, livelyChip(colors)]}
                   onPress={() => setMode('mini')}
                 >
-                  <Text style={{ color: mode === 'mini' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
+                  <Text style={{ color: mode === 'mini' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>
                     {isIelts ? 'Thi mini — 1 Section/Passage' : 'Thi mini — 1 Part'}
                   </Text>
                 </Pressable>
@@ -612,7 +612,7 @@ export default function MockTestScreen() {
                   style={[styles.tab, { borderColor: colors.border }, mode === 'full' && { backgroundColor: colors.accent }, livelyChip(colors)]}
                   onPress={() => setMode('full')}
                 >
-                  <Text style={{ color: mode === 'full' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
+                  <Text style={{ color: mode === 'full' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>
                     {isIelts ? 'Thi full — Listening + Reading (80 câu, 90 phút)' : 'Thi full — toàn bộ ngân hàng, 120 phút'}
                   </Text>
                 </Pressable>
@@ -629,7 +629,8 @@ export default function MockTestScreen() {
                         style={[styles.partChip, { borderColor: part === p ? colors.accent : colors.border, backgroundColor: part === p ? colors.surfaceMuted : colors.surface }, livelyChip(colors)]}
                         onPress={() => setPart(p)}
                       >
-                        <Text style={{ color: colors.text, fontSize: scaled(14), textAlign: 'center' }}>
+                        {/* Chữ 13: nhãn "Section 1 — Listening" dài, chip chỉ rộng ~48% nên 14 bị vỡ 3 dòng */}
+                        <Text style={{ color: colors.text, fontSize: scaled(13), textAlign: 'center' }}>
                           {isIelts ? `${partNameFor(p, exam)} — ${p <= 4 ? 'Listening' : 'Reading'}` : partName(p)}
                         </Text>
                       </Pressable>
@@ -644,7 +645,7 @@ export default function MockTestScreen() {
                       style={[styles.setRow, { borderColor: selectedTestSetId === '' ? colors.accent : colors.border, backgroundColor: selectedTestSetId === '' ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}
                       onPress={() => setSelectedTestSetId('')}
                     >
-                      <Text style={{ color: colors.text, fontSize: scaled(15) }}>Toàn bộ ngân hàng</Text>
+                      <Text style={{ color: colors.text, fontSize: scaled(14) }}>Toàn bộ ngân hàng</Text>
                     </Pressable>
                     {sortedTestSets.map((s) => (
                       <Pressable
@@ -652,7 +653,7 @@ export default function MockTestScreen() {
                         style={[styles.setRow, { borderColor: selectedTestSetId === s.id ? colors.accent : colors.border, backgroundColor: selectedTestSetId === s.id ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}
                         onPress={() => setSelectedTestSetId(s.id)}
                       >
-                        <Text style={{ color: colors.text, fontSize: scaled(15) }}>
+                        <Text style={{ color: colors.text, fontSize: scaled(14) }}>
                           {s.title} ({s.totalQuestions} câu)
                         </Text>
                       </Pressable>
@@ -683,7 +684,7 @@ export default function MockTestScreen() {
                 </Text>
               ) : null}
               <Pressable style={[styles.button, { backgroundColor: colors.accent }, busy && styles.disabled, raisedButton(colors)]} disabled={busy} onPress={() => void start()}>
-                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</Text>
+                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</Text>
               </Pressable>
             </View>
           )}
@@ -819,7 +820,7 @@ export default function MockTestScreen() {
               onPress={submitFromMenu}
               accessibilityRole="button"
             >
-              <Text style={[styles.sheetRowText, { color: colors.accent, fontSize: scaled(16) }]}>
+              <Text style={[styles.sheetRowText, { color: colors.accent, fontSize: scaled(15) }]}>
                 {`✅ Nộp bài · ${answeredCount}/${questions.length} câu (còn ${unansweredCount} câu chưa làm)`}
               </Text>
             </Pressable>
@@ -828,7 +829,7 @@ export default function MockTestScreen() {
               onPress={() => void exitTest()}
               accessibilityRole="button"
             >
-              <Text style={[styles.sheetRowText, { color: colors.danger, fontSize: scaled(16) }]}>
+              <Text style={[styles.sheetRowText, { color: colors.danger, fontSize: scaled(15) }]}>
                 {confirmExit ? '⚠️ Bấm lại để thoát (sẽ hủy bài thi này)' : '🚪 Thoát (sẽ hủy bài thi này)'}
               </Text>
             </Pressable>
@@ -837,7 +838,7 @@ export default function MockTestScreen() {
               onPress={closeMenu}
               accessibilityRole="button"
             >
-              <Text style={[styles.sheetRowText, { color: colors.muted, fontSize: scaled(16) }]}>Đóng</Text>
+              <Text style={[styles.sheetRowText, { color: colors.muted, fontSize: scaled(15) }]}>Đóng</Text>
             </Pressable>
           </Pressable>
         </Pressable>

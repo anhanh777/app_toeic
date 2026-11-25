@@ -127,7 +127,8 @@ export default function LeaderboardScreen() {
       <View style={[styles.wrap, { paddingHorizontal: pad }]}>
         <View style={styles.headerRow}>
           <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>🏆 Bảng xếp hạng</Text>
+          {/* Tiêu đề 24 quá to trên màn hẹp nên giảm còn 21. */}
+          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(21) }]}>🏆 Bảng xếp hạng</Text>
         </View>
         <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
           Xem mình đang đứng ở đâu và cố gắng thêm một chút mỗi ngày nhé.

@@ -86,19 +86,19 @@ export default function LoginScreen() {
                 <Text style={{ fontSize: scaled(36) }}>{brand.logoEmoji}</Text>
               )}
             </View>
-            <Text style={[styles.brand, { color: colors.text, fontSize: scaled(26) }]}>{brand.name}</Text>
+            <Text style={[styles.brand, { color: colors.text, fontSize: scaled(22) }]}>{brand.name}</Text>
             {brand.tagline ? (
-              <Text style={[styles.tagline, { color: colors.muted, fontSize: scaled(15) }]}>
+              <Text style={[styles.tagline, { color: colors.muted, fontSize: scaled(14) }]}>
                 {brand.tagline}
               </Text>
             ) : null}
           </View>
 
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
-            <Text style={[styles.title, { color: colors.text, fontSize: scaled(22) }]}>
+            <Text style={[styles.title, { color: colors.text, fontSize: scaled(20) }]}>
               Đăng nhập
             </Text>
-            <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(15) }]}>
+            <Text style={[styles.sub, { color: colors.muted, fontSize: scaled(14) }]}>
               Đăng nhập bằng tài khoản của bạn để đồng bộ tiến độ với bản web.
             </Text>
 
@@ -148,7 +148,7 @@ export default function LoginScreen() {
               {busy ? (
                 <ActivityIndicator color={colors.onAccent} />
               ) : (
-                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(16) }]}>
+                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
                   Đăng nhập
                 </Text>
               )}
@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 6,
   },
+  // Tên brand 26 to quá nên giảm còn 22 (vẫn nổi bật nhất màn login).
   brand: { fontWeight: '800', letterSpacing: 2, textAlign: 'center' },
   tagline: { textAlign: 'center', flexWrap: 'wrap' },
   card: {

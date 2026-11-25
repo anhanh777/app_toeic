@@ -11,6 +11,7 @@
 // sau tối đa 1.2s — không bao giờ kẹt màn hình.
 import { useEffect, useRef } from 'react';
 import { StyleSheet, Text } from 'react-native';
+import { useTextSize } from '../theme';
 import Animated, {
   Easing,
   runOnJS,
@@ -38,6 +39,7 @@ export function HeroFlight({
   text: string;
   onDone: () => void;
 }) {
+  const { scaled } = useTextSize();
   const x = useSharedValue(from.x);
   const y = useSharedValue(from.y);
   const w = useSharedValue(from.w);
@@ -83,7 +85,7 @@ export function HeroFlight({
       style={[styles.card, { backgroundColor: surface, borderColor: border }, style]}
       pointerEvents="none"
     >
-      <Text style={[styles.title, { color: text }]} numberOfLines={2}>
+      <Text style={[styles.title, { color: text, fontSize: scaled(16) }]} numberOfLines={2}>
         {title}
       </Text>
     </Animated.View>
@@ -98,5 +100,5 @@ const styles = StyleSheet.create({
     padding: 12,
     justifyContent: 'center',
   },
-  title: { fontWeight: '700', fontSize: 16, flexWrap: 'wrap' },
+  title: { fontWeight: '700', flexWrap: 'wrap' }, // fontSize qua scaled(16) ở trên để theo cỡ chữ người dùng
 });

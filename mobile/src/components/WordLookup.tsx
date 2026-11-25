@@ -268,27 +268,27 @@ export function WordLookupModal({
           {pop ? (
             <>
               <View style={styles.sheetHead}>
-                <Text style={[styles.sheetWord, { color: colors.text, fontSize: scaled(20) }]}>{pop.word}</Text>
+                <Text style={[styles.sheetWord, { color: colors.text, fontSize: scaled(18), flexShrink: 1 }]}>{pop.word}</Text>
                 {pop.entry?.phonetic ? (
-                  <Text style={[styles.sheetPhonetic, { color: colors.muted, fontSize: scaled(15) }]}>{pop.entry.phonetic}</Text>
+                  <Text style={[styles.sheetPhonetic, { color: colors.muted, fontSize: scaled(14) }]}>{pop.entry.phonetic}</Text>
                 ) : null}
                 <Pressable onPress={onClose} style={[styles.closeButton, { borderColor: colors.border }, livelyChip(colors)]} accessibilityLabel="Đóng">
-                  <Text style={{ color: colors.text, fontSize: scaled(15) }}>✕</Text>
+                  <Text style={{ color: colors.text, fontSize: scaled(14) }}>✕</Text>
                 </Pressable>
               </View>
               {pop.loading ? (
                 <View style={styles.loadingRow}>
                   <ActivityIndicator color={colors.accent} />
-                  <Text style={{ color: colors.muted, fontSize: scaled(15) }}>Đang tra từ…</Text>
+                  <Text style={{ color: colors.muted, fontSize: scaled(14) }}>Đang tra từ…</Text>
                 </View>
               ) : null}
               {pop.error ? (
-                <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{pop.error}</Text>
+                <Text style={{ color: colors.danger, fontSize: scaled(14) }}>{pop.error}</Text>
               ) : null}
               {pop.entry ? (
                 <>
                   {pop.entry.pos ? (
-                    <Text style={[styles.sheetLine, { color: colors.text, fontSize: scaled(15) }]}>
+                    <Text style={[styles.sheetLine, { color: colors.text, fontSize: scaled(14) }]}>
                       <Text style={{ color: colors.muted }}>Loại từ: </Text>
                       {pop.entry.pos}
                     </Text>
@@ -302,7 +302,7 @@ export function WordLookupModal({
                       disabled={saving}
                       onPress={onUnsave}
                     >
-                      <Text style={[styles.saveText, { color: colors.text, fontSize: scaled(15) }]}>Đã lưu ✓ — bấm để bỏ lưu</Text>
+                      <Text style={[styles.saveText, { color: colors.text, fontSize: scaled(14) }]}>Đã lưu ✓ — bấm để bỏ lưu</Text>
                     </Pressable>
                   ) : (
                     <Pressable
@@ -310,7 +310,7 @@ export function WordLookupModal({
                       disabled={saving}
                       onPress={onSave}
                     >
-                      <Text style={[styles.saveText, { color: colors.onAccent, fontSize: scaled(15) }]}>＋ Lưu vào từ vựng</Text>
+                      <Text style={[styles.saveText, { color: colors.onAccent, fontSize: scaled(14) }]}>＋ Lưu vào từ vựng</Text>
                     </Pressable>
                   )}
                 </>

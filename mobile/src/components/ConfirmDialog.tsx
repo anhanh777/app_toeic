@@ -83,7 +83,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
           >
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(17) }]}>{req?.title}</Text>
             {req?.message ? (
-              <Text style={[styles.message, { color: colors.muted, fontSize: scaled(15) }]}>{req.message}</Text>
+              <Text style={[styles.message, { color: colors.muted, fontSize: scaled(15), lineHeight: scaled(21) }]}>{req.message}</Text>
             ) : null}
             <View style={styles.row}>
               <Pressable
@@ -95,7 +95,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
                 onPress={() => close(false)}
                 accessibilityRole="button"
               >
-                <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>
+                <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(14) }]}>
                   {req?.cancelText ?? 'Hủy'}
                 </Text>
               </Pressable>
@@ -109,7 +109,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
                 onPress={() => close(true)}
                 accessibilityRole="button"
               >
-                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
                   {req?.confirmText ?? 'Đồng ý'}
                 </Text>
               </Pressable>
@@ -136,7 +136,9 @@ const styles = StyleSheet.create({
   },
   sheetLively: { borderWidth: 2, borderTopLeftRadius: 20, borderTopRightRadius: 20 },
   title: { fontWeight: '800' },
-  message: { lineHeight: 21 },
+  // lineHeight của message đặt inline = scaled(21) để giãn theo cỡ chữ
+  // (lineHeight cố định 21 sẽ chật khi chữ phóng to ×1.25).
+  message: {},
   row: { flexDirection: 'row', gap: SPACING.sm, marginTop: SPACING.sm },
   button: {
     flex: 1,
@@ -148,5 +150,5 @@ const styles = StyleSheet.create({
     minHeight: 48,
   },
   buttonPrimary: { borderWidth: 0 },
-  buttonText: { fontWeight: '700' },
+  buttonText: { fontWeight: '700', flexShrink: 1, textAlign: 'center' },
 });

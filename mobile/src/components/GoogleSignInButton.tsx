@@ -148,7 +148,7 @@ function GoogleSignInButtonInner({
         {busy ? (
           <ActivityIndicator color={colors.text} />
         ) : (
-          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(16) }]}>
+          <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(14) }]}>
             Đăng nhập bằng Google
           </Text>
         )}

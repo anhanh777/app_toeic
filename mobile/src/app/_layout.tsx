@@ -13,7 +13,7 @@ import { ConfirmProvider } from '../components/ConfirmDialog';
 import { LoadingLine } from '../components/LoadingLine';
 import { ExamProvider } from '../exam';
 import { MenuIconsProvider } from '../menuIcons';
-import { TextSizeProvider, ThemeProvider, useTheme } from '../theme';
+import { TextSizeProvider, ThemeProvider, useTextSize, useTheme } from '../theme';
 import { UiSettingsProvider, useUiSettings } from '../uiSettings';
 
 SplashScreen.preventAutoHideAsync();
@@ -117,6 +117,7 @@ function RootLayoutNav() {
 function MaintenanceScreen() {
   const { settings, refresh } = useUiSettings();
   const { colors } = useTheme();
+  const { scaled } = useTextSize();
   const [checking, setChecking] = useState(false);
   const retry = () => {
     setChecking(true);
@@ -125,10 +126,10 @@ function MaintenanceScreen() {
   };
   return (
     <View style={[styles.maintenance, { backgroundColor: colors.background }]}>
-      <Text style={styles.maintenanceEmoji}>🔧</Text>
-      <Text style={[styles.maintenanceTitle, { color: colors.text }]}>App đang bảo trì</Text>
-      <Text style={[styles.maintenanceMsg, { color: colors.text }]}>{settings.maintenance.message}</Text>
-      <Text style={[styles.maintenanceSub, { color: colors.muted }]}>
+      <Text style={[styles.maintenanceEmoji, { fontSize: scaled(48) }]}>🔧</Text>
+      <Text style={[styles.maintenanceTitle, { color: colors.text, fontSize: scaled(20) }]}>App đang bảo trì</Text>
+      <Text style={[styles.maintenanceMsg, { color: colors.text, fontSize: scaled(15) }]}>{settings.maintenance.message}</Text>
+      <Text style={[styles.maintenanceSub, { color: colors.muted, fontSize: scaled(14) }]}>
         Dữ liệu đang được nạp lại — quay lại sau ít phút nhé.
       </Text>
       <Pressable
@@ -136,7 +137,7 @@ function MaintenanceScreen() {
         onPress={retry}
         disabled={checking}
       >
-        <Text style={[styles.maintenanceButtonText, { color: colors.onAccent }]}>
+        <Text style={[styles.maintenanceButtonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
           {checking ? 'Đang kiểm tra…' : 'Thử lại'}
         </Text>
       </Pressable>
@@ -176,10 +177,12 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   loading: { flex: 1, alignItems: 'center', justifyContent: 'center' },
   maintenance: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 24 },
-  maintenanceEmoji: { fontSize: 56, marginBottom: 12 },
-  maintenanceTitle: { fontSize: 24, fontWeight: '800', marginBottom: 8, textAlign: 'center' },
-  maintenanceMsg: { fontSize: 16, fontWeight: '700', textAlign: 'center', marginBottom: 8 },
-  maintenanceSub: { fontSize: 14, textAlign: 'center', marginBottom: 24 },
+  // Màn bảo trì trước đây dùng fontSize thô trong StyleSheet nên không theo
+  // cỡ chữ người dùng đã chọn — cỡ chữ giờ đặt bằng scaled() ở JSX bên trên.
+  maintenanceEmoji: { marginBottom: 12 },
+  maintenanceTitle: { fontWeight: '800', marginBottom: 8, textAlign: 'center' },
+  maintenanceMsg: { fontWeight: '700', textAlign: 'center', marginBottom: 8 },
+  maintenanceSub: { textAlign: 'center', marginBottom: 24 },
   maintenanceButton: { paddingHorizontal: 28, paddingVertical: 12, borderRadius: 12 },
-  maintenanceButtonText: { fontSize: 16, fontWeight: '700' },
+  maintenanceButtonText: { fontWeight: '700' },
 });

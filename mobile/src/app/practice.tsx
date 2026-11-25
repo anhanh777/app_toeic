@@ -155,7 +155,7 @@ export default function PracticeScreen() {
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa làm câu nào trong đề này</Text>
           )}
           <View style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}>
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
               {answered > 0 ? '▶ Làm tiếp' : '👁 Xem đề'}
             </Text>
           </View>
@@ -185,9 +185,10 @@ export default function PracticeScreen() {
           ]}
         >
           <Pressable onPress={() => setPart(p.part)} accessibilityRole="button">
-            <Text style={[styles.line, { color: colors.text, fontSize: scaled(16), fontWeight: '700' }]}>
+            {/* Tên Part 16 trong thẻ nửa màn (~165dp) vỡ thành 2–3 dòng nên giảm còn 15 + tăng lineHeight. */}
+            <Text style={[styles.line, { color: colors.text, fontSize: scaled(15), fontWeight: '700', lineHeight: scaled(21) }]}>
               {p.part <= 4 ? '🎧' : '📖'} {isIelts ? partNameFor(p.part, ex) : partName(p.part)}
-              <Text style={{ color: colors.muted, fontSize: scaled(14), fontWeight: '400' }}>
+              <Text style={{ color: colors.muted, fontSize: scaled(13), fontWeight: '400' }}>
                 {p.count ? ` · ${p.count} câu` : ' · Chưa rõ số câu'}
               </Text>
             </Text>
@@ -208,7 +209,7 @@ export default function PracticeScreen() {
             accessibilityRole="button"
             accessibilityLabel={`Luyện ${isIelts ? partNameFor(p.part, ex) : partName(p.part)}`}
           >
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>▶ Luyện</Text>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>▶ Luyện</Text>
           </Pressable>
         </View>
       );
@@ -229,7 +230,7 @@ export default function PracticeScreen() {
             style={[styles.tab, { borderColor: colors.border }, tab === 'sets' && { backgroundColor: colors.accent }, livelyChip(colors)]}
             onPress={() => setTab('sets')}
           >
-            <Text style={{ color: tab === 'sets' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
+            <Text style={{ color: tab === 'sets' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700', textAlign: 'center' }}>
               📚 Luyện theo Bộ đề
             </Text>
           </Pressable>
@@ -237,7 +238,7 @@ export default function PracticeScreen() {
             style={[styles.tab, { borderColor: colors.border }, tab === 'parts' && { backgroundColor: colors.accent }, livelyChip(colors)]}
             onPress={() => setTab('parts')}
           >
-            <Text style={{ color: tab === 'parts' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
+            <Text style={{ color: tab === 'parts' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700', textAlign: 'center' }}>
               {isIelts ? '🎧 Luyện theo Section/Passage' : '🎧 Luyện theo Part'}
             </Text>
           </Pressable>
@@ -303,7 +304,8 @@ const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md, flexWrap: 'wrap' },
   title: { fontWeight: '700' },
   tabs: { flexDirection: 'row', gap: SPACING.sm, flexWrap: 'wrap' },
-  tab: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, flexGrow: 1, alignItems: 'center' },
+  // 2 tab chia đều nửa màn — trước đây flexGrow theo nội dung nên tab dài lấn tab ngắn.
+  tab: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, flex: 1, alignItems: 'center', justifyContent: 'center' },
   list: { gap: SPACING.sm, paddingBottom: SPACING.xl },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: SPACING.md },
   card: { borderWidth: 1, borderRadius: RADIUS.card, padding: CARD_PADDING, gap: SPACING.xs, width: '100%' },

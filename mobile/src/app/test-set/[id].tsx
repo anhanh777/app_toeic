@@ -141,7 +141,8 @@ export default function TestSetDetailScreen() {
             disabled={!n}
             onPress={() => goPractice(p)}
           >
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
+              {/* Nút trong thẻ 2 cột hẹp: chữ 15 vỡ 2–3 dòng nên giảm còn 14. */}
               Luyện {partLabel(p, ex)} này ({n} câu)
             </Text>
           </Pressable>
@@ -236,7 +237,8 @@ export default function TestSetDetailScreen() {
                 disabled={!ts.totalQuestions}
                 onPress={goMock}
               >
-                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
+                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
+                  {/* Chữ 15 ở cỡ Rất lớn vỡ 2 dòng nên giảm còn 14. */}
                   🏆 Thi thử cả đề ({ts.totalQuestions} câu · {fullMinutes} phút)
                 </Text>
               </Pressable>

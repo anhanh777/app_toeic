@@ -358,7 +358,7 @@ export default function ResultScreen() {
         <View style={[styles.center, { paddingHorizontal: pad }]}>
           <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text>
           <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => router.push('/')}>
-            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Về trang chủ</Text>
+            <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Về trang chủ</Text>
           </Pressable>
         </View>
       </SafeAreaView>
@@ -570,7 +570,7 @@ export default function ResultScreen() {
       )}
       {data.byPart ? (
         <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
-          <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(17) }]}>
             {isIelts ? 'Điểm theo Section/Passage' : 'Điểm theo Part'}
           </Text>
           {data.byPart.map((b) => (
@@ -594,10 +594,10 @@ export default function ResultScreen() {
   const bottomButtons = (
     <View style={styles.btnRow}>
       <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={() => router.push('/mock')}>
-        <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Thi thử lại</Text>
+        <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Thi thử lại</Text>
       </Pressable>
       <Pressable style={[styles.button, styles.flexButton, { backgroundColor: colors.surfaceMuted }]} onPress={() => router.push('/')}>
-        <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(15) }]}>Về trang chủ</Text>
+        <Text style={[styles.buttonText, { color: colors.text, fontSize: scaled(14) }]}>Về trang chủ</Text>
       </Pressable>
     </View>
   );
@@ -635,12 +635,12 @@ export default function ResultScreen() {
                 ))}
               </View>
               {paper ? (
-                <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(17) }]}>
                   Xem trên đề ({correctCount}/{detailAll.length} đúng)
                 </Text>
               ) : (
                 <>
-                  <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>
+                  <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(17) }]}>
                     Chi tiết từng câu ({correctCount}/{detailAll.length} đúng)
                   </Text>
                   {wrongCount === 0 ? (
@@ -674,7 +674,7 @@ export default function ResultScreen() {
                 style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
                 onPress={() => router.push('/wrong')}
               >
-                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn lại câu sai</Text>
+                <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Ôn lại câu sai</Text>
               </Pressable>
               {bottomButtons}
             </View>
@@ -694,13 +694,13 @@ export default function ResultScreen() {
         {headerContent}
         {data.wrongQuestionIds?.length ? (
           <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
-            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(18) }]}>Câu làm sai ({data.wrongQuestionIds.length})</Text>
+            <Text style={[styles.sectionTitle, { color: colors.text, fontSize: scaled(17) }]}>Câu làm sai ({data.wrongQuestionIds.length})</Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>{data.wrongQuestionIds.join(', ')}</Text>
             <Pressable
               style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
               onPress={() => router.push('/wrong')}
             >
-              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>Ôn lại câu sai</Text>
+              <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Ôn lại câu sai</Text>
             </Pressable>
           </View>
         ) : (
