@@ -11,8 +11,8 @@ const { gradeTypedAnswer, isTypedType, gradeListSelection, isMultiAnswerType, pa
 const router = express.Router();
 
 router.post('/practice/answer', authMiddleware, (req, res) => {
-  const { questionId, selected } = req.body || {};
-  if (!questionId || typeof selected !== 'string') {
+  const { questionId, selected, reveal } = req.body || {};
+  if (!questionId || (typeof selected !== 'string' && reveal !== true)) {
     return res.status(400).json({ error: 'thieu questionId hoac selected' });
   }
   const q = db.getQuestionRowById(questionId);
@@ -29,6 +29,42 @@ router.post('/practice/answer', authMiddleware, (req, res) => {
   // van vao cau sai de on lai, nhung van duoc diem vao band.
   let marks = null;
   let maxMarks = 1;
+  // Reveal: cau de trong sau khi nop tat ca — tra dap an dung + giai
+  // thich ma KHONG ghi attempt/dap an/cau sai/XP. Frontend chi goi sau
+  // khi da nop (submit-all), cho cau chua lam, de hien giai thich.
+  if (reveal === true && (selected == null || selected === '')) {
+    if (typed) {
+      correctText = q.correct_text || null;
+      marks = 0;
+      maxMarks = 1;
+    } else if (isMultiAnswerType(q.question_type)) {
+      const correctLabels = q.options.filter((o) => o.is_correct === 1).map((o) => o.label);
+      if (!correctLabels.length) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });
+      correctLabel = correctLabels.join(', ');
+      marks = 0;
+      maxMarks = correctLabels.length;
+    } else {
+      const correctOpt = q.options.find((o) => o.is_correct === 1);
+      if (!correctOpt) return res.status(500).json({ error: 'cau hoi chua co dap an dung' });
+      correctLabel = correctOpt.label;
+      marks = 0;
+      maxMarks = 1;
+    }
+    let transcript = q.script || null;
+    if (!transcript && q.passage_id) {
+      const passage = db.getPassage(q.passage_id);
+      transcript = (passage && passage.script) || null;
+    }
+    return res.json({
+      correct: false,
+      correctLabel,
+      ...(typed ? { correctText } : {}),
+      ...(isMultiAnswerType(q.question_type) ? { marks, maxMarks } : {}),
+      explanation: q.explanation || null,
+      transcript,
+      xpAwarded: 0,
+    });
+  }
   if (typed) {
     // Cau dien tu: selected la text tu do; kiem tra gioi han tu TRUOC khi
     // cham — qua gioi han thi 400, khong ghi attempt/cau sai.

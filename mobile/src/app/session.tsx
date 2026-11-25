@@ -286,9 +286,9 @@ export default function PracticeSessionScreen() {
 
   // Nộp tất cả (chế độ 'submit-all'): kiểm tra giới hạn từ TRƯỚC cho
   // mọi câu điền từ đã làm, rồi chấm tuần tự từng câu đã làm theo thứ
-  // tự trong đề. Câu chưa làm KHÔNG gọi API (backend 400 với đáp án
-  // rỗng) — tính là sai. Lỗi giữa chừng thì dừng; câu đã chấm giữ
-  // nguyên kết quả.
+  // tự trong đề. Câu chưa làm thì reveal đáp án đúng + giải thích
+  // (backend không ghi attempt/câu sai/XP) — tính là sai. Lỗi giữa
+  // chừng khi chấm thì dừng; câu đã chấm giữ nguyên kết quả.
   const handleSubmitAll = useCallback(async () => {
     const doSubmit = async () => {
       const { selectedById: sel, resultById: res, questions: qs, nById: nums } = stateRef.current;
@@ -327,6 +327,19 @@ export default function PracticeSessionScreen() {
           setError(e instanceof Error ? e.message : String(e));
           setScore({ correct, done });
           return;
+        }
+      }
+      // (b2) Câu chưa làm: hiện đáp án đúng + giải thích (reveal —
+      // backend không ghi attempt/câu sai/XP). Lỗi thì bỏ qua, câu đó
+      // giữ nguyên dòng "Chưa làm".
+      for (const q of qs) {
+        const v = sel[q.id];
+        if (v || res[q.id]) continue;
+        try {
+          const r = await api.practiceAnswer(q.id, '', { reveal: true });
+          setResultById((m) => ({ ...m, [q.id]: r }));
+        } catch {
+          // giữ nguyên "Chưa làm"
         }
       }
       // (c) Xong: câu chưa làm tính là sai trong tổng số.

@@ -336,9 +336,9 @@ export const api = {
   exams: () => req<ExamInfo[]>('/api/exams'),
   bandTable: () => req<IeltsBandTable>('/api/ielts/band-table'),
 
-  practiceAnswer: (questionId: string, selected: string) =>
+  practiceAnswer: (questionId: string, selected: string, opts?: { reveal?: boolean }) =>
     req<{ correct: boolean; correctLabel: string; correctText?: string; explanation?: string; transcript?: string; xpAwarded?: number; marks?: number; maxMarks?: number }>(
-      '/api/practice/answer', { method: 'POST', body: JSON.stringify({ questionId, selected }) }),
+      '/api/practice/answer', { method: 'POST', body: JSON.stringify({ questionId, selected, ...(opts?.reveal ? { reveal: true } : {}) }) }),
 
   createTest: (mode: 'mini' | 'full', part?: number, durationMinutes = 120, testSetId?: string, exam?: string) =>
     req<{ attemptId: number; testSetId?: string | null; questionIds: string[]; durationSec: number; startedAt: string }>(

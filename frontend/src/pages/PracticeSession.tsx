@@ -319,6 +319,18 @@ export default function PracticeSession() {
         return;
       }
     }
+    // (b2) Câu chưa làm: hiện đáp án đúng + giải thích (reveal —
+    // backend không ghi attempt/câu sai/XP). Lỗi thì bỏ qua, câu đó
+    // giữ nguyên dòng "Chưa làm".
+    for (const q of visibleQuestions) {
+      if (selectedById[q.id] || nextResults[q.id]) continue;
+      try {
+        const r = await api.practiceAnswer(q.id, '', { reveal: true });
+        nextResults[q.id] = r;
+      } catch {
+        // giữ nguyên "Chưa làm"
+      }
+    }
     // (c) Xong: câu chưa làm tính là sai (done = tổng số câu đang hiện).
     setResultById(m => ({ ...m, ...nextResults }));
     setSubmittedAll(true);
@@ -406,9 +418,9 @@ export default function PracticeSession() {
             )}
           </div>
         )}
-        {/* Submit-all: câu chưa làm thì không gọi API chấm (backend trả
-            400 với đáp án MC rỗng) nên không có kết quả — chỉ báo là
-            chưa làm và tính sai, KHÔNG lộ đáp án đúng của câu đó. */}
+        {/* Submit-all: câu chưa làm mà reveal lỗi thì không có kết quả —
+            chỉ báo là chưa làm và tính sai. Câu reveal được thì hiện đáp
+            án đúng + giải thích như câu sai (xem submitAll bước b2). */}
         {submittedAll && !result && (
           <p style={{ color: 'var(--red-ink)', fontWeight: 700, margin: '.5rem 0 0' }}>❌ Chưa làm — tính là sai</p>
         )}
