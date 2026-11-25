@@ -1387,11 +1387,596 @@ tbody tr:hover{background:var(--surface-soft)}
   --warn-bg:#3A2F18; --warn-border:#8A6D2B;
 }
 [data-style="sunset"] .hero{
-  border:2px solid var(--border); border-radius:16px;
+  border:2px solid var(--border); border-radius:18px;
   background:linear-gradient(135deg, var(--accent-soft), #FFE9B8 55%, #F3D1F5);
-  box-shadow:0 4px 0 var(--border);
+  box-shadow:0 4px 14px rgba(194,78,31,.10);
 }
 [data-style="sunset"] .topbar .brand{color:var(--accent-dark)}
+
+/* ================================================================
+   PHONG CACH "HOANG HON" — box/item (theo mau vong 1 + vong 2).
+   Radius the 18, chu tieu de 800, bong mem cam rgba(194,78,31).
+   ================================================================ */
+[data-style="sunset"] h1{font-size:1.55rem; font-weight:800}
+
+[data-style="sunset"] h2{font-size:1.2rem; font-weight:800}
+
+[data-style="sunset"] h3{font-weight:800}
+
+[data-style="sunset"] .big{font-weight:800}
+
+[data-style="sunset"] .stat-num{color:var(--accent-dark)}
+
+/* --- Thanh tren: logo màu chủ đạo, muc dang chon la nút màu chủ đạo co bong day --- */
+[data-style="sunset"] .topbar{background:var(--surface); border-bottom:2px solid var(--border); box-shadow:0 2px 10px rgba(194,78,31,0.09)}
+
+[data-style="sunset"] .topbar nav a{font-weight:700; border:2px solid transparent}
+
+[data-style="sunset"] .topbar nav a.active{background:var(--accent); color:#fff; box-shadow:0 3px 0 var(--accent-dark); border-radius:12px}
+
+[data-style="sunset"] .topbar nav a:hover{border-color:var(--border); background:var(--surface-soft)}
+
+[data-style="sunset"] .icon-btn,[data-style="sunset"] .nav-menu-btn,[data-style="sunset"] .theme-toggle{border:2px solid var(--border)}
+
+[data-style="sunset"] .avatar-btn{background:var(--accent); box-shadow:0 3px 0 var(--accent-dark)}
+
+/* --- The: vien 2px ro, bo tron, bong day nhe --- */
+[data-style="sunset"] .card{border:2px solid var(--border); border-radius:18px; box-shadow:0 2px 10px rgba(194,78,31,0.09)}
+
+[data-style="sunset"] .card .card{border-width:2px; box-shadow:none}
+
+[data-style="sunset"] .panel{border:2px solid var(--border-soft); border-radius:16px}
+
+[data-style="sunset"] .paper{border:2px solid var(--border); border-radius:18px}
+
+[data-style="sunset"] .screen{border:2px solid var(--border) !important; box-shadow:0 2px 10px rgba(194,78,31,0.09) !important}
+
+[data-style="sunset"] .stat-card::before{background:linear-gradient(90deg,var(--accent),var(--exam-blue),var(--gold))}
+
+[data-style="sunset"] .stat-card .ico{font-size:1.4rem}
+
+[data-style="sunset"] .hearts{color:var(--amber)}
+
+[data-style="sunset"] .streak-flame{color:var(--amber)}
+
+/* --- Nut: nut chinh màu chủ đạo bong day duoi, bam thi lun xuong --- */
+[data-style="sunset"] .btn{
+  font-weight:800; border-radius:14px; border:2px solid transparent;
+  background:var(--accent); color:#fff;
+  box-shadow:0 4px 0 var(--accent-dark);
+  transition:background .15s, transform .1s, box-shadow .1s, filter .15s;
+}
+
+[data-style="sunset"] .btn:hover{background:#F07438; filter:none; transform:translateY(-1px); box-shadow:0 5px 0 var(--accent-dark)}
+
+[data-style="sunset"] .btn:active{transform:translateY(2px); box-shadow:0 2px 0 var(--accent-dark)}
+
+[data-style="sunset"] .btn:disabled{box-shadow:none; transform:none}
+
+[data-style="sunset"] .btn.secondary{
+  background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border);
+}
+
+[data-style="sunset"] .btn.secondary:hover{background:var(--surface-soft); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-style="sunset"] .btn.secondary:active{box-shadow:0 2px 0 var(--border)}
+
+[data-style="sunset"] .btn.ghost{background:var(--surface); color:var(--accent-dark); border-color:var(--accent); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .btn.ghost:hover{background:var(--accent-soft)}
+
+[data-style="sunset"] .btn.neon{background:var(--accent-soft); color:var(--accent-dark); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .btn.gold{background:var(--gold); color:var(--ink); box-shadow:0 4px 0 #D9A400}
+
+[data-style="sunset"] .btn.gold:hover{background:#FFD21F; box-shadow:0 5px 0 #D9A400}
+
+[data-style="sunset"] .btn.gold:active{box-shadow:0 2px 0 #D9A400}
+
+[data-style="sunset"] .btn.danger{background:var(--surface); color:var(--red); border-color:var(--red); box-shadow:0 4px 0 var(--red-soft)}
+
+[data-style="sunset"] .btn.danger:hover{background:var(--red-bg)}
+
+/* --- Badge / chip / tag: vien ro, chu dam --- */
+[data-style="sunset"] .pill{background:var(--accent-soft); color:var(--accent-dark); font-weight:800; border:2px solid var(--accent-soft-strong)}
+
+[data-style="sunset"] .tag{color:var(--accent-dark); font-weight:800}
+
+[data-style="sunset"] .progress-badge{background:var(--amber); box-shadow:0 3px 0 #CC7800; border-radius:12px}
+
+[data-style="sunset"] .timer-chip{border:2px solid var(--border); box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .tier{border:2px solid transparent}
+
+[data-style="sunset"] .tier-gold{background:var(--gold); color:var(--gold-ink)}
+
+[data-style="sunset"] .rank-1{background:var(--gold)}
+
+[data-style="sunset"] .rank-2{background:#AFBACA}
+
+[data-style="sunset"] .rank-3{background:var(--amber)}
+
+/* --- Thanh tien do / XP: màu chủ đạo dam, ray vang cho XP --- */
+[data-style="sunset"] .xpbar{height:12px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sunset"] .xpbar>i{background:var(--accent)}
+
+[data-style="sunset"] .xpbar.gold>i{background:var(--gold)}
+
+[data-style="sunset"] .bar{height:10px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sunset"] .bar>i{background:var(--accent)}
+
+[data-style="sunset"] .bar.green>i{background:var(--accent)}
+
+[data-style="sunset"] .hp-bar{height:.6rem; border:2px solid var(--border)}
+
+[data-style="sunset"] .hp-bar i{background:var(--red)}
+
+[data-style="sunset"] .vocab-progress,[data-style="sunset"] .vocab-mastery-track{border:2px solid var(--border)}
+
+[data-style="sunset"] .vocab-progress-fill,[data-style="sunset"] .vocab-mastery-fill{background:var(--accent)}
+
+/* --- Hoàng hôn + nền tối: nút/track dùng màu sáng cố định sẽ chìm/chói --- */
+[data-theme="dark"][data-style="sunset"] .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="sunset"] .btn.secondary:hover{background:var(--surface-soft); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="sunset"] .btn.secondary:active{box-shadow:0 2px 0 var(--border)}
+
+[data-theme="dark"][data-style="sunset"] .btn.ghost{background:var(--surface); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-theme="dark"][data-style="sunset"] .btn.ghost:hover{background:var(--accent-soft)}
+
+[data-theme="dark"][data-style="sunset"] .btn.danger{background:var(--surface); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="sunset"] .btn.danger:hover{background:var(--surface-soft)}
+
+[data-theme="dark"][data-style="sunset"] .xpbar,[data-theme="dark"][data-style="sunset"] .bar{background:var(--track)}
+
+/* --- Lua chon dap an: chon thi viền màu chủ đạo + nen màu chủ đạo nhạt --- */
+[data-style="sunset"] .option{border:2px solid var(--border); border-radius:14px; font-weight:600}
+
+[data-style="sunset"] .option:hover{border-color:var(--accent)}
+
+[data-style="sunset"] .option.selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 2px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .option.correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sunset"] .option.correct strong{background:var(--accent); color:#fff}
+
+[data-style="sunset"] .option.wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="sunset"] .option.wrong strong{background:var(--red); color:#fff}
+
+[data-style="sunset"] .exam-opts .option strong{border:2px solid var(--border)}
+
+[data-style="sunset"] .exam-opts .option.selected strong{border-color:var(--accent); background:var(--accent); color:#fff}
+
+[data-style="sunset"] .exam-opts .option.correct strong{border-color:var(--accent); background:var(--accent); color:#fff}
+
+[data-style="sunset"] .exam-opts .option.wrong strong{border-color:var(--red); background:var(--red); color:#fff}
+
+[data-style="sunset"] .radio-pill{border:2px solid var(--border)}
+
+[data-style="sunset"] .radio-pill:has(input:checked){background:var(--accent-soft); border-color:var(--accent)}
+
+[data-style="sunset"] .blank-chip{color:var(--accent-dark); font-weight:800}
+
+[data-style="sunset"] .exam-part{color:var(--exam-blue)}
+
+[data-style="sunset"] .paper-part{color:var(--exam-blue)}
+
+[data-style="sunset"] .exam-q-num{font-weight:800}
+
+[data-style="sunset"] .audio-box{background:var(--sky) !important; border:2px solid var(--audio-border) !important}
+
+[data-style="sunset"] .audio-box.audio-missing{border:2px dashed var(--amber) !important; background:var(--warn-bg) !important}
+
+[data-style="sunset"] .listen-progress{border:2px solid var(--border)}
+
+[data-style="sunset"] .listen-progress i{background:var(--accent)}
+
+/* --- The chon Part / de thi / ky thi --- */
+[data-style="sunset"] .pick-box{border:2px solid var(--border); box-shadow:0 2px 10px rgba(194,78,31,0.09)}
+
+[data-style="sunset"] .pick-box:hover{border-color:var(--accent)}
+
+[data-style="sunset"] .pick-box--selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 2px 0 var(--accent-dark)}
+
+[data-style="sunset"] .part-card:hover{border-color:var(--accent); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .part-card.selected{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft), 0 4px 0 var(--accent-dark)}
+
+[data-style="sunset"] .exam-pick .card:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .band-num{color:var(--accent-dark)}
+
+/* --- Bang cau hoi (palette): da lam màu chủ đạo nhạt, dang lam vien màu chủ đạo đậm --- */
+[data-style="sunset"] .q-palette-btn{border:2px solid var(--border); font-weight:800}
+
+[data-style="sunset"] .q-palette-btn--done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+
+[data-style="sunset"] .q-palette-btn--correct{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+
+[data-style="sunset"] .q-palette-btn--wrong{background:var(--red-bg); border-color:var(--red); color:var(--red-ink)}
+
+[data-style="sunset"] .q-palette-btn--current{box-shadow:0 0 0 2px var(--surface), 0 0 0 4px var(--accent)}
+
+[data-style="sunset"] .q-palette-group-label{background:var(--accent-soft); color:var(--accent-dark)}
+
+[data-style="sunset"] .flag-btn--on{opacity:1}
+
+[data-style="sunset"] .practice-bar{border:2px solid var(--border); box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .practice-bar .progress{border:2px solid var(--border)}
+
+[data-style="sunset"] .room-side{border:2px solid var(--border)}
+
+[data-style="sunset"] .room-side .progress{border:2px solid var(--border)}
+
+/* --- Flashcard, bang xep hang, menu --- */
+[data-style="sunset"] .flashcard-face{border:2px solid var(--border); box-shadow:0 2px 10px rgba(194,78,31,0.09)}
+
+[data-style="sunset"] .flashcard-face.back{background:var(--accent-soft); border-color:var(--green-border)}
+
+[data-style="sunset"] .top3-place{border:2px solid var(--border); box-shadow:0 2px 10px rgba(194,78,31,0.09)}
+
+[data-style="sunset"] .top3-place .medal-1{background:var(--gold)}
+
+[data-style="sunset"] .top3-place .medal-3{background:var(--amber)}
+
+[data-style="sunset"] .nav-menu,[data-style="sunset"] .profile-menu,[data-style="sunset"] .text-size-popover{border:2px solid var(--border); box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .pin-btn.pinned{background:var(--accent-soft); border-color:var(--accent)}
+
+[data-style="sunset"] .error{border:2px solid var(--red-border)}
+
+[data-style="sunset"] .success{border:2px solid var(--green-border)}
+
+[data-style="sunset"] .monster-card{border:2px solid var(--border)}
+
+[data-style="sunset"] .monster-killed{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sunset"] .today-bad-day{border:2px dashed var(--amber); background:var(--warn-bg)}
+
+[data-style="sunset"] .vocab-due-card{border:2px solid var(--accent); background:var(--accent-soft)}
+
+[data-style="sunset"] .vocab-opt--correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sunset"] .vocab-opt--wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="sunset"] .ielts-match-gap{border:2px dashed var(--accent)}
+
+[data-style="sunset"] .ielts-match-chip--picked{border-color:var(--accent); outline:2px solid var(--accent)}
+
+[data-style="sunset"] .ielts-match-gap--correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sunset"] .ielts-match-gap--wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="sunset"] .ielts-notes,[data-style="sunset"] .ielts-match{border:2px solid var(--border)}
+
+[data-style="sunset"] .notes-blank input{border:2px solid var(--accent)}
+
+[data-style="sunset"] .notes-blank--correct input{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sunset"] .notes-blank--wrong input{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="sunset"] input:focus,[data-style="sunset"] select:focus,[data-style="sunset"] textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
+
+[data-style="sunset"] input,[data-style="sunset"] select,[data-style="sunset"] textarea{border:2px solid var(--border)}
+
+[data-style="sunset"] ::selection{background:var(--accent-soft)}
+
+/* --- Vong 2 "Hoàng hôn": padding + bo + bong --- */
+/* --- A. Khung chung: card/panel/paper/hero/stat — bung to, bong cung --- */
+[data-style="sunset"] .card{border-radius:20px; border-width:2px; padding:1.2rem 1.35rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .card h2{font-size:1.3rem; font-weight:800}
+
+[data-style="sunset"] .card h3{font-size:1.1rem; font-weight:800}
+
+[data-style="sunset"] .panel{border-radius:18px; border-width:2px; padding:1rem 1.1rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .paper{border-radius:20px; border-width:2px; padding:1rem 1.35rem 1.1rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .paper-q{padding:.6rem 0}
+
+[data-style="sunset"] .screen{border-radius:20px; box-shadow:0 4px 14px rgba(194,78,31,0.10) !important}
+
+[data-style="sunset"] .hero{border-radius:20px; border-width:2px; padding:1.4rem 1.4rem 1.5rem; box-shadow:0 5px 16px rgba(194,78,31,0.11)}
+
+[data-style="sunset"] .hero h1{font-size:1.7rem}
+
+[data-style="sunset"] .hero .sub{font-size:1.02rem; font-weight:600}
+
+[data-style="sunset"] .stat-card{border-radius:20px}
+
+[data-style="sunset"] .stat-card::before{height:6px}
+
+[data-style="sunset"] .stat-card .ico{font-size:1.7rem}
+
+[data-style="sunset"] .stat-box{border-radius:18px; border-width:2px; padding:1rem 1.1rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .stat-box b{font-size:1.5rem}
+
+[data-style="sunset"] .stat-num{font-size:1.35rem}
+
+[data-style="sunset"] .grid{gap:1.25rem}
+
+[data-style="sunset"] .grid > .card{gap:.5rem}
+
+[data-style="sunset"] .pick-grid{gap:1rem}
+
+[data-style="sunset"] .mock-warn,[data-style="sunset"] .mock-note{border-radius:16px; border-width:2px; padding:.85rem 1rem; box-shadow:0 3px 12px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .error,[data-style="sunset"] .success{border-radius:16px; border-width:2px; padding:.85rem 1.1rem; box-shadow:0 3px 12px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .passage{border-radius:18px; border-width:2px; padding:.9rem 1.1rem; box-shadow:0 3px 12px rgba(194,78,31,0.10)}
+
+/* --- B. Nut: to hon, bo 16, bam lun sau xuong --- */
+[data-style="sunset"] .btn{border-radius:16px; padding:.65rem 1.2rem; font-size:1rem; box-shadow:0 4px 0 var(--accent-dark)}
+
+[data-style="sunset"] .btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--accent-dark)}
+
+[data-style="sunset"] .btn-sm{padding:.5rem .85rem; border-radius:12px; font-size:.92rem}
+
+[data-style="sunset"] .btn.secondary:active{box-shadow:0 1px 0 var(--border)}
+
+[data-style="sunset"] .btn.ghost:active{box-shadow:0 1px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .btn.gold:active{box-shadow:0 1px 0 #D9A400}
+
+[data-style="sunset"] .btn.danger:active{box-shadow:0 1px 0 var(--red-soft)}
+
+/* --- C. Dap an: o bam to kieu Hoàng hôn --- */
+[data-style="sunset"] .option{border-radius:16px; border-width:2px; padding:.8rem 1rem; font-weight:700}
+
+[data-style="sunset"] .option strong{font-size:.9rem; padding:.3rem .6rem; border-radius:10px}
+
+[data-style="sunset"] .option:hover{box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .option.selected{border-color:var(--accent-dark); background:var(--accent-soft); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .option:active{transform:translateY(2px); box-shadow:0 2px 10px rgba(194,78,31,0.09)}
+
+[data-style="sunset"] .option.selected:active{box-shadow:0 2px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .option.correct{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="sunset"] .option.wrong{border-color:var(--red); background:var(--red-bg); box-shadow:0 4px 0 var(--red-border)}
+
+[data-style="sunset"] .option.letter-only{padding:1.15rem .85rem}
+
+[data-style="sunset"] .option.letter-only strong{font-size:1.7rem; padding:.5rem 1rem}
+
+[data-style="sunset"] .exam-opts{gap:.6rem}
+
+[data-style="sunset"] .exam-opts .option{padding:.75rem .9rem; border-radius:16px}
+
+[data-style="sunset"] .exam-opts .option strong{width:2rem; height:2rem; font-size:1.05rem; border-width:2px}
+
+[data-style="sunset"] .exam-opts .option.selected{border-color:var(--accent-dark); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .exam-opts .option.correct{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="sunset"] .exam-opts .option.wrong{box-shadow:0 4px 0 var(--red-border)}
+
+[data-style="sunset"] .ielts-tfng-row{gap:.6rem}
+
+[data-style="sunset"] .ielts-tfng-row .option{padding:.7rem .6rem; border-radius:14px}
+
+[data-style="sunset"] .radio-pill{border-radius:999px; padding:.5rem .95rem}
+
+/* --- D. The chon Part / de thi / ky thi: icon to, trang thai chon noi han --- */
+[data-style="sunset"] .pick-box{border-radius:18px; border-width:2px; padding:1.05rem 1.15rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .pick-box:hover{transform:translateY(-2px); box-shadow:0 6px 18px rgba(194,78,31,0.12)}
+
+[data-style="sunset"] .pick-box--selected{border-color:var(--accent-dark); background:var(--accent-soft); box-shadow:0 4px 0 var(--accent-dark)}
+
+[data-style="sunset"] .pick-box b{font-size:1.05rem; font-weight:800}
+
+[data-style="sunset"] .pick-box span{font-size:.88rem}
+
+[data-style="sunset"] .part-card{border-radius:20px; border-width:2px}
+
+[data-style="sunset"] .part-card:hover{box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .part-card.selected{border-color:var(--accent-dark); box-shadow:0 0 0 3px var(--accent-soft), 0 4px 0 var(--accent-dark)}
+
+[data-style="sunset"] .exam-pick{gap:1.25rem}
+
+[data-style="sunset"] .exam-pick .card{padding:1.6rem 1.3rem; border-radius:20px; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .exam-pick .card > div:first-child{font-size:2.4rem !important; line-height:1.2}
+
+[data-style="sunset"] .exam-pick .card h2{font-size:1.3rem}
+
+[data-style="sunset"] .exam-pick .card:hover{transform:translateY(-3px); box-shadow:0 7px 0 var(--accent-soft-strong)}
+
+[data-style="sunset"] .band-num{font-size:2.3rem}
+
+/* --- E. Thanh tien do: day 12–16px, vien 2px, bo tron --- */
+[data-style="sunset"] .xpbar{height:14px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sunset"] .bar{height:12px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sunset"] .hp-bar{height:14px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sunset"] .vocab-progress{height:14px; border-width:2px; background:var(--surface)}
+
+[data-style="sunset"] .vocab-mastery-track{height:12px; border-width:2px; background:var(--surface)}
+
+[data-style="sunset"] .listen-progress{height:14px; border-radius:999px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sunset"] .listen-progress i{border-radius:999px}
+
+[data-style="sunset"] .practice-bar .progress,[data-style="sunset"] .room-side .progress{border-width:2px; padding:.5rem .9rem; box-shadow:0 3px 12px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .ld-progress{height:.8em; border:2px solid var(--border)}
+
+/* --- F. Topbar / menu / modal / popover: cung ngon ngu, bong cung --- */
+[data-style="sunset"] .topbar{padding:.85rem 1.1rem; box-shadow:0 3px 12px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .topbar .brand{font-size:1.2rem}
+
+[data-style="sunset"] .topbar nav a{padding:.55rem .85rem; font-weight:800}
+
+[data-style="sunset"] .nav-menu,[data-style="sunset"] .profile-menu,[data-style="sunset"] .text-size-popover{border-radius:20px; border-width:2px; padding:.9rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .nav-menu-row{border-radius:12px; padding:.3rem .5rem}
+
+[data-style="sunset"] .nav-menu-ico{font-size:1.25rem}
+
+[data-style="sunset"] .nav-menu-row a{font-weight:700}
+
+[data-style="sunset"] .wl-popover{border-radius:18px; border-width:2px; padding:1rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .ielts-note-panel{border-radius:20px; border:2px solid var(--border); box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .timer-chip{border-radius:16px}
+
+[data-style="sunset"] .mock-menu{border:2px solid var(--border); border-radius:20px; padding:.9rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .mock-menu-item{border-radius:12px; font-weight:700}
+
+[data-style="sunset"] .mock-menu-btn{border-width:2px; box-shadow:0 3px 12px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .exam-head--mock{border:2px solid var(--border); border-radius:20px; padding:.7rem 1rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .progress-badge{border-radius:14px; padding:.5rem 1rem; box-shadow:0 4px 0 #CC7800}
+
+[data-style="sunset"] .pill{padding:.35rem .8rem; font-weight:800}
+
+/* --- G. Flashcard / bang xep hang / the ket qua --- */
+[data-style="sunset"] .flashcard-face{border-radius:22px; border-width:2px; padding:1.5rem 1.2rem 3rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .flashcard-face .big{font-size:1.9rem}
+
+[data-style="sunset"] .flashcard:hover .flashcard-face{box-shadow:0 6px 18px rgba(194,78,31,0.12)}
+
+[data-style="sunset"] .top3-place{border-radius:20px; border-width:2px; padding:1rem .8rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .top3-place .medal{width:52px; height:52px; font-size:1.5rem}
+
+[data-style="sunset"] .me-row{border-width:2px !important}
+
+[data-style="sunset"] .vocab-summary-card{border-radius:20px; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .vocab-ring-wrap{width:148px; height:148px}
+
+[data-style="sunset"] .vocab-xp-pill{border-width:2px; padding:.4rem 1.1rem}
+
+/* --- H. Tu vung: man danh sach dai thi gon lai nhung van giu vien 2px + bong cung --- */
+[data-style="sunset"] .vocab-tabs{border-width:2px; padding:.4rem}
+
+[data-style="sunset"] .vocab-tab{padding:.55rem 1.25rem; font-weight:800}
+
+[data-style="sunset"] .vocab-tab--active{box-shadow:0 3px 0 var(--accent-dark)}
+
+[data-style="sunset"] .vocab-chip{border-width:2px; padding:.5rem 1rem; font-weight:700}
+
+[data-style="sunset"] .vocab-chip--active{box-shadow:0 3px 0 var(--accent-dark)}
+
+[data-style="sunset"] .vocab-due-card{border-radius:20px; border-width:2px; padding:1.3rem 1.5rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .vocab-due-num{font-size:2.2rem}
+
+[data-style="sunset"] .vocab-pill{border-width:2px; font-weight:700}
+
+[data-style="sunset"] .vocab-cloze{border-radius:16px; border-width:2px; padding:1rem 1.2rem}
+
+[data-style="sunset"] .vocab-quiz-q{font-size:1.45rem}
+
+[data-style="sunset"] .vocab-flash-mean{font-size:1.5rem}
+
+[data-style="sunset"] .vocab-topic-box{border-width:2px; border-radius:18px}
+
+[data-style="sunset"] .vocab-topic-box:hover{box-shadow:0 6px 18px rgba(194,78,31,0.12)}
+
+[data-style="sunset"] .vocab-table td{padding:.55rem .65rem}
+
+[data-style="sunset"] .vocab-table th{font-size:.85rem}
+
+[data-style="sunset"] .vocab-dot{width:.75rem; height:.75rem; border-width:2px}
+
+[data-style="sunset"] .vocab-opt--correct{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="sunset"] .vocab-opt--wrong{box-shadow:0 4px 0 var(--red-border)}
+
+/* --- I. Phong luyen/thi: thanh duoi, cot phai, palette, audio, matching --- */
+[data-style="sunset"] .practice-bar{border-radius:20px; border-width:2px; padding:.75rem 1rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .room-side{border-radius:20px; border-width:2px; padding:1.1rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .q-palette{gap:.45rem}
+
+[data-style="sunset"] .q-palette-btn{min-width:2.4rem; height:2.4rem; font-size:1rem; border-width:2px}
+
+[data-style="sunset"] .q-palette-btn--current{box-shadow:0 0 0 2px var(--surface), 0 0 0 5px var(--accent)}
+
+[data-style="sunset"] .q-palette--side .q-palette-btn{min-width:1.9rem; width:1.9rem; height:1.9rem; font-size:.8rem; border-width:2px; border-radius:10px}
+
+[data-style="sunset"] .audio-box{border-radius:18px; box-shadow:0 4px 0 var(--audio-border)}
+
+[data-style="sunset"] .paper .audio-box,[data-style="sunset"] .part-audio .audio-box{padding:.8rem .9rem}
+
+[data-style="sunset"] .paper .audio-box .listen-btn,[data-style="sunset"] .part-audio .audio-box .listen-btn{border-radius:18px; padding:.7rem 1.1rem}
+
+[data-style="sunset"] .ielts-notes,[data-style="sunset"] .ielts-match{border-radius:18px; border-width:2px; padding:1.05rem 1.25rem; box-shadow:0 4px 14px rgba(194,78,31,0.10)}
+
+[data-style="sunset"] .ielts-match-gap{border-radius:12px; border-width:2px; padding:.4rem .7rem}
+
+[data-style="sunset"] .ielts-match-chip{border-radius:12px; border-width:2px; padding:.55rem .8rem}
+
+[data-style="sunset"] .monster-card{border-radius:18px; border-width:2px}
+
+[data-style="sunset"] .grid .monster-card{padding:.95rem 1.1rem}
+
+[data-style="sunset"] .monster-card .monster-ico{font-size:1.7rem}
+
+[data-style="sunset"] .monster-killed{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="sunset"] .today-bad-day{border-radius:18px; border-width:2px; box-shadow:0 4px 0 var(--warn-border)}
+
+[data-style="sunset"] .flag-btn{font-size:1.15rem}
+
+/* --- K. Dark + sunset: cac cho vong 1 dung mau sang co dinh thi doi sang bien toi --- */
+/* Hero dark+sunset: gradient sang co dinh (var(--accent-soft)/kem sáng/var(--sky)) + chu
+   --ink sang (chữ sáng) = chu tang hinh. Doi sang gradient màu chủ đạo dam
+   (bien toi dark+sunset) + chu sang — sua ca 9 trang dung .hero. */
+[data-theme="dark"][data-style="sunset"] .hero{
+  background:linear-gradient(135deg, var(--mint), var(--accent-soft-strong) 55%, var(--sky));
+  color:var(--ink);
+}
+
+[data-theme="dark"][data-style="sunset"] .hero h1{color:var(--ink)}
+
+[data-theme="dark"][data-style="sunset"] .hero .sub{color:var(--ink-soft)}
+
+[data-theme="dark"][data-style="sunset"] .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="sunset"] .btn.secondary:hover{background:var(--surface-soft)}
+
+[data-theme="dark"][data-style="sunset"] .btn.ghost{background:var(--surface); color:var(--accent-dark)}
+
+[data-theme="dark"][data-style="sunset"] .audio-box{background:var(--sky) !important}
+
+[data-theme="dark"][data-style="sunset"] .option.correct{background:var(--green-bg); box-shadow:0 4px 0 var(--green-border)}
+
+[data-theme="dark"][data-style="sunset"] .option.wrong{background:var(--red-bg); box-shadow:0 4px 0 var(--red-border)}
+
+[data-theme="dark"][data-style="sunset"] .today-bad-day{box-shadow:0 4px 0 var(--warn-border)}
+
+/* --- L. Man hep: van to hon Pastel nhung gon lai cho khoi tran --- */
+@media(max-width:640px){
+[data-style="sunset"] .card{padding:1rem 1.05rem}
+[data-style="sunset"] .hero{padding:1.1rem 1rem}
+[data-style="sunset"] .pick-box{padding:.9rem 1rem}
+[data-style="sunset"] .grid{gap:1rem}
+[data-style="sunset"] .exam-pick .card{padding:1.3rem 1rem}
+}
 /* ================================================================
    PHONG CACH "RUNG XANH" — xanh la dam + kem, tu nhien, binh tinh.
    ================================================================ */
@@ -1424,11 +2009,596 @@ tbody tr:hover{background:var(--surface-soft)}
   --warn-bg:#3A2F18; --warn-border:#8A6D2B;
 }
 [data-style="forest"] .hero{
-  border:2px solid var(--border); border-radius:16px;
+  border:2px solid var(--border); border-radius:14px;
   background:linear-gradient(135deg, var(--accent-soft), #F4F7EF 55%, #DCE9FB);
-  box-shadow:0 4px 0 var(--border);
+  box-shadow:0 2px 0 var(--border);
 }
 [data-style="forest"] .topbar .brand{color:var(--accent-dark)}
+
+/* ================================================================
+   PHONG CACH "RUNG XANH" — box/item (theo mau vong 1 + vong 2).
+   Radius the 14, chu tieu de 700, bong phang 0 2px 0.
+   ================================================================ */
+[data-style="forest"] h1{font-size:1.55rem; font-weight:700}
+
+[data-style="forest"] h2{font-size:1.2rem; font-weight:700}
+
+[data-style="forest"] h3{font-weight:700}
+
+[data-style="forest"] .big{font-weight:700}
+
+[data-style="forest"] .stat-num{color:var(--accent-dark)}
+
+/* --- Thanh tren: logo màu chủ đạo, muc dang chon la nút màu chủ đạo co bong day --- */
+[data-style="forest"] .topbar{background:var(--surface); border-bottom:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .topbar nav a{font-weight:700; border:2px solid transparent}
+
+[data-style="forest"] .topbar nav a.active{background:var(--accent); color:#fff; box-shadow:0 3px 0 var(--accent-dark); border-radius:12px}
+
+[data-style="forest"] .topbar nav a:hover{border-color:var(--border); background:var(--surface-soft)}
+
+[data-style="forest"] .icon-btn,[data-style="forest"] .nav-menu-btn,[data-style="forest"] .theme-toggle{border:2px solid var(--border)}
+
+[data-style="forest"] .avatar-btn{background:var(--accent); box-shadow:0 3px 0 var(--accent-dark)}
+
+/* --- The: vien 2px ro, bo tron, bong day nhe --- */
+[data-style="forest"] .card{border:2px solid var(--border); border-radius:14px; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .card .card{border-width:2px; box-shadow:none}
+
+[data-style="forest"] .panel{border:2px solid var(--border-soft); border-radius:12px}
+
+[data-style="forest"] .paper{border:2px solid var(--border); border-radius:14px}
+
+[data-style="forest"] .screen{border:2px solid var(--border) !important; box-shadow:0 2px 0 var(--border) !important}
+
+[data-style="forest"] .stat-card::before{background:linear-gradient(90deg,var(--accent),var(--exam-blue),var(--gold))}
+
+[data-style="forest"] .stat-card .ico{font-size:1.4rem}
+
+[data-style="forest"] .hearts{color:var(--amber)}
+
+[data-style="forest"] .streak-flame{color:var(--amber)}
+
+/* --- Nut: nut chinh màu chủ đạo bong day duoi, bam thi lun xuong --- */
+[data-style="forest"] .btn{
+  font-weight:800; border-radius:12px; border:2px solid transparent;
+  background:var(--accent); color:#fff;
+  box-shadow:0 4px 0 var(--accent-dark);
+  transition:background .15s, transform .1s, box-shadow .1s, filter .15s;
+}
+
+[data-style="forest"] .btn:hover{background:#3A9463; filter:none; transform:translateY(-1px); box-shadow:0 5px 0 var(--accent-dark)}
+
+[data-style="forest"] .btn:active{transform:translateY(2px); box-shadow:0 2px 0 var(--accent-dark)}
+
+[data-style="forest"] .btn:disabled{box-shadow:none; transform:none}
+
+[data-style="forest"] .btn.secondary{
+  background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border);
+}
+
+[data-style="forest"] .btn.secondary:hover{background:var(--surface-soft); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-style="forest"] .btn.secondary:active{box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .btn.ghost{background:var(--surface); color:var(--accent-dark); border-color:var(--accent); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .btn.ghost:hover{background:var(--accent-soft)}
+
+[data-style="forest"] .btn.neon{background:var(--accent-soft); color:var(--accent-dark); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .btn.gold{background:var(--gold); color:var(--ink); box-shadow:0 4px 0 #D9A400}
+
+[data-style="forest"] .btn.gold:hover{background:#FFD21F; box-shadow:0 5px 0 #D9A400}
+
+[data-style="forest"] .btn.gold:active{box-shadow:0 2px 0 #D9A400}
+
+[data-style="forest"] .btn.danger{background:var(--surface); color:var(--red); border-color:var(--red); box-shadow:0 4px 0 var(--red-soft)}
+
+[data-style="forest"] .btn.danger:hover{background:var(--red-bg)}
+
+/* --- Badge / chip / tag: vien ro, chu dam --- */
+[data-style="forest"] .pill{background:var(--accent-soft); color:var(--accent-dark); font-weight:800; border:2px solid var(--accent-soft-strong)}
+
+[data-style="forest"] .tag{color:var(--accent-dark); font-weight:800}
+
+[data-style="forest"] .progress-badge{background:var(--amber); box-shadow:0 3px 0 #CC7800; border-radius:12px}
+
+[data-style="forest"] .timer-chip{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .tier{border:2px solid transparent}
+
+[data-style="forest"] .tier-gold{background:var(--gold); color:var(--gold-ink)}
+
+[data-style="forest"] .rank-1{background:var(--gold)}
+
+[data-style="forest"] .rank-2{background:#AFBACA}
+
+[data-style="forest"] .rank-3{background:var(--amber)}
+
+/* --- Thanh tien do / XP: màu chủ đạo dam, ray vang cho XP --- */
+[data-style="forest"] .xpbar{height:12px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="forest"] .xpbar>i{background:var(--accent)}
+
+[data-style="forest"] .xpbar.gold>i{background:var(--gold)}
+
+[data-style="forest"] .bar{height:10px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="forest"] .bar>i{background:var(--accent)}
+
+[data-style="forest"] .bar.green>i{background:var(--accent)}
+
+[data-style="forest"] .hp-bar{height:.6rem; border:2px solid var(--border)}
+
+[data-style="forest"] .hp-bar i{background:var(--red)}
+
+[data-style="forest"] .vocab-progress,[data-style="forest"] .vocab-mastery-track{border:2px solid var(--border)}
+
+[data-style="forest"] .vocab-progress-fill,[data-style="forest"] .vocab-mastery-fill{background:var(--accent)}
+
+/* --- Rừng xanh + nền tối: nút/track dùng màu sáng cố định sẽ chìm/chói --- */
+[data-theme="dark"][data-style="forest"] .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="forest"] .btn.secondary:hover{background:var(--surface-soft); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="forest"] .btn.secondary:active{box-shadow:0 2px 0 var(--border)}
+
+[data-theme="dark"][data-style="forest"] .btn.ghost{background:var(--surface); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-theme="dark"][data-style="forest"] .btn.ghost:hover{background:var(--accent-soft)}
+
+[data-theme="dark"][data-style="forest"] .btn.danger{background:var(--surface); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="forest"] .btn.danger:hover{background:var(--surface-soft)}
+
+[data-theme="dark"][data-style="forest"] .xpbar,[data-theme="dark"][data-style="forest"] .bar{background:var(--track)}
+
+/* --- Lua chon dap an: chon thi viền màu chủ đạo + nen màu chủ đạo nhạt --- */
+[data-style="forest"] .option{border:2px solid var(--border); border-radius:14px; font-weight:600}
+
+[data-style="forest"] .option:hover{border-color:var(--accent)}
+
+[data-style="forest"] .option.selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 2px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .option.correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="forest"] .option.correct strong{background:var(--accent); color:#fff}
+
+[data-style="forest"] .option.wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="forest"] .option.wrong strong{background:var(--red); color:#fff}
+
+[data-style="forest"] .exam-opts .option strong{border:2px solid var(--border)}
+
+[data-style="forest"] .exam-opts .option.selected strong{border-color:var(--accent); background:var(--accent); color:#fff}
+
+[data-style="forest"] .exam-opts .option.correct strong{border-color:var(--accent); background:var(--accent); color:#fff}
+
+[data-style="forest"] .exam-opts .option.wrong strong{border-color:var(--red); background:var(--red); color:#fff}
+
+[data-style="forest"] .radio-pill{border:2px solid var(--border)}
+
+[data-style="forest"] .radio-pill:has(input:checked){background:var(--accent-soft); border-color:var(--accent)}
+
+[data-style="forest"] .blank-chip{color:var(--accent-dark); font-weight:800}
+
+[data-style="forest"] .exam-part{color:var(--exam-blue)}
+
+[data-style="forest"] .paper-part{color:var(--exam-blue)}
+
+[data-style="forest"] .exam-q-num{font-weight:800}
+
+[data-style="forest"] .audio-box{background:var(--sky) !important; border:2px solid var(--audio-border) !important}
+
+[data-style="forest"] .audio-box.audio-missing{border:2px dashed var(--amber) !important; background:var(--warn-bg) !important}
+
+[data-style="forest"] .listen-progress{border:2px solid var(--border)}
+
+[data-style="forest"] .listen-progress i{background:var(--accent)}
+
+/* --- The chon Part / de thi / ky thi --- */
+[data-style="forest"] .pick-box{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .pick-box:hover{border-color:var(--accent)}
+
+[data-style="forest"] .pick-box--selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 2px 0 var(--accent-dark)}
+
+[data-style="forest"] .part-card:hover{border-color:var(--accent); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .part-card.selected{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft), 0 4px 0 var(--accent-dark)}
+
+[data-style="forest"] .exam-pick .card:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .band-num{color:var(--accent-dark)}
+
+/* --- Bang cau hoi (palette): da lam màu chủ đạo nhạt, dang lam vien màu chủ đạo đậm --- */
+[data-style="forest"] .q-palette-btn{border:2px solid var(--border); font-weight:800}
+
+[data-style="forest"] .q-palette-btn--done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+
+[data-style="forest"] .q-palette-btn--correct{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+
+[data-style="forest"] .q-palette-btn--wrong{background:var(--red-bg); border-color:var(--red); color:var(--red-ink)}
+
+[data-style="forest"] .q-palette-btn--current{box-shadow:0 0 0 2px var(--surface), 0 0 0 4px var(--accent)}
+
+[data-style="forest"] .q-palette-group-label{background:var(--accent-soft); color:var(--accent-dark)}
+
+[data-style="forest"] .flag-btn--on{opacity:1}
+
+[data-style="forest"] .practice-bar{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .practice-bar .progress{border:2px solid var(--border)}
+
+[data-style="forest"] .room-side{border:2px solid var(--border)}
+
+[data-style="forest"] .room-side .progress{border:2px solid var(--border)}
+
+/* --- Flashcard, bang xep hang, menu --- */
+[data-style="forest"] .flashcard-face{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .flashcard-face.back{background:var(--accent-soft); border-color:var(--green-border)}
+
+[data-style="forest"] .top3-place{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .top3-place .medal-1{background:var(--gold)}
+
+[data-style="forest"] .top3-place .medal-3{background:var(--amber)}
+
+[data-style="forest"] .nav-menu,[data-style="forest"] .profile-menu,[data-style="forest"] .text-size-popover{border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .pin-btn.pinned{background:var(--accent-soft); border-color:var(--accent)}
+
+[data-style="forest"] .error{border:2px solid var(--red-border)}
+
+[data-style="forest"] .success{border:2px solid var(--green-border)}
+
+[data-style="forest"] .monster-card{border:2px solid var(--border)}
+
+[data-style="forest"] .monster-killed{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="forest"] .today-bad-day{border:2px dashed var(--amber); background:var(--warn-bg)}
+
+[data-style="forest"] .vocab-due-card{border:2px solid var(--accent); background:var(--accent-soft)}
+
+[data-style="forest"] .vocab-opt--correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="forest"] .vocab-opt--wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="forest"] .ielts-match-gap{border:2px dashed var(--accent)}
+
+[data-style="forest"] .ielts-match-chip--picked{border-color:var(--accent); outline:2px solid var(--accent)}
+
+[data-style="forest"] .ielts-match-gap--correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="forest"] .ielts-match-gap--wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="forest"] .ielts-notes,[data-style="forest"] .ielts-match{border:2px solid var(--border)}
+
+[data-style="forest"] .notes-blank input{border:2px solid var(--accent)}
+
+[data-style="forest"] .notes-blank--correct input{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="forest"] .notes-blank--wrong input{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="forest"] input:focus,[data-style="forest"] select:focus,[data-style="forest"] textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
+
+[data-style="forest"] input,[data-style="forest"] select,[data-style="forest"] textarea{border:2px solid var(--border)}
+
+[data-style="forest"] ::selection{background:var(--accent-soft)}
+
+/* --- Vong 2 "Rừng xanh": padding + bo + bong --- */
+/* --- A. Khung chung: card/panel/paper/hero/stat — bung to, bong cung --- */
+[data-style="forest"] .card{border-radius:16px; border-width:2px; padding:1.2rem 1.35rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .card h2{font-size:1.3rem; font-weight:700}
+
+[data-style="forest"] .card h3{font-size:1.1rem; font-weight:700}
+
+[data-style="forest"] .panel{border-radius:14px; border-width:2px; padding:1rem 1.1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .paper{border-radius:16px; border-width:2px; padding:1rem 1.35rem 1.1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .paper-q{padding:.6rem 0}
+
+[data-style="forest"] .screen{border-radius:16px; box-shadow:0 2px 0 var(--border) !important}
+
+[data-style="forest"] .hero{border-radius:16px; border-width:2px; padding:1.4rem 1.4rem 1.5rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .hero h1{font-size:1.7rem}
+
+[data-style="forest"] .hero .sub{font-size:1.02rem; font-weight:600}
+
+[data-style="forest"] .stat-card{border-radius:16px}
+
+[data-style="forest"] .stat-card::before{height:6px}
+
+[data-style="forest"] .stat-card .ico{font-size:1.7rem}
+
+[data-style="forest"] .stat-box{border-radius:14px; border-width:2px; padding:1rem 1.1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .stat-box b{font-size:1.5rem}
+
+[data-style="forest"] .stat-num{font-size:1.35rem}
+
+[data-style="forest"] .grid{gap:1.25rem}
+
+[data-style="forest"] .grid > .card{gap:.5rem}
+
+[data-style="forest"] .pick-grid{gap:1rem}
+
+[data-style="forest"] .mock-warn,[data-style="forest"] .mock-note{border-radius:14px; border-width:2px; padding:.85rem 1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .error,[data-style="forest"] .success{border-radius:14px; border-width:2px; padding:.85rem 1.1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .passage{border-radius:16px; border-width:2px; padding:.9rem 1.1rem; box-shadow:0 2px 0 var(--border)}
+
+/* --- B. Nut: to hon, bo 14, bam lun sau xuong --- */
+[data-style="forest"] .btn{border-radius:14px; padding:.65rem 1.2rem; font-size:1rem; box-shadow:0 4px 0 var(--accent-dark)}
+
+[data-style="forest"] .btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--accent-dark)}
+
+[data-style="forest"] .btn-sm{padding:.5rem .85rem; border-radius:12px; font-size:.92rem}
+
+[data-style="forest"] .btn.secondary:active{box-shadow:0 1px 0 var(--border)}
+
+[data-style="forest"] .btn.ghost:active{box-shadow:0 1px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .btn.gold:active{box-shadow:0 1px 0 #D9A400}
+
+[data-style="forest"] .btn.danger:active{box-shadow:0 1px 0 var(--red-soft)}
+
+/* --- C. Dap an: o bam to kieu Rừng xanh --- */
+[data-style="forest"] .option{border-radius:16px; border-width:2px; padding:.8rem 1rem; font-weight:700}
+
+[data-style="forest"] .option strong{font-size:.9rem; padding:.3rem .6rem; border-radius:10px}
+
+[data-style="forest"] .option:hover{box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .option.selected{border-color:var(--accent-dark); background:var(--accent-soft); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .option:active{transform:translateY(2px); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .option.selected:active{box-shadow:0 2px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .option.correct{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="forest"] .option.wrong{border-color:var(--red); background:var(--red-bg); box-shadow:0 4px 0 var(--red-border)}
+
+[data-style="forest"] .option.letter-only{padding:1.15rem .85rem}
+
+[data-style="forest"] .option.letter-only strong{font-size:1.7rem; padding:.5rem 1rem}
+
+[data-style="forest"] .exam-opts{gap:.6rem}
+
+[data-style="forest"] .exam-opts .option{padding:.75rem .9rem; border-radius:16px}
+
+[data-style="forest"] .exam-opts .option strong{width:2rem; height:2rem; font-size:1.05rem; border-width:2px}
+
+[data-style="forest"] .exam-opts .option.selected{border-color:var(--accent-dark); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .exam-opts .option.correct{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="forest"] .exam-opts .option.wrong{box-shadow:0 4px 0 var(--red-border)}
+
+[data-style="forest"] .ielts-tfng-row{gap:.6rem}
+
+[data-style="forest"] .ielts-tfng-row .option{padding:.7rem .6rem; border-radius:14px}
+
+[data-style="forest"] .radio-pill{border-radius:999px; padding:.5rem .95rem}
+
+/* --- D. The chon Part / de thi / ky thi: icon to, trang thai chon noi han --- */
+[data-style="forest"] .pick-box{border-radius:16px; border-width:2px; padding:1.05rem 1.15rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .pick-box:hover{transform:translateY(-2px); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .pick-box--selected{border-color:var(--accent-dark); background:var(--accent-soft); box-shadow:0 4px 0 var(--accent-dark)}
+
+[data-style="forest"] .pick-box b{font-size:1.05rem; font-weight:800}
+
+[data-style="forest"] .pick-box span{font-size:.88rem}
+
+[data-style="forest"] .part-card{border-radius:16px; border-width:2px}
+
+[data-style="forest"] .part-card:hover{box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .part-card.selected{border-color:var(--accent-dark); box-shadow:0 0 0 3px var(--accent-soft), 0 4px 0 var(--accent-dark)}
+
+[data-style="forest"] .exam-pick{gap:1.25rem}
+
+[data-style="forest"] .exam-pick .card{padding:1.6rem 1.3rem; border-radius:16px; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .exam-pick .card > div:first-child{font-size:2.4rem !important; line-height:1.2}
+
+[data-style="forest"] .exam-pick .card h2{font-size:1.3rem}
+
+[data-style="forest"] .exam-pick .card:hover{transform:translateY(-3px); box-shadow:0 7px 0 var(--accent-soft-strong)}
+
+[data-style="forest"] .band-num{font-size:2.3rem}
+
+/* --- E. Thanh tien do: day 12–16px, vien 2px, bo tron --- */
+[data-style="forest"] .xpbar{height:14px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="forest"] .bar{height:12px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="forest"] .hp-bar{height:14px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="forest"] .vocab-progress{height:14px; border-width:2px; background:var(--surface)}
+
+[data-style="forest"] .vocab-mastery-track{height:12px; border-width:2px; background:var(--surface)}
+
+[data-style="forest"] .listen-progress{height:14px; border-radius:999px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="forest"] .listen-progress i{border-radius:999px}
+
+[data-style="forest"] .practice-bar .progress,[data-style="forest"] .room-side .progress{border-width:2px; padding:.5rem .9rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .ld-progress{height:.8em; border:2px solid var(--border)}
+
+/* --- F. Topbar / menu / modal / popover: cung ngon ngu, bong cung --- */
+[data-style="forest"] .topbar{padding:.85rem 1.1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .topbar .brand{font-size:1.2rem}
+
+[data-style="forest"] .topbar nav a{padding:.55rem .85rem; font-weight:800}
+
+[data-style="forest"] .nav-menu,[data-style="forest"] .profile-menu,[data-style="forest"] .text-size-popover{border-radius:16px; border-width:2px; padding:.9rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .nav-menu-row{border-radius:12px; padding:.3rem .5rem}
+
+[data-style="forest"] .nav-menu-ico{font-size:1.25rem}
+
+[data-style="forest"] .nav-menu-row a{font-weight:700}
+
+[data-style="forest"] .wl-popover{border-radius:16px; border-width:2px; padding:1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .ielts-note-panel{border-radius:16px; border:2px solid var(--border); box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .timer-chip{border-radius:16px}
+
+[data-style="forest"] .mock-menu{border:2px solid var(--border); border-radius:16px; padding:.9rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .mock-menu-item{border-radius:12px; font-weight:700}
+
+[data-style="forest"] .mock-menu-btn{border-width:2px; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .exam-head--mock{border:2px solid var(--border); border-radius:16px; padding:.7rem 1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .progress-badge{border-radius:14px; padding:.5rem 1rem; box-shadow:0 4px 0 #CC7800}
+
+[data-style="forest"] .pill{padding:.35rem .8rem; font-weight:800}
+
+/* --- G. Flashcard / bang xep hang / the ket qua --- */
+[data-style="forest"] .flashcard-face{border-radius:18px; border-width:2px; padding:1.5rem 1.2rem 3rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .flashcard-face .big{font-size:1.9rem}
+
+[data-style="forest"] .flashcard:hover .flashcard-face{box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .top3-place{border-radius:16px; border-width:2px; padding:1rem .8rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .top3-place .medal{width:52px; height:52px; font-size:1.5rem}
+
+[data-style="forest"] .me-row{border-width:2px !important}
+
+[data-style="forest"] .vocab-summary-card{border-radius:16px; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .vocab-ring-wrap{width:148px; height:148px}
+
+[data-style="forest"] .vocab-xp-pill{border-width:2px; padding:.4rem 1.1rem}
+
+/* --- H. Tu vung: man danh sach dai thi gon lai nhung van giu vien 2px + bong cung --- */
+[data-style="forest"] .vocab-tabs{border-width:2px; padding:.4rem}
+
+[data-style="forest"] .vocab-tab{padding:.55rem 1.25rem; font-weight:800}
+
+[data-style="forest"] .vocab-tab--active{box-shadow:0 3px 0 var(--accent-dark)}
+
+[data-style="forest"] .vocab-chip{border-width:2px; padding:.5rem 1rem; font-weight:700}
+
+[data-style="forest"] .vocab-chip--active{box-shadow:0 3px 0 var(--accent-dark)}
+
+[data-style="forest"] .vocab-due-card{border-radius:16px; border-width:2px; padding:1.3rem 1.5rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .vocab-due-num{font-size:2.2rem}
+
+[data-style="forest"] .vocab-pill{border-width:2px; font-weight:700}
+
+[data-style="forest"] .vocab-cloze{border-radius:14px; border-width:2px; padding:1rem 1.2rem}
+
+[data-style="forest"] .vocab-quiz-q{font-size:1.45rem}
+
+[data-style="forest"] .vocab-flash-mean{font-size:1.5rem}
+
+[data-style="forest"] .vocab-topic-box{border-width:2px; border-radius:16px}
+
+[data-style="forest"] .vocab-topic-box:hover{box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .vocab-table td{padding:.55rem .65rem}
+
+[data-style="forest"] .vocab-table th{font-size:.85rem}
+
+[data-style="forest"] .vocab-dot{width:.75rem; height:.75rem; border-width:2px}
+
+[data-style="forest"] .vocab-opt--correct{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="forest"] .vocab-opt--wrong{box-shadow:0 4px 0 var(--red-border)}
+
+/* --- I. Phong luyen/thi: thanh duoi, cot phai, palette, audio, matching --- */
+[data-style="forest"] .practice-bar{border-radius:16px; border-width:2px; padding:.75rem 1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .room-side{border-radius:16px; border-width:2px; padding:1.1rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .q-palette{gap:.45rem}
+
+[data-style="forest"] .q-palette-btn{min-width:2.4rem; height:2.4rem; font-size:1rem; border-width:2px}
+
+[data-style="forest"] .q-palette-btn--current{box-shadow:0 0 0 2px var(--surface), 0 0 0 5px var(--accent)}
+
+[data-style="forest"] .q-palette--side .q-palette-btn{min-width:1.9rem; width:1.9rem; height:1.9rem; font-size:.8rem; border-width:2px; border-radius:10px}
+
+[data-style="forest"] .audio-box{border-radius:16px; box-shadow:0 4px 0 var(--audio-border)}
+
+[data-style="forest"] .paper .audio-box,[data-style="forest"] .part-audio .audio-box{padding:.8rem .9rem}
+
+[data-style="forest"] .paper .audio-box .listen-btn,[data-style="forest"] .part-audio .audio-box .listen-btn{border-radius:16px; padding:.7rem 1.1rem}
+
+[data-style="forest"] .ielts-notes,[data-style="forest"] .ielts-match{border-radius:16px; border-width:2px; padding:1.05rem 1.25rem; box-shadow:0 2px 0 var(--border)}
+
+[data-style="forest"] .ielts-match-gap{border-radius:12px; border-width:2px; padding:.4rem .7rem}
+
+[data-style="forest"] .ielts-match-chip{border-radius:12px; border-width:2px; padding:.55rem .8rem}
+
+[data-style="forest"] .monster-card{border-radius:16px; border-width:2px}
+
+[data-style="forest"] .grid .monster-card{padding:.95rem 1.1rem}
+
+[data-style="forest"] .monster-card .monster-ico{font-size:1.7rem}
+
+[data-style="forest"] .monster-killed{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="forest"] .today-bad-day{border-radius:16px; border-width:2px; box-shadow:0 4px 0 var(--warn-border)}
+
+[data-style="forest"] .flag-btn{font-size:1.15rem}
+
+/* --- K. Dark + forest: cac cho vong 1 dung mau sang co dinh thi doi sang bien toi --- */
+/* Hero dark+forest: gradient sang co dinh (var(--accent-soft)/kem sáng/var(--sky)) + chu
+   --ink sang (chữ sáng) = chu tang hinh. Doi sang gradient màu chủ đạo dam
+   (bien toi dark+forest) + chu sang — sua ca 9 trang dung .hero. */
+[data-theme="dark"][data-style="forest"] .hero{
+  background:linear-gradient(135deg, var(--mint), var(--accent-soft-strong) 55%, var(--sky));
+  color:var(--ink);
+}
+
+[data-theme="dark"][data-style="forest"] .hero h1{color:var(--ink)}
+
+[data-theme="dark"][data-style="forest"] .hero .sub{color:var(--ink-soft)}
+
+[data-theme="dark"][data-style="forest"] .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="forest"] .btn.secondary:hover{background:var(--surface-soft)}
+
+[data-theme="dark"][data-style="forest"] .btn.ghost{background:var(--surface); color:var(--accent-dark)}
+
+[data-theme="dark"][data-style="forest"] .audio-box{background:var(--sky) !important}
+
+[data-theme="dark"][data-style="forest"] .option.correct{background:var(--green-bg); box-shadow:0 4px 0 var(--green-border)}
+
+[data-theme="dark"][data-style="forest"] .option.wrong{background:var(--red-bg); box-shadow:0 4px 0 var(--red-border)}
+
+[data-theme="dark"][data-style="forest"] .today-bad-day{box-shadow:0 4px 0 var(--warn-border)}
+
+/* --- L. Man hep: van to hon Pastel nhung gon lai cho khoi tran --- */
+@media(max-width:640px){
+[data-style="forest"] .card{padding:1rem 1.05rem}
+[data-style="forest"] .hero{padding:1.1rem 1rem}
+[data-style="forest"] .pick-box{padding:.9rem 1rem}
+[data-style="forest"] .grid{gap:1rem}
+[data-style="forest"] .exam-pick .card{padding:1.3rem 1rem}
+}
 /* ================================================================
    PHONG CACH "SAKURA" — hong anh dao diu dang, hop voi cu hong.
    ================================================================ */
@@ -1461,11 +2631,596 @@ tbody tr:hover{background:var(--surface-soft)}
   --warn-bg:#3A2F18; --warn-border:#8A6D2B;
 }
 [data-style="sakura"] .hero{
-  border:2px solid var(--border); border-radius:16px;
+  border:2px solid var(--border); border-radius:20px;
   background:linear-gradient(135deg, var(--accent-soft), #FFF7F9 55%, #F3E4F7);
-  box-shadow:0 4px 0 var(--border);
+  box-shadow:0 4px 16px rgba(199,67,110,.10);
 }
 [data-style="sakura"] .topbar .brand{color:var(--accent-dark)}
+
+/* ================================================================
+   PHONG CACH "SAKURA" — box/item (theo mau vong 1 + vong 2).
+   Radius the 20, chu tieu de 700, bong mem cam rgba(199,67,110).
+   ================================================================ */
+[data-style="sakura"] h1{font-size:1.55rem; font-weight:700}
+
+[data-style="sakura"] h2{font-size:1.2rem; font-weight:700}
+
+[data-style="sakura"] h3{font-weight:700}
+
+[data-style="sakura"] .big{font-weight:700}
+
+[data-style="sakura"] .stat-num{color:var(--accent-dark)}
+
+/* --- Thanh tren: logo màu chủ đạo, muc dang chon la nút màu chủ đạo co bong day --- */
+[data-style="sakura"] .topbar{background:var(--surface); border-bottom:2px solid var(--border); box-shadow:0 2px 12px rgba(199,67,110,0.09)}
+
+[data-style="sakura"] .topbar nav a{font-weight:700; border:2px solid transparent}
+
+[data-style="sakura"] .topbar nav a.active{background:var(--accent); color:#fff; box-shadow:0 3px 0 var(--accent-dark); border-radius:12px}
+
+[data-style="sakura"] .topbar nav a:hover{border-color:var(--border); background:var(--surface-soft)}
+
+[data-style="sakura"] .icon-btn,[data-style="sakura"] .nav-menu-btn,[data-style="sakura"] .theme-toggle{border:2px solid var(--border)}
+
+[data-style="sakura"] .avatar-btn{background:var(--accent); box-shadow:0 3px 0 var(--accent-dark)}
+
+/* --- The: vien 2px ro, bo tron, bong day nhe --- */
+[data-style="sakura"] .card{border:2px solid var(--border); border-radius:20px; box-shadow:0 2px 12px rgba(199,67,110,0.09)}
+
+[data-style="sakura"] .card .card{border-width:2px; box-shadow:none}
+
+[data-style="sakura"] .panel{border:2px solid var(--border-soft); border-radius:18px}
+
+[data-style="sakura"] .paper{border:2px solid var(--border); border-radius:20px}
+
+[data-style="sakura"] .screen{border:2px solid var(--border) !important; box-shadow:0 2px 12px rgba(199,67,110,0.09) !important}
+
+[data-style="sakura"] .stat-card::before{background:linear-gradient(90deg,var(--accent),var(--exam-blue),var(--gold))}
+
+[data-style="sakura"] .stat-card .ico{font-size:1.4rem}
+
+[data-style="sakura"] .hearts{color:var(--amber)}
+
+[data-style="sakura"] .streak-flame{color:var(--amber)}
+
+/* --- Nut: nut chinh màu chủ đạo bong day duoi, bam thi lun xuong --- */
+[data-style="sakura"] .btn{
+  font-weight:800; border-radius:16px; border:2px solid transparent;
+  background:var(--accent); color:#fff;
+  box-shadow:0 4px 0 var(--accent-dark);
+  transition:background .15s, transform .1s, box-shadow .1s, filter .15s;
+}
+
+[data-style="sakura"] .btn:hover{background:#F0759F; filter:none; transform:translateY(-1px); box-shadow:0 5px 0 var(--accent-dark)}
+
+[data-style="sakura"] .btn:active{transform:translateY(2px); box-shadow:0 2px 0 var(--accent-dark)}
+
+[data-style="sakura"] .btn:disabled{box-shadow:none; transform:none}
+
+[data-style="sakura"] .btn.secondary{
+  background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border);
+}
+
+[data-style="sakura"] .btn.secondary:hover{background:var(--surface-soft); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-style="sakura"] .btn.secondary:active{box-shadow:0 2px 0 var(--border)}
+
+[data-style="sakura"] .btn.ghost{background:var(--surface); color:var(--accent-dark); border-color:var(--accent); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .btn.ghost:hover{background:var(--accent-soft)}
+
+[data-style="sakura"] .btn.neon{background:var(--accent-soft); color:var(--accent-dark); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .btn.gold{background:var(--gold); color:var(--ink); box-shadow:0 4px 0 #D9A400}
+
+[data-style="sakura"] .btn.gold:hover{background:#FFD21F; box-shadow:0 5px 0 #D9A400}
+
+[data-style="sakura"] .btn.gold:active{box-shadow:0 2px 0 #D9A400}
+
+[data-style="sakura"] .btn.danger{background:var(--surface); color:var(--red); border-color:var(--red); box-shadow:0 4px 0 var(--red-soft)}
+
+[data-style="sakura"] .btn.danger:hover{background:var(--red-bg)}
+
+/* --- Badge / chip / tag: vien ro, chu dam --- */
+[data-style="sakura"] .pill{background:var(--accent-soft); color:var(--accent-dark); font-weight:800; border:2px solid var(--accent-soft-strong)}
+
+[data-style="sakura"] .tag{color:var(--accent-dark); font-weight:800}
+
+[data-style="sakura"] .progress-badge{background:var(--amber); box-shadow:0 3px 0 #CC7800; border-radius:12px}
+
+[data-style="sakura"] .timer-chip{border:2px solid var(--border); box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .tier{border:2px solid transparent}
+
+[data-style="sakura"] .tier-gold{background:var(--gold); color:var(--gold-ink)}
+
+[data-style="sakura"] .rank-1{background:var(--gold)}
+
+[data-style="sakura"] .rank-2{background:#AFBACA}
+
+[data-style="sakura"] .rank-3{background:var(--amber)}
+
+/* --- Thanh tien do / XP: màu chủ đạo dam, ray vang cho XP --- */
+[data-style="sakura"] .xpbar{height:12px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sakura"] .xpbar>i{background:var(--accent)}
+
+[data-style="sakura"] .xpbar.gold>i{background:var(--gold)}
+
+[data-style="sakura"] .bar{height:10px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sakura"] .bar>i{background:var(--accent)}
+
+[data-style="sakura"] .bar.green>i{background:var(--accent)}
+
+[data-style="sakura"] .hp-bar{height:.6rem; border:2px solid var(--border)}
+
+[data-style="sakura"] .hp-bar i{background:var(--red)}
+
+[data-style="sakura"] .vocab-progress,[data-style="sakura"] .vocab-mastery-track{border:2px solid var(--border)}
+
+[data-style="sakura"] .vocab-progress-fill,[data-style="sakura"] .vocab-mastery-fill{background:var(--accent)}
+
+/* --- Sakura + nền tối: nút/track dùng màu sáng cố định sẽ chìm/chói --- */
+[data-theme="dark"][data-style="sakura"] .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="sakura"] .btn.secondary:hover{background:var(--surface-soft); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="sakura"] .btn.secondary:active{box-shadow:0 2px 0 var(--border)}
+
+[data-theme="dark"][data-style="sakura"] .btn.ghost{background:var(--surface); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-theme="dark"][data-style="sakura"] .btn.ghost:hover{background:var(--accent-soft)}
+
+[data-theme="dark"][data-style="sakura"] .btn.danger{background:var(--surface); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="sakura"] .btn.danger:hover{background:var(--surface-soft)}
+
+[data-theme="dark"][data-style="sakura"] .xpbar,[data-theme="dark"][data-style="sakura"] .bar{background:var(--track)}
+
+/* --- Lua chon dap an: chon thi viền màu chủ đạo + nen màu chủ đạo nhạt --- */
+[data-style="sakura"] .option{border:2px solid var(--border); border-radius:14px; font-weight:600}
+
+[data-style="sakura"] .option:hover{border-color:var(--accent)}
+
+[data-style="sakura"] .option.selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 2px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .option.correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sakura"] .option.correct strong{background:var(--accent); color:#fff}
+
+[data-style="sakura"] .option.wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="sakura"] .option.wrong strong{background:var(--red); color:#fff}
+
+[data-style="sakura"] .exam-opts .option strong{border:2px solid var(--border)}
+
+[data-style="sakura"] .exam-opts .option.selected strong{border-color:var(--accent); background:var(--accent); color:#fff}
+
+[data-style="sakura"] .exam-opts .option.correct strong{border-color:var(--accent); background:var(--accent); color:#fff}
+
+[data-style="sakura"] .exam-opts .option.wrong strong{border-color:var(--red); background:var(--red); color:#fff}
+
+[data-style="sakura"] .radio-pill{border:2px solid var(--border)}
+
+[data-style="sakura"] .radio-pill:has(input:checked){background:var(--accent-soft); border-color:var(--accent)}
+
+[data-style="sakura"] .blank-chip{color:var(--accent-dark); font-weight:800}
+
+[data-style="sakura"] .exam-part{color:var(--exam-blue)}
+
+[data-style="sakura"] .paper-part{color:var(--exam-blue)}
+
+[data-style="sakura"] .exam-q-num{font-weight:800}
+
+[data-style="sakura"] .audio-box{background:var(--sky) !important; border:2px solid var(--audio-border) !important}
+
+[data-style="sakura"] .audio-box.audio-missing{border:2px dashed var(--amber) !important; background:var(--warn-bg) !important}
+
+[data-style="sakura"] .listen-progress{border:2px solid var(--border)}
+
+[data-style="sakura"] .listen-progress i{background:var(--accent)}
+
+/* --- The chon Part / de thi / ky thi --- */
+[data-style="sakura"] .pick-box{border:2px solid var(--border); box-shadow:0 2px 12px rgba(199,67,110,0.09)}
+
+[data-style="sakura"] .pick-box:hover{border-color:var(--accent)}
+
+[data-style="sakura"] .pick-box--selected{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 2px 0 var(--accent-dark)}
+
+[data-style="sakura"] .part-card:hover{border-color:var(--accent); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .part-card.selected{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft), 0 4px 0 var(--accent-dark)}
+
+[data-style="sakura"] .exam-pick .card:hover{border-color:var(--accent); transform:translateY(-2px); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .band-num{color:var(--accent-dark)}
+
+/* --- Bang cau hoi (palette): da lam màu chủ đạo nhạt, dang lam vien màu chủ đạo đậm --- */
+[data-style="sakura"] .q-palette-btn{border:2px solid var(--border); font-weight:800}
+
+[data-style="sakura"] .q-palette-btn--done{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+
+[data-style="sakura"] .q-palette-btn--correct{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-dark)}
+
+[data-style="sakura"] .q-palette-btn--wrong{background:var(--red-bg); border-color:var(--red); color:var(--red-ink)}
+
+[data-style="sakura"] .q-palette-btn--current{box-shadow:0 0 0 2px var(--surface), 0 0 0 4px var(--accent)}
+
+[data-style="sakura"] .q-palette-group-label{background:var(--accent-soft); color:var(--accent-dark)}
+
+[data-style="sakura"] .flag-btn--on{opacity:1}
+
+[data-style="sakura"] .practice-bar{border:2px solid var(--border); box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .practice-bar .progress{border:2px solid var(--border)}
+
+[data-style="sakura"] .room-side{border:2px solid var(--border)}
+
+[data-style="sakura"] .room-side .progress{border:2px solid var(--border)}
+
+/* --- Flashcard, bang xep hang, menu --- */
+[data-style="sakura"] .flashcard-face{border:2px solid var(--border); box-shadow:0 2px 12px rgba(199,67,110,0.09)}
+
+[data-style="sakura"] .flashcard-face.back{background:var(--accent-soft); border-color:var(--green-border)}
+
+[data-style="sakura"] .top3-place{border:2px solid var(--border); box-shadow:0 2px 12px rgba(199,67,110,0.09)}
+
+[data-style="sakura"] .top3-place .medal-1{background:var(--gold)}
+
+[data-style="sakura"] .top3-place .medal-3{background:var(--amber)}
+
+[data-style="sakura"] .nav-menu,[data-style="sakura"] .profile-menu,[data-style="sakura"] .text-size-popover{border:2px solid var(--border); box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .pin-btn.pinned{background:var(--accent-soft); border-color:var(--accent)}
+
+[data-style="sakura"] .error{border:2px solid var(--red-border)}
+
+[data-style="sakura"] .success{border:2px solid var(--green-border)}
+
+[data-style="sakura"] .monster-card{border:2px solid var(--border)}
+
+[data-style="sakura"] .monster-killed{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sakura"] .today-bad-day{border:2px dashed var(--amber); background:var(--warn-bg)}
+
+[data-style="sakura"] .vocab-due-card{border:2px solid var(--accent); background:var(--accent-soft)}
+
+[data-style="sakura"] .vocab-opt--correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sakura"] .vocab-opt--wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="sakura"] .ielts-match-gap{border:2px dashed var(--accent)}
+
+[data-style="sakura"] .ielts-match-chip--picked{border-color:var(--accent); outline:2px solid var(--accent)}
+
+[data-style="sakura"] .ielts-match-gap--correct{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sakura"] .ielts-match-gap--wrong{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="sakura"] .ielts-notes,[data-style="sakura"] .ielts-match{border:2px solid var(--border)}
+
+[data-style="sakura"] .notes-blank input{border:2px solid var(--accent)}
+
+[data-style="sakura"] .notes-blank--correct input{border-color:var(--accent); background:var(--accent-soft)}
+
+[data-style="sakura"] .notes-blank--wrong input{border-color:var(--red); background:var(--red-bg)}
+
+[data-style="sakura"] input:focus,[data-style="sakura"] select:focus,[data-style="sakura"] textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft)}
+
+[data-style="sakura"] input,[data-style="sakura"] select,[data-style="sakura"] textarea{border:2px solid var(--border)}
+
+[data-style="sakura"] ::selection{background:var(--accent-soft)}
+
+/* --- Vong 2 "Sakura": padding + bo + bong --- */
+/* --- A. Khung chung: card/panel/paper/hero/stat — bung to, bong cung --- */
+[data-style="sakura"] .card{border-radius:22px; border-width:2px; padding:1.35rem 1.5rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .card h2{font-size:1.3rem; font-weight:700}
+
+[data-style="sakura"] .card h3{font-size:1.1rem; font-weight:700}
+
+[data-style="sakura"] .panel{border-radius:20px; border-width:2px; padding:1.1rem 1.25rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .paper{border-radius:22px; border-width:2px; padding:1.1rem 1.5rem 1.2rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .paper-q{padding:.6rem 0}
+
+[data-style="sakura"] .screen{border-radius:22px; box-shadow:0 4px 16px rgba(199,67,110,0.10) !important}
+
+[data-style="sakura"] .hero{border-radius:22px; border-width:2px; padding:1.6rem 1.6rem 1.7rem; box-shadow:0 5px 18px rgba(199,67,110,0.11)}
+
+[data-style="sakura"] .hero h1{font-size:1.7rem}
+
+[data-style="sakura"] .hero .sub{font-size:1.02rem; font-weight:600}
+
+[data-style="sakura"] .stat-card{border-radius:22px}
+
+[data-style="sakura"] .stat-card::before{height:6px}
+
+[data-style="sakura"] .stat-card .ico{font-size:1.7rem}
+
+[data-style="sakura"] .stat-box{border-radius:20px; border-width:2px; padding:1.1rem 1.25rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .stat-box b{font-size:1.5rem}
+
+[data-style="sakura"] .stat-num{font-size:1.35rem}
+
+[data-style="sakura"] .grid{gap:1.25rem}
+
+[data-style="sakura"] .grid > .card{gap:.5rem}
+
+[data-style="sakura"] .pick-grid{gap:1rem}
+
+[data-style="sakura"] .mock-warn,[data-style="sakura"] .mock-note{border-radius:18px; border-width:2px; padding:1rem 1.15rem; box-shadow:0 3px 14px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .error,[data-style="sakura"] .success{border-radius:18px; border-width:2px; padding:1rem 1.25rem; box-shadow:0 3px 14px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .passage{border-radius:20px; border-width:2px; padding:1rem 1.25rem; box-shadow:0 3px 14px rgba(199,67,110,0.10)}
+
+/* --- B. Nut: to hon, bo 18, bam lun sau xuong --- */
+[data-style="sakura"] .btn{border-radius:18px; padding:.75rem 1.35rem; font-size:1rem; box-shadow:0 4px 0 var(--accent-dark)}
+
+[data-style="sakura"] .btn:active{transform:translateY(3px); box-shadow:0 1px 0 var(--accent-dark)}
+
+[data-style="sakura"] .btn-sm{padding:.5rem .85rem; border-radius:12px; font-size:.92rem}
+
+[data-style="sakura"] .btn.secondary:active{box-shadow:0 1px 0 var(--border)}
+
+[data-style="sakura"] .btn.ghost:active{box-shadow:0 1px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .btn.gold:active{box-shadow:0 1px 0 #D9A400}
+
+[data-style="sakura"] .btn.danger:active{box-shadow:0 1px 0 var(--red-soft)}
+
+/* --- C. Dap an: o bam to kieu Sakura --- */
+[data-style="sakura"] .option{border-radius:16px; border-width:2px; padding:.9rem 1.1rem; font-weight:700}
+
+[data-style="sakura"] .option strong{font-size:.9rem; padding:.3rem .6rem; border-radius:10px}
+
+[data-style="sakura"] .option:hover{box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .option.selected{border-color:var(--accent-dark); background:var(--accent-soft); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .option:active{transform:translateY(2px); box-shadow:0 2px 12px rgba(199,67,110,0.09)}
+
+[data-style="sakura"] .option.selected:active{box-shadow:0 2px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .option.correct{border-color:var(--accent); background:var(--accent-soft); box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="sakura"] .option.wrong{border-color:var(--red); background:var(--red-bg); box-shadow:0 4px 0 var(--red-border)}
+
+[data-style="sakura"] .option.letter-only{padding:1.15rem .85rem}
+
+[data-style="sakura"] .option.letter-only strong{font-size:1.7rem; padding:.5rem 1rem}
+
+[data-style="sakura"] .exam-opts{gap:.6rem}
+
+[data-style="sakura"] .exam-opts .option{padding:.85rem 1rem; border-radius:16px}
+
+[data-style="sakura"] .exam-opts .option strong{width:2rem; height:2rem; font-size:1.05rem; border-width:2px}
+
+[data-style="sakura"] .exam-opts .option.selected{border-color:var(--accent-dark); box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .exam-opts .option.correct{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="sakura"] .exam-opts .option.wrong{box-shadow:0 4px 0 var(--red-border)}
+
+[data-style="sakura"] .ielts-tfng-row{gap:.6rem}
+
+[data-style="sakura"] .ielts-tfng-row .option{padding:.7rem .6rem; border-radius:14px}
+
+[data-style="sakura"] .radio-pill{border-radius:999px; padding:.5rem .95rem}
+
+/* --- D. The chon Part / de thi / ky thi: icon to, trang thai chon noi han --- */
+[data-style="sakura"] .pick-box{border-radius:20px; border-width:2px; padding:1.2rem 1.3rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .pick-box:hover{transform:translateY(-2px); box-shadow:0 6px 20px rgba(199,67,110,0.12)}
+
+[data-style="sakura"] .pick-box--selected{border-color:var(--accent-dark); background:var(--accent-soft); box-shadow:0 4px 0 var(--accent-dark)}
+
+[data-style="sakura"] .pick-box b{font-size:1.05rem; font-weight:800}
+
+[data-style="sakura"] .pick-box span{font-size:.88rem}
+
+[data-style="sakura"] .part-card{border-radius:22px; border-width:2px}
+
+[data-style="sakura"] .part-card:hover{box-shadow:0 4px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .part-card.selected{border-color:var(--accent-dark); box-shadow:0 0 0 3px var(--accent-soft), 0 4px 0 var(--accent-dark)}
+
+[data-style="sakura"] .exam-pick{gap:1.25rem}
+
+[data-style="sakura"] .exam-pick .card{padding:1.8rem 1.5rem; border-radius:22px; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .exam-pick .card > div:first-child{font-size:2.4rem !important; line-height:1.2}
+
+[data-style="sakura"] .exam-pick .card h2{font-size:1.3rem}
+
+[data-style="sakura"] .exam-pick .card:hover{transform:translateY(-3px); box-shadow:0 7px 0 var(--accent-soft-strong)}
+
+[data-style="sakura"] .band-num{font-size:2.3rem}
+
+/* --- E. Thanh tien do: day 12–16px, vien 2px, bo tron --- */
+[data-style="sakura"] .xpbar{height:14px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sakura"] .bar{height:12px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sakura"] .hp-bar{height:14px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sakura"] .vocab-progress{height:14px; border-width:2px; background:var(--surface)}
+
+[data-style="sakura"] .vocab-mastery-track{height:12px; border-width:2px; background:var(--surface)}
+
+[data-style="sakura"] .listen-progress{height:14px; border-radius:999px; border:2px solid var(--border); background:var(--surface)}
+
+[data-style="sakura"] .listen-progress i{border-radius:999px}
+
+[data-style="sakura"] .practice-bar .progress,[data-style="sakura"] .room-side .progress{border-width:2px; padding:.5rem .9rem; box-shadow:0 3px 14px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .ld-progress{height:.8em; border:2px solid var(--border)}
+
+/* --- F. Topbar / menu / modal / popover: cung ngon ngu, bong cung --- */
+[data-style="sakura"] .topbar{padding:.85rem 1.1rem; box-shadow:0 3px 14px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .topbar .brand{font-size:1.2rem}
+
+[data-style="sakura"] .topbar nav a{padding:.55rem .85rem; font-weight:800}
+
+[data-style="sakura"] .nav-menu,[data-style="sakura"] .profile-menu,[data-style="sakura"] .text-size-popover{border-radius:22px; border-width:2px; padding:1rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .nav-menu-row{border-radius:12px; padding:.3rem .5rem}
+
+[data-style="sakura"] .nav-menu-ico{font-size:1.25rem}
+
+[data-style="sakura"] .nav-menu-row a{font-weight:700}
+
+[data-style="sakura"] .wl-popover{border-radius:20px; border-width:2px; padding:1.15rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .ielts-note-panel{border-radius:22px; border:2px solid var(--border); box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .timer-chip{border-radius:16px}
+
+[data-style="sakura"] .mock-menu{border:2px solid var(--border); border-radius:22px; padding:1rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .mock-menu-item{border-radius:12px; font-weight:700}
+
+[data-style="sakura"] .mock-menu-btn{border-width:2px; box-shadow:0 3px 14px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .exam-head--mock{border:2px solid var(--border); border-radius:22px; padding:.8rem 1.15rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .progress-badge{border-radius:14px; padding:.5rem 1rem; box-shadow:0 4px 0 #CC7800}
+
+[data-style="sakura"] .pill{padding:.35rem .8rem; font-weight:800}
+
+/* --- G. Flashcard / bang xep hang / the ket qua --- */
+[data-style="sakura"] .flashcard-face{border-radius:24px; border-width:2px; padding:1.7rem 1.4rem 3.2rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .flashcard-face .big{font-size:1.9rem}
+
+[data-style="sakura"] .flashcard:hover .flashcard-face{box-shadow:0 6px 20px rgba(199,67,110,0.12)}
+
+[data-style="sakura"] .top3-place{border-radius:22px; border-width:2px; padding:1.1rem .95rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .top3-place .medal{width:52px; height:52px; font-size:1.5rem}
+
+[data-style="sakura"] .me-row{border-width:2px !important}
+
+[data-style="sakura"] .vocab-summary-card{border-radius:22px; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .vocab-ring-wrap{width:148px; height:148px}
+
+[data-style="sakura"] .vocab-xp-pill{border-width:2px; padding:.4rem 1.1rem}
+
+/* --- H. Tu vung: man danh sach dai thi gon lai nhung van giu vien 2px + bong cung --- */
+[data-style="sakura"] .vocab-tabs{border-width:2px; padding:.4rem}
+
+[data-style="sakura"] .vocab-tab{padding:.55rem 1.25rem; font-weight:800}
+
+[data-style="sakura"] .vocab-tab--active{box-shadow:0 3px 0 var(--accent-dark)}
+
+[data-style="sakura"] .vocab-chip{border-width:2px; padding:.5rem 1rem; font-weight:700}
+
+[data-style="sakura"] .vocab-chip--active{box-shadow:0 3px 0 var(--accent-dark)}
+
+[data-style="sakura"] .vocab-due-card{border-radius:22px; border-width:2px; padding:1.45rem 1.65rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .vocab-due-num{font-size:2.2rem}
+
+[data-style="sakura"] .vocab-pill{border-width:2px; font-weight:700}
+
+[data-style="sakura"] .vocab-cloze{border-radius:18px; border-width:2px; padding:1.1rem 1.35rem}
+
+[data-style="sakura"] .vocab-quiz-q{font-size:1.45rem}
+
+[data-style="sakura"] .vocab-flash-mean{font-size:1.5rem}
+
+[data-style="sakura"] .vocab-topic-box{border-width:2px; border-radius:20px}
+
+[data-style="sakura"] .vocab-topic-box:hover{box-shadow:0 6px 20px rgba(199,67,110,0.12)}
+
+[data-style="sakura"] .vocab-table td{padding:.55rem .65rem}
+
+[data-style="sakura"] .vocab-table th{font-size:.85rem}
+
+[data-style="sakura"] .vocab-dot{width:.75rem; height:.75rem; border-width:2px}
+
+[data-style="sakura"] .vocab-opt--correct{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="sakura"] .vocab-opt--wrong{box-shadow:0 4px 0 var(--red-border)}
+
+/* --- I. Phong luyen/thi: thanh duoi, cot phai, palette, audio, matching --- */
+[data-style="sakura"] .practice-bar{border-radius:22px; border-width:2px; padding:.9rem 1.15rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .room-side{border-radius:22px; border-width:2px; padding:1.25rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .q-palette{gap:.45rem}
+
+[data-style="sakura"] .q-palette-btn{min-width:2.4rem; height:2.4rem; font-size:1rem; border-width:2px}
+
+[data-style="sakura"] .q-palette-btn--current{box-shadow:0 0 0 2px var(--surface), 0 0 0 5px var(--accent)}
+
+[data-style="sakura"] .q-palette--side .q-palette-btn{min-width:1.9rem; width:1.9rem; height:1.9rem; font-size:.8rem; border-width:2px; border-radius:10px}
+
+[data-style="sakura"] .audio-box{border-radius:20px; box-shadow:0 4px 0 var(--audio-border)}
+
+[data-style="sakura"] .paper .audio-box,[data-style="sakura"] .part-audio .audio-box{padding:.8rem .9rem}
+
+[data-style="sakura"] .paper .audio-box .listen-btn,[data-style="sakura"] .part-audio .audio-box .listen-btn{border-radius:20px; padding:.7rem 1.1rem}
+
+[data-style="sakura"] .ielts-notes,[data-style="sakura"] .ielts-match{border-radius:20px; border-width:2px; padding:1.2rem 1.4rem; box-shadow:0 4px 16px rgba(199,67,110,0.10)}
+
+[data-style="sakura"] .ielts-match-gap{border-radius:12px; border-width:2px; padding:.4rem .7rem}
+
+[data-style="sakura"] .ielts-match-chip{border-radius:12px; border-width:2px; padding:.55rem .8rem}
+
+[data-style="sakura"] .monster-card{border-radius:20px; border-width:2px}
+
+[data-style="sakura"] .grid .monster-card{padding:1.05rem 1.2rem}
+
+[data-style="sakura"] .monster-card .monster-ico{font-size:1.7rem}
+
+[data-style="sakura"] .monster-killed{box-shadow:0 4px 0 var(--green-border)}
+
+[data-style="sakura"] .today-bad-day{border-radius:20px; border-width:2px; box-shadow:0 4px 0 var(--warn-border)}
+
+[data-style="sakura"] .flag-btn{font-size:1.15rem}
+
+/* --- K. Dark + sakura: cac cho vong 1 dung mau sang co dinh thi doi sang bien toi --- */
+/* Hero dark+sakura: gradient sang co dinh (var(--accent-soft)/kem sáng/var(--sky)) + chu
+   --ink sang (chữ sáng) = chu tang hinh. Doi sang gradient màu chủ đạo dam
+   (bien toi dark+sakura) + chu sang — sua ca 9 trang dung .hero. */
+[data-theme="dark"][data-style="sakura"] .hero{
+  background:linear-gradient(135deg, var(--mint), var(--accent-soft-strong) 55%, var(--sky));
+  color:var(--ink);
+}
+
+[data-theme="dark"][data-style="sakura"] .hero h1{color:var(--ink)}
+
+[data-theme="dark"][data-style="sakura"] .hero .sub{color:var(--ink-soft)}
+
+[data-theme="dark"][data-style="sakura"] .btn.secondary{background:var(--surface); color:var(--ink); border-color:var(--border); box-shadow:0 4px 0 var(--border)}
+
+[data-theme="dark"][data-style="sakura"] .btn.secondary:hover{background:var(--surface-soft)}
+
+[data-theme="dark"][data-style="sakura"] .btn.ghost{background:var(--surface); color:var(--accent-dark)}
+
+[data-theme="dark"][data-style="sakura"] .audio-box{background:var(--sky) !important}
+
+[data-theme="dark"][data-style="sakura"] .option.correct{background:var(--green-bg); box-shadow:0 4px 0 var(--green-border)}
+
+[data-theme="dark"][data-style="sakura"] .option.wrong{background:var(--red-bg); box-shadow:0 4px 0 var(--red-border)}
+
+[data-theme="dark"][data-style="sakura"] .today-bad-day{box-shadow:0 4px 0 var(--warn-border)}
+
+/* --- L. Man hep: van to hon Pastel nhung gon lai cho khoi tran --- */
+@media(max-width:640px){
+[data-style="sakura"] .card{padding:1.1rem 1.15rem}
+[data-style="sakura"] .hero{padding:1.25rem 1.15rem}
+[data-style="sakura"] .pick-box{padding:1rem 1.1rem}
+[data-style="sakura"] .grid{gap:1rem}
+[data-style="sakura"] .exam-pick .card{padding:1.45rem 1.15rem}
+}
 [data-style="lively"] h1{font-size:1.55rem; font-weight:800}
 [data-style="lively"] h2{font-size:1.2rem; font-weight:800}
 [data-style="lively"] h3{font-weight:800}

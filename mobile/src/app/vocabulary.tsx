@@ -19,7 +19,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type UserWord, type Vocab } from '../api';
 import { useExam } from '../exam';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedChip, themedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 import { BottomNav } from '../components/BottomNav';
 import { useConfirm } from '../components/ConfirmDialog';
@@ -53,7 +53,7 @@ const WordRow = memo(function WordRow({
   const { colors } = useTheme();
   const { scaled } = useTextSize();
   return (
-    <View style={[styles.wordCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+    <View style={[styles.wordCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'compact')]}>
       <Text style={[styles.word, { color: colors.text, fontSize: scaled(16) }]}>{w.word}</Text>
       <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(14) }]}>
         {[w.phonetic, w.pos, STATUS_LABEL[w.status], w.topic].filter(Boolean).join(' · ')}
@@ -69,7 +69,7 @@ const WordRow = memo(function WordRow({
             style={[
               styles.chip,
               { borderColor: colors.border, backgroundColor: w.status === s ? colors.accent : colors.surface },
-              livelyChip(colors),
+              themedChip(colors), w.status === s && { backgroundColor: colors.accent, borderColor: colors.accent },
             ]}
             onPress={() => onMark(w.id, s)}
           >
@@ -79,13 +79,13 @@ const WordRow = memo(function WordRow({
           </Pressable>
         ))}
         <Pressable
-          style={[styles.chip, { borderColor: colors.border, backgroundColor: colors.surface }, livelyChip(colors)]}
+          style={[styles.chip, { borderColor: colors.border, backgroundColor: colors.surface }, themedChip(colors)]}
           onPress={() => onEdit(w)}
         >
           <Text style={{ color: colors.text, fontSize: scaled(13), fontWeight: '600' }}>Sửa</Text>
         </Pressable>
         <Pressable
-          style={[styles.chip, { borderColor: colors.danger, backgroundColor: colors.surface }, livelyChip(colors)]}
+          style={[styles.chip, { borderColor: colors.danger, backgroundColor: colors.surface }, themedChip(colors), { borderColor: colors.danger }]}
           onPress={() => onDelete(w)}
         >
           <Text style={{ color: colors.danger, fontSize: scaled(13), fontWeight: '600' }}>Xóa</Text>
@@ -117,7 +117,7 @@ export default function VocabularyScreen() {
             <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(20) }]}>Từ vựng</Text>
           </View>
           {/* 2 tab dạng segmented control — 2 nửa bằng nhau, không còn 2 pill lệch. */}
-          <View style={[styles.segmented, { borderColor: colors.border, backgroundColor: colors.surface }, livelyCard(colors, 'compact')]}>
+          <View style={[styles.segmented, { borderColor: colors.border, backgroundColor: colors.surface }, themedCard(colors, 'compact')]}>
             <Pressable
               style={[styles.segment, tab === 'mine' && { backgroundColor: colors.accent }]}
               onPress={() => setTab('mine')}
@@ -317,7 +317,7 @@ function MyWords() {
         {STATUS_FILTERS.map((f) => (
           <Pressable
             key={f.id}
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: statusFilter === f.id ? colors.accent : colors.surface }, livelyChip(colors)]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: statusFilter === f.id ? colors.accent : colors.surface }, themedChip(colors), statusFilter === f.id && { backgroundColor: colors.accent, borderColor: colors.accent }]}
             onPress={() => {
               setStatusFilter(f.id);
               setIdx(0);
@@ -332,19 +332,19 @@ function MyWords() {
       </ScrollView>
       {/* Thêm từ mới: nút to cả hàng, không còn là pill chìm trong đống lọc. */}
       <Pressable
-        style={[styles.addButton, { backgroundColor: colors.accent }, raisedButton(colors)]}
+        style={[styles.addButton, { backgroundColor: colors.accent }, themedButton(colors)]}
         onPress={() => setShowAdd((v) => !v)}
       >
         <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>＋ Thêm từ mới</Text>
       </Pressable>
 
       {showAdd && (
-        <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+        <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
           <Text style={[styles.formTitle, { color: colors.text, fontSize: scaled(16) }]}>Thêm từ mới</Text>
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Từ tiếng Anh</Text>
           <View style={styles.row}>
             <TextInput
-              style={[styles.input, styles.flexInput, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+              style={[styles.input, styles.flexInput, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact')]}
               value={addForm.word}
               onChangeText={(v) => setAddForm((f) => ({ ...f, word: v }))}
               placeholder="vd: supervisor"
@@ -352,7 +352,7 @@ function MyWords() {
               autoCapitalize="none"
             />
             <Pressable
-              style={[styles.smallButton, { backgroundColor: colors.accent, opacity: lookupLoading ? 0.6 : 1 }, raisedButton(colors)]}
+              style={[styles.smallButton, { backgroundColor: colors.accent, opacity: lookupLoading ? 0.6 : 1 }, themedButton(colors)]}
               onPress={() => void lookupAdd()}
               disabled={lookupLoading}
             >
@@ -379,7 +379,7 @@ function MyWords() {
             <View key={k}>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>{label}</Text>
               <TextInput
-                style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+                style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact')]}
                 value={addForm[k]}
                 onChangeText={(v) => setAddForm((f) => ({ ...f, [k]: v }))}
                 placeholder={ph}
@@ -389,7 +389,7 @@ function MyWords() {
           ))}
           <View style={styles.row}>
             <Pressable
-              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]}
               onPress={() => void saveAdd()}
             >
               <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Lưu từ</Text>
@@ -405,7 +405,7 @@ function MyWords() {
       )}
 
       {w ? (
-        <View style={[styles.flashcard, { backgroundColor: colors.surface, borderColor: colors.accent }, livelyCard(colors, 'hero', colors.accentDark)]}>
+        <View style={[styles.flashcard, { backgroundColor: colors.surface, borderColor: colors.accent }, themedCard(colors, 'hero', colors.accentDark), { borderColor: colors.accent }]}>
           {/* Vùng lật thẻ RIÊNG — các nút điều hướng/đánh dấu nằm NGOÀI
               Pressable này nên bấm nút không còn lật thẻ nữa. */}
           <Pressable style={styles.flashFlip} onPress={() => setFlipped((f) => !f)}>
@@ -463,7 +463,7 @@ function MyWords() {
           </View>
           <View style={styles.row}>
             <Pressable
-              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]}
               onPress={() => void mark(w.id, 'learned')}
             >
               <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Đã thuộc ✅</Text>
@@ -478,7 +478,7 @@ function MyWords() {
         </View>
       ) : (
         !loading && (
-          <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+          <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
             <Text style={styles.emptyIcon}>📖</Text>
             <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15), textAlign: 'center' }]}>
               Chưa có từ nào ở đây. Khi luyện tập, bấm vào từ trong đoạn văn rồi chọn ＋ Lưu vào từ vựng —
@@ -489,7 +489,7 @@ function MyWords() {
       )}
 
       {editing && (
-        <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+        <View style={[styles.formCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
           <Text style={[styles.formTitle, { color: colors.text, fontSize: scaled(16) }]}>Sửa từ “{editing.word}”</Text>
           {(
             [
@@ -503,7 +503,7 @@ function MyWords() {
             <View key={k}>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>{label}</Text>
               <TextInput
-                style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+                style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact')]}
                 value={editForm[k]}
                 onChangeText={(v) => setEditForm((f) => ({ ...f, [k]: v }))}
               />
@@ -511,7 +511,7 @@ function MyWords() {
           ))}
           <View style={styles.row}>
             <Pressable
-              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]}
               onPress={() => void saveEdit()}
             >
               <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Lưu sửa đổi</Text>
@@ -600,7 +600,7 @@ function SharedWords({ exam }: { exam: string }) {
   const keyExtractor = useCallback((v: Vocab) => v.id, []);
   const renderItem = useCallback(
     ({ item: v }: { item: Vocab }) => (
-      <View style={[styles.wordCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+      <View style={[styles.wordCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'compact')]}>
         <Text style={[styles.word, { color: colors.text, fontSize: scaled(16) }]}>{v.word}</Text>
         {[v.phonetic, v.topic].filter(Boolean).length ? (
           <Text style={[styles.wordMeta, { color: colors.muted, fontSize: scaled(14) }]}>
@@ -613,13 +613,13 @@ function SharedWords({ exam }: { exam: string }) {
         ) : null}
         <View style={styles.chipRow}>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: colors.surface }, livelyChip(colors)]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: colors.surface }, themedChip(colors)]}
             onPress={() => void mark(v.id, 'learned')}
           >
             <Text style={{ color: colors.text, fontSize: scaled(13), fontWeight: '600' }}>Đã thuộc ✅</Text>
           </Pressable>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: colors.surface }, livelyChip(colors)]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: colors.surface }, themedChip(colors)]}
             onPress={() => void mark(v.id, 'wrong')}
           >
             <Text style={{ color: colors.text, fontSize: scaled(13), fontWeight: '600' }}>Chưa thuộc ❌</Text>
@@ -653,7 +653,7 @@ function SharedWords({ exam }: { exam: string }) {
         {['', ...topics].map((t) => (
           <Pressable
             key={t || 'all'}
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: topic === t ? colors.accent : colors.surface }, livelyChip(colors)]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: topic === t ? colors.accent : colors.surface }, themedChip(colors), topic === t && { backgroundColor: colors.accent, borderColor: colors.accent }]}
             onPress={() => {
               setLoading(true);
               setTopic(t);
@@ -666,7 +666,7 @@ function SharedWords({ exam }: { exam: string }) {
         ))}
       </ScrollView>
       {w ? (
-        <View style={[styles.flashcard, { backgroundColor: colors.surface, borderColor: colors.accent }, livelyCard(colors, 'hero', colors.accentDark)]}>
+        <View style={[styles.flashcard, { backgroundColor: colors.surface, borderColor: colors.accent }, themedCard(colors, 'hero', colors.accentDark), { borderColor: colors.accent }]}>
           <Pressable style={styles.flashFlip} onPress={() => setFlipped((f) => !f)}>
             {!flipped ? (
               <>
@@ -718,7 +718,7 @@ function SharedWords({ exam }: { exam: string }) {
           </View>
           <View style={styles.row}>
             <Pressable
-              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]}
               onPress={() => void mark(w.id, 'learned')}
             >
               <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Đã thuộc ✅</Text>
@@ -747,7 +747,7 @@ function SharedWords({ exam }: { exam: string }) {
         style={styles.flex}
         ListHeaderComponent={header}
         ListEmptyComponent={
-          <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+          <View style={[styles.formCard, styles.emptyCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
             <Text style={styles.emptyIcon}>📖</Text>
             <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15), textAlign: 'center' }]}>
               {topic

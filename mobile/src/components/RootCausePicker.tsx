@@ -7,7 +7,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { api } from '../api';
 import { RADIUS, SPACING } from '../layout';
-import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedChip, themedButton, useTextSize, useTheme } from '../theme';
 
 export interface ErrorCodeInfo {
   code: string;
@@ -115,7 +115,7 @@ export default function RootCausePicker({
   }, [code, questionId, attemptId, skill, questionType, guessed, timeSpentSec, onLogged]);
 
   return (
-    <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+    <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'compact')]}>
       <Text style={[styles.title, { color: colors.text, fontSize: scaled(15) }]}>
         🔍 Vì sao mình sai câu này?{guessed ? ' (bạn đã đánh dấu đoán mò 🤔)' : ''} Chọn 1 nguyên nhân để ghi vào sổ lỗi — giải thích sẽ hiện sau khi bạn chọn.
       </Text>
@@ -132,7 +132,7 @@ export default function RootCausePicker({
                 styles.chip,
                 { borderColor: colors.border, backgroundColor: colors.surface },
                 selected && { borderColor: colors.accent, backgroundColor: colors.accent },
-                livelyChip(colors),
+                themedChip(colors), selected && { borderColor: colors.accent, backgroundColor: colors.accent },
               ]}
               onPress={() => setCode(c.code)}
             >
@@ -152,7 +152,7 @@ export default function RootCausePicker({
         })}
       </View>
       <Pressable
-        style={[styles.saveButton, { backgroundColor: colors.accent }, (!code || saving) && styles.disabled, raisedButton(colors)]}
+        style={[styles.saveButton, { backgroundColor: colors.accent }, (!code || saving) && styles.disabled, themedButton(colors)]}
         disabled={!code || saving}
         onPress={() => void save()}
       >

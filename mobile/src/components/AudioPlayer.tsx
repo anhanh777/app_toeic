@@ -17,7 +17,7 @@ import { setAudioModeAsync, useAudioPlayer, useAudioPlayerStatus } from 'expo-au
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
 import { RADIUS, SPACING } from '../layout';
-import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedBarTrack, themedCard, themedChip, themedButton, useTextSize, useTheme } from '../theme';
 
 let activeStop: (() => void) | null = null;
 let audioModeSet = false;
@@ -276,7 +276,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
 
   if (!audioUrl) {
     return (
-      <View style={[styles.box, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+      <View style={[styles.box, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
         <View style={[styles.button, styles.buttonDisabled, { backgroundColor: colors.surfaceMuted }]}>
           <Text style={[styles.buttonText, { color: colors.muted, fontSize: scaled(14) }]}>🔊 Nghe</Text>
         </View>
@@ -288,10 +288,10 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
   }
 
   return (
-    <View style={[styles.box, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+    <View style={[styles.box, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
       <View style={styles.row}>
         <Pressable
-          style={[styles.button, { backgroundColor: colors.accent }, playDisabled && styles.buttonDisabled, raisedButton(colors)]}
+          style={[styles.button, { backgroundColor: colors.accent }, playDisabled && styles.buttonDisabled, themedButton(colors)]}
           disabled={playDisabled || uiStatus === 'loading'}
           onPress={() => toggle()}
         >
@@ -302,7 +302,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
           )}
         </Pressable>
         <Pressable
-          style={[styles.rateButton, { borderColor: colors.border }, livelyChip(colors)]}
+          style={[styles.rateButton, { borderColor: colors.border }, themedChip(colors)]}
           onPress={() => cycleRate()}
           accessibilityLabel="Đổi tốc độ phát"
         >
@@ -311,7 +311,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
       </View>
       <View style={styles.seekRow}>
         <Pressable
-          style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}
+          style={[styles.bar, { backgroundColor: colors.surfaceMuted }, themedBarTrack(colors)]}
           onLayout={(e) => setBarWidth(e.nativeEvent.layout.width)}
           onPress={(e) => seek(e.nativeEvent.locationX)}
           accessibilityLabel="Tua tới đoạn cần nghe"
@@ -324,14 +324,14 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
       </View>
       <View style={styles.controlsRow}>
         <Pressable
-          style={[styles.skipButton, { borderColor: colors.border }, livelyChip(colors)]}
+          style={[styles.skipButton, { borderColor: colors.border }, themedChip(colors)]}
           onPress={() => seekBy(-5)}
           accessibilityLabel="Tua lùi 5 giây"
         >
           <Text style={{ color: colors.text, fontSize: scaled(14), fontWeight: '700' }}>⏪ 5s</Text>
         </Pressable>
         <Pressable
-          style={[styles.skipButton, { borderColor: colors.border }, livelyChip(colors)]}
+          style={[styles.skipButton, { borderColor: colors.border }, themedChip(colors)]}
           onPress={() => seekBy(5)}
           accessibilityLabel="Tua tới 5 giây"
         >
@@ -340,7 +340,7 @@ export default function AudioPlayer({ audioUrl, stopKey, playOnce, onFirstPlay, 
         <View style={styles.volumeWrap}>
           <Text style={{ color: colors.text, fontSize: scaled(14) }} accessibilityLabel="Âm lượng">🔊</Text>
           <Pressable
-            style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}
+            style={[styles.bar, { backgroundColor: colors.surfaceMuted }, themedBarTrack(colors)]}
             onLayout={(e) => setVolWidth(e.nativeEvent.layout.width)}
             onPress={(e) => setVolumeFromX(e.nativeEvent.locationX)}
             accessibilityLabel="Âm lượng"

@@ -15,7 +15,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ApiError, api, type LeaderboardEntry } from '../api';
 import { useExam } from '../exam';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { livelyCard, livelyChip, useTextSize, useTheme } from '../theme';
+import { themedCard, themedChip, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 import { LoadingLine } from '../components/LoadingLine';
 
@@ -40,7 +40,7 @@ const EntryRow = memo(function EntryRow({
   const { colors } = useTheme();
   const { scaled } = useTextSize();
   return (
-    <View style={[styles.row, { borderColor: colors.border, backgroundColor: e.rank <= 3 ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}>
+    <View style={[styles.row, { borderColor: colors.border, backgroundColor: e.rank <= 3 ? colors.surfaceMuted : colors.surface }, themedCard(colors, 'compact')]}>
       <Text style={[styles.rank, { color: colors.text, fontSize: scaled(15) }]}>
         {e.rank <= 3 ? MEDALS[e.rank - 1] : `#${e.rank}`}
       </Text>
@@ -136,7 +136,7 @@ export default function LeaderboardScreen() {
 
         <View style={styles.chipRow}>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: metric !== 'xp' ? colors.accent : colors.surface }, livelyChip(colors)]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: metric !== 'xp' ? colors.accent : colors.surface }, themedChip(colors), metric !== 'xp' && { backgroundColor: colors.accent, borderColor: colors.accent }]}
             onPress={() => setMetric(isIelts ? 'band' : 'score')}
           >
             <Text style={{ color: metric !== 'xp' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -144,7 +144,7 @@ export default function LeaderboardScreen() {
             </Text>
           </Pressable>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: metric === 'xp' ? colors.accent : colors.surface }, livelyChip(colors)]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: metric === 'xp' ? colors.accent : colors.surface }, themedChip(colors), metric === 'xp' && { backgroundColor: colors.accent, borderColor: colors.accent }]}
             onPress={() => setMetric('xp')}
           >
             <Text style={{ color: metric === 'xp' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -156,7 +156,7 @@ export default function LeaderboardScreen() {
           {TABS.map((t) => (
             <Pressable
               key={t.id}
-              style={[styles.chip, { borderColor: colors.border, backgroundColor: tab === t.id ? colors.accent : colors.surface }, livelyChip(colors)]}
+              style={[styles.chip, { borderColor: colors.border, backgroundColor: tab === t.id ? colors.accent : colors.surface }, themedChip(colors), tab === t.id && { backgroundColor: colors.accent, borderColor: colors.accent }]}
               onPress={() => {
                 setTab(t.id);
                 setLoading(true);
@@ -180,7 +180,7 @@ export default function LeaderboardScreen() {
             {top3.length >= 3 && (
               <View style={styles.top3}>
                 {top3.map((e) => (
-                  <View key={e.rank} style={[styles.top3Card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+                  <View key={e.rank} style={[styles.top3Card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'compact')]}>
                     <Text style={[styles.medal, { fontSize: scaled(colors.style === 'lively' ? 26 : 20) }]}>{MEDALS[e.rank - 1]}</Text>
                     <Text style={[styles.top3Name, { color: colors.text, fontSize: scaled(14) }]} numberOfLines={1}>
                       {e.name}
@@ -206,7 +206,7 @@ export default function LeaderboardScreen() {
         )}
 
         {me && (
-          <View style={[styles.meCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+          <View style={[styles.meCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
             <Text style={[styles.meText, { color: colors.text, fontSize: scaled(15) }]}>
               Bạn đang hạng #{me.rank} — {metric === 'xp' ? `XP: ${me.xp}` : fmtValue(me)}
               {gap != null && gap > 0

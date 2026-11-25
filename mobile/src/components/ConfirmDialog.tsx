@@ -3,12 +3,12 @@
 // useConfirm() — trả về Promise<boolean>, true khi bấm nút chính.
 // Hình thức theo đúng mẫu bottom-sheet ⋮ trong app/mock.tsx: nền mờ, sheet
 // bo tròn, nút chính accent (hoặc đỏ khi danger), Sống động thì viền 2px +
-// viền dưới cứng qua livelyCard/raisedButton.
+// viền dưới cứng qua themedCard/themedButton.
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedButton, useTextSize, useTheme } from '../theme';
 
 export interface ConfirmOptions {
   title: string;
@@ -56,8 +56,8 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => ask, [ask]);
   const confirmBg = req?.danger ? colors.danger : colors.accent;
   const confirmBottom = req?.danger
-    ? raisedButton(colors, colors.redInk)
-    : raisedButton(colors);
+    ? themedButton(colors, colors.redInk)
+    : themedButton(colors);
 
   return (
     <ConfirmContext.Provider value={value}>
@@ -90,7 +90,7 @@ export function ConfirmProvider({ children }: { children: ReactNode }) {
                 style={[
                   styles.button,
                   { borderColor: colors.border, backgroundColor: colors.surface },
-                  livelyCard(colors, 'compact'),
+                  themedCard(colors, 'compact'),
                 ]}
                 onPress={() => close(false)}
                 accessibilityRole="button"

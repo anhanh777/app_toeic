@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { ApiError, api, type CheckinData, type CheckinHistoryItem } from '../api';
 import { CARD_PADDING, RADIUS, SPACING } from '../layout';
-import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedButton, useTextSize, useTheme } from '../theme';
 import { LoadingLine } from './LoadingLine';
 import { maybeRescheduleCheckinReminder } from '../notifications';
 
@@ -156,7 +156,7 @@ export function CheckinSection({ onCheckedIn }: { onCheckedIn?: () => void }) {
       style={[
         styles.card,
         { backgroundColor: colors.surface, borderColor: colors.border },
-        livelyCard(colors, 'card'),
+        themedCard(colors, 'card'),
       ]}
     >
       <Text style={[styles.title, { color: colors.text, fontSize: scaled(18) }]}>📅 Điểm danh hằng ngày</Text>
@@ -172,7 +172,7 @@ export function CheckinSection({ onCheckedIn }: { onCheckedIn?: () => void }) {
             style={[
               styles.checkinBtn,
               { backgroundColor: data.checkedInToday ? colors.surfaceMuted : colors.accent },
-              raisedButton(colors),
+              themedButton(colors),
             ]}
           >
             <Text style={[styles.checkinBtnText, { color: data.checkedInToday ? colors.text : colors.onAccent, fontSize: scaled(14) }]}>

@@ -28,7 +28,7 @@ import {
   RADIUS,
   SPACING,
 } from '../layout';
-import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedChip, themedButton, useTextSize, useTheme } from '../theme';
 import { useMenuIcons, type MenuIconKey } from '../menuIcons';
 import { useUiSettings } from '../uiSettings';
 import { BottomNav } from '../components/BottomNav';
@@ -281,7 +281,7 @@ export default function HomeScreen() {
           <Text style={[styles.hello, { color: colors.text, fontSize: scaled(20) }]}>
             Xin chào, {user?.name || user?.email || 'bạn'} 👋
           </Text>
-          <Pressable onPress={toggleTheme} style={[styles.chip, { borderColor: colors.border }, livelyChip(colors)]}>
+          <Pressable onPress={toggleTheme} style={[styles.chip, { borderColor: colors.border }, themedChip(colors)]}>
             <Text style={{ color: colors.text, fontSize: scaled(14) }}>
               {theme === 'dark' ? '☀️ Sáng' : '🌙 Tối'}
             </Text>
@@ -311,7 +311,7 @@ export default function HomeScreen() {
                     styles.card,
                     wide && styles.cardHalf,
                     { backgroundColor: colors.surface, borderColor: colors.border },
-                    livelyCard(colors, 'hero'),
+                    themedCard(colors, 'hero'),
                   ]}
                   onPress={() => pick(e.id)}
                 >
@@ -327,7 +327,7 @@ export default function HomeScreen() {
                   <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(14) }]}>
                     {e.testSetCount} đề • {e.questionCount} câu • Thang điểm: {e.scale}
                   </Text>
-                  <View style={[styles.pickButton, { backgroundColor: colors.accent }, raisedButton(colors)]}>
+                  <View style={[styles.pickButton, { backgroundColor: colors.accent }, themedButton(colors)]}>
                     <Text style={[styles.pickButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
                       Chọn {e.title}
                     </Text>
@@ -340,7 +340,7 @@ export default function HomeScreen() {
           <Animated.View entering={FadeIn.duration(280)} style={styles.homeWrap}>
             <Animated.View
               entering={ZoomIn.duration(320)}
-              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}
+              style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}
             >
               <Text style={[styles.emoji, { fontSize: scaled(isLively ? 36 : 28) }]}>
                 {exam === 'ielts' ? icons['exam-ielts'] : icons['exam-toeic']}
@@ -356,7 +356,7 @@ export default function HomeScreen() {
             {/* 3 stat-card phía trên hub menu (chuẩn web Home.tsx:37-51). */}
             {stats ? (
               <View style={styles.stats}>
-                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
                   <View style={[styles.statIcoBox, { backgroundColor: colors.greenBg }]}>
                     <Text style={{ fontSize: scaled(isLively ? 30 : 26) }}>🎯</Text>
                   </View>
@@ -390,7 +390,7 @@ export default function HomeScreen() {
                     </>
                   )}
                 </View>
-                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
                   <View style={[styles.statIcoBox, { backgroundColor: colors.sky }]}>
                     <Text style={{ fontSize: scaled(isLively ? 30 : 26) }}>📊</Text>
                   </View>
@@ -409,7 +409,7 @@ export default function HomeScreen() {
                     </Text>
                   ) : null}
                 </View>
-                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                <View style={[styles.statCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
                   <View style={[styles.statIcoBox, { backgroundColor: colors.amberBg }]}>
                     <Text style={{ fontSize: scaled(isLively ? 30 : 26) }}>🔥</Text>
                   </View>
@@ -431,13 +431,13 @@ export default function HomeScreen() {
                 (menu lưới bên dưới vẫn giữ). */}
             <View style={styles.quickRow}>
               <Pressable
-                style={[styles.quickBtn, { backgroundColor: colors.accent }, raisedButton(colors)]}
+                style={[styles.quickBtn, { backgroundColor: colors.accent }, themedButton(colors)]}
                 onPress={() => router.push('/practice')}
               >
                 <Text style={[styles.quickBtnText, { color: colors.onAccent, fontSize: scaled(14) }]}>▶ Luyện tiếp</Text>
               </Pressable>
               <Pressable
-                style={[styles.quickBtn, { backgroundColor: colors.gold }, raisedButton(colors, colors.goldInk)]}
+                style={[styles.quickBtn, { backgroundColor: colors.gold }, themedButton(colors, colors.goldInk)]}
                 onPress={() => router.push('/mock')}
               >
                 <Text style={[styles.quickBtnText, { color: colors.goldInk, fontSize: scaled(14) }]}>⏱ Thi thử</Text>
@@ -465,7 +465,7 @@ export default function HomeScreen() {
                 nhiệm vụ từ GET /api/today, trạng thái xong từ AsyncStorage.
                 Bấm thẻ nhiệm vụ thì cuộn tới khối 1 (không còn màn /today). */}
             {isLively ? (
-              <View style={[styles.livelyHero, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+              <View style={[styles.livelyHero, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
                 <Image
                   source={require('../../assets/mascot.png')}
                   style={{ width: 96, height: 96 }}
@@ -476,12 +476,12 @@ export default function HomeScreen() {
                     Học tiếp nào! 💪
                   </Text>
                   <View style={styles.livelyChips}>
-                    <View style={[styles.livelyChip, { backgroundColor: colors.accentSoft }]}>
+                    <View style={[styles.themedChip, { backgroundColor: colors.accentSoft }]}>
                       <Text style={[styles.livelyChipText, { color: colors.streak, fontSize: scaled(14) }]}>
                         🔥 {stats?.streakDays ?? todayData?.streak.current ?? 0} ngày
                       </Text>
                     </View>
-                    <View style={[styles.livelyChip, { backgroundColor: colors.accentSoft }]}>
+                    <View style={[styles.themedChip, { backgroundColor: colors.accentSoft }]}>
                       <Text style={[styles.livelyChipText, { color: colors.coin, fontSize: scaled(14) }]}>
                         🪙 {stats?.totalXp ?? 0} XP
                       </Text>
@@ -492,7 +492,7 @@ export default function HomeScreen() {
             ) : null}
             {isLively && todayData ? (
               <Pressable
-                style={[styles.card, styles.livelyTasks, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}
+                style={[styles.card, styles.livelyTasks, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}
                 onPress={scrollToReview}
               >
                 <Text style={[styles.livelyTasksTitle, { color: colors.text, fontSize: scaled(16) }]}>
@@ -529,7 +529,7 @@ export default function HomeScreen() {
                 {/* Hàng 2 thẻ: Đã xong hôm nay + Ngày mệt? (thẻ Streak
                     không vẽ lại ở đây vì đã có ở stat-card phía trên). */}
                 <View style={styles.statRow}>
-                  <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                  <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
                     <Text style={[styles.statEmoji, { fontSize: scaled(isLively ? 26 : 20) }]}>📅</Text>
                     <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Đã xong hôm nay</Text>
                     <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(16) }]}>{todayDone.length}/3 khối</Text>
@@ -537,7 +537,7 @@ export default function HomeScreen() {
                       {todayDone.length >= 3 ? '🎉 Xong hết rồi — nghỉ thôi!' : 'Cứ từ từ, từng khối một.'}
                     </Text>
                   </View>
-                  <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+                  <View style={[styles.stat, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
                     <Text style={[styles.statEmoji, { fontSize: scaled(isLively ? 26 : 20) }]}>🌧️</Text>
                     <Text style={[styles.statLabel, { color: colors.muted, fontSize: scaled(13) }]}>Ngày mệt?</Text>
                     <Text style={[styles.statBig, { color: colors.text, fontSize: scaled(14) }]}>
@@ -556,7 +556,7 @@ export default function HomeScreen() {
                 </View>
 
                 {badDay && (
-                  <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                  <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
                     <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>🌧️ Bài ngày nhẹ (5–10 phút)</Text>
                     <Text style={[styles.todayCardText, { color: colors.text, fontSize: scaled(15) }]}>{badDay.title}</Text>
                     <Text style={[styles.todayCardText, { color: colors.muted, fontSize: scaled(15) }]}>{badDay.detail}</Text>
@@ -566,7 +566,7 @@ export default function HomeScreen() {
                       </Pressable>
                     )}
                     <Pressable
-                      style={[styles.button, { backgroundColor: colors.accent, opacity: badDayDone ? 0.6 : 1 }, raisedButton(colors)]}
+                      style={[styles.button, { backgroundColor: colors.accent, opacity: badDayDone ? 0.6 : 1 }, themedButton(colors)]}
                       disabled={badDayDone}
                       onPress={() => {
                         setBadDayDone(true);
@@ -582,7 +582,7 @@ export default function HomeScreen() {
 
                 {/* Chuẩn web Today.tsx — nút cuộn tới khối 1. */}
                 <Pressable
-                  style={[styles.button, { backgroundColor: colors.gold }, raisedButton(colors, '#D9A400')]}
+                  style={[styles.button, { backgroundColor: colors.gold }, themedButton(colors, '#D9A400')]}
                   onPress={scrollToReview}
                 >
                   <Text style={[styles.buttonText, { color: colors.goldInk, fontSize: scaled(14) }]}>▶ Bắt đầu hôm nay</Text>
@@ -595,7 +595,7 @@ export default function HomeScreen() {
                 )}
 
                 <View
-                  style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}
+                  style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}
                   onLayout={(e) => {
                     reviewY.current = e.nativeEvent.layout.y;
                   }}
@@ -621,7 +621,7 @@ export default function HomeScreen() {
                       ) : null}
                       <View style={styles.row}>
                         <Pressable
-                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]}
                           onPress={() => router.push('/wrong')}
                         >
                           <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Ôn ngay →</Text>
@@ -637,7 +637,7 @@ export default function HomeScreen() {
                   )}
                 </View>
 
-                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
                   <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                     2️⃣ Luyện dạng yếu nhất {todayDone.includes('drill') ? '✓' : ''}
                   </Text>
@@ -660,7 +660,7 @@ export default function HomeScreen() {
                       </Text>
                       <View style={styles.row}>
                         <Pressable
-                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]}
                           onPress={() => router.push('/practice')}
                         >
                           <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Mở luyện tập →</Text>
@@ -676,7 +676,7 @@ export default function HomeScreen() {
                   )}
                 </View>
 
-                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
                   <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                     3️⃣ Luyện chủ động {todayDone.includes('active') ? '✓' : ''}
                   </Text>
@@ -689,7 +689,7 @@ export default function HomeScreen() {
                       </Text>
                       <View style={styles.row}>
                         <Pressable
-                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+                          style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]}
                           onPress={() => router.push('/practice')}
                         >
                           <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Mở luyện tập →</Text>
@@ -705,7 +705,7 @@ export default function HomeScreen() {
                   )}
                 </View>
 
-                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
                   <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>📚 Ôn từ vựng đến hạn</Text>
                   {(vocabBlock?.dueCount ?? 0) > 0 ? (
                     <>
@@ -713,7 +713,7 @@ export default function HomeScreen() {
                         Có <Text style={{ fontWeight: '700' }}>{vocabBlock?.dueCount}</Text> từ đến hạn ôn hôm nay — mỗi từ ôn đúng +2 XP.
                       </Text>
                       <Pressable
-                        style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
+                        style={[styles.button, { backgroundColor: colors.accent }, themedButton(colors)]}
                         onPress={() => router.push('/vocabulary')}
                       >
                         <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Ôn ngay →</Text>
@@ -725,7 +725,7 @@ export default function HomeScreen() {
                 </View>
 
                 {isIelts && quitReason === 'chan' && (
-                  <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+                  <View style={[styles.todayCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
                     <Text style={[styles.todayCardTitle, { color: colors.text, fontSize: scaled(18) }]}>🎲 Đổi gió theo chủ đề bạn thích</Text>
                     <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
                       Chọn chủ đề — app sẽ ưu tiên bài đọc/nghe cùng chủ đề khi có.
@@ -736,7 +736,7 @@ export default function HomeScreen() {
                         return (
                           <Pressable
                             key={t}
-                            style={[styles.chip, { borderColor: colors.border, backgroundColor: selected ? colors.accent : colors.surface }, livelyChip(colors)]}
+                            style={[styles.chip, { borderColor: colors.border, backgroundColor: selected ? colors.accent : colors.surface }, themedChip(colors), selected && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                             onPress={() => toggleTopic(t)}
                           >
                             <Text style={{ color: selected ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -746,7 +746,7 @@ export default function HomeScreen() {
                         );
                       })}
                     </View>
-                    <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+                    <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'compact')]}>
                       <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>👹 Boss cuối tuần</Text>
                       <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
                         Mini test 20–30 phút, đánh 1 con quái to — sẽ mở sau. Cứ luyện đều mỗi ngày
@@ -766,7 +766,7 @@ export default function HomeScreen() {
                   style={[
                     styles.menuItem,
                     { backgroundColor: colors.surface, borderColor: colors.border },
-                    livelyCard(colors, 'compact'),
+                    themedCard(colors, 'compact'),
                   ]}
                   onPress={() => router.push(m.href as never)}
                 >
@@ -780,7 +780,7 @@ export default function HomeScreen() {
 
             <View style={styles.menu}>
               <Pressable
-                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}
+                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'compact')]}
                 onPress={clearExam}
               >
                 <Text style={[styles.menuEmoji, { fontSize: scaled(isLively ? 28 : 24) }]}>{icons['switch-exam']}</Text>
@@ -789,7 +789,7 @@ export default function HomeScreen() {
                 </Text>
               </Pressable>
               <Pressable
-                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}
+                style={[styles.menuItem, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'compact')]}
                 onPress={logout}
               >
                 <Text style={[styles.menuEmoji, { fontSize: scaled(isLively ? 28 : 24) }]}>🚪</Text>
@@ -873,7 +873,7 @@ const styles = StyleSheet.create({
   livelyHeroText: { flex: 1, gap: SPACING.sm, flexShrink: 1 },
   livelyHeroTitle: { fontWeight: '800', flexWrap: 'wrap' },
   livelyChips: { flexDirection: 'row', gap: SPACING.sm, flexWrap: 'wrap' },
-  livelyChip: { borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: 6 },
+  themedChip: { borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: 6 },
   livelyChipText: { fontWeight: '800' },
   livelyTasks: { alignItems: 'flex-start', gap: SPACING.sm },
   livelyTasksTitle: { fontWeight: '800', flexWrap: 'wrap' },

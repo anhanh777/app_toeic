@@ -16,7 +16,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type TestSet } from '../api';
 import { useExam, type ExamId } from '../exam';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { BackButton } from '../components/BackButton';
 import { LoadingLine } from '../components/LoadingLine';
@@ -91,7 +91,7 @@ export default function PartSetsScreen() {
           style={[
             styles.card,
             { backgroundColor: colors.surface, borderColor: colors.border, opacity: disabled ? 0.55 : 1 },
-            livelyCard(colors, 'compact'),
+            themedCard(colors, 'compact'),
           ]}
           onPress={() => openSession(ts)}
           accessibilityRole="button"
@@ -111,7 +111,7 @@ export default function PartSetsScreen() {
           {disabled ? (
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có câu</Text>
           ) : (
-            <View style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}>
+            <View style={[styles.button, { backgroundColor: colors.accent }, themedButton(colors)]}>
               <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
                 ▶ Luyện {isIelts ? partNameFor(partNum, ex) : partName(partNum)}
               </Text>
@@ -133,7 +133,7 @@ export default function PartSetsScreen() {
             <BackButton />
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(20) }]}>Part không hợp lệ</Text>
           </View>
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
             <Text style={{ color: colors.text, fontSize: scaled(15) }}>Part không hợp lệ.</Text>
           </View>
         </View>
@@ -158,7 +158,7 @@ export default function PartSetsScreen() {
         ) : error ? (
           <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text>
         ) : sortedSets.length === 0 ? (
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
             <Text style={{ color: colors.text, fontSize: scaled(15) }}>Chưa có bộ đề nào.</Text>
           </View>
         ) : (

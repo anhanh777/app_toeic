@@ -689,6 +689,95 @@ export function livelyOption(
   return { ...base, borderColor: colors.border, backgroundColor: colors.surface, borderBottomColor: colors.borderHard };
 }
 
+export function themedOption(
+  colors: Palette,
+  state: 'default' | 'selected' | 'correct' | 'wrong' = 'default',
+): ViewStyle {
+  if (colors.style === 'lively') return livelyOption(colors, state);
+  if (colors.style === 'pastel') return {};
+  const base: ViewStyle = { borderWidth: 2, borderBottomWidth: 3, borderRadius: 14 };
+  if (state === 'selected')
+    return { ...base, borderColor: colors.accent, backgroundColor: colors.accentSoft, borderBottomColor: colors.accentDark };
+  if (state === 'correct')
+    return { ...base, borderColor: colors.success, backgroundColor: colors.greenBg, borderBottomColor: colors.greenInk };
+  if (state === 'wrong')
+    return { ...base, borderColor: colors.danger, backgroundColor: colors.redBg, borderBottomColor: colors.redInk };
+  return { ...base, borderColor: colors.border, backgroundColor: colors.surface, borderBottomColor: colors.borderHard };
+}
+
+/** Bo góc theo kiểu cho themed*: sunset 18/14/16, forest 14/12/14,
+ * sakura 20/16/18 (card/hero/compact/button). */
+function themedRadii(style: Palette['style']): { card: number; hero: number; compact: number; button: number } {
+  switch (style) {
+    case 'sunset':
+      return { card: 18, hero: 20, compact: 14, button: 14 };
+    case 'forest':
+      return { card: 14, hero: 16, compact: 10, button: 12 };
+    case 'sakura':
+      return { card: 20, hero: 22, compact: 16, button: 16 };
+    default:
+      return { card: 18, hero: 20, compact: 14, button: 16 };
+  }
+}
+
+/** Thẻ theo kiểu đã chọn: lively → livelyCard cũ (giữ nguyên), pastel → {}.
+ * sunset/forest/sakura: viền 2px màu border + viền dưới cứng 4px (3px compact)
+ * như livelyCard, bo theo từng kiểu (sunset 18, forest 14, sakura 20; hero +2,
+ * compact −4), padding như livelyCard (hero 18, card 16, compact giữ nguyên).
+ * LƯU Ý: helper này GHI ĐÈ borderColor bằng colors.border — các thẻ có viền
+ * màu riêng (viền accent khi đang chọn, viền danger khi vượt giới hạn,
+ * viền success khi đã diệt quái...) phải đặt lại { borderColor: ... } SAU
+ * themedCard trong mảng style. Đặt CUỐI mảng style (trước các object viền
+ * màu cần giữ). */
+export function themedCard(colors: Palette, size: LivelyCardSize = 'card', bottomColor?: string): ViewStyle {
+  if (colors.style === 'lively') return livelyCard(colors, size, bottomColor);
+  if (colors.style === 'pastel') return {};
+  const r = themedRadii(colors.style);
+  const base: ViewStyle = {
+    borderWidth: 2,
+    borderColor: colors.border,
+    borderBottomWidth: 4,
+    borderBottomColor: bottomColor ?? colors.borderHard,
+  };
+  if (size === 'hero') return { ...base, borderRadius: r.hero, padding: 18 };
+  if (size === 'compact') return { ...base, borderRadius: r.compact, borderBottomWidth: 3 };
+  return { ...base, borderRadius: r.card, padding: 16 };
+}
+
+/** Nút theo kiểu đã chọn: lively → raisedButton cũ, pastel → {}.
+ * sunset/forest/sakura: bo theo kiểu (14/12/16) + viền dưới cứng 4px màu
+ * accent-dark (hoặc bottomColor riêng, vd. nút vàng/danger).
+ * KHÔNG đặt backgroundColor: màu nền đã có sẵn inline ở từng call site
+ * (accent cho nút chính, vàng cho nút gold, danger cho nút nguy hiểm) —
+ * ép backgroundColor: colors.accent ở đây sẽ phá các nút gold/danger.
+ * Đặt CUỐI mảng style của Pressable. */
+export function themedButton(colors: Palette, bottomColor?: string): ViewStyle {
+  if (colors.style === 'lively') return raisedButton(colors, bottomColor);
+  if (colors.style === 'pastel') return {};
+  return { borderBottomWidth: 4, borderBottomColor: bottomColor ?? colors.accentDark, borderRadius: themedRadii(colors.style).button };
+}
+
+/** Chip/pill theo kiểu đã chọn: lively → livelyChip cũ, pastel → {}.
+ * sunset/forest/sakura: pill nền accent-soft + viền 2px accent-soft-strong
+ * + viền dưới cứng 3px, bo 999. Chip đang CHỌN (nền accent) phải đặt lại
+ * { backgroundColor: colors.accent, borderColor: colors.accent } SAU
+ * themedChip trong mảng style, nếu không chữ trắng onAccent sẽ chìm trên
+ * nền accent-soft. Đặt CUỐI mảng style (trước object chọn nếu có). */
+export function themedChip(colors: Palette): ViewStyle {
+  if (colors.style === 'lively') return livelyChip(colors);
+  if (colors.style === 'pastel') return {};
+  return { borderWidth: 2, borderColor: colors.accentSoftStrong, backgroundColor: colors.accentSoft, borderBottomWidth: 3, borderBottomColor: colors.borderHard, borderRadius: 999 };
+}
+
+/** Track thanh tiến độ/XP theo kiểu đã chọn: lively → livelyBarTrack cũ,
+ * pastel → {}. sunset/forest/sakura: dày 14, bo 999, viền 2px màu border.
+ * Đặt CUỐI mảng style của track. */
+export function themedBarTrack(colors: Palette): ViewStyle {
+  if (colors.style === 'lively') return livelyBarTrack(colors);
+  if (colors.style === 'pastel') return {};
+  return { height: 14, borderRadius: 999, borderWidth: 2, borderColor: colors.border, overflow: 'hidden' };
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const system = useColorScheme();
   const [saved, setSaved] = useState<Theme | 'system'>('system');

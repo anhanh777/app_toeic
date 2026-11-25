@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { api, type PartInfo, type StatsOverview, type TestSet } from '../api';
 import { useExam } from '../exam';
 import { CARD_PADDING, columnsForWidth, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedBarTrack, themedCard, themedChip, themedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
@@ -119,7 +119,7 @@ export default function PracticeScreen() {
             styles.card,
             columns === 2 && styles.cardWide,
             { backgroundColor: colors.surface, borderColor: colors.border },
-            livelyCard(colors, 'compact'),
+            themedCard(colors, 'compact'),
           ]}
           onPress={() => openSet(ts.id, ts.title)}
         >
@@ -147,14 +147,14 @@ export default function PracticeScreen() {
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
                 Đã làm {answered}/{rowTotal} câu ({pct}%)
               </Text>
-              <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
+              <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, themedBarTrack(colors)]}>
                 <View style={[styles.barFill, { width: `${pct}%`, backgroundColor: colors.success }]} />
               </View>
             </View>
           ) : (
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa làm câu nào trong đề này</Text>
           )}
-          <View style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}>
+          <View style={[styles.button, { backgroundColor: colors.accent }, themedButton(colors)]}>
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>
               {answered > 0 ? '▶ Làm tiếp' : '👁 Xem đề'}
             </Text>
@@ -181,7 +181,7 @@ export default function PracticeScreen() {
             styles.card,
             styles.partCard,
             { backgroundColor: colors.surface, borderColor: selected ? colors.accent : colors.border },
-            livelyCard(colors, 'card', selected ? colors.accentDark : undefined),
+            themedCard(colors, 'card', selected ? colors.accentDark : undefined), { borderColor: selected ? colors.accent : colors.border },
           ]}
         >
           <Pressable onPress={() => setPart(p.part)} accessibilityRole="button">
@@ -197,14 +197,14 @@ export default function PracticeScreen() {
                 <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
                   Tỉ lệ đúng: {pct}% ({a.correct}/{a.answered} câu)
                 </Text>
-                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
+                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, themedBarTrack(colors)]}>
                   <View style={[styles.barFill, { width: `${pct}%`, backgroundColor: colors.accent }]} />
                 </View>
               </>
             ) : null}
           </Pressable>
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
+            style={[styles.button, { backgroundColor: colors.accent }, themedButton(colors)]}
             onPress={() => openSetPicker(p.part)}
             accessibilityRole="button"
             accessibilityLabel={`Luyện ${isIelts ? partNameFor(p.part, ex) : partName(p.part)}`}
@@ -227,7 +227,7 @@ export default function PracticeScreen() {
         </View>
         <View style={styles.tabs}>
           <Pressable
-            style={[styles.tab, { borderColor: colors.border }, tab === 'sets' && { backgroundColor: colors.accent }, livelyChip(colors)]}
+            style={[styles.tab, { borderColor: colors.border }, tab === 'sets' && { backgroundColor: colors.accent }, themedChip(colors), tab === 'sets' && { backgroundColor: colors.accent, borderColor: colors.accent }]}
             onPress={() => setTab('sets')}
           >
             <Text style={{ color: tab === 'sets' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700', textAlign: 'center' }}>
@@ -235,7 +235,7 @@ export default function PracticeScreen() {
             </Text>
           </Pressable>
           <Pressable
-            style={[styles.tab, { borderColor: colors.border }, tab === 'parts' && { backgroundColor: colors.accent }, livelyChip(colors)]}
+            style={[styles.tab, { borderColor: colors.border }, tab === 'parts' && { backgroundColor: colors.accent }, themedChip(colors), tab === 'parts' && { backgroundColor: colors.accent, borderColor: colors.accent }]}
             onPress={() => setTab('parts')}
           >
             <Text style={{ color: tab === 'parts' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700', textAlign: 'center' }}>
@@ -250,7 +250,7 @@ export default function PracticeScreen() {
           ) : setsError ? (
             <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{setsError}</Text>
           ) : testSets.length === 0 ? (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
               <Text style={{ color: colors.text, fontSize: scaled(15) }}>Chưa có bộ đề nào.</Text>
             </View>
           ) : (

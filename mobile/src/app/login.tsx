@@ -21,7 +21,7 @@ import { useAuth } from '../auth';
 import { useBrand } from '../brand';
 import { GoogleSignInButton } from '../components/GoogleSignInButton';
 import { horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedButton, useTextSize, useTheme } from '../theme';
 
 export default function LoginScreen() {
   const { login } = useAuth();
@@ -94,7 +94,7 @@ export default function LoginScreen() {
             ) : null}
           </View>
 
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
             <Text style={[styles.title, { color: colors.text, fontSize: scaled(20) }]}>
               Đăng nhập
             </Text>
@@ -107,7 +107,7 @@ export default function LoginScreen() {
               style={[
                 styles.input,
                 { borderColor: colors.border, backgroundColor: colors.surfaceMuted, color: colors.text, fontSize: scaled(16) },
-                livelyCard(colors, 'compact'),
+                themedCard(colors, 'compact'),
               ]}
               value={email}
               onChangeText={setEmail}
@@ -124,7 +124,7 @@ export default function LoginScreen() {
               style={[
                 styles.input,
                 { borderColor: colors.border, backgroundColor: colors.surfaceMuted, color: colors.text, fontSize: scaled(16) },
-                livelyCard(colors, 'compact'),
+                themedCard(colors, 'compact'),
               ]}
               value={password}
               onChangeText={setPassword}
@@ -141,7 +141,7 @@ export default function LoginScreen() {
             ) : null}
 
             <Pressable
-              style={[styles.button, { backgroundColor: colors.accent, opacity: busy ? 0.7 : 1 }, raisedButton(colors)]}
+              style={[styles.button, { backgroundColor: colors.accent, opacity: busy ? 0.7 : 1 }, themedButton(colors)]}
               onPress={submit}
               disabled={busy}
             >

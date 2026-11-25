@@ -25,7 +25,7 @@ import {
   wordCount,
 } from '../lib';
 import { RADIUS, SPACING } from '../layout';
-import { livelyCard, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedOption, themedButton, useTextSize, useTheme } from '../theme';
 import AudioPlayer from './AudioPlayer';
 import IeltsAnswerControl from './IeltsAnswerControl';
 import RootCausePicker from './RootCausePicker';
@@ -157,7 +157,7 @@ function QuestionViewInner({
     : result?.correctLabel ?? result?.correctText ?? '';
 
   return (
-    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
       {hideText && q.part === 2 && listeningOnly ? (
         <Text style={[styles.line, { color: colors.text, fontSize: scaled(14), fontWeight: '700' }]}>
           🎧 Nghe và chọn đáp án đúng
@@ -227,7 +227,7 @@ function QuestionViewInner({
                   isSel && { borderColor: colors.accent, backgroundColor: colors.surfaceMuted },
                   isCorrect && { borderColor: colors.success, backgroundColor: colors.surfaceMuted },
                   isWrong && { borderColor: colors.danger, backgroundColor: colors.surfaceMuted },
-                  livelyOption(colors, isCorrect ? 'correct' : isWrong ? 'wrong' : isSel ? 'selected' : 'default'),
+                  themedOption(colors, isCorrect ? 'correct' : isWrong ? 'wrong' : isSel ? 'selected' : 'default'),
                 ]}
                 disabled={mode === 'practice' && (!!result || !!submittedAll)}
                 onPress={() => {
@@ -265,7 +265,7 @@ function QuestionViewInner({
         <View style={styles.submitRow}>
           {!hideSubmitButton ? (
             <Pressable
-              style={[styles.submitButton, { backgroundColor: colors.accent }, (!selected || overLimit) && styles.disabled, raisedButton(colors)]}
+              style={[styles.submitButton, { backgroundColor: colors.accent }, (!selected || overLimit) && styles.disabled, themedButton(colors)]}
               disabled={!selected || overLimit}
               onPress={() => onSubmit?.(q.id)}
             >

@@ -18,7 +18,7 @@ import { ApiError, api, type ErrorCode, type ErrorLogEntry, type Monster, type W
 import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { questionTypeName } from '../lib';
 import { maybeScheduleDueReminder } from '../notifications';
-import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedBarTrack, themedCard, themedChip, themedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 import { LoadingLine } from '../components/LoadingLine';
 
@@ -92,7 +92,7 @@ const ErrorItem = memo(function ErrorItem({
   const { colors } = useTheme();
   const { scaled } = useTextSize();
   return (
-    <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+    <View style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'compact')]}>
       <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(14) }]}>
         {errorCodeName(it.errorCode, codes)} · {SKILL_EMOJI[it.skill] ?? ''} {SKILL_LABEL[it.skill] ?? it.skill}
         {it.questionType ? ` · ${questionTypeName(it.questionType)}` : ''}
@@ -141,7 +141,7 @@ const MonsterCard = memo(function MonsterCard({ m }: { m: Monster }) {
       style={[
         styles.monster,
         { backgroundColor: colors.surface, borderColor: m.killed ? colors.success : colors.border },
-        livelyCard(colors, 'compact'),
+        themedCard(colors, 'compact'), { borderColor: m.killed ? colors.success : colors.border },
       ]}
     >
       <Text style={[styles.monsterEmoji, { fontSize: scaled(colors.style === 'lively' ? 28 : 24) }]}>{SKILL_EMOJI[m.skill] ?? '👹'}</Text>
@@ -287,7 +287,7 @@ export default function ErrorLogScreen() {
           <LoadingLine location="table" />
         ) : (
           <>
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                 (a) Ôn lỗi đến hạn ({due.length})
               </Text>
@@ -301,14 +301,14 @@ export default function ErrorLogScreen() {
               ))}
             </View>
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                 (b) Tất cả lỗi ({filtered.length}/{all.length})
               </Text>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Kỹ năng</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
                 <Pressable
-                  style={[styles.chip, { borderColor: colors.border, backgroundColor: !filterSkill ? colors.accent : colors.surface }, livelyChip(colors)]}
+                  style={[styles.chip, { borderColor: colors.border, backgroundColor: !filterSkill ? colors.accent : colors.surface }, themedChip(colors), !filterSkill && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                   onPress={() => { setFilterSkill(''); setFilterCode(''); }}
                 >
                   <Text style={{ color: !filterSkill ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>Tất cả</Text>
@@ -316,7 +316,7 @@ export default function ErrorLogScreen() {
                 {Object.entries(SKILL_LABEL).map(([k, v]) => (
                   <Pressable
                     key={k}
-                    style={[styles.chip, { borderColor: colors.border, backgroundColor: filterSkill === k ? colors.accent : colors.surface }, livelyChip(colors)]}
+                    style={[styles.chip, { borderColor: colors.border, backgroundColor: filterSkill === k ? colors.accent : colors.surface }, themedChip(colors), filterSkill === k && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                     onPress={() => { setFilterSkill(k); setFilterCode(''); }}
                   >
                     <Text style={{ color: filterSkill === k ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -330,7 +330,7 @@ export default function ErrorLogScreen() {
                   <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Mã lỗi</Text>
                   <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filterScroll}>
                     <Pressable
-                      style={[styles.chip, { borderColor: colors.border, backgroundColor: !filterCode ? colors.accent : colors.surface }, livelyChip(colors)]}
+                      style={[styles.chip, { borderColor: colors.border, backgroundColor: !filterCode ? colors.accent : colors.surface }, themedChip(colors), !filterCode && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                       onPress={() => setFilterCode('')}
                     >
                       <Text style={{ color: !filterCode ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>Tất cả</Text>
@@ -338,7 +338,7 @@ export default function ErrorLogScreen() {
                     {codesForSkill(filterSkill, codes).map((c) => (
                       <Pressable
                         key={c.code}
-                        style={[styles.chip, { borderColor: colors.border, backgroundColor: filterCode === c.code ? colors.accent : colors.surface }, livelyChip(colors)]}
+                        style={[styles.chip, { borderColor: colors.border, backgroundColor: filterCode === c.code ? colors.accent : colors.surface }, themedChip(colors), filterCode === c.code && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                         onPress={() => setFilterCode(c.code)}
                       >
                         <Text style={{ color: filterCode === c.code ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -357,7 +357,7 @@ export default function ErrorLogScreen() {
               )}
             </View>
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                 (c) Lỗi theo tuần (6 tuần gần nhất)
               </Text>
@@ -367,7 +367,7 @@ export default function ErrorLogScreen() {
               {weekGroups.map(([week, count]) => (
                 <View key={week} style={styles.barRow}>
                   <Text style={[styles.barLabel, { color: colors.text, fontSize: scaled(13) }]}>{week}</Text>
-                  <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
+                  <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }, themedBarTrack(colors)]}>
                     <View style={[styles.barFill, { width: `${(count / maxWeekly) * 100}%`, backgroundColor: colors.accent }]} />
                   </View>
                   <Text style={[styles.barCount, { color: colors.text, fontSize: scaled(13) }]}>{count}</Text>
@@ -375,7 +375,7 @@ export default function ErrorLogScreen() {
               ))}
             </View>
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                 (d) Quái — đã diệt {killed.length}/{monsters.length} 👹
               </Text>
@@ -396,7 +396,7 @@ export default function ErrorLogScreen() {
               )}
             </View>
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>(e) Thêm lỗi thủ công</Text>
               <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>
                 Dùng khi tự phát hiện lỗi ở Writing/Speaking (hoặc lỗi ngoài bài luyện) — ghi tay vào sổ.
@@ -406,7 +406,7 @@ export default function ErrorLogScreen() {
                 {Object.entries(SKILL_LABEL).map(([k, v]) => (
                   <Pressable
                     key={k}
-                    style={[styles.chip, { borderColor: colors.border, backgroundColor: meSkill === k ? colors.accent : colors.surface }, livelyChip(colors)]}
+                    style={[styles.chip, { borderColor: colors.border, backgroundColor: meSkill === k ? colors.accent : colors.surface }, themedChip(colors), meSkill === k && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                     onPress={() => {
                       setMeSkill(k);
                       const first = codesForSkill(k, codes)[0]?.code;
@@ -424,7 +424,7 @@ export default function ErrorLogScreen() {
                 {meCodes.map((c) => (
                   <Pressable
                     key={c.code}
-                    style={[styles.chip, { borderColor: colors.border, backgroundColor: meCode === c.code ? colors.accent : colors.surface }, livelyChip(colors)]}
+                    style={[styles.chip, { borderColor: colors.border, backgroundColor: meCode === c.code ? colors.accent : colors.surface }, themedChip(colors), meCode === c.code && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                     onPress={() => setMeCode(c.code)}
                   >
                     <Text style={{ color: meCode === c.code ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -435,7 +435,7 @@ export default function ErrorLogScreen() {
               </ScrollView>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Bằng chứng (câu/ví dụ cụ thể)</Text>
               <TextInput
-                style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+                style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact')]}
                 value={meEvidence}
                 onChangeText={setMeEvidence}
                 placeholder="VD: Viết 'more better' trong Task 2…"
@@ -444,14 +444,14 @@ export default function ErrorLogScreen() {
               />
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Từ khóa bỏ lỡ (nếu có)</Text>
               <TextInput
-                style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+                style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact')]}
                 value={meKeyword}
                 onChangeText={setMeKeyword}
                 placeholder="VD: furthermore"
                 placeholderTextColor={colors.muted}
               />
               <Pressable
-                style={[styles.button, { backgroundColor: colors.accent, opacity: meSaving || !meCode ? 0.6 : 1 }, raisedButton(colors)]}
+                style={[styles.button, { backgroundColor: colors.accent, opacity: meSaving || !meCode ? 0.6 : 1 }, themedButton(colors)]}
                 onPress={() => void submitManual()}
                 disabled={meSaving || !meCode}
               >

@@ -18,7 +18,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { ApiError, api, type WritingSubmission, type WritingTask } from '../api';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { wordCount } from '../lib';
-import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 import { LoadingLine } from '../components/LoadingLine';
 
@@ -47,7 +47,7 @@ const ChartText = memo(function ChartText({ data }: { data: NonNullable<WritingT
   }
   if (!lines.length) return null;
   return (
-    <View style={[styles.chart, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+    <View style={[styles.chart, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'compact')]}>
       {lines.map((l, i) => (
         <Text key={i} style={[styles.chartLine, { color: colors.text, fontSize: scaled(14) }]}>{l}</Text>
       ))}
@@ -171,7 +171,7 @@ export default function WritingScreen() {
               borderColor: selected ? colors.accent : colors.border,
               backgroundColor: selected ? colors.surfaceMuted : colors.surface,
             },
-            livelyCard(colors, 'card', selected ? colors.accentDark : undefined),
+            themedCard(colors, 'card', selected ? colors.accentDark : undefined), { borderColor: selected ? colors.accent : colors.border },
           ]}
           onPress={() => pick(t)}
         >
@@ -219,7 +219,7 @@ export default function WritingScreen() {
             />
 
             {task && (
-              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
                 <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                   {task.title} <Text style={{ color: colors.accent }}>· {task.type === 'task1' ? 'Task 1' : 'Task 2'}</Text>
                 </Text>
@@ -239,7 +239,7 @@ export default function WritingScreen() {
                 </Pressable>
                 <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Bài viết của bạn</Text>
                 <TextInput
-                  style={[styles.editor, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+                  style={[styles.editor, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact')]}
                   value={content}
                   onChangeText={setContent}
                   placeholder="Viết bài của bạn ở đây…"
@@ -274,7 +274,7 @@ export default function WritingScreen() {
                   ))}
                 </View>
                 <Pressable
-                  style={[styles.button, { backgroundColor: colors.accent, opacity: !content.trim() || saving ? 0.6 : 1 }, raisedButton(colors)]}
+                  style={[styles.button, { backgroundColor: colors.accent, opacity: !content.trim() || saving ? 0.6 : 1 }, themedButton(colors)]}
                   onPress={() => void submit()}
                   disabled={!content.trim() || saving}
                 >
@@ -290,7 +290,7 @@ export default function WritingScreen() {
               </View>
             )}
 
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
               <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>Bài đã nộp ({subs.length})</Text>
               {!subs.length && (
                 <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(15) }]}>Chưa có bài nộp nào.</Text>

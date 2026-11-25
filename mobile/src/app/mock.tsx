@@ -33,7 +33,7 @@ import {
   SPACING,
 } from '../layout';
 import { paperNumbersFor, partLabel, partNameFor, realQuestionNumber } from '../lib';
-import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedChip, themedButton, useTextSize, useTheme } from '../theme';
 import { BottomNav } from '../components/BottomNav';
 import { TabScreen } from '../components/TabScreen';
 import { BackButton } from '../components/BackButton';
@@ -474,7 +474,7 @@ export default function MockTestScreen() {
           <View style={styles.cluster}>
             {header}
             {block.passageText ? (
-              <View style={[styles.passage, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+              <View style={[styles.passage, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'card')]}>
                 <PassageView text={block.passageText} isP6={isP6Block} blanks={blanks} wordLookup={isReading} />
               </View>
             ) : null}
@@ -548,7 +548,7 @@ export default function MockTestScreen() {
           </View>
           {error ? <Text style={{ color: colors.danger, fontSize: scaled(15) }}>{error}</Text> : null}
           {paramTestSetId ? (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
               <Text style={[styles.title, { color: colors.text, fontSize: scaled(18) }]}>Thi thử cả đề</Text>
               {testSet ? (
                 <>
@@ -589,7 +589,7 @@ export default function MockTestScreen() {
                 </Text>
               ) : null}
               <Pressable
-                style={[styles.button, { backgroundColor: colors.accent }, (busy || !testSet || !testSet.totalQuestions) && styles.disabled, raisedButton(colors)]}
+                style={[styles.button, { backgroundColor: colors.accent }, (busy || !testSet || !testSet.totalQuestions) && styles.disabled, themedButton(colors)]}
                 disabled={busy || !testSet || !testSet.totalQuestions}
                 onPress={() => void start()}
               >
@@ -597,11 +597,11 @@ export default function MockTestScreen() {
               </Pressable>
             </View>
           ) : (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(15) }]}>Loại bài thi</Text>
               <View style={styles.tabs}>
                 <Pressable
-                  style={[styles.tab, { borderColor: colors.border }, mode === 'mini' && { backgroundColor: colors.accent }, livelyChip(colors)]}
+                  style={[styles.tab, { borderColor: colors.border }, mode === 'mini' && { backgroundColor: colors.accent }, themedChip(colors), mode === 'mini' && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                   onPress={() => setMode('mini')}
                 >
                   <Text style={{ color: mode === 'mini' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>
@@ -609,7 +609,7 @@ export default function MockTestScreen() {
                   </Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.tab, { borderColor: colors.border }, mode === 'full' && { backgroundColor: colors.accent }, livelyChip(colors)]}
+                  style={[styles.tab, { borderColor: colors.border }, mode === 'full' && { backgroundColor: colors.accent }, themedChip(colors), mode === 'full' && { backgroundColor: colors.accent, borderColor: colors.accent }]}
                   onPress={() => setMode('full')}
                 >
                   <Text style={{ color: mode === 'full' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700' }}>
@@ -626,7 +626,7 @@ export default function MockTestScreen() {
                     {[1, 2, 3, 4, 5, 6, 7].map((p) => (
                       <Pressable
                         key={p}
-                        style={[styles.partChip, { borderColor: part === p ? colors.accent : colors.border, backgroundColor: part === p ? colors.surfaceMuted : colors.surface }, livelyChip(colors)]}
+                        style={[styles.partChip, { borderColor: part === p ? colors.accent : colors.border, backgroundColor: part === p ? colors.surfaceMuted : colors.surface }, themedChip(colors), part === p && { borderColor: colors.accent, backgroundColor: colors.surfaceMuted }]}
                         onPress={() => setPart(p)}
                       >
                         {/* Chữ 13: nhãn "Section 1 — Listening" dài, chip chỉ rộng ~48% nên 14 bị vỡ 3 dòng */}
@@ -642,7 +642,7 @@ export default function MockTestScreen() {
                   <Text style={[styles.label, { color: colors.text, fontSize: scaled(15) }]}>Chọn đề thi</Text>
                   <View style={styles.setList}>
                     <Pressable
-                      style={[styles.setRow, { borderColor: selectedTestSetId === '' ? colors.accent : colors.border, backgroundColor: selectedTestSetId === '' ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}
+                      style={[styles.setRow, { borderColor: selectedTestSetId === '' ? colors.accent : colors.border, backgroundColor: selectedTestSetId === '' ? colors.surfaceMuted : colors.surface }, themedCard(colors, 'compact'), { borderColor: selectedTestSetId === '' ? colors.accent : colors.border }]}
                       onPress={() => setSelectedTestSetId('')}
                     >
                       <Text style={{ color: colors.text, fontSize: scaled(14) }}>Toàn bộ ngân hàng</Text>
@@ -650,7 +650,7 @@ export default function MockTestScreen() {
                     {sortedTestSets.map((s) => (
                       <Pressable
                         key={s.id}
-                        style={[styles.setRow, { borderColor: selectedTestSetId === s.id ? colors.accent : colors.border, backgroundColor: selectedTestSetId === s.id ? colors.surfaceMuted : colors.surface }, livelyCard(colors, 'compact')]}
+                        style={[styles.setRow, { borderColor: selectedTestSetId === s.id ? colors.accent : colors.border, backgroundColor: selectedTestSetId === s.id ? colors.surfaceMuted : colors.surface }, themedCard(colors, 'compact'), { borderColor: selectedTestSetId === s.id ? colors.accent : colors.border }]}
                         onPress={() => setSelectedTestSetId(s.id)}
                       >
                         <Text style={{ color: colors.text, fontSize: scaled(14) }}>
@@ -683,13 +683,13 @@ export default function MockTestScreen() {
                   🎧 Thi thử: audio mỗi Section chỉ phát 1 lần — bấm nghe khi đã sẵn sàng làm các câu của Section đó.
                 </Text>
               ) : null}
-              <Pressable style={[styles.button, { backgroundColor: colors.accent }, busy && styles.disabled, raisedButton(colors)]} disabled={busy} onPress={() => void start()}>
+              <Pressable style={[styles.button, { backgroundColor: colors.accent }, busy && styles.disabled, themedButton(colors)]} disabled={busy} onPress={() => void start()}>
                 <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>{busy ? 'Đang tạo đề…' : 'Bắt đầu thi'}</Text>
               </Pressable>
             </View>
           )}
           {!paramTestSetId ? (
-            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+            <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
               <Text style={[styles.label, { color: colors.text, fontSize: scaled(16) }]}>📜 Lịch sử thi thử</Text>
               {submittedHistory.length === 0 ? (
                 <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có bài thi thử nào — làm 1 bài để xem lịch sử nhé.</Text>
@@ -707,7 +707,7 @@ export default function MockTestScreen() {
                   return (
                     <View
                       key={a.id}
-                      style={[styles.histRow, { borderColor: colors.border, backgroundColor: colors.surfaceMuted }, livelyCard(colors, 'compact')]}
+                      style={[styles.histRow, { borderColor: colors.border, backgroundColor: colors.surfaceMuted }, themedCard(colors, 'compact')]}
                     >
                       <Text style={[styles.line, { color: colors.text, fontSize: scaled(15), fontWeight: '700' }]}>
                         {a.testSetId ? (testSetTitleById.get(a.testSetId) ?? a.testSetId) : 'Toàn bộ ngân hàng'}
@@ -721,14 +721,14 @@ export default function MockTestScreen() {
                       </Text>
                       <View style={styles.histBtns}>
                         <Pressable
-                          style={[styles.histBtn, { borderColor: colors.border }, livelyChip(colors)]}
+                          style={[styles.histBtn, { borderColor: colors.border }, themedChip(colors)]}
                           onPress={() => router.push({ pathname: '/result/[id]', params: { id: String(a.id) } })}
                           accessibilityRole="button"
                         >
                           <Text style={{ color: colors.accent, fontSize: scaled(14), fontWeight: '700' }}>Xem lại</Text>
                         </Pressable>
                         <Pressable
-                          style={[styles.histBtn, { borderColor: colors.border }, livelyChip(colors)]}
+                          style={[styles.histBtn, { borderColor: colors.border }, themedChip(colors)]}
                           onPress={() => redoAttempt(a)}
                           accessibilityRole="button"
                         >
@@ -773,13 +773,13 @@ export default function MockTestScreen() {
             style={[
               styles.timer,
               { color: secondsLeft < 300 ? colors.danger : colors.text, fontSize: scaled(16), borderColor: colors.border },
-              livelyChip(colors),
+              themedChip(colors),
             ]}
           >
             ⏱ {fmt(secondsLeft)}
           </Text>
           <Pressable
-            style={[styles.menuBtn, { borderColor: colors.border }, livelyChip(colors)]}
+            style={[styles.menuBtn, { borderColor: colors.border }, themedChip(colors)]}
             onPress={() => (menuOpen ? closeMenu() : setMenuOpen(true))}
             accessibilityLabel="Mở menu thi thử"
             accessibilityRole="button"
@@ -816,7 +816,7 @@ export default function MockTestScreen() {
               Đã trả lời {answeredCount}/{questions.length} câu
             </Text>
             <Pressable
-              style={[styles.sheetRow, { borderColor: colors.border }, livelyCard(colors, 'compact')]}
+              style={[styles.sheetRow, { borderColor: colors.border }, themedCard(colors, 'compact')]}
               onPress={submitFromMenu}
               accessibilityRole="button"
             >
@@ -825,7 +825,7 @@ export default function MockTestScreen() {
               </Text>
             </Pressable>
             <Pressable
-              style={[styles.sheetRow, { borderColor: colors.border }, livelyCard(colors, 'compact')]}
+              style={[styles.sheetRow, { borderColor: colors.border }, themedCard(colors, 'compact')]}
               onPress={() => void exitTest()}
               accessibilityRole="button"
             >
@@ -834,7 +834,7 @@ export default function MockTestScreen() {
               </Text>
             </Pressable>
             <Pressable
-              style={[styles.sheetRow, { borderColor: colors.border }, livelyCard(colors, 'compact')]}
+              style={[styles.sheetRow, { borderColor: colors.border }, themedCard(colors, 'compact')]}
               onPress={closeMenu}
               accessibilityRole="button"
             >
@@ -860,7 +860,7 @@ const styles = StyleSheet.create({
   title: { fontWeight: '700', flexWrap: 'wrap' },
   timer: { borderWidth: 1, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm, fontWeight: '700', fontVariant: ['tabular-nums'] },
   // Nút ⋮ mở menu thi thử (Phương án A): tròn, viền 1px; lively thêm
-  // viền 2px + bóng cứng dưới qua livelyChip (đặt cuối mảng style).
+  // viền 2px + bóng cứng dưới qua themedChip (đặt cuối mảng style).
   menuBtn: { width: 40, height: 40, borderRadius: 20, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
   // Bottom-sheet menu ⋮ — mẫu theo WordLookupModal: nền mờ bấm ngoài
   // để đóng, sheet trượt từ dưới lên, bo góc trên.

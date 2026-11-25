@@ -25,7 +25,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
 import { ApiError, api, type SpeakingPrompt, type SpeakingRecording } from '../api';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
-import { livelyCard, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 import { LoadingLine } from '../components/LoadingLine';
 import { fmtClock } from './writing';
@@ -82,7 +82,7 @@ const PromptRow = memo(function PromptRow({
           borderColor: selected ? colors.accent : colors.border,
           backgroundColor: selected ? colors.surfaceMuted : colors.surface,
         },
-        livelyCard(colors, 'card', selected ? colors.accentDark : undefined),
+        themedCard(colors, 'card', selected ? colors.accentDark : undefined), { borderColor: selected ? colors.accent : colors.border },
       ]}
     >
       <Text style={[styles.promptTopic, { color: colors.text, fontSize: scaled(15) }]}>{p.topic}</Text>
@@ -325,7 +325,7 @@ export default function SpeakingScreen() {
         ) : null}
 
         {active && (
-          <View style={[styles.activeCard, { backgroundColor: colors.surface, borderColor: colors.accent }, livelyCard(colors, 'hero', colors.accentDark)]}>
+          <View style={[styles.activeCard, { backgroundColor: colors.surface, borderColor: colors.accent }, themedCard(colors, 'hero', colors.accentDark), { borderColor: colors.accent }]}>
             <Text style={[styles.activeTitle, { color: colors.text, fontSize: scaled(16) }]}>
               🎙️ Đang luyện: {active.topic} (Part {active.part})
             </Text>
@@ -343,7 +343,7 @@ export default function SpeakingScreen() {
               ⏱ Đã nói: <Text style={{ fontWeight: '700' }}>{fmtClock(elapsed)}</Text>
             </Text>
             <Pressable
-              style={[styles.button, { backgroundColor: recording ? colors.danger : colors.accent }, raisedButton(colors, recording ? colors.redInk : undefined)]}
+              style={[styles.button, { backgroundColor: recording ? colors.danger : colors.accent }, themedButton(colors, recording ? colors.redInk : undefined)]}
               onPress={() => void (recording ? stopRec() : startRec())}
             >
               <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(15) }]}>
@@ -361,7 +361,7 @@ export default function SpeakingScreen() {
                   </Text>
                 </Pressable>
                 <Pressable
-                  style={[styles.button, { backgroundColor: colors.accent, opacity: saving ? 0.6 : 1 }, raisedButton(colors)]}
+                  style={[styles.button, { backgroundColor: colors.accent, opacity: saving ? 0.6 : 1 }, themedButton(colors)]}
                   onPress={() => void saveRec()}
                   disabled={saving}
                 >
@@ -391,7 +391,7 @@ export default function SpeakingScreen() {
               <Text style={[styles.empty, { color: colors.muted, fontSize: scaled(14) }]}>Chưa có đề Speaking mẫu.</Text>
             }
             ListFooterComponent={
-              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'card')]}>
+              <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'card')]}>
                 <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>
                   Bản ghi của tôi ({recs.length})
                 </Text>

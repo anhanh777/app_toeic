@@ -14,7 +14,7 @@ import { router } from 'expo-router';
 import { ApiError, api, type ErrorLogEntry, type Question, type WeeklyError } from '../api';
 import { bandLevel, isFillIn, isMultiAnswer, parseSelectedLabels, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
 import { CARD_PADDING, RADIUS, SPACING } from '../layout';
-import { livelyBarTrack, livelyCard, livelyChip, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedBarTrack, themedCard, themedChip, themedOption, themedButton, useTextSize, useTheme } from '../theme';
 import { errorCodeName } from '../app/errors';
 import { fmtClock } from '../app/writing';
 import { LoadingLine } from './LoadingLine';
@@ -58,7 +58,7 @@ export const DrillAnswerControl = memo(function DrillAnswerControl({
                   borderColor: isRight ? colors.success : isSel ? colors.accent : colors.border,
                   backgroundColor: isRight || isSel ? colors.surfaceMuted : colors.surface,
                 },
-                livelyChip(colors),
+                themedChip(colors), isRight && { borderColor: colors.success, backgroundColor: colors.surfaceMuted }, isSel && { borderColor: colors.accent, backgroundColor: colors.surfaceMuted },
               ]}
             >
               <Text style={[styles.pillText, { color: colors.text, fontSize: scaled(13) }]}>{l}</Text>
@@ -104,7 +104,7 @@ export const DrillAnswerControl = memo(function DrillAnswerControl({
     return (
       <View style={styles.optList}>
         <TextInput
-          style={[styles.input, { borderColor: over ? colors.danger : colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+          style={[styles.input, { borderColor: over ? colors.danger : colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact'), { borderColor: over ? colors.danger : colors.border }]}
           value={value}
           onChangeText={onChange}
           placeholder={q.wordLimit != null ? `Nhập đáp án (tối đa ${q.wordLimit} từ)` : 'Nhập đáp án'}
@@ -133,7 +133,7 @@ export const DrillAnswerControl = memo(function DrillAnswerControl({
                 borderColor: isRight ? colors.success : isSel ? colors.accent : colors.border,
                 backgroundColor: isSel || isRight ? colors.surfaceMuted : colors.surface,
               },
-              livelyOption(colors, isRight ? 'correct' : isSel ? 'selected' : 'default'),
+              themedOption(colors, isRight ? 'correct' : isSel ? 'selected' : 'default'),
             ]}
           >
             <Text style={[styles.optionText, { color: colors.text, fontSize: scaled(15) }]}>
@@ -185,7 +185,7 @@ export function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDon
         <Text style={[styles.muted, { color: colors.muted, fontSize: scaled(14) }]}>🎉 Hết lỗi đến hạn rồi!</Text>
       )}
       {items.map((it) => (
-        <View key={it.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+        <View key={it.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'compact')]}>
           <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(14) }]}>
             {errorCodeName(it.errorCode)} ·{' '}
             {it.skill === 'listening' ? '🎧 Listening' : it.skill === 'reading' ? '📖 Reading' : it.skill === 'writing' ? '✍️ Writing' : '🎤 Speaking'}
@@ -201,7 +201,7 @@ export function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDon
           ) : null}
           <View style={styles.row}>
             <Pressable
-              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]}
+              style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]}
               onPress={() => void review(it.id, true)}
             >
               <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Tôi đã làm đúng ✓</Text>
@@ -222,7 +222,7 @@ export function IeltsReviewBlock({ dueCount, onDone }: { dueCount: number; onDon
         >
           <Text style={[styles.smallButtonText, { color: colors.text, fontSize: scaled(14) }]}>Mở sổ lỗi đầy đủ →</Text>
         </Pressable>
-        <Pressable style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]} onPress={onDone}>
+        <Pressable style={[styles.smallButton, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]} onPress={onDone}>
           <Text style={[styles.smallButtonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Xong khối ôn lỗi</Text>
         </Pressable>
       </View>
@@ -258,7 +258,7 @@ export function IeltsDrillBlock({
           Chưa có kết quả chẩn đoán nên chưa biết dạng nào yếu nhất.
         </Text>
         <Pressable
-          style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]}
+          style={[styles.button, { backgroundColor: colors.accent }, themedButton(colors)]}
           onPress={() => router.push('/diagnostic')}
         >
           <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Làm chẩn đoán trước →</Text>
@@ -300,7 +300,7 @@ export function IeltsDrillBlock({
       </Text>
       {!started && (
         <View style={styles.row}>
-          <Pressable style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, raisedButton(colors)]} onPress={() => void start()}>
+          <Pressable style={[styles.button, { backgroundColor: colors.accent, flex: 1 }, themedButton(colors)]} onPress={() => void start()}>
             <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Luyện 10 câu dạng này →</Text>
           </Pressable>
         </View>
@@ -316,7 +316,7 @@ export function IeltsDrillBlock({
         const overLimit =
           isFillIn(qType) && q.wordLimit != null && wordCount(selected[q.id] ?? '') > q.wordLimit;
         return (
-          <View key={q.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+          <View key={q.id} style={[styles.panel, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'compact')]}>
             <Text style={[styles.panelTitle, { color: colors.text, fontSize: scaled(15) }]}>
               {i + 1}. {q.content}
             </Text>
@@ -335,7 +335,7 @@ export function IeltsDrillBlock({
             {needsSubmit && !a && (
               <View style={styles.row}>
                 <Pressable
-                  style={[styles.smallButton, { backgroundColor: colors.accent, opacity: !selected[q.id]?.trim() || overLimit ? 0.6 : 1 }, raisedButton(colors)]}
+                  style={[styles.smallButton, { backgroundColor: colors.accent, opacity: !selected[q.id]?.trim() || overLimit ? 0.6 : 1 }, themedButton(colors)]}
                   disabled={!selected[q.id]?.trim() || overLimit}
                   onPress={() => void answer(q, selected[q.id] ?? '')}
                 >
@@ -355,7 +355,7 @@ export function IeltsDrillBlock({
         );
       })}
       {qs && (
-        <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={onDone}>
+        <Pressable style={[styles.button, { backgroundColor: colors.accent }, themedButton(colors)]} onPress={onDone}>
           <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Xong khối luyện dạng yếu</Text>
         </Pressable>
       )}
@@ -416,7 +416,7 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
       ) : null}
       <View style={styles.chipRow}>
         <Pressable
-          style={[styles.chip, { borderColor: colors.border, backgroundColor: mode === 'skim' ? colors.accent : colors.surface }, livelyChip(colors)]}
+          style={[styles.chip, { borderColor: colors.border, backgroundColor: mode === 'skim' ? colors.accent : colors.surface }, themedChip(colors), mode === 'skim' && { backgroundColor: colors.accent, borderColor: colors.accent }]}
           onPress={() => setMode('skim')}
         >
           <Text style={{ color: mode === 'skim' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -424,7 +424,7 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
           </Text>
         </Pressable>
         <Pressable
-          style={[styles.chip, { borderColor: colors.border, backgroundColor: mode === 'dictation' ? colors.accent : colors.surface }, livelyChip(colors)]}
+          style={[styles.chip, { borderColor: colors.border, backgroundColor: mode === 'dictation' ? colors.accent : colors.surface }, themedChip(colors), mode === 'dictation' && { backgroundColor: colors.accent, borderColor: colors.accent }]}
           onPress={() => setMode('dictation')}
         >
           <Text style={{ color: mode === 'dictation' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -441,7 +441,7 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
           {/* Hộp đoạn văn cuộn được (nestedScrollEnabled vì nằm trong
               ScrollView của Trang chủ) — đoạn rất dài không còn bị cắt. */}
           <ScrollView
-            style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}
+            style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'compact')]}
             nestedScrollEnabled
           >
             <Text style={[styles.passageText, { color: colors.text, fontSize: scaled(15) }]}>
@@ -452,7 +452,7 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
             ⏱ Còn lại: <Text style={{ fontWeight: '700' }}>{fmtClock(left)}</Text>
           </Text>
           <Pressable
-            style={[styles.smallButton, { backgroundColor: colors.accent, opacity: started ? 0.6 : 1 }, raisedButton(colors)]}
+            style={[styles.smallButton, { backgroundColor: colors.accent, opacity: started ? 0.6 : 1 }, themedButton(colors)]}
             disabled={started}
             onPress={() => {
               setLeft(90);
@@ -463,7 +463,7 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
           </Pressable>
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Tóm tắt mỗi đoạn 5–8 từ</Text>
           <TextInput
-            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact')]}
             value={summary}
             onChangeText={setSummary}
             placeholder="VD: Đoạn 1: … (5–8 từ). Đoạn 2: …"
@@ -488,7 +488,7 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
           </Pressable>
           {showScript && script ? (
             <ScrollView
-              style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}
+              style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, themedCard(colors, 'compact')]}
               nestedScrollEnabled
             >
               <Text style={[styles.passageText, { color: colors.text, fontSize: scaled(15) }]}>{script}</Text>
@@ -496,14 +496,14 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
           ) : null}
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Gõ lại những gì bạn đọc được</Text>
           <TextInput
-            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+            style={[styles.input, { borderColor: colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact')]}
             value={dictation}
             onChangeText={setDictation}
             multiline
           />
         </>
       )}
-      <Pressable style={[styles.button, { backgroundColor: colors.accent }, raisedButton(colors)]} onPress={onDone}>
+      <Pressable style={[styles.button, { backgroundColor: colors.accent }, themedButton(colors)]} onPress={onDone}>
         <Text style={[styles.buttonText, { color: colors.onAccent, fontSize: scaled(14) }]}>Xong khối luyện chủ động</Text>
       </Pressable>
     </View>
@@ -524,7 +524,7 @@ export function BandCompassBlock() {
 
   const max = Math.max(1, ...(weekly ?? []).map((w) => w.count));
   return (
-    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+    <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
       <Text style={[styles.cardTitle, { color: colors.text, fontSize: scaled(18) }]}>🧭 Band Compass — bạn đang ở đâu?</Text>
       {bands ? (
         <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>
@@ -551,7 +551,7 @@ export function BandCompassBlock() {
       {weekly?.slice(0, 12).map((w, i) => (
         <View key={`${w.week}-${w.code}-${i}`} style={styles.barRow}>
           <Text style={[styles.barLabel, { color: colors.text, fontSize: scaled(13) }]}>{w.week} · {w.code}</Text>
-          <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
+          <View style={[styles.barTrack, { backgroundColor: colors.surfaceMuted }, themedBarTrack(colors)]}>
             <View style={[styles.barFill, { width: `${(w.count / max) * 100}%`, backgroundColor: colors.accent }]} />
           </View>
           <Text style={[styles.barCount, { color: colors.text, fontSize: scaled(13) }]}>{w.count}</Text>

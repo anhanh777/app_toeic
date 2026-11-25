@@ -22,7 +22,7 @@ import {
   SPACING,
 } from '../layout';
 import { isFillIn, isMultiAnswer, parseSelectedLabels, partLabel, questionTypeName, toggleSelectedLabel, wordCount } from '../lib';
-import { livelyCard, livelyChip, livelyOption, raisedButton, useTextSize, useTheme } from '../theme';
+import { themedCard, themedChip, themedOption, themedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
 import { LoadingLine } from '../components/LoadingLine';
 
@@ -67,7 +67,7 @@ const AnswerControl = memo(function AnswerControl({
                   borderColor: isRight ? colors.success : isSel ? colors.accent : colors.border,
                   backgroundColor: isRight ? colors.surfaceMuted : isSel ? colors.surfaceMuted : colors.surface,
                 },
-                livelyChip(colors),
+                themedChip(colors), isRight && { borderColor: colors.success, backgroundColor: colors.surfaceMuted }, isSel && { borderColor: colors.accent, backgroundColor: colors.surfaceMuted },
               ]}
             >
               <Text style={[styles.pillText, { color: colors.text, fontSize: scaled(13) }]}>{l}</Text>
@@ -125,7 +125,7 @@ const AnswerControl = memo(function AnswerControl({
     return (
       <View style={styles.optList}>
         <TextInput
-          style={[styles.input, { borderColor: over ? colors.danger : colors.border, color: colors.text, fontSize: scaled(16) }, livelyCard(colors, 'compact')]}
+          style={[styles.input, { borderColor: over ? colors.danger : colors.border, color: colors.text, fontSize: scaled(16) }, themedCard(colors, 'compact'), { borderColor: over ? colors.danger : colors.border }]}
           value={value}
           onChangeText={onChange}
           placeholder={q.wordLimit != null ? `Nhập đáp án (tối đa ${q.wordLimit} từ)` : 'Nhập đáp án'}
@@ -157,7 +157,7 @@ const AnswerControl = memo(function AnswerControl({
                 borderColor: isRight ? colors.success : isSel ? colors.accent : colors.border,
                 backgroundColor: isSel || isRight ? colors.surfaceMuted : colors.surface,
               },
-              livelyOption(colors, isRight ? 'correct' : isSel ? 'selected' : 'default'),
+              themedOption(colors, isRight ? 'correct' : isSel ? 'selected' : 'default'),
             ]}
           >
             <Text style={[styles.optionText, { color: colors.text, fontSize: scaled(15) }]}>
@@ -245,7 +245,7 @@ export default function WrongQuestionsScreen() {
         fillIn && q.wordLimit != null && wordCount(sel) > q.wordLimit;
       const fb = feedback[q.id];
       return (
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'hero')]}>
           <Text style={[styles.tag, { color: colors.muted, fontSize: scaled(13) }]}>
             {partLabel(q.part, ex)} • Sai {q.wrongCount ?? 1} lần
             {q.questionType ? ` • ${questionTypeName(q.questionType)}` : ''}
@@ -272,7 +272,7 @@ export default function WrongQuestionsScreen() {
             style={[
               styles.button,
               { backgroundColor: colors.accent, opacity: !sel || overLimit || busyId === q.id ? 0.6 : 1 },
-              raisedButton(colors),
+              themedButton(colors),
             ]}
             onPress={() => void review(q)}
             disabled={!sel || overLimit || busyId === q.id}
@@ -298,7 +298,7 @@ export default function WrongQuestionsScreen() {
         </View>
         <View style={styles.chipRow}>
           <Pressable
-            style={[styles.chip, { borderColor: colors.border, backgroundColor: part === undefined ? colors.accent : colors.surface }, livelyChip(colors)]}
+            style={[styles.chip, { borderColor: colors.border, backgroundColor: part === undefined ? colors.accent : colors.surface }, themedChip(colors), part === undefined && { backgroundColor: colors.accent, borderColor: colors.accent }]}
             onPress={() => setPart(undefined)}
           >
             <Text style={{ color: part === undefined ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>
@@ -308,7 +308,7 @@ export default function WrongQuestionsScreen() {
           {[1, 2, 3, 4, 5, 6, 7].map((p) => (
             <Pressable
               key={p}
-              style={[styles.chip, { borderColor: colors.border, backgroundColor: part === p ? colors.accent : colors.surface }, livelyChip(colors)]}
+              style={[styles.chip, { borderColor: colors.border, backgroundColor: part === p ? colors.accent : colors.surface }, themedChip(colors), part === p && { backgroundColor: colors.accent, borderColor: colors.accent }]}
               onPress={() => setPart(p)}
             >
               <Text style={{ color: part === p ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '600' }}>

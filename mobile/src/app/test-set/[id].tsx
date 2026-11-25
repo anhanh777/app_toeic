@@ -10,7 +10,7 @@ import { api, type TestSet } from '../../api';
 import { useExam } from '../../exam';
 import { partLabel, partNameFor } from '../../lib';
 import { CARD_PADDING, horizontalPadding, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../../layout';
-import { livelyBarTrack, livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../../theme';
+import { themedBarTrack, themedCard, themedChip, themedButton, useTextSize, useTheme } from '../../theme';
 import { BackButton } from '../../components/BackButton';
 import { HeroFlight, type HeroRect } from '../../components/HeroFlight';
 import { LoadingLine } from '../../components/LoadingLine';
@@ -114,21 +114,21 @@ export default function TestSetDetailScreen() {
       // (đề IELTS có câu gộp) — chỉ dùng n để hiển thị.
       const rowTotal = prog?.total ?? n;
       return (
-        <View key={p} style={[styles.card, styles.partCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+        <View key={p} style={[styles.card, styles.partCard, { backgroundColor: colors.surface, borderColor: colors.border }, themedCard(colors, 'compact')]}>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
             {p <= 4 ? '🎧' : '📖'} {partLabel(p, ex)} · {n} câu
           </Text>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(16), fontWeight: '700' }]}>
             {isIelts ? partNameFor(p, ex) : partName(p)}
           </Text>
-          <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }, livelyChip(colors)]}>{sectionOf(p)}</Text>
+          <Text style={[styles.pill, { color: colors.muted, fontSize: scaled(12), borderColor: colors.border }, themedChip(colors)]}>{sectionOf(p)}</Text>
           {prog ? (
             <>
               <Text style={[styles.line, { color: colors.text, fontSize: scaled(14) }]}>
                 Đã làm {prog.answered}/{rowTotal} câu · đúng {prog.correct}
               </Text>
               {rowTotal > 0 ? (
-                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
+                <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, themedBarTrack(colors)]}>
                   <View style={[styles.barFill, { width: `${Math.round((prog.answered / rowTotal) * 100)}%`, backgroundColor: colors.accent }]} />
                 </View>
               ) : null}
@@ -137,7 +137,7 @@ export default function TestSetDetailScreen() {
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Chưa làm câu nào ở {partLabel(p, ex)} này</Text>
           )}
           <Pressable
-            style={[styles.button, { backgroundColor: colors.accent }, !n && styles.disabled, raisedButton(colors)]}
+            style={[styles.button, { backgroundColor: colors.accent }, !n && styles.disabled, themedButton(colors)]}
             disabled={!n}
             onPress={() => goPractice(p)}
           >
@@ -202,7 +202,7 @@ export default function TestSetDetailScreen() {
                 {answeredTotal}/{rowTotal} câu ({pctTotal}%) • Đúng{' '}
                 {correctTotal} câu
               </Text>
-              <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, livelyBarTrack(colors)]}>
+              <View style={[styles.bar, { backgroundColor: colors.surfaceMuted }, themedBarTrack(colors)]}>
                 <View
                   style={[
                     styles.barFill,
@@ -233,7 +233,7 @@ export default function TestSetDetailScreen() {
                 </View>
               ) : null}
               <Pressable
-                style={[styles.button, { backgroundColor: colors.accent }, !ts.totalQuestions && styles.disabled, raisedButton(colors)]}
+                style={[styles.button, { backgroundColor: colors.accent }, !ts.totalQuestions && styles.disabled, themedButton(colors)]}
                 disabled={!ts.totalQuestions}
                 onPress={goMock}
               >
