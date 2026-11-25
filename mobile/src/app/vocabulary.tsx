@@ -21,8 +21,10 @@ import { useExam } from '../exam';
 import { CARD_PADDING, horizontalPadding, LIST_DEFAULTS, MAX_CONTENT_WIDTH, RADIUS, SPACING } from '../layout';
 import { livelyCard, livelyChip, raisedButton, useTextSize, useTheme } from '../theme';
 import { BackButton } from '../components/BackButton';
+import { BottomNav } from '../components/BottomNav';
 import { useConfirm } from '../components/ConfirmDialog';
 import { LoadingLine } from '../components/LoadingLine';
+import { TabScreen } from '../components/TabScreen';
 
 type WordStatus = 'learning' | 'learned' | 'wrong';
 const STATUS_LABEL: Record<WordStatus, string> = {
@@ -102,34 +104,41 @@ export default function VocabularyScreen() {
   const [tab, setTab] = useState<'mine' | 'shared'>('mine');
   const pad = horizontalPadding(width);
 
+  // Màn tab chính (giống Luyện tập/Thi thử/Cá nhân): bọc TabScreen để có
+  // hiệu ứng vào màn + vuốt chuyển tab, và BottomNav ở dưới cùng —
+  // trước đây màn này thiếu cả hai nên vào tab Từ vựng là mất thanh
+  // điều hướng dưới đáy.
   return (
     <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
-      <View style={[styles.wrap, { paddingHorizontal: pad }]}>
-        <View style={styles.headerRow}>
-          <BackButton />
-          <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>Từ vựng</Text>
+      <TabScreen href="/vocabulary">
+        <View style={[styles.wrap, { paddingHorizontal: pad }]}>
+          <View style={styles.headerRow}>
+            <BackButton />
+            <Text style={[styles.title, { flex: 1, color: colors.text, fontSize: scaled(24) }]}>Từ vựng</Text>
+          </View>
+          {/* 2 tab dạng segmented control — 2 nửa bằng nhau, không còn 2 pill lệch. */}
+          <View style={[styles.segmented, { borderColor: colors.border, backgroundColor: colors.surface }, livelyCard(colors, 'compact')]}>
+            <Pressable
+              style={[styles.segment, tab === 'mine' && { backgroundColor: colors.accent }]}
+              onPress={() => setTab('mine')}
+            >
+              <Text style={{ color: tab === 'mine' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
+                Từ của tôi
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[styles.segment, tab === 'shared' && { backgroundColor: colors.accent }]}
+              onPress={() => setTab('shared')}
+            >
+              <Text style={{ color: tab === 'shared' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
+                Từ chung
+              </Text>
+            </Pressable>
+          </View>
+          {tab === 'mine' ? <MyWords /> : <SharedWords exam={ex} />}
         </View>
-        {/* 2 tab dạng segmented control — 2 nửa bằng nhau, không còn 2 pill lệch. */}
-        <View style={[styles.segmented, { borderColor: colors.border, backgroundColor: colors.surface }, livelyCard(colors, 'compact')]}>
-          <Pressable
-            style={[styles.segment, tab === 'mine' && { backgroundColor: colors.accent }]}
-            onPress={() => setTab('mine')}
-          >
-            <Text style={{ color: tab === 'mine' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
-              Từ của tôi
-            </Text>
-          </Pressable>
-          <Pressable
-            style={[styles.segment, tab === 'shared' && { backgroundColor: colors.accent }]}
-            onPress={() => setTab('shared')}
-          >
-            <Text style={{ color: tab === 'shared' ? colors.onAccent : colors.text, fontSize: scaled(15), fontWeight: '700' }}>
-              Từ chung
-            </Text>
-          </Pressable>
-        </View>
-        {tab === 'mine' ? <MyWords /> : <SharedWords exam={ex} />}
-      </View>
+      </TabScreen>
+      <BottomNav />
     </SafeAreaView>
   );
 }
@@ -612,10 +621,13 @@ function SharedWords({ exam }: { exam: string }) {
   );
 
   if (loading) {
+    // Khung thường, KHÔNG SafeAreaView lồng trong SafeAreaView của màn
+    // (trước đây lồng 2 lớp safe-area nên lúc tải Từ chung nội dung bị
+    // đẩy xuống thêm 1 khoảng notch).
     return (
-      <SafeAreaView style={[styles.safe, { backgroundColor: colors.background }]}>
+      <View style={styles.flex}>
         <LoadingLine location="page" />
-      </SafeAreaView>
+      </View>
     );
   }
   const header = (
@@ -826,7 +838,7 @@ const styles = StyleSheet.create({
   flashWord: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   flashMeaning: { fontWeight: '700', textAlign: 'center', flexWrap: 'wrap' },
   flashMeta: { textAlign: 'center', flexWrap: 'wrap' },
-  list: { gap: SPACING.sm, paddingBottom: SPACING.md },
+  list: { gap: SPACING.sm, paddingBottom: SPACING.xl },
   loader: { marginTop: SPACING.lg },
   wordCard: {
     borderWidth: 1,
