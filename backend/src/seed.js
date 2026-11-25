@@ -341,6 +341,15 @@ function seedQuestions() {
     });
     console.log('[seed] da tao ETS 2025 Test 07 TS-066.');
   }
+  if (!db.getTestSet('TS-068')) {
+    db.createTestSet({
+      id: 'TS-068',
+      title: 'ETS 2025 - Test 10',
+      description: 'ETS 2025 (YBM TOEIC 1000 Vol.1) Test 10 - LC + RC (200 câu, chua co audio nghe that)',
+      isPublished: 1,
+    });
+    console.log('[seed] da tao ETS 2025 Test 10 TS-068.');
+  }
   let inserted = 0;
   let skipped = 0;
   for (const q of list) {
