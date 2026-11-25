@@ -512,7 +512,7 @@ export default function ResultScreen() {
         isFull && data.overallBand != null ? (
           <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
             <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Band tổng (band ước lượng để tham khảo)</Text>
-            <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>Band {data.overallBand}</Text>
+            <Text style={[styles.big, { color: colors.text, fontSize: scaled(28) }]}>Band {data.overallBand}</Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {bandLevel(data.overallBand)}</Text>
             <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>
               {'★'.repeat(data.overallBand >= 8 ? 3 : data.overallBand >= 6.5 ? 2 : 1)}
@@ -545,7 +545,7 @@ export default function ResultScreen() {
       ) : isFull && data.total_score != null ? (
         <View style={[styles.card, styles.centerCard, { backgroundColor: colors.surface, borderColor: colors.border }, livelyCard(colors, 'hero')]}>
           <Text style={[styles.line, { color: colors.muted, fontSize: scaled(14) }]}>Tổng điểm (điểm ước lượng)</Text>
-          <Text style={[styles.big, { color: colors.text, fontSize: scaled(32) }]}>{data.total_score} / 990</Text>
+          <Text style={[styles.big, { color: colors.text, fontSize: scaled(28) }]}>{data.total_score} / 990</Text>
           <TierBadge total={data.total_score} />
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>Mức: {scoreLevel(data.total_score)}</Text>
           <Text style={[styles.line, { color: colors.text, fontSize: scaled(15) }]}>

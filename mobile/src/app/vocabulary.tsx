@@ -412,7 +412,16 @@ function MyWords() {
             {!flipped ? (
               <>
                 {/* Chữ mặt trước thẻ 24 vỡ với từ dài trên màn hẹp nên giảm còn 22. */}
-                <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(22) }]}>{w.word}</Text>
+                {/* Từ dài tự co chữ để luôn 1 dòng (adjustsFontSizeToFit),
+                    không vỡ 2 dòng ở cỡ chữ Rất lớn. */}
+                <Text
+                  style={[styles.flashWord, { color: colors.text, fontSize: scaled(22) }]}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.7}
+                >
+                  {w.word}
+                </Text>
                 <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>
                   {[w.phonetic, w.pos].filter(Boolean).join(' · ')}
                 </Text>
@@ -662,7 +671,14 @@ function SharedWords({ exam }: { exam: string }) {
             {!flipped ? (
               <>
                 {/* Chữ mặt trước thẻ 24 vỡ với từ dài trên màn hẹp nên giảm còn 22. */}
-                <Text style={[styles.flashWord, { color: colors.text, fontSize: scaled(22) }]}>{w.word}</Text>
+                <Text
+                  style={[styles.flashWord, { color: colors.text, fontSize: scaled(22) }]}
+                  numberOfLines={1}
+                  adjustsFontSizeToFit
+                  minimumFontScale={0.7}
+                >
+                  {w.word}
+                </Text>
                 <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(15) }]}>{w.phonetic || ''}</Text>
                 <Text style={[styles.flashMeta, { color: colors.muted, fontSize: scaled(14) }]}>Chạm để lật thẻ</Text>
               </>

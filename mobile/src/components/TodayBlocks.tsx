@@ -4,6 +4,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import {
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -437,11 +438,16 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
             Đọc lướt đoạn văn dưới đây trong <Text style={{ fontWeight: '700' }}>90 giây</Text>, rồi tóm tắt
             mỗi đoạn bằng <Text style={{ fontWeight: '700' }}>5–8 từ</Text>.
           </Text>
-          <View style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+          {/* Hộp đoạn văn cuộn được (nestedScrollEnabled vì nằm trong
+              ScrollView của Trang chủ) — đoạn rất dài không còn bị cắt. */}
+          <ScrollView
+            style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}
+            nestedScrollEnabled
+          >
             <Text style={[styles.passageText, { color: colors.text, fontSize: scaled(15) }]}>
               {passage || 'Đang tải đoạn văn mẫu (TS-028)…'}
             </Text>
-          </View>
+          </ScrollView>
           <Text style={[styles.cardText, { color: colors.text, fontSize: scaled(15) }]}>
             ⏱ Còn lại: <Text style={{ fontWeight: '700' }}>{fmtClock(left)}</Text>
           </Text>
@@ -481,9 +487,12 @@ export function IeltsActiveBlock({ onDone }: { onDone: () => void }) {
             </Text>
           </Pressable>
           {showScript && script ? (
-            <View style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}>
+            <ScrollView
+              style={[styles.passageBox, { backgroundColor: colors.surfaceMuted, borderColor: colors.border }, livelyCard(colors, 'compact')]}
+              nestedScrollEnabled
+            >
               <Text style={[styles.passageText, { color: colors.text, fontSize: scaled(15) }]}>{script}</Text>
-            </View>
+            </ScrollView>
           ) : null}
           <Text style={[styles.label, { color: colors.text, fontSize: scaled(14) }]}>Gõ lại những gì bạn đọc được</Text>
           <TextInput
@@ -635,7 +644,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: RADIUS.button,
     padding: SPACING.md,
-    maxHeight: 280, // Đoạn văn dài bị cắt ở 220 khi chữ to — nới ra, đoạn rất dài vẫn cần ScrollView (xem báo cáo)
+    maxHeight: 280, // Hộp cuộn được (ScrollView) nên đoạn rất dài cuộn xem hết, không bị cắt.
     width: '100%',
   },
   passageText: { flexWrap: 'wrap' },

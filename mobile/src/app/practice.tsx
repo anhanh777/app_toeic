@@ -239,7 +239,7 @@ export default function PracticeScreen() {
             onPress={() => setTab('parts')}
           >
             <Text style={{ color: tab === 'parts' ? colors.onAccent : colors.text, fontSize: scaled(14), fontWeight: '700', textAlign: 'center' }}>
-              {isIelts ? '🎧 Luyện theo Section/Passage' : '🎧 Luyện theo Part'}
+              {isIelts ? '🎧 Theo Section' : '🎧 Luyện theo Part'}
             </Text>
           </Pressable>
         </View>
