@@ -1915,6 +1915,8 @@ function seedAll() {
   if (db.getTestSet('TS-064')) db.refreshTestSetTotal('TS-064');
   if (db.getTestSet('TS-065')) db.refreshTestSetTotal('TS-065');
   if (db.getTestSet('TS-067')) db.refreshTestSetTotal('TS-067');
+  if (db.getTestSet('TS-066')) db.refreshTestSetTotal('TS-066');
+  if (db.getTestSet('TS-068')) db.refreshTestSetTotal('TS-068');
   if (freshDb) {
     db.setSetting('maintenance.enabled', true);
     db.setSetting('maintenance.auto', true);
