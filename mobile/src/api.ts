@@ -5,7 +5,7 @@
 import * as SecureStore from 'expo-secure-store';
 
 export const API_URL =
-  process.env.EXPO_PUBLIC_API_URL || 'https://app-toeic-backend.onrender.com';
+  process.env.EXPO_PUBLIC_API_URL || 'https://app-toeic-backend-d06a.onrender.com';
 
 const TOKEN_KEY = 'toeic_token';
 

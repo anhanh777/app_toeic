@@ -22,7 +22,7 @@ const { execFileSync } = require('node:child_process');
 
 const GWS_CLI = process.env.GWS_CLI || '/opt/hatch/bin/hatch_gws_cli';
 const DRIVE_FOLDER_NAME = process.env.DRIVE_FOLDER_NAME || 'app-toeic-backups';
-const API_BASE = (process.env.API_BASE || 'https://app-toeic-backend.onrender.com').replace(/\/$/, '');
+const API_BASE = (process.env.API_BASE || 'https://app-toeic-backend-d06a.onrender.com').replace(/\/$/, '');
 const TOKEN_FILE =
   process.env.ADMIN_TOKEN_FILE ||
   path.join(os.homedir(), 'workspace', 'drive-ets', 'token-admin.txt');
