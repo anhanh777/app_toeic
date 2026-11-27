@@ -1613,6 +1613,41 @@ function seedIeltsCam13Test3() {
   return inserted;
 }
 
+function seedIeltsCam13Test4() {
+  const list = readJsonArray('ielts-cam13-test4.json').filter(validSeedIeltsQuestion);
+  if (!list.length) {
+    console.log('[seed] khong co cau IELTS Cam 13 Test 4 hop le — bo qua TS-071.');
+    return 0;
+  }
+  if (!db.getTestSet('TS-071')) {
+    db.createTestSet({
+      id: 'TS-071',
+      title: 'Cambridge IELTS 13 — Test 04',
+      description:
+        'Cambridge IELTS 13 Academic, Test 04: Listening 4 Section + Reading 3 Passage (80 câu). Đề thi thật.',
+      isPublished: 1,
+      exam: 'ielts',
+    });
+    console.log('[seed] da tao Cambridge IELTS 13 Test 04 TS-071.');
+  }
+  const existing = db.listQuestions({ testSetId: 'TS-071', limit: 1, offset: 0 });
+  if (existing.total > 0) {
+    console.log(`[seed] TS-071 da co ${existing.total} cau — bo qua seed Cam 13 Test 4.`);
+    return 0;
+  }
+  let inserted = 0;
+  for (const q of list) {
+    try {
+      db.insertQuestion({ ...q, exam: 'ielts', testSetId: 'TS-071' });
+      inserted += 1;
+    } catch (err) {
+      console.warn(`[seed] bo qua cau Cam 13 Test 4 ${q.id}: ${err.message}`);
+    }
+  }
+  console.log(`[seed] da seed ${inserted}/${list.length} cau Cam 13 Test 4 (TS-071).`);
+  return inserted;
+}
+
 function seedIeltsCam14Test2() {
   const list = readJsonArray('ielts-cam14-test2.json').filter(validSeedIeltsQuestion);
   if (!list.length) {
@@ -1949,6 +1984,7 @@ function seedAll() {
   seedIeltsCam13Test1();
   seedIeltsCam13Test2();
   seedIeltsCam13Test3();
+  seedIeltsCam13Test4();
   seedPartMedia();
   seedVocabulary();
   seedIeltsWritingTasks();
@@ -1991,6 +2027,7 @@ function seedAll() {
   if (db.getTestSet('TS-068')) db.refreshTestSetTotal('TS-068');
   if (db.getTestSet('TS-069')) db.refreshTestSetTotal('TS-069');
   if (db.getTestSet('TS-070')) db.refreshTestSetTotal('TS-070');
+  if (db.getTestSet('TS-071')) db.refreshTestSetTotal('TS-071');
   if (freshDb) {
     db.setSetting('maintenance.enabled', true);
     db.setSetting('maintenance.auto', true);

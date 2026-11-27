@@ -1103,5 +1103,25 @@
   "testSetId": "TS-070",
   "part": 4,
   "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795659503/ielts/audio/cam13-t3-p4.mp3"
+ },
+ {
+  "testSetId": "TS-071",
+  "part": 1,
+  "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795744134/ielts/audio/cam13-t4-p1.mp3"
+ },
+ {
+  "testSetId": "TS-071",
+  "part": 2,
+  "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795744137/ielts/audio/cam13-t4-p2.mp3"
+ },
+ {
+  "testSetId": "TS-071",
+  "part": 3,
+  "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795744143/ielts/audio/cam13-t4-p3.mp3"
+ },
+ {
+  "testSetId": "TS-071",
+  "part": 4,
+  "audioUrl": "https://res.cloudinary.com/b8ay1qzz/video/upload/v1795744146/ielts/audio/cam13-t4-p4.mp3"
  }
 ]
